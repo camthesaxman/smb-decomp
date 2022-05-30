@@ -272,7 +272,7 @@ lbl_800AD510:
 /* 800AD574 000A9494  4B F5 A8 C9 */	bl mathutil_mtxA_tf_vec
 /* 800AD578 000A9498  93 01 00 B0 */	stw r24, 0xb0(r1)
 /* 800AD57C 000A949C  38 61 00 0C */	addi r3, r1, 0xc
-/* 800AD580 000A94A0  4B FB DD 41 */	bl func_8006B2C0
+/* 800AD580 000A94A0  4B FB DD 41 */	bl spawn_stobj
 lbl_800AD584:
 /* 800AD584 000A94A4  3B 39 00 01 */	addi r25, r25, 1
 /* 800AD588 000A94A8  2C 19 00 30 */	cmpwi r25, 0x30
@@ -2947,8 +2947,8 @@ lbl_800AFBF0:
 /* 800AFC08 000ABB28  7C 08 03 A6 */	mtlr r0
 /* 800AFC0C 000ABB2C  38 21 00 80 */	addi r1, r1, 0x80
 /* 800AFC10 000ABB30  4E 80 00 20 */	blr
-.global func_800AFC14
-func_800AFC14:
+.global stobj_nameent_btn_destroy
+stobj_nameent_btn_destroy:
 /* 800AFC14 000ABB34  4E 80 00 20 */	blr
 .global func_800AFC18
 func_800AFC18:

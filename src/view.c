@@ -718,7 +718,7 @@ void draw_stage_objects(void)
                 f0 = 2.0 - f0;
             mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * -f0);
             g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(lbl_802F1FFC);
+            avdisp_draw_model_culled_sort_translucent(jamabarModel);
             totalJamas++;
         }
     }

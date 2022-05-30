@@ -954,45 +954,9 @@ enum
 };
 
 struct Stobj
-{ /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
-    s32 id;
-    s16 g_some_id;
-    u16 type;
-    u32 g_some_bitflag;
-    s16 g_mode;
-    s16 g_counter;
-    Point3d g_model_origin;
-    Point3d position;
-    Point3d position_2; /* Copy of position? */
-    float bounding_sphere_radius; /* Has something to do w/ collision */
-    void (* coli_func)(struct Stobj *, struct PhysicsBall *);
-    Vec scale;
-    float unk48;
-    float unk4c;
-    float unk50;
-    struct GmaModelHeader *model;
-    Point3d g_some_pos; /* Has something to do w/ position */
-    Vec vel;
-    S16Vec rot;
-    short unk76;
-    short unk78;
-    Point3d g_prev_pos;
-    S16Vec g_prev_rot;
-    float unk90;
-    float unk94;
-    float unk98;
-    float unk9c;
-    s8 animGroupId;
-    void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
-    Point3d g_some_pos2;
-    Point3d g_local_pos;
-    Vec g_local_vel;
-};
-
-struct Stobj_
 {
-    s16 unk0;
-    s16 unk2;
+    /*0x00*/ s16 id;  // index into stobjInfo array
+    s16 unk2;  // some other id?
     /*0x04*/ s16 type;
     u8 filler6[2];
     u32 unk8;
@@ -1002,13 +966,13 @@ struct Stobj_
     /*0x1C*/ Vec position;
     /*0x28*/ Vec position_2;
     /*0x34*/ float boundSphereRadius;
-    /*0x38*/ void (*coliFunc)(struct Stobj_ *, struct PhysicsBall *);
+    /*0x38*/ void (*coliFunc)(struct Stobj *, struct PhysicsBall *);
     Vec unk3C;  // unknown type
     float unk48;
     float unk4C;
     float unk50;
-    /*0x54*/ struct GMAModel *model;
-    Vec unk58;  // position within anim group?
+    /*0x54*/ struct GMAModel *model;  // sometimes also a NaomiModel
+    /*0x58*/ Vec g_some_pos;  // position within anim group?
     Vec unk64;
     /*0x70*/ s16 rotX;
     /*0x72*/ s16 rotY;
@@ -1027,8 +991,8 @@ struct Stobj_
     u8 fillerA1[3];
     void *unkA4;
     Vec unkA8;
-    Vec unkB4;  // OFS
-    Vec unkC0;  // OFS SPD
+    /*0xB4*/ Vec g_local_pos;  // OFS
+    /*0xC0*/ Vec g_local_vel;  // OFS SPD
 };  // size = 0xCC
 
 struct BgLightInfo

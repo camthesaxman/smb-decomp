@@ -46,7 +46,7 @@ void do_object_collision(void)
             {
                 int j;
                 s8 *phi_r30 = spritePoolInfo.unk2C;
-                struct Stobj_ *stobj = lbl_80285AB0;
+                struct Stobj *stobj = stobjInfo;
 
                 for (j = spritePoolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
                 {

@@ -33,13 +33,13 @@ struct GoalTape
     float unk8;
     float unkC;
     s32 unk10;
-    struct Stobj_ *unk14;
+    struct Stobj *unk14;
     struct GoalTape_sub unk18[8];
 };  // size = 0x198
 
 struct GoalTape goalTapes[8];
 
-struct PartyBall
+struct GoalBag  // The "party ball", known as a "goal bag" internally
 {
     u32 unk0;
     u8 filler4[0x10-0x4];
@@ -47,7 +47,7 @@ struct PartyBall
     u8 filler24[4];
 };  // size = 0x28
 
-struct PartyBall partyBalls[8];
+struct GoalBag goalBags[8];
 
 s16 smallLCDModelIDs[] =
 {
@@ -77,16 +77,18 @@ s16 largeLCDModelIDs[] =
     NLMODEL_common_L_LCD_9,
 };
 
-void func_8006C7BC(struct StageAnimGroup *arg0, int arg1)
+void g_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
 {
-    struct Stobj_ stobj;
+    struct Stobj stobj;
     struct StageAnimGroup *stageAg;
     int i, j;
     int totalGoals = 0;
     struct StageGoal *goal;
     struct GoalTape *tape;
-    struct PartyBall *partyBall;
+    struct GoalBag *bag;
     Point3d sp10;
+
+    // Spawn goal tapes
 
     memset(goalTapes, 0, sizeof(goalTapes));
     memset(&stobj, 0, sizeof(stobj));
@@ -107,18 +109,21 @@ void func_8006C7BC(struct StageAnimGroup *arg0, int arg1)
                 g_debug_printf("Warning!!! Goal Tape Max(%d) Over!!!\n", 8);
                 break;
             }
-            stobj.unk58 = goal->pos;
+            stobj.g_some_pos = goal->pos;
             stobj.rotX = goal->rotX;
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
             tape->unk0 = 0;
             stobj.unkA4 = tape;
-            func_8006B2C0(&stobj);
+            spawn_stobj(&stobj);
             totalGoals++;
         }
     }
-    memset(partyBalls, 0, sizeof(partyBalls));
+
+    // Spawn goal bags
+
+    memset(goalBags, 0, sizeof(goalBags));
     memset(&stobj, 0, sizeof(stobj));
 
     if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
@@ -130,13 +135,13 @@ void func_8006C7BC(struct StageAnimGroup *arg0, int arg1)
     sp10.y = 2.8f;
     sp10.z = 0.0f;
 
-    partyBall = partyBalls;
+    bag = goalBags;
     stageAg = arg0;
     totalGoals = 0;
     for (i = 0; i < arg1; i++, stageAg++)
     {
         goal = stageAg->goals;
-        for (j = 0; j < stageAg->goalCount; j++, goal++, partyBall++)
+        for (j = 0; j < stageAg->goalCount; j++, goal++, bag++)
         {
             if (totalGoals >= 8)
                 break;
@@ -149,10 +154,10 @@ void func_8006C7BC(struct StageAnimGroup *arg0, int arg1)
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
-            partyBall->unk0 = 0;
-            partyBall->goal = *goal;
-            stobj.unkA4 = partyBall;
-            func_8006B2C0(&stobj);
+            bag->unk0 = 0;
+            bag->goal = *goal;
+            stobj.unkA4 = bag;
+            spawn_stobj(&stobj);
             totalGoals++;
         }
 
@@ -164,7 +169,7 @@ struct NaomiModel *largeLCDModels[10];
 
 // https://decomp.me/scratch/L6SNU
 #ifdef NONMATCHING
-void stobj_goaltape_init(struct Stobj_ *arg0)
+void stobj_goaltape_init(struct Stobj *arg0)
 {
     struct RaycastHit spC;
     f32 temp_f10;
@@ -185,7 +190,7 @@ void stobj_goaltape_init(struct Stobj_ *arg0)
     temp_r31 = arg0->unkA4;
     temp_r31->unk14 = arg0;
     temp_r31->unk10 = -1;
-    mathutil_mtxA_from_translate(&arg0->unk58);
+    mathutil_mtxA_from_translate(&arg0->g_some_pos);
     mathutil_mtxA_rotate_z(arg0->rotZ);
     mathutil_mtxA_rotate_y(arg0->rotY);
     mathutil_mtxA_rotate_x(arg0->rotX);
@@ -260,7 +265,7 @@ double force_lbl_802F4908() { return 1.75; }
 double force_lbl_802F4910() { return 0.875; }
 float  force_lbl_802F4918() { return 1.0f; }
 float  force_lbl_802F491C() { return 0.22499999403953552f; }
-asm void stobj_goaltape_init(struct Stobj_ *arg0)
+asm void stobj_goaltape_init(struct Stobj *arg0)
 {
     nofralloc
 #include "../asm/nonmatchings/stobj_goaltape_init.s"
@@ -268,7 +273,7 @@ asm void stobj_goaltape_init(struct Stobj_ *arg0)
 #pragma peephole on
 #endif
 
-void stobj_goaltape_main(struct Stobj_ *stobj)
+void stobj_goaltape_main(struct Stobj *stobj)
 {
     Vec sp30;
     Vec sp24;
@@ -334,9 +339,9 @@ void stobj_goaltape_main(struct Stobj_ *stobj)
         temp_r27 = &animGroups[stobj->animGroupId];
         var_r30 = 1;
         mathutil_mtxA_from_mtx(temp_r27->prevTransform);
-        mathutil_mtxA_tf_point(&stobj->unk58, &spC);
+        mathutil_mtxA_tf_point(&stobj->g_some_pos, &spC);
         mathutil_mtxA_from_mtx(temp_r27->transform);
-        mathutil_mtxA_tf_point(&stobj->unk58, &sp30);
+        mathutil_mtxA_tf_point(&stobj->g_some_pos, &sp30);
         spC.x -= sp30.x;
         spC.y -= sp30.y;
         spC.z -= sp30.z;
@@ -346,7 +351,7 @@ void stobj_goaltape_main(struct Stobj_ *stobj)
         mathutil_mtxA_rigid_inv_tf_vec(&spC, &spC);
     }
     mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
-    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_translate(&stobj->g_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -485,7 +490,7 @@ void stobj_goaltape_main(struct Stobj_ *stobj)
     }
 }
 
-void stobj_goaltape_draw(struct Stobj_ *stobj)
+void stobj_goaltape_draw(struct Stobj *stobj)
 {
     int i;
     struct GoalTape_sub *var_r31;
@@ -498,7 +503,7 @@ void stobj_goaltape_draw(struct Stobj_ *stobj)
     int digit;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_translate(&stobj->g_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -577,7 +582,7 @@ void stobj_goaltape_draw(struct Stobj_ *stobj)
     func_8000E3BC();
 }
 
-void stobj_goaltape_coli(struct Stobj_ *stobj, struct PhysicsBall *ball)
+void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 {
     Vec sp58;
     Vec sp4C;
@@ -596,7 +601,7 @@ void stobj_goaltape_coli(struct Stobj_ *stobj, struct PhysicsBall *ball)
     sp1C.y = 0.0f;
     sp1C.z = 0.0f;
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_translate(&stobj->g_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -665,6 +670,6 @@ void stobj_goaltape_coli(struct Stobj_ *stobj, struct PhysicsBall *ball)
     }
 }
 
-void func_8006DD98(struct Stobj_ *stobj) {}
+void stobj_goaltape_destroy(struct Stobj *stobj) {}
 
-void func_8006DD9C(struct Stobj_ *stobj) {}
+void func_8006DD9C(struct Stobj *stobj) {}

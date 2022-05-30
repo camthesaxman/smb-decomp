@@ -14,28 +14,28 @@
 
 #include "../data/common.gma.h"
 
-struct Stobj_ lbl_80285AB0[128];
+struct Stobj stobjInfo[128];
 
 extern s16 lbl_802F1FF8;
 
 void ev_stobj_init(void)
 {
     int i;
-    struct Stobj_ *stobj;
+    struct Stobj *stobj;
 
     lbl_802F1FF8 = 0;
-    memset(lbl_80285AB0, 0, sizeof(lbl_80285AB0));
-    stobj = lbl_80285AB0;
-    for (i = 0; i < ARRAY_COUNT(lbl_80285AB0); i++, stobj++)
+    memset(stobjInfo, 0, sizeof(stobjInfo));
+    stobj = stobjInfo;
+    for (i = 0; i < ARRAY_COUNT(stobjInfo); i++, stobj++)
     {
-        stobj->unk0 = i;
+        stobj->id = i;
         stobj->unk2 = -1;
     }
     func_80030A50(spritePoolInfo.unk20);
-    func_8006B594();
-    func_8006B8E4(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
-    func_8006B9E4(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
-    func_8006C7BC(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
+    find_jamabar_and_bumper_models();
+    spawn_bumpers(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
+    spawn_jamabars(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
+    g_spawn_goal_stobjs(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
 }
 
 #pragma force_active on
@@ -55,7 +55,7 @@ char *asdfasdf[] =
 };
 #pragma force_active reset
 
-void (*stobjInitFuncs[])(struct Stobj_ *) =
+void (*stobjInitFuncs[])(struct Stobj *) =
 {
     stobj_bumper_init,
     stobj_jamabar_init,
@@ -71,7 +71,7 @@ void (*stobjInitFuncs[])(struct Stobj_ *) =
     NULL,
 };
 
-void (*stobjMainFuncs[])(struct Stobj_ *) =
+void (*stobjMainFuncs[])(struct Stobj *) =
 {
     stobj_bumper_main,
     stobj_jamabar_main,
@@ -87,7 +87,7 @@ void (*stobjMainFuncs[])(struct Stobj_ *) =
     NULL,
 };
 
-void (*stobjDrawFuncs[])(struct Stobj_ *) =
+void (*stobjDrawFuncs[])(struct Stobj *) =
 {
     stobj_bumper_draw,
     stobj_jamabar_draw,
@@ -103,7 +103,7 @@ void (*stobjDrawFuncs[])(struct Stobj_ *) =
     NULL,
 };
 
-void (*stobjCollisionFuncs[])(struct Stobj_ *, struct PhysicsBall *) =
+void (*stobjCollisionFuncs[])(struct Stobj *, struct PhysicsBall *) =
 {
     stobj_bumper_coli,
     stobj_jamabar_coli,
@@ -119,23 +119,23 @@ void (*stobjCollisionFuncs[])(struct Stobj_ *, struct PhysicsBall *) =
     NULL,
 };
 
-void (*lbl_801BE1F0[])(struct Stobj_ *) =
+void (*stobjDestroyFuncs[])(struct Stobj *) =
 {
-    func_8006C13C,
-    func_8006C6C8,
-    func_8006DD98,
-    func_8006F3A0,
-    func_8006F428,
-    func_8006C7B4,
-    func_8006C7B4,
-    func_8006C7B4,
-    func_8006C7B4,
-    func_8006C404,
-    func_800AFC14,
+    stobj_bumper_destroy,
+    stobj_jamabar_destroy,
+    stobj_goaltape_destroy,
+    stobj_goalbag_destroy,
+    stobj_goalbag_exmaster_destroy,
+    stobj_dummy_destroy,
+    stobj_dummy_destroy,
+    stobj_dummy_destroy,
+    stobj_dummy_destroy,
+    stobj_bumper_bgspecial_destroy,
+    stobj_nameent_btn_destroy,
     NULL,
 };
 
-void (*lbl_801BE220[])(struct Stobj_ *) =
+void (*lbl_801BE220[])(struct Stobj *) =
 {
     func_8006C140,
     func_8006C6CC,
@@ -183,26 +183,26 @@ char string_Flag__0x_08X_n_2[] = "Flag: 0x%08X\n";
 void ev_stobj_main(void)
 {
     int i;
-    struct Stobj_ *stobj;
+    struct Stobj *stobj;
     s8 *phi_r27;
 
     if (gamePauseStatus & 0xA)
         return;
 
     phi_r27 = spritePoolInfo.unk2C;
-    stobj = lbl_80285AB0;
+    stobj = stobjInfo;
     for (i = spritePoolInfo.unk28; i > 0; i--, phi_r27++, stobj++)
     {
         if (*phi_r27 != 0)
         {
             if (*phi_r27 == 3)
             {
-                lbl_801BE1F0[stobj->type](stobj);
+                stobjDestroyFuncs[stobj->type](stobj);
                 *phi_r27 = 0;
             }
             else
             {
-                stobj->unk7C = stobj->unk58;
+                stobj->unk7C = stobj->g_some_pos;
                 stobj->unk88 = stobj->rotX;
                 stobj->unk8A = stobj->rotY;
                 stobj->unk8C = stobj->rotZ;
@@ -216,10 +216,10 @@ void ev_stobj_main(void)
                     if (stobj->animGroupId != 0)
                     {
                         mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
-                        mathutil_mtxA_translate(&stobj->unk58);
+                        mathutil_mtxA_translate(&stobj->g_some_pos);
                     }
                     else
-                        mathutil_mtxA_from_translate(&stobj->unk58);
+                        mathutil_mtxA_from_translate(&stobj->g_some_pos);
                     if (stobj->unk8 & 0x10)
                     {
                         mathutil_mtxA_rotate_y(stobj->rotY);
@@ -243,16 +243,16 @@ void ev_stobj_main(void)
 void ev_stobj_dest(void)
 {
     int i;
-    struct Stobj_ *stobj;
+    struct Stobj *stobj;
     s8 *phi_r27;
 
     phi_r27 = spritePoolInfo.unk2C;
-    stobj = lbl_80285AB0;
+    stobj = stobjInfo;
     for (i = spritePoolInfo.unk28; i > 0; i--, phi_r27++, stobj++)
     {
         if (*phi_r27 != 0)
         {
-            lbl_801BE1F0[stobj->type](stobj);
+            stobjDestroyFuncs[stobj->type](stobj);
             *phi_r27 = 0;
         }
     }
@@ -261,7 +261,7 @@ void ev_stobj_dest(void)
 void stobj_draw(void)
 {
     s32 i;
-    struct Stobj_ *stobj;
+    struct Stobj *stobj;
     s8 *phi_r29;
     BallEnvFunc func;
     int phi_r25;
@@ -274,7 +274,7 @@ void stobj_draw(void)
 
     phi_r29 = spritePoolInfo.unk2C;
     phi_r25 = 0;
-    stobj = lbl_80285AB0;
+    stobj = stobjInfo;
     for (i = spritePoolInfo.unk28; i > 0; i--, phi_r29++, stobj++)
     {
         if (*phi_r29 != 0)
@@ -294,20 +294,20 @@ void stobj_draw(void)
         g_avdisp_set_some_func_1(NULL);
 }
 
-s16 func_8006B2C0(struct Stobj_ *arg0)
+s16 spawn_stobj(struct Stobj *arg0)
 {
     int temp_r3;
-    struct Stobj_ *temp_r31;
+    struct Stobj *temp_r31;
 
     temp_r3 = pool_alloc(spritePoolInfo.unk20, 1);
     if (temp_r3 < 0)
         return -1;
 
-    temp_r31 = &lbl_80285AB0[temp_r3];
+    temp_r31 = &stobjInfo[temp_r3];
     memcpy(temp_r31, arg0, sizeof(*temp_r31));
-    temp_r31->unk0 = temp_r3;
+    temp_r31->id = temp_r3;
     stobjInitFuncs[temp_r31->type](temp_r31);
-    temp_r31->unk7C = temp_r31->unk58;
+    temp_r31->unk7C = temp_r31->g_some_pos;
     func_8006B518(temp_r31);
     temp_r31->position_2 = temp_r31->position;
     temp_r31->coliFunc = stobjCollisionFuncs[temp_r31->type];
@@ -320,21 +320,21 @@ s16 func_8006B2C0(struct Stobj_ *arg0)
 
 struct StobjFuncs
 {
-    void (*unk0)(struct Stobj_ *);
-    void (*unk4)(struct Stobj_ *);
-    void (*unk8)(struct Stobj_ *);
-    void (*unkC)(struct Stobj_ *, struct PhysicsBall *);
-    void (*unk10)(struct Stobj_ *);
-    void (*unk14)(struct Stobj_ *);
+    void (*init)(struct Stobj *);
+    void (*main)(struct Stobj *);
+    void (*draw)(struct Stobj *);
+    void (*coli)(struct Stobj *, struct PhysicsBall *);
+    void (*destroy)(struct Stobj *);
+    void (*unk14)(struct Stobj *);
 };
 
-struct StobjFuncs lbl_801BE364 =
+struct StobjFuncs stobjDummyFuncs =
 {
     stobj_dummy_init,
     stobj_dummy_main,
     stobj_dummy_draw,
     stobj_dummy_coli,
-    func_8006C7B4,
+    stobj_dummy_destroy,
     func_8006C7B8,
 };
 
@@ -344,36 +344,36 @@ void func_8006B3E8(s32 arg0, struct StobjFuncs *arg1)
     struct StobjFuncs sp10;
 
     if (arg1 == NULL)
-        sp10 = lbl_801BE364;
+        sp10 = stobjDummyFuncs;
     else
     {
         sp10 = *arg1;
-        if (sp10.unk0 == NULL)
-            sp10.unk0 = lbl_801BE364.unk0;
-        if (sp10.unk4 == NULL)
-            sp10.unk4 = lbl_801BE364.unk4;
-        if (sp10.unk8 == NULL)
-            sp10.unk8 = lbl_801BE364.unk8;
-        if (sp10.unkC == NULL)
-            sp10.unkC = lbl_801BE364.unkC;
-        if (sp10.unk10 == NULL)
-            sp10.unk10 = lbl_801BE364.unk10;
+        if (sp10.init == NULL)
+            sp10.init = stobjDummyFuncs.init;
+        if (sp10.main == NULL)
+            sp10.main = stobjDummyFuncs.main;
+        if (sp10.draw == NULL)
+            sp10.draw = stobjDummyFuncs.draw;
+        if (sp10.coli == NULL)
+            sp10.coli = stobjDummyFuncs.coli;
+        if (sp10.destroy == NULL)
+            sp10.destroy = stobjDummyFuncs.destroy;
         if (sp10.unk14 == NULL)
-            sp10.unk14 = lbl_801BE364.unk14;
+            sp10.unk14 = stobjDummyFuncs.unk14;
     }
 
-    stobjInitFuncs[arg0] = sp10.unk0;
-    stobjMainFuncs[arg0] = sp10.unk4;
-    stobjDrawFuncs[arg0] = sp10.unk8;
-    stobjCollisionFuncs[arg0] = sp10.unkC;
-    lbl_801BE1F0[arg0] = sp10.unk10;
+    stobjInitFuncs[arg0] = sp10.init;
+    stobjMainFuncs[arg0] = sp10.main;
+    stobjDrawFuncs[arg0] = sp10.draw;
+    stobjCollisionFuncs[arg0] = sp10.coli;
+    stobjDestroyFuncs[arg0] = sp10.destroy;
     lbl_801BE220[arg0] = sp10.unk14;
 }
 #pragma force_active reset
 
-void func_8006B518(struct Stobj_ *stobj)
+void func_8006B518(struct Stobj *stobj)
 {
-    mathutil_mtxA_from_translate(&stobj->unk58);
+    mathutil_mtxA_from_translate(&stobj->g_some_pos);
     if (stobj->unk8 & 0x10)
     {
         mathutil_mtxA_rotate_y(stobj->rotY);
@@ -424,7 +424,7 @@ static inline void func_8006B594_inline(void)
     lbl_8028C0B0.unk10 = r4;
 }
 
-void func_8006B594(void)
+void find_jamabar_and_bumper_models(void)
 {
     int i;
     int numModels;
@@ -504,7 +504,7 @@ void func_8006B594(void)
         lbl_8028C0B0.unk10 = 2;
     }
 
-    memset(&lbl_802F1FFC, 0, sizeof(lbl_802F1FFC));  //! why not just set it to NULL?
+    memset(&jamabarModel, 0, sizeof(jamabarModel));  //! why not just set it to NULL?
 
     found = FALSE;
     for (gmaIter = lbl_801BE37C; *gmaIter != NULL; gmaIter++)
@@ -518,7 +518,7 @@ void func_8006B594(void)
             {
                 if (strcmp(entry->name + 4, "JAMABAR") == 0)
                 {
-                    lbl_802F1FFC = entry->modelOffset;
+                    jamabarModel = entry->modelOffset;
                     found = TRUE;
                     break;
                 }
@@ -530,12 +530,12 @@ void func_8006B594(void)
         }
     }
     if (!found)
-        lbl_802F1FFC = commonGma->modelEntries[mb_jamabar].modelOffset;
+        jamabarModel = commonGma->modelEntries[mb_jamabar].modelOffset;
 }
 
-void func_8006B8E4(struct StageAnimGroup *arg0, int arg1)
+void spawn_bumpers(struct StageAnimGroup *arg0, int arg1)
 {
-    struct Stobj_ stobj;
+    struct Stobj stobj;
     int i, j;
 
     memset(&stobj, 0, sizeof(stobj));
@@ -556,20 +556,20 @@ void func_8006B8E4(struct StageAnimGroup *arg0, int arg1)
 
         for (j = 0; j < arg0->bumperCount; j++, bumper++)
         {
-            stobj.unk58 = bumper->pos;
+            stobj.g_some_pos = bumper->pos;
             stobj.rotX = bumper->rotX;
             stobj.rotY = bumper->rotY;
             stobj.rotZ = bumper->rotZ;
             stobj.unk3C = bumper->unk14;
             stobj.animGroupId = i;
-            func_8006B2C0(&stobj);
+            spawn_stobj(&stobj);
         }
     }
 }
 
-void func_8006B9E4(struct StageAnimGroup *arg0, int arg1)
+void spawn_jamabars(struct StageAnimGroup *arg0, int arg1)
 {
-    struct Stobj_ stobj;
+    struct Stobj stobj;
     int i, j;
 
     memset(&stobj, 0, sizeof(stobj));
@@ -587,12 +587,12 @@ void func_8006B9E4(struct StageAnimGroup *arg0, int arg1)
             stobj.rotZ = jamabar->rotZ;
             stobj.unk3C = jamabar->unk14;
             stobj.animGroupId = i;
-            func_8006B2C0(&stobj);
+            spawn_stobj(&stobj);
         }
     }
 }
 
-void stobj_bumper_init(struct Stobj_ *stobj)
+void stobj_bumper_init(struct Stobj *stobj)
 {
     stobj->unkC = 0;
     stobj->unk8 |= 0xA;
@@ -607,7 +607,7 @@ void stobj_bumper_init(struct Stobj_ *stobj)
     stobj->unk90 = stobj->g_model_origin;
 }
 
-void stobj_bumper_main(struct Stobj_ *stobj)
+void stobj_bumper_main(struct Stobj *stobj)
 {
     switch (stobj->unkC)
     {
@@ -637,7 +637,7 @@ void stobj_bumper_main(struct Stobj_ *stobj)
     stobj->unk76 += stobj->unk78;
 }
 
-void stobj_bumper_draw(struct Stobj_ *stobj)
+void stobj_bumper_draw(struct Stobj *stobj)
 {
     Vec sp18;
     Vec spC;
@@ -645,7 +645,7 @@ void stobj_bumper_draw(struct Stobj_ *stobj)
     float radius;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_translate(&stobj->g_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -694,7 +694,7 @@ void stobj_bumper_draw(struct Stobj_ *stobj)
         float phi_f30;
 
         mathutil_mtxA_from_mtxB();
-        mathutil_mtxA_translate_xyz(stobj->unk58.x, 0.05f + stobj->unk58.y, stobj->unk58.z);
+        mathutil_mtxA_translate_xyz(stobj->g_some_pos.x, 0.05f + stobj->g_some_pos.y, stobj->g_some_pos.z);
         mathutil_mtxA_rotate_z(stobj->rotZ);
         mathutil_mtxA_rotate_y(stobj->rotY);
         mathutil_mtxA_rotate_x(stobj->rotX - 0x4000);
@@ -710,7 +710,7 @@ void stobj_bumper_draw(struct Stobj_ *stobj)
     }
 }
 
-void stobj_bumper_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
+void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     Vec sp30;
     Vec sp24;
@@ -771,11 +771,11 @@ void stobj_bumper_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
     }
 }
 
-void func_8006C13C(struct Stobj_ *stobj) {}
+void stobj_bumper_destroy(struct Stobj *stobj) {}
 
-void func_8006C140(struct Stobj_ *stobj) {}
+void func_8006C140(struct Stobj *stobj) {}
 
-void stobj_bumper_bgspecial_init(struct Stobj_ *arg0)
+void stobj_bumper_bgspecial_init(struct Stobj *arg0)
 {
     arg0->unkC = 0;
     arg0->unk8 |= 0xA;
@@ -790,7 +790,7 @@ void stobj_bumper_bgspecial_init(struct Stobj_ *arg0)
     arg0->unk90 = arg0->g_model_origin;
 }
 
-void stobj_bumper_bgspecial_main(struct Stobj_ *stobj)
+void stobj_bumper_bgspecial_main(struct Stobj *stobj)
 {
     stobj_bumper_main(stobj);
 }
@@ -815,7 +815,7 @@ s16 lbl_801BE394[] =
     0x0026, 0x0027,
 };
 
-void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
+void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
 {
     Vec spC;
     f32 temp_f31;
@@ -824,22 +824,22 @@ void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
     struct GMAModel *temp_r30;
     int modelId;
 
-    stobj_bumper_draw(arg0);
-    switch (backgroundInfo.bgId) 
+    stobj_bumper_draw(stobj);
+    switch (backgroundInfo.bgId)
     {
     case BG_TYPE_JUN:
-        if (arg0->unk48 > 1.0f)
+        if (stobj->unk48 > 1.0f)
         {
-            var_f1 = 1.1f * (arg0->unk48 - 1.0f);
+            var_f1 = 1.1f * (stobj->unk48 - 1.0f);
             temp_r30 = decodedBgGma->modelEntries[0x19].modelOffset;
             if (var_f1 > 1.0f)
                 var_f1 = 1.0f;
-            temp_f31 = arg0->model->boundSphereRadius + arg0->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
-            mathutil_mtxA_from_mtxB_translate(&arg0->unk58);
-            mathutil_mtxA_rotate_z(arg0->rotZ);
-            mathutil_mtxA_rotate_y(arg0->rotY);
-            mathutil_mtxA_rotate_x(arg0->rotX);
-            mathutil_mtxA_rotate_y(arg0->unk0 << 11);
+            temp_f31 = stobj->model->boundSphereRadius + stobj->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
+            mathutil_mtxA_from_mtxB_translate(&stobj->g_some_pos);
+            mathutil_mtxA_rotate_z(stobj->rotZ);
+            mathutil_mtxA_rotate_y(stobj->rotY);
+            mathutil_mtxA_rotate_x(stobj->rotX);
+            mathutil_mtxA_rotate_y(stobj->id << 11);
             mathutil_mtxA_translate_xyz(0.0f, temp_f31, 0.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
@@ -849,7 +849,7 @@ void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
     case BG_TYPE_STM:
         modelId = lbl_801BE394[unpausedFrameCounter & 0x1F];
         temp_r30 = decodedBgGma->modelEntries[modelId].modelOffset;
-        mathutil_mtxA_from_mtxB_translate(&arg0->unk58);
+        mathutil_mtxA_from_mtxB_translate(&stobj->g_some_pos);
         mathutil_mtxA_get_translate_alt(&spC);
         temp_f31_2 = spC.z + (8.0f * currentCameraStructPtr->sub28.unk3C * currentCameraStructPtr->sub28.vp.height);
         if (temp_f31_2 > 0.0f)
@@ -857,7 +857,7 @@ void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
             temp_f31_2 *= 0.5f;
             mathutil_mtxA_rigid_inv_tf_tl(&spC);
             mathutil_mtxA_rotate_y(mathutil_atan2(spC.x, spC.z));
-            mathutil_mtxA_scale_xyz(0.025f * arg0->unk48, 0.035f, 1.0f);
+            mathutil_mtxA_scale_xyz(0.025f * stobj->unk48, 0.035f, 1.0f);
             if (temp_f31_2 < 1.0f)
                 avdisp_set_alpha(temp_f31_2);
             avdisp_set_bound_sphere_scale(0.035f);
@@ -867,29 +867,29 @@ void stobj_bumper_bgspecial_draw(struct Stobj_ *arg0)
     }
 }
 
-void stobj_bumper_bgspecial_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
+void stobj_bumper_bgspecial_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     stobj_bumper_coli(stobj, arg1);
 }
 
-void func_8006C404(struct Stobj_ *stobj) {}
-void func_8006C408(struct Stobj_ *stobj) {}
+void stobj_bumper_bgspecial_destroy(struct Stobj *stobj) {}
+void func_8006C408(struct Stobj *stobj) {}
 
-void stobj_jamabar_init(struct Stobj_ *arg0)
+void stobj_jamabar_init(struct Stobj *stobj)
 {
-    arg0->unkC = 0;
-    arg0->unk8 |= 0xA;
-    arg0->model = lbl_802F1FFC;
-    arg0->boundSphereRadius = arg0->model->boundSphereRadius * arg0->unk3C.x;
-    arg0->g_model_origin = arg0->model->boundSphereCenter;
-    arg0->unk58 = arg0->unkA8;
-    arg0->unk90.x = 0.0f;
-    arg0->unk90.y = 0.5f;
-    arg0->unk90.z = 1.75f;
-    arg0->unk9C = 1.0f;
+    stobj->unkC = 0;
+    stobj->unk8 |= 0xA;
+    stobj->model = jamabarModel;
+    stobj->boundSphereRadius = stobj->model->boundSphereRadius * stobj->unk3C.x;
+    stobj->g_model_origin = stobj->model->boundSphereCenter;
+    stobj->g_some_pos = stobj->unkA8;
+    stobj->unk90.x = 0.0f;
+    stobj->unk90.y = 0.5f;
+    stobj->unk90.z = 1.75f;
+    stobj->unk9C = 1.0f;
 }
 
-void stobj_jamabar_main(struct Stobj_ *stobj)
+void stobj_jamabar_main(struct Stobj *stobj)
 {
     Vec spC;
 
@@ -902,33 +902,33 @@ void stobj_jamabar_main(struct Stobj_ *stobj)
     mathutil_mtxA_rigid_inv_tf_vec(&lbl_80206CF0, &spC);
     mathutil_mtxA_pop();
     spC.z *= 0.016;
-    stobj->unkC0.z += spC.z;
-    stobj->unkC0.z *= 0.97;
-    stobj->unkB4.z += stobj->unkC0.z;
-    if (stobj->unkB4.z < -2.5)
+    stobj->g_local_vel.z += spC.z;
+    stobj->g_local_vel.z *= 0.97;
+    stobj->g_local_pos.z += stobj->g_local_vel.z;
+    if (stobj->g_local_pos.z < -2.5)
     {
-        stobj->unkB4.z = -2.5f;
-        if (stobj->unkC0.z < 0.0)
-            stobj->unkC0.z = -stobj->unkC0.z;
+        stobj->g_local_pos.z = -2.5f;
+        if (stobj->g_local_vel.z < 0.0)
+            stobj->g_local_vel.z = -stobj->g_local_vel.z;
     }
-    else if (stobj->unkB4.z > 0.0)
+    else if (stobj->g_local_pos.z > 0.0)
     {
-        stobj->unkB4.z = 0.0f;
-        if (stobj->unkC0.z > 0.0)
-            stobj->unkC0.z = -stobj->unkC0.z;
+        stobj->g_local_pos.z = 0.0f;
+        if (stobj->g_local_vel.z > 0.0)
+            stobj->g_local_vel.z = -stobj->g_local_vel.z;
     }
-    mathutil_mtxA_tf_point(&stobj->unkB4, &stobj->unk58);
-    stobj->unk64.x = stobj->unk58.x - stobj->unk7C.x;
-    stobj->unk64.y = stobj->unk58.y - stobj->unk7C.y;
-    stobj->unk64.z = stobj->unk58.z - stobj->unk7C.z;
+    mathutil_mtxA_tf_point(&stobj->g_local_pos, &stobj->g_some_pos);
+    stobj->unk64.x = stobj->g_some_pos.x - stobj->unk7C.x;
+    stobj->unk64.y = stobj->g_some_pos.y - stobj->unk7C.y;
+    stobj->unk64.z = stobj->g_some_pos.z - stobj->unk7C.z;
 }
 
-void stobj_jamabar_draw(struct Stobj_ *stobj)
+void stobj_jamabar_draw(struct Stobj *stobj)
 {
     Vec spC;
 
     mathutil_mtxA_from_mtxB();
-    mathutil_mtxA_translate(&stobj->unk58);
+    mathutil_mtxA_translate(&stobj->g_some_pos);
     mathutil_mtxA_rotate_z(stobj->rotZ);
     mathutil_mtxA_rotate_y(stobj->rotY);
     mathutil_mtxA_rotate_x(stobj->rotX);
@@ -940,40 +940,35 @@ void stobj_jamabar_draw(struct Stobj_ *stobj)
     avdisp_draw_model_culled_sort_translucent(stobj->model);
 }
 
-void stobj_jamabar_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1)
+void stobj_jamabar_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     collide_ball_with_jamabar(arg1, stobj);
 }
 
-void func_8006C6C8(struct Stobj_ *stobj) {}
+void stobj_jamabar_destroy(struct Stobj *stobj) {}
 
-char string_OFS__X__7_3f_n[] = "OFS: X,%7.3f\n";
-char string_OFS_SPD__X__7_3f_n[] = "OFS SPD: X,%7.3f\n";
-char string__________Y__7_3f_n[] = "         Y,%7.3f\n";
-char string__________Z__7_3f_n[] = "         Z,%7.3f\n";
-
-void func_8006C6CC(struct Stobj_ *stobj)
+void func_8006C6CC(struct Stobj *stobj)
 {
     func_8002FCC0(2, lbl_801BE25C);
-    func_8002FCC0(2, string_OFS__X__7_3f_n, stobj->unkB4.x);
-    func_8002FCC0(2, string______Y__7_3f_n_2, stobj->unkB4.y);
-    func_8002FCC0(2, string______Z__7_3f_n_2, stobj->unkB4.z);
+    func_8002FCC0(2, "OFS: X,%7.3f\n", stobj->g_local_pos.x);
+    func_8002FCC0(2, string______Y__7_3f_n_2, stobj->g_local_pos.y);
+    func_8002FCC0(2, string______Z__7_3f_n_2, stobj->g_local_pos.z);
     func_8002FD68(2, lbl_802F0B40);
-    func_8002FCC0(2, string_OFS_SPD__X__7_3f_n, stobj->unkC0.x);
-    func_8002FCC0(2, string__________Y__7_3f_n, stobj->unkC0.y);
-    func_8002FCC0(2, string__________Z__7_3f_n, stobj->unkC0.z);
+    func_8002FCC0(2, "OFS SPD: X,%7.3f\n", stobj->g_local_vel.x);
+    func_8002FCC0(2, "         Y,%7.3f\n", stobj->g_local_vel.y);
+    func_8002FCC0(2, "         Z,%7.3f\n", stobj->g_local_vel.z);
     func_8002FD68(2, lbl_802F0B40);
 }
 
-void stobj_dummy_init(struct Stobj_ *stobj) {}
+void stobj_dummy_init(struct Stobj *stobj) {}
 
-void stobj_dummy_main(struct Stobj_ *stobj) {}
+void stobj_dummy_main(struct Stobj *stobj) {}
 
-void stobj_dummy_draw(struct Stobj_ *stobj) {}
+void stobj_dummy_draw(struct Stobj *stobj) {}
 
-void stobj_dummy_coli(struct Stobj_ *stobj, struct PhysicsBall *arg1) {}
+void stobj_dummy_coli(struct Stobj *stobj, struct PhysicsBall *arg1) {}
 
-void func_8006C7B4(struct Stobj_ *stobj) {}
+void stobj_dummy_destroy(struct Stobj *stobj) {}
 
-void func_8006C7B8(struct Stobj_ *stobj) {}
+void func_8006C7B8(struct Stobj *stobj) {}
 
