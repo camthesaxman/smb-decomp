@@ -502,7 +502,7 @@ void u_break_goal_tape(int, struct PhysicsBall *);
 void func_8006F5F0(int);
 // ? func_8006F760();
 // ? func_8006FB20();
-// ? func_8006FCD0();
+float func_8006FCD0(Point3d *, float);
 // ? func_8006FD44();
 
 void monkey_sprite_draw(struct Sprite *);

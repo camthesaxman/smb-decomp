@@ -1,4 +1,5 @@
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
 
@@ -42,9 +43,11 @@ struct GoalTape goalTapes[8];
 struct GoalBag  // The "party ball", known as a "goal bag" internally
 {
     u32 unk0;
-    u8 filler4[0x10-0x4];
-    struct StageGoal goal;
-    u8 filler24[4];
+    float unk4;
+    float unk8;
+    /*0x0C*/ struct Stobj *stobj;
+    /*0x10*/ struct StageGoal goal;
+    s32 unk24;
 };  // size = 0x28
 
 struct GoalBag goalBags[8];
@@ -490,6 +493,8 @@ void stobj_goaltape_main(struct Stobj *stobj)
     }
 }
 
+void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NaomiModel *arg2, struct NaomiModel *arg3);
+
 void stobj_goaltape_draw(struct Stobj *stobj)
 {
     int i;
@@ -523,7 +528,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
         if (var_r27 > 1)
         {
             mathutil_mtxA_push();
-            func_8006DDA0(temp_r28, var_r27, stobj->model, lbl_802F1B4C);
+            func_8006DDA0(temp_r28, var_r27, (void *)stobj->model, lbl_802F1B4C);
             mathutil_mtxA_pop();
             u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
         }
@@ -673,3 +678,375 @@ void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 void stobj_goaltape_destroy(struct Stobj *stobj) {}
 
 void func_8006DD9C(struct Stobj *stobj) {}
+
+void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NaomiModel *model1, struct NaomiModel *model2)
+{
+    Point3d sp24;
+    Point3d sp18;
+    s16 rotX;
+    struct NaomiVtxWithNormal *vtx;
+    s16 rotY;
+    struct NaomiMesh *mesh2;
+    struct NaomiMesh *mesh1;
+    u32 var_r4;
+
+    memcpy(model2, model1, sizeof(*model2));
+
+    mesh2 = (struct NaomiMesh *)model2->meshStart;
+    mesh1 = (struct NaomiMesh *)model1->meshStart;
+    memcpy(mesh2, mesh1, sizeof(*mesh2));
+
+    mesh2->dispListSize = (faceCount * 64) + 8;
+    var_r4 = ((struct NaomiDispList *)mesh1->dispListStart)->unk0;
+    var_r4 &= ~0x14;
+    var_r4 |= 0x10;
+    ((struct NaomiDispList *)mesh2->dispListStart)->unk0 = var_r4;
+    ((struct NaomiDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
+
+    vtx = (void *)(mesh2 = (void *)((struct NaomiDispList *)mesh2->dispListStart)->vtxData);
+    while (faceCount > 0)
+    {
+        sp24.x = arg0->unkC.x;
+        sp24.y = arg0->unkC.y;
+        sp24.z = arg0->unkC.z;
+        rotY = mathutil_atan2(sp24.x, sp24.z) - 0x8000;
+        rotX = mathutil_atan2(sp24.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp24.x, sp24.z)));
+        mathutil_mtxA_from_rotate_y(rotY);
+        mathutil_mtxA_rotate_x(rotX);
+        sp18.x = 0.0f;
+        sp18.y = 0.125f;
+        sp18.z = 0.0f;
+        mathutil_mtxA_tf_vec(&sp18, &sp18);
+
+        vtx[0].x = arg0->unk0.x + sp18.x;
+        *(u32 *)&vtx[0].x |= 1;
+        vtx[0].y = arg0->unk0.y + sp18.y;
+        vtx[0].z = arg0->unk0.z + sp18.z;
+        vtx[0].nx = sp24.x;
+        vtx[0].ny = sp24.y;
+        vtx[0].nz = sp24.z;
+        vtx[0].s = arg0->unk18;
+        vtx[0].t = 1.0f;
+        *(u32 *)&vtx[0].t |= 1;
+
+        vtx[1].x = arg0->unk0.x - sp18.x;
+        *(u32 *)&vtx[1].x |= 1;
+        vtx[1].y = arg0->unk0.y - sp18.y;
+        vtx[1].z = arg0->unk0.z - sp18.z;
+        vtx[1].nx = sp24.x;
+        vtx[1].ny = sp24.y;
+        vtx[1].nz = sp24.z;
+        vtx[1].s = arg0->unk18;
+        vtx[1].t = 0.0f;
+        *(u32 *)&vtx[1].t |= 1;
+
+        vtx += 2;
+        arg0++;
+        faceCount--;
+    }
+    *(u32 *)vtx = 0;
+}
+
+void stobj_goalbag_init(struct Stobj *stobj)
+{
+    struct GoalBag *bag;
+
+    stobj->unkC = 1;
+    stobj->unk8 = 0x12;
+    stobj->model = commonGma->modelEntries[0x20].modelOffset;
+    stobj->boundSphereRadius = stobj->model->boundSphereRadius;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
+    stobj->u_some_pos = stobj->unkA8;
+    stobj->u_local_pos.x = 0.0f;
+    stobj->u_local_pos.y = -1.0f;
+    stobj->u_local_pos.z = 0.1f;
+    mathutil_vec_normalize_len(&stobj->u_local_pos);
+    stobj->u_local_vel.x = 0.0f;
+    stobj->u_local_vel.y = 0.0f;
+    stobj->u_local_vel.z = 0.0f;
+    bag = stobj->unkA4;
+    bag->stobj = stobj;
+    bag->unk24 = -1;
+    bag->unk4 = 0.0f;
+    bag->unk8 = 0.0f;
+}
+
+extern Vec lbl_80117A58;
+extern Vec lbl_80117A64;
+
+void stobj_goalbag_main(struct Stobj *stobj)
+{
+    Point3d sp48;
+    Point3d sp3C;
+    Point3d sp30;
+    Point3d sp24;
+    Point3d sp18;
+    Point3d spC;
+    float temp_f12;
+    float temp_f2_4;
+    float temp_f2_6;
+    float temp_f31;
+    struct AnimGroupInfo *temp_r29;
+    struct GoalBag *temp_r31 = stobj->unkA4;
+
+    switch (stobj->unkC)
+    {
+    case 1:
+        break;
+    case 2:
+    case 3:
+        stobj->unkC = 4;
+        switch (gameMode)
+        {
+        case 2:
+            switch (modeCtrl.gameType)
+            {
+            case 1:
+                stobj->unkE = 0x78;
+                break;
+            default:
+                stobj->unkE = -1;
+                break;
+            }
+            break;
+        default:
+            stobj->unkE = -1;
+            break;
+        }
+        temp_r31->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        // fall through
+    case 4:
+        if (stobj->unkE > 0)
+        {
+            stobj->unkE--;
+            if (stobj->unkE == 0 && !(infoWork.flags & 0x20))
+                stobj->unkC = 5;
+        }
+        temp_r31->unk8 += 0.005;
+        temp_r31->unk8 *= 0.99;
+        temp_r31->unk4 += temp_r31->unk8;
+        if (temp_r31->unk4 < 0.0)
+        {
+            temp_r31->unk4 = 0.0f;
+            if (temp_r31->unk8 < 0.0)
+                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+        }
+        else if (temp_r31->unk4 > 1.0)
+        {
+            temp_r31->unk4 = 1.0f;
+            if (temp_r31->unk8 > 0.0)
+                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+        }
+        break;
+    case 5:
+    case 6:
+        stobj->unkC = 7;
+        stobj->unkE = 60;
+        temp_r31->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        // fall through
+    case 7:
+        stobj->unkE--;
+        temp_r31->unk8 -= 0.005;
+        temp_r31->unk8 *= 0.99;
+        temp_r31->unk4 += temp_r31->unk8;
+        if (temp_r31->unk4 < 0.0)
+        {
+            temp_r31->unk4 = 0.0f;
+            temp_r31->unk0 = 0;
+            temp_r31->unk24 = -1;
+            if (stobj->unkE < 0)
+            {
+                stobj->unkC = 1;
+                temp_r31->unk8 = 0.0f;
+            }
+            else
+            {
+                if (temp_r31->unk8 < 0.0)
+                    temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+            }
+        }
+        else if (temp_r31->unk4 > 1.0)
+        {
+            temp_r31->unk4 = 1.0f;
+            if (temp_r31->unk8 > 0.0)
+                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+        }
+        break;
+    }
+
+    sp3C.x = 0.008f * lbl_80206CF0.x;
+    sp3C.y = 0.008f * lbl_80206CF0.y;
+    sp3C.z = 0.008f * lbl_80206CF0.z;
+    if (stobj->animGroupId > 0)
+    {
+        mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
+        mathutil_mtxA_rigid_inv_tf_vec(&sp3C, &sp3C);
+    }
+    stobj->u_local_vel.x += sp3C.x;
+    stobj->u_local_vel.y += sp3C.y;
+    stobj->u_local_vel.z += sp3C.z;
+    if (stobj->animGroupId > 0)
+    {
+        temp_r29 = &animGroups[stobj->animGroupId];
+        mathutil_mtxA_from_mtx(temp_r29->prevTransform);
+        mathutil_mtxA_tf_point(&stobj->position, &sp3C);
+        mathutil_mtxA_from_mtx(temp_r29->transform);
+        mathutil_mtxA_tf_point(&stobj->position, &sp48);
+        sp3C.x -= sp48.x;
+        sp3C.y -= sp48.y;
+        sp3C.z -= sp48.z;
+        mathutil_mtxA_rigid_inv_tf_vec(&sp3C, &sp3C);
+        stobj->u_local_vel.x += 0.020000000000000018 * (sp3C.x - stobj->u_local_vel.x);
+        stobj->u_local_vel.y += 0.020000000000000018 * (sp3C.y - stobj->u_local_vel.y);
+        stobj->u_local_vel.z += 0.020000000000000018 * (sp3C.z - stobj->u_local_vel.z);
+    }
+    else
+    {
+        stobj->u_local_vel.x *= 0.98;
+        stobj->u_local_vel.y *= 0.98;
+        stobj->u_local_vel.z *= 0.98;
+    }
+    sp30 = lbl_80117A58;
+    sp24 = lbl_80117A64;
+    mathutil_mtxA_from_translate(&temp_r31->goal.pos);
+    mathutil_mtxA_rotate_z(temp_r31->goal.rotZ);
+    mathutil_mtxA_rotate_y(temp_r31->goal.rotY);
+    mathutil_mtxA_rotate_x(temp_r31->goal.rotX);
+    mathutil_mtxA_tf_point(&sp30, &sp30);
+    mathutil_mtxA_tf_vec(&sp24, &sp24);
+    temp_f31 = stobj->boundSphereRadius;
+    sp18.x = stobj->u_some_pos.x + (temp_f31 * stobj->u_local_pos.x);
+    sp18.y = stobj->u_some_pos.y + (temp_f31 * stobj->u_local_pos.y);
+    sp18.z = stobj->u_some_pos.z + (temp_f31 * stobj->u_local_pos.z);
+    sp3C.x = sp18.x - sp30.x;
+    sp3C.y = sp18.y - sp30.y;
+    sp3C.z = sp18.z - sp30.z;
+
+    temp_f12 = sp3C.x * sp24.x + sp3C.y * sp24.y + sp3C.z * sp24.z;
+    if (mathutil_vec_sq_len(&sp3C) - temp_f12 * temp_f12 < temp_f31 * temp_f31)
+    {
+        sp3C.x = sp30.x + sp24.x * temp_f12;
+        sp3C.y = sp30.y + sp24.y * temp_f12;
+        sp3C.z = sp30.z + sp24.z * temp_f12;
+        spC.x = sp18.x - sp3C.x;
+        spC.y = sp18.y - sp3C.y;
+        spC.z = sp18.z - sp3C.z;
+        mathutil_vec_normalize_len(&spC);
+        stobj->u_local_pos.x = sp3C.x + spC.x * temp_f31 - stobj->u_some_pos.x;
+        stobj->u_local_pos.y = sp3C.y + spC.y * temp_f31 - stobj->u_some_pos.y;
+        stobj->u_local_pos.z = sp3C.z + spC.z * temp_f31 - stobj->u_some_pos.z;
+        mathutil_vec_normalize_len(&stobj->u_local_pos);
+        temp_f2_4 = spC.x * stobj->u_local_vel.x + spC.y * stobj->u_local_vel.y + spC.z * stobj->u_local_vel.z;
+        if (temp_f2_4 < 0.0)
+        {
+            temp_f2_4 *= -1.5;
+            stobj->u_local_vel.x += temp_f2_4 * spC.x;
+            stobj->u_local_vel.y += temp_f2_4 * spC.y;
+            stobj->u_local_vel.z += temp_f2_4 * spC.z;
+        }
+    }
+    temp_f2_6 = -mathutil_vec_dot_prod(&stobj->u_local_pos, &stobj->u_local_vel);
+    stobj->u_local_vel.x += temp_f2_6 * stobj->u_local_pos.x;
+    stobj->u_local_vel.y += temp_f2_6 * stobj->u_local_pos.y;
+    stobj->u_local_vel.z += temp_f2_6 * stobj->u_local_pos.z;
+    stobj->u_local_pos.x += stobj->u_local_vel.x;
+    stobj->u_local_pos.y += stobj->u_local_vel.y;
+    stobj->u_local_pos.z += stobj->u_local_vel.z;
+    mathutil_vec_normalize_len(&stobj->u_local_pos);
+    mathutil_mtxA_from_rotate_y(-stobj->rotY);
+    mathutil_mtxA_rotate_x(0);
+    mathutil_mtxA_tf_vec(&stobj->u_local_pos, &sp48);
+    stobj->rotX = mathutil_atan2(sp48.z, sp48.y) - 0x8000;
+    stobj->rotZ = mathutil_atan2(sp48.x, mathutil_sqrt(mathutil_sum_of_sq_2(sp48.z, sp48.y)));
+    sp48.x = 2.0 * stobj->position.x - stobj->u_some_pos.x;
+    sp48.y = 2.0 * stobj->position.y - stobj->u_some_pos.y;
+    sp48.z = 2.0 * stobj->position.z - stobj->u_some_pos.z;
+    if (stobj->animGroupId > 0)
+    {
+        mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
+        mathutil_mtxA_tf_point(&sp48, &sp48);
+    }
+    func_800390C8(5, &sp48, 1.0f);
+}
+
+void stobj_goalbag_draw(struct Stobj *stobj)
+{
+    Point3d spC;
+    float alpha;
+    struct GMAModel *model;
+    struct GoalBag *bag;
+    s16 temp_r30;
+
+    bag = stobj->unkA4;
+    mathutil_mtxA_from_mtxB();
+    mathutil_mtxA_translate(&stobj->u_some_pos);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+
+    if (bag->unk4 == 0.0)
+    {
+        model = stobj->model;
+        alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
+        if (alpha > 0.0f)
+        {
+            if (alpha < 1.0f)
+            {
+                avdisp_set_alpha(alpha);
+                avdisp_draw_model_culled_sort_all(model);
+            }
+            else
+            {
+                GXLoadPosMtxImm(mathutilData->mtxA, 0);
+                GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                avdisp_draw_model_culled_sort_translucent(model);
+            }
+        }
+    }
+    else
+    {
+        temp_r30 = 9102.0f * bag->unk4;
+        spC.x = 0.0f;
+        spC.y = -0.5 * bag->unk4;
+        spC.z = 0.0f;
+        mathutil_mtxA_translate(&spC);
+        mathutil_mtxA_push();
+        mathutil_mtxA_rotate_z(-temp_r30);
+        model = commonGma->modelEntries[0x1E].modelOffset;
+        alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
+        if (alpha > 0.0f)
+        {
+            if (alpha < 1.0f)
+            {
+                avdisp_set_alpha(alpha);
+                avdisp_draw_model_culled_sort_all(model);
+            }
+            else
+            {
+                GXLoadPosMtxImm(mathutilData->mtxA, 0);
+                GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                avdisp_draw_model_culled_sort_translucent(model);
+            }
+        }
+        mathutil_mtxA_pop();
+        mathutil_mtxA_rotate_z(temp_r30);
+        model = commonGma->modelEntries[0x1F].modelOffset;
+        alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
+        if (alpha > 0.0f)
+        {
+            if (alpha < 1.0f)
+            {
+                avdisp_set_alpha(alpha);
+                avdisp_draw_model_culled_sort_all(model);
+            }
+            else
+            {
+                GXLoadPosMtxImm(mathutilData->mtxA, 0);
+                GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+                avdisp_draw_model_culled_sort_translucent(model);
+            }
+        }
+    }
+}

@@ -3856,7 +3856,7 @@ stobj_goaltape_destroy:
 .global func_8006DD9C
 func_8006DD9C:
 /* 8006DD9C 00069CBC  4E 80 00 20 */	blr
-.endif
+
 .global func_8006DDA0
 func_8006DDA0:
 /* 8006DDA0 00069CC0  7C 08 02 A6 */	mflr r0
@@ -4763,7 +4763,7 @@ lbl_8006EB14:
 /* 8006EB20 0006AA40  7C 08 03 A6 */	mtlr r0
 /* 8006EB24 0006AA44  38 21 00 28 */	addi r1, r1, 0x28
 /* 8006EB28 0006AA48  4E 80 00 20 */	blr
-
+.endif
 .global stobj_goalbag_coli
 stobj_goalbag_coli:
 /* 8006EB2C 0006AA4C  7C 08 02 A6 */	mflr r0
@@ -6804,7 +6804,6 @@ lbl_802F49B8:
 	# ROM: 0x1EE3D8
 	.4byte 0x3FC00000
 	.4byte 0
-.endif
 
 .global lbl_802F49C0
 lbl_802F49C0:
@@ -6893,6 +6892,7 @@ lbl_802F4A28:
 	# ROM: 0x1EE448
 	.4byte 0xBFE00000
 	.4byte 0
+.endif
 
 .global lbl_802F4A30
 lbl_802F4A30:
