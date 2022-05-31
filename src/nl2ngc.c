@@ -31,7 +31,7 @@ static struct
     u8 unk6;
     u8 unk7;
     u8 unk8;
-    u8 unk9;
+    u8 meshType;
     u8 unkA;
     u8 fillerB[1];
     GXTexObj *texObj;
@@ -263,8 +263,8 @@ static void init_model_flags(struct NaomiModel *model)
     if (model->unk0 != -1)
     {
         struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
-        BOOL r6 = FALSE;
-        BOOL r7 = FALSE;
+        BOOL translucent = FALSE;
+        BOOL opaque = FALSE;
         BOOL r8 = TRUE;
         BOOL r9 = TRUE;
 
@@ -272,22 +272,22 @@ static void init_model_flags(struct NaomiModel *model)
         {
             if (((mesh->flags >> 24) & 7) != 0)
             {
-                r6 = TRUE;
+                translucent = TRUE;
                 if (r8 && (mesh->type != -1 || mesh->type != -3))
                     r8 = FALSE;
             }
             else
             {
-                r7 = TRUE;
+                opaque = TRUE;
                 if (r9 && (mesh->type != -1 || mesh->type != -3))
                     r9 = FALSE;
             }
             mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
-        if (r6)
-            model->flags |= (1 << 8);
-        if (r7)
-            model->flags |= (1 << 9);
+        if (translucent)
+            model->flags |= (NAOMI_MODEL_FLAG_TRANSLUCENT);
+        if (opaque)
+            model->flags |= (NAOMI_MODEL_FLAG_OPAQUE);
         if (r8)
             model->flags |= (1 << 10);
         if (r9)
@@ -690,7 +690,7 @@ static void prep_some_stuff_before_drawing(void)
     ambColor.a = s_naomiMaterialCache.ambientColor.a = s_naomiMaterialCache.materialColor.a;
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
 
-    s_naomiMaterialCache.unk9 = 0;
+    s_naomiMaterialCache.meshType = 0;
     GXSetChanCtrl(GX_COLOR0A0,    // chan
                   GX_ENABLE,      // enable
                   GX_SRC_REG,     // amb_src
@@ -826,9 +826,9 @@ static void build_tev_material(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.ambientColor = color;
     }
 
-    if (s_naomiMaterialCache.unk9 != mesh.type)
+    if (s_naomiMaterialCache.meshType != mesh.type)
     {
-        s_naomiMaterialCache.unk9 = mesh.type;
+        s_naomiMaterialCache.meshType = mesh.type;
         switch (mesh.type)
         {
         case -1:
@@ -1147,7 +1147,7 @@ static void prep_some_stuff_before_drawing_2(void)
     sp18.a = s_naomiMaterialCache.ambientColor.a = s_naomiMaterialCache.materialColor.a;
     GXSetChanAmbColor(GX_COLOR0A0, sp18);
 
-    s_naomiMaterialCache.unk9 = 0;
+    s_naomiMaterialCache.meshType = 0;
     GXSetChanCtrl(GX_COLOR0A0,    // chan
                   GX_ENABLE,      // enable
                   GX_SRC_REG,     // amb_src
@@ -1288,9 +1288,9 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.ambientColor = color;
     }
 
-    if (s_naomiMaterialCache.unk9 != mesh.type)
+    if (s_naomiMaterialCache.meshType != mesh.type)
     {
-        s_naomiMaterialCache.unk9 = mesh.type;
+        s_naomiMaterialCache.meshType = mesh.type;
         switch (mesh.type)
         {
         case -1:

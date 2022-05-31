@@ -48,8 +48,15 @@ enum
 
 enum
 {
-    NAOMI_MODEL_FLAG_TRANSLUCENT = 1 << 8,
-    NAOMI_MODEL_FLAG_OPAQUE = 1 << 9,
+    NAOMI_MODEL_FLAG_TRANSLUCENT = 1 << 8, // Model has at least 1 translucent mesh
+    NAOMI_MODEL_FLAG_OPAQUE = 1 << 9, // Model has at least 1 opaque mesh
+};
+
+enum
+{
+    NAOMI_MODEL_TYPE_UNLIT_CONST_MAT_COLOR = -1,
+    NAOMI_MODEL_TYPE_LIT = -2,
+    NAOMI_MODEL_TYPE_UNLIT_VERT_MAT_COLOR = -3,
 };
 
 struct NaomiMesh
