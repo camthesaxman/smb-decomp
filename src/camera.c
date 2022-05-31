@@ -1786,7 +1786,7 @@ void camera_func_goal_main(struct Camera *camera, struct Ball *ball)
     sp10.y = 0.0f;
     sp10.z = ball->pos.z - camera->eye.z;
 
-    f31 = mathutil_vec_dot_prod_alt(&sp10, &camera->eyeVel);
+    f31 = mathutil_vec_dot_prod(&sp10, &camera->eyeVel);
     mathutil_vec_normalize_len(&sp10);
 
     camera->eyeVel.y *= 0.97;
