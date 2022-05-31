@@ -405,7 +405,7 @@ void stobj_goaltape_main(struct Stobj *stobj)
                     var_r28->unk0.x = temp_r27_2->unk0.x + (sp30.x * temp_f0);
                     var_r28->unk0.y = temp_r27_2->unk0.y + (sp30.y * temp_f0);
                     var_r28->unk0.z = temp_r27_2->unk0.z + (sp30.z * temp_f0);
-                    temp_f0 = -mathutil_vec_dot_prod_alt2(&var_r28->unk1C, &sp30);
+                    temp_f0 = -mathutil_vec_dot_prod(&var_r28->unk1C, &sp30);
                     var_r28->unk1C.x += sp30.x * temp_f0;
                     var_r28->unk1C.y += sp30.y * temp_f0;
                     var_r28->unk1C.z += sp30.z * temp_f0;
@@ -435,7 +435,7 @@ void stobj_goaltape_main(struct Stobj *stobj)
                     var_r28->unk0.x = temp_r27_2->unk0.x + (sp30.x * temp_f0);
                     var_r28->unk0.y = temp_r27_2->unk0.y + (sp30.y * temp_f0);
                     var_r28->unk0.z = temp_r27_2->unk0.z + (sp30.z * temp_f0);
-                    temp_f0 = -mathutil_vec_dot_prod_alt2(&var_r28->unk1C, &sp30);
+                    temp_f0 = -mathutil_vec_dot_prod(&var_r28->unk1C, &sp30);
                     var_r28->unk1C.x += sp30.x * temp_f0;
                     var_r28->unk1C.y += sp30.y * temp_f0;
                     var_r28->unk1C.z += sp30.z * temp_f0;
@@ -1108,7 +1108,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     ball->pos.x += spE0.x;
     ball->pos.y += spE0.y;
     ball->pos.z += spE0.z;
-    temp_f0 = -mathutil_vec_dot_prod_alt2(&sp110, &stobj->u_local_pos);
+    temp_f0 = -mathutil_vec_dot_prod(&sp110, &stobj->u_local_pos);
     sp110.x += temp_f0 * stobj->u_local_pos.x;
     sp110.y += temp_f0 * stobj->u_local_pos.y;
     sp110.z += temp_f0 * stobj->u_local_pos.z;
@@ -1126,7 +1126,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
         stobj->u_local_vel.y = spEC.y + (spF8.y - sp104.y);
         stobj->u_local_vel.z = spEC.z + (spF8.z - sp104.z);
     }
-    temp_f0 = -mathutil_vec_dot_prod_alt2(&stobj->u_local_pos, &stobj->u_local_vel);
+    temp_f0 = -mathutil_vec_dot_prod(&stobj->u_local_pos, &stobj->u_local_vel);
     stobj->u_local_vel.x += temp_f0 * stobj->u_local_pos.x;
     stobj->u_local_vel.y += temp_f0 * stobj->u_local_pos.y;
     stobj->u_local_vel.z += temp_f0 * stobj->u_local_pos.z;
