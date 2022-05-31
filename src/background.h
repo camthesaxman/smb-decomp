@@ -56,9 +56,7 @@ struct BackgroundInfo  // size = 0xA8
     Vec unk14;
     Vec unk20;
     Vec unk2C;
-    float unk38;
-    float unk3C;
-    float unk40;
+    Vec unk38;
     u8 filler44[4];
     Mtx unk48;
     int (*unk78)();
@@ -69,7 +67,7 @@ struct BackgroundInfo  // size = 0xA8
     BallEnvFunc unk8C;
     void (*unk90)();
     /*0x94*/ BallEnvFunc ballEnvFunc;
-    void (*unk98)();
+    void (*unk98)(void);
     void *work;
     u32 unkA0;
     u32 unkA4;
