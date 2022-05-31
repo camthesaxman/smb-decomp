@@ -267,7 +267,7 @@ extern float unknownTrigTable[];
 // extern ? stobjDrawFuncs;
 // extern ? stobjCollisionFuncs;
 // extern ? stobjDestroyFuncs;
-// extern ? lbl_801BE394;
+// extern ? stmFireModelIDs;
 // extern ? smallLCDModelIDs;
 // extern ? largeLCDModelIDs;
 // extern ? lbl_801BE448;

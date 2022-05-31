@@ -15,6 +15,8 @@
 #include "stobj.h"
 #include "world.h"
 
+#include "../data/bg_jun.gma.h"
+#include "../data/bg_stm.gma.h"
 #include "../data/common.gma.h"
 
 struct Stobj stobjInfo[128];
@@ -827,60 +829,82 @@ static void stobj_bumper_bgspecial_main(struct Stobj *stobj)
     stobj_bumper_main(stobj);
 }
 
-s16 lbl_801BE394[] =
+static s16 stmFireModelIDs[] =
 {
-    0x0008, 0x0009,
-    0x000A, 0x000B,
-    0x000C, 0x000D,
-    0x000E, 0x000F,
-    0x0010, 0x0011,
-    0x0012, 0x0013,
-    0x0014, 0x0015,
-    0x0016, 0x0017,
-    0x0018, 0x0019,
-    0x001A, 0x001B,
-    0x001C, 0x001D,
-    0x001E, 0x001F,
-    0x0020, 0x0021,
-    0x0022, 0x0023,
-    0x0024, 0x0025,
-    0x0026, 0x0027,
+    STM_FIRE00,
+    STM_FIRE01,
+    STM_FIRE02,
+    STM_FIRE03,
+    STM_FIRE04,
+    STM_FIRE05,
+    STM_FIRE06,
+    STM_FIRE07,
+    STM_FIRE08,
+    STM_FIRE09,
+    STM_FIRE10,
+    STM_FIRE11,
+    STM_FIRE12,
+    STM_FIRE13,
+    STM_FIRE14,
+    STM_FIRE15,
+    STM_FIRE16,
+    STM_FIRE17,
+    STM_FIRE18,
+    STM_FIRE19,
+    STM_FIRE20,
+    STM_FIRE21,
+    STM_FIRE22,
+    STM_FIRE23,
+    STM_FIRE24,
+    STM_FIRE25,
+    STM_FIRE26,
+    STM_FIRE27,
+    STM_FIRE28,
+    STM_FIRE29,
+    STM_FIRE30,
+    STM_FIRE31,
 };
 
 static void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
 {
     Vec spC;
-    f32 temp_f31;
-    f32 temp_f31_2;
-    f32 var_f1;
-    struct GMAModel *temp_r30;
+    float birdY;
+    float temp_f31_2;
+    float var_f1;
+    struct GMAModel *birdModel;
+    struct GMAModel *flameModel;
     int modelId;
 
+    // Draw normal bumper model
     stobj_bumper_draw(stobj);
+
+    // Draw special objects
     switch (backgroundInfo.bgId)
     {
     case BG_TYPE_JUN:
+        // Draw bird
         if (stobj->unk48 > 1.0f)
         {
             var_f1 = 1.1f * (stobj->unk48 - 1.0f);
-            temp_r30 = decodedBgGma->modelEntries[0x19].modelOffset;
+            birdModel = decodedBgGma->modelEntries[JUN_PIYO].modelOffset;
             if (var_f1 > 1.0f)
                 var_f1 = 1.0f;
-            temp_f31 = stobj->model->boundSphereRadius + stobj->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
+            birdY = stobj->model->boundSphereRadius + stobj->model->boundSphereRadius * mathutil_sin(16384.0f * var_f1);
             mathutil_mtxA_from_mtxB_translate(&stobj->u_some_pos);
             mathutil_mtxA_rotate_z(stobj->rotZ);
             mathutil_mtxA_rotate_y(stobj->rotY);
             mathutil_mtxA_rotate_x(stobj->rotX);
             mathutil_mtxA_rotate_y(stobj->id << 11);
-            mathutil_mtxA_translate_xyz(0.0f, temp_f31, 0.0f);
+            mathutil_mtxA_translate_xyz(0.0f, birdY, 0.0f);
             GXLoadPosMtxImm(mathutilData->mtxA, 0);
             GXLoadNrmMtxImm(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(temp_r30);
+            avdisp_draw_model_culled_sort_translucent(birdModel);
         }
         break;
     case BG_TYPE_STM:
-        modelId = lbl_801BE394[unpausedFrameCounter & 0x1F];
-        temp_r30 = decodedBgGma->modelEntries[modelId].modelOffset;
+        // Draw animated flame
+        modelId = stmFireModelIDs[unpausedFrameCounter & 0x1F];
+        flameModel = decodedBgGma->modelEntries[modelId].modelOffset;
         mathutil_mtxA_from_mtxB_translate(&stobj->u_some_pos);
         mathutil_mtxA_get_translate_alt(&spC);
         temp_f31_2 = spC.z + (8.0f * currentCameraStructPtr->sub28.unk3C * currentCameraStructPtr->sub28.vp.height);
@@ -893,7 +917,7 @@ static void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
             if (temp_f31_2 < 1.0f)
                 avdisp_set_alpha(temp_f31_2);
             avdisp_set_bound_sphere_scale(0.035f);
-            avdisp_draw_model_culled_sort_all(temp_r30);
+            avdisp_draw_model_culled_sort_all(flameModel);
         }
         break;
     }
