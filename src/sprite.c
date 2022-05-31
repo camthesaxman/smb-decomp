@@ -49,6 +49,8 @@ FORCE_BSS_ORDER(screenFadeInfo)
 
 extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
 
+u32 lbl_802F2000;
+
 void ev_sprite_init(void)
 {
     s8 *status = poolInfo.spriteStatusList;

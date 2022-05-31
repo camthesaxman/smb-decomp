@@ -272,7 +272,7 @@ lbl_800AD510:
 /* 800AD574 000A9494  4B F5 A8 C9 */	bl mathutil_mtxA_tf_vec
 /* 800AD578 000A9498  93 01 00 B0 */	stw r24, 0xb0(r1)
 /* 800AD57C 000A949C  38 61 00 0C */	addi r3, r1, 0xc
-/* 800AD580 000A94A0  4B FB DD 41 */	bl func_8006B2C0
+/* 800AD580 000A94A0  4B FB DD 41 */	bl spawn_stobj
 lbl_800AD584:
 /* 800AD584 000A94A4  3B 39 00 01 */	addi r25, r25, 1
 /* 800AD588 000A94A8  2C 19 00 30 */	cmpwi r25, 0x30
@@ -2592,8 +2592,8 @@ func_800AF62C:
 .global func_800AF6D4
 func_800AF6D4:
 /* 800AF6D4 000AB5F4  4E 80 00 20 */	blr
-.global func_800AF6D8
-func_800AF6D8:
+.global stobj_nameent_btn_init
+stobj_nameent_btn_init:
 /* 800AF6D8 000AB5F8  38 00 00 00 */	li r0, 0
 /* 800AF6DC 000AB5FC  B0 03 00 0C */	sth r0, 0xc(r3)
 /* 800AF6E0 000AB600  80 03 00 08 */	lwz r0, 8(r3)
@@ -2619,8 +2619,8 @@ func_800AF6D8:
 /* 800AF730 000AB650  80 03 00 60 */	lwz r0, 0x60(r3)
 /* 800AF734 000AB654  90 03 00 B0 */	stw r0, 0xb0(r3)
 /* 800AF738 000AB658  4E 80 00 20 */	blr
-.global func_800AF73C
-func_800AF73C:
+.global stobj_nameent_btn_main
+stobj_nameent_btn_main:
 /* 800AF73C 000AB65C  A8 03 00 0C */	lha r0, 0xc(r3)
 /* 800AF740 000AB660  2C 00 00 01 */	cmpwi r0, 1
 /* 800AF744 000AB664  41 82 00 18 */	beq lbl_800AF75C
@@ -2697,8 +2697,8 @@ lbl_800AF790:
 /* 800AF850 000AB770  EC 01 00 2A */	fadds f0, f1, f0
 /* 800AF854 000AB774  D0 03 00 60 */	stfs f0, 0x60(r3)
 /* 800AF858 000AB778  4E 80 00 20 */	blr
-.global func_800AF85C
-func_800AF85C:
+.global stobj_nameent_btn_draw
+stobj_nameent_btn_draw:
 /* 800AF85C 000AB77C  7C 08 02 A6 */	mflr r0
 /* 800AF860 000AB780  90 01 00 04 */	stw r0, 4(r1)
 /* 800AF864 000AB784  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -2815,8 +2815,8 @@ lbl_800AFA00:
 /* 800AFA10 000AB930  7C 08 03 A6 */	mtlr r0
 /* 800AFA14 000AB934  38 21 00 38 */	addi r1, r1, 0x38
 /* 800AFA18 000AB938  4E 80 00 20 */	blr
-.global func_800AFA1C
-func_800AFA1C:
+.global stobj_nameent_btn_coli
+stobj_nameent_btn_coli:
 /* 800AFA1C 000AB93C  7C 08 02 A6 */	mflr r0
 /* 800AFA20 000AB940  90 01 00 04 */	stw r0, 4(r1)
 /* 800AFA24 000AB944  94 21 FF 80 */	stwu r1, -0x80(r1)
@@ -2947,11 +2947,11 @@ lbl_800AFBF0:
 /* 800AFC08 000ABB28  7C 08 03 A6 */	mtlr r0
 /* 800AFC0C 000ABB2C  38 21 00 80 */	addi r1, r1, 0x80
 /* 800AFC10 000ABB30  4E 80 00 20 */	blr
-.global func_800AFC14
-func_800AFC14:
+.global stobj_nameent_btn_destroy
+stobj_nameent_btn_destroy:
 /* 800AFC14 000ABB34  4E 80 00 20 */	blr
-.global func_800AFC18
-func_800AFC18:
+.global stobj_nameent_btn_debug
+stobj_nameent_btn_debug:
 /* 800AFC18 000ABB38  4E 80 00 20 */	blr
 
 .global func_800AFC1C

@@ -12,6 +12,7 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "stage.h"
+#include "stobj.h"
 
 void sel_stage_draw(void)
 {

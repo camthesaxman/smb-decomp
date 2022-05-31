@@ -334,7 +334,8 @@ struct StageBumper
     /*0x0C*/ s16 rotX;
     /*0x0E*/ s16 rotY;
     /*0x10*/ s16 rotZ;
-    /*0x12*/ u8 filler12[0x20-0x12];
+    /*0x12*/ u8 filler12[2];
+    /*0x14*/ Vec unk14;  // unknown type
 };
 
 struct StageJamabar
@@ -343,7 +344,8 @@ struct StageJamabar
     /*0x0C*/ s16 rotX;
     /*0x0E*/ s16 rotY;
     /*0x10*/ s16 rotZ;
-    /*0x12*/ u8 filler12[0x20-0x12];
+    /*0x12*/ u8 filler12[2];
+    /*0x14*/ Vec unk14;  // unknown type
 };
 
 struct StageAnimGroup
@@ -365,21 +367,21 @@ struct StageAnimGroup
     /*0x38*/ s32 gridCellCountZ;  // Number of cells in Z direction
 
     /*0x3C*/ s32 goalCount;
-    struct StageGoal *goals;
+    /*0x40*/ struct StageGoal *goals;
     u8 filler44[4];
     void *unk48;
-    s32 bumperCount;
-    struct StageBumper *bumpers;
-    s32 jamabarCount;
-    struct StageJamabar *jamabars;
-    s32 bananaCount;
-    struct StageBanana *bananas;
-    s32 coliConeCount;
-    struct StageColiCone *coliCones;
-    s32 coliSphereCount;
-    struct StageColiSphere *coliSpheres;
-    s32 coliCylinderCount;
-    struct StageColiCylinder *coliCylinders;
+    /*0x4C*/ s32 bumperCount;
+    /*0x50*/ struct StageBumper *bumpers;
+    /*0x54*/ s32 jamabarCount;
+    /*0x58*/ struct StageJamabar *jamabars;
+    /*0x5C*/ s32 bananaCount;
+    /*0x60*/ struct StageBanana *bananas;
+    /*0x64*/ s32 coliConeCount;
+    /*0x68*/ struct StageColiCone *coliCones;
+    /*0x6C*/ s32 coliSphereCount;
+    /*0x70*/ struct StageColiSphere *coliSpheres;
+    /*0x74*/ s32 coliCylinderCount;
+    /*0x78*/ struct StageColiCylinder *coliCylinders;
     s32 animGroupModelCount;
     struct AnimGroupModel *animGroupModels;
     s32 unk84;
@@ -412,7 +414,7 @@ struct StageGoal
     /*0x0C*/ s16 rotX;
     /*0x0E*/ s16 rotY;
     /*0x10*/ s16 rotZ;
-    char type;  // 'B', 'G', or 'R' for blue, green, or red goal
+    /*0x14*/ char type;  // 'B', 'G', or 'R' for blue, green, or red goal
 };
 
 struct DecodedStageLzPtr_child5_child

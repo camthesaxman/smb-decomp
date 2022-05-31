@@ -98065,3 +98065,66 @@ glabel string___trX
 	.4byte 0x0B08FFFF
 	.4byte 0xFFFF0000
 	.4byte 0
+
+.section .sbss
+
+.global lbl_802F2020
+lbl_802F2020:
+	.skip 0x1
+.global lbl_802F2021
+lbl_802F2021:
+	.skip 0x1
+.global lbl_802F2022
+lbl_802F2022:
+	.skip 0x1
+.global lbl_802F2023
+lbl_802F2023:
+	.skip 0x1
+.global lbl_802F2024
+lbl_802F2024:
+	.skip 0x1
+.global lbl_802F2025
+lbl_802F2025:
+	.skip 0x3
+.global lbl_802F2028
+lbl_802F2028:
+	.skip 0x4
+.global lbl_802F202C
+lbl_802F202C:
+	.skip 0x4
+.global lbl_802F2030
+lbl_802F2030:
+	.skip 0x4
+.global lbl_802F2034
+lbl_802F2034:
+	.skip 0x4
+.global lbl_802F2038
+lbl_802F2038:
+	.skip 0x4
+.global lbl_802F203C
+lbl_802F203C:
+	.skip 0x4
+.global lbl_802F2040
+lbl_802F2040:
+	.skip 0x4
+.global lbl_802F2044
+lbl_802F2044:
+	.skip 0x4
+.global lbl_802F2048
+lbl_802F2048:
+	.skip 0x4
+.global lbl_802F204C
+lbl_802F204C:
+	.skip 0x4
+.global lbl_802F2050
+lbl_802F2050:
+	.skip 0x4
+.global lbl_802F2054
+lbl_802F2054:
+	.skip 0x4
+.global lbl_802F2058
+lbl_802F2058:
+	.skip 0x8
+.global lbl_802F2060
+lbl_802F2060:
+	.skip 0x8

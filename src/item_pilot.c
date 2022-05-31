@@ -68,7 +68,10 @@ float lbl_802F1FD8;
 s32 lbl_802F1FD4;
 u32 lbl_802F1FD0;
 
-u32 lbl_80285A58[4];
+static u32 lbl_80285A58[4];
+
+u8 lbl_80285A80[0x30];
+u8 lbl_80285A68[0x18];
 
 void item_pilot_init(struct Item *item)
 {
@@ -342,15 +345,15 @@ void item_pilot_draw(struct Item *item)
     }
 }
 
-void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
+void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
 {
     item->flags &= ~(1 << 1);
     item->state = 3;
     item->vel.y += item->unk14 * 0.1875;
     item->rotVelY <<= 2;
-    item->vel.x += b->unk1C.x * 0.25;
-    item->vel.y += b->unk1C.y * 0.25;
-    item->vel.z += b->unk1C.z * 0.25;
+    item->vel.x += ball->vel.x * 0.25;
+    item->vel.y += ball->vel.y * 0.25;
+    item->vel.z += ball->vel.z * 0.25;
     if (item->subType == 0 || item->subType == 1 || item->subType == 2)
     {
         if (item->unk5E < 0
@@ -371,7 +374,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
             memset(&sp178, 0, sizeof(sp178));
             sp178.unk8 = 8;
             sp178.unk14 = currentBallStructPtr->playerId;
-            mathutil_mtxA_from_mtx(animGroups[b->unk58].transform);
+            mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
             mathutil_mtxA_tf_point(&item->pos, &sp178.unk34);
             mathutil_mtxA_tf_vec(&item->vel, &sp178.unk40);
             sp178.unk4C = item->rotX;
@@ -395,7 +398,7 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         u_play_sound(0x10B);
         u_play_sound(0x1C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
-        b->unk1C.y += 0.92592592592592582;
+        ball->vel.y += 0.92592592592592582;
         lbl_802F1FE0 = 0x78;
         lbl_802F1FD8 = 0.6f;
         memset(&spCC, 0, sizeof(spCC));
@@ -419,9 +422,9 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         if (lbl_802F1FF6 == 14)
             u_play_sound(0x16C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
-        b->unk1C.y += 0.1388888888888889;
-        b->unk1C.x += (rand() / 32767.0f) * 0.64814814814814814;
-        b->unk1C.z += (rand() / 32767.0f) * 0.64814814814814814;
+        ball->vel.y += 0.1388888888888889;
+        ball->vel.x += (rand() / 32767.0f) * 0.64814814814814814;
+        ball->vel.z += (rand() / 32767.0f) * 0.64814814814814814;
         lbl_802F1FD8 = 0.6f;
         lbl_802F1FDC = 1.0f;
         memset(&sp20, 0, sizeof(sp20));
@@ -430,9 +433,9 @@ void item_pilot_collect(struct Item *item, struct Struct800690DC *b)
         sp20.unk34 = r31->pos;
         for (i = 0; i < 30; i++)
         {
-            sp20.unk40.x = b->unk1C.x + ((rand() / 32767.0f) * 0.2 - 0.1);
-            sp20.unk40.y = b->unk1C.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
-            sp20.unk40.z = b->unk1C.z + ((rand() / 32767.0f) * 0.2 - 0.1);
+            sp20.unk40.x = ball->vel.x + ((rand() / 32767.0f) * 0.2 - 0.1);
+            sp20.unk40.y = ball->vel.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
+            sp20.unk40.z = ball->vel.z + ((rand() / 32767.0f) * 0.2 - 0.1);
             spawn_effect(&sp20);
         }
     }

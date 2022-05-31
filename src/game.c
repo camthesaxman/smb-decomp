@@ -23,6 +23,7 @@
 #include "mode.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stobj.h"
 #include "textbox.h"
 #include "world.h"
 #include "light.h"

@@ -66,7 +66,7 @@ void (*itemDrawFuncs[])(struct Item *) =
     NULL,
 };
 
-void (*itemCollectFuncs[])(struct Item *, struct Struct800690DC *) =
+void (*itemCollectFuncs[])(struct Item *, struct PhysicsBall *) =
 {
     item_coin_collect,
     item_dummy_collect,
@@ -474,7 +474,7 @@ void item_dummy_main(struct Item *item) {}
 
 void item_dummy_draw(struct Item *item) {}
 
-void item_dummy_collect(struct Item *item, struct Struct800690DC *b) {}
+void item_dummy_collect(struct Item *item, struct PhysicsBall *b) {}
 
 void item_dummy_destroy(struct Item *item) {}
 

@@ -28,6 +28,11 @@ u8 playerNumColors[] =
 
 float lbl_801C14FC[] = { -128, 240, 240, 240, 240, 608, 608 };
 
+float lbl_802F201C;
+float lbl_802F2018;
+float lbl_802F2014;
+float lbl_802F2010;
+
 static void press_start_texbox_callback(struct TextBox *a) {}
 
 static void pause_menu_sprite_draw(struct Sprite *);
