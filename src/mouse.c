@@ -174,13 +174,13 @@ void ev_mouse_update(void)
             _spriteInfo = &spriteInfo[mouse.spriteIdx];
             reset_text_draw_settings();
             set_text_pos( (_spriteInfo->left - 8), (_spriteInfo->top - 8) );
-            g_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( (char*)&lbl_802F1360[0] );
             set_text_pos( (_spriteInfo->left - 8), _spriteInfo->bottom );
-            g_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( (char*)&lbl_802F1360[0] );
             set_text_pos( _spriteInfo->right, (_spriteInfo->top - 8) );
-            g_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( (char*)&lbl_802F1360[0] );
             set_text_pos( _spriteInfo->right, _spriteInfo->bottom );
-            g_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( (char*)&lbl_802F1360[0] );
         }
     }
     return;

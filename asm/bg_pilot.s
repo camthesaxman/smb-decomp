@@ -24,7 +24,7 @@ bg_pilot_init:
 /* 80063FDC 0005FEFC  90 1D 00 2C */	stw r0, 0x2c(r29)
 /* 80063FE0 0005FF00  38 83 50 84 */	addi r4, r3, lbl_80065084@l
 /* 80063FE4 0005FF04  38 7F 00 70 */	addi r3, r31, 0x70
-/* 80063FE8 0005FF08  4B FF 26 9D */	bl g_search_bg_models
+/* 80063FE8 0005FF08  4B FF 26 9D */	bl u_search_bg_models
 lbl_80063FEC:
 /* 80063FEC 0005FF0C  38 00 00 00 */	li r0, 0
 /* 80063FF0 0005FF10  90 1D 00 14 */	stw r0, 0x14(r29)
@@ -35,13 +35,13 @@ lbl_80063FEC:
 /* 80064004 0005FF24  38 BF 00 FC */	addi r5, r31, 0xfc
 /* 80064008 0005FF28  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 8006400C 0005FF2C  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 80064010 0005FF30  4B FF 27 CD */	bl g_search_bg_models_from_list
+/* 80064010 0005FF30  4B FF 27 CD */	bl u_search_bg_models_from_list
 /* 80064014 0005FF34  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 80064018 0005FF38  7F C6 F3 78 */	mr r6, r30
 /* 8006401C 0005FF3C  38 BF 00 FC */	addi r5, r31, 0xfc
 /* 80064020 0005FF40  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 80064024 0005FF44  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 80064028 0005FF48  4B FF 27 B5 */	bl g_search_bg_models_from_list
+/* 80064028 0005FF48  4B FF 27 B5 */	bl u_search_bg_models_from_list
 /* 8006402C 0005FF4C  38 61 00 14 */	addi r3, r1, 0x14
 /* 80064030 0005FF50  38 80 00 00 */	li r4, 0
 /* 80064034 0005FF54  38 A0 00 18 */	li r5, 0x18
@@ -787,7 +787,7 @@ lbl_800647B0:
 /* 80064B84 00060AA4  48 07 FA 39 */	bl GXLoadNrmMtxImm
 /* 80064B88 00060AA8  3C 60 80 06 */	lis r3, lbl_80064C30@ha
 /* 80064B8C 00060AAC  38 63 4C 30 */	addi r3, r3, lbl_80064C30@l
-/* 80064B90 00060AB0  48 02 9A 49 */	bl g_avdisp_set_some_func_1
+/* 80064B90 00060AB0  48 02 9A 49 */	bl u_avdisp_set_some_func_1
 /* 80064B94 00060AB4  3B 63 00 00 */	addi r27, r3, 0
 /* 80064B98 00060AB8  38 60 00 01 */	li r3, 1
 /* 80064B9C 00060ABC  38 80 00 03 */	li r4, 3
@@ -800,7 +800,7 @@ lbl_800647B0:
 /* 80064BB8 00060AD8  38 A0 00 01 */	li r5, 1
 /* 80064BBC 00060ADC  48 02 9A 0D */	bl avdisp_set_z_mode
 /* 80064BC0 00060AE0  7F 63 DB 78 */	mr r3, r27
-/* 80064BC4 00060AE4  48 02 9A 15 */	bl g_avdisp_set_some_func_1
+/* 80064BC4 00060AE4  48 02 9A 15 */	bl u_avdisp_set_some_func_1
 /* 80064BC8 00060AE8  48 00 00 4C */	b lbl_80064C14
 lbl_80064BCC:
 /* 80064BCC 00060AEC  38 7F 00 0C */	addi r3, r31, 0xc

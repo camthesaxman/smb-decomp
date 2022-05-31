@@ -2080,7 +2080,7 @@ lbl_800083B4:
 }
 #endif  //__MWERKS__
 
-void g_math_unk6(Quaternion *quat)
+void u_math_unk6(Quaternion *quat)
 {
     float var1 = quat->x * quat->x
                + quat->y * quat->y
@@ -2228,7 +2228,7 @@ static inline void cross_product_alt(register Vec *result, register Vec *a, regi
 #endif
 }
 
-void g_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
+void u_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
 {
     Vec sp24;
     double var1 = mathutil_quat_to_axis_angle(a, &sp24);
@@ -2250,7 +2250,7 @@ void g_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
     }
 }
 
-void g_math_unk8(Quaternion *a, Vec *b, Vec *c, float d)
+void u_math_unk8(Quaternion *a, Vec *b, Vec *c, float d)
 {
     Vec sp18;
     float f1;
@@ -2407,7 +2407,7 @@ void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
     }
 }
 
-void g_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
+void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
 {
     register double var1;
 
@@ -2576,13 +2576,13 @@ void mathutil_quat_slerp(Quaternion *result, Quaternion *start, Quaternion *end,
     result->w = startMul * start->w + endMul * temp.w;
 }
 
-void g_math_unk10(Quaternion *a, Quaternion *b)
+void u_math_unk10(Quaternion *a, Quaternion *b)
 {
     mathutil_mtxA_tf_vec((Vec *)a, (Vec *)b);
     b->w = a->w;
 }
 
-void g_math_unk11(Quaternion *a, Quaternion *b)
+void u_math_unk11(Quaternion *a, Quaternion *b)
 {
     mathutil_mtxA_rigid_inv_tf_vec((Vec *)a, (Vec *)b);
     b->w = a->w;
@@ -2644,7 +2644,7 @@ void mathutil_mtxA_to_euler(S16Vec *rot)
 }
 
 #pragma force_active on
-void g_math_unk14(s16 *a, s16 *b, s16 *c)
+void u_math_unk14(s16 *a, s16 *b, s16 *c)
 {
     Vec sp20;
     Vec sp14;
@@ -2672,7 +2672,7 @@ void g_math_unk14(s16 *a, s16 *b, s16 *c)
 }
 #pragma force_active off
 
-void g_math_unk15(Vec *a, Vec *b, float c)
+void u_math_unk15(Vec *a, Vec *b, float c)
 {
     mathutil_mtxA_tf_point(a, b);
     if (is_large_enough(b->z))
@@ -2688,7 +2688,7 @@ void g_math_unk15(Vec *a, Vec *b, float c)
     }
 }
 
-void g_math_unk16(Vec *a, Vec *b, float c)
+void u_math_unk16(Vec *a, Vec *b, float c)
 {
     mathutil_mtxA_tf_point(a, b);
     if (is_large_enough(b->z))

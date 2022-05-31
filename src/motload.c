@@ -12,9 +12,9 @@ struct Struct800341BC_4
     u8 *unk4;
 };
 
-void g_clear_mot_transforms(struct JointBoneThing *b);
-void g_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b);
-void g_read_transform_list_from_dat(struct MotDat *a, struct MotionTransform *b);
+void u_clear_mot_transforms(struct JointBoneThing *b);
+void u_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b);
+void u_read_transform_list_from_dat(struct MotDat *a, struct MotionTransform *b);
 
 void func_800341BC(struct JointBoneThing *a, struct MotSkeletonEntry1 *skel, u16 c)
 {
@@ -77,12 +77,12 @@ void func_80034360(struct JointBoneThing *a, u16 b)
 {
     struct MotDat dat;
 
-    g_clear_mot_transforms(a);
+    u_clear_mot_transforms(a);
     dat = motDat[b - 1];
-    g_load_mot_transforms(&dat, a);
+    u_load_mot_transforms(&dat, a);
 }
 
-void g_clear_mot_transforms(struct JointBoneThing *b)
+void u_clear_mot_transforms(struct JointBoneThing *b)
 {
     while (b->flags != 0)
     {
@@ -98,7 +98,7 @@ void g_clear_mot_transforms(struct JointBoneThing *b)
     }
 }
 
-void g_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b)
+void u_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b)
 {
     struct MotDat_child2 *r30 = dat->unk4;
     int i;
@@ -110,29 +110,29 @@ void g_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b)
             u32 r31 = r30->unk2;
 
             if (r31 & (1 << 8))
-                g_read_transform_list_from_dat(dat, &b->transforms[0]);
+                u_read_transform_list_from_dat(dat, &b->transforms[0]);
             if (r31 & (1 << 7))
-                g_read_transform_list_from_dat(dat, &b->transforms[1]);
+                u_read_transform_list_from_dat(dat, &b->transforms[1]);
             if (r31 & (1 << 6))
-                g_read_transform_list_from_dat(dat, &b->transforms[2]);
+                u_read_transform_list_from_dat(dat, &b->transforms[2]);
             if (r31 & (1 << 5))
-                g_read_transform_list_from_dat(dat, &b->transforms[3]);
+                u_read_transform_list_from_dat(dat, &b->transforms[3]);
             if (r31 & (1 << 4))
-                g_read_transform_list_from_dat(dat, &b->transforms[4]);
+                u_read_transform_list_from_dat(dat, &b->transforms[4]);
             if (r31 & (1 << 3))
-                g_read_transform_list_from_dat(dat, &b->transforms[5]);
+                u_read_transform_list_from_dat(dat, &b->transforms[5]);
             if (r31 & (1 << 2))
-                g_read_transform_list_from_dat(dat, NULL);
+                u_read_transform_list_from_dat(dat, NULL);
             if (r31 & (1 << 1))
-                g_read_transform_list_from_dat(dat, NULL);
+                u_read_transform_list_from_dat(dat, NULL);
             if (r31 & (1 << 0))
-                g_read_transform_list_from_dat(dat, NULL);
+                u_read_transform_list_from_dat(dat, NULL);
             r30++;
         }
     }
 }
 
-void g_read_transform_list_from_dat(struct MotDat *dat, struct MotionTransform *transform)
+void u_read_transform_list_from_dat(struct MotDat *dat, struct MotionTransform *transform)
 {
     u8 r5 = dat->unk8->unk0;
     int r6;
@@ -174,9 +174,9 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         return 0;
     size = OSRoundUp32B(file.length);
     motLabel = OSAlloc(size);
-    g_read_dvd_file(&file, motLabel, size, 0);
+    u_read_dvd_file(&file, motLabel, size, 0);
     DVDClose(&file);
-    g_motAnimCount = *motLabel;
+    u_motAnimCount = *motLabel;
     motLabel++;
     adjust_motlabel_pointers(motLabel);
     totalSize = size;
@@ -184,7 +184,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // dat file
     if (!DVDOpen(datname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
+    if (u_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 90, "cannot dvd_read");
     compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
     uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
@@ -194,7 +194,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     compressed = OSAlloc(compSize);
     if (compressed == NULL)
         OSPanic("motload.c", 95, "cannot OSAlooc\n");
-    if (g_read_dvd_file(&file, compressed, compSize, 0) < 0)
+    if (u_read_dvd_file(&file, compressed, compSize, 0) < 0)
         OSPanic("motload.c", 97, "cannot dvd_read");
     if (DVDClose(&file) != 1)
         OSPanic("motload.c", 98, "cannot DVDClose");
@@ -208,7 +208,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         return 0;
     size = OSRoundUp32B(file.length);
     motSkeleton = OSAlloc(size);
-    g_read_dvd_file(&file, motSkeleton, size, 0);
+    u_read_dvd_file(&file, motSkeleton, size, 0);
     DVDClose(&file);
     adjust_motskl_pointers(motSkeleton);
     totalSize += size;
@@ -216,7 +216,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     // info file
     if (!DVDOpen(infoname, &file))
         return 0;
-    if (g_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
+    if (u_read_dvd_file(&file, lzssHeader, 32, 0) < 0)
         OSPanic("motload.c", 151, "cannot dvd_read");
     compSize = OSRoundUp32B(__lwbrx(lzssHeader, 0));
     uncompSize = OSRoundUp32B(__lwbrx(lzssHeader, 4));
@@ -226,7 +226,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     compressed = OSAlloc(compSize);
     if (compressed == NULL)
         OSPanic("motload.c", 156, "cannot OSAlooc\n");
-    if (g_read_dvd_file(&file, compressed, compSize, 0) < 0)
+    if (u_read_dvd_file(&file, compressed, compSize, 0) < 0)
         OSPanic("motload.c", 158, "cannot dvd_read");
     if (DVDClose(&file) != 1)
         OSPanic("motload.c", 159, "cannot DVDClose");
@@ -243,7 +243,7 @@ void adjust_motdat_pointers(struct MotDat *a)
     int i;
     struct MotDat *temp = a;
 
-    for (i = g_motAnimCount; i >= 0; i--)
+    for (i = u_motAnimCount; i >= 0; i--)
     {
         temp->unk4 = OFFSET_TO_PTR(temp->unk4, a);
         temp->unk8 = OFFSET_TO_PTR(temp->unk8, a);
@@ -259,7 +259,7 @@ void adjust_motlabel_pointers(u32 *a)
     int i;
     u32 *temp = a;
 
-    for (i = g_motAnimCount; i >= 0; i--)
+    for (i = u_motAnimCount; i >= 0; i--)
     {
         *temp += (u32)a - 4;
         temp++;

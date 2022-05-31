@@ -6,7 +6,7 @@
 #include "global.h"
 #include "mathutil.h"
 
-void g_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct80034F5C_3 *b, const struct Struct80034F5C_2 *c, float e, u32 d)
+void u_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct80034F5C_3 *b, const struct Struct80034F5C_2 *c, float e, u32 d)
 {
     u32 flags;
     struct JointBoneThing *r30 = a;
@@ -22,17 +22,17 @@ void g_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct800
         if (flags & (1 << 2))
         {
             if (d != 0)
-                g_interp_pos_motion(r30, &a[c->unk2], d, e);
+                u_interp_pos_motion(r30, &a[c->unk2], d, e);
             else
-                g_interp_pos_motion(r30, r30, d, e);
+                u_interp_pos_motion(r30, r30, d, e);
             c++;
         }
         if (flags & (1 << 3))
         {
             if (d != 0)
-                g_interp_rot_motion(r30, &a[b->unk2], b, d, e);
+                u_interp_rot_motion(r30, &a[b->unk2], b, d, e);
             else
-                g_interp_rot_motion(r30, r30, b, d, e);
+                u_interp_rot_motion(r30, r30, b, d, e);
             b++;
         }
         r30++;
@@ -40,14 +40,14 @@ void g_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct800
     }
 }
 
-void g_interp_pos_motion(struct JointBoneThing *a, struct JointBoneThing *b, u32 c, float d)
+void u_interp_pos_motion(struct JointBoneThing *a, struct JointBoneThing *b, u32 c, float d)
 {
     struct MotionTransform *r3 = &a->transforms[0];
     int unused;
 
     if (r3->unk0 != 0)
     {
-        b->unk1C0.x = g_interp_skelanim_value_maybe(r3, d);
+        b->unk1C0.x = u_interp_skelanim_value_maybe(r3, d);
         if (c != 0)
             b->unk1C0.x = -b->unk1C0.x;
     }
@@ -56,19 +56,19 @@ void g_interp_pos_motion(struct JointBoneThing *a, struct JointBoneThing *b, u32
     r3++;
 
     if (r3->unk0 != 0)
-        b->unk1C0.y = g_interp_skelanim_value_maybe(r3, d);
+        b->unk1C0.y = u_interp_skelanim_value_maybe(r3, d);
     else
         b->unk1C0.y = 0.0f;
     r3++;
 
     if (r3->unk0 != 0)
-        b->unk1C0.z = g_interp_skelanim_value_maybe(r3, d);
+        b->unk1C0.z = u_interp_skelanim_value_maybe(r3, d);
     else
         b->unk1C0.z = 0.0f;
 
 }
 
-void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, const struct Struct80034F5C_3 *c, u32 d, float e)
+void u_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, const struct Struct80034F5C_3 *c, u32 d, float e)
 {
     float f31;
     struct MotionTransform *sub;
@@ -79,7 +79,7 @@ void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, con
     sub = &a->transforms[5];
     if (sub->unk0 != 0)
     {
-        float f1 = g_interp_skelanim_value_maybe(sub, e);
+        float f1 = u_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk18 + f1 * c->unkC;
         mathutil_mtxA_rotate_z((s16)(f31 * f1));
@@ -88,7 +88,7 @@ void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, con
     sub--;
     if (sub->unk0 != 0)
     {
-        float f1 = g_interp_skelanim_value_maybe(sub, e);
+        float f1 = u_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk14 + f1 * c->unk8;
         mathutil_mtxA_rotate_y((s16)(f31 * f1));
@@ -97,7 +97,7 @@ void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, con
     sub--;
     if (sub->unk0 != 0)
     {
-        float f1 = g_interp_skelanim_value_maybe(sub, e);
+        float f1 = u_interp_skelanim_value_maybe(sub, e);
         if (d != 0)
             f1 = c->unk10 + f1 * c->unk4;
         mathutil_mtxA_rotate_x((s16)(f31 * f1));
@@ -106,7 +106,7 @@ void g_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, con
     mathutil_mtxA_sq_to_mtx(b->rotateMtx);
 }
 
-float g_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
+float u_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
 {
     float ret;
     float dummy1;
@@ -136,14 +136,14 @@ float g_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
             break;
         }
         r31++;
-        g_skelanim_seek_next(transform);
+        u_skelanim_seek_next(transform);
     }
 
     switch (type)
     {
     default:
         if (transform->unk1 < endSomething)
-            g_skelanim_seek_prev(transform);
+            u_skelanim_seek_prev(transform);
         // fall through
     case 1:
     case 2:
@@ -155,17 +155,17 @@ float g_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
         sp10.unk4 = transform->unk4;
         sp10.numComponents = transform->numComponents;
         sp10.values = transform->values;
-        g_skelanim_seek_prev(&sp10);
+        u_skelanim_seek_prev(&sp10);
         sp2C.x = *sp10.unk4;
         read_transform_values(&sp10, &dummy1, &sp2C.z, &sp2C.y);
-        ret = g_crazy_interpolation_stuff(&sp2C, &sp20, t);
+        ret = u_crazy_interpolation_stuff(&sp2C, &sp20, t);
         break;
     }
     transform->unk1 = r31;
     return ret;
 }
 
-float g_crazy_interpolation_stuff(Vec *a, Vec *b, float c)
+float u_crazy_interpolation_stuff(Vec *a, Vec *b, float c)
 {
     float unkx, unkx2, dx, z1, f5, f0;
 
@@ -205,14 +205,14 @@ void read_transform_values(struct MotionTransform *transform, float *b, float *c
     }
 }
 
-void g_skelanim_seek_next(struct MotionTransform *transform)
+void u_skelanim_seek_next(struct MotionTransform *transform)
 {
     transform->unk4++;
     transform->values += *transform->numComponents;
     transform->numComponents++;
 }
 
-void g_skelanim_seek_prev(struct MotionTransform *transform)
+void u_skelanim_seek_prev(struct MotionTransform *transform)
 {
     transform->unk4--;
     transform->numComponents--;
