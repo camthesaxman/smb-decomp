@@ -33,7 +33,7 @@ struct GoalTape
     float unk4;
     float unk8;
     float unkC;
-    s32 unk10;
+    s32 unk10;  // time tape was broken?
     struct Stobj *unk14;
     struct GoalTape_sub unk18[8];
 };  // size = 0x198
@@ -47,7 +47,7 @@ struct GoalBag  // The "party ball", known as a "goal bag" internally
     float unk8;
     /*0x0C*/ struct Stobj *stobj;
     /*0x10*/ struct StageGoal goal;
-    s32 unk24;
+    s32 unk24;  // time ball was opened?
 };  // size = 0x28
 
 struct GoalBag goalBags[8];
@@ -275,6 +275,8 @@ asm void stobj_goaltape_init(struct Stobj *arg0)
 }
 #pragma peephole on
 #endif
+
+void func_8006FD44(struct GoalTape *arg0);
 
 void stobj_goaltape_main(struct Stobj *stobj)
 {
@@ -975,7 +977,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
     float alpha;
     struct GMAModel *model;
     struct GoalBag *bag;
-    s16 temp_r30;
+    int temp_r30;
 
     bag = stobj->unkA4;
     mathutil_mtxA_from_mtxB();
@@ -1013,7 +1015,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
         spC.z = 0.0f;
         mathutil_mtxA_translate(&spC);
         mathutil_mtxA_push();
-        mathutil_mtxA_rotate_z(-temp_r30);
+        mathutil_mtxA_rotate_z(-(s16)(int)temp_r30);
         model = commonGma->modelEntries[0x1E].modelOffset;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
@@ -1031,7 +1033,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
             }
         }
         mathutil_mtxA_pop();
-        mathutil_mtxA_rotate_z(temp_r30);
+        mathutil_mtxA_rotate_z((s16)temp_r30);
         model = commonGma->modelEntries[0x1F].modelOffset;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
@@ -1049,4 +1051,444 @@ void stobj_goalbag_draw(struct Stobj *stobj)
             }
         }
     }
+}
+
+extern Vec lbl_80117A70;
+
+void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
+{
+    Vec sp110;
+    Vec sp104;
+    Vec spF8;
+    Vec spEC;
+    Vec spE0;
+    float temp_f0;
+    float var_f26 = 0.0f;
+    float temp_f25;
+    struct GoalBag *bag;
+
+    sp110.x = ball->pos.x - stobj->position.x;
+    sp110.y = ball->pos.y - stobj->position.y;
+    sp110.z = ball->pos.z - stobj->position.z;
+    mathutil_vec_normalize_len(&sp110);
+    sp104.x = stobj->position.z - stobj->position_2.z;
+    sp104.y = stobj->position.y - stobj->position_2.y;
+    sp104.z = stobj->position.z - stobj->position_2.z;
+    spEC.x = ball->vel.x;
+    spEC.y = ball->vel.y;
+    spEC.z = ball->vel.z;
+    spF8.x = spEC.x - sp104.x;
+    spF8.y = spEC.y - sp104.y;
+    spF8.z = spEC.z - sp104.z;
+    temp_f0 = -1.5 * mathutil_vec_dot_prod(&sp110, &ball->vel);
+    if (temp_f0 > 0.0)
+    {
+        var_f26 = temp_f0;
+        spF8.x += temp_f0 * sp110.x;
+        spF8.y += temp_f0 * sp110.y;
+        spF8.z += temp_f0 * sp110.z;
+        ball->vel.x = spF8.x + sp104.x;
+        ball->vel.y = spF8.y + sp104.y;
+        ball->vel.z = spF8.z + sp104.z;
+    }
+    temp_f25 = stobj->boundSphereRadius + ball->radius;
+    sp110.x *= temp_f25;
+    sp110.y *= temp_f25;
+    sp110.z *= temp_f25;
+    spE0.x = stobj->position.x + sp110.x - ball->pos.x;
+    spE0.y = stobj->position.y + sp110.y - ball->pos.y;
+    spE0.z = stobj->position.z + sp110.z - ball->pos.z;
+    ball->pos.x += spE0.x;
+    ball->pos.y += spE0.y;
+    ball->pos.z += spE0.z;
+    temp_f0 = -mathutil_vec_dot_prod_alt2(&sp110, &stobj->u_local_pos);
+    sp110.x += temp_f0 * stobj->u_local_pos.x;
+    sp110.y += temp_f0 * stobj->u_local_pos.y;
+    sp110.z += temp_f0 * stobj->u_local_pos.z;
+    mathutil_vec_normalize_len(&sp110);
+    spF8.x = sp104.x + stobj->u_local_vel.x - spEC.x;
+    spF8.y = sp104.y + stobj->u_local_vel.y - spEC.y;
+    spF8.z = sp104.z + stobj->u_local_vel.z - spEC.z;
+    temp_f0 = -2.0 * mathutil_vec_dot_prod(&sp110, &spF8);
+    if (temp_f0 < 0.0)
+    {
+        spF8.x += temp_f0 * sp110.x;
+        spF8.y += temp_f0 * sp110.y;
+        spF8.z += temp_f0 * sp110.z;
+        stobj->u_local_vel.x = spEC.x + (spF8.x - sp104.x);
+        stobj->u_local_vel.y = spEC.y + (spF8.y - sp104.y);
+        stobj->u_local_vel.z = spEC.z + (spF8.z - sp104.z);
+    }
+    temp_f0 = -mathutil_vec_dot_prod_alt2(&stobj->u_local_pos, &stobj->u_local_vel);
+    stobj->u_local_vel.x += temp_f0 * stobj->u_local_pos.x;
+    stobj->u_local_vel.y += temp_f0 * stobj->u_local_pos.y;
+    stobj->u_local_vel.z += temp_f0 * stobj->u_local_pos.z;
+    bag = stobj->unkA4;
+    if (bag->unk0 != 0)
+    {
+        temp_f0 = -2.0 * mathutil_vec_dot_prod(&stobj->u_local_pos, &spEC);
+        if (temp_f0 < 0.0)
+            bag->unk8 += temp_f0;
+    }
+    if (var_f26 > 0.1f)
+    {
+        struct Struct8003C550 sp34;
+        Vec sp28 = lbl_80117A70;
+        Vec sp1C;
+        Vec sp10;
+        int var_r30;
+        int var_r29;
+        int temp_r28;
+        float temp_f6;
+        float var_f24;
+
+        mathutil_mtxA_push();
+        temp_f25 = stobj->boundSphereRadius;
+        sp10 = stobj->position;
+        if (stobj->animGroupId > 0)
+        {
+            mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
+            mathutil_mtxA_tf_point(&sp10, &sp10);
+            mathutil_mtxA_tf_vec(&sp104, &sp104);
+            mathutil_mtxA_tf_vec(&spEC, &spEC);
+        }
+        spF8.x = 0.25f * (sp104.x + spEC.x);
+        spF8.y = 0.25f * (sp104.y + spEC.y);
+        spF8.z = 0.25f * (sp104.z + spEC.z);
+        memset(&sp34, 0, sizeof(sp34));
+        var_f24 = 0.1f;
+        sp34.unk14 = currentBallStructPtr->playerId;
+        for (var_r29 = 2; var_r29 > 0; var_r29--)
+        {
+            var_r30 = 16.0f + (16.0f * var_f26);
+            sp34.unk8 = 19;
+            if (var_r30 > 32)
+                var_r30 = 32;
+            temp_r28 = 65536.0f / var_r30;
+            mathutil_mtxA_from_rotate_y(rand() & 0x7FFF);
+            mathutil_mtxA_rotate_x(rand() & 0x7FFF);
+            mathutil_mtxA_rotate_z(rand() & 0x7FFF);
+            while (var_r30 > 0)
+            {
+                mathutil_mtxA_rotate_y(temp_r28);
+                mathutil_mtxA_tf_vec(&sp28, &sp1C);
+                sp34.unk34.x = sp10.x + (temp_f25 * sp1C.x);
+                sp34.unk34.y = sp10.y + (temp_f25 * sp1C.y);
+                sp34.unk34.z = sp10.z + (temp_f25 * sp1C.z);
+                temp_f6 = var_f24 + 0.02f * (rand() / 32767.0f);
+                sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
+                sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
+                sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
+                u_spawn_effect_object(&sp34);
+                var_r30--;
+            }
+            var_r30 = 12.0f + (12.0f * var_f26);
+            sp34.unk8 = 2;
+            if (var_r30 > 24)
+                var_r30 = 24;
+            temp_r28 = 65536.0f / var_r30;
+            while (var_r30 > 0)
+            {
+                mathutil_mtxA_rotate_y(temp_r28);
+                mathutil_mtxA_tf_vec(&sp28, &sp1C);
+                sp34.unk34.x = sp10.x + (temp_f25 * sp1C.x);
+                sp34.unk34.y = sp10.y + (temp_f25 * sp1C.y);
+                sp34.unk34.z = sp10.z + (temp_f25 * sp1C.z);
+                temp_f6 = var_f24 + 0.02f * (rand() / 32767.0f);
+                sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
+                sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
+                sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
+                u_spawn_effect_object(&sp34);
+                var_r30--;
+            }
+            var_f24 *= 0.5f;
+            spF8.x *= 2.0f;
+            spF8.y *= 2.0f;
+            spF8.z *= 2.0f;
+        }
+        mathutil_mtxA_pop();
+    }
+}
+
+void stobj_goalbag_destroy(struct Stobj *stobj) {}
+
+void func_8006F3A4(struct Stobj *stobj) {}
+
+void stobj_goalbag_exmaster_init(struct Stobj *stobj)
+{
+    stobj_goalbag_init(stobj);
+}
+
+void stobj_goalbag_exmaster_main(struct Stobj *stobj)
+{
+    stobj_goalbag_main(stobj);
+}
+
+void stobj_goalbag_exmaster_draw(struct Stobj *stobj)
+{
+    stobj_goalbag_draw(stobj);
+}
+
+void stobj_goalbag_exmaster_coli(struct Stobj *stobj, struct PhysicsBall *ball)
+{
+    stobj_goalbag_coli(stobj, ball);
+}
+
+void stobj_goalbag_exmaster_destroy(struct Stobj *stobj) {}
+
+void func_8006F42C(struct Stobj *stobj) {}
+
+void func_8006F760(int arg0, struct PhysicsBall *arg1);
+
+void u_break_goal_tape(int arg0, struct PhysicsBall *arg1)
+{
+    Vec sp1C;
+    Vec sp10;
+    float temp_f1;
+    float var_f31;
+    int i;
+    struct GoalTape *tape;
+    struct GoalTape_sub *var_r29;
+    int var_r28;
+    struct Stobj *temp_r27;
+
+    func_8006F760(arg0, arg1);
+    if (arg0 < 8)
+    {
+        tape = &goalTapes[arg0];
+        if (tape->unk0 == 0)
+        {
+            temp_r27 = tape->unk14;
+            mathutil_mtxA_from_identity();
+            mathutil_mtxA_translate(&temp_r27->u_some_pos);
+            mathutil_mtxA_rotate_z((s32) temp_r27->rotZ);
+            mathutil_mtxA_rotate_y((s32) temp_r27->rotY);
+            mathutil_mtxA_rotate_x((s32) temp_r27->rotX);
+            mathutil_mtxA_rigid_inv_tf_point(&arg1->pos, &sp1C);
+            mathutil_mtxA_rigid_inv_tf_vec(&arg1->vel, &sp10);
+            if (tape->unk10 < 0)
+                tape->unk10 = infoWork.timerCurr;
+            var_f31 = 17.5f;
+            var_r28 = -1;
+            var_r29 = tape->unk18;
+            for (i = 0; i < 8; i++, var_r29++)
+            {
+                if (var_r29->unk28 & 4)
+                {
+                    temp_f1 = mathutil_vec_distance(&var_r29->unk0, &sp1C);
+                    if (var_f31 > temp_f1)
+                    {
+                        var_f31 = temp_f1;
+                        var_r28 = i;
+                    }
+                }
+            }
+            if (var_r28 >= 0)
+            {
+                var_r29 = &tape->unk18[var_r28];
+                var_r29[0].unk28 &= 0xFFFFFFFB;
+                var_r29[1].unk28 &= 0xFFFFFFFD;
+                var_r29[0].unk1C.x += sp10.x;
+                var_r29[0].unk1C.y += sp10.y;
+                var_r29[0].unk1C.z += sp10.z;
+                var_r29[1].unk1C.x += sp10.x;
+                var_r29[1].unk1C.y += sp10.y;
+                var_r29[1].unk1C.z += sp10.z;
+                temp_r27->unkC = 1;
+                tape->unk0 = 1;
+            }
+        }
+    }
+}
+
+void func_8006FB20(int arg0);
+
+void func_8006F5F0(int arg0)
+{
+    int i;
+    int j;
+    struct GoalTape *tape;
+    struct GoalTape_sub *var_r26;
+    u8 dummy[8];
+
+    func_8006FB20(arg0);
+    tape = goalTapes;
+    for (i = 8; i > 0; i--, tape++)
+    {
+        if (tape->unk10 <= arg0 && tape->unk0 != 0)
+        {
+            tape->unk0 = 0;
+            var_r26 = tape->unk18;
+            for (j = 8; j > 0; j--, var_r26++)
+            {
+                var_r26->unk0.x = 1.75 * ((j - 1) / 7.0f) - 0.875;
+                var_r26->unk0.y = tape->unk14->u_model_origin.y;
+                var_r26->unk0.z = 0.0f;
+                var_r26->unkC.x *= 0.25;
+                var_r26->unkC.y *= 0.25;
+                var_r26->unkC.z = 0.75 + 0.25 * var_r26->unkC.z;
+                mathutil_vec_normalize_len(&var_r26->unkC);
+                var_r26->unk28 |= 6;
+            }
+            tape->unk18[0].unk28 &= 0xFFFFFFFD;
+            tape->unk18[7].unk28 &= 0xFFFFFFFB;
+        }
+    }
+}
+
+void func_8006F760(int arg0, struct PhysicsBall *arg1)
+{
+    struct Struct8003C550 sp34;
+    Point3d sp28;
+    Point3d sp1C;
+    Point3d sp10;
+    f32 temp_f27;
+    s32 var_r31;
+    struct GoalBag *bag;
+    struct Stobj *stobj;
+    u16 temp_r30;
+
+    if (arg0 < 8)
+    {
+        bag = &goalBags[arg0];
+        stobj = bag->stobj;
+        if (bag->unk0 == 0)
+        {
+            bag->unk0 = 1;
+            stobj->unkC = 2;
+            stobj->boundSphereRadius = 0.5 * stobj->model->boundSphereRadius;
+            stobj->u_model_origin = stobj->model->boundSphereCenter;
+            stobj->u_model_origin.x *= 0.5;
+            stobj->u_model_origin.y *= 0.5;
+            stobj->u_model_origin.z *= 0.5;
+            stobj->u_local_vel.x += 0.5 * arg1->vel.x;
+            stobj->u_local_vel.y += 0.5 * arg1->vel.y;
+            stobj->u_local_vel.z += 0.5 * arg1->vel.z;
+            u_play_sound(0x16);
+            u_play_sound(0x127);
+            if (bag->unk24 < 0)
+                bag->unk24 = infoWork.timerCurr;
+            temp_r30 = 1 << currentBallStructPtr->playerId;
+            memset(&sp34, 0, sizeof(sp34));
+            sp34.unk8 = 0;
+            mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
+            mathutil_mtxA_tf_vec(&arg1->vel, &sp34.unk40);
+            mathutil_mtxA_tf_point(&stobj->position, &sp1C);
+            mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].prevTransform);
+            mathutil_mtxA_tf_point(&stobj->position_2, &sp10);
+            sp34.unk40.x += sp1C.x - sp10.x;
+            sp34.unk40.y += sp1C.y - sp10.y;
+            sp34.unk40.z += sp1C.z - sp10.z;
+            temp_f27 = stobj->model->boundSphereRadius - commonGma->modelEntries[0x29].modelOffset->boundSphereRadius;
+            mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
+            mathutil_mtxA_translate(&stobj->position);
+            if (gameMode == 2 && modeCtrl.gameType == 1)
+            {
+                switch (modeCtrl.playerCount)
+                {
+                case 2:
+                    var_r31 = 130;
+                    break;
+                case 3:
+                    var_r31 = 100;
+                    break;
+                case 4:
+                    var_r31 = 70;
+                    break;
+                default:
+                    var_r31 = 160;
+                    break;
+                }
+            }
+            else
+                var_r31 = 160;
+            sp28.x = 0.0f;
+            sp28.y = 0.0f;
+            while (var_r31 > 0)
+            {
+                sp28.z = 0.5 * (temp_f27 * (1.0 + (rand() / 32767.0f)));
+                mathutil_mtxA_rotate_y(rand() & 0x7FFF);
+                mathutil_mtxA_rotate_x(rand() & 0x7FFF);
+                mathutil_mtxA_tf_point(&sp28, &sp34.unk34);
+                sp34.unk4C = rand() & 0x7FFF;
+                sp34.unk4E = rand() & 0x7FFF;
+                sp34.unk50 = rand() & 0x7FFF;
+                if (var_r31 & 1)
+                    sp34.unk16 = temp_r30;
+                else
+                    sp34.unk16 = 0;
+                u_spawn_effect_object(&sp34);
+                var_r31--;
+            }
+        }
+    }
+}
+
+void func_8006FB20(int arg0)
+{
+    int i;
+    struct GoalBag *bag;
+    struct Stobj *stobj;
+
+    bag = goalBags;
+    for (i = ARRAY_COUNT(goalBags); i > 0; i--, bag++)
+    {
+        if (bag->unk24 <= arg0 && bag->unk0 != 0)
+        {
+            bag->unk0 = 0;
+            bag->unk4 = 0.0f;
+            bag->unk8 = 0.0f;
+            stobj = bag->stobj;
+            stobj->boundSphereRadius = stobj->model->boundSphereRadius;
+            stobj->u_model_origin = stobj->model->boundSphereCenter;
+            stobj->unkC = 1;
+        }
+    }
+}
+
+float func_8006FCD0(Point3d *arg0, float arg8)
+{
+    Point3d sp10;
+    float var_f1;
+
+    mathutil_mtxA_tf_point(arg0, &sp10);
+    sp10.z += 0.1f + arg8;
+    sp10.z = -sp10.z;
+    if (sp10.z > 1.0f)
+        return 1.0f;
+    var_f1 = 0.0f;
+    if (sp10.z > 0.0f)
+        var_f1 = sp10.z;
+    return var_f1;
+}
+
+void func_8006FD44(struct GoalTape *tape)
+{
+    int i;
+    struct GoalTape_sub *var_r29;
+    float y;
+    u8 unused[8];
+
+    tape->unk0 = 0;
+    tape->unk10 = -1;
+    y = tape->unk8;
+    var_r29 = tape->unk18;
+    for (i = 8; i > 0; i--, var_r29++)
+    {
+        var_r29->unk0.x = 1.75 * (((i - 1) / 7.0f) - 0.5f);
+        var_r29->unk0.y = y;
+        var_r29->unk0.z = 0.0f;
+        var_r29->unk1C.x *= 0.05f;
+        var_r29->unk1C.y *= 0.05f;
+        var_r29->unk1C.z *= 0.05f;
+        var_r29->unkC.x *= 0.25f;
+        var_r29->unkC.y *= 0.25f;
+        var_r29->unkC.z = 0.75f + 0.25f * var_r29->unkC.z;
+        mathutil_vec_normalize_len(&var_r29->unkC);
+        var_r29->unk28 = 6;
+    }
+    tape->unk18[0].unk28 &= 0xFFFFFFFD;
+    tape->unk18[0].unk28 |= 1;
+    tape->unk18[7].unk28 &= 0xFFFFFFFB;
+    tape->unk18[7].unk28 |= 1;
 }
