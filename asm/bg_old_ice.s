@@ -585,7 +585,7 @@ func_80059058:
 lbl_800594BC:
 /* 800594BC 000553DC  FC 20 00 90 */	fmr f1, f0
 lbl_800594C0:
-/* 800594C0 000553E0  4B FD 76 E9 */	bl u_nl2ngc_set_scale
+/* 800594C0 000553E0  4B FD 76 E9 */	bl nl2ngc_set_scale
 /* 800594C4 000553E4  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 800594C8 000553E8  4B FD A6 0D */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 800594CC 000553EC  C0 22 97 70 */	lfs f1, lbl_802F3F70@sda21(r2)
@@ -607,7 +607,7 @@ lbl_80059504:
 /* 80059504 00055424  C8 02 97 90 */	lfd f0, lbl_802F3F90@sda21(r2)
 /* 80059508 00055428  FC 20 00 72 */	fmul f1, f0, f1
 /* 8005950C 0005542C  FC 20 08 18 */	frsp f1, f1
-/* 80059510 00055430  4B FD 76 99 */	bl u_nl2ngc_set_scale
+/* 80059510 00055430  4B FD 76 99 */	bl nl2ngc_set_scale
 /* 80059514 00055434  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 80059518 00055438  80 63 00 0C */	lwz r3, 0xc(r3)
 /* 8005951C 0005543C  4B FD A5 B9 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -754,7 +754,7 @@ func_800596C0:
 lbl_80059724:
 /* 80059724 00055644  FC 20 00 90 */	fmr f1, f0
 lbl_80059728:
-/* 80059728 00055648  4B FD 74 81 */	bl u_nl2ngc_set_scale
+/* 80059728 00055648  4B FD 74 81 */	bl nl2ngc_set_scale
 /* 8005972C 0005564C  A8 7F 00 A4 */	lha r3, 0xa4(r31)
 /* 80059730 00055650  4B FA E9 59 */	bl mathutil_mtxA_rotate_z
 /* 80059734 00055654  C0 3F 00 A8 */	lfs f1, 0xa8(r31)

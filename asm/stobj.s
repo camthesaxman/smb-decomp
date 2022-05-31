@@ -1713,7 +1713,7 @@ lbl_8006BE28:
 /* 8006BE28 00067D48  FC 20 F8 90 */	fmr f1, f31
 /* 8006BE2C 00067D4C  4B F9 BF 9D */	bl mathutil_mtxA_scale_s
 /* 8006BE30 00067D50  FC 20 F8 90 */	fmr f1, f31
-/* 8006BE34 00067D54  4B FC 4D 75 */	bl u_nl2ngc_set_scale
+/* 8006BE34 00067D54  4B FC 4D 75 */	bl nl2ngc_set_scale
 /* 8006BE38 00067D58  FC 20 F0 90 */	fmr f1, f30
 /* 8006BE3C 00067D5C  FC 40 F0 90 */	fmr f2, f30
 /* 8006BE40 00067D60  FC 60 F0 90 */	fmr f3, f30

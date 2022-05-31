@@ -1125,7 +1125,7 @@ void ball_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_mult_right(ball->unk30);
         mathutil_mtxA_scale_s(ball->modelScale);
-        u_nl2ngc_set_scale(ball->modelScale);
+        nl2ngc_set_scale(ball->modelScale);
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
@@ -1161,7 +1161,7 @@ void ball_draw(void)
         mathutil_mtxA_push();
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
-        u_nl2ngc_set_scale(ball->modelScale);
+        nl2ngc_set_scale(ball->modelScale);
         u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 

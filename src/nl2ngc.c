@@ -20,8 +20,8 @@ GXFogType s_fogType;
 s32 s_fogEnabled;
 u32 s_lightMask;
 
-struct Color3f u_ambientColor;
-FORCE_BSS_ORDER(u_ambientColor)
+struct Color3f s_ambientColor;
+FORCE_BSS_ORDER(s_ambientColor)
 
 static struct
 {
@@ -52,11 +52,11 @@ static u8 s_lzssHeader[32] __attribute__((aligned(32)));
 struct
 {
     struct Color3f materialColor;
-    float unkC;
-    float unk10;
-    float unk14;
-    float u_scale;
-    float u_scaleCopy;
+    float unused1;
+    float unused2;
+    float unused3;
+    float scale;
+    float prevScale;
 } s_renderParams = {{1.0f, 1.0f, 1.0f}, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
 static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj);
@@ -64,7 +64,7 @@ static void init_model_flags(struct NaomiModel *model);
 static void prep_some_stuff_before_drawing(void);
 static void build_tev_material(struct NaomiMesh *pmesh);
 static void prep_some_stuff_before_drawing_2(void);
-void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh);
+void build_tev_material_2(struct NaomiMesh *pmesh);
 
 #pragma force_active on
 void nl2ngc_set_line_width(float a)
@@ -100,9 +100,9 @@ void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 color)
     gxutil_draw_line_deferred(start, end, &gxColor);
 }
 
-void u_nl2ngc_set_scale(float x)
+void nl2ngc_set_scale(float x)
 {
-    s_renderParams.u_scale = x;
+    s_renderParams.scale = x;
 }
 
 void nl2ngc_set_material_color(float r, float g, float b)
@@ -374,7 +374,7 @@ struct DrawModelDeferredNode
     struct OrdTblNode node;
     struct NaomiModel *model;
     Mtx viewFromModel;
-    struct Color3f materialColoir;
+    struct Color3f materialColor;
     u32 lightGroup;
     struct Color3f ambientColor;
     u32 fogEnabled;
@@ -388,8 +388,8 @@ void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *model)
 
     if (model->unk0 != -1)
     {
-        s_renderParams.u_scaleCopy = s_renderParams.u_scale;
-        if (s_renderParams.u_scale == 1.0f)
+        s_renderParams.prevScale = s_renderParams.scale;
+        if (s_renderParams.scale == 1.0f)
         {
             if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
@@ -398,16 +398,16 @@ void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *model)
         {
             // Always reset a non-one scale before next draw call
             if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius,
-                                              s_renderParams.u_scale) == 0)
+                                              s_renderParams.scale) == 0)
             {
-                s_renderParams.u_scale = 1.0f;
+                s_renderParams.scale = 1.0f;
                 return;
             }
-            s_renderParams.u_scale = 1.0f;
+            s_renderParams.scale = 1.0f;
         }
         modelFlags = &model->flags;
         if (model->flags & (NAOMI_MODEL_FLAG_OPAQUE))
-            u_draw_opaque_model(model);
+            u_draw_model_opaque_meshes(model);
         if (*modelFlags & (NAOMI_MODEL_FLAG_TRANSLUCENT))
         {
             struct DrawModelDeferredNode *drawNode;
@@ -416,13 +416,13 @@ void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *model)
 
             drawNode->node.drawFunc = (OrdTblDrawFunc)lbl_80033C8C;
             drawNode->model = model;
-            drawNode->materialColoir.r = s_renderParams.materialColor.r;
-            drawNode->materialColoir.g = s_renderParams.materialColor.g;
-            drawNode->materialColoir.b = s_renderParams.materialColor.b;
+            drawNode->materialColor.r = s_renderParams.materialColor.r;
+            drawNode->materialColor.g = s_renderParams.materialColor.g;
+            drawNode->materialColor.b = s_renderParams.materialColor.b;
             drawNode->lightGroup = peek_light_group();
-            drawNode->ambientColor.r = u_ambientColor.r;
-            drawNode->ambientColor.g = u_ambientColor.g;
-            drawNode->ambientColor.b = u_ambientColor.b;
+            drawNode->ambientColor.r = s_ambientColor.r;
+            drawNode->ambientColor.g = s_ambientColor.g;
+            drawNode->ambientColor.b = s_ambientColor.b;
             drawNode->fogEnabled = s_fogEnabled;
             mathutil_mtxA_to_mtx(drawNode->viewFromModel);
             ord_tbl_insert_node(list, &drawNode->node);
@@ -442,8 +442,8 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
 
     if (model->unk0 != -1)
     {
-        s_renderParams.u_scaleCopy = s_renderParams.u_scale;
-        if (s_renderParams.u_scale == 1.0f)
+        s_renderParams.prevScale = s_renderParams.scale;
+        if (s_renderParams.scale == 1.0f)
         {
             if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
@@ -451,9 +451,9 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
         else
         {
             if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius,
-                                              s_renderParams.u_scale) == 0)
+                                              s_renderParams.scale) == 0)
             {
-                s_renderParams.u_scale = 1.0f;
+                s_renderParams.scale = 1.0f;
                 return;
             }
         }
@@ -503,12 +503,12 @@ struct UnkStruct19
 {
     struct OrdTblNode node;
     struct NaomiModel *model;
-    Mtx unkC;
-    struct Color3f unk3C;
+    Mtx viewFromModel;
+    struct Color3f materialColor;
     float alpha;
-    u32 unk4C;
-    struct Color3f ambColor;
-    u32 unk5C;
+    u32 lightGroup;
+    struct Color3f ambientColor;
+    u32 fogEnabled;
 };
 
 void lbl_80033E6C(struct UnkStruct19 *);
@@ -522,8 +522,8 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
 
     if (model->unk0 != -1)
     {
-        s_renderParams.u_scaleCopy = s_renderParams.u_scale;
-        if (s_renderParams.u_scale == 1.0f)
+        s_renderParams.prevScale = s_renderParams.scale;
+        if (s_renderParams.scale == 1.0f)
         {
             if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
@@ -531,12 +531,12 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
         else
         {
             if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius,
-                                              s_renderParams.u_scale) == 0)
+                                              s_renderParams.scale) == 0)
             {
-                s_renderParams.u_scale = 1.0f;
+                s_renderParams.scale = 1.0f;
                 return;
             }
-            s_renderParams.u_scale = 1.0f;
+            s_renderParams.scale = 1.0f;
         }
 
         entry = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
@@ -545,15 +545,15 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
         node->node.drawFunc = (OrdTblDrawFunc)lbl_80033E6C;
         node->model = model;
         node->alpha = alpha;
-        node->unk3C.r = s_renderParams.materialColor.r;
-        node->unk3C.g = s_renderParams.materialColor.g;
-        node->unk3C.b = s_renderParams.materialColor.b;
-        node->unk4C = peek_light_group();
-        node->ambColor.r = u_ambientColor.r;
-        node->ambColor.g = u_ambientColor.g;
-        node->ambColor.b = u_ambientColor.b;
-        node->unk5C = s_fogEnabled;
-        mathutil_mtxA_to_mtx(node->unkC);
+        node->materialColor.r = s_renderParams.materialColor.r;
+        node->materialColor.g = s_renderParams.materialColor.g;
+        node->materialColor.b = s_renderParams.materialColor.b;
+        node->lightGroup = peek_light_group();
+        node->ambientColor.r = s_ambientColor.r;
+        node->ambientColor.g = s_ambientColor.g;
+        node->ambientColor.b = s_ambientColor.b;
+        node->fogEnabled = s_fogEnabled;
+        mathutil_mtxA_to_mtx(node->viewFromModel);
         ord_tbl_insert_node(entry, &node->node);
     }
 }
@@ -564,8 +564,8 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
 
     if (model->unk0 != -1)
     {
-        s_renderParams.u_scaleCopy = s_renderParams.u_scale;
-        if (s_renderParams.u_scale == 1.0f)
+        s_renderParams.prevScale = s_renderParams.scale;
+        if (s_renderParams.scale == 1.0f)
         {
             if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
@@ -573,9 +573,9 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
         else
         {
             if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius,
-                                              s_renderParams.u_scale) == 0)
+                                              s_renderParams.scale) == 0)
             {
-                s_renderParams.u_scale = 1.0f;
+                s_renderParams.scale = 1.0f;
                 return;
             }
         }
@@ -602,7 +602,7 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
             struct NaomiDispList *dlstart;
             struct NaomiMesh *next;
 
-            do_some_stuff_with_mesh_colors_2(mesh);
+            build_tev_material_2(mesh);
             dlstart = (void *)(mesh->dispListStart);
             next = (void *)(mesh->dispListStart + mesh->dispListSize);
             switch (mesh->type)
@@ -815,9 +815,9 @@ static void build_tev_material(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.materialColor = color;
     }
 
-    color.r = mesh.unk28 * u_ambientColor.r * 255.0f;
-    color.g = mesh.unk28 * u_ambientColor.g * 255.0f;
-    color.b = mesh.unk28 * u_ambientColor.b * 255.0f;
+    color.r = mesh.unk28 * s_ambientColor.r * 255.0f;
+    color.g = mesh.unk28 * s_ambientColor.g * 255.0f;
+    color.b = mesh.unk28 * s_ambientColor.b * 255.0f;
     color.a = s_naomiMaterialCache.materialColor.a;
     if (s_naomiMaterialCache.ambientColor.r != color.r || s_naomiMaterialCache.ambientColor.g != color.g ||
         s_naomiMaterialCache.ambientColor.b != color.b || s_naomiMaterialCache.ambientColor.a != color.a)
@@ -1164,7 +1164,7 @@ static void prep_some_stuff_before_drawing_2(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
+void build_tev_material_2(struct NaomiMesh *pmesh)
 {
     struct NaomiMesh mesh = *pmesh;
     GXColor color;
@@ -1277,9 +1277,9 @@ void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.materialColor = color;
     }
 
-    color.r = mesh.unk28 * u_ambientColor.r * 255.0f;
-    color.g = mesh.unk28 * u_ambientColor.g * 255.0f;
-    color.b = mesh.unk28 * u_ambientColor.b * 255.0f;
+    color.r = mesh.unk28 * s_ambientColor.r * 255.0f;
+    color.g = mesh.unk28 * s_ambientColor.g * 255.0f;
+    color.b = mesh.unk28 * s_ambientColor.b * 255.0f;
     color.a = s_naomiMaterialCache.materialColor.a;
     if (s_naomiMaterialCache.ambientColor.r != color.r || s_naomiMaterialCache.ambientColor.g != color.g ||
         s_naomiMaterialCache.ambientColor.b != color.b || s_naomiMaterialCache.ambientColor.a != color.a)
@@ -1454,9 +1454,9 @@ void nl2ngc_set_light_mask(u32 lightMask)
 
 void nl2ngc_set_ambient(float r, float g, float b)
 {
-    u_ambientColor.r = r;
-    u_ambientColor.g = g;
-    u_ambientColor.b = b;
+    s_ambientColor.r = r;
+    s_ambientColor.g = g;
+    s_ambientColor.b = b;
 }
 
 void func_80033B50(int a)
@@ -1478,7 +1478,7 @@ void u_nl2ngc_set_some_other_color(int r, int g, int b)
     s_fogColor.b = b;
 }
 
-void u_draw_opaque_model(struct NaomiModel *model)
+void u_draw_model_opaque_meshes(struct NaomiModel *model)
 {
     struct NaomiMesh *mesh;
 
@@ -1538,9 +1538,9 @@ static void lbl_80033C8C(struct DrawModelDeferredNode *a)
     f30 = s_renderParams.materialColor.g;
     f29 = s_renderParams.materialColor.b;
 
-    s_renderParams.materialColor.r = a->materialColoir.r;
-    s_renderParams.materialColor.g = a->materialColoir.g;
-    s_renderParams.materialColor.b = a->materialColoir.b;
+    s_renderParams.materialColor.r = a->materialColor.r;
+    s_renderParams.materialColor.g = a->materialColor.g;
+    s_renderParams.materialColor.b = a->materialColor.b;
     if (!(a->model->flags & (1 << 10)))
     {
         load_light_group_cached(a->lightGroup);
@@ -1608,22 +1608,22 @@ void lbl_80033E6C(struct UnkStruct19 *a)
 {
     float f31, f30, f29;
 
-    mathutil_mtxA_from_mtx(a->unkC);
+    mathutil_mtxA_from_mtx(a->viewFromModel);
 
     f31 = s_renderParams.materialColor.r;
     f30 = s_renderParams.materialColor.g;
     f29 = s_renderParams.materialColor.b;
 
-    s_renderParams.materialColor.r = a->unk3C.r;
-    s_renderParams.materialColor.g = a->unk3C.g;
-    s_renderParams.materialColor.b = a->unk3C.b;
+    s_renderParams.materialColor.r = a->materialColor.r;
+    s_renderParams.materialColor.g = a->materialColor.g;
+    s_renderParams.materialColor.b = a->materialColor.b;
     s_naomiMaterialCache.alpha = a->alpha;
     if (!(a->model->flags & (1 << 10)))
     {
-        load_light_group_cached(a->unk4C);
-        nl2ngc_set_ambient(a->ambColor.r, a->ambColor.g, a->ambColor.b);
+        load_light_group_cached(a->lightGroup);
+        nl2ngc_set_ambient(a->ambientColor.r, a->ambientColor.g, a->ambientColor.b);
     }
-    s_fogEnabled = a->unk5C;
+    s_fogEnabled = a->fogEnabled;
     u_draw_naomi_model_5(a->model);
 
     s_renderParams.materialColor.r = f31;
@@ -1660,7 +1660,7 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
         struct NaomiDispList *dlstart;
         struct NaomiMesh *next;
 
-        do_some_stuff_with_mesh_colors_2(mesh);
+        build_tev_material_2(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
         dlstart = (void *)(mesh->dispListStart);
         switch (mesh->type)
@@ -1685,8 +1685,8 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
 
     if (model->unk0 != -1)
     {
-        s_renderParams.u_scaleCopy = s_renderParams.u_scale;
-        if (s_renderParams.u_scale == 1.0f)
+        s_renderParams.prevScale = s_renderParams.scale;
+        if (s_renderParams.scale == 1.0f)
         {
             if (test_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius) == 0)
                 return;
@@ -1694,9 +1694,9 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         else
         {
             if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius,
-                                              s_renderParams.u_scaleCopy) == 0)
+                                              s_renderParams.prevScale) == 0)
             {
-                s_renderParams.u_scale = 1.0f;
+                s_renderParams.scale = 1.0f;
                 return;
             }
         }

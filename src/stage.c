@@ -2078,7 +2078,7 @@ void stage_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
-        u_nl2ngc_set_scale(10.0f);
+        nl2ngc_set_scale(10.0f);
         u_call_draw_naomi_model_and_do_other_stuff(
             NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
     }
@@ -2333,7 +2333,7 @@ void stage_draw(void)
                 mathutil_mtxA_scale(&r25->unkC);
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
-                u_nl2ngc_set_scale(f1);
+                nl2ngc_set_scale(f1);
                 u_call_draw_model_with_alpha_deferred(
                     NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_CUBE_B), 0.5f);
             }

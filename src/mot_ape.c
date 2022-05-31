@@ -1749,7 +1749,7 @@ void func_8008CAAC(struct Ape *ape, float b)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&ape->unk30);
     mathutil_mtxA_scale_xyz(ape->modelScale, ape->modelScale, ape->modelScale);
-    u_nl2ngc_set_scale(ape->modelScale);
+    nl2ngc_set_scale(ape->modelScale);
     mathutil_mtxA_translate(&ape->unk3C);
     mathutil_mtxA_mult_right(lbl_802B39C0);
     sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];

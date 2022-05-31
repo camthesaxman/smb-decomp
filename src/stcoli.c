@@ -1946,7 +1946,7 @@ void u_draw_stage_collision(void)
             mathutil_mtxA_scale(&cone->scale);
             scale = MAX(cone->scale.x, cone->scale.y);
             scale = MAX(scale, cone->scale.z);
-            u_nl2ngc_set_scale(scale);
+            nl2ngc_set_scale(scale);
             u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CONE));
         }
 
@@ -1956,7 +1956,7 @@ void u_draw_stage_collision(void)
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
             mathutil_mtxA_translate(&sphere->pos);
             mathutil_mtxA_scale_xyz(sphere->radius, sphere->radius, sphere->radius);
-            u_nl2ngc_set_scale(sphere->radius);
+            nl2ngc_set_scale(sphere->radius);
             u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_SPHERE));
         }
 
@@ -1969,7 +1969,7 @@ void u_draw_stage_collision(void)
             mathutil_mtxA_rotate_y(cylinder->rot.y);
             mathutil_mtxA_rotate_x(cylinder->rot.x);
             mathutil_mtxA_scale_xyz(cylinder->radius, cylinder->height, cylinder->radius);
-            u_nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
+            nl2ngc_set_scale(MAX(cylinder->radius, cylinder->height));
             u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_COLI_CYLIN));
         }
     }
@@ -2057,7 +2057,7 @@ void draw_collision_triangle(struct StageColiTri *tri)
     f1 = mathutil_sum_of_sq_2(tri->vert3.x, tri->vert3.y);
     if (f0 > f1)
         f1 = f0;
-    u_nl2ngc_set_scale(f1);
+    nl2ngc_set_scale(f1);
     u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TRIANGLE_XY));
 }
 

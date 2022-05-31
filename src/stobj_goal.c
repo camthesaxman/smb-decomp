@@ -34,7 +34,7 @@ struct GoalTape_sub
 
 struct GoalTape
 {
-    u32 unk0;
+    u32 u_flags;
     float unk4;
     float unk8;
     float unkC;
@@ -47,7 +47,7 @@ struct GoalTape goalTapes[MAX_GOALS];
 
 struct GoalBag  // The "party ball", known as a "goal bag" internally
 {
-    u32 unk0;
+    u32 u_flags;
     /*0x04*/ float openness;
     float unk8;
     /*0x0C*/ struct Stobj *stobj;
@@ -128,7 +128,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
-            tape->unk0 = 0;
+            tape->u_flags = 0;
             stobj.extraData = tape;
             spawn_stobj(&stobj);
             totalGoals++;
@@ -168,7 +168,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->goal = *goal;
             stobj.extraData = bag;
             spawn_stobj(&stobj);
@@ -861,7 +861,7 @@ void stobj_goalbag_main(struct Stobj *stobj)
         if (bag->openness < 0.0)
         {
             bag->openness = 0.0f;
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->unk24 = -1;
             if (stobj->counter < 0)
             {
@@ -1132,7 +1132,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     stobj->u_local_vel.y += temp_f0 * stobj->u_local_pos.y;
     stobj->u_local_vel.z += temp_f0 * stobj->u_local_pos.z;
     bag = stobj->extraData;
-    if (bag->unk0 != 0)
+    if (bag->u_flags != 0)
     {
         temp_f0 = -2.0 * mathutil_vec_dot_prod(&stobj->u_local_pos, &spEC);
         if (temp_f0 < 0.0)
@@ -1262,7 +1262,7 @@ void u_break_goal_tape(int goalId, struct PhysicsBall *arg1)
     if (goalId < 8)
     {
         tape = &goalTapes[goalId];
-        if (tape->unk0 == 0)
+        if (tape->u_flags == 0)
         {
             stobj = tape->unk14;
             mathutil_mtxA_from_identity();
@@ -1301,7 +1301,7 @@ void u_break_goal_tape(int goalId, struct PhysicsBall *arg1)
                 var_r29[1].unk1C.y += sp10.y;
                 var_r29[1].unk1C.z += sp10.z;
                 stobj->state = 1;
-                tape->unk0 = 1;
+                tape->u_flags = 1;
             }
         }
     }
@@ -1319,9 +1319,9 @@ void func_8006F5F0(int arg0)
     tape = goalTapes;
     for (i = ARRAY_COUNT(goalTapes); i > 0; i--, tape++)
     {
-        if (tape->unk10 <= arg0 && tape->unk0 != 0)
+        if (tape->unk10 <= arg0 && tape->u_flags != 0)
         {
-            tape->unk0 = 0;
+            tape->u_flags = 0;
             var_r26 = tape->unk18;
             for (j = 8; j > 0; j--, var_r26++)
             {
@@ -1356,9 +1356,9 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
     {
         bag = &goalBags[goalId];
         stobj = bag->stobj;
-        if (bag->unk0 == 0)
+        if (bag->u_flags == 0)
         {
-            bag->unk0 = 1;
+            bag->u_flags = 1;
             stobj->state = 2;
             stobj->boundSphereRadius = 0.5 * stobj->model->boundSphereRadius;
             stobj->u_model_origin = stobj->model->boundSphereCenter;
@@ -1439,9 +1439,9 @@ static void func_8006FB20(int arg0)
     bag = goalBags;
     for (i = ARRAY_COUNT(goalBags); i > 0; i--, bag++)
     {
-        if (bag->unk24 <= arg0 && bag->unk0 != 0)
+        if (bag->unk24 <= arg0 && bag->u_flags != 0)
         {
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->openness = 0.0f;
             bag->unk8 = 0.0f;
             stobj = bag->stobj;
@@ -1475,7 +1475,7 @@ static void func_8006FD44(struct GoalTape *tape)
     float y;
     u8 unused[8];
 
-    tape->unk0 = 0;
+    tape->u_flags = 0;
     tape->unk10 = -1;
     y = tape->unk8;
     var_r29 = tape->unk18;

@@ -435,7 +435,7 @@ lbl_000006B4:
 /* 000006B4 FC20F890 */ fmr f1, f31
 /* 000006B8 4BFFFAAD */ bl mathutil_mtxA_scale_s
 /* 000006BC FC20F890 */ fmr f1, f31
-/* 000006C0 4BFFFAA5 */ bl u_nl2ngc_set_scale
+/* 000006C0 4BFFFAA5 */ bl nl2ngc_set_scale
 /* 000006C4 FC20F090 */ fmr f1, f30
 /* 000006C8 FC40F090 */ fmr f2, f30
 /* 000006CC FC60F090 */ fmr f3, f30
@@ -898,7 +898,7 @@ lbl_00000D04:
 /* 00000DAC FC20F890 */ fmr f1, f31
 /* 00000DB0 4BFFF3B5 */ bl mathutil_mtxA_scale_s
 /* 00000DB4 FC20F890 */ fmr f1, f31
-/* 00000DB8 4BFFF3AD */ bl u_nl2ngc_set_scale
+/* 00000DB8 4BFFF3AD */ bl nl2ngc_set_scale
 /* 00000DBC 3C600000 */ lis r3, naomiCommonObj@ha
 /* 00000DC0 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000DC4 80630000 */ lwz r3, 0(r3)
@@ -964,7 +964,7 @@ lbl_00000DD0:
 /* 00000EB0 FC20F890 */ fmr f1, f31
 /* 00000EB4 4BFFF2B1 */ bl mathutil_mtxA_scale_s
 /* 00000EB8 FC20F890 */ fmr f1, f31
-/* 00000EBC 4BFFF2A9 */ bl u_nl2ngc_set_scale
+/* 00000EBC 4BFFF2A9 */ bl nl2ngc_set_scale
 /* 00000EC0 3C600000 */ lis r3, naomiCommonObj@ha
 /* 00000EC4 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000EC8 80630000 */ lwz r3, 0(r3)
@@ -1026,7 +1026,7 @@ lbl_00000ED4:
 /* 00000FA4 FC20F890 */ fmr f1, f31
 /* 00000FA8 4BFFF1BD */ bl mathutil_mtxA_scale_s
 /* 00000FAC FC20F890 */ fmr f1, f31
-/* 00000FB0 4BFFF1B5 */ bl u_nl2ngc_set_scale
+/* 00000FB0 4BFFF1B5 */ bl nl2ngc_set_scale
 /* 00000FB4 3C600000 */ lis r3, naomiCommonObj@ha
 /* 00000FB8 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00000FBC 80630000 */ lwz r3, 0(r3)
@@ -10532,7 +10532,7 @@ lbl_00009ED0:
 /* 00009F28 C07F0020 */ lfs f3, 0x20(r31)
 /* 00009F2C 4BFF6239 */ bl nl2ngc_set_material_color
 /* 00009F30 C03F0024 */ lfs f1, 0x24(r31)
-/* 00009F34 4BFF6231 */ bl u_nl2ngc_set_scale
+/* 00009F34 4BFF6231 */ bl nl2ngc_set_scale
 /* 00009F38 3C600000 */ lis r3, naomiCommonObj@ha
 /* 00009F3C 38630000 */ addi r3, r3, naomiCommonObj@l
 /* 00009F40 80630000 */ lwz r3, 0(r3)
@@ -15771,7 +15771,7 @@ lbl_0000EA74:
 /* 0000EBA4 C0610010 */ lfs f3, 0x10(r1)
 /* 0000EBA8 4BFF15BD */ bl nl2ngc_set_material_color
 /* 0000EBAC FC20F890 */ fmr f1, f31
-/* 0000EBB0 4BFF15B5 */ bl u_nl2ngc_set_scale
+/* 0000EBB0 4BFF15B5 */ bl nl2ngc_set_scale
 /* 0000EBB4 7F43D378 */ mr r3, r26
 /* 0000EBB8 C03F009C */ lfs f1, 0x9c(r31)
 /* 0000EBBC 4BFF15A9 */ bl nl2ngc_draw_model_alpha_unsorted

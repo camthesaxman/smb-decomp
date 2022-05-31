@@ -767,7 +767,7 @@ lbl_80084B1C:
 /* 80084D64 00080C84  FC 60 D8 90 */	fmr f3, f27
 /* 80084D68 00080C88  4B F8 30 71 */	bl mathutil_mtxA_scale_xyz
 /* 80084D6C 00080C8C  FC 20 D8 90 */	fmr f1, f27
-/* 80084D70 00080C90  4B FA BE 39 */	bl u_nl2ngc_set_scale
+/* 80084D70 00080C90  4B FA BE 39 */	bl nl2ngc_set_scale
 /* 80084D74 00080C94  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80084D78 00080C98  80 63 00 38 */	lwz r3, 0x38(r3)
 /* 80084D7C 00080C9C  4B FA ED 79 */	bl u_dupe_of_call_draw_naomi_model_1
@@ -794,7 +794,7 @@ lbl_80084B1C:
 /* 80084DD0 00080CF0  FC 60 D8 90 */	fmr f3, f27
 /* 80084DD4 00080CF4  4B F8 30 05 */	bl mathutil_mtxA_scale_xyz
 /* 80084DD8 00080CF8  FC 20 D8 90 */	fmr f1, f27
-/* 80084DDC 00080CFC  4B FA BD CD */	bl u_nl2ngc_set_scale
+/* 80084DDC 00080CFC  4B FA BD CD */	bl nl2ngc_set_scale
 /* 80084DE0 00080D00  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80084DE4 00080D04  80 63 00 34 */	lwz r3, 0x34(r3)
 /* 80084DE8 00080D08  4B FA ED 0D */	bl u_dupe_of_call_draw_naomi_model_1
@@ -1102,7 +1102,7 @@ lbl_8008514C:
 /* 80085294 000811B4  FC 00 06 F2 */	fmul f0, f0, f27
 /* 80085298 000811B8  FC 20 07 F2 */	fmul f1, f0, f31
 /* 8008529C 000811BC  FC 20 08 18 */	frsp f1, f1
-/* 800852A0 000811C0  4B FA B9 09 */	bl u_nl2ngc_set_scale
+/* 800852A0 000811C0  4B FA B9 09 */	bl nl2ngc_set_scale
 /* 800852A4 000811C4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 800852A8 000811C8  80 63 00 1C */	lwz r3, 0x1c(r3)
 /* 800852AC 000811CC  4B FA BF 65 */	bl u_nl2ngc_draw_model_sort_translucent
@@ -1223,7 +1223,7 @@ lbl_800853E4:
 /* 80085464 00081384  EC 00 06 F2 */	fmuls f0, f0, f27
 /* 80085468 00081388  FC 21 00 32 */	fmul f1, f1, f0
 /* 8008546C 0008138C  FC 20 08 18 */	frsp f1, f1
-/* 80085470 00081390  4B FA B7 39 */	bl u_nl2ngc_set_scale
+/* 80085470 00081390  4B FA B7 39 */	bl nl2ngc_set_scale
 /* 80085474 00081394  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80085478 00081398  80 63 00 30 */	lwz r3, 0x30(r3)
 /* 8008547C 0008139C  4B FA C2 E9 */	bl u_nl2ngc_draw_model_sort_translucent_alt

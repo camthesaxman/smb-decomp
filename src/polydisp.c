@@ -403,7 +403,7 @@ void u_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_translate(&sp48);
     mathutil_mtxA_rotate_x(3328.0 + 32768.0 * (1.0 - advTutorialInfo.transitionValue));
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
-    u_nl2ngc_set_scale(baseScale);
+    nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[lever_analogue_base].model);
@@ -444,7 +444,7 @@ void u_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(CLAMP(stickXRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_rotate_z(CLAMP(stickZRot * 2, -0x1000, 0x1000));
     mathutil_mtxA_scale_s(0.99f);
-    u_nl2ngc_set_scale(0.99f);
+    nl2ngc_set_scale(0.99f);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_set_alpha(advTutorialInfo.transitionValue * 0.5);
@@ -456,7 +456,7 @@ void u_draw_tutorial_button_and_joystick(void)
     mathutil_mtxA_rotate_x(3328.0f + (-32768.0f * advTutorialInfo.transitionValue));
     mathutil_mtxA_translate_xyz(0.0f, 0.00058f, 0.0f);
     mathutil_mtxA_scale_xyz(baseScale, baseScale, baseScale);
-    u_nl2ngc_set_scale(baseScale);
+    nl2ngc_set_scale(baseScale);
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
     avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[button_base].model);
@@ -465,7 +465,7 @@ void u_draw_tutorial_button_and_joystick(void)
     if (advTutorialInfo.state == 2)
     {
         mathutil_mtxA_scale_xyz(1.0f, 0.25f, 1.0f);
-        u_nl2ngc_set_scale(1.0f);
+        nl2ngc_set_scale(1.0f);
     }
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
@@ -758,14 +758,14 @@ void draw_continue_scene(void)
         f26 = 0.9f;
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
-        u_nl2ngc_set_scale(MAX(f26, f27));
+        nl2ngc_set_scale(MAX(f26, f27));
         u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
         nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-        u_nl2ngc_set_scale(0.25f);
+        nl2ngc_set_scale(0.25f);
         u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
     }
     else
@@ -808,7 +808,7 @@ void draw_continue_scene(void)
             sp2C[2][3] = sp14.z;
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
-            u_nl2ngc_set_scale(4.6f);
+            nl2ngc_set_scale(4.6f);
             u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
@@ -818,7 +818,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_rotate_y(mathutil_atan2(sp8.x, sp8.z) - 32768);
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
-            u_nl2ngc_set_scale(0.25f);
+            nl2ngc_set_scale(0.25f);
             u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
         }
     }

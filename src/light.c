@@ -810,7 +810,7 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        u_nl2ngc_set_scale(r31->refDist * 2.0);
+        nl2ngc_set_scale(r31->refDist * 2.0);
         nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
@@ -835,7 +835,7 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        u_nl2ngc_set_scale(r31->refDist * 2.0);
+        nl2ngc_set_scale(r31->refDist * 2.0);
         nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);

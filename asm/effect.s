@@ -2657,7 +2657,7 @@ func_8004F17C:
 /* 8004F1B8 0004B0D8  FC 40 08 90 */	fmr f2, f1
 /* 8004F1BC 0004B0DC  4B FB 8C 1D */	bl mathutil_mtxA_scale_xyz
 /* 8004F1C0 0004B0E0  C0 3F 00 2C */	lfs f1, 0x2c(r31)
-/* 8004F1C4 0004B0E4  4B FE 19 E5 */	bl u_nl2ngc_set_scale
+/* 8004F1C4 0004B0E4  4B FE 19 E5 */	bl nl2ngc_set_scale
 /* 8004F1C8 0004B0E8  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 8004F1CC 0004B0EC  C0 3F 00 A8 */	lfs f1, 0xa8(r31)
 /* 8004F1D0 0004B0F0  4B FE 49 45 */	bl u_call_draw_model_with_alpha_deferred
@@ -2880,7 +2880,7 @@ lbl_8004F4E8:
 /* 8004F4F0 0004B410  FC 60 F8 90 */	fmr f3, f31
 /* 8004F4F4 0004B414  4B FB 88 E5 */	bl mathutil_mtxA_scale_xyz
 /* 8004F4F8 0004B418  FC 20 F8 90 */	fmr f1, f31
-/* 8004F4FC 0004B41C  4B FE 16 AD */	bl u_nl2ngc_set_scale
+/* 8004F4FC 0004B41C  4B FE 16 AD */	bl nl2ngc_set_scale
 /* 8004F500 0004B420  80 1F 00 0C */	lwz r0, 0xc(r31)
 /* 8004F504 0004B424  2C 00 00 38 */	cmpwi r0, 0x38
 /* 8004F508 0004B428  40 80 00 14 */	bge lbl_8004F51C
@@ -3041,7 +3041,7 @@ func_8004F648:
 /* 8004F744 0004B664  FC 60 F8 90 */	fmr f3, f31
 /* 8004F748 0004B668  4B FB 86 91 */	bl mathutil_mtxA_scale_xyz
 /* 8004F74C 0004B66C  FC 20 F8 90 */	fmr f1, f31
-/* 8004F750 0004B670  4B FE 14 59 */	bl u_nl2ngc_set_scale
+/* 8004F750 0004B670  4B FE 14 59 */	bl nl2ngc_set_scale
 /* 8004F754 0004B674  C0 3E 00 18 */	lfs f1, 0x18(r30)
 /* 8004F758 0004B678  C0 5E 00 1C */	lfs f2, 0x1c(r30)
 /* 8004F75C 0004B67C  C0 7E 00 20 */	lfs f3, 0x20(r30)
@@ -3366,7 +3366,7 @@ func_8004FB24:
 /* 8004FC28 0004BB48  FC 60 F8 90 */	fmr f3, f31
 /* 8004FC2C 0004BB4C  4B FB 81 AD */	bl mathutil_mtxA_scale_xyz
 /* 8004FC30 0004BB50  FC 20 F8 90 */	fmr f1, f31
-/* 8004FC34 0004BB54  4B FE 0F 75 */	bl u_nl2ngc_set_scale
+/* 8004FC34 0004BB54  4B FE 0F 75 */	bl nl2ngc_set_scale
 /* 8004FC38 0004BB58  C8 22 92 68 */	lfd f1, lbl_802F3A68@sda21(r2)
 /* 8004FC3C 0004BB5C  C0 1E 00 A8 */	lfs f0, 0xa8(r30)
 /* 8004FC40 0004BB60  FC 21 00 32 */	fmul f1, f1, f0
@@ -3501,7 +3501,7 @@ func_8004FDCC:
 /* 8004FE1C 0004BD3C  FC 60 F8 90 */	fmr f3, f31
 /* 8004FE20 0004BD40  4B FB 7F B9 */	bl mathutil_mtxA_scale_xyz
 /* 8004FE24 0004BD44  FC 20 F8 90 */	fmr f1, f31
-/* 8004FE28 0004BD48  4B FE 0D 81 */	bl u_nl2ngc_set_scale
+/* 8004FE28 0004BD48  4B FE 0D 81 */	bl nl2ngc_set_scale
 /* 8004FE2C 0004BD4C  38 61 00 0C */	addi r3, r1, 0xc
 /* 8004FE30 0004BD50  38 83 00 04 */	addi r4, r3, 4
 /* 8004FE34 0004BD54  38 63 00 08 */	addi r3, r3, 8
@@ -4066,7 +4066,7 @@ lbl_80050668:
 /* 80050698 0004C5B8  FC 60 08 90 */	fmr f3, f1
 /* 8005069C 0004C5BC  4B FB 77 3D */	bl mathutil_mtxA_scale_xyz
 /* 800506A0 0004C5C0  C0 3F 00 24 */	lfs f1, 0x24(r31)
-/* 800506A4 0004C5C4  4B FE 05 05 */	bl u_nl2ngc_set_scale
+/* 800506A4 0004C5C4  4B FE 05 05 */	bl nl2ngc_set_scale
 /* 800506A8 0004C5C8  3C 60 80 1F */	lis r3, s_bgLightInfo@ha
 /* 800506AC 0004C5CC  38 63 06 14 */	addi r3, r3, s_bgLightInfo@l
 /* 800506B0 0004C5D0  C0 23 00 14 */	lfs f1, 0x14(r3)
@@ -4180,7 +4180,7 @@ func_80050788:
 /* 80050838 0004C758  FC 60 F8 90 */	fmr f3, f31
 /* 8005083C 0004C75C  4B FB 75 9D */	bl mathutil_mtxA_scale_xyz
 /* 80050840 0004C760  FC 20 F8 90 */	fmr f1, f31
-/* 80050844 0004C764  4B FE 03 65 */	bl u_nl2ngc_set_scale
+/* 80050844 0004C764  4B FE 03 65 */	bl nl2ngc_set_scale
 /* 80050848 0004C768  C0 22 90 E8 */	lfs f1, lbl_802F38E8@sda21(r2)
 /* 8005084C 0004C76C  FC 40 08 90 */	fmr f2, f1
 /* 80050850 0004C770  FC 60 08 90 */	fmr f3, f1
@@ -4487,7 +4487,7 @@ func_80050C38:
 /* 80050CCC 0004CBEC  FC 60 F8 90 */	fmr f3, f31
 /* 80050CD0 0004CBF0  4B FB 71 09 */	bl mathutil_mtxA_scale_xyz
 /* 80050CD4 0004CBF4  FC 20 F8 90 */	fmr f1, f31
-/* 80050CD8 0004CBF8  4B FD FE D1 */	bl u_nl2ngc_set_scale
+/* 80050CD8 0004CBF8  4B FD FE D1 */	bl nl2ngc_set_scale
 /* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
 /* 80050CE0 0004CC00  80 63 00 08 */	lwz r3, 8(r3)
 /* 80050CE4 0004CC04  4B FE 2D F1 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -4523,7 +4523,7 @@ func_80050C38:
 /* 80050D5C 0004CC7C  FC 60 F8 90 */	fmr f3, f31
 /* 80050D60 0004CC80  4B FB 70 79 */	bl mathutil_mtxA_scale_xyz
 /* 80050D64 0004CC84  FC 20 F8 90 */	fmr f1, f31
-/* 80050D68 0004CC88  4B FD FE 41 */	bl u_nl2ngc_set_scale
+/* 80050D68 0004CC88  4B FD FE 41 */	bl nl2ngc_set_scale
 /* 80050D6C 0004CC8C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
 /* 80050D70 0004CC90  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 80050D74 0004CC94  4B FE 2D 61 */	bl u_call_draw_naomi_model_and_do_other_stuff
@@ -4643,7 +4643,7 @@ func_80050ED4:
 /* 80050F10 0004CE30  FC 60 F8 90 */	fmr f3, f31
 /* 80050F14 0004CE34  4B FB 6E C5 */	bl mathutil_mtxA_scale_xyz
 /* 80050F18 0004CE38  FC 20 F8 90 */	fmr f1, f31
-/* 80050F1C 0004CE3C  4B FD FC 8D */	bl u_nl2ngc_set_scale
+/* 80050F1C 0004CE3C  4B FD FC 8D */	bl nl2ngc_set_scale
 /* 80050F20 0004CE40  38 61 00 0C */	addi r3, r1, 0xc
 /* 80050F24 0004CE44  38 83 00 04 */	addi r4, r3, 4
 /* 80050F28 0004CE48  38 63 00 08 */	addi r3, r3, 8
@@ -7235,7 +7235,7 @@ lbl_8005359C:
 /* 800535B8 0004F4D8  FC 60 F8 90 */	fmr f3, f31
 /* 800535BC 0004F4DC  4B FB 48 1D */	bl mathutil_mtxA_scale_xyz
 /* 800535C0 0004F4E0  FC 20 F8 90 */	fmr f1, f31
-/* 800535C4 0004F4E4  4B FD D5 E5 */	bl u_nl2ngc_set_scale
+/* 800535C4 0004F4E4  4B FD D5 E5 */	bl nl2ngc_set_scale
 /* 800535C8 0004F4E8  38 61 00 0C */	addi r3, r1, 0xc
 /* 800535CC 0004F4EC  38 83 00 04 */	addi r4, r3, 4
 /* 800535D0 0004F4F0  38 63 00 08 */	addi r3, r3, 8
