@@ -195,9 +195,9 @@ void view_draw(void)
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(1);
     view_apply_camera(camera);
-    g_draw_ball_shadow();
+    u_draw_ball_shadow();
     func_80054FF0();
-    g_reset_light_group_stack(0);
+    u_reset_light_group_stack(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
         func_80095398(4);
     view_apply_camera(camera);
@@ -255,12 +255,12 @@ void view_info_sprite_draw(struct Sprite *sprite)
     set_text_mul_color(RGBA(0, 0, 0, 0));
     set_text_add_color(RGBA(0, 0, 0, 0));
     set_text_pos(sprite->x + 2.0, sprite->y + 2.0);
-    g_draw_text(sprite->text);
+    u_draw_text(sprite->text);
     func_80071B1C(sprite->unk4C);
     set_text_mul_color(RGBA(sprite->mulR, sprite->mulG, sprite->mulB, 0));
     set_text_add_color(RGBA(sprite->addR, sprite->addG, sprite->addB, 0));
     set_text_pos(sprite->x, sprite->y);
-    g_draw_text(sprite->text);
+    u_draw_text(sprite->text);
 }
 
 void view_create_text_sprites(void)
@@ -318,7 +318,7 @@ void view_init_stage_anim(void)
     struct StageAnimGroup *r30;
     int i;
 
-    stageViewInfo->unk40 = lbl_80206DEC.g_stageTimer;
+    stageViewInfo->unk40 = lbl_80206DEC.u_stageTimer;
     animGroup = animGroups;
     r30 = decodedStageLzPtr->animGroups;
     for (i = 0; i < 72; i++, animGroup++, r30++)
@@ -356,7 +356,7 @@ void view_animate_stage(void)
     struct StageAnimGroup *r30;
     int i;
 
-    lbl_80206DEC.g_stageTimer = stageViewInfo->frameCounter;
+    lbl_80206DEC.u_stageTimer = stageViewInfo->frameCounter;
     t = stageViewInfo->frameCounter / 60.0;
     t += decodedStageLzPtr->loopStartSeconds;
     f3 = (float)(decodedStageLzPtr->loopEndSeconds - decodedStageLzPtr->loopStartSeconds);
@@ -430,7 +430,7 @@ void view_animate_stage(void)
         while (dyn->modelName != NULL)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
-            g_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
+            u_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
             dyn++;
         }
     }
@@ -438,7 +438,7 @@ void view_animate_stage(void)
 
 void func_800A66CC(void)
 {
-    lbl_80206DEC.g_stageTimer = stageViewInfo->unk40;
+    lbl_80206DEC.u_stageTimer = stageViewInfo->unk40;
 }
 
 void func_800A66E4(void)
@@ -483,7 +483,7 @@ void draw_items(void)
                 mathutil_mtxA_sq_from_identity();
                 mathutil_mtxA_rotate_y(stageViewInfo->frameCounter * sp10[r24->type]);
                 mathutil_mtxA_mult_left(mathutilData->mtxB);
-                g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+                u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 avdisp_draw_model_culled_sort_translucent(models[r24->type]);
             }
         }
@@ -529,7 +529,7 @@ void draw_banana_shadows(void)
                     mathutil_mtxA_from_quat(&sp50);
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);
-                    g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+                    u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                     avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].modelOffset);
                 }
             }
@@ -552,7 +552,7 @@ void draw_stage_geometry(void)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
-    g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
     func_8000E3BC();
     if (decodedStageGmaPtr != NULL)
     {
@@ -563,7 +563,7 @@ void draw_stage_geometry(void)
             mathutil_mtxA_from_mtxB();
             if (i > 0)
                 mathutil_mtxA_mult_right(animGrp->transform);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             r26 = r29->unk0;
             for (j = 0; j < r29->unk4; j++, r26++)
             {
@@ -587,7 +587,7 @@ void draw_stage_geometry(void)
         dyn = dynamicStageParts;
         while (dyn->modelName != NULL)
         {
-            g_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+            u_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
             dyn++;
         }
     }
@@ -651,28 +651,28 @@ void draw_stage_objects(void)
             }
             if (goalModel != NULL)
             {
-                g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+                u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 avdisp_draw_model_culled_sort_translucent(goalModel);
             }
             nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[32].modelOffset);
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
             mathutil_mtxA_translate_xyz(-0.45f, 0.0f, 0.0f);
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
             mathutil_mtxA_pop();
 
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            g_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
         }
     }
 
@@ -694,7 +694,7 @@ void draw_stage_objects(void)
             mathutil_mtxA_rotate_y(bumper->rotY);
             mathutil_mtxA_rotate_x(bumper->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14);
         }
     }
@@ -725,7 +725,7 @@ void draw_stage_objects(void)
             if (f0 >= 1.0)
                 f0 = 2.0 - f0;
             mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * -f0);
-            g_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
             avdisp_draw_model_culled_sort_translucent(lbl_802F1FFC);
             totalJamas++;
         }

@@ -102,18 +102,18 @@ int should_open_pause_menu(void)
          && !(analogButtonInfo[0][0] & PAD_BUTTON_B)
          && lbl_802F1ED8 == 0
          && !(gamePauseStatus & 8)
-         && (g_unkInputArr1[2] & PAD_BUTTON_START))
+         && (u_unkInputArr1[2] & PAD_BUTTON_START))
             return TRUE;
     }
     else
     {
-        if (!(gamePauseStatus & 8) && (g_unkInputArr1[2] & PAD_BUTTON_START))
+        if (!(gamePauseStatus & 8) && (u_unkInputArr1[2] & PAD_BUTTON_START))
             return TRUE;
     }
     return FALSE;
 }
 
-void g_open_pause_menu(struct Sprite *menuSprite)
+void u_open_pause_menu(struct Sprite *menuSprite)
 {
     int i;
 
@@ -202,10 +202,10 @@ void g_open_pause_menu(struct Sprite *menuSprite)
     else
         menuSprite->userVar = 1;
     func_8002B5C8(0x70);
-    g_play_music(50, 10);
+    u_play_music(50, 10);
 }
 
-void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
+void u_handle_pause_menu_navigation(struct Sprite *menuSprite)
 {
     s8 r3 = pauseMenuState.selection;
 
@@ -254,7 +254,7 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
                 if (menuSprite != NULL)
                     menuSprite->userVar = 2;
                 screenFadeInfo.color = RGBA(255, 255, 255, 0);
-                g_play_music(59, 2);
+                u_play_music(59, 2);
             }
             break;
         }
@@ -263,12 +263,12 @@ void g_handle_pause_menu_navigation(struct Sprite *menuSprite)
             pauseMenuState.unk0 = 60;
             if (menuSprite != NULL)
                 menuSprite->userVar = 3;
-            g_play_music(60, 2);
+            u_play_music(60, 2);
         }
     }
 }
 
-void g_pause_menu_load_how_to_play(struct Sprite *menuSprite)
+void u_pause_menu_load_how_to_play(struct Sprite *menuSprite)
 {
     lbl_802F1B98 = 4;
     if (menuSprite != NULL)
@@ -289,7 +289,7 @@ void g_pause_menu_load_how_to_play(struct Sprite *menuSprite)
     gamePauseStatus |= 8;
 }
 
-void g_activate_pause_menu_item(struct Sprite *menuSprite)
+void u_activate_pause_menu_item(struct Sprite *menuSprite)
 {
     gamePauseStatus &= ~(1 << 3);
     switch (pauseMenuState.menuType)
@@ -300,12 +300,12 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
         case 0:  // "Continue"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             if (modeCtrl.gameType == GAMETYPE_MINI_BILLIARDS)
                 pauseMenuState.unk4 |= 0x20;
             break;
         case 1:  // "How to play"
-            g_pause_menu_load_how_to_play(menuSprite);
+            u_pause_menu_load_how_to_play(menuSprite);
             break;
         case 2:  // "Exit game"
             lbl_802F1B98 = 1;
@@ -319,7 +319,7 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
         case 0:  // "Continue"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             break;
         case 1:  // "View stage"
             if (pauseMenuState.unk4 & (1 << 2))
@@ -339,7 +339,7 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
             }
             break;
         case 2:  // "How to play"
-            g_pause_menu_load_how_to_play(menuSprite);
+            u_pause_menu_load_how_to_play(menuSprite);
             break;
         case 3:  // "Exit game"
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
@@ -361,13 +361,13 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
         case 0:  // "Continue"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             break;
         case 1:  // "Retry"
             infoWork.unk1E++;
             BALL_FOREACH( ball->flags |= BALL_FLAG_23; )
             gameSubmodeRequest = SMD_GAME_READY_INIT;
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             break;
         case 2:  // "View stage" or "Save replay"
             if (pauseMenuState.unk4 & (1 << 2))
@@ -387,7 +387,7 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
             }
             break;
         case 3:  // "How to play"
-            g_pause_menu_load_how_to_play(menuSprite);
+            u_pause_menu_load_how_to_play(menuSprite);
             break;
         case 4:  // "Stage select"
             modeCtrl.levelSetFlags |= 0x8000;
@@ -406,15 +406,15 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
         case 0:  // "Continue"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             break;
         case 1:  // "Retry"
             destroy_sprite_with_tag(4);
             modeCtrl.levelSetFlags |= 0x4000;
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             break;
         case 2:  // "How to play"
-            g_pause_menu_load_how_to_play(menuSprite);
+            u_pause_menu_load_how_to_play(menuSprite);
             break;
         case 3:  // "Exit game"
             lbl_802F1B98 = 1;
@@ -428,17 +428,17 @@ void g_activate_pause_menu_item(struct Sprite *menuSprite)
         case 0:  // "Continue"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             pauseMenuState.unk4 |= 0x20;
             break;
         case 1:  // "Guide"
             lbl_802F1B98 = 0;
             destroy_sprite_with_tag(4);
-            g_play_music(100, 10);
+            u_play_music(100, 10);
             pauseMenuState.unk4 |= 0x20;
             break;
         case 2:  // "How to play"
-            g_pause_menu_load_how_to_play(menuSprite);
+            u_pause_menu_load_how_to_play(menuSprite);
             break;
         case 3:  // "Exit game"
             lbl_802F1B98 = 1;
@@ -500,7 +500,7 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
     }
 }
 
-void g_menu_input_game_notdebug(void)
+void u_menu_input_game_notdebug(void)
 {
     struct Sprite *menuSprite = find_sprite_with_tag(4);
 
@@ -515,13 +515,13 @@ void g_menu_input_game_notdebug(void)
     if (lbl_802F1BA1 > 0)
         lbl_802F1BA1--;
     if (should_open_pause_menu())
-        g_open_pause_menu(menuSprite);
+        u_open_pause_menu(menuSprite);
     else
     {
         if (gamePauseStatus & (1 << 3))
         {
             if (!(pauseMenuState.unk4 & 1))
-                g_handle_pause_menu_navigation(menuSprite);
+                u_handle_pause_menu_navigation(menuSprite);
             if (pauseMenuState.itemCount >= 2
              && pauseMenuState.selection == pauseMenuState.itemCount - 1
              && pauseMenuState.unk0 == 0x28
@@ -530,7 +530,7 @@ void g_menu_input_game_notdebug(void)
             if (pauseMenuState.unk0 > 0)
             {
                 if (--pauseMenuState.unk0 == 0)
-                    g_activate_pause_menu_item(menuSprite);
+                    u_activate_pause_menu_item(menuSprite);
             }
             else
                 unkFunc8000AECC(menuSprite);
