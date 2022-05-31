@@ -13764,12 +13764,6 @@ lbl_802B9370:
 .global lbl_802B9390
 lbl_802B9390:
 	.skip 0xE00
-	
-.if 0
-.global mouse
-mouse:
-	.skip 0x10
-.endif
 
 .section .sbss
 

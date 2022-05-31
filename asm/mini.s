@@ -1473,36 +1473,6 @@ lbl_802F5840:
 	.4byte 0x43300000
 	.4byte 0
 
-.if 0
-.global lbl_802F5848
-lbl_802F5848:
-	# ROM: 0x1EF268
-	.4byte 0x3FB99999
-	.4byte 0x9999999A
-
-.global lbl_802F5850
-lbl_802F5850:
-	# ROM: 0x1EF270
-	.4byte 0x43300000
-	.4byte 0x80000000
-
-.global lbl_802F5858
-lbl_802F5858:
-	# ROM: 0x1EF278
-	.4byte 0x3C23D70A
-
-.global lbl_802F585C
-lbl_802F585C:
-	# ROM: 0x1EF27C
-	.4byte 0x3F800000
-
-.global lbl_802F5860
-lbl_802F5860:
-	# ROM: 0x1EF280
-	.4byte 0
-	.4byte 0
-.endif
-
 .section .sbss
 
 .global lbl_802F2158
