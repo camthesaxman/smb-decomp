@@ -15,17 +15,12 @@ struct Mouse {
     s16 unk08;
     s16 unk0a;
     s16 spriteIdx;
+    s16 unk0e;
 };
 
 struct Mouse mouse;
-extern s8 lbl_802F1360[8];
+extern char lbl_802F1360[8];
 extern s32 lbl_802F1EA8;
-
-extern f64 lbl_802F5848; // = 0.1
-
-extern float lbl_802F5858;// = 0.01f
-extern float lbl_802F585C;// = 1.0f
-extern float lbl_802F5860;// = 0.0f
 
 #define INVALID_SPRITE_INDEX -1;
 
@@ -83,8 +78,8 @@ void ev_mouse_main(void)
             mouse.posHorizontal += phi_r8;
         }
         
-        mouse.posHorizontal += (controllerInfo[0].unk0[0].stickX * lbl_802F5848);
-        mouse.posVertical += (-controllerInfo[0].unk0[0].stickY * lbl_802F5848);
+        mouse.posHorizontal += (controllerInfo[0].unk0[0].stickX * 0.1);
+        mouse.posVertical += (-controllerInfo[0].unk0[0].stickY * 0.1);
 
         // Horizontal Check
         if (mouse.posHorizontal < HORIZONTAL_MIN) {
@@ -161,15 +156,15 @@ void ev_mouse_update(void)
         _naomiSprite.bmpId = 0x1;
         _naomiSprite.x = mouse.posHorizontal;
         _naomiSprite.y = mouse.posVertical;
-        _naomiSprite.z = lbl_802F5858;
-        _naomiSprite.scaleX = lbl_802F585C;
-        _naomiSprite.scaleY = lbl_802F585C;
-        _naomiSprite.u1 = lbl_802F5860;
-        _naomiSprite.v1 = lbl_802F5860;
-        _naomiSprite.u2 = lbl_802F585C;
-        _naomiSprite.v2 = lbl_802F585C;
+        _naomiSprite.z = 0.01;
+        _naomiSprite.scaleX = 1.0;
+        _naomiSprite.scaleY = 1.0;
+        _naomiSprite.u1 = (f64)0.0;
+        _naomiSprite.v1 = (f64)0.0;
+        _naomiSprite.u2 = 1.0;
+        _naomiSprite.v2 = 1.0;
         _naomiSprite.rotation = 0x0;
-        _naomiSprite.opacity = lbl_802F585C;
+        _naomiSprite.opacity = 1.0;
         _naomiSprite.unk30 = -1;
         _naomiSprite.flags = 5;
         _naomiSprite.mulColor = -1;
