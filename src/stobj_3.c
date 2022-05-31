@@ -773,8 +773,8 @@ void stobj_goalbag_init(struct Stobj *stobj)
     bag->unk8 = 0.0f;
 }
 
-extern Vec lbl_80117A58;
-extern Vec lbl_80117A64;
+const Vec lbl_80117A58 = { 0.0f, 3.549999952316284f, 0.0f };
+const Vec lbl_80117A64 = { 1.0f, 0.0f, 0.0f };
 
 void stobj_goalbag_main(struct Stobj *stobj)
 {
@@ -1053,7 +1053,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
     }
 }
 
-extern Vec lbl_80117A70;
+const Vec lbl_80117A70 = { 0.0f, 0.0f, -1.0f };
 
 void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 {

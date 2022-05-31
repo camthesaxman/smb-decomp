@@ -145,7 +145,6 @@ SOURCES := \
 	src/stobj_2.c \
 	src/stobj.c \
 	src/stobj_3.c \
-	asm/stobj.s \
 	src/sprite.c \
 	src/textbox.c \
 	src/hud.c \

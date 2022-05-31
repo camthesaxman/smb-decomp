@@ -16,7 +16,8 @@
 
 struct Stobj stobjInfo[128];
 
-extern s16 lbl_802F1FF8;
+static s16 lbl_802F1FF8;
+struct GMAModel *jamabarModel;
 
 void ev_stobj_init(void)
 {
