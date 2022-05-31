@@ -7,12 +7,13 @@
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "obj_collision.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 
-void func_8006AD3C(Vec *, Vec *, Vec *, float, float);
-extern u32 func_8006AAEC(Point3d *, Point3d *, Point3d *, Point3d *, float,  float);
-void do_object_collision(void);
+static void do_object_collision(void);
+static void func_8006AD3C(Vec *, Vec *, Vec *, float, float);
 
 void ev_obj_collision_init(void) {}
 
@@ -24,7 +25,7 @@ void ev_obj_collision_main(void)
 
 void ev_obj_collision_dest(void) {}
 
-void do_object_collision(void)
+static void do_object_collision(void)
 {
     Vec sp70;
     struct Ball *ballBackup = currentBallStructPtr;
@@ -201,7 +202,7 @@ u32 func_8006AAEC(Point3d *arg0, Point3d *arg1, Point3d *arg2, Point3d *arg3, fl
 }
 
 #ifdef NONMATCHING
-void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
+static void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
 {
     float temp_f4 = arg3 * arg4;
 
@@ -254,7 +255,7 @@ void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, floa
     #undef z2
 }
 #else
-asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
+static asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
 {
     nofralloc
 #include "../asm/nonmatchings/func_8006AD3C.s"

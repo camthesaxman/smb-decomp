@@ -9,22 +9,54 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "obj_collision.h"
 #include "stage.h"
+#include "stcoli.h"
+#include "stobj.h"
 #include "world.h"
 
 #include "../data/common.gma.h"
 
 struct Stobj stobjInfo[128];
 
-static s16 lbl_802F1FF8;
+static s16 spawnedObjCount;
 struct GMAModel *jamabarModel;
+
+static void func_8006B518(struct Stobj *);
+static void find_jamabar_and_bumper_models(void);
+static void spawn_bumpers(struct StageAnimGroup *, int);
+static void spawn_jamabars(struct StageAnimGroup *, int);
+static void stobj_bumper_init(struct Stobj *);
+static void stobj_bumper_main(struct Stobj *);
+static void stobj_bumper_draw(struct Stobj *);
+static void stobj_bumper_coli(struct Stobj *, struct PhysicsBall *);
+static void stobj_bumper_destroy(struct Stobj *);
+static void stobj_bumper_debug(struct Stobj *);
+static void stobj_bumper_bgspecial_init(struct Stobj *);
+static void stobj_bumper_bgspecial_main(struct Stobj *);
+static void stobj_bumper_bgspecial_draw(struct Stobj *);
+static void stobj_bumper_bgspecial_coli(struct Stobj *, struct PhysicsBall *);
+static void stobj_bumper_bgspecial_destroy(struct Stobj *);
+static void stobj_bumper_bgspecial_debug(struct Stobj *);
+static void stobj_jamabar_init(struct Stobj *);
+static void stobj_jamabar_main(struct Stobj *);
+static void stobj_jamabar_draw(struct Stobj *);
+static void stobj_jamabar_coli(struct Stobj *, struct PhysicsBall *);
+static void stobj_jamabar_destroy(struct Stobj *);
+static void stobj_jamabar_debug(struct Stobj *);
+static void stobj_dummy_init(struct Stobj *);
+static void stobj_dummy_main(struct Stobj *);
+static void stobj_dummy_draw(struct Stobj *);
+static void stobj_dummy_coli(struct Stobj *, struct PhysicsBall *);
+static void stobj_dummy_destroy(struct Stobj *);
+static void stobj_dummy_debug(struct Stobj *);
 
 void ev_stobj_init(void)
 {
     int i;
     struct Stobj *stobj;
 
-    lbl_802F1FF8 = 0;
+    spawnedObjCount = 0;
     memset(stobjInfo, 0, sizeof(stobjInfo));
     stobj = stobjInfo;
     for (i = 0; i < ARRAY_COUNT(stobjInfo); i++, stobj++)
@@ -40,7 +72,7 @@ void ev_stobj_init(void)
 }
 
 #pragma force_active on
-char *asdfasdf[] =
+char *stobjTypeNames[] =
 {
     "SOT_BUMPER",
     "SOT_JAMABAR",
@@ -56,7 +88,7 @@ char *asdfasdf[] =
 };
 #pragma force_active reset
 
-void (*stobjInitFuncs[])(struct Stobj *) =
+static void (*stobjInitFuncs[])(struct Stobj *) =
 {
     stobj_bumper_init,
     stobj_jamabar_init,
@@ -72,7 +104,7 @@ void (*stobjInitFuncs[])(struct Stobj *) =
     NULL,
 };
 
-void (*stobjMainFuncs[])(struct Stobj *) =
+static void (*stobjMainFuncs[])(struct Stobj *) =
 {
     stobj_bumper_main,
     stobj_jamabar_main,
@@ -88,7 +120,7 @@ void (*stobjMainFuncs[])(struct Stobj *) =
     NULL,
 };
 
-void (*stobjDrawFuncs[])(struct Stobj *) =
+static void (*stobjDrawFuncs[])(struct Stobj *) =
 {
     stobj_bumper_draw,
     stobj_jamabar_draw,
@@ -104,7 +136,7 @@ void (*stobjDrawFuncs[])(struct Stobj *) =
     NULL,
 };
 
-void (*stobjCollisionFuncs[])(struct Stobj *, struct PhysicsBall *) =
+static void (*stobjCollisionFuncs[])(struct Stobj *, struct PhysicsBall *) =
 {
     stobj_bumper_coli,
     stobj_jamabar_coli,
@@ -120,7 +152,7 @@ void (*stobjCollisionFuncs[])(struct Stobj *, struct PhysicsBall *) =
     NULL,
 };
 
-void (*stobjDestroyFuncs[])(struct Stobj *) =
+static void (*stobjDestroyFuncs[])(struct Stobj *) =
 {
     stobj_bumper_destroy,
     stobj_jamabar_destroy,
@@ -136,19 +168,19 @@ void (*stobjDestroyFuncs[])(struct Stobj *) =
     NULL,
 };
 
-void (*lbl_801BE220[])(struct Stobj *) =
+static void (*stobjDebugFuncs[])(struct Stobj *) =
 {
-    func_8006C140,
-    func_8006C6CC,
-    func_8006DD9C,
-    func_8006F3A4,
-    func_8006F42C,
-    func_8006C7B8,
-    func_8006C7B8,
-    func_8006C7B8,
-    func_8006C7B8,
-    func_8006C408,
-    func_800AFC18,
+    stobj_bumper_debug,
+    stobj_jamabar_debug,
+    stobj_goaltape_debug,
+    stobj_goalbag_debug,
+    stobj_goalbag_exmaster_debug,
+    stobj_dummy_debug,
+    stobj_dummy_debug,
+    stobj_dummy_debug,
+    stobj_dummy_debug,
+    stobj_bumper_bgspecial_debug,
+    stobj_nameent_btn_debug,
     NULL,
 };
 
@@ -179,6 +211,7 @@ char string_________Y_0x_04X_n_2[] = "        Y,0x%04X\n";
 char string_________Z_0x_04X_n_2[] = "        Z,0x%04X\n";
 char string_COLI_RAD___7_3f_n_2[] = "COLI RAD: %7.3f\n";
 char string_Flag__0x_08X_n_2[] = "Flag: 0x%08X\n";
+char lbl_802F0B40[2] = "\n";
 #pragma force_active reset
 
 void ev_stobj_main(void)
@@ -312,10 +345,10 @@ s16 spawn_stobj(struct Stobj *arg0)
     func_8006B518(temp_r31);
     temp_r31->position_2 = temp_r31->position;
     temp_r31->coliFunc = stobjCollisionFuncs[temp_r31->type];
-    temp_r31->unk2 = lbl_802F1FF8;
-    lbl_802F1FF8++;
-    if (lbl_802F1FF8 < 0)
-        lbl_802F1FF8 = 0;
+    temp_r31->unk2 = spawnedObjCount;
+    spawnedObjCount++;
+    if (spawnedObjCount < 0)
+        spawnedObjCount = 0;
     return temp_r31->unk2;
 }
 
@@ -336,7 +369,7 @@ struct StobjFuncs stobjDummyFuncs =
     stobj_dummy_draw,
     stobj_dummy_coli,
     stobj_dummy_destroy,
-    func_8006C7B8,
+    stobj_dummy_debug,
 };
 
 #pragma force_active on
@@ -368,11 +401,11 @@ void func_8006B3E8(s32 arg0, struct StobjFuncs *arg1)
     stobjDrawFuncs[arg0] = sp10.draw;
     stobjCollisionFuncs[arg0] = sp10.coli;
     stobjDestroyFuncs[arg0] = sp10.destroy;
-    lbl_801BE220[arg0] = sp10.unk14;
+    stobjDebugFuncs[arg0] = sp10.unk14;
 }
 #pragma force_active reset
 
-void func_8006B518(struct Stobj *stobj)
+static void func_8006B518(struct Stobj *stobj)
 {
     mathutil_mtxA_from_translate(&stobj->u_some_pos);
     if (stobj->unk8 & 0x10)
@@ -389,8 +422,6 @@ void func_8006B518(struct Stobj *stobj)
     }
     mathutil_mtxA_tf_point(&stobj->u_model_origin, &stobj->position);
 }
-
-char lbl_802F0B40[2] = "\n";
 
 struct Struct8028C0B0 lbl_8028C0B0;
 
@@ -593,9 +624,9 @@ void spawn_jamabars(struct StageAnimGroup *arg0, int arg1)
     }
 }
 
-void stobj_bumper_init(struct Stobj *stobj)
+static void stobj_bumper_init(struct Stobj *stobj)
 {
-    stobj->unkC = 0;
+    stobj->state = 0;
     stobj->unk8 |= 0xA;
     stobj->model = lbl_8028C0B0.unk14[0];
     stobj->boundSphereRadius = 0.75f * stobj->model->boundSphereRadius;
@@ -608,9 +639,9 @@ void stobj_bumper_init(struct Stobj *stobj)
     stobj->unk90 = stobj->u_model_origin;
 }
 
-void stobj_bumper_main(struct Stobj *stobj)
+static void stobj_bumper_main(struct Stobj *stobj)
 {
-    switch (stobj->unkC)
+    switch (stobj->state)
     {
     case 0:
         stobj->unk78 += (0x100 - stobj->unk78) >> 6;
@@ -623,13 +654,13 @@ void stobj_bumper_main(struct Stobj *stobj)
         }
         break;
     case 1:
-        stobj->unkC = 2;
-        stobj->unkE = 7;
+        stobj->state = 2;
+        stobj->counter = 7;
         // fall through
     case 2:
-        stobj->unkE--;
-        if (stobj->unkE < 0)
-            stobj->unkC = 0;
+        stobj->counter--;
+        if (stobj->counter < 0)
+            stobj->state = 0;
         stobj->unk78 += 0x100;
         stobj->unk48 += 0.5 * (2.0 - stobj->unk48);
         stobj->unk50 = stobj->unk48;
@@ -638,7 +669,7 @@ void stobj_bumper_main(struct Stobj *stobj)
     stobj->unk76 += stobj->unk78;
 }
 
-void stobj_bumper_draw(struct Stobj *stobj)
+static void stobj_bumper_draw(struct Stobj *stobj)
 {
     Vec sp18;
     Vec spC;
@@ -711,7 +742,7 @@ void stobj_bumper_draw(struct Stobj *stobj)
     }
 }
 
-void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
+static void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     Vec sp30;
     Vec sp24;
@@ -721,7 +752,7 @@ void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
     int phi_r4;
 
     temp_r31 = currentBallStructPtr;
-    stobj->unkC = 1;
+    stobj->state = 1;
     sp30 = stobj->position;
     func_8006AAEC(&arg1->prevPos, &arg1->pos, &stobj->position_2, &sp30, arg1->radius, stobj->model->boundSphereRadius);
     sp24 = arg1->pos;
@@ -772,26 +803,26 @@ void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
     }
 }
 
-void stobj_bumper_destroy(struct Stobj *stobj) {}
+static void stobj_bumper_destroy(struct Stobj *stobj) {}
 
-void func_8006C140(struct Stobj *stobj) {}
+static void stobj_bumper_debug(struct Stobj *stobj) {}
 
-void stobj_bumper_bgspecial_init(struct Stobj *arg0)
+static void stobj_bumper_bgspecial_init(struct Stobj *stobj)
 {
-    arg0->unkC = 0;
-    arg0->unk8 |= 0xA;
-    arg0->model = lbl_8028C0B0.unk14[0];
-    arg0->boundSphereRadius = 0.75f * arg0->model->boundSphereRadius;
-    arg0->u_model_origin = arg0->model->boundSphereCenter;
-    arg0->unk48 = 1.0f;
-    arg0->unk4C = 1.0f;
-    arg0->unk50 = 1.0f;
-    arg0->unk76 = 0;
-    arg0->unk9C = 0.75f;
-    arg0->unk90 = arg0->u_model_origin;
+    stobj->state = 0;
+    stobj->unk8 |= 0xA;
+    stobj->model = lbl_8028C0B0.unk14[0];
+    stobj->boundSphereRadius = 0.75f * stobj->model->boundSphereRadius;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
+    stobj->unk48 = 1.0f;
+    stobj->unk4C = 1.0f;
+    stobj->unk50 = 1.0f;
+    stobj->unk76 = 0;
+    stobj->unk9C = 0.75f;
+    stobj->unk90 = stobj->u_model_origin;
 }
 
-void stobj_bumper_bgspecial_main(struct Stobj *stobj)
+static void stobj_bumper_bgspecial_main(struct Stobj *stobj)
 {
     stobj_bumper_main(stobj);
 }
@@ -816,7 +847,7 @@ s16 lbl_801BE394[] =
     0x0026, 0x0027,
 };
 
-void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
+static void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
 {
     Vec spC;
     f32 temp_f31;
@@ -868,17 +899,18 @@ void stobj_bumper_bgspecial_draw(struct Stobj *stobj)
     }
 }
 
-void stobj_bumper_bgspecial_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
+static void stobj_bumper_bgspecial_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     stobj_bumper_coli(stobj, arg1);
 }
 
-void stobj_bumper_bgspecial_destroy(struct Stobj *stobj) {}
-void func_8006C408(struct Stobj *stobj) {}
+static void stobj_bumper_bgspecial_destroy(struct Stobj *stobj) {}
 
-void stobj_jamabar_init(struct Stobj *stobj)
+static void stobj_bumper_bgspecial_debug(struct Stobj *stobj) {}
+
+static void stobj_jamabar_init(struct Stobj *stobj)
 {
-    stobj->unkC = 0;
+    stobj->state = 0;
     stobj->unk8 |= 0xA;
     stobj->model = jamabarModel;
     stobj->boundSphereRadius = stobj->model->boundSphereRadius * stobj->unk3C.x;
@@ -890,7 +922,7 @@ void stobj_jamabar_init(struct Stobj *stobj)
     stobj->unk9C = 1.0f;
 }
 
-void stobj_jamabar_main(struct Stobj *stobj)
+static void stobj_jamabar_main(struct Stobj *stobj)
 {
     Vec spC;
 
@@ -924,7 +956,7 @@ void stobj_jamabar_main(struct Stobj *stobj)
     stobj->unk64.z = stobj->u_some_pos.z - stobj->unk7C.z;
 }
 
-void stobj_jamabar_draw(struct Stobj *stobj)
+static void stobj_jamabar_draw(struct Stobj *stobj)
 {
     Vec spC;
 
@@ -941,14 +973,14 @@ void stobj_jamabar_draw(struct Stobj *stobj)
     avdisp_draw_model_culled_sort_translucent(stobj->model);
 }
 
-void stobj_jamabar_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
+static void stobj_jamabar_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
 {
     collide_ball_with_jamabar(arg1, stobj);
 }
 
-void stobj_jamabar_destroy(struct Stobj *stobj) {}
+static void stobj_jamabar_destroy(struct Stobj *stobj) {}
 
-void func_8006C6CC(struct Stobj *stobj)
+static void stobj_jamabar_debug(struct Stobj *stobj)
 {
     func_8002FCC0(2, lbl_801BE25C);
     func_8002FCC0(2, "OFS: X,%7.3f\n", stobj->u_local_pos.x);
@@ -961,14 +993,14 @@ void func_8006C6CC(struct Stobj *stobj)
     func_8002FD68(2, lbl_802F0B40);
 }
 
-void stobj_dummy_init(struct Stobj *stobj) {}
+static void stobj_dummy_init(struct Stobj *stobj) {}
 
-void stobj_dummy_main(struct Stobj *stobj) {}
+static void stobj_dummy_main(struct Stobj *stobj) {}
 
-void stobj_dummy_draw(struct Stobj *stobj) {}
+static void stobj_dummy_draw(struct Stobj *stobj) {}
 
-void stobj_dummy_coli(struct Stobj *stobj, struct PhysicsBall *arg1) {}
+static void stobj_dummy_coli(struct Stobj *stobj, struct PhysicsBall *arg1) {}
 
-void stobj_dummy_destroy(struct Stobj *stobj) {}
+static void stobj_dummy_destroy(struct Stobj *stobj) {}
 
-void func_8006C7B8(struct Stobj *stobj) {}
+static void stobj_dummy_debug(struct Stobj *stobj) {}

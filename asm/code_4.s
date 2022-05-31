@@ -2950,8 +2950,8 @@ lbl_800AFBF0:
 .global stobj_nameent_btn_destroy
 stobj_nameent_btn_destroy:
 /* 800AFC14 000ABB34  4E 80 00 20 */	blr
-.global func_800AFC18
-func_800AFC18:
+.global stobj_nameent_btn_debug
+stobj_nameent_btn_debug:
 /* 800AFC18 000ABB38  4E 80 00 20 */	blr
 
 .global func_800AFC1C

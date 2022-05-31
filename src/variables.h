@@ -601,8 +601,7 @@ extern struct
 // extern ? lbl_8027CE24;
 
 // extern ? lbl_80285A58;
-extern struct Stobj stobjInfo[128];
-extern struct Struct8028C0B0 lbl_8028C0B0;
+
 // extern ? goalTapes;
 // extern ? goalBags;
 // extern ? smallLCDModels;
@@ -1312,7 +1311,7 @@ extern s16 lbl_802F1FC8;
 extern s32 lbl_802F1FF0;
 // extern ? lbl_802F1FF4;
 extern s16 lbl_802F1FF6;
-// extern ? lbl_802F1FF8;
+// extern ? spawnedObjCount;
 extern struct GMAModel *jamabarModel;
 extern u32 lbl_802F2000;
 extern float lbl_802F2008;

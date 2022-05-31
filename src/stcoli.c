@@ -5,8 +5,10 @@
 #include "ball.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "obj_collision.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 #include "types.h"
 #include "variables.h"
 

@@ -19,6 +19,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 #include "gma.h"
 #include "light.h"
 

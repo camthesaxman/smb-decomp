@@ -13,9 +13,13 @@
 #include "nl2ngc.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 #include "world.h"
 
+#include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
+
+#define MAX_GOALS 8
 
 struct GoalTape_sub
 {
@@ -38,19 +42,19 @@ struct GoalTape
     struct GoalTape_sub unk18[8];
 };  // size = 0x198
 
-struct GoalTape goalTapes[8];
+struct GoalTape goalTapes[MAX_GOALS];
 
 struct GoalBag  // The "party ball", known as a "goal bag" internally
 {
     u32 unk0;
-    float unk4;
+    /*0x04*/ float openness;
     float unk8;
     /*0x0C*/ struct Stobj *stobj;
     /*0x10*/ struct StageGoal goal;
     s32 unk24;  // time ball was opened?
 };  // size = 0x28
 
-struct GoalBag goalBags[8];
+struct GoalBag goalBags[MAX_GOALS];
 
 s16 smallLCDModelIDs[] =
 {
@@ -80,6 +84,12 @@ s16 largeLCDModelIDs[] =
     NLMODEL_common_L_LCD_9,
 };
 
+static void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NaomiModel *arg2, struct NaomiModel *arg3);
+static void open_goal_bag(int goalId, struct PhysicsBall *arg1);
+static void func_8006FB20(int arg0);
+static float func_8006FCD0(Point3d *, float);
+static void func_8006FD44(struct GoalTape *tape);
+
 void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
 {
     struct Stobj stobj;
@@ -106,10 +116,10 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
         goal = stageAg->goals;
         for (j = 0; j < stageAg->goalCount; j++, goal++, tape++)
         {
-            if (totalGoals >= 8)
+            if (totalGoals >= MAX_GOALS)
             {
                 u_debug_set_cursor_pos(16, 16);
-                u_debug_printf("Warning!!! Goal Tape Max(%d) Over!!!\n", 8);
+                u_debug_printf("Warning!!! Goal Tape Max(%d) Over!!!\n", MAX_GOALS);
                 break;
             }
             stobj.u_some_pos = goal->pos;
@@ -118,7 +128,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
             tape->unk0 = 0;
-            stobj.unkA4 = tape;
+            stobj.extraData = tape;
             spawn_stobj(&stobj);
             totalGoals++;
         }
@@ -146,7 +156,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
         goal = stageAg->goals;
         for (j = 0; j < stageAg->goalCount; j++, goal++, bag++)
         {
-            if (totalGoals >= 8)
+            if (totalGoals >= MAX_GOALS)
                 break;
             mathutil_mtxA_from_translate(&goal->pos);
             mathutil_mtxA_rotate_z(goal->rotZ);
@@ -159,7 +169,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.animGroupId = i;
             bag->unk0 = 0;
             bag->goal = *goal;
-            stobj.unkA4 = bag;
+            stobj.extraData = bag;
             spawn_stobj(&stobj);
             totalGoals++;
         }
@@ -172,7 +182,7 @@ struct NaomiModel *largeLCDModels[10];
 
 // https://decomp.me/scratch/L6SNU
 #ifdef NONMATCHING
-void stobj_goaltape_init(struct Stobj *arg0)
+void stobj_goaltape_init(struct Stobj *stobj)
 {
     struct RaycastHit spC;
     f32 temp_f10;
@@ -185,19 +195,19 @@ void stobj_goaltape_init(struct Stobj *arg0)
     //s16 *idxPtr;
     Point3d sp28;
 
-    arg0->unkC = 0;
-    arg0->unk8 |= 2;
-    arg0->model = (struct GMAModel *)naomiCommonObj->modelPtrs[NLMODEL_common_GOAL_TAPE];
-    arg0->boundSphereRadius = 1.3125f;
-    arg0->u_model_origin = arg0->model->boundSphereCenter;
-    temp_r31 = arg0->unkA4;
-    temp_r31->unk14 = arg0;
+    stobj->state = 0;
+    stobj->unk8 |= 2;
+    stobj->model = (struct GMAModel *)naomiCommonObj->modelPtrs[NLMODEL_common_GOAL_TAPE];
+    stobj->boundSphereRadius = 1.3125f;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
+    temp_r31 = stobj->extraData;
+    temp_r31->unk14 = stobj;
     temp_r31->unk10 = -1;
-    mathutil_mtxA_from_translate(&arg0->u_some_pos);
-    mathutil_mtxA_rotate_z(arg0->rotZ);
-    mathutil_mtxA_rotate_y(arg0->rotY);
-    mathutil_mtxA_rotate_x(arg0->rotX);
-    mathutil_mtxA_tf_point(&arg0->u_model_origin, &sp28);
+    mathutil_mtxA_from_translate(&stobj->u_some_pos);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    mathutil_mtxA_tf_point(&stobj->u_model_origin, &sp28);
     mathutil_mtxA_push();
     raycast_stage_down(&sp28, &spC, NULL);
     mathutil_mtxA_pop();
@@ -208,7 +218,7 @@ void stobj_goaltape_init(struct Stobj *arg0)
     }
     else
         temp_r31->unk4 = 0.002f;
-    temp_f11 = arg0->u_model_origin.y;
+    temp_f11 = stobj->u_model_origin.y;
     var_r7 = temp_r31->unk18;
     for (i = 8; i > 0; i--, var_r7++)
     {
@@ -268,15 +278,13 @@ double force_lbl_802F4908() { return 1.75; }
 double force_lbl_802F4910() { return 0.875; }
 float  force_lbl_802F4918() { return 1.0f; }
 float  force_lbl_802F491C() { return 0.22499999403953552f; }
-asm void stobj_goaltape_init(struct Stobj *arg0)
+asm void stobj_goaltape_init(struct Stobj *stobj)
 {
     nofralloc
 #include "../asm/nonmatchings/stobj_goaltape_init.s"
 }
 #pragma peephole on
 #endif
-
-void func_8006FD44(struct GoalTape *arg0);
 
 void stobj_goaltape_main(struct Stobj *stobj)
 {
@@ -294,8 +302,8 @@ void stobj_goaltape_main(struct Stobj *stobj)
     struct AnimGroupInfo *temp_r27;
     u32 var_r30;
 
-    tape = stobj->unkA4;
-    switch (stobj->unkC)
+    tape = stobj->extraData;
+    switch (stobj->state)
     {
     case 1:
     case 2:
@@ -305,35 +313,35 @@ void stobj_goaltape_main(struct Stobj *stobj)
             switch (modeCtrl.gameType)
             {
             case GAMETYPE_MAIN_COMPETITION:
-                stobj->unkC = 3;
-                stobj->unkE = 90;
+                stobj->state = 3;
+                stobj->counter = 90;
                 break;
             default:
-                stobj->unkC = 0;
+                stobj->state = 0;
                 break;
             }
             break;
         default:
-            stobj->unkC = 0;
+            stobj->state = 0;
             break;
         }
         break;
     case 3:
-        stobj->unkE--;
-        if (stobj->unkE < 0)
+        stobj->counter--;
+        if (stobj->counter < 0)
         {
             if (!(infoWork.flags & 0x20))
-                stobj->unkC = 4;
+                stobj->state = 4;
             else
-                stobj->unkC = 0;
+                stobj->state = 0;
         }
         break;
     case 4:
     case 5:
-        stobj->unkC = 0;
+        stobj->state = 0;
         tape->unk8 = -0.25f;
         tape->unkC = stobj->u_model_origin.y;
-        func_8006FD44(stobj->unkA4);
+        func_8006FD44(stobj->extraData);
         break;
     }
 
@@ -495,8 +503,6 @@ void stobj_goaltape_main(struct Stobj *stobj)
     }
 }
 
-void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NaomiModel *arg2, struct NaomiModel *arg3);
-
 void stobj_goaltape_draw(struct Stobj *stobj)
 {
     int i;
@@ -516,7 +522,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
     mathutil_mtxA_rotate_x(stobj->rotX);
     set_render_ambient(0.8f, 0.8f, 0.8f);
 
-    var_r31 = ((struct GoalTape *)stobj->unkA4)->unk18;
+    var_r31 = ((struct GoalTape *)stobj->extraData)->unk18;
     for (i = 8; i > 0; i--, var_r31++)
     {
         temp_r28 = var_r31;
@@ -616,7 +622,7 @@ void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     radius = ball->radius;
     radiusSq = radius * radius;
 
-    var_r29 = ((struct GoalTape *)stobj->unkA4)->unk18;
+    var_r29 = ((struct GoalTape *)stobj->extraData)->unk18;
     for (i = 8; i > 0; i--, var_r29++)
     {
         if (var_r29->unk28 & 1)
@@ -679,9 +685,9 @@ void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 
 void stobj_goaltape_destroy(struct Stobj *stobj) {}
 
-void func_8006DD9C(struct Stobj *stobj) {}
+void stobj_goaltape_debug(struct Stobj *stobj) {}
 
-void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NaomiModel *model1, struct NaomiModel *model2)
+static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NaomiModel *model1, struct NaomiModel *model2)
 {
     Point3d sp24;
     Point3d sp18;
@@ -753,9 +759,9 @@ void stobj_goalbag_init(struct Stobj *stobj)
 {
     struct GoalBag *bag;
 
-    stobj->unkC = 1;
+    stobj->state = 1;
     stobj->unk8 = 0x12;
-    stobj->model = commonGma->modelEntries[0x20].modelOffset;
+    stobj->model = commonGma->modelEntries[NEW_SCENT_BAG_WHOLE].modelOffset;
     stobj->boundSphereRadius = stobj->model->boundSphereRadius;
     stobj->u_model_origin = stobj->model->boundSphereCenter;
     stobj->u_some_pos = stobj->unkA8;
@@ -766,10 +772,10 @@ void stobj_goalbag_init(struct Stobj *stobj)
     stobj->u_local_vel.x = 0.0f;
     stobj->u_local_vel.y = 0.0f;
     stobj->u_local_vel.z = 0.0f;
-    bag = stobj->unkA4;
+    bag = stobj->extraData;
     bag->stobj = stobj;
     bag->unk24 = -1;
-    bag->unk4 = 0.0f;
+    bag->openness = 0.0f;
     bag->unk8 = 0.0f;
 }
 
@@ -789,89 +795,89 @@ void stobj_goalbag_main(struct Stobj *stobj)
     float temp_f2_6;
     float temp_f31;
     struct AnimGroupInfo *temp_r29;
-    struct GoalBag *temp_r31 = stobj->unkA4;
+    struct GoalBag *bag = stobj->extraData;
 
-    switch (stobj->unkC)
+    switch (stobj->state)
     {
     case 1:
         break;
-    case 2:
+    case 2:  // opening ball?
     case 3:
-        stobj->unkC = 4;
+        stobj->state = 4;
         switch (gameMode)
         {
-        case 2:
+        case MD_GAME:
             switch (modeCtrl.gameType)
             {
-            case 1:
-                stobj->unkE = 0x78;
+            case GAMETYPE_MAIN_COMPETITION:
+                stobj->counter = 120;
                 break;
             default:
-                stobj->unkE = -1;
+                stobj->counter = -1;
                 break;
             }
             break;
         default:
-            stobj->unkE = -1;
+            stobj->counter = -1;
             break;
         }
-        temp_r31->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        bag->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
         // fall through
     case 4:
-        if (stobj->unkE > 0)
+        if (stobj->counter > 0)
         {
-            stobj->unkE--;
-            if (stobj->unkE == 0 && !(infoWork.flags & 0x20))
-                stobj->unkC = 5;
+            stobj->counter--;
+            if (stobj->counter == 0 && !(infoWork.flags & 0x20))
+                stobj->state = 5;
         }
-        temp_r31->unk8 += 0.005;
-        temp_r31->unk8 *= 0.99;
-        temp_r31->unk4 += temp_r31->unk8;
-        if (temp_r31->unk4 < 0.0)
+        bag->unk8 += 0.005;
+        bag->unk8 *= 0.99;
+        bag->openness += bag->unk8;
+        if (bag->openness < 0.0)
         {
-            temp_r31->unk4 = 0.0f;
-            if (temp_r31->unk8 < 0.0)
-                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+            bag->openness = 0.0f;
+            if (bag->unk8 < 0.0)
+                bag->unk8 = 0.5 * -bag->unk8;
         }
-        else if (temp_r31->unk4 > 1.0)
+        else if (bag->openness > 1.0)
         {
-            temp_r31->unk4 = 1.0f;
-            if (temp_r31->unk8 > 0.0)
-                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+            bag->openness = 1.0f;
+            if (bag->unk8 > 0.0)
+                bag->unk8 = 0.5 * -bag->unk8;
         }
         break;
     case 5:
     case 6:
-        stobj->unkC = 7;
-        stobj->unkE = 60;
-        temp_r31->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        stobj->state = 7;
+        stobj->counter = 60;
+        bag->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
         // fall through
     case 7:
-        stobj->unkE--;
-        temp_r31->unk8 -= 0.005;
-        temp_r31->unk8 *= 0.99;
-        temp_r31->unk4 += temp_r31->unk8;
-        if (temp_r31->unk4 < 0.0)
+        stobj->counter--;
+        bag->unk8 -= 0.005;
+        bag->unk8 *= 0.99;
+        bag->openness += bag->unk8;
+        if (bag->openness < 0.0)
         {
-            temp_r31->unk4 = 0.0f;
-            temp_r31->unk0 = 0;
-            temp_r31->unk24 = -1;
-            if (stobj->unkE < 0)
+            bag->openness = 0.0f;
+            bag->unk0 = 0;
+            bag->unk24 = -1;
+            if (stobj->counter < 0)
             {
-                stobj->unkC = 1;
-                temp_r31->unk8 = 0.0f;
+                stobj->state = 1;
+                bag->unk8 = 0.0f;
             }
             else
             {
-                if (temp_r31->unk8 < 0.0)
-                    temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+                if (bag->unk8 < 0.0)
+                    bag->unk8 = 0.5 * -bag->unk8;
             }
         }
-        else if (temp_r31->unk4 > 1.0)
+        else if (bag->openness > 1.0)
         {
-            temp_r31->unk4 = 1.0f;
-            if (temp_r31->unk8 > 0.0)
-                temp_r31->unk8 = 0.5 * -temp_r31->unk8;
+            bag->openness = 1.0f;
+            if (bag->unk8 > 0.0)
+                bag->unk8 = 0.5 * -bag->unk8;
         }
         break;
     }
@@ -910,10 +916,10 @@ void stobj_goalbag_main(struct Stobj *stobj)
     }
     sp30 = lbl_80117A58;
     sp24 = lbl_80117A64;
-    mathutil_mtxA_from_translate(&temp_r31->goal.pos);
-    mathutil_mtxA_rotate_z(temp_r31->goal.rotZ);
-    mathutil_mtxA_rotate_y(temp_r31->goal.rotY);
-    mathutil_mtxA_rotate_x(temp_r31->goal.rotX);
+    mathutil_mtxA_from_translate(&bag->goal.pos);
+    mathutil_mtxA_rotate_z(bag->goal.rotZ);
+    mathutil_mtxA_rotate_y(bag->goal.rotY);
+    mathutil_mtxA_rotate_x(bag->goal.rotX);
     mathutil_mtxA_tf_point(&sp30, &sp30);
     mathutil_mtxA_tf_vec(&sp24, &sp24);
     temp_f31 = stobj->boundSphereRadius;
@@ -976,10 +982,9 @@ void stobj_goalbag_draw(struct Stobj *stobj)
     Point3d spC;
     float alpha;
     struct GMAModel *model;
-    struct GoalBag *bag;
-    int temp_r30;
+    struct GoalBag *bag = stobj->extraData;
+    int rotZ;
 
-    bag = stobj->unkA4;
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&stobj->u_some_pos);
     mathutil_mtxA_rotate_y(stobj->rotY);
@@ -988,8 +993,9 @@ void stobj_goalbag_draw(struct Stobj *stobj)
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
 
-    if (bag->unk4 == 0.0)
+    if (bag->openness == 0.0)
     {
+        // Draw closed ball
         model = stobj->model;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
@@ -1009,14 +1015,15 @@ void stobj_goalbag_draw(struct Stobj *stobj)
     }
     else
     {
-        temp_r30 = 9102.0f * bag->unk4;
+        // Draw two halves
+        rotZ = 9102.0f * bag->openness;
         spC.x = 0.0f;
-        spC.y = -0.5 * bag->unk4;
+        spC.y = -0.5 * bag->openness;
         spC.z = 0.0f;
         mathutil_mtxA_translate(&spC);
         mathutil_mtxA_push();
-        mathutil_mtxA_rotate_z(-(s16)(int)temp_r30);
-        model = commonGma->modelEntries[0x1E].modelOffset;
+        mathutil_mtxA_rotate_z(-(s16)(int)rotZ);
+        model = commonGma->modelEntries[NEW_SCENT_BAG_A].modelOffset;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
         {
@@ -1033,8 +1040,8 @@ void stobj_goalbag_draw(struct Stobj *stobj)
             }
         }
         mathutil_mtxA_pop();
-        mathutil_mtxA_rotate_z((s16)temp_r30);
-        model = commonGma->modelEntries[0x1F].modelOffset;
+        mathutil_mtxA_rotate_z((s16)rotZ);
+        model = commonGma->modelEntries[NEW_SCENT_BAG_B].modelOffset;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
         {
@@ -1123,7 +1130,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     stobj->u_local_vel.x += temp_f0 * stobj->u_local_pos.x;
     stobj->u_local_vel.y += temp_f0 * stobj->u_local_pos.y;
     stobj->u_local_vel.z += temp_f0 * stobj->u_local_pos.z;
-    bag = stobj->unkA4;
+    bag = stobj->extraData;
     if (bag->unk0 != 0)
     {
         temp_f0 = -2.0 * mathutil_vec_dot_prod(&stobj->u_local_pos, &spEC);
@@ -1212,7 +1219,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 
 void stobj_goalbag_destroy(struct Stobj *stobj) {}
 
-void func_8006F3A4(struct Stobj *stobj) {}
+void stobj_goalbag_debug(struct Stobj *stobj) {}
 
 void stobj_goalbag_exmaster_init(struct Stobj *stobj)
 {
@@ -1236,11 +1243,9 @@ void stobj_goalbag_exmaster_coli(struct Stobj *stobj, struct PhysicsBall *ball)
 
 void stobj_goalbag_exmaster_destroy(struct Stobj *stobj) {}
 
-void func_8006F42C(struct Stobj *stobj) {}
+void stobj_goalbag_exmaster_debug(struct Stobj *stobj) {}
 
-void func_8006F760(int arg0, struct PhysicsBall *arg1);
-
-void u_break_goal_tape(int arg0, struct PhysicsBall *arg1)
+void u_break_goal_tape(int goalId, struct PhysicsBall *arg1)
 {
     Vec sp1C;
     Vec sp10;
@@ -1250,20 +1255,20 @@ void u_break_goal_tape(int arg0, struct PhysicsBall *arg1)
     struct GoalTape *tape;
     struct GoalTape_sub *var_r29;
     int var_r28;
-    struct Stobj *temp_r27;
+    struct Stobj *stobj;
 
-    func_8006F760(arg0, arg1);
-    if (arg0 < 8)
+    open_goal_bag(goalId, arg1);
+    if (goalId < 8)
     {
-        tape = &goalTapes[arg0];
+        tape = &goalTapes[goalId];
         if (tape->unk0 == 0)
         {
-            temp_r27 = tape->unk14;
+            stobj = tape->unk14;
             mathutil_mtxA_from_identity();
-            mathutil_mtxA_translate(&temp_r27->u_some_pos);
-            mathutil_mtxA_rotate_z((s32) temp_r27->rotZ);
-            mathutil_mtxA_rotate_y((s32) temp_r27->rotY);
-            mathutil_mtxA_rotate_x((s32) temp_r27->rotX);
+            mathutil_mtxA_translate(&stobj->u_some_pos);
+            mathutil_mtxA_rotate_z(stobj->rotZ);
+            mathutil_mtxA_rotate_y(stobj->rotY);
+            mathutil_mtxA_rotate_x(stobj->rotX);
             mathutil_mtxA_rigid_inv_tf_point(&arg1->pos, &sp1C);
             mathutil_mtxA_rigid_inv_tf_vec(&arg1->vel, &sp10);
             if (tape->unk10 < 0)
@@ -1294,14 +1299,12 @@ void u_break_goal_tape(int arg0, struct PhysicsBall *arg1)
                 var_r29[1].unk1C.x += sp10.x;
                 var_r29[1].unk1C.y += sp10.y;
                 var_r29[1].unk1C.z += sp10.z;
-                temp_r27->unkC = 1;
+                stobj->state = 1;
                 tape->unk0 = 1;
             }
         }
     }
 }
-
-void func_8006FB20(int arg0);
 
 void func_8006F5F0(int arg0)
 {
@@ -1313,7 +1316,7 @@ void func_8006F5F0(int arg0)
 
     func_8006FB20(arg0);
     tape = goalTapes;
-    for (i = 8; i > 0; i--, tape++)
+    for (i = ARRAY_COUNT(goalTapes); i > 0; i--, tape++)
     {
         if (tape->unk10 <= arg0 && tape->unk0 != 0)
         {
@@ -1336,26 +1339,26 @@ void func_8006F5F0(int arg0)
     }
 }
 
-void func_8006F760(int arg0, struct PhysicsBall *arg1)
+static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
 {
     struct Struct8003C550 sp34;
     Point3d sp28;
     Point3d sp1C;
     Point3d sp10;
-    f32 temp_f27;
-    s32 var_r31;
+    float temp_f27;
+    int confettiCount;
     struct GoalBag *bag;
     struct Stobj *stobj;
     u16 temp_r30;
 
-    if (arg0 < 8)
+    if (goalId < 8)
     {
-        bag = &goalBags[arg0];
+        bag = &goalBags[goalId];
         stobj = bag->stobj;
         if (bag->unk0 == 0)
         {
             bag->unk0 = 1;
-            stobj->unkC = 2;
+            stobj->state = 2;
             stobj->boundSphereRadius = 0.5 * stobj->model->boundSphereRadius;
             stobj->u_model_origin = stobj->model->boundSphereCenter;
             stobj->u_model_origin.x *= 0.5;
@@ -1379,32 +1382,34 @@ void func_8006F760(int arg0, struct PhysicsBall *arg1)
             sp34.unk40.x += sp1C.x - sp10.x;
             sp34.unk40.y += sp1C.y - sp10.y;
             sp34.unk40.z += sp1C.z - sp10.z;
-            temp_f27 = stobj->model->boundSphereRadius - commonGma->modelEntries[0x29].modelOffset->boundSphereRadius;
+            temp_f27 = stobj->model->boundSphereRadius - commonGma->modelEntries[PAPER_PIECE_DEEPGREEN].modelOffset->boundSphereRadius;
             mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
             mathutil_mtxA_translate(&stobj->position);
-            if (gameMode == 2 && modeCtrl.gameType == 1)
+            if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
             {
                 switch (modeCtrl.playerCount)
                 {
                 case 2:
-                    var_r31 = 130;
+                    confettiCount = 130;
                     break;
                 case 3:
-                    var_r31 = 100;
+                    confettiCount = 100;
                     break;
                 case 4:
-                    var_r31 = 70;
+                    confettiCount = 70;
                     break;
                 default:
-                    var_r31 = 160;
+                    confettiCount = 160;
                     break;
                 }
             }
             else
-                var_r31 = 160;
+                confettiCount = 160;
             sp28.x = 0.0f;
             sp28.y = 0.0f;
-            while (var_r31 > 0)
+            
+            // Release confetti
+            while (confettiCount > 0)
             {
                 sp28.z = 0.5 * (temp_f27 * (1.0 + (rand() / 32767.0f)));
                 mathutil_mtxA_rotate_y(rand() & 0x7FFF);
@@ -1413,18 +1418,18 @@ void func_8006F760(int arg0, struct PhysicsBall *arg1)
                 sp34.unk4C = rand() & 0x7FFF;
                 sp34.unk4E = rand() & 0x7FFF;
                 sp34.unk50 = rand() & 0x7FFF;
-                if (var_r31 & 1)
+                if (confettiCount & 1)
                     sp34.unk16 = temp_r30;
                 else
                     sp34.unk16 = 0;
                 u_spawn_effect_object(&sp34);
-                var_r31--;
+                confettiCount--;
             }
         }
     }
 }
 
-void func_8006FB20(int arg0)
+static void func_8006FB20(int arg0)
 {
     int i;
     struct GoalBag *bag;
@@ -1436,17 +1441,17 @@ void func_8006FB20(int arg0)
         if (bag->unk24 <= arg0 && bag->unk0 != 0)
         {
             bag->unk0 = 0;
-            bag->unk4 = 0.0f;
+            bag->openness = 0.0f;
             bag->unk8 = 0.0f;
             stobj = bag->stobj;
             stobj->boundSphereRadius = stobj->model->boundSphereRadius;
             stobj->u_model_origin = stobj->model->boundSphereCenter;
-            stobj->unkC = 1;
+            stobj->state = 1;
         }
     }
 }
 
-float func_8006FCD0(Point3d *arg0, float arg8)
+static float func_8006FCD0(Point3d *arg0, float arg8)
 {
     Point3d sp10;
     float var_f1;
@@ -1462,7 +1467,7 @@ float func_8006FCD0(Point3d *arg0, float arg8)
     return var_f1;
 }
 
-void func_8006FD44(struct GoalTape *tape)
+static void func_8006FD44(struct GoalTape *tape)
 {
     int i;
     struct GoalTape_sub *var_r29;
