@@ -25,6 +25,9 @@ FORCE_BSS_ORDER(lbl_80292AC0)
 struct TextBox textBoxes[4];
 FORCE_BSS_ORDER(textBoxes)
 
+float lbl_802F200C;
+float lbl_802F2008;
+
 static void update_textbox(int id, struct TextBox *b);
 static void clear_lines(int a);
 

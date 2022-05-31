@@ -24,6 +24,7 @@
 #include "ord_tbl.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stobj.h"
 #include "world.h"
 
 #define SCREEN_ASPECT (640.0f / 480.0f)

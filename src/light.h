@@ -89,7 +89,7 @@ void u_reset_light_group_stack(int a);
 void set_bg_ambient(float, float, float);
 void set_render_ambient(float r, float g, float b);
 // ? get_curr_light_group_ambient();
-// ? apply_curr_light_group_ambient();
+void apply_curr_light_group_ambient(void);
 void u_draw_naomi_ball(void);
 void u_smth_with_lights_smd_continue(int stageId);
 void u_smth_with_lights_smd_extra(int stageId);

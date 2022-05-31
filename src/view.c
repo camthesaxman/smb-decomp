@@ -19,6 +19,7 @@
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 #include "gma.h"
 #include "light.h"
 
@@ -595,14 +596,6 @@ void draw_stage_geometry(void)
         draw_blur_bridge_accordions();
 }
 
-extern struct
-{
-    u8 filler0[0x14];
-    struct GMAModel *unk14;
-} lbl_8028C0B0;
-
-extern struct GMAModel *lbl_802F1FFC;
-
 void draw_stage_objects(void)
 {
     Mtx mtx;
@@ -695,7 +688,7 @@ void draw_stage_objects(void)
             mathutil_mtxA_rotate_x(bumper->rotX);
             mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 8);
             u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14);
+            avdisp_draw_model_culled_sort_translucent(lbl_8028C0B0.unk14[0]);
         }
     }
 
@@ -726,7 +719,7 @@ void draw_stage_objects(void)
                 f0 = 2.0 - f0;
             mathutil_mtxA_translate_xyz(0.0f, 0.0f, 2.5 * -f0);
             u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(lbl_802F1FFC);
+            avdisp_draw_model_culled_sort_translucent(jamabarModel);
             totalJamas++;
         }
     }

@@ -339,7 +339,9 @@ struct SpritePoolInfo
              u8 unk10[0x18-0x10];
              s32 unk18;
              s8 *unk1C;
-             u8 filler20[0x30-0x20];
+             u8 unk20[8];
+             s32 unk28;
+             s8 *unk2C;
              u8 unk30[4];
              u32 unk34;
              s32 unk38;
@@ -432,20 +434,20 @@ struct ColiPlane
 
 struct PhysicsBall
 {
-    u32 flags;
+    /*0x00*/ u32 flags;
 
     // Current center position in animGroupId's local space
-    Point3d pos;
+    /*0x04*/ Point3d pos;
 
     // Center position at end of previous frame in animGroupId's previous frame local space
-    Point3d prevPos;
+    /*0x10*/ Point3d prevPos;
 
     // Current velocity in animGroupId's local space
-    Vec vel;
+    /*0x1C*/ Vec vel;
 
-    float radius;
-    float gravityAccel;
-    float restitution;
+    /*0x28*/ float radius;
+    /*0x2C*/ float gravityAccel;
+    /*0x30*/ float restitution;
 
     // The ball may collide with more than one surface during a frame. The "hardest" collision is
     // recorded, which is used to draw visual collision effects for example.
@@ -453,13 +455,13 @@ struct PhysicsBall
     // Largest (in magnitude) animGroup-relative ball velocity along the collision normal. It's
     // always negative because when a collision occurs, the ball's animGroup-relative velocity is
     // pointing away from the normal.
-    float hardestColiSpeed;
+    /*0x34*/ float hardestColiSpeed;
 
     // Collision plane of the hardest collision, in hardestColiAnimGroupId's local space
-    struct ColiPlane hardestColiPlane;
+    /*0x38*/ struct ColiPlane hardestColiPlane;
 
     // animGroup ID of the hardest collision
-    s32 hardestColiAnimGroupId;
+    /*0x50*/ s32 hardestColiAnimGroupId;
 
     // Friction applied to the ball's velocity on each contact with a surface.
     //
@@ -467,11 +469,11 @@ struct PhysicsBall
     // is thrown away upon contact. The ball's velocity in this context is relative to the contact
     // surface's velocity. For example, the relative velocity of a motionless ball on a platform
     // with velocity (1, 0, 0) would be (-1, 0, 0).
-    float friction;
+    /*0x54*/ float friction;
 
     // animGroup whose local space we are in.
     // As a reminder, ID 0 is world space.
-    s32 animGroupId;
+    /*0x58*/ s32 animGroupId;
 };
 
 struct ColiEdge
@@ -882,16 +884,6 @@ struct Keyframe
 struct StageAnimGroup;
 struct StageBanana;
 
-struct Struct800690DC
-{
-    u8 filler0[0x1C];
-    Vec unk1C;
-    u8 filler28[0x30-0x28];
-    float unk30;
-    u8 filler34[0x58-0x34];
-    s32 unk58;
-};
-
 struct Item;
 
 struct ModelLOD
@@ -944,58 +936,6 @@ struct Struct80061BC4
 };
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
-
-// Stage object (stobj) type
-enum
-{
-    SOT_BUMPER,
-    SOT_JAMABAR,
-    SOT_GOALTAPE,
-    SOT_GOALBAG,
-    SOT_GOALBAG_EXMASTER,
-    SOT_MF_PNL_BUMPER,
-    SOT_MF_PNL_ELECTRAP,
-    SOT_MF_BULLET_TEST,
-    SOT_MF_BOX,
-    SOT_BUMPER_BGSPECIAL,
-    SOT_NAMEENT_BTN,
-};
-
-struct Stobj
-{ /* A "stage object" which is one of a: bumper, jamabar, goaltape, party ball, and others. */
-    s32 id;
-    s16 u_some_id;
-    u16 type;
-    u32 u_some_bitflag;
-    s16 u_mode;
-    s16 u_counter;
-    Point3d u_model_origin;
-    Point3d position;
-    Point3d position_2; /* Copy of position? */
-    float bounding_sphere_radius; /* Has something to do w/ collision */
-    void (* coli_func)(struct Stobj *, struct PhysicsBall *);
-    Vec scale;
-    float unk48;
-    float unk4c;
-    float unk50;
-    struct GmaModelHeader *model;
-    Point3d u_some_pos; /* Has something to do w/ position */
-    Vec vel;
-    S16Vec rot;
-    short unk76;
-    short unk78;
-    Point3d u_prev_pos;
-    S16Vec u_prev_rot;
-    float unk90;
-    float unk94;
-    float unk98;
-    float unk9c;
-    s8 animGroupId;
-    void * extra_data; /* Extra stobj-type-specific data, such as switch stagedef header for switches or goaltape struct for goaltapes. Maybe worth making a union */
-    Point3d u_some_pos2;
-    Point3d u_local_pos;
-    Vec u_local_vel;
-};
 
 struct BgLightInfo
 {
@@ -1084,5 +1024,7 @@ struct Struct8008CF00
 	u32 unk18;
 	u32 unk1C;
 };
+
+struct Stobj;
 
 #endif

@@ -5,8 +5,10 @@
 #include "ball.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
+#include "obj_collision.h"
 #include "stage.h"
 #include "stcoli.h"
+#include "stobj.h"
 #include "types.h"
 #include "variables.h"
 
@@ -1062,9 +1064,9 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
     s32 i;
 
     mathutil_mtxA_from_translate(&stobj->u_some_pos);
-    mathutil_mtxA_rotate_x(stobj->rot.x);
-    mathutil_mtxA_rotate_y(stobj->rot.y);
-    mathutil_mtxA_rotate_z(stobj->rot.z);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
     stcoli_sub31(ball, ball);
     ballPos = ball->pos;
 
@@ -1082,9 +1084,9 @@ void collide_ball_with_jamabar(struct PhysicsBall *ball, struct Stobj *stobj)
         ball->vel.z = ball->vel.z + (2.5 * (temp_f2 - stobj->u_local_vel.z));
     }
     mathutil_mtxA_from_translate(&stobj->u_some_pos);
-    mathutil_mtxA_rotate_x(stobj->rot.x);
-    mathutil_mtxA_rotate_y(stobj->rot.y);
-    mathutil_mtxA_rotate_z(stobj->rot.z);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_z(stobj->rotZ);
     stcoli_sub30(ball, ball);
 }
 
