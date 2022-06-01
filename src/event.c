@@ -14,6 +14,7 @@
 #include "stage.h"
 #include "stobj.h"
 #include "world.h"
+#include "mouse.h"
 
 struct Event eventInfo[] =
 {

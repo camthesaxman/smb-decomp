@@ -2806,6 +2806,49 @@ lbl_80171B60:
 	.4byte 0x3ECCCCCD
 	.4byte 0
 
+.section .sdata
+
+    .balign 8
+glabel lbl_802F1368
+	.4byte 0xFFFFFFFF
+	.4byte 0x000001E9
+glabel lbl_802F1370
+	.4byte 0
+	.4byte 0x000001E9
+glabel lbl_802F1378
+	.4byte 0
+	.4byte 0x000001F0
+glabel lbl_802F1380
+	.4byte 0
+	.4byte 0x000001DB
+glabel string_1P_WINS
+	.asciz "1P WINS"
+glabel string_2P_WINS
+	.asciz "2P WINS"
+glabel string_3P_WINS
+	.asciz "3P WINS"
+glabel string_4P_WINS
+	.asciz "4P WINS"
+glabel string_RANK_IN
+	.asciz "RANK IN"
+glabel lbl_802F13B0
+	.4byte 0
+glabel string_YOU_WIN
+	.asciz "YOU WIN"
+
+.global lbl_802F13BC
+lbl_802F13BC:
+	# ROM: 0x1EBAFC
+glabel string_init_2
+	.asciz "init"
+	.balign 4
+
+.global lbl_802F13C4
+lbl_802F13C4:
+	# ROM: 0x1EBB04
+	.asciz ".."
+    .balign 4
+
 .section .bss
 
 .global lbl_802BA210
