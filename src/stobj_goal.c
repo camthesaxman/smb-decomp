@@ -85,7 +85,7 @@ s16 largeLCDModelIDs[] =
     NLMODEL_common_L_LCD_9,
 };
 
-static void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NaomiModel *arg2, struct NaomiModel *arg3);
+static void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NlModel *arg2, struct NlModel *arg3);
 static void open_goal_bag(int goalId, struct PhysicsBall *arg1);
 static void func_8006FB20(int arg0);
 static float func_8006FCD0(Point3d *, float);
@@ -178,8 +178,8 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
     }
 }
 
-struct NaomiModel *smallLCDModels[10];
-struct NaomiModel *largeLCDModels[10];
+struct NlModel *smallLCDModels[10];
+struct NlModel *largeLCDModels[10];
 
 // https://decomp.me/scratch/L6SNU
 #ifdef NONMATCHING
@@ -192,13 +192,13 @@ void stobj_goaltape_init(struct Stobj *stobj)
     int j;
     struct GoalTape_sub *var_r7;
     struct GoalTape *temp_r31;
-    struct NaomiModel **mdlPtr;
+    struct NlModel **mdlPtr;
     //s16 *idxPtr;
     Point3d sp28;
 
     stobj->state = 0;
     stobj->unk8 |= 2;
-    stobj->model = (struct GMAModel *)naomiCommonObj->models[NLMODEL_common_GOAL_TAPE];
+    stobj->model = (struct GMAModel *)g_commonNLObj->models[NLMODEL_common_GOAL_TAPE];
     stobj->boundSphereRadius = 1.3125f;
     stobj->u_model_origin = stobj->model->boundSphereCenter;
     temp_r31 = stobj->extraData;
@@ -246,29 +246,29 @@ void stobj_goaltape_init(struct Stobj *stobj)
 
     mdlPtr = smallLCDModels;
     //idxPtr = smallLCDModelIDs;
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[0]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[1]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[2]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[3]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[4]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[5]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[6]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[7]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[8]];
-    *mdlPtr++ = naomiCommonObj->models[smallLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[9]];
 
     mdlPtr = largeLCDModels;
     //idxPtr = largeLCDModelIDs;
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[0]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[1]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[2]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[3]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[4]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[5]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[6]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[7]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[8]];
-    *mdlPtr++ = naomiCommonObj->models[largeLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[9]];
 }
 #else
 float  force_lbl_802F48F0() { return 1.3125f; }
@@ -688,31 +688,31 @@ void stobj_goaltape_destroy(struct Stobj *stobj) {}
 
 void stobj_goaltape_debug(struct Stobj *stobj) {}
 
-static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NaomiModel *model1, struct NaomiModel *model2)
+static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NlModel *model1, struct NlModel *model2)
 {
     Point3d sp24;
     Point3d sp18;
     s16 rotX;
-    struct NLVtxWithNormal *vtx;
+    struct NlVtxWithNormal *vtx;
     s16 rotY;
-    struct NaomiMesh *mesh2;
-    struct NaomiMesh *mesh1;
+    struct NlMesh *mesh2;
+    struct NlMesh *mesh1;
     u32 var_r4;
 
     memcpy(model2, model1, sizeof(*model2));
 
-    mesh2 = (struct NaomiMesh *)model2->meshStart;
-    mesh1 = (struct NaomiMesh *)model1->meshStart;
+    mesh2 = (struct NlMesh *)model2->meshStart;
+    mesh1 = (struct NlMesh *)model1->meshStart;
     memcpy(mesh2, mesh1, sizeof(*mesh2));
 
     mesh2->dispListSize = (faceCount * 64) + 8;
-    var_r4 = ((struct NLDispList *)mesh1->dispListStart)->flags;
+    var_r4 = ((struct NlDispList *)mesh1->dispListStart)->flags;
     var_r4 &= ~0x14;
     var_r4 |= 0x10;
-    ((struct NLDispList *)mesh2->dispListStart)->flags = var_r4;
-    ((struct NLDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
+    ((struct NlDispList *)mesh2->dispListStart)->flags = var_r4;
+    ((struct NlDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
 
-    vtx = (void *)(mesh2 = (void *)((struct NLDispList *)mesh2->dispListStart)->vtxData);
+    vtx = (void *)(mesh2 = (void *)((struct NlDispList *)mesh2->dispListStart)->vtxData);
     while (faceCount > 0)
     {
         sp24.x = arg0->unkC.x;

@@ -387,7 +387,7 @@ void func_8005507C(void)
             free_gma(decodedBgGma);
             decodedBgGma = NULL;
         }
-        free_naomi_archive(&naomiBgArchive, &naomiBgTpl);
+        free_naomi_archive(&g_bgNLObj, &naomiBgTpl);
 
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = -1;
@@ -510,7 +510,7 @@ void load_bg_files(int bgId)
             }
 
             // free old NAOMI resources
-            free_naomi_archive(&naomiBgArchive, &naomiBgTpl);
+            free_naomi_archive(&g_bgNLObj, &naomiBgTpl);
         }
         if (bgId > 0)
         {
@@ -535,7 +535,7 @@ void load_bg_files(int bgId)
                 DVDChangeDir(bgDir);
                 sprintf(gmaFileName, "%s_p.lz", bgName);
                 sprintf(tplFileName, "%s.lz", bgName);
-                load_naomi_archive(&naomiBgArchive, &naomiBgTpl, gmaFileName, tplFileName);
+                load_naomi_archive(&g_bgNLObj, &naomiBgTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
 

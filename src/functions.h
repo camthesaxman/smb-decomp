@@ -198,9 +198,9 @@ void func_800367E4(struct JointBoneThing *arg0, u16 arg1, u16 arg2);
 float interpolate_keyframes(int count, struct Keyframe *frames, float time);
 
 void draw_stage_preview(void);
-void u_apply_func_to_naomi_model_vertices(struct NaomiModel *model, void (*b)(struct NLVtxWithNormal *), void (*c)(struct NLVtxWithColor *));
-void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NLDispList *dl, void *end, void (*func)(struct NLVtxWithNormal *));
-void u_apply_func_to_naomi_dl_pos_color_tex(struct NLDispList *dl, void *end, void (*func)(struct NLVtxWithColor *));
+void u_apply_func_to_naomi_model_vertices(struct NlModel *model, void (*b)(struct NlVtxWithNormal *), void (*c)(struct NlVtxWithColor *));
+void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxWithNormal *));
+void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxWithColor *));
 // ? func_80048084();
 void func_80048420();
 void func_800487B4(void);
@@ -545,9 +545,9 @@ void func_8008D158(u32 arg0);
 int func_8008D1DC(void (*)(struct Ape *, int), struct Ape *, int);
 void func_8008D240(void);
 void func_8008D29C(int);
-void func_8008D330(struct NaomiModel *arg0, u32 arg1, u32 arg2);
-void func_8008D36C(struct NaomiModel *arg0, u32 arg1, u32 arg2);
-void func_8008D3A8(struct NaomiModel *arg0, u32 arg1, u32 arg2);
+void func_8008D330(struct NlModel *arg0, u32 arg1, u32 arg2);
+void func_8008D36C(struct NlModel *arg0, u32 arg1, u32 arg2);
+void func_8008D3A8(struct NlModel *arg0, u32 arg1, u32 arg2);
 
 int lzs_decompress(u8 *, void *);
 // ? func_8008D6BC();

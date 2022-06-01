@@ -440,8 +440,8 @@ lbl_000006B4:
 /* 000006C8 FC40F090 */ fmr f2, f30
 /* 000006CC FC60F090 */ fmr f3, f30
 /* 000006D0 4BFFFA95 */ bl nl2ngc_set_material_color
-/* 000006D4 3C600000 */ lis r3, naomiCommonObj@ha
-/* 000006D8 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 000006D4 3C600000 */ lis r3, g_commonNLObj@ha
+/* 000006D8 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 000006DC 80630000 */ lwz r3, 0(r3)
 /* 000006E0 806300B0 */ lwz r3, 0xb0(r3)
 /* 000006E4 4BFFFA81 */ bl nl2ngc_draw_model_unsorted
@@ -899,8 +899,8 @@ lbl_00000D04:
 /* 00000DB0 4BFFF3B5 */ bl mathutil_mtxA_scale_s
 /* 00000DB4 FC20F890 */ fmr f1, f31
 /* 00000DB8 4BFFF3AD */ bl nl2ngc_set_scale
-/* 00000DBC 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00000DC0 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00000DBC 3C600000 */ lis r3, g_commonNLObj@ha
+/* 00000DC0 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 00000DC4 80630000 */ lwz r3, 0(r3)
 /* 00000DC8 806300B0 */ lwz r3, 0xb0(r3)
 /* 00000DCC 4BFFF399 */ bl nl2ngc_draw_model_unsorted
@@ -965,8 +965,8 @@ lbl_00000DD0:
 /* 00000EB4 4BFFF2B1 */ bl mathutil_mtxA_scale_s
 /* 00000EB8 FC20F890 */ fmr f1, f31
 /* 00000EBC 4BFFF2A9 */ bl nl2ngc_set_scale
-/* 00000EC0 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00000EC4 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00000EC0 3C600000 */ lis r3, g_commonNLObj@ha
+/* 00000EC4 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 00000EC8 80630000 */ lwz r3, 0(r3)
 /* 00000ECC 806300B0 */ lwz r3, 0xb0(r3)
 /* 00000ED0 4BFFF295 */ bl nl2ngc_draw_model_unsorted
@@ -1027,8 +1027,8 @@ lbl_00000ED4:
 /* 00000FA8 4BFFF1BD */ bl mathutil_mtxA_scale_s
 /* 00000FAC FC20F890 */ fmr f1, f31
 /* 00000FB0 4BFFF1B5 */ bl nl2ngc_set_scale
-/* 00000FB4 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00000FB8 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00000FB4 3C600000 */ lis r3, g_commonNLObj@ha
+/* 00000FB8 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 00000FBC 80630000 */ lwz r3, 0(r3)
 /* 00000FC0 806300B0 */ lwz r3, 0xb0(r3)
 /* 00000FC4 4BFFF1A1 */ bl nl2ngc_draw_model_unsorted
@@ -10381,9 +10381,9 @@ lbl_00009CA4:
 /* 00009CDC C03F004C */ lfs f1, 0x4c(r31)
 /* 00009CE0 90010018 */ stw r0, 0x18(r1)
 /* 00009CE4 C8830000 */ lfd f4, lbl_0001C138@l(r3)
-/* 00009CE8 3C600000 */ lis r3, naomiCommonObj@ha
+/* 00009CE8 3C600000 */ lis r3, g_commonNLObj@ha
 /* 00009CEC C8610018 */ lfd f3, 0x18(r1)
-/* 00009CF0 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00009CF0 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 00009CF4 C01F010C */ lfs f0, 0x10c(r31)
 /* 00009CF8 EC632028 */ fsubs f3, f3, f4
 /* 00009CFC EC431024 */ fdivs f2, f3, f2
@@ -10533,8 +10533,8 @@ lbl_00009ED0:
 /* 00009F2C 4BFF6239 */ bl nl2ngc_set_material_color
 /* 00009F30 C03F0024 */ lfs f1, 0x24(r31)
 /* 00009F34 4BFF6231 */ bl nl2ngc_set_scale
-/* 00009F38 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00009F3C 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00009F38 3C600000 */ lis r3, g_commonNLObj@ha
+/* 00009F3C 38630000 */ addi r3, r3, g_commonNLObj@l
 /* 00009F40 80630000 */ lwz r3, 0(r3)
 /* 00009F44 806300D8 */ lwz r3, 0xd8(r3)
 /* 00009F48 4BFF621D */ bl u_nl2ngc_draw_model_sort_translucent
@@ -15652,10 +15652,10 @@ lbl_0000E9C0:
 /* 0000E9D4 4E800020 */ blr 
 lbl_0000E9D8:
 /* 0000E9D8 7C0802A6 */ mflr r0
-/* 0000E9DC 3C600000 */ lis r3, naomiCommonObj@ha
+/* 0000E9DC 3C600000 */ lis r3, g_commonNLObj@ha
 /* 0000E9E0 90010004 */ stw r0, 4(r1)
 /* 0000E9E4 9421FFF8 */ stwu r1, -8(r1)
-/* 0000E9E8 80A30000 */ lwz r5, naomiCommonObj@l(r3)
+/* 0000E9E8 80A30000 */ lwz r5, g_commonNLObj@l(r3)
 /* 0000E9EC 3C601C00 */ lis r3, 0x1c00
 /* 0000E9F0 3883FFFF */ addi r4, r3, -1  ;# fixed addi
 /* 0000E9F4 80650030 */ lwz r3, 0x30(r5)
@@ -15667,14 +15667,14 @@ lbl_0000E9D8:
 /* 0000EA0C 4E800020 */ blr 
 lbl_0000EA10:
 /* 0000EA10 7C0802A6 */ mflr r0
-/* 0000EA14 3C600000 */ lis r3, naomiCommonObj@ha
+/* 0000EA14 3C600000 */ lis r3, g_commonNLObj@ha
 /* 0000EA18 90010004 */ stw r0, 4(r1)
 /* 0000EA1C 3CA00000 */ lis r5, unpausedFrameCounter@ha
 /* 0000EA20 9421FFB0 */ stwu r1, -0x50(r1)
 /* 0000EA24 DBE10048 */ stfd f31, 0x48(r1)
 /* 0000EA28 BEC10020 */ stmw r22, 0x20(r1)
 /* 0000EA2C 3BC10014 */ addi r30, r1, 0x14
-/* 0000EA30 80830000 */ lwz r4, naomiCommonObj@l(r3)
+/* 0000EA30 80830000 */ lwz r4, g_commonNLObj@l(r3)
 /* 0000EA34 3C600000 */ lis r3, poolInfo@ha
 /* 0000EA38 38630000 */ addi r3, r3, poolInfo@l
 /* 0000EA3C 83250000 */ lwz r25, unpausedFrameCounter@l(r5)

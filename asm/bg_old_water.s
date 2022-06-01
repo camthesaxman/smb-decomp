@@ -352,7 +352,7 @@ lbl_8005A5A0:
 /* 8005A6C4 000565E4  C0 21 00 B4 */	lfs f1, 0xb4(r1)
 /* 8005A6C8 000565E8  C0 01 00 BC */	lfs f0, 0xbc(r1)
 /* 8005A6CC 000565EC  EC 22 08 2A */	fadds f1, f2, f1
-/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005A6D4 000565F4  D0 21 00 3C */	stfs f1, 0x3c(r1)
 /* 8005A6D8 000565F8  C0 21 00 44 */	lfs f1, 0x44(r1)
 /* 8005A6DC 000565FC  EC 01 00 2A */	fadds f0, f1, f0
@@ -473,7 +473,7 @@ lbl_8005A6F0:
 /* 8005A8A4 000567C4  B0 01 00 56 */	sth r0, 0x56(r1)
 /* 8005A8A8 000567C8  48 0A BF BD */	bl rand
 /* 8005A8AC 000567CC  54 60 04 7E */	clrlwi r0, r3, 0x11
-/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005A8B4 000567D4  B0 01 00 58 */	sth r0, 0x58(r1)
 /* 8005A8B8 000567D8  38 61 00 08 */	addi r3, r1, 8
 /* 8005A8BC 000567DC  80 04 00 14 */	lwz r0, 0x14(r4)
@@ -754,10 +754,10 @@ bg_old_water_draw:
 /* 8005ACD0 00056BF0  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005ACD4 00056BF4  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005ACD8 00056BF8  4B FA CB D9 */	bl mathutil_mtxA_from_mtx
-/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 8005ACE0 00056C00  80 63 00 04 */	lwz r3, 4(r3)
 /* 8005ACE4 00056C04  4B FD 8D F1 */	bl u_call_draw_naomi_model_and_do_other_stuff
-/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005ACEC 00056C0C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005ACF0 00056C10  80 84 00 08 */	lwz r4, 8(r4)
 /* 8005ACF4 00056C14  80 A4 FF FC */	lwz r5, -4(r4)
@@ -773,7 +773,7 @@ bg_old_water_draw:
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
 /* 8005AD20 00056C40  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD24 00056C44  4B FD 8D D1 */	bl u_dupe_of_call_draw_naomi_model_1
-/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005AD2C 00056C4C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD30 00056C50  80 84 00 10 */	lwz r4, 0x10(r4)
 /* 8005AD34 00056C54  80 A4 FF FC */	lwz r5, -4(r4)
@@ -828,7 +828,7 @@ lbl_8005ADC8:
 /* 8005ADE0 00056D00  4B FA 86 35 */	bl memcpy
 /* 8005ADE4 00056D04  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005ADE8 00056D08  4B FA CE 6D */	bl mathutil_mtxA_mult_left
-/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005ADF0 00056D10  38 7E 00 00 */	addi r3, r30, 0
 /* 8005ADF4 00056D14  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005ADF8 00056D18  80 84 00 0C */	lwz r4, 0xc(r4)
@@ -867,7 +867,7 @@ lbl_8005AE58:
 /* 8005AE6C 00056D8C  4B FA 85 A9 */	bl memcpy
 /* 8005AE70 00056D90  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005AE74 00056D94  4B FA CD E1 */	bl mathutil_mtxA_mult_left
-/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 8005AE7C 00056D9C  38 7E 00 00 */	addi r3, r30, 0
 /* 8005AE80 00056DA0  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005AE84 00056DA4  80 84 00 0C */	lwz r4, 0xc(r4)

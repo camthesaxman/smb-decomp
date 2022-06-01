@@ -389,8 +389,8 @@ typedef u32 (*Func802F20F0)();
 typedef void (*CameraCallback)(struct Camera *, struct Ball *);
 typedef void (*BallCallback)(struct Ball *);
 
-struct NaomiModel;
-struct NaomiArchive;
+struct NlModel;
+struct NlObj;
 
 struct Struct80092B98
 {
@@ -685,18 +685,18 @@ struct NaomiSpriteParams
     u8 filler40[0x50-0x40];
 };
 
-struct NLVtxWithNormal;
-struct NLVtxWithColor;
+struct NlVtxWithNormal;
+struct NlVtxWithColor;
 
 // Part of the stage whose vertices are manipulated by functions
 struct DynamicStagePart
 {
     void *modelName;
-    struct NaomiModel *origModel;  // original model
-    void (*posNrmTexFunc)(struct NLVtxWithNormal *);
-    void (*posColorTexFunc)(struct NLVtxWithColor *);
+    struct NlModel *origModel;  // original model
+    void (*posNrmTexFunc)(struct NlVtxWithNormal *);
+    void (*posColorTexFunc)(struct NlVtxWithColor *);
     u32 (*raycastDownFunc)(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal);
-    struct NaomiModel *tempModel;  // modified copy of the model
+    struct NlModel *tempModel;  // modified copy of the model
 };
 
 struct Struct801EEC80
@@ -776,7 +776,7 @@ struct Sphere
 };
 
 struct Preview;
-struct NLDispList;
+struct NlDispList;
 
 struct Struct8009544C
 {

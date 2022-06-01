@@ -266,7 +266,7 @@ void draw_intro_av_logo(void)
     mathutil_mtxA_translate(&advLogoInfo.pos);
     mathutil_mtxA_rotate_x(advLogoInfo.xrot);
     mathutil_mtxA_rotate_z(advLogoInfo.zrot);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_av_ball));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_av_ball));
 }
 
 void draw_adv_demo_scene(void)
@@ -309,7 +309,7 @@ void draw_adv_demo_scene(void)
             ballInfo[0].ape->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_AIRSHIP));
+        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_AIRSHIP));
     }
 
     // Draws old arcade ball. Leftover from Monkey Ball?
@@ -324,7 +324,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, r27->modelId));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, r27->modelId));
         }
     }
 
@@ -717,7 +717,7 @@ void draw_continue_scene(void)
     else
     {
         mathutil_mtxA_from_mtxB();
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BOX));
+        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_BOX));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -759,14 +759,14 @@ void draw_continue_scene(void)
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         nl2ngc_set_scale(MAX(f26, f27));
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT));
+        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT));
         nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
         nl2ngc_set_scale(0.25f);
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_spotl1));
     }
     else
     {
@@ -809,7 +809,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             nl2ngc_set_scale(4.6f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_SPOT_LIGHT_MULTI));
+            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -819,7 +819,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             nl2ngc_set_scale(0.25f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_spotl1));
         }
     }
 
@@ -1020,7 +1020,7 @@ struct Keyframe bombSparkYKeyframes[] =
 
 void draw_timer_bomb_fuse(void)
 {
-    struct NaomiModel *tempModel;
+    struct NlModel *tempModel;
     struct Sprite *sprite;
     float t;  // portion of clock time remaining (from 0.0 to 1.0)
     float x;
@@ -1036,12 +1036,12 @@ void draw_timer_bomb_fuse(void)
     Point3d sparkPos;
     float f4;
     float f3;
-    struct NLVtxWithNormal *vtx;
+    struct NlVtxWithNormal *vtx;
     int i;
     int r7;
     int faceCount;
     float f1;
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING || infoWork.timerCurr <= 0)
         return;
@@ -1073,11 +1073,11 @@ void draw_timer_bomb_fuse(void)
     // Make a temporary copy of the timer fuse, which we will modify
     memcpy(
         tempModel,
-        NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_OBJ_COLOR_BAR_03),
-        NLMODEL_HEADER(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
+        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_OBJ_COLOR_BAR_03),
+        NLMODEL_HEADER(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
 
-    mesh = (struct NaomiMesh *)tempModel->meshStart;
-    faceCount = ((struct NLDispList *)(((struct NaomiMesh *)tempModel->meshStart)->dispListStart))->faceCount;
+    mesh = (struct NlMesh *)tempModel->meshStart;
+    faceCount = ((struct NlDispList *)(((struct NlMesh *)tempModel->meshStart)->dispListStart))->faceCount;
 
     f4 = 2.0 * (t - 0.5);
     f4 = CLAMP(f4, 0.0, 1.0);
@@ -1086,7 +1086,7 @@ void draw_timer_bomb_fuse(void)
     r7 = mathutil_floor(f3 * 0.5) * 2.0f;
     f1 = (f3 - r7) * 0.5;
 
-    vtx = (struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData;
+    vtx = (struct NlVtxWithNormal *)((struct NlDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
         if (t < 0.5)
@@ -1108,7 +1108,7 @@ void draw_timer_bomb_fuse(void)
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
 
-        vtx = &((struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData)[index];
+        vtx = &((struct NlVtxWithNormal *)((struct NlDispList *)mesh->dispListStart)->vtxData)[index];
 
         sp48.x = vtx[0].x * f1 + vtx[2].x * f2;
         sp48.y = vtx[0].y * f1 + vtx[2].y * f2;
@@ -1126,7 +1126,7 @@ void draw_timer_bomb_fuse(void)
     // WTF??
     mesh = (void *)((u32 *)mesh + (((s32)mesh->dispListSize >> 2) + 0x14));
 
-    faceCount = ((struct NLDispList *)mesh->dispListStart)->faceCount;
+    faceCount = ((struct NlDispList *)mesh->dispListStart)->faceCount;
 
     f4 = t * 2.0;
     f4 = CLAMP(f4, 0.0, 1.0);
@@ -1135,7 +1135,7 @@ void draw_timer_bomb_fuse(void)
     r7 = mathutil_floor(f3 * 0.5) * 2.0f;
     f1 = (f3 - r7) * 0.5;
 
-    vtx = (void *)((struct NLDispList *)mesh->dispListStart)->vtxData;
+    vtx = (void *)((struct NlDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
         if (t > 0.5)
@@ -1157,7 +1157,7 @@ void draw_timer_bomb_fuse(void)
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
 
-        vtx = &((struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData)[index];
+        vtx = &((struct NlVtxWithNormal *)((struct NlDispList *)mesh->dispListStart)->vtxData)[index];
 
         sp30.x = vtx[0].x * f1 + vtx[2].x * f2;
         sp30.y = vtx[0].y * f1 + vtx[2].y * f2;
@@ -1237,7 +1237,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
     mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
-    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_TIMER_FIRE));
+    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_TIMER_FIRE));
     u_reset_post_mult_color();
 }
 

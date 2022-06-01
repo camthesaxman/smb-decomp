@@ -12,11 +12,11 @@ bg_old_extramaster_init:
 /* 80057AB0 000539D0  DB E1 01 38 */	stfd f31, 0x138(r1)
 /* 80057AB4 000539D4  DB C1 01 30 */	stfd f30, 0x130(r1)
 /* 80057AB8 000539D8  BF 21 01 14 */	stmw r25, 0x114(r1)
-/* 80057ABC 000539DC  80 AD 99 1C */	lwz r5, naomiBgArchive@sda21(r13)
+/* 80057ABC 000539DC  80 AD 99 1C */	lwz r5, g_bgNLObj@sda21(r13)
 /* 80057AC0 000539E0  80 65 00 08 */	lwz r3, 8(r5)
 /* 80057AC4 000539E4  3C A0 04 00 */	lis r5, 0x400
 /* 80057AC8 000539E8  48 03 58 A5 */	bl func_8008D36C
-/* 80057ACC 000539EC  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80057ACC 000539EC  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80057AD0 000539F0  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 80057AD4 000539F4  3B A3 91 78 */	addi r29, r3, backgroundInfo@l
 /* 80057AD8 000539F8  80 04 00 A0 */	lwz r0, 0xa0(r4)
@@ -244,14 +244,14 @@ lbl_80057DB0:
 /* 80057E4C 00053D6C  B0 01 00 10 */	sth r0, 0x10(r1)
 /* 80057E50 00053D70  3C 60 80 1C */	lis r3, lbl_801B9B48@ha
 /* 80057E54 00053D74  3B C3 9B 48 */	addi r30, r3, lbl_801B9B48@l
-/* 80057E58 00053D78  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80057E58 00053D78  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80057E5C 00053D7C  38 00 00 00 */	li r0, 0
 /* 80057E60 00053D80  38 7E 00 00 */	addi r3, r30, 0
 /* 80057E64 00053D84  80 84 00 08 */	lwz r4, 8(r4)
 /* 80057E68 00053D88  90 81 00 38 */	stw r4, 0x38(r1)
 /* 80057E6C 00053D8C  90 01 00 18 */	stw r0, 0x18(r1)
 /* 80057E70 00053D90  48 0A EC F1 */	bl strlen
-/* 80057E74 00053D94  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80057E74 00053D94  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80057E78 00053D98  7C 7A 1B 78 */	mr r26, r3
 /* 80057E7C 00053D9C  CB C2 96 58 */	lfd f30, lbl_802F3E58@sda21(r2)
 /* 80057E80 00053DA0  3F E0 43 30 */	lis r31, 0x4330
@@ -534,7 +534,7 @@ bg_old_extramaster_draw:
 /* 80058264 00054184  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80058268 00054188  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005826C 0005418C  4B FA F6 45 */	bl mathutil_mtxA_from_mtx
-/* 80058270 00054190  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80058270 00054190  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80058274 00054194  80 63 00 A4 */	lwz r3, 0xa4(r3)
 /* 80058278 00054198  4B FD B8 5D */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8005827C 0005419C  80 01 00 0C */	lwz r0, 0xc(r1)

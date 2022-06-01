@@ -12,7 +12,7 @@
 
 void bg_old_space_init(void)
 {
-    backgroundInfo.unk80 = NLOBJ_MODEL(naomiBgArchive, 1);
+    backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNLObj, 1);
     backgroundInfo.unk84 = 1.0f;
     backgroundInfo.unk38.x = 0.00069444444444444447 - (rand() / 32767.0f) * 0.0013888888888888889;
     backgroundInfo.unk38.y = -0.00034722222222222224 - (rand() / 32767.0f) * 0.00017361111111111112;
@@ -35,28 +35,28 @@ void bg_old_space_main(void)
 
 void bg_old_space_finish(void) {}
 
-static void lbl_8005872C(struct NLVtxWithNormal *);
-static void lbl_80058764(struct NLVtxWithColor *);
+static void lbl_8005872C(struct NlVtxWithNormal *);
+static void lbl_80058764(struct NlVtxWithColor *);
 
 void bg_old_space_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiBgArchive, 0));
-    memcpy(lbl_802F1B4C, NLOBJ_MODEL(naomiBgArchive, 2), NLMODEL_HEADER(NLOBJ_MODEL(naomiBgArchive, 2))->unk4->modelSize);
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNLObj, 0));
+    memcpy(lbl_802F1B4C, NLOBJ_MODEL(g_bgNLObj, 2), NLMODEL_HEADER(NLOBJ_MODEL(g_bgNLObj, 2))->unk4->modelSize);
     u_apply_func_to_naomi_model_vertices(lbl_802F1B4C, lbl_8005872C, lbl_80058764);
     u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
 }
 
 void bg_old_space_interact(int a) {}
 
-static void lbl_8005872C(struct NLVtxWithNormal *vtx)
+static void lbl_8005872C(struct NlVtxWithNormal *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80058764(struct NLVtxWithColor *vtx)
+static void lbl_80058764(struct NlVtxWithColor *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;

@@ -18,7 +18,7 @@
 
 struct Struct8008CF00 lbl_801ED920[146];
 
-struct NaomiModel *lbl_802F1B4C;
+struct NlModel *lbl_802F1B4C;
 void *dvdReadBuffer;
 void *lbl_802F1B44;
 void *lbl_802F1B40;
@@ -39,11 +39,11 @@ long stageHeapSize;
 long backgroundHeapSize;
 long charaHeapSize;
 
-struct NaomiArchive *naomiCommonObj;
-struct NaomiArchive *naomiStageObj;
-struct NaomiArchive *naomiBgArchive;
-struct NaomiArchive *lbl_802F1AF8;
-struct NaomiArchive *minigameNaomiObj;
+struct NlObj *g_commonNLObj;
+struct NlObj *g_stageNLObj;
+struct NlObj *g_bgNLObj;
+struct NlObj *lbl_802F1AF8;
+struct NlObj *g_minigameNLObj;
 
 struct TPL *naomiCommonTpl;
 struct TPL *naomiStageTpl;

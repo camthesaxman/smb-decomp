@@ -7,8 +7,8 @@
 
 static float lbl_802F1F60;
 
-static void lbl_800481A0(struct NLVtxWithNormal *);
-static void lbl_800482A4(struct NLVtxWithColor *);
+static void lbl_800481A0(struct NlVtxWithNormal *);
+static void lbl_800482A4(struct NlVtxWithColor *);
 
 struct Struct80048084
 {
@@ -18,10 +18,10 @@ struct Struct80048084
 };
 
 #ifdef NONMATCHING
-void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
-    struct NaomiMesh *mesh;
-    struct NaomiMesh *next;
+    struct NlMesh *mesh;
+    struct NlMesh *next;
     u32 r30;
     GXTexObj *r29;
 
@@ -31,19 +31,19 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     memcpy(&lbl_802F1F60, arg2, 4);
     r30 = arg1->unk20;
     r29 = arg1->unk24;
-    mesh = (struct NaomiMesh *)arg0->meshStart;
+    mesh = (struct NlMesh *)arg0->meshStart;
     while (mesh->flags != 0)
     {
-        next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+        next = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
         {
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NLDispList *)mesh->dispListStart, next, lbl_800482A4);
+            u_apply_func_to_naomi_dl_pos_color_tex((struct NlDispList *)mesh->dispListStart, next, lbl_800482A4);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NLDispList *)mesh->dispListStart, next, lbl_800481A0);
+            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NlDispList *)mesh->dispListStart, next, lbl_800481A0);
             break;
         }
         mesh->flags &= 0xF8FFFFFE;
@@ -57,7 +57,7 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     }
 }
 #else
-asm void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+asm void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
     nofralloc
 #include "../asm/nonmatchings/func_80048084.s"
@@ -65,13 +65,13 @@ asm void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_800481A0(struct NLVtxWithNormal *arg0)
+static void lbl_800481A0(struct NlVtxWithNormal *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NLVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxWithColor *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -98,7 +98,7 @@ static void lbl_800481A0(struct NLVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_800482A4(struct NLVtxWithColor *arg0)
+static void lbl_800482A4(struct NlVtxWithColor *arg0)
 {
 	u8 dummy[8];
 	Vec spC;
@@ -130,14 +130,14 @@ static void lbl_800482A4(struct NLVtxWithColor *arg0)
     arg0->unk14 = 0;
 }
 
-static void lbl_8004853C(struct NLVtxWithNormal *);
-static void lbl_8004863C(struct NLVtxWithColor *);
+static void lbl_8004853C(struct NlVtxWithNormal *);
+static void lbl_8004863C(struct NlVtxWithColor *);
 
 #ifdef NONMATCHING
-void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
-    struct NaomiMesh *mesh;
-    struct NaomiMesh *next;
+    struct NlMesh *mesh;
+    struct NlMesh *next;
     u32 r30;
     GXTexObj *r29;
 
@@ -147,19 +147,19 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     memcpy(&lbl_802F1F60, arg2, 4);
     r30 = arg1->unk20;
     r29 = arg1->unk24;
-    mesh = (struct NaomiMesh *)arg0->meshStart;
+    mesh = (struct NlMesh *)arg0->meshStart;
     while (mesh->flags != 0)
     {
-        next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+        next = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
         {
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NLDispList *)mesh->dispListStart, next, lbl_8004863C);
+            u_apply_func_to_naomi_dl_pos_color_tex((struct NlDispList *)mesh->dispListStart, next, lbl_8004863C);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NLDispList *)mesh->dispListStart, next, lbl_8004853C);
+            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NlDispList *)mesh->dispListStart, next, lbl_8004853C);
             break;
         }
         mesh->flags &= 0xF8FFFFFE;
@@ -173,7 +173,7 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
     }
 }
 #else
-asm void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+asm void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
 	nofralloc
 #include "../asm/nonmatchings/func_80048420.s"
@@ -181,13 +181,13 @@ asm void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_8004853C(struct NLVtxWithNormal *arg0)
+static void lbl_8004853C(struct NlVtxWithNormal *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NLVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxWithColor *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -214,7 +214,7 @@ static void lbl_8004853C(struct NLVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_8004863C(struct NLVtxWithColor *arg0)
+static void lbl_8004863C(struct NlVtxWithColor *arg0)
 {
 	u8 dummy[8];
 	Vec spC;

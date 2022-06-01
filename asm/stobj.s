@@ -1718,7 +1718,7 @@ lbl_8006BE28:
 /* 8006BE3C 00067D5C  FC 40 F0 90 */	fmr f2, f30
 /* 8006BE40 00067D60  FC 60 F0 90 */	fmr f3, f30
 /* 8006BE44 00067D64  4B FC 4D 75 */	bl nl2ngc_set_material_color
-/* 8006BE48 00067D68  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006BE48 00067D68  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006BE4C 00067D6C  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 8006BE50 00067D70  4B FC 55 01 */	bl nl2ngc_draw_model_unsorted
 /* 8006BE54 00067D74  4B FA 25 69 */	bl u_reset_post_mult_color
@@ -2560,7 +2560,7 @@ func_8006CA1C:
 /* 8006CA44 00068964  80 9E 00 08 */	lwz r4, 8(r30)
 /* 8006CA48 00068968  60 84 00 02 */	ori r4, r4, 2
 /* 8006CA4C 0006896C  90 9E 00 08 */	stw r4, 8(r30)
-/* 8006CA50 00068970  80 8D 99 24 */	lwz r4, naomiCommonObj@sda21(r13)
+/* 8006CA50 00068970  80 8D 99 24 */	lwz r4, g_commonNLObj@sda21(r13)
 /* 8006CA54 00068974  80 84 00 3C */	lwz r4, 0x3c(r4)
 /* 8006CA58 00068978  90 9E 00 54 */	stw r4, 0x54(r30)
 /* 8006CA5C 0006897C  C0 02 A0 F0 */	lfs f0, lbl_802F48F0@sda21(r2)
@@ -2732,67 +2732,67 @@ lbl_8006CB38:
 /* 8006CCE8 00068C08  D1 7F 00 08 */	stfs f11, 8(r31)
 /* 8006CCEC 00068C0C  D1 7F 00 0C */	stfs f11, 0xc(r31)
 /* 8006CCF0 00068C10  A8 05 00 00 */	lha r0, 0(r5)
-/* 8006CCF4 00068C14  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CCF4 00068C14  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CCF8 00068C18  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CCFC 00068C1C  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD00 00068C20  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD04 00068C24  90 04 00 00 */	stw r0, 0(r4)
 /* 8006CD08 00068C28  A8 05 00 02 */	lha r0, 2(r5)
-/* 8006CD0C 00068C2C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD0C 00068C2C  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD10 00068C30  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD14 00068C34  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD18 00068C38  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD1C 00068C3C  90 04 00 04 */	stw r0, 4(r4)
 /* 8006CD20 00068C40  A8 05 00 04 */	lha r0, 4(r5)
-/* 8006CD24 00068C44  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD24 00068C44  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD28 00068C48  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD2C 00068C4C  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD30 00068C50  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD34 00068C54  90 04 00 08 */	stw r0, 8(r4)
 /* 8006CD38 00068C58  A8 05 00 06 */	lha r0, 6(r5)
-/* 8006CD3C 00068C5C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD3C 00068C5C  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD40 00068C60  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD44 00068C64  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD48 00068C68  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD4C 00068C6C  90 04 00 0C */	stw r0, 0xc(r4)
 /* 8006CD50 00068C70  A8 05 00 08 */	lha r0, 8(r5)
-/* 8006CD54 00068C74  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD54 00068C74  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD58 00068C78  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD5C 00068C7C  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD60 00068C80  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD64 00068C84  90 04 00 10 */	stw r0, 0x10(r4)
 /* 8006CD68 00068C88  A8 05 00 0A */	lha r0, 0xa(r5)
-/* 8006CD6C 00068C8C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD6C 00068C8C  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD70 00068C90  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD74 00068C94  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD78 00068C98  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD7C 00068C9C  90 04 00 14 */	stw r0, 0x14(r4)
 /* 8006CD80 00068CA0  A8 05 00 0C */	lha r0, 0xc(r5)
-/* 8006CD84 00068CA4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD84 00068CA4  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CD88 00068CA8  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CD8C 00068CAC  7C 63 02 14 */	add r3, r3, r0
 /* 8006CD90 00068CB0  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CD94 00068CB4  90 04 00 18 */	stw r0, 0x18(r4)
 /* 8006CD98 00068CB8  A8 05 00 0E */	lha r0, 0xe(r5)
-/* 8006CD9C 00068CBC  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CD9C 00068CBC  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CDA0 00068CC0  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CDA4 00068CC4  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDA8 00068CC8  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CDAC 00068CCC  90 04 00 1C */	stw r0, 0x1c(r4)
 /* 8006CDB0 00068CD0  A8 05 00 10 */	lha r0, 0x10(r5)
-/* 8006CDB4 00068CD4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CDB4 00068CD4  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CDB8 00068CD8  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CDBC 00068CDC  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDC0 00068CE0  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CDC4 00068CE4  90 04 00 20 */	stw r0, 0x20(r4)
 /* 8006CDC8 00068CE8  A8 05 00 12 */	lha r0, 0x12(r5)
-/* 8006CDCC 00068CEC  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CDCC 00068CEC  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CDD0 00068CF0  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CDD4 00068CF4  7C 63 02 14 */	add r3, r3, r0
 /* 8006CDD8 00068CF8  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CDDC 00068CFC  90 04 00 24 */	stw r0, 0x24(r4)
 /* 8006CDE0 00068D00  3C 80 80 1C */	lis r4, lbl_801BE434@ha
-/* 8006CDE4 00068D04  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CDE4 00068D04  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CDE8 00068D08  38 A4 E4 34 */	addi r5, r4, lbl_801BE434@l
 /* 8006CDEC 00068D0C  A8 05 00 00 */	lha r0, 0(r5)
 /* 8006CDF0 00068D10  3C 80 80 29 */	lis r4, lbl_8028CF00@ha
@@ -2801,55 +2801,55 @@ lbl_8006CB38:
 /* 8006CDFC 00068D1C  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE00 00068D20  94 04 CF 00 */	stwu r0, lbl_8028CF00@l(r4)
 /* 8006CE04 00068D24  AC 05 00 02 */	lhau r0, 2(r5)
-/* 8006CE08 00068D28  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE08 00068D28  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE0C 00068D2C  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE10 00068D30  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE14 00068D34  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE18 00068D38  90 04 00 04 */	stw r0, 4(r4)
 /* 8006CE1C 00068D3C  A8 05 00 02 */	lha r0, 2(r5)
-/* 8006CE20 00068D40  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE20 00068D40  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE24 00068D44  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE28 00068D48  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE2C 00068D4C  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE30 00068D50  90 04 00 08 */	stw r0, 8(r4)
 /* 8006CE34 00068D54  A8 05 00 04 */	lha r0, 4(r5)
-/* 8006CE38 00068D58  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE38 00068D58  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE3C 00068D5C  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE40 00068D60  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE44 00068D64  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE48 00068D68  90 04 00 0C */	stw r0, 0xc(r4)
 /* 8006CE4C 00068D6C  A8 05 00 06 */	lha r0, 6(r5)
-/* 8006CE50 00068D70  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE50 00068D70  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE54 00068D74  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE58 00068D78  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE5C 00068D7C  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE60 00068D80  90 04 00 10 */	stw r0, 0x10(r4)
 /* 8006CE64 00068D84  A8 05 00 08 */	lha r0, 8(r5)
-/* 8006CE68 00068D88  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE68 00068D88  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE6C 00068D8C  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE70 00068D90  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE74 00068D94  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE78 00068D98  90 04 00 14 */	stw r0, 0x14(r4)
 /* 8006CE7C 00068D9C  A8 05 00 0A */	lha r0, 0xa(r5)
-/* 8006CE80 00068DA0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE80 00068DA0  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE84 00068DA4  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CE88 00068DA8  7C 63 02 14 */	add r3, r3, r0
 /* 8006CE8C 00068DAC  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CE90 00068DB0  90 04 00 18 */	stw r0, 0x18(r4)
 /* 8006CE94 00068DB4  A8 05 00 0C */	lha r0, 0xc(r5)
-/* 8006CE98 00068DB8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CE98 00068DB8  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CE9C 00068DBC  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CEA0 00068DC0  7C 63 02 14 */	add r3, r3, r0
 /* 8006CEA4 00068DC4  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CEA8 00068DC8  90 04 00 1C */	stw r0, 0x1c(r4)
 /* 8006CEAC 00068DCC  A8 05 00 0E */	lha r0, 0xe(r5)
-/* 8006CEB0 00068DD0  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CEB0 00068DD0  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CEB4 00068DD4  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CEB8 00068DD8  7C 63 02 14 */	add r3, r3, r0
 /* 8006CEBC 00068DDC  80 03 00 04 */	lwz r0, 4(r3)
 /* 8006CEC0 00068DE0  90 04 00 20 */	stw r0, 0x20(r4)
 /* 8006CEC4 00068DE4  A8 05 00 10 */	lha r0, 0x10(r5)
-/* 8006CEC8 00068DE8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8006CEC8 00068DE8  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8006CECC 00068DEC  54 00 10 3A */	slwi r0, r0, 2
 /* 8006CED0 00068DF0  7C 63 02 14 */	add r3, r3, r0
 /* 8006CED4 00068DF4  80 03 00 04 */	lwz r0, 4(r3)

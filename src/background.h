@@ -61,7 +61,7 @@ struct BackgroundInfo  // size = 0xA8
     Mtx unk48;
     int (*unk78)();
     int (*unk7C)();
-    struct NaomiModel *unk80;
+    struct NlModel *unk80;
     float unk84;
     u8 filler88[4];
     BallEnvFunc unk8C;

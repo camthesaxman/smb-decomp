@@ -2884,13 +2884,13 @@ lbl_8004F4E8:
 /* 8004F500 0004B420  80 1F 00 0C */	lwz r0, 0xc(r31)
 /* 8004F504 0004B424  2C 00 00 38 */	cmpwi r0, 0x38
 /* 8004F508 0004B428  40 80 00 14 */	bge lbl_8004F51C
-/* 8004F50C 0004B42C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8004F50C 0004B42C  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8004F510 0004B430  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 8004F514 0004B434  4B FE 45 C1 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8004F518 0004B438  48 00 00 3C */	b lbl_8004F554
 lbl_8004F51C:
 /* 8004F51C 0004B43C  20 00 00 3C */	subfic r0, r0, 0x3c
-/* 8004F520 0004B440  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8004F520 0004B440  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8004F524 0004B444  6C 00 80 00 */	xoris r0, r0, 0x8000
 /* 8004F528 0004B448  C8 42 90 D8 */	lfd f2, lbl_802F38D8@sda21(r2)
 /* 8004F52C 0004B44C  90 01 00 1C */	stw r0, 0x1c(r1)
@@ -3330,7 +3330,7 @@ func_8004FB24:
 /* 8004FB98 0004BAB8  4B FB 83 F1 */	bl mathutil_mtxA_rotate_x
 /* 8004FB9C 0004BABC  A8 7E 00 50 */	lha r3, 0x50(r30)
 /* 8004FBA0 0004BAC0  4B FB 84 E9 */	bl mathutil_mtxA_rotate_z
-/* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 8004FBA8 0004BAC8  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 8004FBAC 0004BACC  80 63 00 9C */	lwz r3, 0x9c(r3)
 /* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl u_call_draw_model_with_alpha_deferred
@@ -3374,7 +3374,7 @@ func_8004FB24:
 /* 8004FC48 0004BB68  FC 40 08 90 */	fmr f2, f1
 /* 8004FC4C 0004BB6C  FC 60 08 90 */	fmr f3, f1
 /* 8004FC50 0004BB70  4B FE 0F 69 */	bl nl2ngc_set_material_color
-/* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 8004FC54 0004BB74  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 8004FC58 0004BB78  80 63 00 08 */	lwz r3, 8(r3)
 /* 8004FC5C 0004BB7C  4B FE 3E 79 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8004FC60 0004BB80  4B FB E7 5D */	bl u_reset_post_mult_color
@@ -3528,7 +3528,7 @@ func_8004FDCC:
 /* 8004FE88 0004BDA8  FC 40 08 90 */	fmr f2, f1
 /* 8004FE8C 0004BDAC  FC 60 08 90 */	fmr f3, f1
 /* 8004FE90 0004BDB0  4B FE 0D 29 */	bl nl2ngc_set_material_color
-/* 8004FE94 0004BDB4  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 8004FE94 0004BDB4  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8004FE98 0004BDB8  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 8004FE9C 0004BDBC  4B FE 3C 39 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 8004FEA0 0004BDC0  4B FB E5 1D */	bl u_reset_post_mult_color
@@ -3778,7 +3778,7 @@ func_80050138:
 /* 80050248 0004C168  EC 20 07 F2 */	fmuls f1, f0, f31
 /* 8005024C 0004C16C  C0 62 90 E8 */	lfs f3, lbl_802F38E8@sda21(r2)
 /* 80050250 0004C170  4B FB 7B 89 */	bl mathutil_mtxA_scale_xyz
-/* 80050254 0004C174  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80050254 0004C174  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80050258 0004C178  80 63 00 18 */	lwz r3, 0x18(r3)
 /* 8005025C 0004C17C  4B FE 38 79 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050260 0004C180  4B FB E1 5D */	bl u_reset_post_mult_color
@@ -4185,7 +4185,7 @@ func_80050788:
 /* 8005084C 0004C76C  FC 40 08 90 */	fmr f2, f1
 /* 80050850 0004C770  FC 60 08 90 */	fmr f3, f1
 /* 80050854 0004C774  4B FE 03 65 */	bl nl2ngc_set_material_color
-/* 80050858 0004C778  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 80050858 0004C778  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 8005085C 0004C77C  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 80050860 0004C780  4B FE 32 75 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050864 0004C784  4B FB DB 59 */	bl u_reset_post_mult_color
@@ -4488,7 +4488,7 @@ func_80050C38:
 /* 80050CD0 0004CBF0  4B FB 71 09 */	bl mathutil_mtxA_scale_xyz
 /* 80050CD4 0004CBF4  FC 20 F8 90 */	fmr f1, f31
 /* 80050CD8 0004CBF8  4B FD FE D1 */	bl nl2ngc_set_scale
-/* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80050CDC 0004CBFC  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80050CE0 0004CC00  80 63 00 08 */	lwz r3, 8(r3)
 /* 80050CE4 0004CC04  4B FE 2D F1 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050CE8 0004CC08  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
@@ -4524,7 +4524,7 @@ func_80050C38:
 /* 80050D60 0004CC80  4B FB 70 79 */	bl mathutil_mtxA_scale_xyz
 /* 80050D64 0004CC84  FC 20 F8 90 */	fmr f1, f31
 /* 80050D68 0004CC88  4B FD FE 41 */	bl nl2ngc_set_scale
-/* 80050D6C 0004CC8C  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 80050D6C 0004CC8C  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 80050D70 0004CC90  80 63 00 B0 */	lwz r3, 0xb0(r3)
 /* 80050D74 0004CC94  4B FE 2D 61 */	bl u_call_draw_naomi_model_and_do_other_stuff
 lbl_80050D78:
@@ -4670,7 +4670,7 @@ func_80050ED4:
 /* 80050F7C 0004CE9C  FC 40 08 90 */	fmr f2, f1
 /* 80050F80 0004CEA0  FC 60 08 90 */	fmr f3, f1
 /* 80050F84 0004CEA4  4B FD FC 35 */	bl nl2ngc_set_material_color
-/* 80050F88 0004CEA8  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 80050F88 0004CEA8  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
 /* 80050F8C 0004CEAC  80 63 00 D8 */	lwz r3, 0xd8(r3)
 /* 80050F90 0004CEB0  4B FE 2B 45 */	bl u_call_draw_naomi_model_and_do_other_stuff
 /* 80050F94 0004CEB4  4B FB D4 29 */	bl u_reset_post_mult_color
@@ -7211,7 +7211,7 @@ func_80053534:
 /* 8005355C 0004F47C  80 03 EC 90 */	lwz r0, lbl_801EEC90@l(r3)
 /* 80053560 0004F480  EC 01 00 32 */	fmuls f0, f1, f0
 /* 80053564 0004F484  C8 22 93 10 */	lfd f1, lbl_802F3B10@sda21(r2)
-/* 80053568 0004F488  80 8D 99 24 */	lwz r4, naomiCommonObj@sda21(r13)
+/* 80053568 0004F488  80 8D 99 24 */	lwz r4, g_commonNLObj@sda21(r13)
 /* 8005356C 0004F48C  54 00 07 7B */	rlwinm. r0, r0, 0, 0x1d, 0x1d
 /* 80053570 0004F490  FF E1 00 32 */	fmul f31, f1, f0
 /* 80053574 0004F494  83 E4 00 D8 */	lwz r31, 0xd8(r4)

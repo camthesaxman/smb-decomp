@@ -30,7 +30,7 @@ bg_old_bluesky_init:
 /* 80056A20 00052940  A8 0D 99 B2 */	lha r0, gameMode@sda21(r13)
 /* 80056A24 00052944  2C 00 00 01 */	cmpwi r0, 1
 /* 80056A28 00052948  41 82 08 FC */	beq lbl_80057324
-/* 80056A2C 0005294C  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80056A2C 0005294C  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80056A30 00052950  C0 02 95 48 */	lfs f0, lbl_802F3D48@sda21(r2)
 /* 80056A34 00052954  38 83 00 08 */	addi r4, r3, 8
 /* 80056A38 00052958  80 63 00 08 */	lwz r3, 8(r3)
@@ -262,7 +262,7 @@ lbl_80056D70:
 /* 80056D70 00052C90  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056D74 00052C94  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056D78 00052C98  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056D7C 00052C9C  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80056D7C 00052C9C  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80056D80 00052CA0  80 04 00 08 */	lwz r0, 8(r4)
 /* 80056D84 00052CA4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056D88 00052CA8  4B FF 61 81 */	bl spawn_effect
@@ -342,7 +342,7 @@ lbl_80056E80:
 /* 80056E80 00052DA0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056E84 00052DA4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056E88 00052DA8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056E8C 00052DAC  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80056E8C 00052DAC  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80056E90 00052DB0  80 04 00 0C */	lwz r0, 0xc(r4)
 /* 80056E94 00052DB4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056E98 00052DB8  4B FF 60 71 */	bl spawn_effect
@@ -422,7 +422,7 @@ lbl_80056F90:
 /* 80056F90 00052EB0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 80056F94 00052EB4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 80056F98 00052EB8  38 61 00 14 */	addi r3, r1, 0x14
-/* 80056F9C 00052EBC  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 80056F9C 00052EBC  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80056FA0 00052EC0  80 04 00 10 */	lwz r0, 0x10(r4)
 /* 80056FA4 00052EC4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80056FA8 00052EC8  4B FF 5F 61 */	bl spawn_effect
@@ -506,7 +506,7 @@ lbl_800570B0:
 /* 800570B0 00052FD0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800570B4 00052FD4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800570B8 00052FD8  38 61 00 14 */	addi r3, r1, 0x14
-/* 800570BC 00052FDC  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 800570BC 00052FDC  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 800570C0 00052FE0  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 800570C4 00052FE4  90 01 00 44 */	stw r0, 0x44(r1)
 /* 800570C8 00052FE8  4B FF 5E 41 */	bl spawn_effect
@@ -590,7 +590,7 @@ lbl_800571D0:
 /* 800571D0 000530F0  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800571D4 000530F4  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800571D8 000530F8  38 61 00 14 */	addi r3, r1, 0x14
-/* 800571DC 000530FC  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 800571DC 000530FC  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 800571E0 00053100  80 04 00 1C */	lwz r0, 0x1c(r4)
 /* 800571E4 00053104  90 01 00 44 */	stw r0, 0x44(r1)
 /* 800571E8 00053108  4B FF 5D 21 */	bl spawn_effect
@@ -674,11 +674,11 @@ lbl_800572F0:
 /* 800572F0 00053210  54 00 07 3E */	clrlwi r0, r0, 0x1c
 /* 800572F4 00053214  B0 01 00 68 */	sth r0, 0x68(r1)
 /* 800572F8 00053218  38 61 00 14 */	addi r3, r1, 0x14
-/* 800572FC 0005321C  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 800572FC 0005321C  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80057300 00053220  80 04 00 20 */	lwz r0, 0x20(r4)
 /* 80057304 00053224  90 01 00 44 */	stw r0, 0x44(r1)
 /* 80057308 00053228  4B FF 5C 01 */	bl spawn_effect
-/* 8005730C 0005322C  80 8D 99 1C */	lwz r4, naomiBgArchive@sda21(r13)
+/* 8005730C 0005322C  80 8D 99 1C */	lwz r4, g_bgNLObj@sda21(r13)
 /* 80057310 00053230  3C 60 80 05 */	lis r3, lbl_80057940@ha
 /* 80057314 00053234  38 A3 79 40 */	addi r5, r3, lbl_80057940@l
 /* 80057318 00053238  80 64 00 30 */	lwz r3, 0x30(r4)
@@ -712,10 +712,10 @@ bg_old_bluesky_draw:
 /* 8005736C 0005328C  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 80057370 00053290  38 63 00 30 */	addi r3, r3, 0x30
 /* 80057374 00053294  4B FB 05 3D */	bl mathutil_mtxA_from_mtx
-/* 80057378 00053298  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80057378 00053298  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 8005737C 0005329C  80 63 00 14 */	lwz r3, 0x14(r3)
 /* 80057380 000532A0  4B FD C7 55 */	bl u_call_draw_naomi_model_and_do_other_stuff
-/* 80057384 000532A4  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80057384 000532A4  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80057388 000532A8  80 63 00 30 */	lwz r3, 0x30(r3)
 /* 8005738C 000532AC  4B FD A3 D9 */	bl u_nl2ngc_draw_model_sort_translucent_alt
 /* 80057390 000532B0  80 01 00 0C */	lwz r0, 0xc(r1)
@@ -778,7 +778,7 @@ lbl_8005744C:
 /* 80057458 00053378  D8 01 00 10 */	stfd f0, 0x10(r1)
 /* 8005745C 0005337C  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 80057460 00053380  90 1F 00 10 */	stw r0, 0x10(r31)
-/* 80057464 00053384  80 6D 99 1C */	lwz r3, naomiBgArchive@sda21(r13)
+/* 80057464 00053384  80 6D 99 1C */	lwz r3, g_bgNLObj@sda21(r13)
 /* 80057468 00053388  80 03 00 04 */	lwz r0, 4(r3)
 /* 8005746C 0005338C  90 1F 00 30 */	stw r0, 0x30(r31)
 /* 80057470 00053390  A8 1F 00 54 */	lha r0, 0x54(r31)

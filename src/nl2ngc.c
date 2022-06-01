@@ -59,12 +59,12 @@ struct
     float prevScale;
 } s_renderParams = {{1.0f, 1.0f, 1.0f}, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
-static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj);
-static void init_model_flags(struct NaomiModel *model);
+static BOOL naomi_archive_offsets_to_pointers(struct NlObj *obj);
+static void init_model_flags(struct NlModel *model);
 static void prep_some_stuff_before_drawing(void);
-static void build_tev_material(struct NaomiMesh *pmesh);
+static void build_tev_material(struct NlMesh *pmesh);
 static void prep_some_stuff_before_drawing_2(void);
-void build_tev_material_2(struct NaomiMesh *pmesh);
+void build_tev_material_2(struct NlMesh *pmesh);
 
 #pragma force_active on
 void nl2ngc_set_line_width(float a)
@@ -112,11 +112,11 @@ void nl2ngc_set_material_color(float r, float g, float b)
     s_renderParams.materialColor.b = b;
 }
 
-BOOL load_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl, char *archivePath,
+BOOL load_naomi_archive(struct NlObj **archive, struct TPL **tpl, char *archivePath,
                         char *tplPath)
 {
     int len;
-    struct NaomiModel **pmodel;
+    struct NlModel **pmodel;
     u32 size;
     struct File file;
 
@@ -190,7 +190,7 @@ BOOL load_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl, char *a
     return TRUE;
 }
 
-BOOL free_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl)
+BOOL free_naomi_archive(struct NlObj **archive, struct TPL **tpl)
 {
     u8 unused[8];
 
@@ -209,11 +209,11 @@ BOOL free_naomi_archive(struct NaomiArchive **archive, struct TPL **tpl)
 
 // This function converts file all file offsets in the struct into memory pointers
 // Featuring some insane pointer arithmetic.
-static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj)
+static BOOL naomi_archive_offsets_to_pointers(struct NlObj *obj)
 {
-    struct NaomiModel *volatile *pmodel = obj->models;
-    struct NaomiObj_UnkChild *volatile *unkptr;
-    struct NaomiObj_UnkChild_Child *unkchild;
+    struct NlModel *volatile *pmodel = obj->models;
+    struct NlObj_UnkChild *volatile *unkptr;
+    struct NlObj_UnkChild_Child *unkchild;
 
     // Adjust pointers in models?
     while (*pmodel != NULL)
@@ -258,11 +258,11 @@ static BOOL naomi_archive_offsets_to_pointers(struct NaomiArchive *obj)
     return TRUE;
 }
 
-static void init_model_flags(struct NaomiModel *model)
+static void init_model_flags(struct NlModel *model)
 {
     if (model->unk0 != -1)
     {
-        struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
+        struct NlMesh *mesh = (struct NlMesh *)model->meshStart;
         BOOL translucent = FALSE;
         BOOL opaque = FALSE;
         BOOL r8 = TRUE;
@@ -282,7 +282,7 @@ static void init_model_flags(struct NaomiModel *model)
                 if (r9 && (mesh->type != -1 || mesh->type != -3))
                     r9 = FALSE;
             }
-            mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+            mesh = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
         if (translucent)
             model->flags |= (NL_MODEL_FLAG_TRANSLUCENT);
@@ -295,13 +295,13 @@ static void init_model_flags(struct NaomiModel *model)
     }
 }
 
-void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
+void init_naomi_model_textures(struct NlModel *model, struct TPL *tpl)
 {
     u8 unused[8];
 
     if (model->unk0 != -1)
     {
-        struct NaomiMesh *mesh = (struct NaomiMesh *)model->meshStart;
+        struct NlMesh *mesh = (struct NlMesh *)model->meshStart;
 
         while (mesh->flags != 0)
         {
@@ -364,7 +364,7 @@ void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
                                 GX_ANISO_1); // max_aniso
                 mesh->texObj = texObj;
             }
-            mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+            mesh = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
     }
 }
@@ -372,7 +372,7 @@ void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
 struct DrawModelDeferredNode
 {
     struct OrdTblNode node;
-    struct NaomiModel *model;
+    struct NlModel *model;
     Mtx viewFromModel;
     struct Color3f materialColor;
     u32 lightGroup;
@@ -382,7 +382,7 @@ struct DrawModelDeferredNode
 
 static void lbl_80033C8C(struct DrawModelDeferredNode *);
 
-void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *model)
+void u_nl2ngc_draw_model_sort_translucent(struct NlModel *model)
 {
     u32 *modelFlags;
 
@@ -436,9 +436,9 @@ Mtx textureMatrix = {
     {0, 0, 1, 0},
 };
 
-void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
+void nl2ngc_draw_model_unsorted(struct NlModel *model)
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->unk0 != -1)
     {
@@ -473,11 +473,11 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-        mesh = (struct NaomiMesh *)model->meshStart;
+        mesh = (struct NlMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NLDispList *dlstart;
-            struct NaomiMesh *next;
+            struct NlDispList *dlstart;
+            struct NlMesh *next;
 
             build_tev_material(mesh);
             dlstart = (void *)(mesh->dispListStart);
@@ -503,7 +503,7 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
 struct UnkStruct19
 {
     struct OrdTblNode node;
-    struct NaomiModel *model;
+    struct NlModel *model;
     Mtx viewFromModel;
     struct Color3f materialColor;
     float alpha;
@@ -516,7 +516,7 @@ void lbl_80033E6C(struct UnkStruct19 *);
 
 // TODO: Can Naomi models have transparency besides a global parameter here? If not, consider naming
 // `nl2ngc_draw_model_translucent_sorted`
-void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
+void nl2ngc_draw_model_alpha_sorted(struct NlModel *model, float alpha)
 {
     struct UnkStruct19 *node;
     struct OrdTblNode *entry;
@@ -559,9 +559,9 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha)
     }
 }
 
-void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
+void nl2ngc_draw_model_alpha_unsorted(struct NlModel *model, float alpha)
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->unk0 != -1)
     {
@@ -597,11 +597,11 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-        mesh = (struct NaomiMesh *)model->meshStart;
+        mesh = (struct NlMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NLDispList *dlstart;
-            struct NaomiMesh *next;
+            struct NlDispList *dlstart;
+            struct NlMesh *next;
 
             build_tev_material_2(mesh);
             dlstart = (void *)(mesh->dispListStart);
@@ -624,12 +624,12 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
     }
 }
 
-void u_nl2ngc_draw_model_sort_translucent_alt(struct NaomiModel *model)
+void u_nl2ngc_draw_model_sort_translucent_alt(struct NlModel *model)
 {
     u_nl2ngc_draw_model_sort_translucent(model);
 }
 
-void nl2ngc_draw_model_unsorted_alt(struct NaomiModel *model)
+void nl2ngc_draw_model_unsorted_alt(struct NlModel *model)
 {
     nl2ngc_draw_model_unsorted(model);
 }
@@ -709,9 +709,9 @@ static void prep_some_stuff_before_drawing(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-static void build_tev_material(struct NaomiMesh *pmesh)
+static void build_tev_material(struct NlMesh *pmesh)
 {
-    struct NaomiMesh mesh = *pmesh;
+    struct NlMesh mesh = *pmesh;
     GXColor color;
     u32 r28;
     u32 r25;
@@ -865,19 +865,19 @@ static void build_tev_material(struct NaomiMesh *pmesh)
     }
 }
 
-void u_draw_naomi_disp_list_pos_nrm_tex(struct NLDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_nrm_tex(struct NlDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_NRM) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 0)
         s_naomiMaterialCache.hasVerticesWithColor = 0;
 
-    while (dl < (struct NLDispList *)end)
+    while (dl < (struct NlDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NLVtxWithNormal *vtx;
+        struct NlVtxWithNormal *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -972,19 +972,19 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NLDispList *dl, void *end)
     }
 }
 
-void u_draw_naomi_disp_list_pos_color_tex_1(struct NLDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_color_tex_1(struct NlDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 1)
         s_naomiMaterialCache.hasVerticesWithColor = 1;
 
-    while (dl < (struct NLDispList *)end)
+    while (dl < (struct NlDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NLVtxWithColor *vtx;
+        struct NlVtxWithColor *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -1166,9 +1166,9 @@ static void prep_some_stuff_before_drawing_2(void)
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0);
 }
 
-void build_tev_material_2(struct NaomiMesh *pmesh)
+void build_tev_material_2(struct NlMesh *pmesh)
 {
-    struct NaomiMesh mesh = *pmesh;
+    struct NlMesh mesh = *pmesh;
     GXColor color;
     u32 r28;
     u32 r25;
@@ -1327,7 +1327,7 @@ void build_tev_material_2(struct NaomiMesh *pmesh)
     }
 }
 
-static inline void handle_color_vtx(struct NLVtxWithColor *vtx)
+static inline void handle_color_vtx(struct NlVtxWithColor *vtx)
 {
     u32 color;
     GXPosition3f32(vtx->x, vtx->y, vtx->z);
@@ -1339,19 +1339,19 @@ static inline void handle_color_vtx(struct NLVtxWithColor *vtx)
     GXTexCoord2f32(vtx->s, vtx->t);
 }
 
-void u_draw_naomi_disp_list_pos_color_tex_2(struct NLDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_color_tex_2(struct NlDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 1)
         s_naomiMaterialCache.hasVerticesWithColor = 1;
 
-    while (dl < (struct NLDispList *)end)
+    while (dl < (struct NlDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NLVtxWithColor *vtx;
+        struct NlVtxWithColor *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -1434,17 +1434,17 @@ void u_draw_naomi_disp_list_pos_color_tex_2(struct NLDispList *dl, void *end)
     }
 }
 
-void u_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model)
+void u_call_draw_naomi_model_and_do_other_stuff(struct NlModel *model)
 {
     u_nl2ngc_draw_model_sort_translucent(model);
 }
 
-void u_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model)
+void u_dupe_of_call_draw_naomi_model_1(struct NlModel *model)
 {
     nl2ngc_draw_model_unsorted(model);
 }
 
-void u_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b)
+void u_call_draw_model_with_alpha_deferred(struct NlModel *model, float b)
 {
     nl2ngc_draw_model_alpha_sorted(model, b);
 }
@@ -1480,9 +1480,9 @@ void u_nl2ngc_set_some_other_color(int r, int g, int b)
     s_fogColor.b = b;
 }
 
-void u_draw_model_opaque_meshes(struct NaomiModel *model)
+void u_draw_model_opaque_meshes(struct NlModel *model)
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->flags & (1 << 1))
     {
@@ -1500,11 +1500,11 @@ void u_draw_model_opaque_meshes(struct NaomiModel *model)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    mesh = (struct NaomiMesh *)model->meshStart;
+    mesh = (struct NlMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NLDispList *dlstart;
-        struct NaomiMesh *next;
+        struct NlDispList *dlstart;
+        struct NlMesh *next;
 
         build_tev_material(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
@@ -1556,9 +1556,9 @@ static void lbl_80033C8C(struct DrawModelDeferredNode *a)
     s_renderParams.materialColor.b = f29;
 }
 
-void u_draw_naomi_model_4(struct NaomiModel *model)
+void u_draw_naomi_model_4(struct NlModel *model)
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->flags & (1 << 1))
     {
@@ -1576,11 +1576,11 @@ void u_draw_naomi_model_4(struct NaomiModel *model)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    mesh = (struct NaomiMesh *)model->meshStart;
+    mesh = (struct NlMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NLDispList *dlstart;
-        struct NaomiMesh *next;
+        struct NlDispList *dlstart;
+        struct NlMesh *next;
 
         build_tev_material(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
@@ -1633,9 +1633,9 @@ void lbl_80033E6C(struct UnkStruct19 *a)
     s_renderParams.materialColor.b = f29;
 }
 
-void u_draw_naomi_model_5(struct NaomiModel *model)
+void u_draw_naomi_model_5(struct NlModel *model)
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->unk0 == -1)
         return;
@@ -1656,11 +1656,11 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
     GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
 
-    mesh = (struct NaomiMesh *)model->meshStart;
+    mesh = (struct NlMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NLDispList *dlstart;
-        struct NaomiMesh *next;
+        struct NlDispList *dlstart;
+        struct NlMesh *next;
 
         build_tev_material_2(mesh);
         next = (void *)(mesh->dispListStart + mesh->dispListSize);
@@ -1681,9 +1681,9 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
     func_800341B8();
 }
 
-void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
+void u_draw_naomi_model_with_mesh_func(struct NlModel *model, int (*func)())
 {
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (model->unk0 != -1)
     {
@@ -1714,11 +1714,11 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         }
         s_naomiMaterialCache.alpha = 1.0f;
 
-        mesh = (struct NaomiMesh *)model->meshStart;
+        mesh = (struct NlMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NLDispList *dlstart;
-            struct NaomiMesh *next = (void *)(mesh->dispListStart + mesh->dispListSize);
+            struct NlDispList *dlstart;
+            struct NlMesh *next = (void *)(mesh->dispListStart + mesh->dispListSize);
 
             if (func(mesh, mesh->dispListSize) == 0)
                 mesh = next;
