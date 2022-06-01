@@ -269,7 +269,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     if (!(ball->flags & BALL_FLAG_GOAL))
         return 2;
 
-    for (i = 0; i < poolInfo.unk8; i++)
+    for (i = 0; i < g_poolInfo.unk8; i++)
     {
         if (ball->rank - 1 == ballInfo[i].rank
          && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
@@ -502,10 +502,10 @@ void func_80037B20(void)
 {
     struct Ball *ball = &ballInfo[0];
     struct Ball *ballBackup = currentBallStructPtr;
-    s8 *r7 = poolInfo.unkC;
+    s8 *r7 = g_poolInfo.unkC;
     int i;
 
-    for (i = 0; i < poolInfo.unk8; i++, ball++, r7++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r7++)
     {
         if (*r7 == 2)
         {
@@ -529,7 +529,7 @@ void ev_ball_init(void)
         lbl_80206B80[j] = -1;
 
     ball = &ballInfo[0];
-    r21 = poolInfo.unkC;
+    r21 = g_poolInfo.unkC;
 
     lbl_802F1F0C = 0;
     func_8008C4A0(1.0f);
@@ -868,9 +868,9 @@ void ev_ball_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    r28 = poolInfo.unkC;
+    r28 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < poolInfo.unk8; i++, ball++, r28++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r28++)
     {
         if (*r28 == 0 || *r28 == 4)
             continue;
@@ -886,9 +886,9 @@ void ev_ball_main(void)
             func_80038528(ball);
     }
 
-    r3 = poolInfo.unkC;
+    r3 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < poolInfo.unk8; i++, ball++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++)
     {
         if (r3[i] == 0 || r3[i] == 4)
             continue;
@@ -897,9 +897,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        r28 = poolInfo.unkC;
+        r28 = g_poolInfo.unkC;
         ball = &ballInfo[0];
-        for (i = 0; i < poolInfo.unk8; i++, ball++)
+        for (i = 0; i < g_poolInfo.unk8; i++, ball++)
         {
             struct Ball *nextBall;
             int j;
@@ -907,7 +907,7 @@ void ev_ball_main(void)
             if (r28[i] == 0 || r28[i] == 4)
                 continue;
             nextBall = ball + 1;
-            for (j = i + 1; j < poolInfo.unk8; j++, nextBall++)
+            for (j = i + 1; j < g_poolInfo.unk8; j++, nextBall++)
             {
                 float f29;
                 float f2;
@@ -931,7 +931,7 @@ void ev_ball_main(void)
                     else
                         f1 = (f1 - (f29 * 0.25)) / (f29 * 0.25);
 
-                    for (k = 0; k < poolInfo.unk8; k++)
+                    for (k = 0; k < g_poolInfo.unk8; k++)
                     {
                         if (j != k)
                         {
@@ -954,9 +954,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        r28 = poolInfo.unkC;
+        r28 = g_poolInfo.unkC;
         ball = &ballInfo[0];
-        for (i = 0; i < poolInfo.unk8; i++, ball++, r28++)
+        for (i = 0; i < g_poolInfo.unk8; i++, ball++, r28++)
         {
             if (*r28 == 0 || *r28 == 4)
                 continue;
@@ -1092,9 +1092,9 @@ void ball_draw(void)
             func = NULL;
     }
 
-    r27 = poolInfo.unkC;
+    r27 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < poolInfo.unk8; i++, ball++, r27++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r27++)
     {
         if (*r27 == 0 || *r27 == 4)
             continue;
@@ -1253,9 +1253,9 @@ void u_ball_shadow_something_1(void)
 
     sp18.unk3C = lbl_801B7EC0;
 
-    r26 = poolInfo.unkC;
+    r26 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < poolInfo.unk8; i++, ball++, r26++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r26++)
     {
         if (*r26 == 0 || *r26 == 4)
             continue;
@@ -1301,8 +1301,8 @@ void u_ball_shadow_something_2(void)
     sp30.unk28 = commonGma->modelEntries[polyshadow01].model;
 
     ball = &ballInfo[0];
-    r25 = poolInfo.unkC;
-    for (i = 0; i < poolInfo.unk8; i++, ball++, r25++)
+    r25 = g_poolInfo.unkC;
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r25++)
     {
         float f2;
 
@@ -1372,7 +1372,7 @@ void func_800390C8(int a, Vec *sphereCenter, float c)
 
     ball = &ballInfo[0];
     r28 = currentBallStructPtr->playerId;
-    r29 = poolInfo.unkC;
+    r29 = g_poolInfo.unkC;
     lbl_802F1F0C = 0;
 
     for (i = 0; i < 4; i++, ball++, r29++)

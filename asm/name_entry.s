@@ -2303,9 +2303,9 @@ lbl_800AF268:
 /* 800AF2A0 000AB1C0  C8 02 B8 68 */	lfd f0, lbl_802F6068@sda21(r2)
 /* 800AF2A4 000AB1C4  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AF2A8 000AB1C8  4C 80 00 20 */	bgelr
-/* 800AF2AC 000AB1CC  3C 80 80 20 */	lis r4, poolInfo@ha
+/* 800AF2AC 000AB1CC  3C 80 80 20 */	lis r4, g_poolInfo@ha
 /* 800AF2B0 000AB1D0  A8 03 00 00 */	lha r0, 0(r3)
-/* 800AF2B4 000AB1D4  38 64 59 88 */	addi r3, r4, poolInfo@l
+/* 800AF2B4 000AB1D4  38 64 59 88 */	addi r3, r4, g_poolInfo@l
 /* 800AF2B8 000AB1D8  80 63 00 4C */	lwz r3, 0x4c(r3)
 /* 800AF2BC 000AB1DC  38 80 00 03 */	li r4, 3
 /* 800AF2C0 000AB1E0  7C 83 01 AE */	stbx r4, r3, r0
@@ -2481,9 +2481,9 @@ lbl_800AF51C:
 /* 800AF524 000AB444  C0 82 B7 D4 */	lfs f4, lbl_802F5FD4@sda21(r2)
 /* 800AF528 000AB448  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AF52C 000AB44C  40 80 00 1C */	bge lbl_800AF548
-/* 800AF530 000AB450  3C 80 80 20 */	lis r4, poolInfo@ha
+/* 800AF530 000AB450  3C 80 80 20 */	lis r4, g_poolInfo@ha
 /* 800AF534 000AB454  A8 03 00 00 */	lha r0, 0(r3)
-/* 800AF538 000AB458  38 84 59 88 */	addi r4, r4, poolInfo@l
+/* 800AF538 000AB458  38 84 59 88 */	addi r4, r4, g_poolInfo@l
 /* 800AF53C 000AB45C  80 84 00 4C */	lwz r4, 0x4c(r4)
 /* 800AF540 000AB460  38 A0 00 03 */	li r5, 3
 /* 800AF544 000AB464  7C A4 01 AE */	stbx r5, r4, r0

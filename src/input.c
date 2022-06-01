@@ -494,7 +494,7 @@ void func_80025640(void)
         }
         break;
     default:
-        r27 = poolInfo.unkC;
+        r27 = g_poolInfo.unkC;
         if (r27 == NULL)
             break;
         for (i = 0; i < 4; i++, r27++)

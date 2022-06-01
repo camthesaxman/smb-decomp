@@ -34,8 +34,8 @@ static void do_object_collision(void)
     s8 *phi_r19;
 
     ball = ballInfo;
-    phi_r19 = poolInfo.unkC;
-    for (i = 0; i < poolInfo.unk8; i++, ball++, phi_r19++)
+    phi_r19 = g_poolInfo.unkC;
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, phi_r19++)
     {
         currentBallStructPtr = ball;
         if (*phi_r19 != 0 && *phi_r19 != 4)
@@ -46,10 +46,10 @@ static void do_object_collision(void)
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
             {
                 int j;
-                s8 *phi_r30 = poolInfo.unk2C;
+                s8 *phi_r30 = g_poolInfo.unk2C;
                 struct Stobj *stobj = stobjInfo;
 
-                for (j = poolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
+                for (j = g_poolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
                 {
                     if (*phi_r30 && (stobj->unk8 & 2))
                     {
@@ -63,11 +63,11 @@ static void do_object_collision(void)
             }
             if (!(ball->flags & 0x100000) && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
             {
-                s8 *phi_r29_2 = poolInfo.itemStatusList;
+                s8 *phi_r29_2 = g_poolInfo.itemStatusList;
                 int j;
                 struct Item *item = itemPool;
 
-                for (j = poolInfo.itemPoolUpperBound; j > 0; j--, item++, phi_r29_2++)
+                for (j = g_poolInfo.itemPoolUpperBound; j > 0; j--, item++, phi_r29_2++)
                 {
                     if (*phi_r29_2 != 0
                      && (item->flags & 2)

@@ -74,9 +74,9 @@ credits_init:
 /* 800AFDB0 000ABCD0  4B F6 8C 55 */	bl camera_set_state
 /* 800AFDB4 000ABCD4  38 60 00 03 */	li r3, 3
 /* 800AFDB8 000ABCD8  4B F5 B5 71 */	bl event_start
-/* 800AFDBC 000ABCDC  3C 60 80 20 */	lis r3, poolInfo@ha
+/* 800AFDBC 000ABCDC  3C 60 80 20 */	lis r3, g_poolInfo@ha
 /* 800AFDC0 000ABCE0  80 CD 9D 38 */	lwz r6, currentBallStructPtr@sda21(r13)
-/* 800AFDC4 000ABCE4  38 83 59 88 */	addi r4, r3, poolInfo@l
+/* 800AFDC4 000ABCE4  38 83 59 88 */	addi r4, r3, g_poolInfo@l
 /* 800AFDC8 000ABCE8  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 800AFDCC 000ABCEC  80 E4 00 0C */	lwz r7, 0xc(r4)
 /* 800AFDD0 000ABCF0  38 03 5E 60 */	addi r0, r3, ballInfo@l
@@ -210,8 +210,8 @@ credits_main:
 /* 800AFFB8 000ABED8  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800AFFBC 000ABEDC  4C 41 13 82 */	cror 2, 1, 2
 /* 800AFFC0 000ABEE0  40 82 00 58 */	bne lbl_800B0018
-/* 800AFFC4 000ABEE4  3C 60 80 20 */	lis r3, poolInfo@ha
-/* 800AFFC8 000ABEE8  38 83 59 88 */	addi r4, r3, poolInfo@l
+/* 800AFFC4 000ABEE4  3C 60 80 20 */	lis r3, g_poolInfo@ha
+/* 800AFFC8 000ABEE8  38 83 59 88 */	addi r4, r3, g_poolInfo@l
 /* 800AFFCC 000ABEEC  3C 60 80 20 */	lis r3, worldInfo@ha
 /* 800AFFD0 000ABEF0  80 C4 00 0C */	lwz r6, 0xc(r4)
 /* 800AFFD4 000ABEF4  38 03 6B F0 */	addi r0, r3, worldInfo@l
@@ -584,14 +584,14 @@ lbl_800B0500:
 /* 800B0530 000AC450  90 0D A0 40 */	stw r0, lbl_802F2220@sda21(r13)
 /* 800B0534 000AC454  3C A0 66 66 */	lis r5, 0x66666667@ha
 /* 800B0538 000AC458  C3 A2 B8 B8 */	lfs f29, lbl_802F60B8@sda21(r2)
-/* 800B053C 000AC45C  3C 80 80 20 */	lis r4, poolInfo@ha
+/* 800B053C 000AC45C  3C 80 80 20 */	lis r4, g_poolInfo@ha
 /* 800B0540 000AC460  CB C2 B8 F8 */	lfd f30, lbl_802F60F8@sda21(r2)
 /* 800B0544 000AC464  3C 60 80 26 */	lis r3, lbl_802673C8@ha
 /* 800B0548 000AC468  CB E2 B9 80 */	lfd f31, lbl_802F6180@sda21(r2)
 /* 800B054C 000AC46C  CB 62 B9 88 */	lfd f27, lbl_802F6188@sda21(r2)
 /* 800B0550 000AC470  3B C6 75 24 */	addi r30, r6, lbl_801D7524@l
 /* 800B0554 000AC474  3B E5 66 67 */	addi r31, r5, 0x66666667@l
-/* 800B0558 000AC478  3B 04 59 88 */	addi r24, r4, poolInfo@l
+/* 800B0558 000AC478  3B 04 59 88 */	addi r24, r4, g_poolInfo@l
 /* 800B055C 000AC47C  3B 23 73 C8 */	addi r25, r3, lbl_802673C8@l
 /* 800B0560 000AC480  3F A0 00 04 */	lis r29, 4
 /* 800B0564 000AC484  48 00 01 90 */	b lbl_800B06F4

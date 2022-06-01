@@ -166,9 +166,9 @@ lbl_00000278:
 /* 000002BC 38600043 */ li r3, 0x43
 /* 000002C0 4BFFFE8D */ bl camera_set_state
 /* 000002C4 3C800000 */ lis r4, currentBallStructPtr@ha
-/* 000002C8 3C600000 */ lis r3, poolInfo@ha
+/* 000002C8 3C600000 */ lis r3, g_poolInfo@ha
 /* 000002CC 38A40000 */ addi r5, r4, currentBallStructPtr@l
-/* 000002D0 38830000 */ addi r4, r3, poolInfo@l
+/* 000002D0 38830000 */ addi r4, r3, g_poolInfo@l
 /* 000002D4 80E50000 */ lwz r7, 0(r5)
 /* 000002D8 3C600000 */ lis r3, ballInfo@ha
 /* 000002DC 8104000C */ lwz r8, 0xc(r4)
@@ -1216,9 +1216,9 @@ lbl_000011CC:
 /* 0000126C 3B640000 */ addi r27, r4, ballInfo@l
 /* 00001270 3B430000 */ addi r26, r3, lbl_80206B80@l
 /* 00001274 3C600000 */ lis r3, lbl_000051A4@ha
-/* 00001278 3C800000 */ lis r4, poolInfo@ha
+/* 00001278 3C800000 */ lis r4, g_poolInfo@ha
 /* 0000127C 3B830000 */ addi r28, r3, lbl_000051A4@l
-/* 00001280 3BA40000 */ addi r29, r4, poolInfo@l
+/* 00001280 3BA40000 */ addi r29, r4, g_poolInfo@l
 /* 00001284 3B200000 */ li r25, 0
 lbl_00001288:
 /* 00001288 9B3B014A */ stb r25, 0x14a(r27)
@@ -1308,8 +1308,8 @@ lbl_000012FC:
 /* 000013D0 801E0070 */ lwz r0, 0x70(r30)
 /* 000013D4 90040008 */ stw r0, 8(r4)
 /* 000013D8 4BFFF3E1 */ bl lbl_000007B8
-/* 000013DC 3C600000 */ lis r3, poolInfo@ha
-/* 000013E0 38630000 */ addi r3, r3, poolInfo@l
+/* 000013DC 3C600000 */ lis r3, g_poolInfo@ha
+/* 000013E0 38630000 */ addi r3, r3, g_poolInfo@l
 /* 000013E4 3C800000 */ lis r4, currentBallStructPtr@ha
 /* 000013E8 38A40000 */ addi r5, r4, currentBallStructPtr@l
 /* 000013EC 3BA3000C */ addi r29, r3, 0xc
@@ -3500,8 +3500,8 @@ lbl_00003374:
 /* 000033D4 801F0050 */ lwz r0, 0x50(r31)
 /* 000033D8 901F00A4 */ stw r0, 0xa4(r31)
 lbl_000033DC:
-/* 000033DC 3C600000 */ lis r3, poolInfo@ha
-/* 000033E0 38630000 */ addi r3, r3, poolInfo@l
+/* 000033DC 3C600000 */ lis r3, g_poolInfo@ha
+/* 000033E0 38630000 */ addi r3, r3, g_poolInfo@l
 /* 000033E4 8083000C */ lwz r4, 0xc(r3)
 /* 000033E8 38BF0044 */ addi r5, r31, 0x44
 /* 000033EC 38DF0098 */ addi r6, r31, 0x98
@@ -3683,8 +3683,8 @@ lbl_000035B8:
 /* 00003668 98010008 */ stb r0, 8(r1)
 /* 0000366C 48000144 */ b lbl_000037B0
 lbl_00003670:
-/* 00003670 3C600000 */ lis r3, poolInfo@ha
-/* 00003674 38830000 */ addi r4, r3, poolInfo@l
+/* 00003670 3C600000 */ lis r3, g_poolInfo@ha
+/* 00003674 38830000 */ addi r4, r3, g_poolInfo@l
 /* 00003678 3C600000 */ lis r3, lbl_10000044@ha
 /* 0000367C 8164000C */ lwz r11, 0xc(r4)
 /* 00003680 39830000 */ addi r12, r3, lbl_10000044@l
@@ -3895,8 +3895,8 @@ lbl_0000396C:
 lbl_00003974:
 /* 00003974 3BC00008 */ li r30, 8
 lbl_00003978:
-/* 00003978 3C600000 */ lis r3, poolInfo@ha
-/* 0000397C 38630000 */ addi r3, r3, poolInfo@l
+/* 00003978 3C600000 */ lis r3, g_poolInfo@ha
+/* 0000397C 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00003980 80A3000C */ lwz r5, 0xc(r3)
 /* 00003984 3C800000 */ lis r4, playerCharacterSelection@ha
 /* 00003988 3C600000 */ lis r3, lbl_10000044@ha
@@ -4076,7 +4076,7 @@ lbl_00003BDC:
 /* 00003C10 3CE00000 */ lis r7, lbl_802F1FF6@ha
 /* 00003C14 3CA00000 */ lis r5, backgroundInfo@ha
 /* 00003C18 3D800000 */ lis r12, cameraInfo@ha
-/* 00003C1C 3D600000 */ lis r11, poolInfo@ha
+/* 00003C1C 3D600000 */ lis r11, g_poolInfo@ha
 /* 00003C20 3A8F0000 */ addi r20, r15, lbl_0000BE80@l
 /* 00003C24 3BC40000 */ addi r30, r4, lbl_1000003C@l
 /* 00003C28 3A610018 */ addi r19, r1, 0x18
@@ -4089,7 +4089,7 @@ lbl_00003BDC:
 /* 00003C44 3BA50000 */ addi r29, r5, backgroundInfo@l
 /* 00003C48 3ACC0000 */ addi r22, r12, cameraInfo@l
 /* 00003C4C 82350000 */ lwz r17, 0(r21)
-/* 00003C50 3AEB0000 */ addi r23, r11, poolInfo@l
+/* 00003C50 3AEB0000 */ addi r23, r11, g_poolInfo@l
 /* 00003C54 3A400000 */ li r18, 0
 /* 00003C58 3A000000 */ li r16, 0
 /* 00003C5C 39E00000 */ li r15, 0
@@ -4354,11 +4354,11 @@ lbl_00003FF0:
 /* 00004020 4E800020 */ blr 
 lbl_00004024:
 /* 00004024 7C0802A6 */ mflr r0
-/* 00004028 3C600000 */ lis r3, poolInfo@ha
+/* 00004028 3C600000 */ lis r3, g_poolInfo@ha
 /* 0000402C 90010004 */ stw r0, 4(r1)
 /* 00004030 9421FFD8 */ stwu r1, -0x28(r1)
 /* 00004034 BF21000C */ stmw r25, 0xc(r1)
-/* 00004038 3BC30000 */ addi r30, r3, poolInfo@l
+/* 00004038 3BC30000 */ addi r30, r3, g_poolInfo@l
 /* 0000403C 3C600000 */ lis r3, ballInfo@ha
 /* 00004040 38030000 */ addi r0, r3, ballInfo@l
 /* 00004044 3C600000 */ lis r3, lbl_000040EC@ha
@@ -7403,8 +7403,8 @@ lbl_00006CCC:
 /* 00006D0C D0040000 */ stfs f0, 0(r4)
 /* 00006D10 4E800020 */ blr 
 lbl_00006D14:
-/* 00006D14 3C600000 */ lis r3, poolInfo@ha
-/* 00006D18 38630000 */ addi r3, r3, poolInfo@l
+/* 00006D14 3C600000 */ lis r3, g_poolInfo@ha
+/* 00006D18 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00006D1C 80C3000C */ lwz r6, 0xc(r3)
 /* 00006D20 3C800000 */ lis r4, lbl_80206BD0@ha
 /* 00006D24 3C600000 */ lis r3, controllerInfo@ha
@@ -8825,9 +8825,9 @@ lbl_00008198:
 /* 00008210 90030030 */ stw r0, 0x30(r3)
 /* 00008214 4E800020 */ blr 
 lbl_00008218:
-/* 00008218 3C800000 */ lis r4, poolInfo@ha
+/* 00008218 3C800000 */ lis r4, g_poolInfo@ha
 /* 0000821C A8030000 */ lha r0, 0(r3)
-/* 00008220 38640000 */ addi r3, r4, poolInfo@l
+/* 00008220 38640000 */ addi r3, r4, g_poolInfo@l
 /* 00008224 8063004C */ lwz r3, 0x4c(r3)
 /* 00008228 38800003 */ li r4, 3
 /* 0000822C 7C8301AE */ stbx r4, r3, r0
@@ -10157,11 +10157,11 @@ lbl_000094A0:
 /* 00009614 3C800000 */ lis r4, ballInfo@ha
 /* 00009618 3C600000 */ lis r3, lbl_10000044@ha
 /* 0000961C D001001C */ stfs f0, 0x1c(r1)
-/* 00009620 3CA00000 */ lis r5, poolInfo@ha
+/* 00009620 3CA00000 */ lis r5, g_poolInfo@ha
 /* 00009624 3BE40000 */ addi r31, r4, ballInfo@l
 /* 00009628 C0190054 */ lfs f0, 0x54(r25)
 /* 0000962C 3AA30000 */ addi r21, r3, lbl_10000044@l
-/* 00009630 3BC50000 */ addi r30, r5, poolInfo@l
+/* 00009630 3BC50000 */ addi r30, r5, g_poolInfo@l
 /* 00009634 D0010020 */ stfs f0, 0x20(r1)
 /* 00009638 3AC00000 */ li r22, 0
 /* 0000963C 3E804330 */ lis r20, 0x4330
@@ -11543,7 +11543,7 @@ lbl_0000AA70:
 /* 0000AAA4 3CA00100 */ lis r5, 0x100
 /* 0000AAA8 3C800000 */ lis r4, lbl_80118AC8@ha
 /* 0000AAAC 3C60005C */ lis r3, 0x5c
-/* 0000AAB0 3CC00000 */ lis r6, poolInfo@ha
+/* 0000AAB0 3CC00000 */ lis r6, g_poolInfo@ha
 /* 0000AAB4 5668103A */ slwi r8, r19, 2
 /* 0000AAB8 38070000 */ addi r0, r7, lbl_10000098@l
 /* 0000AABC 7E804214 */ add r20, r0, r8
@@ -11552,7 +11552,7 @@ lbl_0000AA70:
 /* 0000AAC8 3BC5FFFF */ addi r30, r5, -1  ;# fixed addi
 /* 0000AACC 3BE40000 */ addi r31, r4, lbl_80118AC8@l
 /* 0000AAD0 3A233B1B */ addi r17, r3, 0x3b1b
-/* 0000AAD4 3B460000 */ addi r26, r6, poolInfo@l
+/* 0000AAD4 3B460000 */ addi r26, r6, g_poolInfo@l
 lbl_0000AAD8:
 /* 0000AAD8 2C130002 */ cmpwi r19, 2
 /* 0000AADC 41820028 */ beq lbl_0000AB04

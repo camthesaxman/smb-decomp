@@ -195,11 +195,11 @@ void ev_world_init(void)
 void ev_world_main(void)
 {
     struct World *world = worldInfo;
-    s8 *unk = poolInfo.unkC;
+    s8 *unk = g_poolInfo.unkC;
     int i;
     Vec sp8;
 
-    for (i = 0; i < poolInfo.unk8; i++, world++, unk++)
+    for (i = 0; i < g_poolInfo.unk8; i++, world++, unk++)
     {
         if (*unk == 0 || *unk == 4)
             continue;
@@ -243,9 +243,9 @@ void ev_world_main(void)
         sp8.x = 0.0f;
         sp8.y = 0.0f;
         sp8.z = 0.0f;
-        unk = poolInfo.unkC;
+        unk = g_poolInfo.unkC;
         world = worldInfo;
-        for (i = poolInfo.unk8; i > 0; i--, world++, unk++)
+        for (i = g_poolInfo.unk8; i > 0; i--, world++, unk++)
         {
             if (*unk == 0 || *unk == 4)
                 continue;

@@ -174,8 +174,8 @@ lbl_00000260:
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
 /* 000002E0 4BFFFE55 */ bl light_init
-/* 000002E4 3C600000 */ lis r3, poolInfo@ha
-/* 000002E8 38830000 */ addi r4, r3, poolInfo@l
+/* 000002E4 3C600000 */ lis r3, g_poolInfo@ha
+/* 000002E8 38830000 */ addi r4, r3, g_poolInfo@l
 /* 000002EC 3C600000 */ lis r3, worldInfo@ha
 /* 000002F0 80C4000C */ lwz r6, 0xc(r4)
 /* 000002F4 38030000 */ addi r0, r3, worldInfo@l

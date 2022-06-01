@@ -158,8 +158,8 @@ lbl_80094EAC:
 lbl_80094F04:
 /* 80094F04 00090E24  38 00 FF FF */	li r0, -1
 /* 80094F08 00090E28  B0 0A 00 00 */	sth r0, 0(r10)
-/* 80094F0C 00090E2C  3C C0 80 20 */	lis r6, poolInfo@ha
-/* 80094F10 00090E30  38 C6 59 88 */	addi r6, r6, poolInfo@l
+/* 80094F0C 00090E2C  3C C0 80 20 */	lis r6, g_poolInfo@ha
+/* 80094F10 00090E30  38 C6 59 88 */	addi r6, r6, g_poolInfo@l
 /* 80094F14 00090E34  81 26 00 38 */	lwz r9, 0x38(r6)
 /* 80094F18 00090E38  3D 00 80 29 */	lis r8, spriteInfo@ha
 /* 80094F1C 00090E3C  38 08 CF 58 */	addi r0, r8, spriteInfo@l
