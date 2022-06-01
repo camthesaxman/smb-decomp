@@ -11,6 +11,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "sprite.h"
+#include "mouse.h"
 
 struct TPL *u_unkBitmapTPL;
 s32 lbl_802F1D04;
@@ -366,7 +367,7 @@ void bitmap_main(void)
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(1);
     if (eventInfo[EVENT_MOUSE].state == EV_STATE_RUNNING)
-        func_80095024();
+        ev_mouse_update();
     lbl_802F1D04 = 3;
     u_draw_screen_fade_mask();
     lbl_802F1D04 = 2;

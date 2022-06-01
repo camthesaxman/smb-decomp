@@ -1249,7 +1249,7 @@ extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E51;
 // extern ? lbl_802F1E54;
 // extern ? lbl_802F1E58;
-// extern ? lbl_802F1EA8;
+
 extern s32 lbl_802F1EB0;
 extern s32 lbl_802F1EB4;
 extern float lbl_802F1EC4;
@@ -3838,11 +3838,7 @@ extern const s8 pauseMenuItemCounts[8];
 // extern ? lbl_802F5838;
 // extern ? lbl_802F583C;
 // extern ? lbl_802F5840;
-// extern ? lbl_802F5848;
-// extern ? lbl_802F5850;
-// extern ? lbl_802F5858;
-// extern ? lbl_802F585C;
-// extern ? lbl_802F5860;
+
 // extern ? lbl_802F5868;
 // extern ? lbl_802F586C;
 // extern ? lbl_802F5870;

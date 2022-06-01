@@ -13702,51 +13702,6 @@ lbl_802F1358:
 	.4byte 0x25730A00
 	.4byte 0
 
-.global lbl_802F1360
-lbl_802F1360:
-	# ROM: 0x1EBAA0
-	.4byte 0x2B000000
-	.4byte 0
-glabel lbl_802F1368
-	.4byte 0xFFFFFFFF
-	.4byte 0x000001E9
-glabel lbl_802F1370
-	.4byte 0
-	.4byte 0x000001E9
-glabel lbl_802F1378
-	.4byte 0
-	.4byte 0x000001F0
-glabel lbl_802F1380
-	.4byte 0
-	.4byte 0x000001DB
-glabel string_1P_WINS
-	.asciz "1P WINS"
-glabel string_2P_WINS
-	.asciz "2P WINS"
-glabel string_3P_WINS
-	.asciz "3P WINS"
-glabel string_4P_WINS
-	.asciz "4P WINS"
-glabel string_RANK_IN
-	.asciz "RANK IN"
-glabel lbl_802F13B0
-	.4byte 0
-glabel string_YOU_WIN
-	.asciz "YOU WIN"
-
-.global lbl_802F13BC
-lbl_802F13BC:
-	# ROM: 0x1EBAFC
-glabel string_init_2
-	.asciz "init"
-	.balign 4
-
-.global lbl_802F13C4
-lbl_802F13C4:
-	# ROM: 0x1EBB04
-	.asciz ".."
-    .balign 4
-
 .section .bss
 
 .global lbl_802B8FA0
@@ -13764,12 +13719,6 @@ lbl_802B9370:
 .global lbl_802B9390
 lbl_802B9390:
 	.skip 0xE00
-.global lbl_802BA190
-lbl_802BA190:
-	.skip 0x10
-.global lbl_802BA1A0
-lbl_802BA1A0:
-	.skip 0x60
 
 .section .sbss
 
