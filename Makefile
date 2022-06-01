@@ -142,7 +142,9 @@ SOURCES := \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
-	asm/stobj.s \
+	src/obj_collision.c \
+	src/stobj.c \
+	src/stobj_goal.c \
 	src/sprite.c \
 	src/textbox.c \
 	src/hud.c \

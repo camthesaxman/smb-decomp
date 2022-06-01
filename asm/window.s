@@ -6338,19 +6338,19 @@ glabel lbl_801B7134
 	.4byte 0x00000002
 	.4byte 0x00000003
 	.4byte string_LOD_LEVEL_1____4_5f  ;# ptr
-	.4byte lbl_8028C0B4  ;# ptr
+	.4byte lbl_8028C0B0+4  ;# ptr
 	.4byte lbl_801B3B38  ;# ptr
 	.4byte 0x00000007
 	.4byte 0x00000002
 	.4byte 0x00000004
 	.4byte string_LOD_LEVEL_2____4_5f  ;# ptr
-	.4byte lbl_8028C0B8  ;# ptr
+	.4byte lbl_8028C0B0+8  ;# ptr
 	.4byte lbl_801B3B38  ;# ptr
 	.4byte 0x00000007
 	.4byte 0x00000002
 	.4byte 0x00000005
 	.4byte string_LOD_LEVEL_3____4_5f  ;# ptr
-	.4byte lbl_8028C0BC  ;# ptr
+	.4byte lbl_8028C0B0+0xC  ;# ptr
 	.4byte lbl_801B3B38  ;# ptr
 	.4byte 0x0000001F
 	.4byte 0

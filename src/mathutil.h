@@ -129,7 +129,7 @@ void mathutil_vec_to_euler(Vec *vec, S16Vec *rot);
 void mathutil_vec_to_euler_xy(Vec *vec, s16 *rotX, s16 *rotY);
 void mathutil_mtxA_to_quat(Quaternion *quat);
 void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle);
-void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c);
+void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register float c);
 void mathutil_quat_from_axis_angle(Quaternion *a, Vec *b, s16 c);
 double mathutil_quat_to_axis_angle(Quaternion *quat, Vec *axis);
 void mathutil_quat_normalize(Quaternion *quat);
@@ -273,17 +273,18 @@ static inline float mathutil_vec_sq_len(register Vec *v)
 #ifdef MATHUTIL_C_ONLY
     return v->x * v->x + v->y * v->y + v->z * v->z;
 #else
+    register float result;
     register float x, y, z;
     asm
     {
         lfs x, v->x
         lfs y, v->y
         lfs z, v->z
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
+        fmuls result, x, x
+        fmadds result, y, y, result
+        fmadds result, z, z, result
     }
-    return x;
+    return result;
 #endif
 }
 
@@ -321,32 +322,8 @@ static inline float mathutil_vec_dot_prod(register Vec *a, register Vec *b)
 #ifdef MATHUTIL_C_ONLY
     return a->x * b->x + a->y * b->y + a->z * b->z;
 #else
-    register float x1, y1, z1, x2, y2, z2;
-
-    asm
-    {
-        lfs x1, a->x
-        lfs x2, b->x
-        lfs y1, a->y
-        lfs y2, b->y
-        lfs z1, a->z
-        lfs z2, b->z
-        fmuls x2, x1, x2
-        fmadds x2, y1, y2, x2
-        fmadds x2, z1, z2, x2
-    }
-    return x2;
-#endif
-}
-
-// same as mathutil_vec_dot_prod, but with some registers swapped
-static inline float mathutil_vec_dot_prod_alt(register Vec *a, register Vec *b)
-{
-#ifdef MATHUTIL_C_ONLY
-    return a->x * b->x + a->y * b->y + a->z * b->z;
-#else
-    register float x1, y1, z1, x2, y2, z2;
     register float result;
+    register float x1, y1, z1, x2, y2, z2;
 
     asm
     {

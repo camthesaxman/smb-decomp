@@ -2103,142 +2103,17 @@ void u_math_unk6(Quaternion *quat)
     }
 }
 
-static inline float dot_product(Vec *a, Vec *b)
-{
-#ifdef __MWERKS__
-    register float ax, ay, az, bx, by, bz, temp;
-
-    ax = a->x;
-    bx = b->x;
-    ay = a->y;
-    by = b->y;
-    az = a->z;
-    bz = b->z;
-
-    asm
-    {
-        fmuls temp, ax, bx
-        fmadds temp, ay, by, temp
-        fmadds temp, az, bz, temp
-    }
-    return temp;
-#else
-    return a->x * b->x + a->y * b->y + a->z * b->z;
-#endif
-}
-
-static inline float sq_mag(register Vec *vec)
-{
-#ifdef __MWERKS__
-    register float x, y, z;
-
-    asm
-    {
-        lfs x, vec->x;
-        lfs y, vec->y;
-        lfs z, vec->z;
-        fmuls x, x, x
-        fmadds x, y, y, x
-        fmadds x, z, z, x
-    }
-    return x;
-#else
-    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
-#endif
-}
-
-static inline float sq_mag2(Vec *vec)
-{
-#ifdef __MWERKS__
-    register float result;
-    register float x = vec->x;
-    register float y = vec->y;
-    register float z = vec->z;
-
-    asm
-    {
-        fmuls result, x, x
-        fmadds result, y, y, result
-        fmadds result, z, z, result
-    }
-    return result;
-#else
-    return vec->x * vec->x + vec->y * vec->y + vec->z * vec->z;
-#endif
-}
-
-static inline void cross_product(Vec *a, Vec *b, register Vec *result)
-{
-#ifdef __MWERKS__
-    register float ax = a->x;
-    register float ay = a->y;
-    register float az = a->z;
-    register float bx = b->x;
-    register float by = b->y;
-    register float bz = b->z;
-    register float temp1, temp2, temp3;
-
-    asm
-    {
-        fmuls temp1, ay, bz
-        fmuls temp2, az, bx
-        fmuls temp3, ax, by
-        fnmsubs temp1, az, by, temp1
-        stfs temp1, result->x
-        fnmsubs temp2, ax, bz, temp2
-        stfs temp2, result->y
-        fnmsubs temp3, ay, bx, temp3
-        stfs temp3, result->z
-    }
-#else
-    result->x = a->y * b->z - a->z * b->y;
-    result->y = a->z * b->x - a->x * b->z;
-    result->z = a->x * b->y - a->y * b->x;
-#endif
-}
-
-static inline void cross_product_alt(register Vec *result, register Vec *a, register Vec *b)
-{
-#ifdef __MWERKS__
-    register float ax, ay, az, bx, by, bz;
-    register float temp1, temp2, temp3;
-
-    asm
-    {
-        lfs ay, a->y
-        lfs bz, b->z
-        lfs az, a->z
-        lfs bx, b->x
-        lfs ax, a->x
-        lfs by, b->y
-        fmuls temp1, ay, bz
-        fmuls temp2, az, bx
-        fmuls temp3, ax, by
-        fnmsubs temp1, az, by, temp1
-        stfs temp1, result->x
-        fnmsubs temp2, ax, bz, temp2
-        stfs temp2, result->y
-        fnmsubs temp3, ay, bx, temp3
-        stfs temp3, result->z
-    }
-#else
-    result->x = a->y * b->z - a->z * b->y;
-    result->y = a->z * b->x - a->x * b->z;
-    result->z = a->x * b->y - a->y * b->x;
-#endif
-}
-
 void u_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
 {
     Vec sp24;
     double var1 = mathutil_quat_to_axis_angle(a, &sp24);
 
-    if (__fabs(dot_product(&sp24, c)) < 0.9999989867210388)
+    if (__fabs(mathutil_vec_dot_prod(&sp24, c)) < 0.9999989867210388)
     {
         Vec sp18;
         float var2;
 
-        cross_product(&sp24, c, &sp18);
+        mathutil_vec_cross_prod(&sp24, c, &sp18);
         var2 = d * var1;
         b->x = sp18.x * var2;
         b->y = sp18.y * var2;
@@ -2256,9 +2131,9 @@ void u_math_unk8(Quaternion *a, Vec *b, Vec *c, float d)
     float f1;
     s16 var;
 
-    cross_product_alt(&sp18, b, c);
+    mathutil_vec_cross_prod(b, c, &sp18);
     mathutil_vec_normalize_len(&sp18);
-    f1 = mathutil_sqrt(sq_mag(b));
+    f1 = mathutil_vec_len(b);
     if (f1 > PI * d - FLT_EPSILON)
         f1 = PI * d - FLT_EPSILON;
     var = (int)((0.159154936671f * f1 / d) * 65536.0f);
@@ -2270,19 +2145,8 @@ void mathutil_ray_to_euler(Vec *rayStart, Vec *rayEnd, S16Vec *rot)
     register float negX = rayStart->x - rayEnd->x;
     register float y    = rayEnd->y - rayStart->y;
     register float negZ = rayStart->z - rayEnd->z;
-    register float sqMag;
 
-#ifdef NONMATCHING
-    sqMag = (negZ * negZ) + (negX * negX);
-#else
-    asm
-    {
-        fmuls sqMag, negX, negX
-        fmadds sqMag, negZ, negZ, sqMag
-    }
-#endif
-
-    rot->x = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    rot->x = mathutil_atan2(y, mathutil_sqrt(mathutil_sum_of_sq_2(negX, negZ)));
     rot->y = mathutil_atan2(negX, negZ);
     rot->z = 0;
 }
@@ -2292,32 +2156,18 @@ void mathutil_ray_to_euler_xy(Vec *rayStart, Vec *rayEnd, s16 *rotX, s16 *rotY)
     register float negX = rayStart->x - rayEnd->x;
     register float y    = rayEnd->y - rayStart->y;
     register float negZ = rayStart->z - rayEnd->z;
-    register float sqMag;
 
-#ifdef NONMATCHING
-    sqMag = (negZ * negZ) + (negX * negX);
-#else
-    asm
-    {
-        fmuls sqMag, negX, negX
-        fmadds sqMag, negZ, negZ, sqMag
-    }
-#endif
-
-    *rotX = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    *rotX = mathutil_atan2(y, mathutil_sqrt(mathutil_sum_of_sq_2(negX, negZ)));
     *rotY = mathutil_atan2(negX, negZ);
 }
-
-#pragma fp_contract on
 
 void mathutil_vec_to_euler(Vec *vec, S16Vec *rot)
 {
     float negX = -vec->x;
     float y = vec->y;
     float negZ = -vec->z;
-    float sqMag = (negX * negX); sqMag += (negZ * negZ);
 
-    rot->x = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    rot->x = mathutil_atan2(y, mathutil_sqrt(mathutil_sum_of_sq_2(negX, negZ)));
     rot->y = mathutil_atan2(negX, negZ);
     rot->z = 0;
 }
@@ -2327,9 +2177,8 @@ void mathutil_vec_to_euler_xy(Vec *vec, s16 *rotX, s16 *rotY)
     float negX = -vec->x;
     float y    = vec->y;
     float negZ = -vec->z;
-    float sqMag = (negX * negX); sqMag += (negZ * negZ);
 
-    *rotX = mathutil_atan2(y, mathutil_sqrt(sqMag));
+    *rotX = mathutil_atan2(y, mathutil_sqrt(mathutil_sum_of_sq_2(negX, negZ)));
     *rotY = mathutil_atan2(negX, negZ);
 }
 
@@ -2388,8 +2237,7 @@ void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
     float var1;
 
     angle >>= 1;
-
-    var1 = sq_mag(axis);
+    var1 = mathutil_vec_sq_len(axis);
     if (var1 < FLT_EPSILON)
     {
         quat->x = 0.0f;
@@ -2407,20 +2255,11 @@ void mathutil_quat_from_axis_angle(Quaternion *quat, Vec *axis, s16 angle)
     }
 }
 
-void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
+void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register float c)
 {
-    register double var1;
+    double var1 = c / 2.0;
 
-#ifdef NONMATCHING
-    var1 = c * 0.5;
-#else
-    {
-        register double oneHalf = 0.5;
-        asm { fmul var1, c, oneHalf }
-    }
-#endif
-
-    if (sq_mag2(b) < FLT_EPSILON)
+    if (mathutil_vec_sq_len(b) < FLT_EPSILON)
     {
         a->x = 0.0f;
         a->y = 0.0f;
@@ -2429,7 +2268,7 @@ void u_math_unk9_smth_w_quats(Quaternion *a, register Vec *b, register double c)
     }
     else
     {
-        float var2 = mathutil_rsqrt(sq_mag2(b)) * (float)sin(var1);
+        float var2 = mathutil_rsqrt(mathutil_vec_sq_len(b)) * (float)sin(var1);
         a->x = b->x * var2;
         a->y = b->y * var2;
         a->z = b->z * var2;
@@ -2466,8 +2305,6 @@ void mathutil_quat_normalize(Quaternion *quat)
     quat->z *= invMag;
     quat->w *= invMag;
 }
-
-#pragma fp_contract off
 
 // Computes the rotation between two vectors
 void mathutil_quat_from_dirs(Quaternion *quat, Vec *start, Vec *end)
@@ -2590,20 +2427,6 @@ void u_math_unk11(Quaternion *a, Quaternion *b)
 
 #pragma force_active off
 
-static inline float sum_of_squares(register float a, register float b)
-{
-#ifdef __MWERKS__
-    asm
-    {
-        fmuls a, a, a
-        fmadds a, b, b, a
-    }
-    return a;
-#else
-    return a * a + b * b;
-#endif
-}
-
 static int is_large_enough(float n)  // inlined
 {
     return __fabs(n) > FLT_EPSILON;
@@ -2625,11 +2448,7 @@ void mathutil_mtxA_to_euler_yxz(s16 *rotY, s16 *rotX, s16 *rotZ)
     up.z = 0.0f;
     mathutil_mtxA_tf_vec(&forward, &forward);
     mathutil_mtxA_tf_vec(&up, &up);
-#ifdef NONMATCHING
-    *rotX = mathutil_atan2(forward.y, mathutil_sqrt(forward.x * forward.x + forward.z * forward.z));
-#else
-    *rotX = mathutil_atan2(forward.y, mathutil_sqrt(sum_of_squares(forward.x, forward.z)));
-#endif
+    *rotX = mathutil_atan2(forward.y, mathutil_sqrt(mathutil_sum_of_sq_2(forward.x, forward.z)));
     *rotY = mathutil_atan2(forward.x, forward.z) - 0x8000;
     mathutil_mtxA_from_rotate_y(*rotY);
     mathutil_mtxA_rotate_x(*rotX);
@@ -2659,11 +2478,7 @@ void u_math_unk14(s16 *a, s16 *b, s16 *c)
     mathutil_mtxA_tf_vec(&sp20, &sp20);
     mathutil_mtxA_tf_vec(&sp14, &sp14);
     *a = mathutil_atan2(sp20.y, sp20.x);
-#ifdef NONMATCHING
-    *b = -mathutil_atan2(sp20.z, mathutil_sqrt(sp20.y * sp20.y + sp20.x * sp20.x));
-#else
-    *b = -mathutil_atan2(sp20.z, mathutil_sqrt(sum_of_squares(sp20.y, sp20.x)));
-#endif
+    *b = -mathutil_atan2(sp20.z, mathutil_sqrt(mathutil_sum_of_sq_2(sp20.y, sp20.x)));
     mathutil_mtxA_from_rotate_z(*a);
     mathutil_mtxA_rotate_y(*b);
     mathutil_mtxA_rigid_inv_tf_vec(&sp14, &sp14);

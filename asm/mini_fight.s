@@ -5856,9 +5856,9 @@ lbl_000058A0:
 /* 000058E8 4BFFA87D */ bl mathutil_mtxA_rotate_x
 /* 000058EC A8780074 */ lha r3, 0x74(r24)
 /* 000058F0 4BFFA875 */ bl mathutil_mtxA_rotate_z
-/* 000058F4 3C600000 */ lis r3, lbl_80285AB0@ha
+/* 000058F4 3C600000 */ lis r3, stobjInfo@ha
 /* 000058F8 C01F0040 */ lfs f0, 0x40(r31)
-/* 000058FC 38630000 */ addi r3, r3, lbl_80285AB0@l
+/* 000058FC 38630000 */ addi r3, r3, stobjInfo@l
 /* 00005900 C03F0008 */ lfs f1, 8(r31)
 /* 00005904 C3E30034 */ lfs f31, 0x34(r3)
 /* 00005908 3C600000 */ lis r3, lbl_1000008C@ha
@@ -15084,7 +15084,7 @@ lbl_0000E138:
 /* 0000E170 7C000774 */ extsb r0, r0
 /* 0000E174 B001000E */ sth r0, 0xe(r1)
 /* 0000E178 908100AC */ stw r4, 0xac(r1)
-/* 0000E17C 4BFF1FE9 */ bl func_8006B2C0
+/* 0000E17C 4BFF1FE9 */ bl spawn_stobj
 lbl_0000E180:
 /* 0000E180 3B390001 */ addi r25, r25, 1
 /* 0000E184 3B5A01A4 */ addi r26, r26, 0x1a4
@@ -16489,7 +16489,7 @@ lbl_0000F58C:
 /* 0000F600 7C000774 */ extsb r0, r0
 /* 0000F604 980100AC */ stb r0, 0xac(r1)
 /* 0000F608 93E100B0 */ stw r31, 0xb0(r1)
-/* 0000F60C 4BFF0B59 */ bl func_8006B2C0
+/* 0000F60C 4BFF0B59 */ bl spawn_stobj
 lbl_0000F610:
 /* 0000F610 80010194 */ lwz r0, 0x194(r1)
 /* 0000F614 83E1018C */ lwz r31, 0x18c(r1)
@@ -16728,7 +16728,7 @@ lbl_0000F90C:
 /* 0000F978 7C000774 */ extsb r0, r0
 /* 0000F97C 980100AC */ stb r0, 0xac(r1)
 /* 0000F980 93E100B0 */ stw r31, 0xb0(r1)
-/* 0000F984 4BFF07E1 */ bl func_8006B2C0
+/* 0000F984 4BFF07E1 */ bl spawn_stobj
 lbl_0000F988:
 /* 0000F988 80010194 */ lwz r0, 0x194(r1)
 /* 0000F98C 83E1018C */ lwz r31, 0x18c(r1)
@@ -16847,7 +16847,7 @@ lbl_0000FAD8:
 /* 0000FB30 9001007C */ stw r0, 0x7c(r1)
 /* 0000FB34 801D0018 */ lwz r0, 0x18(r29)
 /* 0000FB38 90010080 */ stw r0, 0x80(r1)
-/* 0000FB3C 4BFF0629 */ bl func_8006B2C0
+/* 0000FB3C 4BFF0629 */ bl spawn_stobj
 lbl_0000FB40:
 /* 0000FB40 3BBD001C */ addi r29, r29, 0x1c
 lbl_0000FB44:
@@ -16967,7 +16967,7 @@ lbl_0000FBE0:
 /* 0000FD04 EC220828 */ fsubs f1, f2, f1
 /* 0000FD08 EC00082A */ fadds f0, f0, f1
 /* 0000FD0C D0010080 */ stfs f0, 0x80(r1)
-/* 0000FD10 4BFF0455 */ bl func_8006B2C0
+/* 0000FD10 4BFF0455 */ bl spawn_stobj
 lbl_0000FD14:
 /* 0000FD14 8001011C */ lwz r0, 0x11c(r1)
 /* 0000FD18 CBE10110 */ lfd f31, 0x110(r1)
