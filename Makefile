@@ -130,7 +130,7 @@ SOURCES := \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
 	asm/bg_sand.s \
-	asm/bg_water.s \
+	src/bg_water.c \
 	asm/bg_space.s \
 	src/bg_sunset.c \
 	src/bg_bonus.c \
@@ -171,7 +171,8 @@ SOURCES := \
 	src/code_6.c \
 	asm/mini_ranking.s \
 	src/preview.c \
-	asm/code_4.s \
+	asm/name_entry.s \
+	asm/credits.s \
 	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \

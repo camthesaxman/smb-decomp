@@ -447,7 +447,7 @@ u32 bgWorkSizes[] =
     0,
     0,
     sizeof(struct BGJungleWork),
-    0x194,
+    sizeof(struct BGWaterWork),
     0,
     sizeof(struct BGSunsetWork),
     0xAC,

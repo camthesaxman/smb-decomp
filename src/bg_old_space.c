@@ -14,19 +14,19 @@ void bg_old_space_init(void)
 {
     backgroundInfo.unk80 = NLOBJ_MODEL(naomiBgArchive, 1);
     backgroundInfo.unk84 = 1.0f;
-    backgroundInfo.unk38 = 0.00069444444444444447 - (rand() / 32767.0f) * 0.0013888888888888889;
-    backgroundInfo.unk3C = -0.00034722222222222224 - (rand() / 32767.0f) * 0.00017361111111111112;
+    backgroundInfo.unk38.x = 0.00069444444444444447 - (rand() / 32767.0f) * 0.0013888888888888889;
+    backgroundInfo.unk38.y = -0.00034722222222222224 - (rand() / 32767.0f) * 0.00017361111111111112;
 }
 
 void bg_old_space_main(void)
 {
-    backgroundInfo.unk2C.x += backgroundInfo.unk38;
+    backgroundInfo.unk2C.x += backgroundInfo.unk38.x;
     while (backgroundInfo.unk2C.x > 1.0)
         backgroundInfo.unk2C.x -= 1.0;
     while (backgroundInfo.unk2C.x < 0.0)
         backgroundInfo.unk2C.x += 1.0;
 
-    backgroundInfo.unk2C.y += backgroundInfo.unk3C;
+    backgroundInfo.unk2C.y += backgroundInfo.unk38.y;
     while (backgroundInfo.unk2C.y > 1.0)
         backgroundInfo.unk2C.y -= 1.0;
     while (backgroundInfo.unk2C.y < 0.0)

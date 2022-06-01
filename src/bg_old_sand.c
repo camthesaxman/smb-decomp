@@ -14,22 +14,22 @@ void bg_old_sand_init(void)
 {
     backgroundInfo.unk80 = NLOBJ_MODEL(naomiBgArchive, 2);
     backgroundInfo.unk84 = 1.0f;
-    backgroundInfo.unk38 = (rand() / 32767.0f) * 65536.0f / 3840.0 + 34.133333333333333;
-    backgroundInfo.unk3C = (rand() / 32767.0f) * 0.00034722222222222224 + 0.00069444444444444447;
-    backgroundInfo.unk40 = (rand() / 32767.0f) * 0.00050000000000000001 + 0.0033;
+    backgroundInfo.unk38.x = (rand() / 32767.0f) * 65536.0f / 3840.0 + 34.133333333333333;
+    backgroundInfo.unk38.y = (rand() / 32767.0f) * 0.00034722222222222224 + 0.00069444444444444447;
+    backgroundInfo.unk38.z = (rand() / 32767.0f) * 0.00050000000000000001 + 0.0033;
 }
 
 void bg_old_sand_main(void)
 {
-    backgroundInfo.unk2C.x += backgroundInfo.unk38;
+    backgroundInfo.unk2C.x += backgroundInfo.unk38.x;
     if (backgroundInfo.unk2C.x > 65536.0f)
         backgroundInfo.unk2C.x -= 65536.0f;
 
-    backgroundInfo.unk2C.y += backgroundInfo.unk3C;
+    backgroundInfo.unk2C.y += backgroundInfo.unk38.y;
     if (backgroundInfo.unk2C.y > 1.0)
         backgroundInfo.unk2C.y -= 1.0;
 
-    backgroundInfo.unk2C.z += backgroundInfo.unk40;
+    backgroundInfo.unk2C.z += backgroundInfo.unk38.z;
     if (backgroundInfo.unk2C.z > 1.0)
         backgroundInfo.unk2C.z -= 1.0;
 }
