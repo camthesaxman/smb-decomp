@@ -920,19 +920,24 @@ struct ApeGfxFileInfo
 
 struct Struct80061BC4_sub
 {
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    GXTexMapID u_texMapId;
-    u8 filler10[4];
-    u32 unk14;
-    u8 filler18[0x2C-0x18];
+    s32 unk0;
+    int unk4;
+    s32 unk8;
+    /*0x0C*/ GXTexMapID u_texMapId;
+    s32 unk10;
+    s32 unk14;
+    u32 unk18;
+    s32 unk1C;
+    u32 unk20;
+    u8 filler20[0x2C-0x24];
 };
 
 struct Struct80061BC4
 {
-    u8 filler0[0xC];
+    s32 unk0;
+    u8 filler4[0xC-0x4];
     struct Struct80061BC4_sub unkC;
+    u32 unk2C;
 };
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
