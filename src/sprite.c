@@ -47,8 +47,6 @@ FORCE_BSS_ORDER(lbl_8028FE58)
 struct ScreenFadeInfo screenFadeInfo;
 FORCE_BSS_ORDER(screenFadeInfo)
 
-extern struct SpritePoolInfo spritePoolInfo;  // 0x80205988
-
 u32 lbl_802F2000;
 
 void ev_sprite_init(void)
