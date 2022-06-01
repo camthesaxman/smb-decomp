@@ -961,7 +961,7 @@ lbl_800B0A74:
 /* 800B0AB0 000AC9D0  38 60 01 26 */	li r3, 0x126
 /* 800B0AB4 000AC9D4  4B F7 BC C1 */	bl SoundOffID
 lbl_800B0AB8:
-/* 800B0AB8 000AC9D8  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
+/* 800B0AB8 000AC9D8  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 800B0ABC 000AC9DC  80 83 00 0C */	lwz r4, 0xc(r3)
 /* 800B0AC0 000AC9E0  80 64 00 08 */	lwz r3, 8(r4)
 /* 800B0AC4 000AC9E4  80 04 00 0C */	lwz r0, 0xc(r4)
@@ -4236,7 +4236,7 @@ lbl_800B3B30:
 /* 800B3B44 000AFA64  FC 40 08 90 */	fmr f2, f1
 /* 800B3B48 000AFA68  FC 60 08 90 */	fmr f3, f1
 /* 800B3B4C 000AFA6C  4B F5 42 8D */	bl mathutil_mtxA_scale_xyz
-/* 800B3B50 000AFA70  80 6D 99 24 */	lwz r3, g_commonNLObj@sda21(r13)
+/* 800B3B50 000AFA70  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 800B3B54 000AFA74  C0 22 BB 14 */	lfs f1, lbl_802F6314@sda21(r2)
 /* 800B3B58 000AFA78  80 63 00 10 */	lwz r3, 0x10(r3)
 /* 800B3B5C 000AFA7C  4B F7 DA 89 */	bl nl2ngc_draw_model_alpha_unsorted

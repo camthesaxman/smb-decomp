@@ -1100,16 +1100,16 @@ extern struct
 // extern ? SendCount;
 
 // .sbss section
-extern struct TPL *minigameNaomiTpl;
+extern struct TPL *g_minigameNlTpl;
 extern struct TPL *lbl_802F1AE4;
-extern struct TPL *naomiBgTpl;
-extern struct TPL *naomiStageTpl;
-extern struct TPL *naomiCommonTpl;
-extern struct NlObj *g_minigameNLObj;
+extern struct TPL *g_bgNlTpl;
+extern struct TPL *g_stageNlTpl;
+extern struct TPL *g_commonNlTpl;
+extern struct NlObj *g_minigameNlObj;
 extern struct NlObj *lbl_802F1AF8;
-extern struct NlObj *g_bgNLObj;
-extern struct NlObj *g_stageNLObj;
-extern struct NlObj *g_commonNLObj;
+extern struct NlObj *g_bgNlObj;
+extern struct NlObj *g_stageNlObj;
+extern struct NlObj *g_commonNlObj;
 extern long charaHeapSize;
 extern long backgroundHeapSize;
 extern long stageHeapSize;

@@ -16652,8 +16652,8 @@ lbl_0000F44C:
 /* 0000F4A8 4BFF0C8D */ bl mathutil_mtxA_translate_xyz
 /* 0000F4AC C03F37B4 */ lfs f1, 0x37b4(r31)
 /* 0000F4B0 4BFF0C85 */ bl mathutil_mtxA_scale_s
-/* 0000F4B4 3C600000 */ lis r3, g_commonNLObj@ha
-/* 0000F4B8 3AA30000 */ addi r21, r3, g_commonNLObj@l
+/* 0000F4B4 3C600000 */ lis r3, g_commonNlObj@ha
+/* 0000F4B8 3AA30000 */ addi r21, r3, g_commonNlObj@l
 /* 0000F4BC 80750000 */ lwz r3, 0(r21)
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
 /* 0000F4C4 4BFF0C71 */ bl u_nl2ngc_draw_model_sort_translucent
@@ -16746,9 +16746,9 @@ lbl_0000F4FC:
 /* 0000F61C 3A310030 */ addi r17, r17, 0x30
 /* 0000F620 4180FEDC */ blt lbl_0000F4FC
 /* 0000F624 3C800000 */ lis r4, lbl_0001CAD8@ha
-/* 0000F628 3C600000 */ lis r3, g_commonNLObj@ha
+/* 0000F628 3C600000 */ lis r3, g_commonNlObj@ha
 /* 0000F62C 3A440000 */ addi r18, r4, lbl_0001CAD8@l
-/* 0000F630 3A230000 */ addi r17, r3, g_commonNLObj@l
+/* 0000F630 3A230000 */ addi r17, r3, g_commonNlObj@l
 /* 0000F634 3A000000 */ li r16, 0
 /* 0000F638 39E00000 */ li r15, 0
 lbl_0000F63C:

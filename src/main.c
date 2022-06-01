@@ -39,17 +39,17 @@ long stageHeapSize;
 long backgroundHeapSize;
 long charaHeapSize;
 
-struct NlObj *g_commonNLObj;
-struct NlObj *g_stageNLObj;
-struct NlObj *g_bgNLObj;
+struct NlObj *g_commonNlObj;
+struct NlObj *g_stageNlObj;
+struct NlObj *g_bgNlObj;
 struct NlObj *lbl_802F1AF8;
-struct NlObj *g_minigameNLObj;
+struct NlObj *g_minigameNlObj;
 
-struct TPL *naomiCommonTpl;
-struct TPL *naomiStageTpl;
-struct TPL *naomiBgTpl;
+struct TPL *g_commonNlTpl;
+struct TPL *g_stageNlTpl;
+struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
-struct TPL *minigameNaomiTpl;
+struct TPL *g_minigameNlTpl;
 
 void main(void)
 {

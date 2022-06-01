@@ -10,7 +10,7 @@
 
 void bg_old_cave_init(void)
 {
-    backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNLObj, 1);
+    backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNlObj, 1);
     backgroundInfo.unk84 = 1.0f;
 }
 
@@ -21,7 +21,7 @@ void bg_old_cave_finish(void) {}
 void bg_old_cave_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNLObj, 0));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 0));
 }
 
 void bg_old_cave_interact(int a) {}

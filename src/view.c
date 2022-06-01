@@ -553,7 +553,7 @@ void draw_stage_geometry(void)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 10));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 10));
     u_reset_post_mult_color();
     if (decodedStageGmaPtr != NULL)
     {
@@ -647,7 +647,7 @@ void draw_stage_objects(void)
                 u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 avdisp_draw_model_culled_sort_translucent(goalModel);
             }
-            u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNLObj, 14));
+            u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
@@ -656,16 +656,16 @@ void draw_stage_objects(void)
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 0x1D));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 0x1D));
             mathutil_mtxA_translate_xyz(-0.45f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 0x1D));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 0x1D));
             mathutil_mtxA_pop();
 
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, 0x13));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, 0x13));
         }
     }
 

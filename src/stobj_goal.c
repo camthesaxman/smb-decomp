@@ -198,7 +198,7 @@ void stobj_goaltape_init(struct Stobj *stobj)
 
     stobj->state = 0;
     stobj->unk8 |= 2;
-    stobj->model = (struct GMAModel *)g_commonNLObj->models[NLMODEL_common_GOAL_TAPE];
+    stobj->model = (struct GMAModel *)g_commonNlObj->models[NLMODEL_common_GOAL_TAPE];
     stobj->boundSphereRadius = 1.3125f;
     stobj->u_model_origin = stobj->model->boundSphereCenter;
     temp_r31 = stobj->extraData;
@@ -246,29 +246,29 @@ void stobj_goaltape_init(struct Stobj *stobj)
 
     mdlPtr = smallLCDModels;
     //idxPtr = smallLCDModelIDs;
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[0]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[1]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[2]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[3]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[4]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[5]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[6]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[7]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[8]];
-    *mdlPtr++ = g_commonNLObj->models[smallLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[9]];
 
     mdlPtr = largeLCDModels;
     //idxPtr = largeLCDModelIDs;
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[0]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[1]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[2]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[3]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[4]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[5]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[6]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[7]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[8]];
-    *mdlPtr++ = g_commonNLObj->models[largeLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[9]];
 }
 #else
 float  force_lbl_802F48F0() { return 1.3125f; }

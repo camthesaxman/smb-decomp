@@ -59,7 +59,7 @@ struct
     float prevScale;
 } s_renderParams = {{1.0f, 1.0f, 1.0f}, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
-static BOOL naomi_archive_offsets_to_pointers(struct NlObj *obj);
+static BOOL convert_nlobj_offsets_to_pointers(struct NlObj *obj);
 static void init_model_flags(struct NlModel *model);
 static void prep_some_stuff_before_drawing(void);
 static void build_tev_material(struct NlMesh *pmesh);
@@ -174,7 +174,7 @@ BOOL load_naomi_archive(struct NlObj **archive, struct TPL **tpl, char *archiveP
         file_close(&file);
     }
 
-    naomi_archive_offsets_to_pointers(*archive);
+    convert_nlobj_offsets_to_pointers(*archive);
     if (*tpl != NULL)
         bitmap_free_tpl(*tpl);
     *tpl = bitmap_load_tpl(tplPath);
@@ -209,7 +209,7 @@ BOOL free_naomi_archive(struct NlObj **archive, struct TPL **tpl)
 
 // This function converts file all file offsets in the struct into memory pointers
 // Featuring some insane pointer arithmetic.
-static BOOL naomi_archive_offsets_to_pointers(struct NlObj *obj)
+static BOOL convert_nlobj_offsets_to_pointers(struct NlObj *obj)
 {
     struct NlModel *volatile *pmodel = obj->models;
     struct NlObj_UnkChild *volatile *unkptr;

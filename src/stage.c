@@ -512,7 +512,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_naomi_archive(&g_stageNLObj, &naomiStageTpl);
+        free_naomi_archive(&g_stageNlObj, &g_stageNlTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -567,7 +567,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_naomi_archive(&g_stageNLObj, &naomiStageTpl);
+        free_naomi_archive(&g_stageNlObj, &g_stageNlTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -678,7 +678,7 @@ void load_stage_files(int stageId)
         {
             sprintf(gmaName, "st%03d_p.lz", stageId);
             sprintf(tplName, "st%03d.lz", stageId);
-            load_naomi_archive(&g_stageNLObj, &naomiStageTpl, gmaName, tplName);
+            load_naomi_archive(&g_stageNlObj, &g_stageNlTpl, gmaName, tplName);
         }
         OSSetCurrentHeap(oldHeap);
         DVDChangeDir("/test");
@@ -711,7 +711,7 @@ FORCE_BSS_ORDER(lbl_80209488)
 FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
 
-static struct NlObj **naomiObjList[] = {&g_stageNLObj, &g_commonNLObj, NULL};
+static struct NlObj **naomiObjList[] = {&g_stageNlObj, &g_commonNlObj, NULL};
 
 void func_80044E18_inline(struct Struct8020A348 *r7)
 {
@@ -2059,9 +2059,9 @@ void stage_draw(void)
                 else
                 {
                     u_call_draw_naomi_model_and_do_other_stuff(
-                        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_GOAL_01));
+                        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
-                    sp7C.unk4 = NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_GOAL_01);
+                    sp7C.unk4 = NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_GOAL_01);
                 }
                 if (r31 != 0)
                     func_80092F90(&sp7C);
@@ -2080,7 +2080,7 @@ void stage_draw(void)
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
         nl2ngc_set_scale(10.0f);
         u_call_draw_naomi_model_and_do_other_stuff(
-            NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_TRIANGLE_XY));
+            NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
     {
@@ -2280,11 +2280,11 @@ void stage_draw(void)
             {
                 if (modeCtrl.submodeTimer > 120)
                     u_call_draw_naomi_model_and_do_other_stuff(
-                        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_START_SIGN));
+                        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 60)
                 {
                     u_call_draw_model_with_alpha_deferred(
-                        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_START_SIGN),
+                        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 60) / 60.0f);
                 }
             }
@@ -2292,11 +2292,11 @@ void stage_draw(void)
             {
                 if (modeCtrl.submodeTimer > 75)
                     u_call_draw_naomi_model_and_do_other_stuff(
-                        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_START_SIGN));
+                        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 45)
                 {
                     u_call_draw_model_with_alpha_deferred(
-                        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_START_SIGN),
+                        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 45) / 30.0f);
                 }
             }
@@ -2335,7 +2335,7 @@ void stage_draw(void)
                 f1 = MAX(f1, r25->unkC.z);
                 nl2ngc_set_scale(f1);
                 u_call_draw_model_with_alpha_deferred(
-                    NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_CUBE_B), 0.5f);
+                    NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }
         mathutil_mtx_copy(sp8, mathutilData->mtxB);

@@ -266,7 +266,7 @@ void draw_intro_av_logo(void)
     mathutil_mtxA_translate(&advLogoInfo.pos);
     mathutil_mtxA_rotate_x(advLogoInfo.xrot);
     mathutil_mtxA_rotate_z(advLogoInfo.zrot);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_av_ball));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_av_ball));
 }
 
 void draw_adv_demo_scene(void)
@@ -309,7 +309,7 @@ void draw_adv_demo_scene(void)
             ballInfo[0].ape->unk30.z);
         if (advDemoInfo.unk8 >= 0x440 && advDemoInfo.unk8 < 0x51A)
             mathutil_mtxA_translate_xyz(-0.24f, 0.0f, 0.0f);
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_AIRSHIP));
+        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_AIRSHIP));
     }
 
     // Draws old arcade ball. Leftover from Monkey Ball?
@@ -324,7 +324,7 @@ void draw_adv_demo_scene(void)
             mathutil_mtxA_translate(&r27->pos);
             mathutil_mtxA_rotate_y(r27->yrot);
             mathutil_mtxA_rotate_x(r27->xrot);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, r27->modelId));
+            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, r27->modelId));
         }
     }
 
@@ -717,7 +717,7 @@ void draw_continue_scene(void)
     else
     {
         mathutil_mtxA_from_mtxB();
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_BOX));
+        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BOX));
     }
 
     if (eventInfo[EVENT_BALL].state == EV_STATE_RUNNING)
@@ -759,14 +759,14 @@ void draw_continue_scene(void)
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         nl2ngc_set_scale(MAX(f26, f27));
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT));
+        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT));
         nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
         nl2ngc_set_scale(0.25f);
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_spotl1));
+        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
     }
     else
     {
@@ -809,7 +809,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             nl2ngc_set_scale(4.6f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT_MULTI));
+            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -819,7 +819,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             nl2ngc_set_scale(0.25f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_spotl1));
+            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         }
     }
 
@@ -1073,8 +1073,8 @@ void draw_timer_bomb_fuse(void)
     // Make a temporary copy of the timer fuse, which we will modify
     memcpy(
         tempModel,
-        NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_OBJ_COLOR_BAR_03),
-        NLMODEL_HEADER(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
+        NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_OBJ_COLOR_BAR_03),
+        NLMODEL_HEADER(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
 
     mesh = (struct NlMesh *)tempModel->meshStart;
     faceCount = ((struct NlDispList *)(((struct NlMesh *)tempModel->meshStart)->dispListStart))->faceCount;
@@ -1237,7 +1237,7 @@ void draw_timer_bomb_fuse(void)
     mathutil_mtxA_rotate_z(lbl_801EEC90.unk54);
     mathutil_mtxA_scale_s(0.0149f);
     mathutil_mtxA_scale_xyz(lbl_801EEC90.unk5C, lbl_801EEC90.unk5C, lbl_801EEC90.unk5C);
-    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_TIMER_FIRE));
+    nl2ngc_draw_model_unsorted(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_TIMER_FIRE));
     u_reset_post_mult_color();
 }
 

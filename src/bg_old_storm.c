@@ -15,7 +15,7 @@ void bg_old_storm_init(void)
     Point3d spB4;
     struct Effect sp8;
 
-    backgroundInfo.unk80 = g_bgNLObj->models[7];
+    backgroundInfo.unk80 = g_bgNlObj->models[7];
     backgroundInfo.unk84 = 1.0f;
     spB4.x = 0.0f;
     spB4.y = 0.0f;
@@ -31,28 +31,28 @@ void bg_old_storm_init(void)
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 = -((rand() & 0x3F) + 16);
-    sp8.unk30 = (void *)g_bgNLObj->models[1];
+    sp8.unk30 = (void *)g_bgNlObj->models[1];
     spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNLObj->models[2];
+    sp8.unk30 = (void *)g_bgNlObj->models[2];
     spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNLObj->models[5];
+    sp8.unk30 = (void *)g_bgNlObj->models[5];
     spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNLObj->models[6];
+    sp8.unk30 = (void *)g_bgNlObj->models[6];
     spawn_effect(&sp8);
 }
 
@@ -125,7 +125,7 @@ void bg_old_storm_main(void)
 		sp24.unk70.z = 0.0f;
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
-		sp24.unk30 = (void *)g_bgNLObj->models[8];
+		sp24.unk30 = (void *)g_bgNlObj->models[8];
 		spawn_effect(&sp24);
 	}
 	else if ((u32)raycast_stage_down(&spD0, &sp8, &spDC) != 0)
@@ -143,7 +143,7 @@ void bg_old_storm_main(void)
 		sp24.unk70.z = sp8.normal.z;
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
-		sp24.unk30 = (void *)g_bgNLObj->models[8];
+		sp24.unk30 = (void *)g_bgNlObj->models[8];
 		spawn_effect(&sp24);
 	}
 
@@ -154,8 +154,8 @@ void bg_old_storm_finish(void) {}
 void bg_old_storm_draw(void)
 {
 	mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-	u_call_draw_naomi_model_and_do_other_stuff(g_bgNLObj->models[0]);
-	u_call_draw_naomi_model_and_do_other_stuff(g_bgNLObj->models[3]);
+	u_call_draw_naomi_model_and_do_other_stuff(g_bgNlObj->models[0]);
+	u_call_draw_naomi_model_and_do_other_stuff(g_bgNlObj->models[3]);
 }
 
 void bg_old_storm_interact(int arg0) {}

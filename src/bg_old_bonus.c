@@ -18,18 +18,18 @@ void bg_old_bonus_init(void)
     struct NlModel **r29;
     int r28;
 
-    func_8008D36C(NLOBJ_MODEL(g_bgNLObj, 1), 0xFBFFFFFF, 0x4000000);
-    backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNLObj, 39);
+    func_8008D36C(NLOBJ_MODEL(g_bgNlObj, 1), 0xFBFFFFFF, 0x4000000);
+    backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNlObj, 39);
     backgroundInfo.unk84 = 1.0f;
     mathutil_mtxA_from_identity();
     mathutil_mtxA_scale_xyz(0.66666668653488159f, 0.66666668653488159f, 0.66666668653488159f);
     mathutil_mtxA_to_mtx(backgroundInfo.unk48);
     memset(&sp8, 0, sizeof(sp8));
     sp8.unk8 = 11;
-    sp8.unk30 = (void *)NLOBJ_MODEL(g_bgNLObj, 1);
+    sp8.unk30 = (void *)NLOBJ_MODEL(g_bgNlObj, 1);
     sp8.unk10 = 0;
     r28 = strlen("obj_STARPOINT_");
-    r29 = g_bgNLObj->models;
+    r29 = g_bgNlObj->models;
     while (*r29 != NULL)
     {
         if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
@@ -53,7 +53,7 @@ void bg_old_bonus_finish(void) {}
 void bg_old_bonus_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNLObj, 0));
+    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 0));
 }
 
 void bg_old_bonus_interact(int a)

@@ -35,7 +35,7 @@ struct GMA *minigameGma;
 
 int load_common_graphics(void)
 {
-    int success = load_naomi_archive(&g_commonNLObj, &naomiCommonTpl, "init/common_p.lz", "init/common.lz");
+    int success = load_naomi_archive(&g_commonNlObj, &g_commonNlTpl, "init/common_p.lz", "init/common.lz");
 
     DVDChangeDir("init");
     commonTpl = load_tpl("common.tpl.lz");
@@ -50,10 +50,10 @@ int load_common_graphics(void)
     DVDChangeDir("/test");
     if (success)
     {
-        func_8008D36C(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_circle_white), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_CROSS_LIGHT), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT), 0xFBFFFFFF, 0x4000000);
-        func_8008D36C(NLOBJ_MODEL(g_commonNLObj, NLMODEL_common_SPOT_LIGHT_MULTI), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_circle_white), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_CROSS_LIGHT), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT), 0xFBFFFFFF, 0x4000000);
+        func_8008D36C(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT_MULTI), 0xFBFFFFFF, 0x4000000);
     }
     return success;
 }
@@ -80,7 +80,7 @@ int u_load_minigame_graphics(int index)
     if (gfx->gmaName != NULL)
         minigameGma = load_gma(gfx->gmaName, minigameTpl);
     if (gfx->naomiTplName != NULL && gfx->naomiObjName != NULL)
-        success = load_naomi_archive(&g_minigameNLObj, &minigameNaomiTpl, gfx->naomiObjName, gfx->naomiTplName);
+        success = load_naomi_archive(&g_minigameNlObj, &g_minigameNlTpl, gfx->naomiObjName, gfx->naomiTplName);
     return success;
 }
 #pragma force_active reset
@@ -102,7 +102,7 @@ void u_free_minigame_graphics(void)
         free_gma(minigameGma);
         minigameGma = NULL;
     }
-    free_naomi_archive(&g_minigameNLObj, &minigameNaomiTpl);
+    free_naomi_archive(&g_minigameNlObj, &g_minigameNlTpl);
 }
 
 #pragma force_active on
