@@ -772,7 +772,7 @@ bg_old_water_draw:
 /* 8005AD18 00056C38  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
 /* 8005AD20 00056C40  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD24 00056C44  4B FD 8D D1 */	bl u_dupe_of_call_draw_naomi_model_1
+/* 8005AD24 00056C44  4B FD 8D D1 */	bl nl2ngc_draw_model_sort_none_alt2
 /* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005AD2C 00056C4C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD30 00056C50  80 84 00 10 */	lwz r4, 0x10(r4)
@@ -789,7 +789,7 @@ bg_old_water_draw:
 /* 8005AD5C 00056C7C  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD60 00056C80  4B FA CB 51 */	bl mathutil_mtxA_from_mtx
 /* 8005AD64 00056C84  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD68 00056C88  4B FD 8D 8D */	bl u_dupe_of_call_draw_naomi_model_1
+/* 8005AD68 00056C88  4B FD 8D 8D */	bl nl2ngc_draw_model_sort_none_alt2
 /* 8005AD6C 00056C8C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8005AD70 00056C90  38 21 00 08 */	addi r1, r1, 8
 /* 8005AD74 00056C94  7C 08 03 A6 */	mtlr r0

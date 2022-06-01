@@ -539,7 +539,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
             mathutil_mtxA_push();
             func_8006DDA0(temp_r28, var_r27, (void *)stobj->model, lbl_802F1B4C);
             mathutil_mtxA_pop();
-            u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
+            nl2ngc_draw_model_sort_none_alt2(lbl_802F1B4C);
         }
     }
     apply_curr_light_group_ambient();

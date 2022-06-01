@@ -759,14 +759,14 @@ void draw_continue_scene(void)
         f27 = 4.6f;
         mathutil_mtxA_scale_xyz(f26, f27, f26);
         nl2ngc_set_scale(MAX(f26, f27));
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT));
+        nl2ngc_draw_model_sort_none_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT));
         nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate_xyz(0.0f, f27, 0.0f);
         mathutil_mtxA_rotate_x(-16384);
         mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
         nl2ngc_set_scale(0.25f);
-        u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sort_none_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
     }
     else
     {
@@ -809,7 +809,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_from_mtx(sp2C);
             mathutil_mtxA_mult_left(mathutilData->mtxB);
             nl2ngc_set_scale(4.6f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT_MULTI));
+            nl2ngc_draw_model_sort_none_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_SPOT_LIGHT_MULTI));
             nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
             mathutil_mtxA_from_mtxB_translate(&sp20);
             sp8.x = sp14.x - sp20.x;
@@ -819,7 +819,7 @@ void draw_continue_scene(void)
             mathutil_mtxA_rotate_x(mathutil_atan2(sp8.y, mathutil_sqrt(mathutil_sum_of_sq_2(sp8.x, sp8.z))));
             mathutil_mtxA_scale_xyz(0.25f, 0.25f, 0.25f);
             nl2ngc_set_scale(0.25f);
-            u_dupe_of_call_draw_naomi_model_1(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
+            nl2ngc_draw_model_sort_none_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         }
     }
 

@@ -588,7 +588,7 @@ void draw_stage_geometry(void)
         dyn = dynamicStageParts;
         while (dyn->modelName != NULL)
         {
-            u_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+            nl2ngc_draw_model_sort_none_alt2(dyn->tempModel);
             dyn++;
         }
     }

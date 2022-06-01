@@ -154,17 +154,17 @@ void draw_nl_disp_list_type_a(struct NlDispList *dl, void *end);
 void build_alpha_mesh_tev_material(struct NlMesh *);
 void draw_nl_disp_list_type_a_alpha(struct NlDispList *dl, void *end);
 void nl2ngc_draw_model_sort_translucent_alt2(struct NlModel *model);
-void u_dupe_of_call_draw_naomi_model_1(struct NlModel *model);
-void u_call_draw_model_with_alpha_deferred(struct NlModel *model, float b);
+void nl2ngc_draw_model_sort_none_alt2(struct NlModel *model);
+void nl2ngc_draw_model_alpha_sort_all_alt(struct NlModel *model, float b);
 void nl2ngc_set_light_mask(u32 lightMask);
 void nl2ngc_set_ambient(float r, float g, float b);
-void func_80033B50(int);
-void func_80033B58(u32 a, float b, float c);
-void u_nl2ngc_set_some_other_color(int r, int g, int b);
-void u_draw_model_opaque_meshes(struct NlModel *);
-void u_draw_naomi_model_4(struct NlModel *);
-void u_draw_naomi_model_5(struct NlModel *);
-void u_draw_naomi_model_with_mesh_func(struct NlModel *a, int (*func)());
-void func_800341B8(void);
+void nl2ngc_enable_fog(int);
+void nl2ngc_set_fog_params(u32 a, float b, float c);
+void nl2ngc_set_fog_color(int r, int g, int b);
+void nl2ngc_draw_opaque_model_meshes(struct NlModel *);
+void nl2ngc_draw_translucent_model_meshes(struct NlModel *);
+void nl2ngc_draw_all_model_meshes_alpha(struct NlModel *);
+void u_nl2ngc_draw_model_with_mesh_func(struct NlModel *a, int (*func)());
+void unk_empty(void);
 
 #endif

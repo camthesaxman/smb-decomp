@@ -2241,7 +2241,7 @@ void stage_draw(void)
             dyn = dynamicStageParts;
             while (dyn->modelName != NULL)
             {
-                u_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+                nl2ngc_draw_model_sort_none_alt2(dyn->tempModel);
                 if (r31 != 0)
                 {
                     sp7C.unk2 = 0;
@@ -2283,7 +2283,7 @@ void stage_draw(void)
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 60)
                 {
-                    u_call_draw_model_with_alpha_deferred(
+                    nl2ngc_draw_model_alpha_sort_all_alt(
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 60) / 60.0f);
                 }
@@ -2295,7 +2295,7 @@ void stage_draw(void)
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 45)
                 {
-                    u_call_draw_model_with_alpha_deferred(
+                    nl2ngc_draw_model_alpha_sort_all_alt(
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN),
                         (modeCtrl.submodeTimer - 45) / 30.0f);
                 }
@@ -2334,7 +2334,7 @@ void stage_draw(void)
                 f1 = MAX(r25->unkC.x, r25->unkC.y);
                 f1 = MAX(f1, r25->unkC.z);
                 nl2ngc_set_scale(f1);
-                u_call_draw_model_with_alpha_deferred(
+                nl2ngc_draw_model_alpha_sort_all_alt(
                     NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_CUBE_B), 0.5f);
             }
         }

@@ -3461,7 +3461,7 @@ lbl_8006D7B0:
 /* 8006D7CC 000696EC  48 00 05 D5 */	bl func_8006DDA0
 /* 8006D7D0 000696F0  4B F9 A0 65 */	bl mathutil_mtxA_pop
 /* 8006D7D4 000696F4  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8006D7D8 000696F8  4B FC 63 1D */	bl u_dupe_of_call_draw_naomi_model_1
+/* 8006D7D8 000696F8  4B FC 63 1D */	bl nl2ngc_draw_model_sort_none_alt2
 lbl_8006D7DC:
 /* 8006D7DC 000696FC  3B BD FF FF */	addi r29, r29, -1
 /* 8006D7E0 00069700  3B FF 00 30 */	addi r31, r31, 0x30

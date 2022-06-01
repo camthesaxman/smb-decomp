@@ -1129,7 +1129,7 @@ void ball_draw(void)
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            u_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId), 0.3f);
+            nl2ngc_draw_model_alpha_sort_all_alt(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId), 0.3f);
         }
         else
         {

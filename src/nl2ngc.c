@@ -408,7 +408,7 @@ void nl2ngc_draw_model_sort_translucent(struct NlModel *model)
         }
         modelFlags = &model->flags;
         if (model->flags & (NL_MODEL_FLAG_OPAQUE))
-            u_draw_model_opaque_meshes(model);
+            nl2ngc_draw_opaque_model_meshes(model);
         if (*modelFlags & (NL_MODEL_FLAG_TRANSLUCENT))
         {
             struct DrawModelDeferredNode *drawNode;
@@ -498,10 +498,11 @@ void nl2ngc_draw_model_sort_none(struct NlModel *model)
             }
             mesh = next;
         }
-        func_800341B8();
+        unk_empty();
     }
 }
 
+// Same as normal model deferred node but with alpha parameter
 struct DrawAlphaModelDeferredNode
 {
     struct OrdTblNode node;
@@ -622,7 +623,7 @@ void nl2ngc_draw_model_alpha_sort_none(struct NlModel *model, float alpha)
             }
             mesh = next;
         }
-        func_800341B8();
+        unk_empty();
     }
 }
 
@@ -1443,14 +1444,14 @@ void nl2ngc_draw_model_sort_translucent_alt2(struct NlModel *model)
     nl2ngc_draw_model_sort_translucent(model);
 }
 
-void u_dupe_of_call_draw_naomi_model_1(struct NlModel *model)
+void nl2ngc_draw_model_sort_none_alt2(struct NlModel *model)
 {
     nl2ngc_draw_model_sort_none(model);
 }
 
-void u_call_draw_model_with_alpha_deferred(struct NlModel *model, float b)
+void nl2ngc_draw_model_alpha_sort_all_alt(struct NlModel *model, float alpha)
 {
-    nl2ngc_draw_model_alpha_sort_all(model, b);
+    nl2ngc_draw_model_alpha_sort_all(model, alpha);
 }
 
 void nl2ngc_set_light_mask(u32 lightMask)
@@ -1465,26 +1466,27 @@ void nl2ngc_set_ambient(float r, float g, float b)
     s_ambientColor.b = b;
 }
 
-void func_80033B50(int a)
+void nl2ngc_enable_fog(int enabled)
 {
-    s_fogEnabled = a;
+    s_fogEnabled = enabled;
 }
 
-void func_80033B58(u32 a, float b, float c)
+void nl2ngc_set_fog_params(u32 a, float b, float c)
 {
     s_fogType = a;
     s_fogStartZ = b;
     s_fogEndZ = c;
 }
 
-void u_nl2ngc_set_some_other_color(int r, int g, int b)
+void nl2ngc_set_fog_color(int r, int g, int b)
 {
     s_fogColor.r = r;
     s_fogColor.g = g;
     s_fogColor.b = b;
 }
 
-void u_draw_model_opaque_meshes(struct NlModel *model)
+// Draw all opaque meshes in model immediately
+void nl2ngc_draw_opaque_model_meshes(struct NlModel *model)
 {
     struct NlMesh *mesh;
 
@@ -1531,7 +1533,7 @@ void u_draw_model_opaque_meshes(struct NlModel *model)
             mesh = next;
         }
     }
-    func_800341B8();
+    unk_empty();
 }
 
 static void draw_model_node_callback(struct DrawModelDeferredNode *a)
@@ -1553,14 +1555,14 @@ static void draw_model_node_callback(struct DrawModelDeferredNode *a)
         nl2ngc_set_ambient(a->ambientColor.r, a->ambientColor.g, a->ambientColor.b);
     }
     s_fogEnabled = a->fogEnabled;
-    u_draw_naomi_model_4(a->model);
+    nl2ngc_draw_translucent_model_meshes(a->model);
 
     s_renderParams.materialColor.r = f31;
     s_renderParams.materialColor.g = f30;
     s_renderParams.materialColor.b = f29;
 }
 
-void u_draw_naomi_model_4(struct NlModel *model)
+void nl2ngc_draw_translucent_model_meshes(struct NlModel *model)
 {
     struct NlMesh *mesh;
 
@@ -1607,7 +1609,7 @@ void u_draw_naomi_model_4(struct NlModel *model)
             mesh = next;
         }
     }
-    func_800341B8();
+    unk_empty();
 }
 
 void draw_alpha_model_node_callback(struct DrawAlphaModelDeferredNode *a)
@@ -1630,14 +1632,15 @@ void draw_alpha_model_node_callback(struct DrawAlphaModelDeferredNode *a)
         nl2ngc_set_ambient(a->ambientColor.r, a->ambientColor.g, a->ambientColor.b);
     }
     s_fogEnabled = a->fogEnabled;
-    u_draw_naomi_model_5(a->model);
+    nl2ngc_draw_all_model_meshes_alpha(a->model);
 
     s_renderParams.materialColor.r = f31;
     s_renderParams.materialColor.g = f30;
     s_renderParams.materialColor.b = f29;
 }
 
-void u_draw_naomi_model_5(struct NlModel *model)
+// Draw all meshes in model immediately with global alpha parameter
+void nl2ngc_draw_all_model_meshes_alpha(struct NlModel *model)
 {
     struct NlMesh *mesh;
 
@@ -1682,10 +1685,10 @@ void u_draw_naomi_model_5(struct NlModel *model)
         }
         mesh = next;
     }
-    func_800341B8();
+    unk_empty();
 }
 
-void u_draw_naomi_model_with_mesh_func(struct NlModel *model, int (*func)())
+void u_nl2ngc_draw_model_with_mesh_func(struct NlModel *model, int (*func)())
 {
     struct NlMesh *mesh;
 
@@ -1746,6 +1749,6 @@ void u_draw_naomi_model_with_mesh_func(struct NlModel *model, int (*func)())
     }
 }
 
-void func_800341B8(void)
+void unk_empty(void)
 {
 }

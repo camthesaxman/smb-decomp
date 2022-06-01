@@ -2660,7 +2660,7 @@ func_8004F17C:
 /* 8004F1C4 0004B0E4  4B FE 19 E5 */	bl nl2ngc_set_scale
 /* 8004F1C8 0004B0E8  80 7F 00 30 */	lwz r3, 0x30(r31)
 /* 8004F1CC 0004B0EC  C0 3F 00 A8 */	lfs f1, 0xa8(r31)
-/* 8004F1D0 0004B0F0  4B FE 49 45 */	bl u_call_draw_model_with_alpha_deferred
+/* 8004F1D0 0004B0F0  4B FE 49 45 */	bl nl2ngc_draw_model_alpha_sort_all_alt
 /* 8004F1D4 0004B0F4  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 8004F1D8 0004B0F8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8004F1DC 0004B0FC  38 21 00 18 */	addi r1, r1, 0x18
@@ -3333,7 +3333,7 @@ func_8004FB24:
 /* 8004FBA4 0004BAC4  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 8004FBA8 0004BAC8  C0 3E 00 A8 */	lfs f1, 0xa8(r30)
 /* 8004FBAC 0004BACC  80 63 00 9C */	lwz r3, 0x9c(r3)
-/* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl u_call_draw_model_with_alpha_deferred
+/* 8004FBB0 0004BAD0  4B FE 3F 65 */	bl nl2ngc_draw_model_alpha_sort_all_alt
 /* 8004FBB4 0004BAD4  C0 21 00 0C */	lfs f1, 0xc(r1)
 /* 8004FBB8 0004BAD8  C0 41 00 10 */	lfs f2, 0x10(r1)
 /* 8004FBBC 0004BADC  C0 01 00 14 */	lfs f0, 0x14(r1)

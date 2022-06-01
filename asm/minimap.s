@@ -770,7 +770,7 @@ lbl_80084B1C:
 /* 80084D70 00080C90  4B FA BE 39 */	bl nl2ngc_set_scale
 /* 80084D74 00080C94  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 80084D78 00080C98  80 63 00 38 */	lwz r3, 0x38(r3)
-/* 80084D7C 00080C9C  4B FA ED 79 */	bl u_dupe_of_call_draw_naomi_model_1
+/* 80084D7C 00080C9C  4B FA ED 79 */	bl nl2ngc_draw_model_sort_none_alt2
 /* 80084D80 00080CA0  A8 1E 00 34 */	lha r0, 0x34(r30)
 /* 80084D84 00080CA4  C0 22 AB 78 */	lfs f1, lbl_802F5378@sda21(r2)
 /* 80084D88 00080CA8  6C 00 80 00 */	xoris r0, r0, 0x8000
@@ -797,7 +797,7 @@ lbl_80084B1C:
 /* 80084DDC 00080CFC  4B FA BD CD */	bl nl2ngc_set_scale
 /* 80084DE0 00080D00  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 80084DE4 00080D04  80 63 00 34 */	lwz r3, 0x34(r3)
-/* 80084DE8 00080D08  4B FA ED 0D */	bl u_dupe_of_call_draw_naomi_model_1
+/* 80084DE8 00080D08  4B FA ED 0D */	bl nl2ngc_draw_model_sort_none_alt2
 /* 80084DEC 00080D0C  6F 74 80 00 */	xoris r20, r27, 0x8000
 /* 80084DF0 00080D10  C8 E2 AC 80 */	lfd f7, lbl_802F5480@sda21(r2)
 /* 80084DF4 00080D14  6E E3 80 00 */	xoris r3, r23, 0x8000
