@@ -7,8 +7,8 @@
 
 static float lbl_802F1F60;
 
-static void lbl_800481A0(struct NaomiVtxWithNormal *);
-static void lbl_800482A4(struct NaomiVtxWithColor *);
+static void lbl_800481A0(struct NLVtxWithNormal *);
+static void lbl_800482A4(struct NLVtxWithColor *);
 
 struct Struct80048084
 {
@@ -40,10 +40,10 @@ void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800482A4);
+            u_apply_func_to_naomi_dl_pos_color_tex((struct NLDispList *)mesh->dispListStart, next, lbl_800482A4);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800481A0);
+            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NLDispList *)mesh->dispListStart, next, lbl_800481A0);
             break;
         }
         mesh->flags &= 0xF8FFFFFE;
@@ -65,13 +65,13 @@ asm void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_800481A0(struct NaomiVtxWithNormal *arg0)
+static void lbl_800481A0(struct NLVtxWithNormal *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NaomiVtxWithColor *arg0_ = (void *)arg0;
+    struct NLVtxWithColor *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -98,7 +98,7 @@ static void lbl_800481A0(struct NaomiVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_800482A4(struct NaomiVtxWithColor *arg0)
+static void lbl_800482A4(struct NLVtxWithColor *arg0)
 {
 	u8 dummy[8];
 	Vec spC;
@@ -130,8 +130,8 @@ static void lbl_800482A4(struct NaomiVtxWithColor *arg0)
     arg0->unk14 = 0;
 }
 
-static void lbl_8004853C(struct NaomiVtxWithNormal *);
-static void lbl_8004863C(struct NaomiVtxWithColor *);
+static void lbl_8004853C(struct NLVtxWithNormal *);
+static void lbl_8004863C(struct NLVtxWithColor *);
 
 #ifdef NONMATCHING
 void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
@@ -156,10 +156,10 @@ void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004863C);
+            u_apply_func_to_naomi_dl_pos_color_tex((struct NLDispList *)mesh->dispListStart, next, lbl_8004863C);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004853C);
+            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NLDispList *)mesh->dispListStart, next, lbl_8004853C);
             break;
         }
         mesh->flags &= 0xF8FFFFFE;
@@ -181,13 +181,13 @@ asm void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_8004853C(struct NaomiVtxWithNormal *arg0)
+static void lbl_8004853C(struct NLVtxWithNormal *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NaomiVtxWithColor *arg0_ = (void *)arg0;
+    struct NLVtxWithColor *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -214,7 +214,7 @@ static void lbl_8004853C(struct NaomiVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_8004863C(struct NaomiVtxWithColor *arg0)
+static void lbl_8004863C(struct NLVtxWithColor *arg0)
 {
 	u8 dummy[8];
 	Vec spC;

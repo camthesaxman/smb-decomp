@@ -685,16 +685,16 @@ struct NaomiSpriteParams
     u8 filler40[0x50-0x40];
 };
 
-struct NaomiVtxWithNormal;
-struct NaomiVtxWithColor;
+struct NLVtxWithNormal;
+struct NLVtxWithColor;
 
 // Part of the stage whose vertices are manipulated by functions
 struct DynamicStagePart
 {
     void *modelName;
     struct NaomiModel *origModel;  // original model
-    void (*posNrmTexFunc)(struct NaomiVtxWithNormal *);
-    void (*posColorTexFunc)(struct NaomiVtxWithColor *);
+    void (*posNrmTexFunc)(struct NLVtxWithNormal *);
+    void (*posColorTexFunc)(struct NLVtxWithColor *);
     u32 (*raycastDownFunc)(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal);
     struct NaomiModel *tempModel;  // modified copy of the model
 };
@@ -776,7 +776,7 @@ struct Sphere
 };
 
 struct Preview;
-struct NaomiDispList;
+struct NLDispList;
 
 struct Struct8009544C
 {

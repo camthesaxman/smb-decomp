@@ -1036,7 +1036,7 @@ void draw_timer_bomb_fuse(void)
     Point3d sparkPos;
     float f4;
     float f3;
-    struct NaomiVtxWithNormal *vtx;
+    struct NLVtxWithNormal *vtx;
     int i;
     int r7;
     int faceCount;
@@ -1077,7 +1077,7 @@ void draw_timer_bomb_fuse(void)
         NLMODEL_HEADER(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_OBJ_COLOR_BAR_03))->unk4->modelSize);
 
     mesh = (struct NaomiMesh *)tempModel->meshStart;
-    faceCount = ((struct NaomiDispList *)(((struct NaomiMesh *)tempModel->meshStart)->dispListStart))->faceCount;
+    faceCount = ((struct NLDispList *)(((struct NaomiMesh *)tempModel->meshStart)->dispListStart))->faceCount;
 
     f4 = 2.0 * (t - 0.5);
     f4 = CLAMP(f4, 0.0, 1.0);
@@ -1086,7 +1086,7 @@ void draw_timer_bomb_fuse(void)
     r7 = mathutil_floor(f3 * 0.5) * 2.0f;
     f1 = (f3 - r7) * 0.5;
 
-    vtx = (struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
+    vtx = (struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
         if (t < 0.5)
@@ -1108,7 +1108,7 @@ void draw_timer_bomb_fuse(void)
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
 
-        vtx = &((struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData)[index];
+        vtx = &((struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData)[index];
 
         sp48.x = vtx[0].x * f1 + vtx[2].x * f2;
         sp48.y = vtx[0].y * f1 + vtx[2].y * f2;
@@ -1126,7 +1126,7 @@ void draw_timer_bomb_fuse(void)
     // WTF??
     mesh = (void *)((u32 *)mesh + (((s32)mesh->dispListSize >> 2) + 0x14));
 
-    faceCount = ((struct NaomiDispList *)mesh->dispListStart)->faceCount;
+    faceCount = ((struct NLDispList *)mesh->dispListStart)->faceCount;
 
     f4 = t * 2.0;
     f4 = CLAMP(f4, 0.0, 1.0);
@@ -1135,7 +1135,7 @@ void draw_timer_bomb_fuse(void)
     r7 = mathutil_floor(f3 * 0.5) * 2.0f;
     f1 = (f3 - r7) * 0.5;
 
-    vtx = (void *)((struct NaomiDispList *)mesh->dispListStart)->vtxData;
+    vtx = (void *)((struct NLDispList *)mesh->dispListStart)->vtxData;
     for (i = faceCount - 1; i >= 0; i--, vtx++)
     {
         if (t > 0.5)
@@ -1157,7 +1157,7 @@ void draw_timer_bomb_fuse(void)
         int index = faceCount - 4 - r7;
         float f2 = 1.0 - f1;
 
-        vtx = &((struct NaomiVtxWithNormal *)((struct NaomiDispList *)mesh->dispListStart)->vtxData)[index];
+        vtx = &((struct NLVtxWithNormal *)((struct NLDispList *)mesh->dispListStart)->vtxData)[index];
 
         sp30.x = vtx[0].x * f1 + vtx[2].x * f2;
         sp30.y = vtx[0].y * f1 + vtx[2].y * f2;

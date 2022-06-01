@@ -5,16 +5,16 @@
 #include <dolphin/mtx.h>
 #include <dolphin/GXStruct.h>
 
-// Lit vertex?
-struct NaomiVtxWithNormal
+// NL == NaomiLib, the format for Naomi model archives (analogous to GMA)
+
+struct NLVtxWithNormal
 {
     /*0x00*/ float x, y, z;
     /*0x0C*/ float nx, ny, nz;
     /*0x18*/ float s, t;
 };
 
-// Unlit vertex?
-struct NaomiVtxWithColor
+struct NLVtxWithColor
 {
     /*0x00*/ float x, y, z;
     /*0x0C*/ u32 unkC;
@@ -23,40 +23,42 @@ struct NaomiVtxWithColor
     /*0x18*/ float s, t;
 };
 
-struct NaomiDispList
+struct NLDispList
 {
     u32 flags;
     u32 faceCount;
-    u8 vtxData[];  // array of NaomiVtxWithNormal or NaomiVtxWithColor structs
+    u8 vtxData[];  // array of NLVtxWithNormal or NLVtxWithColor structs
 };
 
 enum
 {
     // 13-14 are min/mag filter: if either set it's near for all, else linear
-    NAOMI_TEX_FLAG_T_CLAMP = 1 << 15,
-    NAOMI_TEX_FLAG_S_CLAMP = 1 << 16,
-    NAOMI_TEX_FLAG_T_MIRROR = 1 << 17,
-    NAOMI_TEX_FLAG_S_MIRROR = 1 << 18,
+    NL_TEX_FLAG_T_CLAMP = 1 << 15,
+    NL_TEX_FLAG_S_CLAMP = 1 << 16,
+    NL_TEX_FLAG_T_MIRROR = 1 << 17,
+    NL_TEX_FLAG_S_MIRROR = 1 << 18,
 };
 
 enum
 {
-    NAOMI_DLIST_FLAG_QUADS = 1 << 2,
-    NAOMI_DLIST_FLAG_TRIANGLES = 1 << 3,
-    NAOMI_DLIST_FLAG_TRIANGLESTRIP = 1 << 4,
+    NL_DLIST_FLAG_QUADS = 1 << 2,
+    NL_DLIST_FLAG_TRIANGLES = 1 << 3,
+    NL_DLIST_FLAG_TRIANGLESTRIP = 1 << 4,
 };
 
 enum
 {
-    NAOMI_MODEL_FLAG_TRANSLUCENT = 1 << 8, // Model has at least 1 translucent mesh
-    NAOMI_MODEL_FLAG_OPAQUE = 1 << 9, // Model has at least 1 opaque mesh
+    NL_MODEL_FLAG_TRANSLUCENT = 1 << 8, // Model has at least 1 translucent mesh
+    NL_MODEL_FLAG_OPAQUE = 1 << 9, // Model has at least 1 opaque mesh
 };
 
 enum
 {
-    NAOMI_MODEL_TYPE_UNLIT_CONST_MAT_COLOR = -1,
-    NAOMI_MODEL_TYPE_LIT = -2,
-    NAOMI_MODEL_TYPE_UNLIT_VERT_MAT_COLOR = -3,
+    // Non-negative model types also exist, these are treated as lit with constant material color
+    NL_MODEL_TYPE_UNLIT_CONST_MAT_COLOR = -1,
+    NL_MODEL_TYPE_LIT_CONST_MAT_COLOR = -2, // Ignored
+    NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR = -3,
+    // No lit + vertex material color type
 };
 
 struct NaomiMesh
@@ -144,10 +146,10 @@ void nl2ngc_draw_model_alpha_sorted(struct NaomiModel *model, float alpha);
 void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float b);
 void u_nl2ngc_draw_model_sort_translucent_alt(struct NaomiModel *a);
 void nl2ngc_draw_model_unsorted_alt(struct NaomiModel *a);
-void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end);
-void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end);
+void u_draw_naomi_disp_list_pos_nrm_tex(struct NLDispList *dl, void *end);
+void u_draw_naomi_disp_list_pos_color_tex_1(struct NLDispList *dl, void *end);
 void build_tev_material_2(struct NaomiMesh *);
-void u_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end);
+void u_draw_naomi_disp_list_pos_color_tex_2(struct NLDispList *dl, void *end);
 void u_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model);
 void u_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model);
 void u_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b);

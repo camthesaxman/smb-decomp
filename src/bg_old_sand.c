@@ -36,10 +36,10 @@ void bg_old_sand_main(void)
 
 void bg_old_sand_finish(void) {}
 
-static void lbl_800599FC(struct NaomiVtxWithNormal *);
-static void lbl_80059A24(struct NaomiVtxWithColor *);
-static void lbl_80059A4C(struct NaomiVtxWithNormal *);
-static void lbl_80059A74(struct NaomiVtxWithColor *);
+static void lbl_800599FC(struct NLVtxWithNormal *);
+static void lbl_80059A24(struct NLVtxWithColor *);
+static void lbl_80059A4C(struct NLVtxWithNormal *);
+static void lbl_80059A74(struct NLVtxWithColor *);
 
 void bg_old_sand_draw(void)
 {
@@ -60,25 +60,25 @@ void bg_old_sand_draw(void)
 
 void bg_old_sand_interact(int a) {}
 
-static void lbl_800599FC(struct NaomiVtxWithNormal *vtx)
+static void lbl_800599FC(struct NLVtxWithNormal *vtx)
 {
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A24(struct NaomiVtxWithColor *vtx)
+static void lbl_80059A24(struct NLVtxWithColor *vtx)
 {
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A4C(struct NaomiVtxWithNormal *vtx)
+static void lbl_80059A4C(struct NLVtxWithNormal *vtx)
 {
     vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A74(struct NaomiVtxWithColor *vtx)
+static void lbl_80059A74(struct NLVtxWithColor *vtx)
 {
     vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???

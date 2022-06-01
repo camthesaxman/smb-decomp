@@ -285,9 +285,9 @@ static void init_model_flags(struct NaomiModel *model)
             mesh = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
         }
         if (translucent)
-            model->flags |= (NAOMI_MODEL_FLAG_TRANSLUCENT);
+            model->flags |= (NL_MODEL_FLAG_TRANSLUCENT);
         if (opaque)
-            model->flags |= (NAOMI_MODEL_FLAG_OPAQUE);
+            model->flags |= (NL_MODEL_FLAG_OPAQUE);
         if (r8)
             model->flags |= (1 << 10);
         if (r9)
@@ -312,16 +312,16 @@ void init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl)
                 GXTexWrapMode wrapS, wrapT;
                 GXTexFilter minFilt, magFilt;
 
-                if (flags & (NAOMI_TEX_FLAG_S_CLAMP))
+                if (flags & (NL_TEX_FLAG_S_CLAMP))
                     wrapS = GXGetTexObjWrapS(texObj);
-                else if (flags & (NAOMI_TEX_FLAG_S_MIRROR))
+                else if (flags & (NL_TEX_FLAG_S_MIRROR))
                     wrapS = GX_MIRROR;
                 else
                     wrapS = GX_REPEAT;
 
-                if (flags & (NAOMI_TEX_FLAG_T_CLAMP))
+                if (flags & (NL_TEX_FLAG_T_CLAMP))
                     wrapT = GXGetTexObjWrapT(texObj);
-                else if (flags & (NAOMI_TEX_FLAG_T_MIRROR))
+                else if (flags & (NL_TEX_FLAG_T_MIRROR))
                     wrapT = GX_MIRROR;
                 else
                     wrapT = GX_REPEAT;
@@ -406,9 +406,9 @@ void u_nl2ngc_draw_model_sort_translucent(struct NaomiModel *model)
             s_renderParams.scale = 1.0f;
         }
         modelFlags = &model->flags;
-        if (model->flags & (NAOMI_MODEL_FLAG_OPAQUE))
+        if (model->flags & (NL_MODEL_FLAG_OPAQUE))
             u_draw_model_opaque_meshes(model);
-        if (*modelFlags & (NAOMI_MODEL_FLAG_TRANSLUCENT))
+        if (*modelFlags & (NL_MODEL_FLAG_TRANSLUCENT))
         {
             struct DrawModelDeferredNode *drawNode;
             struct OrdTblNode *list = ord_tbl_get_entry_for_pos(&model->boundSphereCenter);
@@ -476,7 +476,7 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
         mesh = (struct NaomiMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NaomiDispList *dlstart;
+            struct NLDispList *dlstart;
             struct NaomiMesh *next;
 
             build_tev_material(mesh);
@@ -484,9 +484,10 @@ void nl2ngc_draw_model_unsorted(struct NaomiModel *model)
             next = (void *)(mesh->dispListStart + mesh->dispListSize);
             switch (mesh->type)
             {
-            case -2:
+            case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
+                // Other non-negative model types cover the lit + const material color case
                 break;
-            case -3:
+            case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
                 u_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
@@ -599,7 +600,7 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
         mesh = (struct NaomiMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NaomiDispList *dlstart;
+            struct NLDispList *dlstart;
             struct NaomiMesh *next;
 
             build_tev_material_2(mesh);
@@ -607,9 +608,10 @@ void nl2ngc_draw_model_alpha_unsorted(struct NaomiModel *model, float alpha)
             next = (void *)(mesh->dispListStart + mesh->dispListSize);
             switch (mesh->type)
             {
-            case -2:
+            case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
+                // Other non-negative model types cover the lit + const material color case
                 break;
-            case -3:
+            case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
                 u_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
                 break;
             default:
@@ -831,7 +833,7 @@ static void build_tev_material(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.meshType = mesh.type;
         switch (mesh.type)
         {
-        case -1:
+        case NL_MODEL_TYPE_UNLIT_CONST_MAT_COLOR:
             GXSetChanCtrl(GX_COLOR0A0,   // chan
                           GX_DISABLE,    // enable
                           GX_SRC_REG,    // amb_src
@@ -840,7 +842,7 @@ static void build_tev_material(struct NaomiMesh *pmesh)
                           GX_DF_CLAMP,   // diff_fn
                           GX_AF_SPOT);   // attn_fn
             break;
-        case -3:
+        case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
             GXSetChanCtrl(GX_COLOR0A0,   // chan
                           GX_DISABLE,    // enable
                           GX_SRC_VTX,    // amb_src
@@ -849,7 +851,7 @@ static void build_tev_material(struct NaomiMesh *pmesh)
                           GX_DF_CLAMP,   // diff_fn
                           GX_AF_SPOT);   // attn_fn
             break;
-        case -2:
+        case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR: // Ignored
         default:
             GXSetChanCtrl(GX_COLOR0A0,    // chan
                           GX_ENABLE,      // enable
@@ -863,19 +865,19 @@ static void build_tev_material(struct NaomiMesh *pmesh)
     }
 }
 
-void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_nrm_tex(struct NLDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_NRM) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 0)
         s_naomiMaterialCache.hasVerticesWithColor = 0;
 
-    while (dl < (struct NaomiDispList *)end)
+    while (dl < (struct NLDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NaomiVtxWithNormal *vtx;
+        struct NLVtxWithNormal *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -885,7 +887,7 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
             GXSetCullMode_cached(s_naomiToGXCullModes[r4]);
         }
 
-        if (dl->flags & (NAOMI_DLIST_FLAG_TRIANGLESTRIP))
+        if (dl->flags & (NL_DLIST_FLAG_TRIANGLESTRIP))
         {
             GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceCount);
             while (faceCount > 0)
@@ -910,7 +912,7 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->flags & (NAOMI_DLIST_FLAG_TRIANGLES))
+        else if (dl->flags & (NL_DLIST_FLAG_TRIANGLES))
         {
             GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceCount * 3);
             while (faceCount > 0)
@@ -938,7 +940,7 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
             }
             GXEnd();
         }
-        else if (dl->flags & (NAOMI_DLIST_FLAG_QUADS))
+        else if (dl->flags & (NL_DLIST_FLAG_QUADS))
         {
             GXBegin(GX_QUADS, GX_VTXFMT0, faceCount * 4);
             while (faceCount > 0)
@@ -970,19 +972,19 @@ void u_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end)
     }
 }
 
-void u_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_color_tex_1(struct NLDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 1)
         s_naomiMaterialCache.hasVerticesWithColor = 1;
 
-    while (dl < (struct NaomiDispList *)end)
+    while (dl < (struct NLDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NaomiVtxWithColor *vtx;
+        struct NLVtxWithColor *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -1293,7 +1295,7 @@ void build_tev_material_2(struct NaomiMesh *pmesh)
         s_naomiMaterialCache.meshType = mesh.type;
         switch (mesh.type)
         {
-        case -1:
+        case NL_MODEL_TYPE_UNLIT_CONST_MAT_COLOR:
             GXSetChanCtrl(GX_COLOR0A0,   // chan
                           GX_DISABLE,    // enable
                           GX_SRC_REG,    // amb_src
@@ -1302,7 +1304,7 @@ void build_tev_material_2(struct NaomiMesh *pmesh)
                           GX_DF_CLAMP,   // diff_fn
                           GX_AF_SPOT);   // attn_fn
             break;
-        case -3:
+        case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
             GXSetChanCtrl(GX_COLOR0A0,   // chan
                           GX_DISABLE,    // enable
                           GX_SRC_VTX,    // amb_src
@@ -1311,7 +1313,7 @@ void build_tev_material_2(struct NaomiMesh *pmesh)
                           GX_DF_CLAMP,   // diff_fn
                           GX_AF_SPOT);   // attn_fn
             break;
-        case -2:
+        case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR: // Ignored
         default:
             GXSetChanCtrl(GX_COLOR0A0,    // chan
                           GX_ENABLE,      // enable
@@ -1325,7 +1327,7 @@ void build_tev_material_2(struct NaomiMesh *pmesh)
     }
 }
 
-static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
+static inline void handle_color_vtx(struct NLVtxWithColor *vtx)
 {
     u32 color;
     GXPosition3f32(vtx->x, vtx->y, vtx->z);
@@ -1337,19 +1339,19 @@ static inline void handle_color_vtx(struct NaomiVtxWithColor *vtx)
     GXTexCoord2f32(vtx->s, vtx->t);
 }
 
-void u_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end)
+void u_draw_naomi_disp_list_pos_color_tex_2(struct NLDispList *dl, void *end)
 {
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0) | (1 << GX_VA_TEX0));
 
     if (s_naomiMaterialCache.hasVerticesWithColor != 1)
         s_naomiMaterialCache.hasVerticesWithColor = 1;
 
-    while (dl < (struct NaomiDispList *)end)
+    while (dl < (struct NLDispList *)end)
     {
         int faceCount;
         int i;
         u8 *vtxData = dl->vtxData;
-        struct NaomiVtxWithColor *vtx;
+        struct NLVtxWithColor *vtx;
         u8 r4 = dl->flags & 3;
 
         faceCount = dl->faceCount;
@@ -1501,7 +1503,7 @@ void u_draw_model_opaque_meshes(struct NaomiModel *model)
     mesh = (struct NaomiMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NaomiDispList *dlstart;
+        struct NLDispList *dlstart;
         struct NaomiMesh *next;
 
         build_tev_material(mesh);
@@ -1513,9 +1515,9 @@ void u_draw_model_opaque_meshes(struct NaomiModel *model)
             dlstart = (void *)(mesh->dispListStart);
             switch (mesh->type)
             {
-            case -2:
+            case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
                 break;
-            case -3:
+            case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
                 u_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
@@ -1577,7 +1579,7 @@ void u_draw_naomi_model_4(struct NaomiModel *model)
     mesh = (struct NaomiMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NaomiDispList *dlstart;
+        struct NLDispList *dlstart;
         struct NaomiMesh *next;
 
         build_tev_material(mesh);
@@ -1589,9 +1591,9 @@ void u_draw_naomi_model_4(struct NaomiModel *model)
             dlstart = (void *)(mesh->dispListStart);
             switch (mesh->type)
             {
-            case -2:
+            case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
                 break;
-            case -3:
+            case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
                 u_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                 break;
             default:
@@ -1657,7 +1659,7 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
     mesh = (struct NaomiMesh *)model->meshStart;
     while (mesh->flags != 0)
     {
-        struct NaomiDispList *dlstart;
+        struct NLDispList *dlstart;
         struct NaomiMesh *next;
 
         build_tev_material_2(mesh);
@@ -1665,9 +1667,9 @@ void u_draw_naomi_model_5(struct NaomiModel *model)
         dlstart = (void *)(mesh->dispListStart);
         switch (mesh->type)
         {
-        case -2:
+        case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
             break;
-        case -3:
+        case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
             u_draw_naomi_disp_list_pos_color_tex_2(dlstart, next);
             break;
         default:
@@ -1715,7 +1717,7 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
         mesh = (struct NaomiMesh *)model->meshStart;
         while (mesh->flags != 0)
         {
-            struct NaomiDispList *dlstart;
+            struct NLDispList *dlstart;
             struct NaomiMesh *next = (void *)(mesh->dispListStart + mesh->dispListSize);
 
             if (func(mesh, mesh->dispListSize) == 0)
@@ -1725,9 +1727,9 @@ void u_draw_naomi_model_with_mesh_func(struct NaomiModel *model, int (*func)())
                 dlstart = (void *)(mesh->dispListStart);
                 switch (mesh->type)
                 {
-                case -2:
+                case NL_MODEL_TYPE_LIT_CONST_MAT_COLOR:
                     break;
-                case -3:
+                case NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR:
                     u_draw_naomi_disp_list_pos_color_tex_1(dlstart, next);
                     break;
                 default:

@@ -693,7 +693,7 @@ static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct Naomi
     Point3d sp24;
     Point3d sp18;
     s16 rotX;
-    struct NaomiVtxWithNormal *vtx;
+    struct NLVtxWithNormal *vtx;
     s16 rotY;
     struct NaomiMesh *mesh2;
     struct NaomiMesh *mesh1;
@@ -706,13 +706,13 @@ static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct Naomi
     memcpy(mesh2, mesh1, sizeof(*mesh2));
 
     mesh2->dispListSize = (faceCount * 64) + 8;
-    var_r4 = ((struct NaomiDispList *)mesh1->dispListStart)->flags;
+    var_r4 = ((struct NLDispList *)mesh1->dispListStart)->flags;
     var_r4 &= ~0x14;
     var_r4 |= 0x10;
-    ((struct NaomiDispList *)mesh2->dispListStart)->flags = var_r4;
-    ((struct NaomiDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
+    ((struct NLDispList *)mesh2->dispListStart)->flags = var_r4;
+    ((struct NLDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
 
-    vtx = (void *)(mesh2 = (void *)((struct NaomiDispList *)mesh2->dispListStart)->vtxData);
+    vtx = (void *)(mesh2 = (void *)((struct NLDispList *)mesh2->dispListStart)->vtxData);
     while (faceCount > 0)
     {
         sp24.x = arg0->unkC.x;

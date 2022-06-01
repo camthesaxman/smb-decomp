@@ -1081,9 +1081,9 @@ static int string_match_len(char *a, char *b)
 
 // Called for each vertex in the Bonus Wave floor model.
 // Modifies the y coordinate and normal vector
-void u_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
+void u_bonus_wave_warp_callback_1(struct NLVtxWithNormal *vtxp)
 {
-    struct NaomiVtxWithNormal vtx = *vtxp;
+    struct NLVtxWithNormal vtx = *vtxp;
     float dstFromOrigin;
     float amplitude;
     float f2;
@@ -1119,9 +1119,9 @@ void u_bonus_wave_warp_callback_1(struct NaomiVtxWithNormal *vtxp)
 }
 
 // does the same as u_bonus_wave_warp_callback_1, but doesn't calculate normals
-void u_bonus_wave_warp_callback_2(struct NaomiVtxWithColor *vtxp)
+void u_bonus_wave_warp_callback_2(struct NLVtxWithColor *vtxp)
 {
-    struct NaomiVtxWithColor vtx = *vtxp;
+    struct NLVtxWithColor vtx = *vtxp;
     float dstFromOrigin;
     float amplitude;
     float f2;
@@ -2358,8 +2358,8 @@ void draw_stage_preview(void)
 }
 
 void u_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
-                                          void (*b)(struct NaomiVtxWithNormal *),
-                                          void (*c)(struct NaomiVtxWithColor *))
+                                          void (*b)(struct NLVtxWithNormal *),
+                                          void (*c)(struct NLVtxWithColor *))
 {
     struct NaomiMesh *r6;
 
@@ -2386,12 +2386,12 @@ void u_apply_func_to_naomi_model_vertices(struct NaomiModel *model,
     }
 }
 
-void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
-                                          void (*func)(struct NaomiVtxWithNormal *))
+void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NLDispList *dl, void *end,
+                                          void (*func)(struct NLVtxWithNormal *))
 {
     int i;
 
-    while (dl < (struct NaomiDispList *)end)
+    while (dl < (struct NLDispList *)end)
     {
         u32 flags;
         int faceCount;
@@ -2406,7 +2406,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((struct NaomiVtxWithNormal *)vtxData);
+                    func((struct NLVtxWithNormal *)vtxData);
                     vtxData += 32;
                 }
                 else
@@ -2422,7 +2422,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((struct NaomiVtxWithNormal *)vtxData);
+                        func((struct NLVtxWithNormal *)vtxData);
                         vtxData += 32;
                     }
                     else
@@ -2431,17 +2431,17 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NaomiDispList *dl, void *end,
                 faceCount--;
             }
         }
-        dl = (struct NaomiDispList *)vtxData;
+        dl = (struct NLDispList *)vtxData;
     }
 }
 
 // duplicate of u_apply_func_to_naomi_dl_pos_nrm_tex
-void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
-                                            void (*func)(struct NaomiVtxWithColor *))
+void u_apply_func_to_naomi_dl_pos_color_tex(struct NLDispList *dl, void *end,
+                                            void (*func)(struct NLVtxWithColor *))
 {
     int i;
 
-    while (dl < (struct NaomiDispList *)end)
+    while (dl < (struct NLDispList *)end)
     {
         u32 flags;
         int faceCount;
@@ -2456,7 +2456,7 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((struct NaomiVtxWithColor *)vtxData);
+                    func((struct NLVtxWithColor *)vtxData);
                     vtxData += 32;
                 }
                 else
@@ -2472,7 +2472,7 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((struct NaomiVtxWithColor *)vtxData);
+                        func((struct NLVtxWithColor *)vtxData);
                         vtxData += 32;
                     }
                     else
@@ -2481,6 +2481,6 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NaomiDispList *dl, void *end,
                 faceCount--;
             }
         }
-        dl = (struct NaomiDispList *)vtxData;
+        dl = (struct NLDispList *)vtxData;
     }
 }

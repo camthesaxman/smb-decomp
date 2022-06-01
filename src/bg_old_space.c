@@ -35,8 +35,8 @@ void bg_old_space_main(void)
 
 void bg_old_space_finish(void) {}
 
-static void lbl_8005872C(struct NaomiVtxWithNormal *);
-static void lbl_80058764(struct NaomiVtxWithColor *);
+static void lbl_8005872C(struct NLVtxWithNormal *);
+static void lbl_80058764(struct NLVtxWithColor *);
 
 void bg_old_space_draw(void)
 {
@@ -49,14 +49,14 @@ void bg_old_space_draw(void)
 
 void bg_old_space_interact(int a) {}
 
-static void lbl_8005872C(struct NaomiVtxWithNormal *vtx)
+static void lbl_8005872C(struct NLVtxWithNormal *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80058764(struct NaomiVtxWithColor *vtx)
+static void lbl_80058764(struct NLVtxWithColor *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;
