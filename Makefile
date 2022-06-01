@@ -171,7 +171,8 @@ SOURCES := \
 	src/code_6.c \
 	asm/mini_ranking.s \
 	src/preview.c \
-	asm/code_4.s \
+	asm/name_entry.s \
+	asm/credits.s \
 	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \

@@ -12569,3 +12569,2010 @@ lbl_800C16A8:
 /* 800C16F8 000BD618  7C 08 03 A6 */	mtlr r0
 /* 800C16FC 000BD61C  4E 80 00 20 */	blr
 
+.section .bss
+
+.global lbl_802C6BB8
+lbl_802C6BB8:
+	.skip 0x10
+.global lbl_802C6BC8
+lbl_802C6BC8:
+	.skip 0x10
+.global lbl_802C6BD8
+lbl_802C6BD8:
+	.skip 0x10
+
+.section .data
+
+.global lbl_801E2A98
+lbl_801E2A98:
+	# ROM: 0x1DFA98
+	.4byte 0x3F333333
+	.4byte 0xBECCCCCD
+glabel string__333_3
+	.asciz "?333"
+	.byte 0x00, 0x80, 0x00
+	.4byte 0
+	.4byte 0xBF2CCCCD
+	.4byte 0
+	.4byte 0x3F400000
+	.4byte 0x00008000
+	.4byte 0
+	.4byte 0x3CA3D70B
+	.4byte 0xBECCCCCD
+	.4byte 0x3F8CCCCD
+	.4byte 0x00008000
+	.4byte 0
+
+.global lbl_801E2AD4
+lbl_801E2AD4:
+	# ROM: 0x1DFAD4
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x40B00000
+	.4byte 0xBF99999A
+	.4byte 0x41200000
+	.4byte 0x40A00000
+	.4byte 0x3F99999A
+	.4byte 0x41200000
+	.4byte 0x40A00000
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x40800000
+	.4byte 0xBDCCCCCD
+	.4byte 0x41200000
+	.4byte 0x40B00000
+	.4byte 0x3DCCCCCD
+	.4byte 0x41200000
+	.4byte 0x40D00000
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x41180000
+
+.global lbl_801E2B28
+lbl_801E2B28:
+	# ROM: 0x1DFB28
+	.4byte 0x00E800E8
+	.4byte 0x01010101
+	.4byte 0x016D016D
+	.4byte 0x01860187
+
+.global lbl_801E2B38
+lbl_801E2B38:
+	# ROM: 0x1DFB38
+	.4byte func_800B65B4  ;# ptr
+	.4byte func_800B6608  ;# ptr
+	.4byte func_800B6848  ;# ptr
+	.4byte func_800B69F8  ;# ptr
+	.4byte func_800B6C14  ;# ptr
+	.4byte func_800B6EA4  ;# ptr
+	.4byte func_800B6F9C  ;# ptr
+	.4byte func_800B7078  ;# ptr
+	.4byte func_800B72D4  ;# ptr
+	.4byte func_800B7B6C  ;# ptr
+	.4byte func_800B7D38  ;# ptr
+	.4byte func_800B7F6C  ;# ptr
+	.4byte func_800B7FB4  ;# ptr
+	.4byte func_800B83EC  ;# ptr
+	.4byte func_800B86E0  ;# ptr
+	.4byte func_800B8780  ;# ptr
+	.4byte func_800B8AA4  ;# ptr
+	.4byte func_800B8D7C  ;# ptr
+	.4byte func_800B8E1C  ;# ptr
+	.4byte func_800B9444  ;# ptr
+	.4byte func_800B9724  ;# ptr
+	.4byte func_800B9920  ;# ptr
+	.4byte func_800B9A8C  ;# ptr
+	.4byte func_800B9EA4  ;# ptr
+	.4byte func_800B9FDC  ;# ptr
+	.4byte func_800BA124  ;# ptr
+	.4byte func_800BA160  ;# ptr
+	.4byte func_800BA928  ;# ptr
+	.4byte func_800BA950  ;# ptr
+	.4byte func_800BA4F4  ;# ptr
+	.4byte func_800BA51C  ;# ptr
+	.4byte func_800BB050  ;# ptr
+	.4byte func_800BB064  ;# ptr
+
+.global lbl_801E2BBC
+lbl_801E2BBC:
+	# ROM: 0x1DFBBC
+glabel string_fail_to_alloc_memory_for_ending_management__n
+	.asciz "fail to alloc memory for ending-management!\n"
+	.balign 4
+
+.global lbl_801E2BEC
+lbl_801E2BEC:
+	# ROM: 0x1DFBEC
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BBD34  ;# ptr
+	.4byte lbl_800BBDA4  ;# ptr
+	.4byte lbl_800BBDF0  ;# ptr
+	.4byte lbl_800BBE9C  ;# ptr
+	.4byte lbl_800BBEB0  ;# ptr
+	.4byte lbl_800BBEF8  ;# ptr
+	.4byte lbl_800BBFAC  ;# ptr
+	.4byte lbl_800BC080  ;# ptr
+	.4byte lbl_800BC110  ;# ptr
+	.4byte lbl_800BC218  ;# ptr
+	.4byte lbl_800BC29C  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC3DC  ;# ptr
+	.4byte lbl_800BC468  ;# ptr
+	.4byte lbl_800BC590  ;# ptr
+	.4byte lbl_800BC5C4  ;# ptr
+	.4byte lbl_800BC650  ;# ptr
+	.4byte lbl_800BC6A4  ;# ptr
+glabel lbl_801E2C44
+	.4byte 0x00232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x18232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x13232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x08232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x0D232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x05232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DCCCCCD
+	.4byte 0x3E9374BD
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E2DAC
+	.4byte 0x00181919
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x18202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x13202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x08202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x0D202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x05202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3D23D70A
+	.4byte 0x3FB851EB
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E2F14
+	.4byte 0x00201B19
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x18161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x13161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x08161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x0D161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x05161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E4CCCCD
+	.4byte 0x3E75C290
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E307C
+	.4byte 0x00212526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EF5C290
+	.4byte 0x07252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x0C252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x16191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E449BA6
+	.4byte 0x1B191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E449BA6
+	.4byte 0x15191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x1A191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x0F191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E83126F
+	.4byte 0x0A191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E83126F
+	.4byte 0x18252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x13252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x08252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x0D252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x05252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E4CCCCD
+	.4byte 0x3EFDF3B7
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+
+.global lbl_801E31E4
+lbl_801E31E4:
+	# ROM: 0x1E01E4
+	.4byte lbl_801E2C44  ;# ptr
+	.4byte lbl_801E2DAC  ;# ptr
+	.4byte lbl_801E2F14  ;# ptr
+	.4byte lbl_801E307C  ;# ptr
+
+.global lbl_801E31F4
+lbl_801E31F4:
+	# ROM: 0x1E01F4
+	.4byte lbl_800BD07C  ;# ptr
+	.4byte lbl_800BD058  ;# ptr
+	.4byte lbl_800BD0A0  ;# ptr
+	.4byte lbl_800BD0E8  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD0C4  ;# ptr
+	.4byte lbl_800BD10C  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD140  ;# ptr
+
+.global lbl_801E321C
+lbl_801E321C:
+	# ROM: 0x1E021C
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BD708  ;# ptr
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BD9D8  ;# ptr
+	.4byte lbl_800BDCA4  ;# ptr
+	.4byte lbl_800BDD48  ;# ptr
+	.4byte lbl_800BDF68  ;# ptr
+	.4byte lbl_800BE1D4  ;# ptr
+	.4byte lbl_800BE33C  ;# ptr
+	.4byte lbl_800BE694  ;# ptr
+
+.global lbl_801E3248
+lbl_801E3248:
+	# ROM: 0x1E0248
+	.4byte func_800C013C  ;# ptr
+	.4byte func_800C0354  ;# ptr
+	.4byte 0
+	.4byte 0
+
+.global lbl_801E3258
+lbl_801E3258:
+	# ROM: 0x1E0258
+glabel string_h_KONNDOHA_SARANI
+	.asciz "h/KONNDOHA SARANI"
+	.balign 4
+glabel string_h_UENOk_REBERUh_DE_ASONNDENE
+	.asciz "h/UENOk/REBERUh/DE ASONNDENE"
+	.balign 4
+	.4byte string_h_KONNDOHA_SARANI  ;# ptr
+	.4byte string_h_UENOk_REBERUh_DE_ASONNDENE  ;# ptr
+	.4byte 0
+glabel string_Try_a_higher_level
+	.asciz "Try a higher level"
+	.balign 4
+glabel string_next_time
+	.asciz "next time"
+	.balign 4
+glabel lbl_801E32B8
+	.4byte string_Try_a_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_KOREDE_k_KIMIh_MO
+	.asciz "h/KOREDE k/KIMIh/MO"
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO
+	.asciz "h/ICHININNMAENO Ok/SARUh/SANNDAYO"
+	.balign 4
+	.4byte string_h_KOREDE_k_KIMIh_MO  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO  ;# ptr
+	.4byte 0
+glabel string_Now_you_ve_become
+	.asciz "Now you've become"
+	.balign 4
+glabel string_cool_monkey_like_me
+	.asciz "cool monkey like me"
+glabel lbl_801E3330
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_cool_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO
+	.asciz "k/KIMIh/TTEk/SUGOIh/NE! KOREKARAMO"
+	.balign 4
+glabel string_k_MONNKI_BO_RUh_WO_YOROSIKU_
+	.asciz "k/MONNKI-BO-RUh/WO YOROSIKU!"
+	.balign 4
+	.4byte string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO  ;# ptr
+	.4byte string_k_MONNKI_BO_RUh_WO_YOROSIKU_  ;# ptr
+	.4byte 0
+glabel string_You_are_so_cool__Remember_
+	.asciz "You are so cool! Remember,"
+	.balign 4
+glabel string_Monkey_Ball_is_the_best_game_for_you_
+	.asciz "Monkey Ball is the best game for you!"
+	.balign 4
+glabel lbl_801E33D0
+	.4byte string_You_are_so_cool__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KOKOMADE__k_PUREIh_DEKITAk_KIMIh_HAk_SUGOIh_YO_
+	.asciz "h/KOKOMADE, k/PUREIh/DEKITAk/KIMIh/HAk/SUGOIh/YO!"
+	.balign 4
+glabel string_h_KOKOMADENOk_PUREIh___OTUKARESAMADESITA_
+	.asciz "h/KOKOMADENOk/PUREIh/, OTUKARESAMADESITA!"
+	.balign 4
+glabel string_p_TSUGI_h_NIk_PUREIh_SURUTOKIHA__SAIGOMADE
+	.asciz "p/TSUGI/h/NIk/PUREIh/SURUTOKIHA, SAIGOMADE"
+	.balign 4
+glabel string_h_IKERUYOUNI__GANNBATTEMITENE_
+	.asciz "h/IKERUYOUNI, GANNBATTEMITENE!"
+	.balign 4
+	.4byte string_h_KOKOMADE__k_PUREIh_DEKITAk_KIMIh_HAk_SUGOIh_YO_  ;# ptr
+	.4byte string_h_KOKOMADENOk_PUREIh___OTUKARESAMADESITA_  ;# ptr
+	.4byte string_p_TSUGI_h_NIk_PUREIh_SURUTOKIHA__SAIGOMADE  ;# ptr
+	.4byte string_h_IKERUYOUNI__GANNBATTEMITENE_  ;# ptr
+	.4byte 0
+glabel string_Wow__You_ve_made_it_this_far_
+	.asciz "Wow! You've made it this far!"
+	.balign 4
+glabel string_You_re_incredible_
+	.asciz "You're incredible!"
+	.balign 4
+glabel string_The_next_time_you_play_
+	.asciz "The next time you play,"
+glabel string_let_s_try_to_make_it
+	.asciz "let's try to make it"
+	.balign 4
+glabel string_all_the_way_to_the_end_
+	.asciz "all the way to the end!"
+glabel lbl_801E3518
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_re_incredible_  ;# ptr
+	.4byte string_The_next_time_you_play_  ;# ptr
+	.4byte string_let_s_try_to_make_it  ;# ptr
+	.4byte string_all_the_way_to_the_end_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "h/%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_ZENBUDE_tk_POINNTOh_DANE_
+	.asciz "h/ZENBUDE%tk/POINNTOh/DANE!"
+glabel string_h_ATO_nk_POINNTOh_DE
+	.asciz "h/ATO%nk/POINNTOh/DE"
+	.balign 4
+glabel string_k_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_
+	.asciz "k/MINIGE-MUh/WOk/GETTOh/DEKIRUYO!"
+	.balign 4
+	.4byte string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_  ;# ptr
+	.4byte 0
+glabel string_You_got__p_
+	.asciz "You got %p!"
+glabel string_All_together__you_have__t_
+	.asciz "All together, you have %t!"
+	.balign 4
+glabel string_Only__n_left_to
+	.asciz "Only %n left to"
+glabel string_unlock_the_next_Mini_Game_
+	.asciz "unlock the next Mini Game!"
+	.balign 4
+glabel lbl_801E3614
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_unlock_the_next_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_h_ZENNBUDE_tk_POINNTOh_DANE_
+	.asciz "h/ZENNBUDE%tk/POINNTOh/DANE!"
+	.balign 4
+glabel string_k_POINNTOh_GATAKUSANNTAMATTAKARA
+	.asciz "k/POINNTOh/GATAKUSANNTAMATTAKARA"
+	.balign 4
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUYO!"
+	.balign 4
+	.4byte string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENNBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_lot_of_points_
+	.asciz "Since you got a lot of points,"
+	.balign 4
+glabel string_you_can_unlock_a_Mini_Game_
+	.asciz "you can unlock a Mini Game!"
+glabel lbl_801E36E8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_SAIGONOk_MINIGE_MUh_WOk_GETTOh_SHITENE_
+	.asciz "h/SAIGONOk/MINIGE-MUh/WOk/GETTOh/SHITENE!"
+	.balign 4
+	.4byte string__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_h_SAIGONOk_MINIGE_MUh_WOk_GETTOh_SHITENE_  ;# ptr
+	.4byte 0
+glabel string_you_can_unlock_the_last_Mini_Game_
+	.asciz "you can unlock the last Mini Game!"
+	.balign 4
+glabel lbl_801E3784
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "k/%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_k_KONNTEXINYU_h_p_KAISUUh_WOHUYASERUYO_
+	.asciz "h/k/KONNTEXINYU-h/p/KAISUUh/WOHUYASERUYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENNBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_h_k_KONNTEXINYU_h_p_KAISUUh_WOHUYASERUYO_  ;# ptr
+	.4byte 0
+glabel string_increase_your_number_of_continues_
+	.asciz "increase your number of continues!"
+	.balign 4
+glabel lbl_801E3820
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_increase_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAYO_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/GA%cp/KAIsuu/h/NINATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAYO_  ;# ptr
+	.4byte 0
+glabel string_you_increase_your_number
+	.asciz "you increase your number"
+	.balign 4
+glabel string_of_continues_to__c_
+	.asciz "of continues to %c!"
+glabel lbl_801E38AC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_increase_your_number  ;# ptr
+	.4byte string_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO
+	.asciz "h/KOREDEk/KONNTEXINYU-h/GAp/NANNKAI/h/DEMO"
+	.balign 4
+glabel string_h_DEKIRUYOUNINATTAYO_
+	.asciz "h/DEKIRUYOUNINATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTAYO_  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_play_with
+	.asciz "Now, you can play with"
+	.balign 4
+glabel string_infinite_continues_
+	.asciz "infinite continues!"
+glabel lbl_801E3948
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KIMIh_HA__SUBETENOMONOWOk_GETTOh_SHITEIRUYO_
+	.asciz "k/KIMIh/HA, SUBETENOMONOWOk/GETTOh/SHITEIRUYO!"
+	.balign 4
+glabel string_h_KOREKARAHA__1k_PUREIh_DEk_GETTOh_DEKIRU
+	.asciz "h/KOREKARAHA, 1k/PUREIh/DEk/GETTOh/DEKIRU"
+	.balign 4
+glabel string_k_PUREIPOINNTOh_KIROKUNIk_TYARENJIh_DAYO_
+	.asciz "k/PUREIPOINNTOh/KIROKUNIk/TYARENJIh/DAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_KIMIh_HA__SUBETENOMONOWOk_GETTOh_SHITEIRUYO_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_GETTOh_DEKIRU  ;# ptr
+	.4byte string_k_PUREIPOINNTOh_KIROKUNIk_TYARENJIh_DAYO_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unlocked_everything_
+	.asciz "You've unlocked everything!"
+glabel string_Now__you_can_try_to_set_the
+	.asciz "Now, you can try to set the"
+glabel string_high_score_for_the_most_Play_Points_
+	.asciz "high score for the most Play Points!"
+	.balign 4
+glabel lbl_801E3A58
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything_  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_the_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA___bk_POINNTOh_DANE_
+	.asciz "k/SAIKO-h/HA, %bk/POINNTOh/DANE!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKUWOKOERARERUYOUNI
+	.asciz "k/SAIKO-h/KIROKUWOKOERARERUYOUNI"
+	.balign 4
+glabel string_h_KOREKARAMO__GANBATTENE_
+	.asciz "h/KOREKARAMO, GANBATTENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKUWOKOERARERUYOUNI  ;# ptr
+	.4byte string_h_KOREKARAMO__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_The_high_score_is__b_
+	.asciz "The high score is %b!"
+	.balign 4
+glabel string_Do_your_best_to_try_and_beat
+	.asciz "Do your best to try and beat"
+	.balign 4
+glabel string_the_high_score__okay_
+	.asciz "the high score, okay?"
+	.balign 4
+glabel lbl_801E3B34
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score__okay_  ;# ptr
+	.4byte 0
+glabel string_h_KORETTE__k_SAIKO_h_KIROKUDAYO_
+	.asciz "h/KORETTE, k/SAIKO-h/KIROKUDAYO!"
+	.balign 4
+glabel string_k_YATTAh_NE__KOREKARAMO__SARANIUENO
+	.asciz "k/YATTAh/NE! KOREKARAMO, SARANIUENO"
+glabel string_h_KIROKUWOMEZASITE__GANBATTENE_
+	.asciz "h/KIROKUWOMEZASITE, GANBATTENE!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_KORETTE__k_SAIKO_h_KIROKUDAYO_  ;# ptr
+	.4byte string_k_YATTAh_NE__KOREKARAMO__SARANIUENO  ;# ptr
+	.4byte string_h_KIROKUWOMEZASITE__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_That_s_a_new_high_score_
+	.asciz "That's a new high score!"
+	.balign 4
+glabel string_Congratulations_
+	.asciz "Congratulations!"
+	.balign 4
+glabel string_That_was_truly_a_great_game_
+	.asciz "That was truly a great game!"
+	.balign 4
+glabel lbl_801E3C14
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congratulations_  ;# ptr
+	.4byte string_That_was_truly_a_great_game_  ;# ptr
+	.4byte 0
+glabel string_h_KOREYORIk_SUGOIh_KIROKUHANAIYO_
+	.asciz "h/KOREYORIk/SUGOIh/KIROKUHANAIYO!"
+	.balign 4
+glabel string_k_KIMIh_HA__k_KANPEKIh_DANE_
+	.asciz "k/KIMIh/HA, k/KANPEKIh/DANE!"
+	.balign 4
+glabel string_h_TYO_k_MIRAKURUh_NAk_PUREIh_DATTAYO_
+	.asciz "h/TYO-k/MIRAKURUh/NAk/PUREIh/DATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_KOREYORIk_SUGOIh_KIROKUHANAIYO_  ;# ptr
+	.4byte string_k_KIMIh_HA__k_KANPEKIh_DANE_  ;# ptr
+	.4byte string_h_TYO_k_MIRAKURUh_NAk_PUREIh_DATTAYO_  ;# ptr
+	.4byte 0
+glabel string_There_s_no_record_better_than_this_
+	.asciz "There's no record better than this!"
+glabel string_You_are_the_greatest_
+	.asciz "You are the greatest!"
+	.balign 4
+glabel lbl_801E3CE4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte string_That_was_truly_a_great_game_  ;# ptr
+	.4byte 0
+glabel string_h_MOUITIDO___bk_POINNTOh_DASERUKA
+	.asciz "h/MOUITIDO, %bk/POINNTOh/DASERUKA"
+	.balign 4
+glabel string_k_TYARENJIh_SHITEMITENE_
+	.asciz "k/TYARENJIh/SHITEMITENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_MOUITIDO___bk_POINNTOh_DASERUKA  ;# ptr
+	.4byte string_k_TYARENJIh_SHITEMITENE_  ;# ptr
+	.4byte 0
+glabel string_Try_one_more_time_to_see
+	.asciz "Try one more time to see"
+	.balign 4
+glabel string_if_you_can_get__b_
+	.asciz "if you can get %b!"
+	.balign 4
+glabel lbl_801E3D7C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b_  ;# ptr
+	.4byte 0
+glabel string_h_KONNDOHA_MOTTO
+	.asciz "h/KONNDOHA MOTTO"
+	.balign 4
+glabel string_h_UENOk_REBERUh_WO_MEZASHITENE
+	.asciz "h/UENOk/REBERUh/WO MEZASHITENE"
+	.balign 4
+	.4byte string_h_KONNDOHA_MOTTO  ;# ptr
+	.4byte string_h_UENOk_REBERUh_WO_MEZASHITENE  ;# ptr
+	.4byte 0
+glabel lbl_801E3DD0
+	.4byte string_Try_a_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_ANATAMO_KOREDE
+	.asciz "h/ANATAMO KOREDE"
+	.balign 4
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNNE
+	.asciz "h/ICHININNMAENO Ok/SARUh/SANNNE"
+	.4byte string_h_ANATAMO_KOREDE  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNNE  ;# ptr
+	.4byte 0
+glabel string_pretty_monkey_like_me
+	.asciz "pretty monkey like me"
+	.balign 4
+glabel lbl_801E3E34
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_pretty_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO
+	.asciz "h/ANATATTEk/SUGOIh/WA! KOREKARAMO"
+	.balign 4
+glabel string_k_PUREI_h_SHIMAKUTTENE
+	.asciz "k/PUREI h/SHIMAKUTTENE"
+	.balign 4
+	.4byte string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO  ;# ptr
+	.4byte string_k_PUREI_h_SHIMAKUTTENE  ;# ptr
+	.4byte 0
+glabel string_You_are_so_fantastic__Remember_
+	.asciz "You are so fantastic! Remember,"
+glabel lbl_801E3EA8
+	.4byte string_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KOKOMADEk_PUREIh_DEKITAANATAHA__k_ERAIh_WA_
+	.asciz "h/KOKOMADEk/PUREIh/DEKITAANATAHA, k/ERAIh/WA!"
+	.balign 4
+glabel string_p_JIBUNN_h_DEp_JIBUNN_h_WOHOMETEAGETEMOIIKAMO_
+	.asciz "p/JIBUNN/h/DEp/JIBUNN/h/WOHOMETEAGETEMOIIKAMO!"
+	.balign 4
+glabel string_p_IMA_p_KAIsuu_h_HAAKIRAMETAKEDO__p_TSUGI_h_NOk_PUREIh_DEHA
+	.asciz "p/IMA/p/KAIsuu/h/HAAKIRAMETAKEDO, p/TSUGI/h/NOk/PUREIh/DEHA"
+glabel string_k_KURIAh_DEKIRUYOUNI__GANNBATTENE_
+	.asciz "k/KURIAh/DEKIRUYOUNI, GANNBATTENE!"
+	.balign 4
+	.4byte string_h_KOKOMADEk_PUREIh_DEKITAANATAHA__k_ERAIh_WA_  ;# ptr
+	.4byte string_p_JIBUNN_h_DEp_JIBUNN_h_WOHOMETEAGETEMOIIKAMO_  ;# ptr
+	.4byte string_p_IMA_p_KAIsuu_h_HAAKIRAMETAKEDO__p_TSUGI_h_NOk_PUREIh_DEHA  ;# ptr
+	.4byte string_k_KURIAh_DEKIRUYOUNI__GANNBATTENE_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_something_
+	.asciz "You really are something!"
+	.balign 4
+glabel string_I_guess_you_should_take_a_break_
+	.asciz "I guess you should take a break."
+	.balign 4
+glabel string_Next_time__let_s_try_to_make_it
+	.asciz "Next time, let's try to make it"
+glabel lbl_801E3FE8
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_really_are_something_  ;# ptr
+	.4byte string_I_guess_you_should_take_a_break_  ;# ptr
+	.4byte string_Next_time__let_s_try_to_make_it  ;# ptr
+	.4byte string_all_the_way_to_the_end_  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_
+	.asciz "k/%pk/POINNTOh/WOk/GETTOh/SHITAWA!"
+	.balign 4
+glabel string_h_ZE_NBUDE_tk_POINNTOh_YO_
+	.asciz "h/ZE~NBUDE%tk/POINNTOh/YO."
+	.balign 4
+glabel string_k_MINIGE_MUh_GAk_GETTOh_DEKITYATTARISHITE_
+	.asciz "k/MINIGE-MUh/GAk/GETTOh/DEKITYATTARISHITE."
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUh_GAk_GETTOh_DEKITYATTARISHITE_  ;# ptr
+	.4byte 0
+glabel string_All_together__that_s__t_
+	.asciz "All together, that's %t!"
+	.balign 4
+glabel string_You_might_be_able_to_unlock_a_game
+	.asciz "You might be able to unlock a game"
+	.balign 4
+glabel string_with__n__more_points_
+	.asciz "with %n_ more points!"
+	.balign 4
+glabel lbl_801E40D8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_You_might_be_able_to_unlock_a_game  ;# ptr
+	.4byte string_with__n__more_points_  ;# ptr
+	.4byte 0
+glabel string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA
+	.asciz "h/TAKKUSA~NNk/POINNTOh/GAATUMATTAKARA"
+	.balign 4
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUWAYO_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUWAYO!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUWAYO_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_whole_lot_more_points_
+	.asciz "Since you got a whole lot more points,"
+	.balign 4
+glabel string_you_can_unlock_any_Mini_Game
+	.asciz "you can unlock any Mini Game"
+	.balign 4
+glabel string_you_want_
+	.asciz "you want!"
+	.balign 4
+glabel lbl_801E41A8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_can_unlock_any_Mini_Game  ;# ptr
+	.4byte string_you_want_  ;# ptr
+	.4byte 0
+glabel string_h_SAIGONOk_MINIGE_MUh_MOk_GETTOh_DEKIRUWAYO_
+	.asciz "h/SAIGONOk/MINIGE-MUh/MOk/GETTOh/DEKIRUWAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_h_SAIGONOk_MINIGE_MUh_MOk_GETTOh_DEKIRUWAYO_  ;# ptr
+	.4byte 0
+glabel string_you_ll_be_able_to_unlock
+	.asciz "you'll be able to unlock"
+	.balign 4
+glabel string_the_last_Mini_Game_
+	.asciz "the last Mini Game!"
+glabel lbl_801E4234
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_ll_be_able_to_unlock  ;# ptr
+	.4byte string_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_WOHUYASERUWAYO_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/WOHUYASERUWAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_WOHUYASERUWAYO_  ;# ptr
+	.4byte 0
+glabel string_You_can_increase
+	.asciz "You can increase"
+	.balign 4
+glabel string_your_number_of_continues
+	.asciz "your number of continues"
+	.balign 4
+glabel string_if_you_get__n__more_points_
+	.asciz "if you get %n_ more points!"
+glabel lbl_801E42D8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_You_can_increase  ;# ptr
+	.4byte string_your_number_of_continues  ;# ptr
+	.4byte string_if_you_get__n__more_points_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAWA_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/GA%cp/KAIsuu/h/NINATTAWA!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAWA_  ;# ptr
+	.4byte 0
+glabel string_you_ll_be_able_to_increase
+	.asciz "you'll be able to increase"
+	.balign 4
+glabel string_your_number_of_continues_to__c_
+	.asciz "your number of continues to %c!"
+glabel lbl_801E4374
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_ll_be_able_to_increase  ;# ptr
+	.4byte string_your_number_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_h_DEKIRUYOUNINATTAWAYO_
+	.asciz "h/DEKIRUYOUNINATTAWAYO!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTAWAYO_  ;# ptr
+	.4byte 0
+glabel lbl_801E43B8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_h_ANATANIAGERARERUMONOHA__MOUNAIWA_
+	.asciz "h/ANATANIAGERARERUMONOHA, MOUNAIWA!"
+glabel string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO
+	.asciz "h/KOREKARAHA, 1k/PUREIh/DEk/PUREIPOINNTOh/WO"
+	.balign 4
+glabel string_h_DOREDAKETORERUKANI__TYOUSENNYO_
+	.asciz "h/DOREDAKETORERUKANI, TYOUSENNYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ANATANIAGERARERUMONOHA__MOUNAIWA_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO  ;# ptr
+	.4byte string_h_DOREDAKETORERUKANI__TYOUSENNYO_  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_try_to_see_how_many
+	.asciz "Now, you can try to see how many"
+	.balign 4
+glabel string_points_you_can_get_in_1_player_mode_
+	.asciz "points you can get in 1 player mode!"
+	.balign 4
+glabel lbl_801E44A4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything_  ;# ptr
+	.4byte string_Now__you_can_try_to_see_how_many  ;# ptr
+	.4byte string_points_you_can_get_in_1_player_mode_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA___bk_POINNTOh_YO_
+	.asciz "k/SAIKO-h/HA, %bk/POINNTOh/YO!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKUWONURIKAERARERUYOUNI
+	.asciz "k/SAIKO-h/KIROKUWONURIKAERARERUYOUNI"
+	.balign 4
+glabel string_h_KOREKARAMO__ASOBITUDUKETENE_
+	.asciz "h/KOREKARAMO, ASOBITUDUKETENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_YO_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKUWONURIKAERARERUYOUNI  ;# ptr
+	.4byte string_h_KOREKARAMO__ASOBITUDUKETENE_  ;# ptr
+	.4byte 0
+glabel string_Do_your_best_and_play_more_to_beat
+	.asciz "Do your best and play more to beat"
+	.balign 4
+glabel lbl_801E4558
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_and_play_more_to_beat  ;# ptr
+	.4byte string_the_high_score__okay_  ;# ptr
+	.4byte 0
+glabel string_h_KOREHA__k_SAIKO_h_KIROKUDAWA_
+	.asciz "h/KOREHA, k/SAIKO-h/KIROKUDAWA!"
+glabel string_k_SUGGO_I__h_KOREKARAMO
+	.asciz "k/SUGGO~I! h/KOREKARAMO"
+glabel string_h_UENOKIROKUWOMEZASHITE__GANBATTENE_
+	.asciz "h/UENOKIROKUWOMEZASHITE, GANBATTENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KOREHA__k_SAIKO_h_KIROKUDAWA_  ;# ptr
+	.4byte string_k_SUGGO_I__h_KOREKARAMO  ;# ptr
+	.4byte string_h_UENOKIROKUWOMEZASHITE__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_You_got_the_high_score_
+	.asciz "You got the high score!"
+glabel string_Wow__I_can_t_believe_it_
+	.asciz "Wow! I can't believe it!"
+	.balign 4
+glabel string_Now_just_try_to_beat
+	.asciz "Now just try to beat"
+	.balign 4
+glabel string_your_own_record_
+	.asciz "your own record!"
+	.balign 4
+glabel lbl_801E4640
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_got_the_high_score_  ;# ptr
+	.4byte string_Wow__I_can_t_believe_it_  ;# ptr
+	.4byte string_Now_just_try_to_beat  ;# ptr
+	.4byte string_your_own_record_  ;# ptr
+	.4byte 0
+glabel string_h_KOREIJYOUNOKIROKUHA__DENAIWAYO_
+	.asciz "h/KOREIJYOUNOKIROKUHA, DENAIWAYO!"
+	.balign 4
+glabel string_h_ANATATTE__k_PA_FEKUTOh_NE_
+	.asciz "h/ANATATTE, k/PA-FEKUTOh/NE!"
+	.balign 4
+glabel string_h_MOU__k_SUTEKIp___k_TOKIMEKIp___k_DA_ISUKIh_YO_
+	.asciz "h/MOU, k/SUTEKIp/./k/TOKIMEKIp/./k/DA~ISUKIh/YO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KOREIJYOUNOKIROKUHA__DENAIWAYO_  ;# ptr
+	.4byte string_h_ANATATTE__k_PA_FEKUTOh_NE_  ;# ptr
+	.4byte string_h_MOU__k_SUTEKIp___k_TOKIMEKIp___k_DA_ISUKIh_YO_  ;# ptr
+	.4byte 0
+glabel string_You_are_perfect_
+	.asciz "You are perfect!"
+	.balign 4
+glabel lbl_801E46F8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_You_are_perfect_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte 0
+glabel string_h_KIROKUHA__bk_POINNTOh_YO_
+	.asciz "h/KIROKUHA,%bk/POINNTOh/YO!"
+glabel string_h__bk_POINNTOh_TOIUk_SAIKO_h_KIROKUWO
+	.asciz "h/%bk/POINNTOh/TOIUk/SAIKO-h/KIROKUWO"
+	.balign 4
+glabel string_h_MATADASERUKA__TYOUSENNSITENE_
+	.asciz "h/MATADASERUKA, TYOUSENNSITENE!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KIROKUHA__bk_POINNTOh_YO_  ;# ptr
+	.4byte string_h__bk_POINNTOh_TOIUk_SAIKO_h_KIROKUWO  ;# ptr
+	.4byte string_h_MATADASERUKA__TYOUSENNSITENE_  ;# ptr
+	.4byte 0
+glabel string_if_you_can_get_the_high_score
+	.asciz "if you can get the high score"
+	.balign 4
+glabel lbl_801E47A4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get_the_high_score  ;# ptr
+	.4byte string_of__b_  ;# ptr
+	.4byte 0
+glabel string_h_MOTTO_UENOk_REBERUh_DE
+	.asciz "h/MOTTO UENOk/REBERUh/DE"
+	.balign 4
+glabel string_h_ASOBITAIDEk_CHU
+	.asciz "h/ASOBITAIDEk/CHU"
+	.balign 4
+	.4byte string_h_MOTTO_UENOk_REBERUh_DE  ;# ptr
+	.4byte string_h_ASOBITAIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_I_want_to_play_higher_level
+	.asciz "I want to play higher level"
+glabel lbl_801E4814
+	.4byte string_I_want_to_play_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO
+	.asciz "h/KOREDE RIPPANA Ok/SARUh/SANNNO"
+	.balign 4
+glabel string_h_NAKAMAIRIDEk_CHU
+	.asciz "h/NAKAMAIRIDEk/CHU"
+	.balign 4
+	.4byte string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO  ;# ptr
+	.4byte string_h_NAKAMAIRIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_grown_up_monkey_like_me
+	.asciz "grown up monkey like me"
+glabel lbl_801E487C
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_grown_up_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_k_SUGOIh_DEk_CHU__h_KOREKARAMO
+	.asciz "k/SUGOIh/DEk/CHU! h/KOREKARAMO"
+	.balign 4
+glabel string_h_ZUTTO_ASONNDEHOSIIDEk_CHU
+	.asciz "h/ZUTTO ASONNDEHOSIIDEk/CHU"
+	.4byte string_k_SUGOIh_DEk_CHU__h_KOREKARAMO  ;# ptr
+	.4byte string_h_ZUTTO_ASONNDEHOSIIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_You_are_such_grown_up__Remember_
+	.asciz "You are such grown up! Remember,"
+	.balign 4
+glabel lbl_801E48F4
+	.4byte string_You_are_such_grown_up__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KONOk_SUTE_JIh_MADEk_PUREIh_DEKIRUNANNTE
+	.asciz "h/KONOk/SUTE-JIh/MADEk/PUREIh/DEKIRUNANNTE"
+	.balign 4
+glabel string_k_SUGOIh_DEk_TYU__ODOROKIh_DEk_TYU_
+	.asciz "k/SUGOIh/DEk/TYU! ODOROKIh/DEk/TYU!"
+glabel string_h_TOTTEMOk_MUZUKAh_TIIDEk_TYUh_KEDO
+	.asciz "h/TOTTEMOk/MUZUKAh/TIIDEk/TYUh/KEDO"
+glabel string_h_TUGIHAk_SAIGOh_MADEITTEHOTIIDEk_TYU_
+	.asciz "h/TUGIHAk/SAIGOh/MADEITTEHOTIIDEk/TYU!"
+	.balign 4
+	.4byte string_h_KONOk_SUTE_JIh_MADEk_PUREIh_DEKIRUNANNTE  ;# ptr
+	.4byte string_k_SUGOIh_DEk_TYU__ODOROKIh_DEk_TYU_  ;# ptr
+	.4byte string_h_TOTTEMOk_MUZUKAh_TIIDEk_TYUh_KEDO  ;# ptr
+	.4byte string_h_TUGIHAk_SAIGOh_MADEITTEHOTIIDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_You_are_weally_good_
+	.asciz "You are weally good!"
+	.balign 4
+glabel string_It_s_a_wittle_hard__but_let_s_try
+	.asciz "It's a wittle hard, but let's try"
+	.balign 4
+glabel string_to_make_it_all_da_way_to_da_end_
+	.asciz "to make it all da way to da end!"
+	.balign 4
+glabel lbl_801E4A10
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_are_weally_good_  ;# ptr
+	.4byte string_It_s_a_wittle_hard__but_let_s_try  ;# ptr
+	.4byte string_to_make_it_all_da_way_to_da_end_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTO__GETTOh_DEk_TYU_
+	.asciz "h/%pk/POINNTO, GETTOh/DEk/TYU!"
+	.balign 4
+glabel string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_
+	.asciz "h/ZENBUDE%tk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_MINIGE_MUGETTOh_DEk_TYU__BABU__
+	.asciz "k/MINIGE-MUGETTOh/DEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUGETTOh_DEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_All_togeder__you_have__t_
+	.asciz "All togeder, you have %t!"
+	.balign 4
+glabel string_Only__n_weft_to
+	.asciz "Only %n weft to"
+glabel string_unwock_the_next_Mini_Game_
+	.asciz "unwock the next Mini Game!"
+	.balign 4
+glabel lbl_801E4AE4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Only__n_weft_to  ;# ptr
+	.4byte string_unwock_the_next_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA
+	.asciz "k/POINNTOh/WOTAKUSANNk/GETTOh/TITADEk/TYUh/KARA"
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel lbl_801E4B6C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTO_GETTOh_DEk_TYU_
+	.asciz "h/%pk/POINNTO,GETTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_MINIGE_MUh_WOZENNBUk_GETTOh_DEKIRUDEk_TYU_
+	.asciz "k/MINIGE-MUh/WOZENNBUk/GETTOh/DEKIRUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_k_MINIGE_MUh_WOZENNBUk_GETTOh_DEKIRUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_wot_of_points_
+	.asciz "Since you got a wot of points,"
+	.balign 4
+glabel string_you_can_unwock_the_last_Mini_Game_
+	.asciz "you can unwock the last Mini Game!"
+	.balign 4
+glabel lbl_801E4C28
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
+	.4byte string_you_can_unwock_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_h_WOHUYASERUDEk_TYU_
+	.asciz "k/KONNTEXINYU-h/WOHUYASERUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU_h_WOHUYASERUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_All_togedder__you_have__p_
+	.asciz "All togedder, you have %p!"
+	.balign 4
+glabel string_incwease_your_number_of_continues_
+	.asciz "incwease your number of continues!"
+	.balign 4
+glabel lbl_801E4CB4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togedder__you_have__p_  ;# ptr
+	.4byte string_Only__n_weft_to  ;# ptr
+	.4byte string_incwease_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_h_GA_ch_KAININATTADEk_TYU_
+	.asciz "k/KONNTEXINYU-h/GA%ch/KAININATTADEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_h_GA_ch_KAININATTADEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_you_incwease_your_number
+	.asciz "you incwease your number"
+	.balign 4
+glabel string_of_continues_
+	.asciz "of continues!"
+	.balign 4
+glabel lbl_801E4D34
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
+	.4byte string_you_incwease_your_number  ;# ptr
+	.4byte string_of_continues_  ;# ptr
+	.4byte 0
+glabel string_h_NANNKAIDEMOk_KONNTEXINYU_h_GA
+	.asciz "h/NANNKAIDEMOk/KONNTEXINYU-h/GA"
+glabel string_h_DEKIRUYOUNINATTADEk_TYU__BABU__
+	.asciz "h/DEKIRUYOUNINATTADEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_NANNKAIDEMOk_KONNTEXINYU_h_GA  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTADEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_pway_with
+	.asciz "Now, you can pway with"
+	.balign 4
+glabel lbl_801E4DBC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_pway_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_h_MOU__k_PUREZENNTOh_SURUMONOHANAIDEk_TYU_
+	.asciz "h/MOU, k/PUREZENNTOh/SURUMONOHANAIDEk/TYU!"
+	.balign 4
+glabel string_h_IKUTUk_GETTOh_SURUKANIk_TYARENJIh_DEk_TYU_
+	.asciz "h/IKUTUk/GETTOh/SURUKANIk/TYARENJIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_MOU__k_PUREZENNTOh_SURUMONOHANAIDEk_TYU_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO  ;# ptr
+	.4byte string_h_IKUTUk_GETTOh_SURUKANIk_TYARENJIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unwocked_everyting_
+	.asciz "You've unwocked everyting!"
+	.balign 4
+glabel lbl_801E4E5C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unwocked_everyting_  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_the_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA_bk_POINNTOh_DEk_TYU_
+	.asciz "k/SAIKO-h/HA%bk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKU__MEZATITE
+	.asciz "k/SAIKO-h/KIROKU, MEZATITE"
+	.balign 4
+glabel string_h_KOREKARAMO__k_PUREIh_SURUDEk_TYU_
+	.asciz "h/KOREKARAMO, k/PUREIh/SURUDEk/TYU!"
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_HA_bk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKU__MEZATITE  ;# ptr
+	.4byte string_h_KOREKARAMO__k_PUREIh_SURUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_the_high_score___Let_s_go__
+	.asciz "the high score!! Let's go!!"
+glabel lbl_801E4F04
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score___Let_s_go__  ;# ptr
+	.4byte 0
+glabel string_h_KOREHA__k_SAIKO_h_KIROKUDEk_TYU_
+	.asciz "h/KOREHA, k/SAIKO-h/KIROKUDEk/TYU!"
+	.balign 4
+glabel string_h_YATTADEk_TYU__h_URETIIDEk_TYU_
+	.asciz "h/YATTADEk/TYU! h/URETIIDEk/TYU!"
+	.balign 4
+glabel string_k_SUGOIh_DEk_TYU__UKIUKIh_DEk_TYU_
+	.asciz "k/SUGOIh/DEk/TYU! UKIUKIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_KOREHA__k_SAIKO_h_KIROKUDEk_TYU_  ;# ptr
+	.4byte string_h_YATTADEk_TYU__h_URETIIDEk_TYU_  ;# ptr
+	.4byte string_k_SUGOIh_DEk_TYU__UKIUKIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_Congwatuwations_
+	.asciz "Congwatuwations!"
+	.balign 4
+glabel string_That_was_truly_a_gweat_game_
+	.asciz "That was truly a gweat game!"
+	.balign 4
+glabel lbl_801E4FCC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congwatuwations_  ;# ptr
+	.4byte string_That_was_truly_a_gweat_game_  ;# ptr
+	.4byte 0
+glabel string_k_PA_FEKUTOh_NAKIROKUDEk_TYU_
+	.asciz "k/PA-FEKUTOh/NAKIROKUDEk/TYU!"
+	.balign 4
+glabel string_h_KOREYORIk_SUGOIh_KIROKUHA
+	.asciz "h/KOREYORIk/SUGOIh/KIROKUHA"
+glabel string_h_MOUNAIDEk_TYU__ODOROKIh_DEk_TYU_
+	.asciz "h/MOUNAIDEk/TYU! ODOROKIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_PA_FEKUTOh_NAKIROKUDEk_TYU_  ;# ptr
+	.4byte string_h_KOREYORIk_SUGOIh_KIROKUHA  ;# ptr
+	.4byte string_h_MOUNAIDEk_TYU__ODOROKIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_There_s_no_wecord_better_than_this_
+	.asciz "There's no wecord better than this!"
+glabel lbl_801E5078
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_wecord_better_than_this_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte string_That_was_truly_a_gweat_game_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA__bk_POINNTOh_DEk_TYU_
+	.asciz "k/SAIKO-h/HA,%bk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_h__bk_POINNTOh_WOMATAk_GETTOh_DEKIRUKA
+	.asciz "h/%bk/POINNTOh/WOMATAk/GETTOh/DEKIRUKA"
+	.balign 4
+glabel string_k_TYARENNJIh_TITEHOSIIDEk_TYU__BABU__
+	.asciz "k/TYARENNJIh/TITEHOSIIDEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_HA__bk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h__bk_POINNTOh_WOMATAk_GETTOh_DEKIRUKA  ;# ptr
+	.4byte string_k_TYARENNJIh_TITEHOSIIDEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_if_you_can_get__b__Goo_goo___
+	.asciz "if you can get %b! Goo goo!!!"
+	.balign 4
+glabel lbl_801E5134
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b__Goo_goo___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKYO_NOSARU_MEZASHITE_MOTTO
+	.asciz "k/SAIKYO~NOSARU MEZASHITE MOTTO"
+glabel string_k_UENO_REBERUDE_ASONDEKURE__
+	.asciz "k/UENO REBERUDE ASONDEKURE~!"
+	.balign 4
+	.4byte string_k_SAIKYO_NOSARU_MEZASHITE_MOTTO  ;# ptr
+	.4byte string_k_UENO_REBERUDE_ASONDEKURE__  ;# ptr
+	.4byte 0
+glabel string_Try_to_be_the_greatest_monkey_ever_
+	.asciz "Try to be the greatest monkey ever!"
+glabel string_Play_the_more_difficult_levels_
+	.asciz "Play the more difficult levels!"
+glabel lbl_801E51D8
+	.4byte string_Try_to_be_the_greatest_monkey_ever_  ;# ptr
+	.4byte string_Play_the_more_difficult_levels_  ;# ptr
+	.4byte 0
+glabel string_k_SUGOIJYANE_KA__ODOROKIDAZE_
+	.asciz "k/SUGOIJYANE~KA! ODOROKIDAZE!"
+	.balign 4
+glabel string_k_DAXA_KEDO_UEHA_MADA_ARUZE_
+	.asciz "k/DAXA~KEDO UEHA MADA ARUZE!"
+	.balign 4
+	.4byte string_k_SUGOIJYANE_KA__ODOROKIDAZE_  ;# ptr
+	.4byte string_k_DAXA_KEDO_UEHA_MADA_ARUZE_  ;# ptr
+	.4byte 0
+glabel string_Wow__You_re_really_good_
+	.asciz "Wow! You're really good!"
+	.balign 4
+glabel string_I_m_surprised_
+	.asciz "I'm surprised!"
+	.balign 4
+glabel string_Buuuut__there_s_still_a_more
+	.asciz "Buuuut, there's still a more"
+	.balign 4
+glabel string_difficult_level_to_beat_
+	.asciz "difficult level to beat!"
+	.balign 4
+glabel lbl_801E5298
+	.4byte string_Wow__You_re_really_good_  ;# ptr
+	.4byte string_I_m_surprised_  ;# ptr
+	.4byte string_Buuuut__there_s_still_a_more  ;# ptr
+	.4byte string_difficult_level_to_beat_  ;# ptr
+	.4byte 0
+glabel string_k_UHOUHO_UHOHO_I__YATTA__
+	.asciz "k/UHOUHO UHOHO~I! YATTA~!"
+	.balign 4
+glabel string_k_KOREDE_SAIKYO_NOSARU_DAZE__
+	.asciz "k/KOREDE SAIKYO~NOSARU DAZE~!"
+	.balign 4
+	.4byte string_k_UHOUHO_UHOHO_I__YATTA__  ;# ptr
+	.4byte string_k_KOREDE_SAIKYO_NOSARU_DAZE__  ;# ptr
+	.4byte 0
+glabel string_I_can_t_believe_it_
+	.asciz "I can't believe it!"
+glabel string_You_really_are_the_greatest
+	.asciz "You really are the greatest"
+glabel string_monkey_ever__
+	.asciz "monkey ever!!"
+	.balign 4
+glabel lbl_801E5334
+	.4byte string_Oh_wow_  ;# ptr
+	.4byte string_I_can_t_believe_it_  ;# ptr
+	.4byte string_You_really_are_the_greatest  ;# ptr
+	.4byte string_monkey_ever__  ;# ptr
+	.4byte 0
+glabel string_k_KONOSUTE_JIMADE_KORETA_OMAEHA
+	.asciz "k/KONOSUTE~JIMADE KORETA OMAEHA"
+glabel string_k_KANARINO_UDEMAEDA_XTU__UHOUHO_
+	.asciz "k/KANARINO UDEMAEDA~XTU! UHOUHO!"
+	.balign 4
+glabel string_k_TUGINI_PUREISURUTOKIHA_AKIRAMEZUNI
+	.asciz "k/TUGINI PUREISURUTOKIHA AKIRAMEZUNI"
+	.balign 4
+glabel string_k_ZENNBU_KURIA_DEKIRUYOUNI_GANBARE_
+	.asciz "k/ZENNBU KURIA DEKIRUYOUNI GANBARE!"
+	.4byte string_k_KONOSUTE_JIMADE_KORETA_OMAEHA  ;# ptr
+	.4byte string_k_KANARINO_UDEMAEDA_XTU__UHOUHO_  ;# ptr
+	.4byte string_k_TUGINI_PUREISURUTOKIHA_AKIRAMEZUNI  ;# ptr
+	.4byte string_k_ZENNBU_KURIA_DEKIRUYOUNI_GANBARE_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_something_to_have
+	.asciz "You really are something to have"
+	.balign 4
+glabel string_made_it_this_far__Congratulations__
+	.asciz "made it this far! Congratulations!!"
+glabel string_Next_time_you_play_
+	.asciz "Next time you play,"
+glabel string_let_s_take_it_all_the_way___
+	.asciz "let's take it all the way!!!"
+	.balign 4
+glabel lbl_801E5468
+	.4byte string_You_really_are_something_to_have  ;# ptr
+	.4byte string_made_it_this_far__Congratulations__  ;# ptr
+	.4byte string_Next_time_you_play_  ;# ptr
+	.4byte string_let_s_take_it_all_the_way___  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTO_GETTOXO_XTU_
+	.asciz "k/%pk/POINNTO GETTOXO~XTU!"
+	.balign 4
+glabel string_k_ZENBUDE__tk_POINNTOXO_XTU_
+	.asciz "k/ZENBUDE %tk/POINNTOXO~XTU!"
+	.balign 4
+glabel string_k_ATO__nk_POINNTO_DE
+	.asciz "k/ATO %nk/POINNTO DE"
+	.balign 4
+glabel string_k_MINIGEXE_MU_GETTOXO_XTU__UHOHO_
+	.asciz "k/MINIGEXE~MU GETTOXO~XTU! UHOHO!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_ATO__nk_POINNTO_DE  ;# ptr
+	.4byte string_k_MINIGEXE_MU_GETTOXO_XTU__UHOHO_  ;# ptr
+	.4byte 0
+glabel string_You_got__p__Alright___
+	.asciz "You got %p! Alright!!!"
+	.balign 4
+glabel string_Go_go_go___
+	.asciz "Go go go!!!"
+glabel lbl_801E552C
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_unlock_the_next_Mini_Game_  ;# ptr
+	.4byte string_Go_go_go___  ;# ptr
+	.4byte 0
+glabel string_k_POINNTO_TAKUSANN__DAXAKA_RA
+	.asciz "k/POINNTO TAKUSANN! DAXAKA~RA"
+	.balign 4
+glabel string_k_MINIGE_MU_GETTOXO_XTU__DAXA__
+	.asciz "k/MINIGE~MU GETTOXO~XTU! DAXA~!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_MINIGE_MU_GETTOXO_XTU__DAXA__  ;# ptr
+	.4byte 0
+glabel string_you_can_unlock_a_Mini_Game__Yeah___
+	.asciz "you can unlock a Mini Game! Yeah!!!"
+glabel lbl_801E55BC
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game__Yeah___  ;# ptr
+	.4byte 0
+glabel string_k_MINIGEXE_MU_ZE_NNBU_GETTOXO_XTU_
+	.asciz "k/MINIGEXE~MU ZE~NNBU GETTOXO~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_MINIGEXE_MU_ZE_NNBU_GETTOXO_XTU_  ;# ptr
+	.4byte 0
+glabel string_All_together__you_have__t
+	.asciz "All together, you have %t"
+	.balign 4
+glabel string_Go_for_it___
+	.asciz "Go for it!!!"
+	.balign 4
+glabel lbl_801E5634
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_the_last_Mini_Game_  ;# ptr
+	.4byte string_Go_for_it___  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU__HUE_RU__UHOUHO_
+	.asciz "k/KONNTEXINYU~ HUE~RU! UHOUHO!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_ATO__nk_POINNTO_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU__HUE_RU__UHOUHO_  ;# ptr
+	.4byte 0
+glabel lbl_801E5680
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_increase_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_
+	.asciz "k/KONNTEXINYU~ %ck/ KAINI HUETA~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_  ;# ptr
+	.4byte 0
+glabel lbl_801E56D0
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_increase_your_number  ;# ptr
+	.4byte string_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_k_DAXAKA_RA_KONNTEXINYU__NANNDOMO
+	.asciz "k/DAXAKA~RA KONNTEXINYU~ NANNDOMO"
+	.balign 4
+glabel string_k_DEKIRUYOUNI_NATTA___NATTA__
+	.asciz "k/DEKIRUYOUNI NATTA~! NATTA~!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_DAXAKA_RA_KONNTEXINYU__NANNDOMO  ;# ptr
+	.4byte string_k_DEKIRUYOUNI_NATTA___NATTA__  ;# ptr
+	.4byte 0
+glabel string_infinite_continues__Good_job__
+	.asciz "infinite continues! Good job!!"
+	.balign 4
+glabel lbl_801E5760
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues__Good_job__  ;# ptr
+	.4byte 0
+glabel string_k_MOU_OMAENI_YARERUMONO_NAI_
+	.asciz "k/MOU OMAENI YARERUMONO NAI!"
+	.balign 4
+glabel string_k_KOREKARAHA_1PUREIDE_PUREIPOINNTO
+	.asciz "k/KOREKARAHA 1PUREIDE PUREIPOINNTO"
+	.balign 4
+glabel string_k_NANNTENN_GETTODEKIRUKA_TYARENNJI_
+	.asciz "k/NANNTENN GETTODEKIRUKA TYARENNJI!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_MOU_OMAENI_YARERUMONO_NAI_  ;# ptr
+	.4byte string_k_KOREKARAHA_1PUREIDE_PUREIPOINNTO  ;# ptr
+	.4byte string_k_NANNTENN_GETTODEKIRUKA_TYARENNJI_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unlocked_everything__Wow___
+	.asciz "You've unlocked everything! Wow!!!"
+	.balign 4
+glabel string_high_score_for_most_Play_Points_
+	.asciz "high score for most Play Points!"
+	.balign 4
+glabel lbl_801E5838
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything__Wow___  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO__bk_POINNTO__ZANNNENN_
+	.asciz "k/SAIKO~%bk/POINNTO! ZANNNENN!"
+	.balign 4
+glabel string_k_KOREKARAMO_SAIKO_KIROKU_MEZASITE
+	.asciz "k/KOREKARAMO SAIKO~KIROKU MEZASITE"
+	.balign 4
+glabel string_k_PUREI_SURUNO_DA_XTU__UHOHO_I_
+	.asciz "k/PUREI SURUNO DA~XTU! UHOHO~I!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO__bk_POINNTO__ZANNNENN_  ;# ptr
+	.4byte string_k_KOREKARAMO_SAIKO_KIROKU_MEZASITE  ;# ptr
+	.4byte string_k_PUREI_SURUNO_DA_XTU__UHOHO_I_  ;# ptr
+	.4byte 0
+glabel string_the_high_score__You_can_do_it___
+	.asciz "the high score! You can do it!!!"
+	.balign 4
+glabel lbl_801E58E8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score__You_can_do_it___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_KIROKU_DETTA___DETTA__
+	.asciz "k/SAIKO~KIROKU DETTA~! DETTA~!"
+	.balign 4
+glabel string_k_UHO_UHOHO__UHOUHO_UHOHO_I_
+	.asciz "k/UHO UHOHO! UHOUHO UHOHO~I!"
+	.balign 4
+glabel string_k_YATTA__YATTA___YATTA_GO_NN_
+	.asciz "k/YATTA~ YATTA~! YATTA~GO~NN!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO_KIROKU_DETTA___DETTA__  ;# ptr
+	.4byte string_k_UHO_UHOHO__UHOUHO_UHOHO_I_  ;# ptr
+	.4byte string_k_YATTA__YATTA___YATTA_GO_NN_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_the_best____Woo_hoo___
+	.asciz "You really are the best!!! Woo hoo!!!"
+	.balign 4
+glabel lbl_801E5998
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congratulations_  ;# ptr
+	.4byte string_You_really_are_the_best____Woo_hoo___  ;# ptr
+	.4byte 0
+glabel string_k_KO_KOREHA_ODOROKINO_DA_IKIROKU_
+	.asciz "k/KO KOREHA ODOROKINO DA~IKIROKU!"
+	.balign 4
+glabel string_k_KOREIJYO__SUGOI_KIROKU_DENAI_
+	.asciz "k/KOREIJYO~ SUGOI KIROKU DENAI!"
+glabel string_k_OMAE_TENNSA_I_SUGOIZOXO_XTU_
+	.asciz "k/OMAE TENNSA~I SUGOIZOXO~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_KO_KOREHA_ODOROKINO_DA_IKIROKU_  ;# ptr
+	.4byte string_k_KOREIJYO__SUGOI_KIROKU_DENAI_  ;# ptr
+	.4byte string_k_OMAE_TENNSA_I_SUGOIZOXO_XTU_  ;# ptr
+	.4byte 0
+glabel string_I_can_t_believe_it__
+	.asciz "I can't believe it!!"
+	.balign 4
+glabel string_You_must_be_a_genius___
+	.asciz "You must be a genius!!!"
+glabel lbl_801E5A54
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_I_can_t_believe_it__  ;# ptr
+	.4byte string_You_must_be_a_genius___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO__bk_POINNTO__ZANNNENN
+	.asciz "k/SAIKO~%bk/POINNTO! ZANNNENN"
+	.balign 4
+glabel string_k__bk_POINNTO_MATA_DASERUYO_NI
+	.asciz "k/%bk/POINNTO MATA DASERUYO~NI"
+	.balign 4
+glabel string_k_GANNBARE_XTU__1p___k_2p___k_3p___k_DAXA_XTU_
+	.asciz "k/GANNBARE~XTU! 1p/./k/2p/./k/3p/./k/DAXA~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO__bk_POINNTO__ZANNNENN  ;# ptr
+	.4byte string_k__bk_POINNTO_MATA_DASERUYO_NI  ;# ptr
+	.4byte string_k_GANNBARE_XTU__1p___k_2p___k_3p___k_DAXA_XTU_  ;# ptr
+	.4byte 0
+glabel string_Readyp_TENNTENN_a__Go___
+	.asciz "Readyp/TENNTENN/a/ Go!!!"
+	.balign 4
+glabel lbl_801E5B08
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b_  ;# ptr
+	.4byte string_Readyp_TENNTENN_a__Go___  ;# ptr
+	.4byte 0
+glabel lbl_801E5B20
+	.4byte lbl_801E32B8  ;# ptr
+	.4byte lbl_801E3330  ;# ptr
+	.4byte lbl_801E33D0  ;# ptr
+	.4byte lbl_801E3518  ;# ptr
+	.4byte lbl_801E3614  ;# ptr
+	.4byte lbl_801E36E8  ;# ptr
+	.4byte lbl_801E3784  ;# ptr
+	.4byte lbl_801E3820  ;# ptr
+	.4byte lbl_801E38AC  ;# ptr
+	.4byte lbl_801E3948  ;# ptr
+	.4byte lbl_801E3A58  ;# ptr
+	.4byte lbl_801E3B34  ;# ptr
+	.4byte lbl_801E3C14  ;# ptr
+	.4byte lbl_801E3CE4  ;# ptr
+	.4byte lbl_801E3D7C  ;# ptr
+glabel lbl_801E5B5C
+	.4byte lbl_801E3DD0  ;# ptr
+	.4byte lbl_801E3E34  ;# ptr
+	.4byte lbl_801E3EA8  ;# ptr
+	.4byte lbl_801E3FE8  ;# ptr
+	.4byte lbl_801E40D8  ;# ptr
+	.4byte lbl_801E41A8  ;# ptr
+	.4byte lbl_801E4234  ;# ptr
+	.4byte lbl_801E42D8  ;# ptr
+	.4byte lbl_801E4374  ;# ptr
+	.4byte lbl_801E43B8  ;# ptr
+	.4byte lbl_801E44A4  ;# ptr
+	.4byte lbl_801E4558  ;# ptr
+	.4byte lbl_801E4640  ;# ptr
+	.4byte lbl_801E46F8  ;# ptr
+	.4byte lbl_801E47A4  ;# ptr
+glabel lbl_801E5B98
+	.4byte lbl_801E4814  ;# ptr
+	.4byte lbl_801E487C  ;# ptr
+	.4byte lbl_801E48F4  ;# ptr
+	.4byte lbl_801E4A10  ;# ptr
+	.4byte lbl_801E4AE4  ;# ptr
+	.4byte lbl_801E4B6C  ;# ptr
+	.4byte lbl_801E4C28  ;# ptr
+	.4byte lbl_801E4CB4  ;# ptr
+	.4byte lbl_801E4D34  ;# ptr
+	.4byte lbl_801E4DBC  ;# ptr
+	.4byte lbl_801E4E5C  ;# ptr
+	.4byte lbl_801E4F04  ;# ptr
+	.4byte lbl_801E4FCC  ;# ptr
+	.4byte lbl_801E5078  ;# ptr
+	.4byte lbl_801E5134  ;# ptr
+glabel lbl_801E5BD4
+	.4byte lbl_801E51D8  ;# ptr
+	.4byte lbl_801E5298  ;# ptr
+	.4byte lbl_801E5334  ;# ptr
+	.4byte lbl_801E5468  ;# ptr
+	.4byte lbl_801E552C  ;# ptr
+	.4byte lbl_801E55BC  ;# ptr
+	.4byte lbl_801E5634  ;# ptr
+	.4byte lbl_801E5680  ;# ptr
+	.4byte lbl_801E56D0  ;# ptr
+	.4byte lbl_801E5760  ;# ptr
+	.4byte lbl_801E5838  ;# ptr
+	.4byte lbl_801E58E8  ;# ptr
+	.4byte lbl_801E5998  ;# ptr
+	.4byte lbl_801E5A54  ;# ptr
+	.4byte lbl_801E5B08  ;# ptr
+
+.global lbl_801E5C10
+lbl_801E5C10:
+	# ROM: 0x1E2C10
+	.4byte lbl_801E5B20  ;# ptr
+	.4byte lbl_801E5B5C  ;# ptr
+	.4byte lbl_801E5B98  ;# ptr
+	.4byte lbl_801E5BD4  ;# ptr
+
+.global lbl_801E5C20
+lbl_801E5C20:
+	# ROM: 0x1E2C20
+	.4byte lbl_800C0EEC  ;# ptr
+	.4byte lbl_800C0EF4  ;# ptr
+	.4byte lbl_800C0EFC  ;# ptr
+	.4byte lbl_800C0F04  ;# ptr
+	.4byte lbl_800C0F0C  ;# ptr
+	.4byte lbl_800C0F14  ;# ptr
+	.4byte lbl_800C0F1C  ;# ptr
+	.4byte lbl_800C0F24  ;# ptr
+	.4byte lbl_800C0F2C  ;# ptr
+	.4byte lbl_800C0F34  ;# ptr
+	.4byte lbl_800C0F3C  ;# ptr
+	.4byte lbl_800C0F44  ;# ptr
+	.4byte lbl_800C0F4C  ;# ptr
+	.4byte lbl_800C0F54  ;# ptr
+	.4byte lbl_800C0F5C  ;# ptr
+	.4byte string__point  ;# ptr
+	.4byte string__points  ;# ptr
+	.4byte lbl_802F1920  ;# ptr
+glabel string_c_0xff0000__dc_0x000000__s
+	.asciz "c/0xff0000/%dc/0x000000/%s"
+	.balign 4
+glabel string_c_0xff0000__dc_0x000000_
+	.asciz "c/0xff0000/%dc/0x000000/"
+	.balign 4
+
+.global lbl_801E5CA0
+lbl_801E5CA0:
+	# ROM: 0x1E2CA0
+	.4byte lbl_800C15F8  ;# ptr
+	.4byte lbl_800C15E0  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1624  ;# ptr
+	.4byte lbl_800C15A0  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1544  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1574  ;# ptr
+	.4byte 0
