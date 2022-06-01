@@ -131,7 +131,6 @@ SOURCES := \
 	src/bg_jungle.c \
 	asm/bg_sand.s \
 	src/bg_water.c \
-	asm/bg_water.s \
 	asm/bg_space.s \
 	src/bg_sunset.c \
 	src/bg_bonus.c \

@@ -921,7 +921,7 @@ struct ApeGfxFileInfo
 struct Struct80061BC4_sub
 {
     s32 unk0;
-    u32 unk4;
+    int unk4;
     s32 unk8;
     /*0x0C*/ GXTexMapID u_texMapId;
     s32 unk10;
@@ -937,6 +937,7 @@ struct Struct80061BC4
     s32 unk0;
     u8 filler4[0xC-0x4];
     struct Struct80061BC4_sub unkC;
+    u32 unk2C;
 };
 
 typedef void (*BallEnvFunc)(struct Struct80061BC4 *);

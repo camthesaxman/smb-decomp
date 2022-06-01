@@ -199,6 +199,36 @@ struct BGEndWork
     Mtx unk64;
 };
 
+struct BGWaterWork
+{
+    s32 unk0;
+    u8 filler4[0x10-0x4];
+    s16 unk10;
+    s16 unk12;
+    s16 unk14;
+    s16 unk16;
+    s16 unk18;
+    s16 unk1A;
+    u16 unk1C;
+    u16 unk1E;
+    float unk20;
+    struct GMAModel *waterSurfaceMat;
+    GXTexObj *causticTex;
+    GXTexObj *waterSurfaceTestTex;
+    GXTexObj *lightmapTex;
+    GXTexObj *lightmapStageTex;
+    GXTexObj *lightmapGradTex;
+    Mtx unk3C;
+    Mtx unk6C;
+    Mtx unk9C;
+    Mtx unkCC;
+    Mtx unkFC;
+    Mtx unk12C;
+    Mtx unk15C;
+    struct GMAModel *bubbleModel;
+    struct StageBgModel *waterSurface;
+};
+
 typedef int (*Func800567DC)(int, struct StageBgModel *);
 
 extern struct BackgroundInfo backgroundInfo;
@@ -251,7 +281,7 @@ void bg_bowling_interact(int);
 int func_80056610(u32 **a, void *b);
 void u_search_bg_models(struct BGModelSearch *a, int (*func)(int, struct GMAModelEntry *));
 void u_search_bg_models_from_list(struct StageBgModel *r28, int r30_, struct BGModelSearch *a, Func800567DC b);
-// ? func_80056934();
+void func_80056934(void);
 void func_800569B4(int);
 void bg_old_bluesky_init(void);
 void bg_old_bluesky_main(void);

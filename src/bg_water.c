@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <dolphin.h>
 
@@ -7,12 +8,13 @@
 #include "background.h"
 #include "event.h"
 #include "gxcache.h"
+#include "gxutil.h"
+#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"
 
-#pragma force_active on
-struct BGModelSearch bgWaterModelFind1[] =
+static struct BGModelSearch bgWaterModelFind1[] =
 {
     { BG_MDL_CMP_FULL,   "WAT_SUIMEN_MAT_ONLY" },
     { BG_MDL_CMP_FULL,   "WAT_SANSYO_TEX_WATER" },
@@ -24,10 +26,10 @@ struct BGModelSearch bgWaterModelFind1[] =
     { BG_MDL_CMP_END,    NULL },
 };
 
-struct BGModelSearch bgWaterModelFind2[] =
+static struct BGModelSearch bgWaterModelFind2[] =
 {
     { BG_MDL_CMP_PREFIX, "WAT_SUB_SUKRYU" },
-    { BG_MDL_CMP_FULL, "WAT_SUIMEN" },
+    { BG_MDL_CMP_FULL,   "WAT_SUIMEN" },
     { BG_MDL_CMP_PREFIX, "WAT_LIGHTCHAIN" },
     { BG_MDL_CMP_PREFIX, "WAT_LONG_CHAIN" },
     { BG_MDL_CMP_PREFIX, "WAT_PLANT" },
@@ -36,56 +38,14 @@ struct BGModelSearch bgWaterModelFind2[] =
     { BG_MDL_CMP_END,    NULL },
 };
 
-#pragma force_active reset
-
-void lbl_8005E914(void);
-void lbl_8005E998(struct Struct80061BC4 *);
-void lbl_8005EB8C();
-void func_8005ED80(struct Struct80061BC4 *);
-void lbl_8005F124(struct Struct80061BC4 *);
-void lbl_8005F520(struct Struct80061BC4 *);
-int lbl_8005F88C(int, struct GMAModelEntry *);
-int lbl_8005F924(int, struct StageBgModel *);
-
-struct BGWaterWork_child
-{
-    u32 unk0;
-    u8 filler4[0xC-0x4];
-    Vec unkC;
-    s16 unk18;
-    s16 unk1A;
-    s16 unk1C;
-    Vec unk20;
-};
-
-struct BGWaterWork
-{
-    s32 unk0;
-    u8 filler4[0x10-0x4];
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    s16 unk18;
-    s16 unk1A;
-    u16 unk1C;
-    u16 unk1E;
-    float unk20;
-    struct GMAModel *unk24;
-    u8 filler28[0x30-0x28];
-    GXTexObj *unk30;
-    GXTexObj *unk34;
-    GXTexObj *unk38;
-    Mtx unk3C;
-    Mtx unk6C;
-    Mtx unk9C;
-    Mtx unkCC;
-    Mtx unkFC;
-    Mtx unk12C;
-    Mtx unk15C;
-    u8 filler18C[4];
-    struct BGWaterWork_child *unk190;
-};
+static void lbl_8005E914(void);
+static void lbl_8005E998(struct Struct80061BC4 *);
+static void lbl_8005EB8C();
+static void func_8005ED80(struct Struct80061BC4 *);
+static void lbl_8005F124(struct Struct80061BC4 *);
+static void lbl_8005F520(struct Struct80061BC4 *);
+static int model_find_proc_1(int, struct GMAModelEntry *);
+static int model_find_proc_2(int, struct StageBgModel *);
 
 void bg_water_init(void)
 {
@@ -101,21 +61,21 @@ void bg_water_init(void)
     if (work->unk0 == 0)
     {
         u_debug_set_cursor_pos(4, 4);
-        u_search_bg_models(bgWaterModelFind1, lbl_8005F88C);
+        u_search_bg_models(bgWaterModelFind1, model_find_proc_1);
         work->unk0 = 1;
     }
     func_80056934();
-    work->unk190 = NULL;
+    work->waterSurface = NULL;
     u_search_bg_models_from_list(
         decodedStageLzPtr->bgModels,
         decodedStageLzPtr->bgModelsCount,
         bgWaterModelFind2,
-        lbl_8005F924);
+        model_find_proc_2);
     u_search_bg_models_from_list(
         decodedStageLzPtr->fgModels,
         decodedStageLzPtr->fgModelCount,
         bgWaterModelFind2,
-        lbl_8005F924);
+        model_find_proc_2);
     backgroundInfo.unk14.x = (rand() / 32767.0f) - 0.5f;
     backgroundInfo.unk14.y = (rand() / 32767.0f) - 0.5f;
     backgroundInfo.unk14.z = (rand() / 32767.0f) - 0.5f;
@@ -205,52 +165,51 @@ void bg_water_finish(void) {}
 
 void bg_water_draw(void)
 {
-    struct BGWaterWork *temp_r30;
-    struct BGWaterWork_child *temp_r31;
+    struct BGWaterWork *work = backgroundInfo.work;
+    struct StageBgModel *temp_r31;
 
-    temp_r30 = backgroundInfo.work;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-    temp_r31 = temp_r30->unk190;
+    temp_r31 = work->waterSurface;
     if (temp_r31 != NULL)
     {
-        temp_r31->unk0 &= 0xFFFEFFFF;
-        mathutil_mtxA_translate(&temp_r31->unkC);
-        mathutil_mtxA_rotate_z(temp_r31->unk1C);
-        mathutil_mtxA_rotate_y(temp_r31->unk1A);
-        mathutil_mtxA_rotate_x(temp_r31->unk18);
-        mathutil_mtxA_scale(&temp_r31->unk20);
+        temp_r31->flags &= 0xFFFEFFFF;
+        mathutil_mtxA_translate(&temp_r31->pos);
+        mathutil_mtxA_rotate_z(temp_r31->rotZ);
+        mathutil_mtxA_rotate_y(temp_r31->rotY);
+        mathutil_mtxA_rotate_x(temp_r31->rotX);
+        mathutil_mtxA_scale(&temp_r31->scale);
     }
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     GXLoadNrmMtxImm(mathutilData->mtxA, 0);
     u_avdisp_set_some_func_1(lbl_8005F520);
-    avdisp_draw_model_culled_sort_none(temp_r30->unk24);
+    avdisp_draw_model_culled_sort_none(work->waterSurfaceMat);
     u_avdisp_set_some_func_1(NULL);
     bg_e3_draw();
 }
 
 void bg_water_interact(int a) {}
 
-void lbl_8005E914(void)
+static void lbl_8005E914(void)
 {
-    struct BGWaterWork *temp_r31 = backgroundInfo.work;
+    struct BGWaterWork *work = backgroundInfo.work;
     Mtx sp8;
 
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
     mathutil_mtxA_rigid_invert();
     mathutil_mtxA_to_mtx(sp8);
-    mathutil_mtxA_mult_left(temp_r31->unk3C);
-    mathutil_mtxA_to_mtx(temp_r31->unkFC);
+    mathutil_mtxA_mult_left(work->unk3C);
+    mathutil_mtxA_to_mtx(work->unkFC);
     mathutil_mtxA_from_mtx(sp8);
-    mathutil_mtxA_mult_left(temp_r31->unk6C);
-    mathutil_mtxA_to_mtx(temp_r31->unk12C);
+    mathutil_mtxA_mult_left(work->unk6C);
+    mathutil_mtxA_to_mtx(work->unk12C);
     mathutil_mtxA_from_mtx(sp8);
-    mathutil_mtxA_mult_left(temp_r31->unk9C);
-    mathutil_mtxA_to_mtx(temp_r31->unk15C);
+    mathutil_mtxA_mult_left(work->unk9C);
+    mathutil_mtxA_to_mtx(work->unk15C);
 }
 
 struct Struct80061BC4_sub lbl_8027CBF8;
 
-void lbl_8005E998(struct Struct80061BC4 *arg0)
+static void lbl_8005E998(struct Struct80061BC4 *arg0)
 {
     struct Struct80061BC4_sub sp24 = arg0->unkC;
     float spC[2][3];
@@ -273,7 +232,7 @@ void lbl_8005E998(struct Struct80061BC4 *arg0)
         return;
     }
     lbl_8027CBF8 = sp24;
-    GXLoadTexObj_cached(((struct BGWaterWork *)backgroundInfo.work)->unk34, arg0->unkC.u_texMapId);
+    GXLoadTexObj_cached(((struct BGWaterWork *)backgroundInfo.work)->lightmapStageTex, arg0->unkC.u_texMapId);
     spC[0][0] = 0.8f;
     spC[0][1] = 0.0f;
     spC[0][2] = 0.0f;
@@ -284,7 +243,7 @@ void lbl_8005E998(struct Struct80061BC4 *arg0)
     func_8005ED80(arg0);
 }
 
-void lbl_8005EB8C(struct Struct80061BC4 *arg0)
+static void lbl_8005EB8C(struct Struct80061BC4 *arg0)
 {
     struct Struct80061BC4_sub sp24 = arg0->unkC;
     float spC[2][3];
@@ -307,7 +266,7 @@ void lbl_8005EB8C(struct Struct80061BC4 *arg0)
         return;
     }
     lbl_8027CBF8 = sp24;
-    GXLoadTexObj_cached(((struct BGWaterWork *)backgroundInfo.work)->unk30, arg0->unkC.u_texMapId);
+    GXLoadTexObj_cached(((struct BGWaterWork *)backgroundInfo.work)->lightmapTex, arg0->unkC.u_texMapId);
     spC[0][0] = 0.6f;
     spC[0][1] = 0.0f;
     spC[0][2] = 0.0f;
@@ -318,7 +277,7 @@ void lbl_8005EB8C(struct Struct80061BC4 *arg0)
     func_8005ED80(arg0);
 }
 
-void func_8005ED80(struct Struct80061BC4 *arg0)
+static void func_8005ED80(struct Struct80061BC4 *arg0)
 {
     struct BGWaterWork *work = backgroundInfo.work;
     struct Struct80061BC4_sub sp2C = arg0->unkC;
@@ -346,7 +305,7 @@ void func_8005ED80(struct Struct80061BC4 *arg0)
     GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8 + 6, GX_MTX3x4);
     mathutil_mtxA_pop();
     GXLoadTexMtxImm(work->unkCC, sp2C.unk14, GX_MTX3x4);
-    GXLoadTexObj_cached(work->unk38, sp2C.u_texMapId + 2);
+    GXLoadTexObj_cached(work->lightmapGradTex, sp2C.u_texMapId + 2);
     GXSetTexCoordGen2(sp2C.unk4 + 2, GX_TG_MTX3x4, GX_TG_NRM, sp2C.unk8 + 6, 1, sp2C.unk14);
     GXSetTevDirect(sp2C.unk0 + 1);
     GXSetTevOrder_cached(sp2C.unk0 + 1, sp2C.unk4 + 2, sp2C.u_texMapId + 2, 0xFF);
@@ -362,4 +321,188 @@ void func_8005ED80(struct Struct80061BC4 *arg0)
     sp2C.unk1C += 1;
     sp2C.u_texMapId += 2;
     arg0->unkC = sp2C;
+}
+
+static void lbl_8005F124(struct Struct80061BC4 *arg0)
+{
+    struct BGWaterWork *work = backgroundInfo.work;
+    struct Struct80061BC4_sub sp2C = arg0->unkC;
+    float sp14[2][3];
+
+    GXSetBlendMode_cached(1, 1, 1, 0);
+    func_8009AC8C();
+    GXLoadTexObj_cached(work->lightmapStageTex, sp2C.u_texMapId);
+    sp14[0][0] = 0.6f;
+    sp14[0][1] = 0.0f;
+    sp14[0][2] = 0.0f;
+    sp14[1][0] = 0.0f;
+    sp14[1][1] = 0.6f;
+    sp14[1][2] = 0.0f;
+    GXSetIndTexMtx(sp2C.unk1C, sp14, 0);
+    mathutil_mtxA_push();
+    mathutil_mtxA_mult_left(work->unkFC);
+    mathutil_mtxA_scale_s(3.0f);
+    GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8, GX_MTX3x4);
+    mathutil_mtxA_pop();
+    mathutil_mtxA_push();
+    mathutil_mtxA_mult_left(work->unk12C);
+    mathutil_mtxA_scale_s(3.0f);
+    GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8 + 3, GX_MTX3x4);
+    mathutil_mtxA_pop();
+    GXSetTexCoordGen(sp2C.unk4, GX_TG_MTX2x4, GX_TG_POS, sp2C.unk8);
+    GXSetTexCoordGen(sp2C.unk4 + 1, GX_TG_MTX2x4, GX_TG_POS, sp2C.unk8 + 3);
+    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.u_texMapId);
+    GXSetTevIndirect(sp2C.unk0, sp2C.unk10, 0, 0, sp2C.unk1C, 0, 0, 0, 0, 0);
+    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.u_texMapId, 0xFF);
+    GXSetTevColorIn_cached(sp2C.unk0, 0xF, 0xF, 0xF, 8);
+    GXSetTevColorOp_cached(sp2C.unk0, 0, 0, 0, 1, 2);
+    GXSetTevAlphaIn_cached(sp2C.unk0, 7, 7, 7, 6);
+    GXSetTevAlphaOp_cached(sp2C.unk0, 0, 0, 0, 1, 0);
+    mathutil_mtxA_push();
+    mathutil_mtxA_mult_left(work->unk15C);
+    mathutil_mtxA_set_translate_xyz(0.0f, 0.0f, 0.0f);
+    GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8 + 6, GX_MTX3x4);
+    mathutil_mtxA_pop();
+    GXLoadTexMtxImm(work->unkCC, sp2C.unk14, GX_MTX3x4);
+    GXLoadTexObj_cached(work->lightmapGradTex, sp2C.u_texMapId + 2);
+    GXSetTexCoordGen2(sp2C.unk4 + 2, GX_TG_MTX3x4, GX_TG_NRM, sp2C.unk8 + 6, 1, sp2C.unk14);
+    GXSetTevDirect(sp2C.unk0 + 1);
+    GXSetTevOrder_cached(sp2C.unk0 + 1, sp2C.unk4 + 2, sp2C.u_texMapId + 2, 0xFF);
+    GXSetTevColorIn_cached(sp2C.unk0 + 1, 0xF, 8, 4, 0xF);
+    GXSetTevColorOp_cached(sp2C.unk0 + 1, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(sp2C.unk0 + 1, 7, 7, 7, 0);
+    GXSetTevAlphaOp_cached(sp2C.unk0 + 1, 0, 0, 0, 1, 0);
+    sp2C.unk0 += 2;
+    sp2C.unk10 += 1;
+    sp2C.unk4 += 3;
+    sp2C.unk8 += 9;
+    sp2C.unk14 += 3;
+    sp2C.unk1C += 1;
+    arg0->unkC = sp2C;
+}
+
+#ifdef NONMATCHING
+static void lbl_8005F520(struct Struct80061BC4 *arg0)
+{
+    struct BGWaterWork *work = backgroundInfo.work;
+    struct Struct80061BC4_sub sp2C = arg0->unkC;
+    float sp14[2][3];
+
+    GXLoadTexObj_cached(work->causticTex, sp2C.u_texMapId);
+    GXLoadTexObj_cached(work->waterSurfaceTestTex, sp2C.u_texMapId + 1);
+    mathutil_mtxA_push();
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_x(0x4000);
+    mathutil_mtxA_rotate_y(backgroundInfo.unkA4);
+    mathutil_mtxA_translate_xyz(
+        backgroundInfo.animTimer / 2160.0f,
+        backgroundInfo.animTimer / 2160.0f,
+        backgroundInfo.animTimer / -5280.0f);
+    mathutil_mtxA_scale_s(1.0f / (214.0f + (20.0f * mathutil_sin(backgroundInfo.unkA4 << 6))));
+    GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8, GX_MTX3x4);
+    mathutil_mtxA_from_identity();
+    mathutil_mtxA_rotate_x(0x4000);
+    mathutil_mtxA_rotate_y(0x400);
+    mathutil_mtxA_translate_xyz(
+        backgroundInfo.animTimer / 360.0f,
+        backgroundInfo.animTimer / 360.0f,
+        backgroundInfo.animTimer / 360.0f);
+    mathutil_mtxA_scale_s(0.005f * (1.0f + (0.25f * mathutil_sin(backgroundInfo.unkA4 << 5))));
+    GXLoadTexMtxImm(mathutilData->mtxA, sp2C.unk8 + 3, GX_MTX3x4);
+    mathutil_mtxA_pop();
+    sp14[0][0] = 0.6f;
+    sp14[0][1] = -0.01f;
+    sp14[0][2] = 0.0f;
+    sp14[1][0] = 0.0f;
+    sp14[1][1] = 0.6f;
+    sp14[1][2] = 0.2f;
+    GXSetIndTexMtx(arg0->unkC.unk1C, sp14, 1);
+    GXSetTexCoordGen(sp2C.unk4, GX_TG_MTX2x4, GX_TG_POS, sp2C.unk8);
+    // NONMATCHING: need it to reload sp2C.unk4 here instead of using r29
+    GXSetTexCoordGen(sp2C.unk4 + 1, GX_TG_MTX2x4, GX_TG_POS, sp2C.unk8 + 3);
+    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.u_texMapId + 1);
+    GXSetTevIndirect(sp2C.unk0, sp2C.unk10, 0, 0, sp2C.unk1C, 0, 0, 0, 0, 0);
+    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.u_texMapId, 0xFF);
+    GXSetTevColorIn_cached(sp2C.unk0, 0xF, 8, 0, 0xF);
+    GXSetTevColorOp_cached(sp2C.unk0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(sp2C.unk0, 7, 7, 7, 0);
+    GXSetTevAlphaOp_cached(sp2C.unk0, 0, 0, 0, 1, 0);
+    sp2C.unk0 += 1;
+    sp2C.unk10 += 1;
+    sp2C.unk4 += 2;
+    sp2C.unk8 += 6;
+    sp2C.u_texMapId += 2;
+    sp2C.unk1C += 1;
+    arg0->unkC = sp2C;
+}
+#else
+const float lbl_802F4314 = 2160.0f;
+const float lbl_802F4318 = -5280.0f;
+const float lbl_802F431C = 214.0f;
+const float lbl_802F4320 = 20.0f;
+const float lbl_802F4324 = 360.0f;
+const float lbl_802F4328 = 0.004999999888241291f;
+const float lbl_802F432C = 0.25f;
+const float lbl_802F4330 = -0.0099999997764825821f;
+static asm void lbl_8005F520(struct Struct80061BC4 *arg0)
+{
+    nofralloc
+#include "../asm/nonmatchings/lbl_8005F520.s"
+}
+#pragma peephole on
+#endif
+
+static int model_find_proc_1(int arg0, struct GMAModelEntry *arg1)
+{
+    struct BGWaterWork *work = backgroundInfo.work;
+
+    switch (arg0)
+    {
+    case 0:  // WAT_SUIMEN_MAT_ONLY
+        work->waterSurfaceMat = arg1->modelOffset;
+        break;
+    case 1:  // WAT_SANSYO_TEX_WATER
+        work->causticTex = &arg1->modelOffset->texObjs[0];
+        break;
+    case 2:  // WAT_SUIMEN_TEST_LOW_CONT
+        work->waterSurfaceTestTex = &arg1->modelOffset->texObjs[0];
+        break;
+    case 3:  // WAT_BUBBLE_
+        work->bubbleModel = arg1->modelOffset;
+        break;
+    case 4:  // WAT_LIGHTMAP
+        work->lightmapTex = &arg1->modelOffset->texObjs[0];
+        break;
+    case 5:  // WAT_LIGHTMAP_STAGE
+        work->lightmapStageTex = &arg1->modelOffset->texObjs[0];
+        break;
+    case 6:  // WAT_LIGHTMAP_GRAD
+        work->lightmapGradTex = &arg1->modelOffset->texObjs[0];
+        break;
+    }
+    return 1;
+}
+
+static int model_find_proc_2(int arg0, struct StageBgModel *arg1)
+{
+    struct BGWaterWork *work = backgroundInfo.work;
+    struct Struct8003C550 sp10;
+
+    switch (arg0)
+    {
+    case 0:  // WAT_SUB_SUKRYU
+        // submarine propeller
+        memset(&sp10, 0, sizeof(sp10));
+        sp10.unk8 = 20;
+        sp10.unk30 = (void *)arg1;
+        u_spawn_effect_object(&sp10);
+        break;
+    case 1:  // WAT_SUIMEN
+        work->waterSurface = arg1;
+        break;
+    default:
+        arg1->flags |= 0x1000000;
+        break;
+    }
+    return 1;
 }

@@ -1357,6 +1357,7 @@ lbl_80060DD4:
 
 .section .sdata2
 
+	.balign 8
 .global lbl_802F4338
 lbl_802F4338:
 	# ROM: 0x1EDD58
@@ -1589,6 +1590,7 @@ lbl_802F43F8:
 
 .section .data
 
+	.balign 8
 .global lbl_801B9EF8
 lbl_801B9EF8:
 	# ROM: 0x1B6EF8
@@ -1631,3 +1633,22 @@ lbl_801B9F64:
 	.4byte lbl_8005FAB4  ;# ptr
 	.4byte lbl_8005FA98  ;# ptr
 	.4byte 0
+
+.section .bss
+
+	.balign 8
+.global lbl_8027CC28
+lbl_8027CC28:
+	.skip 0x30
+.global lbl_8027CC58
+lbl_8027CC58:
+	.skip 0x1B0
+.global lbl_8027CE08
+lbl_8027CE08:
+	.skip 0x10
+.global lbl_8027CE18
+lbl_8027CE18:
+	.skip 0xC
+.global lbl_8027CE24
+lbl_8027CE24:
+	.skip 0x34
