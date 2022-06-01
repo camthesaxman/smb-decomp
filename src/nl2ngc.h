@@ -7,14 +7,8 @@
 
 // NL == NaomiLib, the format for Naomi model archives (analogous to GMA)
 
-struct NlVtxWithNormal
-{
-    /*0x00*/ float x, y, z;
-    /*0x0C*/ float nx, ny, nz;
-    /*0x18*/ float s, t;
-};
-
-struct NlVtxWithColor
+// Type A: no normal, vertex material colors, always unlit
+struct NlVtxTypeA
 {
     /*0x00*/ float x, y, z;
     /*0x0C*/ u32 unkC;
@@ -23,11 +17,19 @@ struct NlVtxWithColor
     /*0x18*/ float s, t;
 };
 
+// Type B: has normal, no vertex material colors, can be lit or unlit
+struct NlVtxTypeB
+{
+    /*0x00*/ float x, y, z;
+    /*0x0C*/ float nx, ny, nz;
+    /*0x18*/ float s, t;
+};
+
 struct NlDispList
 {
     u32 flags;
     u32 faceCount;
-    u8 vtxData[];  // array of NLVtxWithNormal or NLVtxWithColor structs
+    u8 vtxData[];  // array of NlVtxTypeB or NlVtxTypeA structs
 };
 
 enum
@@ -48,6 +50,7 @@ enum
 
 enum
 {
+    NL_MODEL_FLAG_VTX_TYPE_A = 1 << 1, // All meshes in model have vertices of type A (type B if unset)
     NL_MODEL_FLAG_TRANSLUCENT = 1 << 8, // Model has at least 1 translucent mesh
     NL_MODEL_FLAG_OPAQUE = 1 << 9, // Model has at least 1 opaque mesh
 };
@@ -83,7 +86,7 @@ struct NlMesh
 
 struct NlModel
 {
-    /*0x00*/ s32 unk0;
+    /*0x00*/ s32 u_valid;
     /*0x04*/ u32 flags;
     /*0x08*/ Vec boundSphereCenter;
     /*0x14*/ float boundSphereRadius;
@@ -139,18 +142,18 @@ void nl2ngc_set_scale(float);
 void nl2ngc_set_material_color(float r, float g, float b);
 BOOL load_naomi_archive(struct NlObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
 BOOL free_naomi_archive(struct NlObj **pobj, struct TPL **ptpl);
-void init_naomi_model_textures(struct NlModel *model, struct TPL *tpl);
-void u_nl2ngc_draw_model_sort_translucent(struct NlModel *);
-void nl2ngc_draw_model_unsorted(struct NlModel *model);
-void nl2ngc_draw_model_alpha_sorted(struct NlModel *model, float alpha);
-void nl2ngc_draw_model_alpha_unsorted(struct NlModel *model, float b);
-void u_nl2ngc_draw_model_sort_translucent_alt(struct NlModel *a);
-void nl2ngc_draw_model_unsorted_alt(struct NlModel *a);
-void u_draw_naomi_disp_list_pos_nrm_tex(struct NlDispList *dl, void *end);
-void u_draw_naomi_disp_list_pos_color_tex_1(struct NlDispList *dl, void *end);
-void build_tev_material_2(struct NlMesh *);
-void u_draw_naomi_disp_list_pos_color_tex_2(struct NlDispList *dl, void *end);
-void u_call_draw_naomi_model_and_do_other_stuff(struct NlModel *model);
+void init_nl_model_textures(struct NlModel *model, struct TPL *tpl);
+void nl2ngc_draw_model_sort_translucent(struct NlModel *);
+void nl2ngc_draw_model_sort_none(struct NlModel *model);
+void nl2ngc_draw_model_alpha_sort_all(struct NlModel *model, float alpha);
+void nl2ngc_draw_model_alpha_sort_none(struct NlModel *model, float b);
+void nl2ngc_draw_model_sort_translucent_alt(struct NlModel *a);
+void nl2ngc_draw_model_sort_none_alt(struct NlModel *a);
+void u_draw_nl_disp_list_type_b_1(struct NlDispList *dl, void *end);
+void draw_nl_disp_list_type_a(struct NlDispList *dl, void *end);
+void build_alpha_mesh_tev_material(struct NlMesh *);
+void draw_nl_disp_list_type_a_alpha(struct NlDispList *dl, void *end);
+void nl2ngc_draw_model_sort_translucent_alt2(struct NlModel *model);
 void u_dupe_of_call_draw_naomi_model_1(struct NlModel *model);
 void u_call_draw_model_with_alpha_deferred(struct NlModel *model, float b);
 void nl2ngc_set_light_mask(u32 lightMask);

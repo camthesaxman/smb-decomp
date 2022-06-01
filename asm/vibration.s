@@ -10146,11 +10146,11 @@ lbl_800BF490:
 /* 800BF49C 000BB3BC  40 80 00 14 */	bge lbl_800BF4B0
 /* 800BF4A0 000BB3C0  7F 83 E3 78 */	mr r3, r28
 /* 800BF4A4 000BB3C4  FC 20 E0 90 */	fmr f1, f28
-/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl nl2ngc_draw_model_alpha_sorted
+/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl nl2ngc_draw_model_alpha_sort_all
 /* 800BF4AC 000BB3CC  48 00 00 0C */	b lbl_800BF4B8
 lbl_800BF4B0:
 /* 800BF4B0 000BB3D0  7F 83 E3 78 */	mr r3, r28
-/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl u_nl2ngc_draw_model_sort_translucent
+/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl nl2ngc_draw_model_sort_translucent
 lbl_800BF4B8:
 /* 800BF4B8 000BB3D8  37 FF FF FF */	addic. r31, r31, -1
 /* 800BF4BC 000BB3DC  3B DE 00 54 */	addi r30, r30, 0x54

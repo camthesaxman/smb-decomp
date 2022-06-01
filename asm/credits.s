@@ -4239,7 +4239,7 @@ lbl_800B3B30:
 /* 800B3B50 000AFA70  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 800B3B54 000AFA74  C0 22 BB 14 */	lfs f1, lbl_802F6314@sda21(r2)
 /* 800B3B58 000AFA78  80 63 00 10 */	lwz r3, 0x10(r3)
-/* 800B3B5C 000AFA7C  4B F7 DA 89 */	bl nl2ngc_draw_model_alpha_unsorted
+/* 800B3B5C 000AFA7C  4B F7 DA 89 */	bl nl2ngc_draw_model_alpha_sort_none
 /* 800B3B60 000AFA80  48 00 01 08 */	b lbl_800B3C68
 lbl_800B3B64:
 /* 800B3B64 000AFA84  D8 01 00 08 */	stfd f0, 8(r1)

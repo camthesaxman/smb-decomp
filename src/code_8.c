@@ -7,8 +7,8 @@
 
 static float lbl_802F1F60;
 
-static void lbl_800481A0(struct NlVtxWithNormal *);
-static void lbl_800482A4(struct NlVtxWithColor *);
+static void lbl_800481A0(struct NlVtxTypeB *);
+static void lbl_800482A4(struct NlVtxTypeA *);
 
 struct Struct80048084
 {
@@ -25,7 +25,7 @@ void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg
     u32 r30;
     GXTexObj *r29;
 
-    if (arg0->unk0 == -1)
+    if (arg0->u_valid == -1)
         return;
     arg0->flags &= 0xFFFFFFF9;
     memcpy(&lbl_802F1F60, arg2, 4);
@@ -65,13 +65,13 @@ asm void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float 
 #pragma peephole on
 #endif
 
-static void lbl_800481A0(struct NlVtxWithNormal *arg0)
+static void lbl_800481A0(struct NlVtxTypeB *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NlVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxTypeA *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -98,7 +98,7 @@ static void lbl_800481A0(struct NlVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_800482A4(struct NlVtxWithColor *arg0)
+static void lbl_800482A4(struct NlVtxTypeA *arg0)
 {
 	u8 dummy[8];
 	Vec spC;
@@ -130,8 +130,8 @@ static void lbl_800482A4(struct NlVtxWithColor *arg0)
     arg0->unk14 = 0;
 }
 
-static void lbl_8004853C(struct NlVtxWithNormal *);
-static void lbl_8004863C(struct NlVtxWithColor *);
+static void lbl_8004853C(struct NlVtxTypeB *);
+static void lbl_8004863C(struct NlVtxTypeA *);
 
 #ifdef NONMATCHING
 void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
@@ -141,7 +141,7 @@ void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg
     u32 r30;
     GXTexObj *r29;
 
-    if (arg0->unk0 == -1)
+    if (arg0->u_valid == -1)
         return;
     arg0->flags &= 0xFFFFFFF9;
     memcpy(&lbl_802F1F60, arg2, 4);
@@ -181,13 +181,13 @@ asm void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float 
 #pragma peephole on
 #endif
 
-static void lbl_8004853C(struct NlVtxWithNormal *arg0)
+static void lbl_8004853C(struct NlVtxTypeB *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NlVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxTypeA *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -214,7 +214,7 @@ static void lbl_8004853C(struct NlVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_8004863C(struct NlVtxWithColor *arg0)
+static void lbl_8004863C(struct NlVtxTypeA *arg0)
 {
 	u8 dummy[8];
 	Vec spC;

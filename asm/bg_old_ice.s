@@ -64,7 +64,7 @@ bg_old_ice_draw:
 /* 80058CBC 00054BDC  4B FA EB F5 */	bl mathutil_mtxA_from_mtx
 /* 80058CC0 00054BE0  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 80058CC4 00054BE4  80 63 00 04 */	lwz r3, 4(r3)
-/* 80058CC8 00054BE8  4B FD AE 0D */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 80058CC8 00054BE8  4B FD AE 0D */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 80058CCC 00054BEC  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80058CD0 00054BF0  38 21 00 08 */	addi r1, r1, 8
 /* 80058CD4 00054BF4  7C 08 03 A6 */	mtlr r0
@@ -587,7 +587,7 @@ lbl_800594BC:
 lbl_800594C0:
 /* 800594C0 000553E0  4B FD 76 E9 */	bl nl2ngc_set_scale
 /* 800594C4 000553E4  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 800594C8 000553E8  4B FD A6 0D */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 800594C8 000553E8  4B FD A6 0D */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 800594CC 000553EC  C0 22 97 70 */	lfs f1, lbl_802F3F70@sda21(r2)
 /* 800594D0 000553F0  C0 62 98 00 */	lfs f3, lbl_802F4000@sda21(r2)
 /* 800594D4 000553F4  FC 40 08 90 */	fmr f2, f1
@@ -610,7 +610,7 @@ lbl_80059504:
 /* 80059510 00055430  4B FD 76 99 */	bl nl2ngc_set_scale
 /* 80059514 00055434  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 80059518 00055438  80 63 00 0C */	lwz r3, 0xc(r3)
-/* 8005951C 0005543C  4B FD A5 B9 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8005951C 0005543C  4B FD A5 B9 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 80059520 00055440  80 1F 00 04 */	lwz r0, 4(r31)
 /* 80059524 00055444  54 00 00 3C */	rlwinm r0, r0, 0, 0, 0x1e
 /* 80059528 00055448  90 1F 00 04 */	stw r0, 4(r31)
@@ -762,7 +762,7 @@ lbl_80059728:
 /* 8005973C 0005565C  FC 60 08 90 */	fmr f3, f1
 /* 80059740 00055660  4B FD 74 79 */	bl nl2ngc_set_material_color
 /* 80059744 00055664  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 80059748 00055668  4B FD A3 8D */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 80059748 00055668  4B FD A3 8D */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8005974C 0005566C  4B FB 4C 71 */	bl u_reset_post_mult_color
 /* 80059750 00055670  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80059754 00055674  83 E1 00 14 */	lwz r31, 0x14(r1)

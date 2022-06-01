@@ -811,10 +811,10 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
+        nl2ngc_draw_model_alpha_sort_all(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
-        u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B));
         break;
     case LIGHT_TYPE_INFINITE:
         mathutil_mtxA_from_mtxB();
@@ -822,7 +822,7 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
         mathutil_mtxA_rotate_x(0x8000);
-        u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         break;
     case LIGHT_TYPE_SPOT:
     case LIGHT_TYPE_SPOT_POW:
@@ -836,12 +836,12 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
         nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
+        nl2ngc_draw_model_alpha_sort_all(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
-        u_nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         break;
     }
 }

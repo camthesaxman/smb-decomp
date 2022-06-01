@@ -1105,7 +1105,7 @@ lbl_8008514C:
 /* 800852A0 000811C0  4B FA B9 09 */	bl nl2ngc_set_scale
 /* 800852A4 000811C4  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 800852A8 000811C8  80 63 00 1C */	lwz r3, 0x1c(r3)
-/* 800852AC 000811CC  4B FA BF 65 */	bl u_nl2ngc_draw_model_sort_translucent
+/* 800852AC 000811CC  4B FA BF 65 */	bl nl2ngc_draw_model_sort_translucent
 lbl_800852B0:
 /* 800852B0 000811D0  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800852B4 000811D4  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -1226,7 +1226,7 @@ lbl_800853E4:
 /* 80085470 00081390  4B FA B7 39 */	bl nl2ngc_set_scale
 /* 80085474 00081394  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 80085478 00081398  80 63 00 30 */	lwz r3, 0x30(r3)
-/* 8008547C 0008139C  4B FA C2 E9 */	bl u_nl2ngc_draw_model_sort_translucent_alt
+/* 8008547C 0008139C  4B FA C2 E9 */	bl nl2ngc_draw_model_sort_translucent_alt
 lbl_80085480:
 /* 80085480 000813A0  48 00 04 4D */	bl ord_tbl_draw_nodes
 /* 80085484 000813A4  38 61 00 A4 */	addi r3, r1, 0xa4

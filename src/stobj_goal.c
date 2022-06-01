@@ -565,13 +565,13 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(smallLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(smallLCDModels[digit]);
 
     mathutil_mtxA_pop();
 
@@ -579,19 +579,19 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
     u_reset_post_mult_color();
 }
@@ -693,7 +693,7 @@ static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NlMod
     Point3d sp24;
     Point3d sp18;
     s16 rotX;
-    struct NlVtxWithNormal *vtx;
+    struct NlVtxTypeB *vtx;
     s16 rotY;
     struct NlMesh *mesh2;
     struct NlMesh *mesh1;

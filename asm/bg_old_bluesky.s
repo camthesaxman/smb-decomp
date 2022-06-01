@@ -714,10 +714,10 @@ bg_old_bluesky_draw:
 /* 80057374 00053294  4B FB 05 3D */	bl mathutil_mtxA_from_mtx
 /* 80057378 00053298  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 8005737C 0005329C  80 63 00 14 */	lwz r3, 0x14(r3)
-/* 80057380 000532A0  4B FD C7 55 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 80057380 000532A0  4B FD C7 55 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 80057384 000532A4  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 80057388 000532A8  80 63 00 30 */	lwz r3, 0x30(r3)
-/* 8005738C 000532AC  4B FD A3 D9 */	bl u_nl2ngc_draw_model_sort_translucent_alt
+/* 8005738C 000532AC  4B FD A3 D9 */	bl nl2ngc_draw_model_sort_translucent_alt
 /* 80057390 000532B0  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 80057394 000532B4  38 21 00 08 */	addi r1, r1, 8
 /* 80057398 000532B8  7C 08 03 A6 */	mtlr r0
@@ -1095,7 +1095,7 @@ func_800578D0:
 /* 80057910 00053830  A8 7F 00 50 */	lha r3, 0x50(r31)
 /* 80057914 00053834  4B FB 07 75 */	bl mathutil_mtxA_rotate_z
 /* 80057918 00053838  80 7F 00 30 */	lwz r3, 0x30(r31)
-/* 8005791C 0005383C  4B FD C1 B9 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8005791C 0005383C  4B FD C1 B9 */	bl nl2ngc_draw_model_sort_translucent_alt2
 lbl_80057920:
 /* 80057920 00053840  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 80057924 00053844  83 E1 00 14 */	lwz r31, 0x14(r1)

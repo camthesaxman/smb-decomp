@@ -1133,7 +1133,7 @@ void ball_draw(void)
         }
         else
         {
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId));
         }
 
         if (func != NULL)
@@ -1143,7 +1143,7 @@ void ball_draw(void)
             if (func(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
-                nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
+                nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
             }
             else
                 mathutil_mtxA_pop();
@@ -1162,7 +1162,7 @@ void ball_draw(void)
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
         nl2ngc_set_scale(ball->modelScale);
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_EDGE));
+        nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
         u_reset_post_mult_color();
@@ -3113,7 +3113,7 @@ void ball_draw_callback(struct BallDrawNode *node)
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
             mathutil_mtxA_scale_s(1.01f);
-            nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
+            nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
             mathutil_mtxA_pop();
         }
         else

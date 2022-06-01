@@ -756,7 +756,7 @@ bg_old_water_draw:
 /* 8005ACD8 00056BF8  4B FA CB D9 */	bl mathutil_mtxA_from_mtx
 /* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 8005ACE0 00056C00  80 63 00 04 */	lwz r3, 4(r3)
-/* 8005ACE4 00056C04  4B FD 8D F1 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8005ACE4 00056C04  4B FD 8D F1 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005ACEC 00056C0C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005ACF0 00056C10  80 84 00 08 */	lwz r4, 8(r4)

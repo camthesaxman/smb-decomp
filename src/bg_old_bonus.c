@@ -53,7 +53,7 @@ void bg_old_bonus_finish(void) {}
 void bg_old_bonus_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 0));
+    nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_bgNlObj, 0));
 }
 
 void bg_old_bonus_interact(int a)

@@ -19584,7 +19584,7 @@ lbl_000119B0:
 /* 00011A2C 38630000 */ addi r3, r3, g_commonNlObj@l
 /* 00011A30 80630000 */ lwz r3, 0(r3)
 /* 00011A34 8063002C */ lwz r3, 0x2c(r3)
-/* 00011A38 4BFEE751 */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 00011A38 4BFEE751 */ bl nl2ngc_draw_model_sort_translucent_alt2
 lbl_00011A3C:
 /* 00011A3C 4BFEE74D */ bl stage_draw
 /* 00011A40 3C600000 */ lis r3, eventInfo@ha

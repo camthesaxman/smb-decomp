@@ -1720,7 +1720,7 @@ lbl_8006BE28:
 /* 8006BE44 00067D64  4B FC 4D 75 */	bl nl2ngc_set_material_color
 /* 8006BE48 00067D68  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 8006BE4C 00067D6C  80 63 00 B0 */	lwz r3, 0xb0(r3)
-/* 8006BE50 00067D70  4B FC 55 01 */	bl nl2ngc_draw_model_unsorted
+/* 8006BE50 00067D70  4B FC 55 01 */	bl nl2ngc_draw_model_sort_none
 /* 8006BE54 00067D74  4B FA 25 69 */	bl u_reset_post_mult_color
 lbl_8006BE58:
 /* 8006BE58 00067D78  80 01 00 4C */	lwz r0, 0x4c(r1)
@@ -3540,7 +3540,7 @@ lbl_8006D8B0:
 /* 8006D8F4 00069814  54 80 0F FE */	srwi r0, r4, 0x1f
 /* 8006D8F8 00069818  80 63 0E 00 */	lwz r3, 0xe00(r3)
 /* 8006D8FC 0006981C  7F A4 02 14 */	add r29, r4, r0
-/* 8006D900 00069820  4B FC 61 D5 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8006D900 00069820  4B FC 61 D5 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8006D904 00069824  38 61 00 0C */	addi r3, r1, 0xc
 /* 8006D908 00069828  4B F9 A4 19 */	bl mathutil_mtxA_translate
 /* 8006D90C 0006982C  7C 9F E8 96 */	mulhw r4, r31, r29
@@ -3555,7 +3555,7 @@ lbl_8006D8B0:
 /* 8006D930 00069850  54 80 0F FE */	srwi r0, r4, 0x1f
 /* 8006D934 00069854  80 63 0E 00 */	lwz r3, 0xe00(r3)
 /* 8006D938 00069858  7F A4 02 14 */	add r29, r4, r0
-/* 8006D93C 0006985C  4B FC 61 99 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8006D93C 0006985C  4B FC 61 99 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8006D940 00069860  4B F9 9E F5 */	bl mathutil_mtxA_pop
 /* 8006D944 00069864  7C 9F E8 96 */	mulhw r4, r31, r29
 /* 8006D948 00069868  C0 02 A1 A4 */	lfs f0, lbl_802F49A4@sda21(r2)
@@ -3571,7 +3571,7 @@ lbl_8006D8B0:
 /* 8006D970 00069890  54 80 0F FE */	srwi r0, r4, 0x1f
 /* 8006D974 00069894  80 63 0E 28 */	lwz r3, 0xe28(r3)
 /* 8006D978 00069898  7F A4 02 14 */	add r29, r4, r0
-/* 8006D97C 0006989C  4B FC 61 59 */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8006D97C 0006989C  4B FC 61 59 */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8006D980 000698A0  38 61 00 0C */	addi r3, r1, 0xc
 /* 8006D984 000698A4  4B F9 A3 9D */	bl mathutil_mtxA_translate
 /* 8006D988 000698A8  7C 9F E8 96 */	mulhw r4, r31, r29
@@ -3586,7 +3586,7 @@ lbl_8006D8B0:
 /* 8006D9AC 000698CC  54 80 0F FE */	srwi r0, r4, 0x1f
 /* 8006D9B0 000698D0  80 63 0E 28 */	lwz r3, 0xe28(r3)
 /* 8006D9B4 000698D4  7F A4 02 14 */	add r29, r4, r0
-/* 8006D9B8 000698D8  4B FC 61 1D */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8006D9B8 000698D8  4B FC 61 1D */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8006D9BC 000698DC  38 61 00 0C */	addi r3, r1, 0xc
 /* 8006D9C0 000698E0  4B F9 A3 61 */	bl mathutil_mtxA_translate
 /* 8006D9C4 000698E4  7C 1F E8 96 */	mulhw r0, r31, r29
@@ -3598,7 +3598,7 @@ lbl_8006D8B0:
 /* 8006D9DC 000698FC  54 00 10 3A */	slwi r0, r0, 2
 /* 8006D9E0 00069900  7C 7E 02 14 */	add r3, r30, r0
 /* 8006D9E4 00069904  80 63 0E 28 */	lwz r3, 0xe28(r3)
-/* 8006D9E8 00069908  4B FC 60 ED */	bl u_call_draw_naomi_model_and_do_other_stuff
+/* 8006D9E8 00069908  4B FC 60 ED */	bl nl2ngc_draw_model_sort_translucent_alt2
 /* 8006D9EC 0006990C  4B FA 09 D1 */	bl u_reset_post_mult_color
 /* 8006D9F0 00069910  BB 41 00 28 */	lmw r26, 0x28(r1)
 /* 8006D9F4 00069914  80 01 00 44 */	lwz r0, 0x44(r1)

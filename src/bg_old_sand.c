@@ -36,15 +36,15 @@ void bg_old_sand_main(void)
 
 void bg_old_sand_finish(void) {}
 
-static void lbl_800599FC(struct NlVtxWithNormal *);
-static void lbl_80059A24(struct NlVtxWithColor *);
-static void lbl_80059A4C(struct NlVtxWithNormal *);
-static void lbl_80059A74(struct NlVtxWithColor *);
+static void lbl_800599FC(struct NlVtxTypeB *);
+static void lbl_80059A24(struct NlVtxTypeA *);
+static void lbl_80059A4C(struct NlVtxTypeB *);
+static void lbl_80059A74(struct NlVtxTypeA *);
 
 void bg_old_sand_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 0));
+    nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_bgNlObj, 0));
 
     memcpy(lbl_802F1B4C, NLOBJ_MODEL(g_bgNlObj, 1), NLMODEL_HEADER(NLOBJ_MODEL(g_bgNlObj, 1))->unk4->modelSize);
     u_apply_func_to_naomi_model_vertices(lbl_802F1B4C, lbl_800599FC, lbl_80059A24);
@@ -55,30 +55,30 @@ void bg_old_sand_draw(void)
     u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
 
     mathutil_mtxA_rotate_y((s16)-backgroundInfo.unk2C.x);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 4));
+    nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_bgNlObj, 4));
 }
 
 void bg_old_sand_interact(int a) {}
 
-static void lbl_800599FC(struct NlVtxWithNormal *vtx)
+static void lbl_800599FC(struct NlVtxTypeB *vtx)
 {
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A24(struct NlVtxWithColor *vtx)
+static void lbl_80059A24(struct NlVtxTypeA *vtx)
 {
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A4C(struct NlVtxWithNormal *vtx)
+static void lbl_80059A4C(struct NlVtxTypeB *vtx)
 {
     vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80059A74(struct NlVtxWithColor *vtx)
+static void lbl_80059A74(struct NlVtxTypeA *vtx)
 {
     vtx->t += backgroundInfo.unk2C.z;
     *(u32 *)&vtx->t |= 1;  // WTF???

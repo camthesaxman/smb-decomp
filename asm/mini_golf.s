@@ -18094,7 +18094,7 @@ lbl_00010BA4:
 /* 00010BA4 80780000 */ lwz r3, 0(r24)
 /* 00010BA8 7F23B82E */ lwzx r25, r3, r23
 /* 00010BAC 7F23CB78 */ mr r3, r25
-/* 00010BB0 4BFEF621 */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 00010BB0 4BFEF621 */ bl nl2ngc_draw_model_sort_translucent_alt2
 /* 00010BB4 281B0000 */ cmplwi r27, 0
 /* 00010BB8 41820040 */ beq lbl_00010BF8
 /* 00010BBC 4BFEF615 */ bl mathutil_mtxA_push
@@ -18109,7 +18109,7 @@ lbl_00010BA4:
 /* 00010BE0 41820014 */ beq lbl_00010BF4
 /* 00010BE4 4BFEF5ED */ bl mathutil_mtxA_pop
 /* 00010BE8 80760000 */ lwz r3, 0(r22)
-/* 00010BEC 4BFEF5E5 */ bl nl2ngc_draw_model_unsorted_alt
+/* 00010BEC 4BFEF5E5 */ bl nl2ngc_draw_model_sort_none_alt
 /* 00010BF0 48000008 */ b lbl_00010BF8
 lbl_00010BF4:
 /* 00010BF4 4BFEF5DD */ bl mathutil_mtxA_pop
@@ -18200,7 +18200,7 @@ lbl_00010D20:
 /* 00010D20 28140000 */ cmplwi r20, 0
 /* 00010D24 4182006C */ beq lbl_00010D90
 /* 00010D28 7E83A378 */ mr r3, r20
-/* 00010D2C 4BFEF4A5 */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 00010D2C 4BFEF4A5 */ bl nl2ngc_draw_model_sort_translucent_alt2
 /* 00010D30 2C1E0000 */ cmpwi r30, 0
 /* 00010D34 41820018 */ beq lbl_00010D4C
 /* 00010D38 38000000 */ li r0, 0
@@ -18223,7 +18223,7 @@ lbl_00010D4C:
 /* 00010D78 41820014 */ beq lbl_00010D8C
 /* 00010D7C 4BFEF455 */ bl mathutil_mtxA_pop
 /* 00010D80 80750000 */ lwz r3, 0(r21)
-/* 00010D84 4BFEF44D */ bl nl2ngc_draw_model_unsorted_alt
+/* 00010D84 4BFEF44D */ bl nl2ngc_draw_model_sort_none_alt
 /* 00010D88 48000008 */ b lbl_00010D90
 lbl_00010D8C:
 /* 00010D8C 4BFEF445 */ bl mathutil_mtxA_pop

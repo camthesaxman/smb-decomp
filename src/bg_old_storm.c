@@ -154,8 +154,8 @@ void bg_old_storm_finish(void) {}
 void bg_old_storm_draw(void)
 {
 	mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-	u_call_draw_naomi_model_and_do_other_stuff(g_bgNlObj->models[0]);
-	u_call_draw_naomi_model_and_do_other_stuff(g_bgNlObj->models[3]);
+	nl2ngc_draw_model_sort_translucent_alt2(g_bgNlObj->models[0]);
+	nl2ngc_draw_model_sort_translucent_alt2(g_bgNlObj->models[3]);
 }
 
 void bg_old_storm_interact(int arg0) {}

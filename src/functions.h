@@ -198,9 +198,9 @@ void func_800367E4(struct JointBoneThing *arg0, u16 arg1, u16 arg2);
 float interpolate_keyframes(int count, struct Keyframe *frames, float time);
 
 void draw_stage_preview(void);
-void u_apply_func_to_naomi_model_vertices(struct NlModel *model, void (*b)(struct NlVtxWithNormal *), void (*c)(struct NlVtxWithColor *));
-void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxWithNormal *));
-void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxWithColor *));
+void u_apply_func_to_naomi_model_vertices(struct NlModel *model, void (*b)(struct NlVtxTypeB *), void (*c)(struct NlVtxTypeA *));
+void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxTypeB *));
+void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end, void (*func)(struct NlVtxTypeA *));
 // ? func_80048084();
 void func_80048420();
 void func_800487B4(void);

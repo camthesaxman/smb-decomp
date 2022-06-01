@@ -1081,9 +1081,9 @@ static int string_match_len(char *a, char *b)
 
 // Called for each vertex in the Bonus Wave floor model.
 // Modifies the y coordinate and normal vector
-void u_bonus_wave_warp_callback_1(struct NlVtxWithNormal *vtxp)
+void u_bonus_wave_warp_callback_1(struct NlVtxTypeB *vtxp)
 {
-    struct NlVtxWithNormal vtx = *vtxp;
+    struct NlVtxTypeB vtx = *vtxp;
     float dstFromOrigin;
     float amplitude;
     float f2;
@@ -1119,9 +1119,9 @@ void u_bonus_wave_warp_callback_1(struct NlVtxWithNormal *vtxp)
 }
 
 // does the same as u_bonus_wave_warp_callback_1, but doesn't calculate normals
-void u_bonus_wave_warp_callback_2(struct NlVtxWithColor *vtxp)
+void u_bonus_wave_warp_callback_2(struct NlVtxTypeA *vtxp)
 {
-    struct NlVtxWithColor vtx = *vtxp;
+    struct NlVtxTypeA vtx = *vtxp;
     float dstFromOrigin;
     float amplitude;
     float f2;
@@ -1265,7 +1265,7 @@ void compute_stage_bounding_sphere(void)
         {
             struct NlModel *model = *r3;
 
-            if (model != NULL2 && model->unk0 >= 0)
+            if (model != NULL2 && model->u_valid >= 0)
             {
                 if (!r4)
                 {
@@ -1311,7 +1311,7 @@ void compute_stage_bounding_sphere(void)
             {
                 struct NlModel *model = (void *)r5->model;
 
-                if (model != NULL2 && model->unk0 >= 0)
+                if (model != NULL2 && model->u_valid >= 0)
                 {
                     if (!r4)
                     {
@@ -2058,7 +2058,7 @@ void stage_draw(void)
                 }
                 else
                 {
-                    u_call_draw_naomi_model_and_do_other_stuff(
+                    nl2ngc_draw_model_sort_translucent_alt2(
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_GOAL_01));
                     sp7C.unk2 = 0;
                     sp7C.unk4 = NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_GOAL_01);
@@ -2079,7 +2079,7 @@ void stage_draw(void)
         mathutil_mtxA_rotate_x(0xC000);
         mathutil_mtxA_scale_xyz(10.0f, 10.0f, 10.0f);
         nl2ngc_set_scale(10.0f);
-        u_call_draw_naomi_model_and_do_other_stuff(
+        nl2ngc_draw_model_sort_translucent_alt2(
             NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_TRIANGLE_XY));
     }
     else if (dipSwitches & DIP_STCOLI)
@@ -2147,7 +2147,7 @@ void stage_draw(void)
                 for (j = 0; j < r23->unk8; j++)
                 {
                     model = (void *)r23->unk0[j];
-                    u_call_draw_naomi_model_and_do_other_stuff(model);
+                    nl2ngc_draw_model_sort_translucent_alt2(model);
                     if (r25 != NULL)
                     {
                         mathutil_mtxA_push();
@@ -2155,7 +2155,7 @@ void stage_draw(void)
                         if (r25(model, lbl_802F1B4C) != 0)
                         {
                             mathutil_mtxA_pop();
-                            nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
+                            nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
                         }
                         else
                             mathutil_mtxA_pop();
@@ -2207,7 +2207,7 @@ void stage_draw(void)
                             }
                             if (model != NULL)
                             {
-                                u_call_draw_naomi_model_and_do_other_stuff(model);
+                                nl2ngc_draw_model_sort_translucent_alt2(model);
                                 if (r31 != 0)
                                 {
                                     sp7C.unk2 = 0;
@@ -2221,7 +2221,7 @@ void stage_draw(void)
                                     if (r25(model, lbl_802F1B4C) != 0)
                                     {
                                         mathutil_mtxA_pop();
-                                        nl2ngc_draw_model_unsorted_alt(lbl_802F1B4C);
+                                        nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
                                     }
                                     else
                                         mathutil_mtxA_pop();
@@ -2279,7 +2279,7 @@ void stage_draw(void)
             if (infoWork.unk1E == 1)
             {
                 if (modeCtrl.submodeTimer > 120)
-                    u_call_draw_naomi_model_and_do_other_stuff(
+                    nl2ngc_draw_model_sort_translucent_alt2(
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 60)
                 {
@@ -2291,7 +2291,7 @@ void stage_draw(void)
             else
             {
                 if (modeCtrl.submodeTimer > 75)
-                    u_call_draw_naomi_model_and_do_other_stuff(
+                    nl2ngc_draw_model_sort_translucent_alt2(
                         NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_START_SIGN));
                 else if (modeCtrl.submodeTimer > 45)
                 {
@@ -2358,12 +2358,12 @@ void draw_stage_preview(void)
 }
 
 void u_apply_func_to_naomi_model_vertices(struct NlModel *model,
-                                          void (*b)(struct NlVtxWithNormal *),
-                                          void (*c)(struct NlVtxWithColor *))
+                                          void (*b)(struct NlVtxTypeB *),
+                                          void (*c)(struct NlVtxTypeA *))
 {
     struct NlMesh *r6;
 
-    if (model->unk0 == -1)
+    if (model->u_valid == -1)
         return;
     r6 = (void *)model->meshStart;
     while (r6->flags != 0)
@@ -2387,7 +2387,7 @@ void u_apply_func_to_naomi_model_vertices(struct NlModel *model,
 }
 
 void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
-                                          void (*func)(struct NlVtxWithNormal *))
+                                          void (*func)(struct NlVtxTypeB *))
 {
     int i;
 
@@ -2406,7 +2406,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((struct NlVtxWithNormal *)vtxData);
+                    func((struct NlVtxTypeB *)vtxData);
                     vtxData += 32;
                 }
                 else
@@ -2422,7 +2422,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((struct NlVtxWithNormal *)vtxData);
+                        func((struct NlVtxTypeB *)vtxData);
                         vtxData += 32;
                     }
                     else
@@ -2437,7 +2437,7 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
 
 // duplicate of u_apply_func_to_naomi_dl_pos_nrm_tex
 void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end,
-                                            void (*func)(struct NlVtxWithColor *))
+                                            void (*func)(struct NlVtxTypeA *))
 {
     int i;
 
@@ -2456,7 +2456,7 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end,
             {
                 if (*(u32 *)vtxData & 1)
                 {
-                    func((struct NlVtxWithColor *)vtxData);
+                    func((struct NlVtxTypeA *)vtxData);
                     vtxData += 32;
                 }
                 else
@@ -2472,7 +2472,7 @@ void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end,
                 {
                     if (*(u32 *)vtxData & 1)
                     {
-                        func((struct NlVtxWithColor *)vtxData);
+                        func((struct NlVtxTypeA *)vtxData);
                         vtxData += 32;
                     }
                     else

@@ -35,13 +35,13 @@ void bg_old_space_main(void)
 
 void bg_old_space_finish(void) {}
 
-static void lbl_8005872C(struct NlVtxWithNormal *);
-static void lbl_80058764(struct NlVtxWithColor *);
+static void lbl_8005872C(struct NlVtxTypeB *);
+static void lbl_80058764(struct NlVtxTypeA *);
 
 void bg_old_space_draw(void)
 {
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(g_bgNlObj, 0));
+    nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_bgNlObj, 0));
     memcpy(lbl_802F1B4C, NLOBJ_MODEL(g_bgNlObj, 2), NLMODEL_HEADER(NLOBJ_MODEL(g_bgNlObj, 2))->unk4->modelSize);
     u_apply_func_to_naomi_model_vertices(lbl_802F1B4C, lbl_8005872C, lbl_80058764);
     u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
@@ -49,14 +49,14 @@ void bg_old_space_draw(void)
 
 void bg_old_space_interact(int a) {}
 
-static void lbl_8005872C(struct NlVtxWithNormal *vtx)
+static void lbl_8005872C(struct NlVtxTypeB *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;
     *(u32 *)&vtx->t |= 1;  // WTF???
 }
 
-static void lbl_80058764(struct NlVtxWithColor *vtx)
+static void lbl_80058764(struct NlVtxTypeA *vtx)
 {
     vtx->s += backgroundInfo.unk2C.x;
     vtx->t += backgroundInfo.unk2C.y;

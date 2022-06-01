@@ -740,7 +740,7 @@ static void stobj_bumper_draw(struct Stobj *stobj)
         mathutil_mtxA_scale_s(temp_f31_2);
         nl2ngc_set_scale(temp_f31_2);
         nl2ngc_set_material_color(phi_f30, phi_f30, phi_f30);
-        nl2ngc_draw_model_unsorted(g_commonNlObj->models[0x2B]);
+        nl2ngc_draw_model_sort_none(g_commonNlObj->models[0x2B]);
         u_reset_post_mult_color();
     }
 }
