@@ -331,7 +331,7 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct g_poolInfo
+struct PoolInfo
 {
              u8 filler0[8];
              s32 unk8;

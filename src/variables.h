@@ -566,7 +566,7 @@ extern struct
 // extern ? lbl_802037D8;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
-extern struct g_poolInfo g_poolInfo;
+extern struct PoolInfo g_poolInfo;
 
 // extern ? lbl_80206D00;
 // extern ? stagePreview;
