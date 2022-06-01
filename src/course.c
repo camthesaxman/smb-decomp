@@ -1,0 +1,197 @@
+#include <dolphin.h>
+
+#include "global.h"
+
+s16 lbl_801BA3D8[] =
+{
+    0x0015, 0x0016,
+    0x0017, 0x0018,
+    0x0032, 0x001A,
+    0x001B, 0x001C,
+    0x001D, 0x0064,
+};
+s16 lbl_801BA3EC[] =
+{
+    0x0016, 0x0017,
+    0x0018, 0x0019,
+    0x0033, 0x001B,
+    0x001C, 0x001D,
+    0x001E, 0x0065,
+    0x0020, 0x0021,
+    0x0022, 0x0023,
+    0x0024, 0x0025,
+    0x0026, 0x0027,
+    0x0028, 0x00C9,
+    0x002A, 0x002B,
+    0x002C, 0x002D,
+    0x002E, 0x002F,
+    0x0030, 0x0031,
+    0x0032, 0x012C,
+};
+s16 lbl_801BA428[] =
+{
+    0x0017, 0x0018,
+    0x0019, 0x001A,
+    0x0034, 0x001C,
+    0x001D, 0x001E,
+    0x001F, 0x0066,
+    0x0021, 0x0022,
+    0x0023, 0x0024,
+    0x0025, 0x0026,
+    0x0027, 0x0028,
+    0x0029, 0x00CA,
+    0x002B, 0x002C,
+    0x002D, 0x002E,
+    0x002F, 0x0030,
+    0x0031, 0x0032,
+    0x0033, 0x012E,
+    0x0035, 0x0036,
+    0x0037, 0x0038,
+    0x0039, 0x003A,
+    0x003B, 0x003C,
+    0x003D, 0x0192,
+    0x003F, 0x0040,
+    0x0041, 0x0042,
+    0x0043, 0x0044,
+    0x0045, 0x0046,
+    0x0047, 0x01F4,
+};
+s16 lbl_802F0B00[4] =
+{
+    0x0028, 0x0046,
+    0x0083, 0x0000,
+};
+s16 lbl_801BA48C[] =
+{
+    0x0032, 0x0050,
+    0x006E, 0x008C,
+    0x015F, 0x0000,
+};
+s16 lbl_801BA498[] =
+{
+    0x004B, 0x005A,
+    0x0069, 0x0078,
+    0x0087, 0x0096,
+    0x00A5, 0x00B4,
+    0x00C3, 0x0259,
+};
+s16 lbl_801BA4AC[] =
+{
+    0x00FA, 0x0104,
+    0x010E, 0x0118,
+    0x0122, 0x012C,
+    0x0136, 0x0140,
+    0x014A, 0x02BC,
+};
+
+#pragma force_active on
+void *lbl_801BA4C0[] =
+{
+    lbl_801BA3D8,
+    lbl_801BA3EC,
+    lbl_801BA428,
+    lbl_802F0B00,
+    lbl_801BA48C,
+    lbl_801BA498,
+    lbl_801BA4AC,
+    lbl_801BA4AC,
+    lbl_801BA4AC,
+};
+s16 lbl_801BA4E4[] =  // 0x10C
+{
+    0x0000, 0x0001,
+    0x0001, 0x0002,
+    0x0002, 0x0003,
+    0x0003, 0x0004,
+    0x0004, 0x0005,
+    0x0005, 0x0006,
+    0x0006, 0x0007,
+    0x0007, 0x0008,
+    0x0008, 0x0009,
+    0x0009, 0x000A,
+    0x000A, 0x000B,
+    0x000B, 0x000C,
+    0x000C, 0x000D,
+    0x000D, 0x000E,
+    0x000E, 0x000F,
+    0x000F, 0x0010,
+    0x0010, 0x0011,
+    0x0011, 0x0012,
+    0x0012, 0x0013,
+    0x0013, 0x0014,
+    0x0014, 0x0015,
+    0x0015, 0x0016,
+    0x0016, 0x0017,
+    0x0017, 0x0018,
+    0x0018, 0x0019,
+    0x0019, 0x001A,
+    0x001A, 0x001B,
+    0x001B, 0x001C,
+    0x001C, 0x001D,
+    0x001D, 0x001E,
+    0x001E, 0x001F,
+    0x001F, 0x0020,
+    0x0020, 0x0021,
+    0x0021, 0x0022,
+    0x0022, 0x0023,
+};
+#pragma force_active reset
+
+u8 lbl_8027CC58[0x1B0];
+FORCE_BSS_ORDER(lbl_8027CC58)
+
+struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u32 unkC;
+} lbl_8027CE08;  // 0x1B0
+FORCE_BSS_ORDER(lbl_8027CE08)
+
+struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+} lbl_8027CE18;  // 0x1C0
+FORCE_BSS_ORDER(lbl_8027CE18)
+
+extern u32 lbl_802F1FB8;
+
+void func_80065C58(void)
+{
+    int i;
+    int count;
+    u8 unused[4];
+
+    lbl_8027CE08.unk0 = 0;
+    lbl_8027CE08.unk4 = 0;
+    lbl_8027CE08.unk8 = 0;
+    lbl_8027CE08.unkC = 0;
+    lbl_802F1FBC = 0;
+    lbl_802F1FB8 = 0;
+
+    count = 0;
+    lbl_8027CE18.unk0 = 0;
+    for (i = 0; i < 10; i++, count++)
+        lbl_8027CE18.unk0 += lbl_801BA3D8[i] + lbl_801BA4E4[i];
+    for (i = 0; i < 3; i++, count++)
+        lbl_8027CE18.unk0 += lbl_802F0B00[i] + lbl_801BA4E4[count];
+
+    count = 0;
+    lbl_8027CE18.unk4 = 0;
+    for (i = 0; i < 30; i++, count++)
+        lbl_8027CE18.unk4 += lbl_801BA3EC[i] + lbl_801BA4E4[i];
+    for (i = 0; i < 5; i++, count++)
+        lbl_8027CE18.unk4 += lbl_801BA48C[i] + lbl_801BA4E4[count];
+
+    count = 0;
+    lbl_8027CE18.unk8 = 0;
+    for (i = 0; i < 50; i++, count++)
+        lbl_8027CE18.unk8 += lbl_801BA428[i] + lbl_801BA4E4[i];
+    for (i = 0; i < 10; i++, count++)
+        lbl_8027CE18.unk8 += lbl_801BA498[i] + lbl_801BA4E4[count];
+    for (i = 0; i < 10; i++, count++)
+        lbl_8027CE18.unk8 += lbl_801BA4AC[i] + lbl_801BA4E4[count];
+}

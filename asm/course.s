@@ -1,7 +1,7 @@
 .include "macros.inc"
 
 .section .text
-
+.if 0
 .global func_80065C58
 func_80065C58:
 /* 80065C58 00061B78  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -405,7 +405,7 @@ lbl_80065F8C:
 /* 80066288 000621A8  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 8006628C 000621AC  38 21 00 18 */	addi r1, r1, 0x18
 /* 80066290 000621B0  4E 80 00 20 */	blr
-
+.endif
 .global func_80066294
 func_80066294:
 /* 80066294 000621B4  7C 08 02 A6 */	mflr r0
@@ -2591,6 +2591,7 @@ func_8006800C:
 
 .section .data
 
+.if 0
 .global lbl_801BA3D8
 lbl_801BA3D8:
 	# ROM: 0x1B73D8
@@ -2666,6 +2667,7 @@ glabel lbl_801BA4AC
 	.4byte lbl_801BA4AC  ;# ptr
 	.4byte lbl_801BA4AC  ;# ptr
 	.4byte lbl_801BA4AC  ;# ptr
+
 	.4byte 0x00000001
 	.4byte 0x00010002
 	.4byte 0x00020003
@@ -2701,6 +2703,8 @@ glabel lbl_801BA4AC
 	.4byte 0x00200021
 	.4byte 0x00210022
 	.4byte 0x00220023
+.endif
+asdf:
 	.4byte func_80066C78  ;# ptr
 	.4byte func_80066D44  ;# ptr
 	.4byte func_80066CD4  ;# ptr
@@ -6156,11 +6160,13 @@ lbl_802F4658:
 
 .section .sdata
 
+.if 0
 .global lbl_802F0B00
 lbl_802F0B00:
 	# ROM: 0x1EB240
 	.4byte 0x00280046
 	.4byte 0x00830000
+.endif
 
 .global lbl_802F0B08
 lbl_802F0B08:
@@ -6237,3 +6243,20 @@ lbl_802F1FC4:
 .global lbl_802F1FC8
 lbl_802F1FC8:
 	.skip 0x8
+
+.section .bss
+
+.if 0
+.global lbl_8027CC58
+lbl_8027CC58:
+	.skip 0x1B0
+.global lbl_8027CE08
+lbl_8027CE08:
+	.skip 0x10
+.global lbl_8027CE18
+lbl_8027CE18:
+	.skip 0xC
+.endif
+.global lbl_8027CE24
+lbl_8027CE24:
+	.skip 0x34
