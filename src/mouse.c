@@ -19,7 +19,6 @@ struct Mouse {
 };
 
 struct Mouse mouse;
-extern char lbl_802F1360[8];
 extern s32 lbl_802F1EA8;
 
 #define INVALID_SPRITE_INDEX -1;
@@ -174,13 +173,13 @@ void ev_mouse_update(void)
             _spriteInfo = &spriteInfo[mouse.spriteIdx];
             reset_text_draw_settings();
             set_text_pos( (_spriteInfo->left - 8), (_spriteInfo->top - 8) );
-            u_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( "+" );
             set_text_pos( (_spriteInfo->left - 8), _spriteInfo->bottom );
-            u_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( "+" );
             set_text_pos( _spriteInfo->right, (_spriteInfo->top - 8) );
-            u_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( "+" );
             set_text_pos( _spriteInfo->right, _spriteInfo->bottom );
-            u_draw_text( (char*)&lbl_802F1360[0] );
+            u_draw_text( "+" );
         }
     }
     return;
