@@ -1378,7 +1378,7 @@ lbl_80066FE4:
 /* 80066FFC 00062F1C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80067000 00062F20  7C 08 03 A6 */	mtlr r0
 /* 80067004 00062F24  4E 80 00 20 */	blr
-.endif
+
 .global u_get_stage_time_limit
 u_get_stage_time_limit:
 /* 80067008 00062F28  80 0D 9D C4 */	lwz r0, lbl_802F1FA4@sda21(r13)
@@ -1598,8 +1598,8 @@ lbl_800672BC:
 
 .global is_bonus_stage
 is_bonus_stage:
-/* 800672D0 000631F0  3C 80 80 11 */	lis r4, lbl_801179E8@ha
-/* 800672D4 000631F4  38 04 79 E8 */	addi r0, r4, lbl_801179E8@l
+/* 800672D0 000631F0  3C 80 80 11 */	lis r4, s_bonusStages@ha
+/* 800672D4 000631F4  38 04 79 E8 */	addi r0, r4, s_bonusStages@l
 /* 800672D8 000631F8  7C 05 03 78 */	mr r5, r0
 /* 800672DC 000631FC  38 80 00 00 */	li r4, 0
 /* 800672E0 00063200  48 00 00 1C */	b lbl_800672FC
@@ -1618,7 +1618,7 @@ lbl_800672FC:
 lbl_80067308:
 /* 80067308 00063228  7C 83 23 78 */	mr r3, r4
 /* 8006730C 0006322C  4E 80 00 20 */	blr
-
+.endif
 glabel func_80067310
 /* 80067310 00063230  7C 08 02 A6 */	mflr r0
 /* 80067314 00063234  3C 80 80 28 */	lis r4, lbl_8027CE24@ha
@@ -6267,7 +6267,8 @@ lbl_8027CE08:
 .global lbl_8027CE18
 lbl_8027CE18:
 	.skip 0xC
-.endif
+
 .global lbl_8027CE24
 lbl_8027CE24:
 	.skip 0x34
+.endif

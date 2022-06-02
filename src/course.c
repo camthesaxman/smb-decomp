@@ -221,7 +221,7 @@ void func_800662D4(void)
 
 void func_800662E0(void)
 {
-    lbl_802F1FBC = MIN(lbl_802F1FBC + playPointsReceived, 0x270F);
+    lbl_802F1FBC = MIN(lbl_802F1FBC + playPointsReceived, 9999);
     if (func_800676C0() != 0 && lbl_802F1FBC > lbl_802F1FB8)
         lbl_802F1FB8 = lbl_802F1FBC;
 }
@@ -3696,7 +3696,7 @@ u32 lbl_801BD86C[] =
     0,
 };
 
-s32 *lbl_801BDA2C[] =
+void *lbl_801BDA2C[] =
 {
     (void *)lbl_801BA590,
     (void *)lbl_801BA964,
@@ -4019,5 +4019,157 @@ void func_80066EC0(struct Struct802F1F98 *unused)
     infoWork.unk2E = -1;
 }
 
-//void func_80066D78(struct Struct802F1F98 *);
-//void func_80066EC0(struct Struct802F1F98 *);
+struct Struct8027CE24
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+};  // size = 8
+
+struct Struct8027CE24 lbl_8027CE24[6];
+
+int u_get_stage_time_limit(void)
+{
+    s32 temp_r3_2;
+    s32 temp_r5;
+    s32 var_r6;
+    s32 var_r7;
+    u8 temp_r0;
+    struct Struct802F1F98 *var_r3;
+
+    if (lbl_802F1FA4 != 0)
+    {
+        var_r7 = 0;
+        var_r6 = 0;
+        if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 8)
+            var_r6 = 3;
+        if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 0x10)
+            var_r6 = 6;
+        var_r3 = lbl_801BDA2C[var_r6 + lbl_8027CE24[infoWork.unk20 - 1].unk2];
+        temp_r5 = lbl_8027CE24[infoWork.unk20 - 1].unk0;
+        while (var_r3->unk0 != 3)
+        {
+            if (var_r3->unk0 == 2 && var_r3->unk1 == 0)
+            {
+                var_r7++;
+                if (var_r7 == temp_r5)
+                {
+                    if (var_r3[1].unk0 != 2 || var_r3[1].unk1 != 1)
+                        break;
+                    return var_r3[1].unk4;
+                }
+            }
+            var_r3++;
+        }
+        return 3600;
+    }
+    if (lbl_802F1F98->unk0 == 2 && lbl_802F1F98->unk1 == 1)
+        return lbl_802F1F98->unk4;
+    return 3600;
+}
+
+int level_num_to_stage_id(int arg0, int arg1, int arg2)
+{
+    int stageId;
+    int var_r4;
+
+    lbl_802F1F98 = lbl_801BDA2C[func_800671D4(arg0, arg2)];
+    var_r4 = 1;
+    while (var_r4 <= arg1 && lbl_802F1F98->unk0 != 3)
+    {
+        if (lbl_802F1F98->unk0 == 2 && lbl_802F1F98->unk1 == 0)
+        {
+            if (var_r4 == arg1)
+                break;
+            var_r4++;
+        }
+        lbl_802F1F98++;
+    }
+    stageId = lbl_802F1F98->unk4;
+    if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+    {
+        if (stageId == ST_126_ROLL_MASTER)
+            stageId = ST_116_ALTERNATE_ROLL_MASTER;
+        if (stageId == ST_127_EDGE_MASTER)
+            stageId = ST_115_ALTERNATE_EDGE_MASTER;
+    }
+    lbl_802F1F98++;
+    return stageId;
+}
+
+int func_800671D4(int arg0, u32 arg1)
+{
+    int var_r5 = 0;
+
+    if (arg1 & 8)
+        var_r5 = 3;
+    if (arg1 & 0x10)
+        var_r5 = 6;
+    if (lbl_802F1FA4 != 0)
+        var_r5 = 9;
+    var_r5 += arg0;
+    return var_r5;
+}
+
+static const int s_bonusStages[] =
+{
+    ST_091_BONUS_BASIC,
+    ST_092_BONUS_WAVE,
+    ST_093_BONUS_GRID,
+    ST_094_BONUS_BUMPY,
+    ST_095_BONUS_HUNTING,
+    ST_134_RACE_ICE,  //! How is this a bonus stage?
+    0,
+};
+
+const int lbl_80117A04[] =
+{
+    0x0A,
+    0x1E,
+    0x32,
+    0x03,
+    0x05,
+    0x0A,
+    0x0A,
+    0x0A,
+    0x0A,
+    0,
+    0,
+    0,
+    0,
+};
+
+#pragma force_active on
+int get_last_level_num_of_set(int arg0, int arg1)
+{
+    if (lbl_802F1FA4 != 0)
+        return lbl_802F1FB0;
+    return lbl_80117A04[func_800671D4(arg0, arg1)];
+}
+#pragma force_active reset
+
+u32 func_80067264(int arg0, int arg1, int arg2)
+{
+    int r0 = get_last_level_num_of_set(arg0, arg2);
+
+    if (arg1 == r0)
+        return 1;
+    else
+        return 0;
+}
+
+u32 is_bonus_stage(int stageId)
+{
+    int isBonus = FALSE;
+    const volatile int *id;
+
+    for (id = s_bonusStages; *id != 0; id++)
+    {
+        if (*id == stageId)
+        {
+            isBonus = TRUE;
+            break;
+        }
+    }
+    return isBonus;
+}
