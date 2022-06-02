@@ -340,9 +340,9 @@ void hud_show_press_start_textbox(int a)
     tbox.callback = press_start_texbox_callback;
     textbox_set_properties(0, 21, &tbox);
     if (a == 3)
-        textbox_set_text(0, "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!");
+        textbox_add_text(0, "b/Select using the c/0xffffff/p/BUTTON_A/c/0x000000/ Button!");
     else
-        textbox_set_text(0, "b/Press Start");
+        textbox_add_text(0, "b/Press Start");
 }
 
 float force_lbl_802F4C80() { return 10.0f; }

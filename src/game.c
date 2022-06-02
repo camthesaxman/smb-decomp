@@ -1010,9 +1010,9 @@ void submode_game_over_main_func(void)
     if (--modeCtrl.submodeTimer > 0)
         return;
     if (modeCtrl.playerCount == 1
-     && func_800675E0(6) != 0
-     && func_800675E0(7) != 0
-     && func_800675E0(8) != 0
+     && u_is_minigame_unlocked(6) != 0
+     && u_is_minigame_unlocked(7) != 0
+     && u_is_minigame_unlocked(8) != 0
      && func_800676C0() == 0 && lbl_802F1FBC >= 0x9C4)
         gameSubmodeRequest = SMD_GAME_OVER_POINT_INIT;
     else if (func_8009F4C4() == 1)
@@ -1173,7 +1173,7 @@ void submode_game_nameentry_ready_init_func(void)
     tbox.numRows = 1;
     tbox.callback = NULL;
     textbox_set_properties(1, 1, &tbox);
-    textbox_set_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
+    textbox_add_text(1, nameEntryText[playerCharacterSelection[modeCtrl.currPlayer]]);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 30);
     BALL_FOREACH( ball->state = 15; )
     camera_set_state(31);
@@ -1509,18 +1509,18 @@ void submode_game_extra_wait_func(void)
         textbox_set_properties(1, 1, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            textbox_set_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
-            textbox_set_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
+            textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
         else if (modeCtrl.levelSet == LVLSET_EXPERT)
         {
-            textbox_set_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
-            textbox_set_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
+            textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
         else
         {
-            textbox_set_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
-            textbox_set_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
+            textbox_add_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
+            textbox_add_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
     }
     if (modeCtrl.submodeTimer == 300)
@@ -1536,18 +1536,18 @@ void submode_game_extra_wait_func(void)
         textbox_set_properties(1, 21, &tbox);
         if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
         {
-            textbox_set_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
-            textbox_set_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
+            textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
         else if (modeCtrl.levelSet == LVLSET_EXPERT)
         {
-            textbox_set_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
-            textbox_set_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
+            textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
         else
         {
-            textbox_set_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
-            textbox_set_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
+            textbox_add_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
+            textbox_add_text(1, extraIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
     }
     if (modeCtrl.submodeTimer == 60)

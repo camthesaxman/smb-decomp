@@ -326,15 +326,15 @@ lbl_000004FC:
 /* 00000508 480000A0 */ b lbl_000005A8
 lbl_0000050C:
 /* 0000050C 38600006 */ li r3, 6
-/* 00000510 4BFFFC79 */ bl func_800675E0
+/* 00000510 4BFFFC79 */ bl u_is_minigame_unlocked
 /* 00000514 2C030000 */ cmpwi r3, 0
 /* 00000518 41820034 */ beq lbl_0000054C
 /* 0000051C 38600007 */ li r3, 7
-/* 00000520 4BFFFC69 */ bl func_800675E0
+/* 00000520 4BFFFC69 */ bl u_is_minigame_unlocked
 /* 00000524 2C030000 */ cmpwi r3, 0
 /* 00000528 41820024 */ beq lbl_0000054C
 /* 0000052C 38600008 */ li r3, 8
-/* 00000530 4BFFFC59 */ bl func_800675E0
+/* 00000530 4BFFFC59 */ bl u_is_minigame_unlocked
 /* 00000534 2C030000 */ cmpwi r3, 0
 /* 00000538 41820014 */ beq lbl_0000054C
 /* 0000053C 38600006 */ li r3, 6
@@ -348,15 +348,15 @@ lbl_0000054C:
 /* 00000558 48000050 */ b lbl_000005A8
 lbl_0000055C:
 /* 0000055C 38600006 */ li r3, 6
-/* 00000560 4BFFFC29 */ bl func_800675E0
+/* 00000560 4BFFFC29 */ bl u_is_minigame_unlocked
 /* 00000564 2C030000 */ cmpwi r3, 0
 /* 00000568 41820034 */ beq lbl_0000059C
 /* 0000056C 38600007 */ li r3, 7
-/* 00000570 4BFFFC19 */ bl func_800675E0
+/* 00000570 4BFFFC19 */ bl u_is_minigame_unlocked
 /* 00000574 2C030000 */ cmpwi r3, 0
 /* 00000578 41820024 */ beq lbl_0000059C
 /* 0000057C 38600008 */ li r3, 8
-/* 00000580 4BFFFC09 */ bl func_800675E0
+/* 00000580 4BFFFC09 */ bl u_is_minigame_unlocked
 /* 00000584 2C030000 */ cmpwi r3, 0
 /* 00000588 41820014 */ beq lbl_0000059C
 /* 0000058C 38600006 */ li r3, 6
@@ -2050,7 +2050,7 @@ lbl_00001C78:
 /* 00001CD8 3C600000 */ lis r3, lbl_0001225C@ha
 /* 00001CDC 38830000 */ addi r4, r3, lbl_0001225C@l
 /* 00001CE0 38600001 */ li r3, 1
-/* 00001CE4 4BFFE4A5 */ bl textbox_set_text
+/* 00001CE4 4BFFE4A5 */ bl textbox_add_text
 /* 00001CE8 38000001 */ li r0, 1
 /* 00001CEC 901D0000 */ stw r0, 0(r29)
 /* 00001CF0 38000000 */ li r0, 0
@@ -2274,19 +2274,19 @@ lbl_00001FF8:
 /* 00001FF8 3B400001 */ li r26, 1
 lbl_00001FFC:
 /* 00001FFC 38600006 */ li r3, 6
-/* 00002000 4BFFE189 */ bl func_800675E0
+/* 00002000 4BFFE189 */ bl u_is_minigame_unlocked
 /* 00002004 2C030000 */ cmpwi r3, 0
 /* 00002008 41820008 */ beq lbl_00002010
 /* 0000200C 3B5A0001 */ addi r26, r26, 1
 lbl_00002010:
 /* 00002010 38600007 */ li r3, 7
-/* 00002014 4BFFE175 */ bl func_800675E0
+/* 00002014 4BFFE175 */ bl u_is_minigame_unlocked
 /* 00002018 2C030000 */ cmpwi r3, 0
 /* 0000201C 41820008 */ beq lbl_00002024
 /* 00002020 3B5A0001 */ addi r26, r26, 1
 lbl_00002024:
 /* 00002024 38600008 */ li r3, 8
-/* 00002028 4BFFE161 */ bl func_800675E0
+/* 00002028 4BFFE161 */ bl u_is_minigame_unlocked
 /* 0000202C 2C030000 */ cmpwi r3, 0
 /* 00002030 41820008 */ beq lbl_00002038
 /* 00002034 3B5A0001 */ addi r26, r26, 1
@@ -2326,19 +2326,19 @@ lbl_000020A4:
 /* 000020AC 40820078 */ bne lbl_00002124
 /* 000020B0 3B400000 */ li r26, 0
 /* 000020B4 38600006 */ li r3, 6
-/* 000020B8 4BFFE0D1 */ bl func_800675E0
+/* 000020B8 4BFFE0D1 */ bl u_is_minigame_unlocked
 /* 000020BC 2C030000 */ cmpwi r3, 0
 /* 000020C0 41820008 */ beq lbl_000020C8
 /* 000020C4 3B400001 */ li r26, 1
 lbl_000020C8:
 /* 000020C8 38600007 */ li r3, 7
-/* 000020CC 4BFFE0BD */ bl func_800675E0
+/* 000020CC 4BFFE0BD */ bl u_is_minigame_unlocked
 /* 000020D0 2C030000 */ cmpwi r3, 0
 /* 000020D4 41820008 */ beq lbl_000020DC
 /* 000020D8 3B5A0001 */ addi r26, r26, 1
 lbl_000020DC:
 /* 000020DC 38600008 */ li r3, 8
-/* 000020E0 4BFFE0A9 */ bl func_800675E0
+/* 000020E0 4BFFE0A9 */ bl u_is_minigame_unlocked
 /* 000020E4 2C030000 */ cmpwi r3, 0
 /* 000020E8 41820008 */ beq lbl_000020F0
 /* 000020EC 3B5A0001 */ addi r26, r26, 1
@@ -4221,15 +4221,15 @@ lbl_00003BAC:
 /* 00003BB0 A8030000 */ lha r0, currStageId@l(r3)
 /* 00003BB4 38600006 */ li r3, 6
 /* 00003BB8 901F003C */ stw r0, 0x3c(r31)
-/* 00003BBC 4BFFC5CD */ bl func_800675E0
+/* 00003BBC 4BFFC5CD */ bl u_is_minigame_unlocked
 /* 00003BC0 2C030000 */ cmpwi r3, 0
 /* 00003BC4 4182004C */ beq lbl_00003C10
 /* 00003BC8 38600007 */ li r3, 7
-/* 00003BCC 4BFFC5BD */ bl func_800675E0
+/* 00003BCC 4BFFC5BD */ bl u_is_minigame_unlocked
 /* 00003BD0 2C030000 */ cmpwi r3, 0
 /* 00003BD4 4182003C */ beq lbl_00003C10
 /* 00003BD8 38600008 */ li r3, 8
-/* 00003BDC 4BFFC5AD */ bl func_800675E0
+/* 00003BDC 4BFFC5AD */ bl u_is_minigame_unlocked
 /* 00003BE0 2C030000 */ cmpwi r3, 0
 /* 00003BE4 4182002C */ beq lbl_00003C10
 /* 00003BE8 3C600000 */ lis r3, lbl_802014E0@ha
@@ -4373,15 +4373,15 @@ lbl_00003DBC:
 /* 00003DE0 48005A74 */ b lbl_00009854
 lbl_00003DE4:
 /* 00003DE4 38600006 */ li r3, 6
-/* 00003DE8 4BFFC3A1 */ bl func_800675E0
+/* 00003DE8 4BFFC3A1 */ bl u_is_minigame_unlocked
 /* 00003DEC 2C030000 */ cmpwi r3, 0
 /* 00003DF0 4182004C */ beq lbl_00003E3C
 /* 00003DF4 38600007 */ li r3, 7
-/* 00003DF8 4BFFC391 */ bl func_800675E0
+/* 00003DF8 4BFFC391 */ bl u_is_minigame_unlocked
 /* 00003DFC 2C030000 */ cmpwi r3, 0
 /* 00003E00 4182003C */ beq lbl_00003E3C
 /* 00003E04 38600008 */ li r3, 8
-/* 00003E08 4BFFC381 */ bl func_800675E0
+/* 00003E08 4BFFC381 */ bl u_is_minigame_unlocked
 /* 00003E0C 2C030000 */ cmpwi r3, 0
 /* 00003E10 4182002C */ beq lbl_00003E3C
 /* 00003E14 3C600000 */ lis r3, lbl_802014E0@ha
@@ -4413,15 +4413,15 @@ lbl_00003E60:
 /* 00003E74 90030048 */ stw r0, 0x48(r3)
 lbl_00003E78:
 /* 00003E78 38600006 */ li r3, 6
-/* 00003E7C 4BFFC30D */ bl func_800675E0
+/* 00003E7C 4BFFC30D */ bl u_is_minigame_unlocked
 /* 00003E80 2C030000 */ cmpwi r3, 0
 /* 00003E84 41820024 */ beq lbl_00003EA8
 /* 00003E88 38600007 */ li r3, 7
-/* 00003E8C 4BFFC2FD */ bl func_800675E0
+/* 00003E8C 4BFFC2FD */ bl u_is_minigame_unlocked
 /* 00003E90 2C030000 */ cmpwi r3, 0
 /* 00003E94 41820014 */ beq lbl_00003EA8
 /* 00003E98 38600008 */ li r3, 8
-/* 00003E9C 4BFFC2ED */ bl func_800675E0
+/* 00003E9C 4BFFC2ED */ bl u_is_minigame_unlocked
 /* 00003EA0 2C030000 */ cmpwi r3, 0
 /* 00003EA4 40820008 */ bne lbl_00003EAC
 lbl_00003EA8:
@@ -4454,19 +4454,19 @@ lbl_00003EF0:
 /* 00003F00 40825954 */ bne lbl_00009854
 /* 00003F04 39E00000 */ li r15, 0
 /* 00003F08 38600006 */ li r3, 6
-/* 00003F0C 4BFFC27D */ bl func_800675E0
+/* 00003F0C 4BFFC27D */ bl u_is_minigame_unlocked
 /* 00003F10 2C030000 */ cmpwi r3, 0
 /* 00003F14 40820008 */ bne lbl_00003F1C
 /* 00003F18 39E00001 */ li r15, 1
 lbl_00003F1C:
 /* 00003F1C 38600007 */ li r3, 7
-/* 00003F20 4BFFC269 */ bl func_800675E0
+/* 00003F20 4BFFC269 */ bl u_is_minigame_unlocked
 /* 00003F24 2C030000 */ cmpwi r3, 0
 /* 00003F28 40820008 */ bne lbl_00003F30
 /* 00003F2C 3A200001 */ li r17, 1
 lbl_00003F30:
 /* 00003F30 38600008 */ li r3, 8
-/* 00003F34 4BFFC255 */ bl func_800675E0
+/* 00003F34 4BFFC255 */ bl u_is_minigame_unlocked
 /* 00003F38 2C030000 */ cmpwi r3, 0
 /* 00003F3C 40820008 */ bne lbl_00003F44
 /* 00003F40 3A400001 */ li r18, 1
@@ -4768,7 +4768,7 @@ lbl_0000430C:
 /* 0000436C 4BFFBE1D */ bl textbox_set_properties
 /* 00004370 38600001 */ li r3, 1
 /* 00004374 389E0150 */ addi r4, r30, 0x150
-/* 00004378 4BFFBE11 */ bl textbox_set_text
+/* 00004378 4BFFBE11 */ bl textbox_add_text
 /* 0000437C 91F00000 */ stw r15, 0(r16)
 /* 00004380 480000C8 */ b lbl_00004448
 lbl_00004384:
@@ -17620,19 +17620,19 @@ lbl_0000FD2C:
 /* 0000FD38 480000C0 */ b lbl_0000FDF8
 lbl_0000FD3C:
 /* 0000FD3C 38600006 */ li r3, 6
-/* 0000FD40 4BFF0449 */ bl func_800675E0
+/* 0000FD40 4BFF0449 */ bl u_is_minigame_unlocked
 /* 0000FD44 2C030000 */ cmpwi r3, 0
 /* 0000FD48 4182002C */ beq lbl_0000FD74
 /* 0000FD4C 480000AC */ b lbl_0000FDF8
 lbl_0000FD50:
 /* 0000FD50 38600007 */ li r3, 7
-/* 0000FD54 4BFF0435 */ bl func_800675E0
+/* 0000FD54 4BFF0435 */ bl u_is_minigame_unlocked
 /* 0000FD58 2C030000 */ cmpwi r3, 0
 /* 0000FD5C 41820018 */ beq lbl_0000FD74
 /* 0000FD60 48000098 */ b lbl_0000FDF8
 lbl_0000FD64:
 /* 0000FD64 38600008 */ li r3, 8
-/* 0000FD68 4BFF0421 */ bl func_800675E0
+/* 0000FD68 4BFF0421 */ bl u_is_minigame_unlocked
 /* 0000FD6C 2C030000 */ cmpwi r3, 0
 /* 0000FD70 40820088 */ bne lbl_0000FDF8
 lbl_0000FD74:

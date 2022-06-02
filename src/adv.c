@@ -1275,7 +1275,7 @@ void submode_adv_title_reinit_func(void)
         tbox.style = 14;
         tbox.callback = NULL;
         textbox_set_properties(0, 1, &tbox);
-        textbox_set_text(0, " \n ");
+        textbox_add_text(0, " \n ");
         hud_show_title_menu();
     }
     load_stage(ST_150_TUTORIAL);
@@ -1319,7 +1319,7 @@ void submode_adv_title_main_func(void)
         tbox.style = 14;
         tbox.callback = NULL;
         textbox_set_properties(0, 1, &tbox);
-        textbox_set_text(0, " \n ");
+        textbox_add_text(0, " \n ");
         hud_show_title_menu();
     }
     if (modeCtrl.levelSetFlags & (1 << 2))
@@ -1413,7 +1413,7 @@ void submode_adv_info_init_func(void)
         tbox.style = 14;
         tbox.callback = NULL;
         textbox_set_properties(2, 1, &tbox);
-        textbox_set_text(2, "c/0xff5000/    Control description!    ");
+        textbox_add_text(2, "c/0xff5000/    Control description!    ");
     }
     func_800846B0(4);
     func_800846B0(3);
@@ -1586,7 +1586,7 @@ void submode_adv_info_main_func(void)
             tbox.numRows = 1;
             tbox.style = cmd->param ? TEXTBOX_STYLE_SPIKY : TEXTBOX_STYLE_CENTER_DOWN;
             textbox_set_properties(1, 21, &tbox);
-            textbox_set_text(1, infoEnglishText[cmd->cmdId]);
+            textbox_add_text(1, infoEnglishText[cmd->cmdId]);
         }
         switch (cmd->cmdId)
         {

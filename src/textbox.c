@@ -658,7 +658,7 @@ static void add_textbox_line(int id, const char *str)
     }
 }
 
-void textbox_set_text(int id, const char *str)
+void textbox_add_text(int id, const char *str)
 {
     char buffer[0x200];
     int length = 0;
@@ -686,7 +686,7 @@ void textbox_set_text(int id, const char *str)
         lbl_80292AC0[id].numRows = newLines + 1;
 }
 
-void textbox_set_textf(int id, const char *fmt, ...)
+void textbox_add_textf(int id, const char *fmt, ...)
 {
     va_list args;
     char buffer[0x200];
@@ -694,5 +694,5 @@ void textbox_set_textf(int id, const char *fmt, ...)
     va_start(args, fmt);
     vsprintf(buffer, fmt, args);
     va_end(args);
-    textbox_set_text(id, buffer);
+    textbox_add_text(id, buffer);
 }

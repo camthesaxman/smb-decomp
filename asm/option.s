@@ -7526,15 +7526,15 @@ lbl_00006F18:
 /* 00006F38 48000078 */ b lbl_00006FB0
 lbl_00006F3C:
 /* 00006F3C 38600006 */ li r3, 6
-/* 00006F40 4BFF926D */ bl func_800675E0
+/* 00006F40 4BFF926D */ bl u_is_minigame_unlocked
 /* 00006F44 2C030000 */ cmpwi r3, 0
 /* 00006F48 4182003C */ beq lbl_00006F84
 /* 00006F4C 38600007 */ li r3, 7
-/* 00006F50 4BFF925D */ bl func_800675E0
+/* 00006F50 4BFF925D */ bl u_is_minigame_unlocked
 /* 00006F54 2C030000 */ cmpwi r3, 0
 /* 00006F58 4182002C */ beq lbl_00006F84
 /* 00006F5C 38600008 */ li r3, 8
-/* 00006F60 4BFF924D */ bl func_800675E0
+/* 00006F60 4BFF924D */ bl u_is_minigame_unlocked
 /* 00006F64 2C030000 */ cmpwi r3, 0
 /* 00006F68 4182001C */ beq lbl_00006F84
 /* 00006F6C 387D0000 */ addi r3, r29, 0
@@ -7837,7 +7837,7 @@ lbl_000073C0:
 /* 000073F4 9801001D */ stb r0, 0x1d(r1)
 /* 000073F8 4800001C */ b lbl_00007414
 lbl_000073FC:
-/* 000073FC 4BFF8DB1 */ bl func_80067664
+/* 000073FC 4BFF8DB1 */ bl u_get_max_continues
 /* 00007400 38A30000 */ addi r5, r3, 0
 /* 00007404 4CC63182 */ crclr 6
 /* 00007408 387D0000 */ addi r3, r29, 0
@@ -7923,7 +7923,7 @@ lbl_00007414:
 lbl_00007544:
 /* 00007544 3AC0FFFF */ li r22, -1
 /* 00007548 387C0006 */ addi r3, r28, 6
-/* 0000754C 4BFF8C61 */ bl func_800675E0
+/* 0000754C 4BFF8C61 */ bl u_is_minigame_unlocked
 /* 00007550 2C030000 */ cmpwi r3, 0
 /* 00007554 40820008 */ bne lbl_0000755C
 /* 00007558 3AC00000 */ li r22, 0

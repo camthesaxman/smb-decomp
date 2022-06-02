@@ -1300,7 +1300,7 @@ extern int lbl_802F1FB0;
 // extern ? lbl_802F1FB8;
 extern u32 lbl_802F1FBC;
 // extern ? lbl_802F1FC0;
-// extern ? lbl_802F1FC4;
+// extern ? playPointsReceived;
 extern s16 lbl_802F1FC8;
 // extern ? lbl_802F1FD0;
 // extern ? lbl_802F1FD4;
