@@ -804,9 +804,9 @@ void u_draw_naomi_ball(void)
     case LIGHT_TYPE_POINT_DARKPOW:
     case LIGHT_TYPE_POINT_DARK:
         mesh = (struct NlMesh *)NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B)->meshStart;
-        mesh->unk30 = 1.0f;
-        mesh->unk34 = 0.0f;
-        mesh->unk38 = 0.0f;
+        mesh->materialColorR = 1.0f;
+        mesh->materialColorG = 0.0f;
+        mesh->materialColorB = 0.0f;
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
@@ -829,9 +829,9 @@ void u_draw_naomi_ball(void)
     case LIGHT_TYPE_SPOT_DARKPOW:
     case LIGHT_TYPE_SPOT_DARK:
         mesh = (struct NlMesh *)NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B)->meshStart;
-        mesh->unk30 = 1.0f;
-        mesh->unk34 = 0.0f;
-        mesh->unk38 = 0.0f;
+        mesh->materialColorR = 1.0f;
+        mesh->materialColorG = 0.0f;
+        mesh->materialColorB = 0.0f;
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);

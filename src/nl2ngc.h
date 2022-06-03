@@ -74,11 +74,11 @@ struct NlMesh
     /*0x14*/ u8 filler14[0x20-0x14];
     /*0x20*/ s32 tplTexIdx;
     /*0x24*/ s32 type;
-    /*0x28*/ float unk28;
-    /*0x2C*/ float unk2C;
-    /*0x30*/ float unk30;
-    /*0x34*/ float unk34;
-    /*0x38*/ float unk38;
+    /*0x28*/ float ambientColorScale;
+    /*0x2C*/ float materialColorA;
+    /*0x30*/ float materialColorR;
+    /*0x34*/ float materialColorG;
+    /*0x38*/ float materialColorB;
     /*0x3C*/ u8 filler3C[0x4C-0x3C];
     /*0x4C*/ u32 dispListSize;
     /*0x50*/ u8 dispListStart[];  // display list immediately follows the Mesh struct
@@ -93,7 +93,7 @@ struct NlModel
     /*0x18*/ u8 meshStart[];  // meshes immediately follow the Model struct
 };
 
-struct NlModelHeader_chil
+struct NlModelHeader_child
 {
     u32 modelSize;
 };
@@ -109,7 +109,7 @@ struct NlModelHeader_child2
 struct NlModelHeader
 {
     /*-0x08*/ struct NlModelHeader_child2 *unk0;
-    /*-0x04*/ struct NlModelHeader_chil *unk4;
+    /*-0x04*/ struct NlModelHeader_child *unk4;
 };
 
 #define NLMODEL_HEADER(model) ((struct NlModelHeader *)((u8 *)(model) - 8))

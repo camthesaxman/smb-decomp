@@ -809,10 +809,10 @@ static void build_mesh_tev_material(struct NlMesh *pmesh)
         }
     }
 
-    color.r = mesh.unk30 * s_renderParams.materialColor.r * 255.0f;
-    color.g = mesh.unk34 * s_renderParams.materialColor.g * 255.0f;
-    color.b = mesh.unk38 * s_renderParams.materialColor.b * 255.0f;
-    color.a = mesh.unk2C * 255.0f;
+    color.r = mesh.materialColorR * s_renderParams.materialColor.r * 255.0f;
+    color.g = mesh.materialColorG * s_renderParams.materialColor.g * 255.0f;
+    color.b = mesh.materialColorB * s_renderParams.materialColor.b * 255.0f;
+    color.a = mesh.materialColorA * 255.0f;
     if (s_nlMaterialCache.materialColor.r != color.r || s_nlMaterialCache.materialColor.g != color.g ||
         s_nlMaterialCache.materialColor.b != color.b || s_nlMaterialCache.materialColor.a != color.a)
     {
@@ -820,9 +820,9 @@ static void build_mesh_tev_material(struct NlMesh *pmesh)
         s_nlMaterialCache.materialColor = color;
     }
 
-    color.r = mesh.unk28 * s_ambientColor.r * 255.0f;
-    color.g = mesh.unk28 * s_ambientColor.g * 255.0f;
-    color.b = mesh.unk28 * s_ambientColor.b * 255.0f;
+    color.r = mesh.ambientColorScale * s_ambientColor.r * 255.0f;
+    color.g = mesh.ambientColorScale * s_ambientColor.g * 255.0f;
+    color.b = mesh.ambientColorScale * s_ambientColor.b * 255.0f;
     color.a = s_nlMaterialCache.materialColor.a;
     if (s_nlMaterialCache.ambientColor.r != color.r || s_nlMaterialCache.ambientColor.g != color.g ||
         s_nlMaterialCache.ambientColor.b != color.b || s_nlMaterialCache.ambientColor.a != color.a)
@@ -1272,10 +1272,10 @@ void build_alpha_mesh_tev_material(struct NlMesh *pmesh)
         }
     }
 
-    color.r = mesh.unk30 * s_renderParams.materialColor.r * 255.0f;
-    color.g = mesh.unk34 * s_renderParams.materialColor.g * 255.0f;
-    color.b = mesh.unk38 * s_renderParams.materialColor.b * 255.0f;
-    color.a = mesh.unk2C * s_nlMaterialCache.alpha * 255.0f;
+    color.r = mesh.materialColorR * s_renderParams.materialColor.r * 255.0f;
+    color.g = mesh.materialColorG * s_renderParams.materialColor.g * 255.0f;
+    color.b = mesh.materialColorB * s_renderParams.materialColor.b * 255.0f;
+    color.a = mesh.materialColorA * s_nlMaterialCache.alpha * 255.0f;
     if (s_nlMaterialCache.materialColor.r != color.r || s_nlMaterialCache.materialColor.g != color.g ||
         s_nlMaterialCache.materialColor.b != color.b || s_nlMaterialCache.materialColor.a != color.a)
     {
@@ -1283,9 +1283,9 @@ void build_alpha_mesh_tev_material(struct NlMesh *pmesh)
         s_nlMaterialCache.materialColor = color;
     }
 
-    color.r = mesh.unk28 * s_ambientColor.r * 255.0f;
-    color.g = mesh.unk28 * s_ambientColor.g * 255.0f;
-    color.b = mesh.unk28 * s_ambientColor.b * 255.0f;
+    color.r = mesh.ambientColorScale * s_ambientColor.r * 255.0f;
+    color.g = mesh.ambientColorScale * s_ambientColor.g * 255.0f;
+    color.b = mesh.ambientColorScale * s_ambientColor.b * 255.0f;
     color.a = s_nlMaterialCache.materialColor.a;
     if (s_nlMaterialCache.ambientColor.r != color.r || s_nlMaterialCache.ambientColor.g != color.g ||
         s_nlMaterialCache.ambientColor.b != color.b || s_nlMaterialCache.ambientColor.a != color.a)
