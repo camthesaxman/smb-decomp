@@ -4426,38 +4426,6 @@ void func_800676E8(void)
     }
 }
 
-static void test(void)
-{
-    int temp_r27_3;
-    int var_r3_3;
-    struct Struct8027CC58 *temp_r3_3;
-
-    temp_r27_3 = modeCtrl.currPlayer;
-    if (modeCtrl.gameType == 0)
-        var_r3_3 = get_next_player();
-    else
-        var_r3_3 = temp_r27_3;
-    temp_r3_3 = lbl_8027CC58[var_r3_3];
-    if (temp_r27_3 == var_r3_3)
-        infoWork.unk32 = lbl_8027CC58[temp_r27_3][0].unk0[1].unk4;
-    else if (temp_r3_3->unk22 == -1)
-        infoWork.unk32 = temp_r3_3->unk0[0].unk4;
-    else
-        infoWork.unk32 = temp_r3_3->unk0[temp_r3_3->unk22 + 1].unk4;
-}
-
-static void test2(struct Struct8027CC58 *temp_r28)
-{
-    temp_r28->unk0[0].unk0 = infoWork.unk20;
-    temp_r28->unk0[0].unk4 = currStageId;
-    temp_r28->unk0[1].unk0 = 0;
-    temp_r28->unk0[1].unk4 = -1;
-    temp_r28->unk0[2].unk0 = 0;
-    temp_r28->unk0[2].unk4 = -1;
-    temp_r28->unk0[3].unk0 = 0;
-    temp_r28->unk0[3].unk4 = -1;
-}
-
 static void inline1(void)
 {
     int temp_r27_3;
@@ -4478,57 +4446,18 @@ static void inline1(void)
         infoWork.unk32 = temp_r3_3->unk0[temp_r3_3->unk22 + 1].unk4;
 }
 
-// https://decomp.me/scratch/gVFFx
-#ifdef NONMATCHING
-void func_80067808(void)
+static inline void inline3(struct Struct8027CC58 *temp_r28)
 {
-    int temp_r27_2;
-    struct Struct8027CC58 *temp_r28;
-    struct Struct802F1F98 *var_r3_2;
-    int var_r5;
-    struct Struct8027CC58_sub *var_r6;
-    int var_r4;
-    int var_r7;
     struct Struct802F1F98 *var_r8;
-    int var_r3;
-    struct Struct8027CC58 *var_r25;
-    u8 unused[0x18];
+    int i;
+    struct Struct8027CC58_sub *var_r6;
+    int var_r5;
+    int var_r4;
+    struct Struct802F1F98 *var_r3_2;
 
-    temp_r27_2 = modeCtrl.currPlayer;
-    if (modeCtrl.gameType == 0)
-        get_next_player();  // return value not used
-
-    if (infoWork.unk20 == lbl_8027CC58[temp_r27_2][0].unk0[0].unk0)
-    {
-        inline1();
-        return;
-    }
-
-    #define var_r26 var_r7
-    var_r26 = 1;
-    var_r25 = &lbl_8027CC58[temp_r27_2][1];
-    for (; var_r26 >= 0; var_r26--, var_r25--)
-    {
-        if (var_r25->unk0[0].unk0 != 0)
-        {
-            memcpy(var_r25 + 1, var_r25, 0x24U);
-        }
-    }
-    #undef var_r26
-
-    temp_r28 = lbl_8027CC58[temp_r27_2];
     var_r6 = temp_r28->unk0;
-    temp_r28->unk0[0].unk0 = infoWork.unk20;
-    temp_r28->unk0[0].unk4 = currStageId;
-    temp_r28->unk0[1].unk0 = 0;
-    temp_r28->unk0[1].unk4 = -1;
-    temp_r28->unk0[2].unk0 = 0;
-    temp_r28->unk0[2].unk4 = -1;
-    temp_r28->unk0[3].unk0 = 0;
-    temp_r28->unk0[3].unk4 = -1;
-
     var_r8 = lbl_802F1F98;
-    for (var_r7 = 0; var_r7 < 3 && var_r8->unk0 != 3; var_r8++)
+    for (i = 0; i < 3 && var_r8->unk0 != 3; var_r8++)
     {
         if (var_r8->unk0 == 2 && var_r8->unk1 == 0)
             break;
@@ -4538,7 +4467,8 @@ void func_80067808(void)
             {
             case 0:
             default:
-                var_r6[1].unk0 = infoWork.unk20 + var_r8->unk4;
+
+                var_r6[1].unk0 = (s32) (infoWork.unk20 + var_r8->unk4);
                 var_r5 = var_r8->unk4;
                 var_r3_2 = lbl_802F1F98;
                 var_r4 = -1;
@@ -4561,21 +4491,54 @@ void func_80067808(void)
                 break;
             }
             var_r6++;
-            var_r7++;
+            i++;
         }
     }
-    temp_r28->unk20 = var_r7;
+    temp_r28->unk20 = i;
     temp_r28->unk22 = -1;
+
+}
+
+void func_80067808(void)
+{
+    int temp_r27_2;
+    struct Struct8027CC58 *temp_r28;
+    int i;
+    struct Struct8027CC58 *var_r25;
+    u8 unused[0x18];
+
+    temp_r27_2 = modeCtrl.currPlayer;
+    if (modeCtrl.gameType == 0)
+        get_next_player();  // return value not used
+
+    if (infoWork.unk20 == lbl_8027CC58[temp_r27_2][0].unk0[0].unk0)
+    {
+        inline1();
+        return;
+    }
+
+    temp_r28 = lbl_8027CC58[temp_r27_2];
+
+    for (i = 1, var_r25 = &temp_r28[1]; i >= 0; i--, var_r25--)
+    {
+        if (var_r25->unk0[0].unk0 != 0)
+            memcpy(&var_r25[1], var_r25, sizeof(var_r25[1]));
+    }
+
+
+    temp_r28->unk0[0].unk0 = infoWork.unk20;
+    temp_r28->unk0[0].unk4 = currStageId;
+    temp_r28->unk0[1].unk0 = 0;
+    temp_r28->unk0[1].unk4 = -1;
+    temp_r28->unk0[2].unk0 = 0;
+    temp_r28->unk0[2].unk4 = -1;
+    temp_r28->unk0[3].unk0 = 0;
+    temp_r28->unk0[3].unk4 = -1;
+
+    inline3(temp_r28);
+
     inline1();
 }
-#else
-asm void func_80067808(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_80067808.s"
-}
-#pragma peephole on
-#endif
 
 void func_80067AD4(void)
 {
