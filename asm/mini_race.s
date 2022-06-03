@@ -238,8 +238,8 @@ lbl_00000370:
 /* 000003D0 90010028 */ stw r0, 0x28(r1)
 /* 000003D4 4BFFFDA9 */ bl item_replace_type_funcs
 /* 000003D8 48012979 */ bl lbl_00012D50
-/* 000003DC 3C600000 */ lis r3, spritePoolInfo@ha
-/* 000003E0 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 000003DC 3C600000 */ lis r3, g_poolInfo@ha
+/* 000003E0 38630000 */ addi r3, r3, g_poolInfo@l
 /* 000003E4 88030050 */ lbz r0, 0x50(r3)
 /* 000003E8 38A30050 */ addi r5, r3, 0x50
 /* 000003EC 3C600000 */ lis r3, playerCharacterSelection@ha
@@ -314,9 +314,9 @@ lbl_0000048C:
 /* 000004FC 80060018 */ lwz r0, 0x18(r6)
 /* 00000500 90010024 */ stw r0, 0x24(r1)
 /* 00000504 4BFFFC79 */ bl item_replace_type_funcs
-/* 00000508 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00000508 3C600000 */ lis r3, g_poolInfo@ha
 /* 0000050C 881F0004 */ lbz r0, 4(r31)
-/* 00000510 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00000510 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00000514 98030050 */ stb r0, 0x50(r3)
 /* 00000518 38830050 */ addi r4, r3, 0x50
 /* 0000051C 3C600000 */ lis r3, playerCharacterSelection@ha
@@ -640,9 +640,9 @@ lbl_00000980:
 /* 00000990 2C000003 */ cmpwi r0, 3
 /* 00000994 40820060 */ bne lbl_000009F4
 lbl_00000998:
-/* 00000998 3C800000 */ lis r4, spritePoolInfo@ha
+/* 00000998 3C800000 */ lis r4, g_poolInfo@ha
 /* 0000099C 833E0000 */ lwz r25, 0(r30)
-/* 000009A0 38040000 */ addi r0, r4, spritePoolInfo@l
+/* 000009A0 38040000 */ addi r0, r4, g_poolInfo@l
 /* 000009A4 3C600000 */ lis r3, playerCharacterSelection@ha
 /* 000009A8 7F60CA14 */ add r27, r0, r25
 /* 000009AC 5724103A */ slwi r4, r25, 2
@@ -857,8 +857,8 @@ lbl_00000C2C:
 /* 00000CC4 4BFFF4B9 */ bl event_start
 /* 00000CC8 3860000B */ li r3, 0xb
 /* 00000CCC 4BFFF4B1 */ bl event_start
-/* 00000CD0 3C600000 */ lis r3, spritePoolInfo@ha
-/* 00000CD4 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00000CD0 3C600000 */ lis r3, g_poolInfo@ha
+/* 00000CD4 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00000CD8 3C800000 */ lis r4, currentBallStructPtr@ha
 /* 00000CDC 38A40000 */ addi r5, r4, currentBallStructPtr@l
 /* 00000CE0 38C3000C */ addi r6, r3, 0xc
@@ -3279,9 +3279,9 @@ lbl_00002F94:
 /* 00002FA0 4E800020 */ blr 
 lbl_00002FA4:
 /* 00002FA4 3C800000 */ lis r4, ballInfo@ha
-/* 00002FA8 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00002FA8 3C600000 */ lis r3, g_poolInfo@ha
 /* 00002FAC 38040000 */ addi r0, r4, ballInfo@l
-/* 00002FB0 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00002FB0 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00002FB4 3C800000 */ lis r4, lbl_10000000@ha
 /* 00002FB8 7C070378 */ mr r7, r0
 /* 00002FBC 38A40000 */ addi r5, r4, lbl_10000000@l
@@ -6569,7 +6569,7 @@ lbl_00006034:
 /* 00006060 881E002E */ lbz r0, 0x2e(r30)
 /* 00006064 7C000774 */ extsb r0, r0
 /* 00006068 B0010028 */ sth r0, 0x28(r1)
-/* 0000606C 4BFFA111 */ bl u_spawn_effect_object
+/* 0000606C 4BFFA111 */ bl spawn_effect
 /* 00006070 38000005 */ li r0, 5
 /* 00006074 B01F026A */ sth r0, 0x26a(r31)
 /* 00006078 A87F026E */ lha r3, 0x26e(r31)
@@ -6832,7 +6832,7 @@ lbl_000063B0:
 /* 00006414 80010028 */ lwz r0, 0x28(r1)
 /* 00006418 90810054 */ stw r4, 0x54(r1)
 /* 0000641C 90010058 */ stw r0, 0x58(r1)
-/* 00006420 4BFF9D5D */ bl u_spawn_effect_object
+/* 00006420 4BFF9D5D */ bl spawn_effect
 /* 00006424 3860290B */ li r3, 0x290b
 /* 00006428 4BFF9D55 */ bl u_play_sound
 /* 0000642C 809F01E8 */ lwz r4, 0x1e8(r31)
@@ -10395,10 +10395,10 @@ lbl_000098A8:
 /* 000098B4 39040000 */ addi r8, r4, lbl_00013B40@l
 /* 000098B8 3CA00000 */ lis r5, ballInfo@ha
 /* 000098BC 9421FFD0 */ stwu r1, -0x30(r1)
-/* 000098C0 3C800000 */ lis r4, spritePoolInfo@ha
+/* 000098C0 3C800000 */ lis r4, g_poolInfo@ha
 /* 000098C4 38050000 */ addi r0, r5, ballInfo@l
 /* 000098C8 80E80000 */ lwz r7, 0(r8)
-/* 000098CC 38A40000 */ addi r5, r4, spritePoolInfo@l
+/* 000098CC 38A40000 */ addi r5, r4, g_poolInfo@l
 /* 000098D0 80C80004 */ lwz r6, 4(r8)
 /* 000098D4 7C040378 */ mr r4, r0
 /* 000098D8 90E10014 */ stw r7, 0x14(r1)
@@ -11540,7 +11540,7 @@ lbl_0000A9EC:
 /* 0000A9FC 3C800000 */ lis r4, ballInfo@ha
 /* 0000AA00 9421FFC0 */ stwu r1, -0x40(r1)
 /* 0000AA04 3CE00000 */ lis r7, lbl_00013BD0@ha
-/* 0000AA08 3CC00000 */ lis r6, spritePoolInfo@ha
+/* 0000AA08 3CC00000 */ lis r6, g_poolInfo@ha
 /* 0000AA0C BE61000C */ stmw r19, 0xc(r1)
 /* 0000AA10 3B630000 */ addi r27, r3, currentBallStructPtr@l
 /* 0000AA14 3C600000 */ lis r3, eventInfo@ha
@@ -11554,7 +11554,7 @@ lbl_0000A9EC:
 /* 0000AA34 3ADE01E0 */ addi r22, r30, 0x1e0
 /* 0000AA38 3BE40000 */ addi r31, r4, decodedStageLzPtr@l
 /* 0000AA3C 3A630000 */ addi r19, r3, backgroundInfo@l
-/* 0000AA40 3B860000 */ addi r28, r6, spritePoolInfo@l
+/* 0000AA40 3B860000 */ addi r28, r6, g_poolInfo@l
 /* 0000AA44 3BA50000 */ addi r29, r5, modeCtrl@l
 /* 0000AA48 3AA00000 */ li r21, 0
 /* 0000AA4C 829B0000 */ lwz r20, 0(r27)
@@ -12284,7 +12284,7 @@ lbl_0000B488:
 /* 0000B4D0 C0230000 */ lfs f1, 0(r3)
 /* 0000B4D4 C0430004 */ lfs f2, 4(r3)
 /* 0000B4D8 C0630008 */ lfs f3, 8(r3)
-/* 0000B4DC 4BFF4CA1 */ bl avdisp_set_post_multiply_color
+/* 0000B4DC 4BFF4CA1 */ bl avdisp_set_post_mult_color
 /* 0000B4E0 807F0000 */ lwz r3, 0(r31)
 /* 0000B4E4 80630008 */ lwz r3, 8(r3)
 /* 0000B4E8 806302C0 */ lwz r3, 0x2c0(r3)
@@ -12293,7 +12293,7 @@ lbl_0000B488:
 /* 0000B4F4 FC400890 */ fmr f2, f1
 /* 0000B4F8 FC600890 */ fmr f3, f1
 /* 0000B4FC FC800890 */ fmr f4, f1
-/* 0000B500 4BFF4C7D */ bl avdisp_set_post_multiply_color
+/* 0000B500 4BFF4C7D */ bl avdisp_set_post_mult_color
 /* 0000B504 48000028 */ b lbl_0000B52C
 lbl_0000B508:
 /* 0000B508 881B002E */ lbz r0, 0x2e(r27)
@@ -12412,11 +12412,11 @@ lbl_0000B67C:
 /* 0000B6A8 3B440000 */ addi r26, r4, ballInfo@l
 /* 0000B6AC 3CA00000 */ lis r5, lbl_00013BD0@ha
 /* 0000B6B0 3C600000 */ lis r3, backgroundInfo@ha
-/* 0000B6B4 3C800000 */ lis r4, spritePoolInfo@ha
+/* 0000B6B4 3C800000 */ lis r4, g_poolInfo@ha
 /* 0000B6B8 3B850000 */ addi r28, r5, lbl_00013BD0@l
 /* 0000B6BC 3B3F01E0 */ addi r25, r31, 0x1e0
 /* 0000B6C0 3AC30000 */ addi r22, r3, backgroundInfo@l
-/* 0000B6C4 3BC40000 */ addi r30, r4, spritePoolInfo@l
+/* 0000B6C4 3BC40000 */ addi r30, r4, g_poolInfo@l
 /* 0000B6C8 82FD0000 */ lwz r23, 0(r29)
 /* 0000B6CC 3B000000 */ li r24, 0
 lbl_0000B6D0:
@@ -18986,7 +18986,7 @@ lbl_00011788:
 /* 00011794 FC40F090 */ fmr f2, f30
 /* 00011798 C03B0014 */ lfs f1, 0x14(r27)
 /* 0001179C 387B0008 */ addi r3, r27, 8
-/* 000117A0 4BFEE9DD */ bl u_test_scaled_sphere_in_frustum
+/* 000117A0 4BFEE9DD */ bl test_scaled_sphere_in_frustum
 /* 000117A4 2C030000 */ cmpwi r3, 0
 /* 000117A8 418200A8 */ beq lbl_00011850
 /* 000117AC 389D0004 */ addi r4, r29, 4
@@ -19184,9 +19184,9 @@ lbl_00011A3C:
 /* 00011A6C A81D0012 */ lha r0, 0x12(r29)
 /* 00011A70 2C000000 */ cmpwi r0, 0
 /* 00011A74 418100E4 */ bgt lbl_00011B58
-/* 00011A78 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00011A78 3C600000 */ lis r3, g_poolInfo@ha
 /* 00011A7C A81D0000 */ lha r0, 0(r29)
-/* 00011A80 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00011A80 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00011A84 8063001C */ lwz r3, 0x1c(r3)
 /* 00011A88 38800003 */ li r4, 3
 /* 00011A8C 7C8301AE */ stbx r4, r3, r0
@@ -19238,9 +19238,9 @@ lbl_00011B1C:
 /* 00011B34 C03F0070 */ lfs f1, 0x70(r31)
 /* 00011B38 FC020840 */ fcmpo cr0, f2, f1
 /* 00011B3C 4080001C */ bge lbl_00011B58
-/* 00011B40 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00011B40 3C600000 */ lis r3, g_poolInfo@ha
 /* 00011B44 A81D0000 */ lha r0, 0(r29)
-/* 00011B48 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00011B48 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00011B4C 8063001C */ lwz r3, 0x1c(r3)
 /* 00011B50 38800003 */ li r4, 3
 /* 00011B54 7C8301AE */ stbx r4, r3, r0
@@ -19992,17 +19992,17 @@ lbl_00012638:
 /* 00012650 C01F0070 */ lfs f0, 0x70(r31)
 /* 00012654 FC010040 */ fcmpo cr0, f1, f0
 /* 00012658 40800038 */ bge lbl_00012690
-/* 0001265C 3C600000 */ lis r3, spritePoolInfo@ha
+/* 0001265C 3C600000 */ lis r3, g_poolInfo@ha
 /* 00012660 A81E0000 */ lha r0, 0(r30)
-/* 00012664 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00012664 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00012668 8063001C */ lwz r3, 0x1c(r3)
 /* 0001266C 38800003 */ li r4, 3
 /* 00012670 7C8301AE */ stbx r4, r3, r0
 /* 00012674 4800001C */ b lbl_00012690
 lbl_00012678:
-/* 00012678 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00012678 3C600000 */ lis r3, g_poolInfo@ha
 /* 0001267C A81E0000 */ lha r0, 0(r30)
-/* 00012680 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00012680 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00012684 8063001C */ lwz r3, 0x1c(r3)
 /* 00012688 38800003 */ li r4, 3
 /* 0001268C 7C8301AE */ stbx r4, r3, r0
@@ -20214,17 +20214,17 @@ lbl_0001296C:
 /* 00012984 C01F0070 */ lfs f0, 0x70(r31)
 /* 00012988 FC010040 */ fcmpo cr0, f1, f0
 /* 0001298C 40800038 */ bge lbl_000129C4
-/* 00012990 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00012990 3C600000 */ lis r3, g_poolInfo@ha
 /* 00012994 A81E0000 */ lha r0, 0(r30)
-/* 00012998 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00012998 38630000 */ addi r3, r3, g_poolInfo@l
 /* 0001299C 8063001C */ lwz r3, 0x1c(r3)
 /* 000129A0 38800003 */ li r4, 3
 /* 000129A4 7C8301AE */ stbx r4, r3, r0
 /* 000129A8 4800001C */ b lbl_000129C4
 lbl_000129AC:
-/* 000129AC 3C600000 */ lis r3, spritePoolInfo@ha
+/* 000129AC 3C600000 */ lis r3, g_poolInfo@ha
 /* 000129B0 A81E0000 */ lha r0, 0(r30)
-/* 000129B4 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 000129B4 38630000 */ addi r3, r3, g_poolInfo@l
 /* 000129B8 8063001C */ lwz r3, 0x1c(r3)
 /* 000129BC 38800003 */ li r4, 3
 /* 000129C0 7C8301AE */ stbx r4, r3, r0
@@ -20557,7 +20557,7 @@ lbl_00012E00:
 /* 00012EAC 8001001C */ lwz r0, 0x1c(r1)
 /* 00012EB0 908100B8 */ stw r4, 0xb8(r1)
 /* 00012EB4 900100BC */ stw r0, 0xbc(r1)
-/* 00012EB8 4BFED2C5 */ bl u_spawn_effect_object
+/* 00012EB8 4BFED2C5 */ bl spawn_effect
 /* 00012EBC 800100E4 */ lwz r0, 0xe4(r1)
 /* 00012EC0 83E100DC */ lwz r31, 0xdc(r1)
 /* 00012EC4 382100E0 */ addi r1, r1, 0xe0
@@ -20583,9 +20583,9 @@ lbl_00012ED0:
 /* 00012F10 90030030 */ stw r0, 0x30(r3)
 /* 00012F14 4E800020 */ blr 
 lbl_00012F18:
-/* 00012F18 3C800000 */ lis r4, spritePoolInfo@ha
+/* 00012F18 3C800000 */ lis r4, g_poolInfo@ha
 /* 00012F1C A8030000 */ lha r0, 0(r3)
-/* 00012F20 38640000 */ addi r3, r4, spritePoolInfo@l
+/* 00012F20 38640000 */ addi r3, r4, g_poolInfo@l
 /* 00012F24 8063004C */ lwz r3, 0x4c(r3)
 /* 00012F28 38800003 */ li r4, 3
 /* 00012F2C 7C8301AE */ stbx r4, r3, r0
@@ -20742,9 +20742,9 @@ lbl_00013124:
 /* 00013158 4BFED025 */ bl raycast_stage_down
 /* 0001315C 28030000 */ cmplwi r3, 0
 /* 00013160 40820020 */ bne lbl_00013180
-/* 00013164 3C600000 */ lis r3, spritePoolInfo@ha
+/* 00013164 3C600000 */ lis r3, g_poolInfo@ha
 /* 00013168 A81F0000 */ lha r0, 0(r31)
-/* 0001316C 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 0001316C 38630000 */ addi r3, r3, g_poolInfo@l
 /* 00013170 8063004C */ lwz r3, 0x4c(r3)
 /* 00013174 38800003 */ li r4, 3
 /* 00013178 7C8301AE */ stbx r4, r3, r0
@@ -20804,8 +20804,8 @@ lbl_00013238:
 /* 00013240 FC010040 */ fcmpo cr0, f1, f0
 /* 00013244 4C800020 */ bgelr 
 /* 00013248 D0030024 */ stfs f0, 0x24(r3)
-/* 0001324C 3C800000 */ lis r4, spritePoolInfo@ha
-/* 00013250 38840000 */ addi r4, r4, spritePoolInfo@l
+/* 0001324C 3C800000 */ lis r4, g_poolInfo@ha
+/* 00013250 38840000 */ addi r4, r4, g_poolInfo@l
 /* 00013254 8084004C */ lwz r4, 0x4c(r4)
 /* 00013258 38A00003 */ li r5, 3
 /* 0001325C A8030000 */ lha r0, 0(r3)
@@ -20838,14 +20838,14 @@ lbl_00013268:
 /* 000132C4 C07F0064 */ lfs f3, 0x64(r31)
 /* 000132C8 FC400890 */ fmr f2, f1
 /* 000132CC FC800890 */ fmr f4, f1
-/* 000132D0 4BFECEAD */ bl avdisp_set_post_multiply_color
+/* 000132D0 4BFECEAD */ bl avdisp_set_post_mult_color
 /* 000132D4 3C600000 */ lis r3, commonGma@ha
 /* 000132D8 38630000 */ addi r3, r3, commonGma@l
 /* 000132DC 80630000 */ lwz r3, 0(r3)
 /* 000132E0 80630008 */ lwz r3, 8(r3)
 /* 000132E4 806302D0 */ lwz r3, 0x2d0(r3)
 /* 000132E8 4BFECE95 */ bl avdisp_draw_model_unculled_sort_translucent
-/* 000132EC 4BFECE91 */ bl func_8000E3BC
+/* 000132EC 4BFECE91 */ bl u_reset_post_mult_color
 /* 000132F0 38600001 */ li r3, 1
 /* 000132F4 38800003 */ li r4, 3
 /* 000132F8 38A00001 */ li r5, 1
@@ -21067,14 +21067,14 @@ lbl_00013614:
 /* 0001361C C07F0064 */ lfs f3, 0x64(r31)
 /* 00013620 FC400890 */ fmr f2, f1
 /* 00013624 FC800890 */ fmr f4, f1
-/* 00013628 4BFECB55 */ bl avdisp_set_post_multiply_color
+/* 00013628 4BFECB55 */ bl avdisp_set_post_mult_color
 /* 0001362C 3C600000 */ lis r3, commonGma@ha
 /* 00013630 38630000 */ addi r3, r3, commonGma@l
 /* 00013634 80630000 */ lwz r3, 0(r3)
 /* 00013638 80630008 */ lwz r3, 8(r3)
 /* 0001363C 806302D0 */ lwz r3, 0x2d0(r3)
 /* 00013640 4BFECB3D */ bl avdisp_draw_model_unculled_sort_translucent
-/* 00013644 4BFECB39 */ bl func_8000E3BC
+/* 00013644 4BFECB39 */ bl u_reset_post_mult_color
 /* 00013648 38600001 */ li r3, 1
 /* 0001364C 38800003 */ li r4, 3
 /* 00013650 38A00001 */ li r5, 1

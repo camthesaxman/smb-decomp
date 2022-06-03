@@ -61,10 +61,10 @@ static void sel_stage_init(void)
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk40 = 0;
-    spritePoolInfo.unkC[0] = 2;
-    spritePoolInfo.unkC[1] = 0;
-    spritePoolInfo.unkC[2] = 0;
-    spritePoolInfo.unkC[3] = 0;
+    g_poolInfo.unkC[0] = 2;
+    g_poolInfo.unkC[1] = 0;
+    g_poolInfo.unkC[2] = 0;
+    g_poolInfo.unkC[3] = 0;
     modeCtrl.currPlayer = 0;
 
     func_8002FFEC();

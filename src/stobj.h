@@ -35,7 +35,7 @@ struct Stobj
     float unk48;
     float unk4C;
     float unk50;
-    /*0x54*/ struct GMAModel *model;  // sometimes also a NaomiModel
+    /*0x54*/ struct GMAModel *model;  // sometimes also a NlModel
     /*0x58*/ Vec u_some_pos;  // position within anim group?
     Vec unk64;
     /*0x70*/ s16 rotX;

@@ -459,25 +459,25 @@ static int model_find_proc_1(int arg0, struct GMAModelEntry *arg1)
     switch (arg0)
     {
     case 0:  // WAT_SUIMEN_MAT_ONLY
-        work->waterSurfaceMat = arg1->modelOffset;
+        work->waterSurfaceMat = arg1->model;
         break;
     case 1:  // WAT_SANSYO_TEX_WATER
-        work->causticTex = &arg1->modelOffset->texObjs[0];
+        work->causticTex = &arg1->model->texObjs[0];
         break;
     case 2:  // WAT_SUIMEN_TEST_LOW_CONT
-        work->waterSurfaceTestTex = &arg1->modelOffset->texObjs[0];
+        work->waterSurfaceTestTex = &arg1->model->texObjs[0];
         break;
     case 3:  // WAT_BUBBLE_
-        work->bubbleModel = arg1->modelOffset;
+        work->bubbleModel = arg1->model;
         break;
     case 4:  // WAT_LIGHTMAP
-        work->lightmapTex = &arg1->modelOffset->texObjs[0];
+        work->lightmapTex = &arg1->model->texObjs[0];
         break;
     case 5:  // WAT_LIGHTMAP_STAGE
-        work->lightmapStageTex = &arg1->modelOffset->texObjs[0];
+        work->lightmapStageTex = &arg1->model->texObjs[0];
         break;
     case 6:  // WAT_LIGHTMAP_GRAD
-        work->lightmapGradTex = &arg1->modelOffset->texObjs[0];
+        work->lightmapGradTex = &arg1->model->texObjs[0];
         break;
     }
     return 1;
@@ -486,16 +486,16 @@ static int model_find_proc_1(int arg0, struct GMAModelEntry *arg1)
 static int model_find_proc_2(int arg0, struct StageBgModel *arg1)
 {
     struct BGWaterWork *work = backgroundInfo.work;
-    struct Struct8003C550 sp10;
+    struct Effect effect;
 
     switch (arg0)
     {
     case 0:  // WAT_SUB_SUKRYU
         // submarine propeller
-        memset(&sp10, 0, sizeof(sp10));
-        sp10.unk8 = 20;
-        sp10.unk30 = (void *)arg1;
-        u_spawn_effect_object(&sp10);
+        memset(&effect, 0, sizeof(effect));
+        effect.unk8 = 20;
+        effect.unk30 = (void *)arg1;
+        spawn_effect(&effect);
         break;
     case 1:  // WAT_SUIMEN
         work->waterSurface = arg1;

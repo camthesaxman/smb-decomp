@@ -34,8 +34,8 @@ static void do_object_collision(void)
     s8 *phi_r19;
 
     ball = ballInfo;
-    phi_r19 = spritePoolInfo.unkC;
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, phi_r19++)
+    phi_r19 = g_poolInfo.unkC;
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, phi_r19++)
     {
         currentBallStructPtr = ball;
         if (*phi_r19 != 0 && *phi_r19 != 4)
@@ -46,10 +46,10 @@ static void do_object_collision(void)
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
             {
                 int j;
-                s8 *phi_r30 = spritePoolInfo.unk2C;
+                s8 *phi_r30 = g_poolInfo.unk2C;
                 struct Stobj *stobj = stobjInfo;
 
-                for (j = spritePoolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
+                for (j = g_poolInfo.unk28; j > 0; j--, stobj++, phi_r30++)
                 {
                     if (*phi_r30 && (stobj->unk8 & 2))
                     {
@@ -63,24 +63,24 @@ static void do_object_collision(void)
             }
             if (!(ball->flags & 0x100000) && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
             {
-                s8 *phi_r29_2 = spritePoolInfo.unk1C;
+                s8 *phi_r29_2 = g_poolInfo.itemStatusList;
                 int j;
-                struct Item *item = itemInfo;
+                struct Item *item = itemPool;
 
-                for (j = spritePoolInfo.unk18; j > 0; j--, item++, phi_r29_2++)
+                for (j = g_poolInfo.itemPoolUpperBound; j > 0; j--, item++, phi_r29_2++)
                 {
                     if (*phi_r29_2 != 0
                      && (item->flags & 2)
                      && item->unkC == 0
                      && (modeCtrl.gameType != GAMETYPE_MINI_TARGET
                       || currStageId != ST_151_TARGET_CIRCLES
-                      || item->attachedTo == 0
-                      || stcoli_sub34(&physBall, item->attachedTo) != 0)
+                      || item->animGroupId == 0
+                      || stcoli_sub34(&physBall, item->animGroupId) != 0)
                     )
                     {
                         u32 (*phi_r12)(Point3d *, Point3d *, Point3d *, Point3d *, float,  float);
 
-                        s8 temp_r4_2 = item->attachedTo;
+                        s8 temp_r4_2 = item->animGroupId;
                         if (physBall.animGroupId != temp_r4_2)
                             tf_physball_to_anim_group_space(&physBall, (s32) temp_r4_2);
                         if (item->flags & 8)
@@ -88,8 +88,8 @@ static void do_object_collision(void)
                         else
                             phi_r12 = func_8006A9B8;
 
-                        sp70 = item->unk20;
-                        if (phi_r12(&physBall.prevPos, &physBall.pos, &item->unk44, (void *)&sp70, physBall.radius, item->unk14) != 0U)
+                        sp70 = item->pos;
+                        if (phi_r12(&physBall.prevPos, &physBall.pos, &item->prevPos, (void *)&sp70, physBall.radius, item->unk14) != 0U)
                         {
                             item->unkC = 8;
                             item->unk58(item, &physBall);
@@ -100,9 +100,9 @@ static void do_object_collision(void)
                                 sp8.y -= physBall.pos.y;
                                 sp8.z -= physBall.pos.z;
                                 mathutil_vec_normalize_len(&sp8);
-                                func_8006AD3C(&sp8, &physBall.vel, &item->unk2C, 1.0f, item->unk18);
+                                func_8006AD3C(&sp8, &physBall.vel, &item->vel, 1.0f, item->unk18);
                             }
-                            item->unk20 = sp70;
+                            item->pos = sp70;
                         }
                     }
                 }

@@ -13,9 +13,9 @@
 void bg_old_storm_init(void)
 {
     Point3d spB4;
-    struct Struct8003C550 sp8;
+    struct Effect sp8;
 
-    backgroundInfo.unk80 = naomiBackgroundObj->modelPtrs[7];
+    backgroundInfo.unk80 = g_bgNlObj->models[7];
     backgroundInfo.unk84 = 1.0f;
     spB4.x = 0.0f;
     spB4.y = 0.0f;
@@ -31,36 +31,36 @@ void bg_old_storm_init(void)
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 = -((rand() & 0x3F) + 16);
-    sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[1];
-    u_spawn_effect_object(&sp8);
+    sp8.unk30 = (void *)g_bgNlObj->models[1];
+    spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[2];
-    u_spawn_effect_object(&sp8);
+    sp8.unk30 = (void *)g_bgNlObj->models[2];
+    spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[5];
-    u_spawn_effect_object(&sp8);
+    sp8.unk30 = (void *)g_bgNlObj->models[5];
+    spawn_effect(&sp8);
 
     sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
     sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
     sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)naomiBackgroundObj->modelPtrs[6];
-    u_spawn_effect_object(&sp8);
+    sp8.unk30 = (void *)g_bgNlObj->models[6];
+    spawn_effect(&sp8);
 }
 
 void bg_old_storm_main(void)
 {
     Point3d spDC;
     Point3d spD0;
-    struct Struct8003C550 sp24;
+    struct Effect sp24;
     struct RaycastHit sp8;
     struct Ball *temp_r30 = currentBallStructPtr;
 
@@ -97,7 +97,7 @@ void bg_old_storm_main(void)
 	sp24.unk18 = 0.2f;
 	sp24.unk1C = 0.35f;
 	sp24.unk20 = 0.4f;
-	u_spawn_effect_object(&sp24);
+	spawn_effect(&sp24);
 	mathutil_mtxA_from_mtxB();
 	spD0.x = 0.0f;
 	spD0.y = 0.0f;
@@ -125,8 +125,8 @@ void bg_old_storm_main(void)
 		sp24.unk70.z = 0.0f;
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
-		sp24.unk30 = (void *)naomiBackgroundObj->modelPtrs[8];
-		u_spawn_effect_object(&sp24);
+		sp24.unk30 = (void *)g_bgNlObj->models[8];
+		spawn_effect(&sp24);
 	}
 	else if ((u32)raycast_stage_down(&spD0, &sp8, &spDC) != 0)
 	{
@@ -143,8 +143,8 @@ void bg_old_storm_main(void)
 		sp24.unk70.z = sp8.normal.z;
 		mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
 		sp24.unk50 = rand() & 0x7FFF;
-		sp24.unk30 = (void *)naomiBackgroundObj->modelPtrs[8];
-		u_spawn_effect_object(&sp24);
+		sp24.unk30 = (void *)g_bgNlObj->models[8];
+		spawn_effect(&sp24);
 	}
 
 }
@@ -154,8 +154,8 @@ void bg_old_storm_finish(void) {}
 void bg_old_storm_draw(void)
 {
 	mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
-	u_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[0]);
-	u_call_draw_naomi_model_and_do_other_stuff(naomiBackgroundObj->modelPtrs[3]);
+	nl2ngc_draw_model_sort_translucent_alt2(g_bgNlObj->models[0]);
+	nl2ngc_draw_model_sort_translucent_alt2(g_bgNlObj->models[3]);
 }
 
 void bg_old_storm_interact(int arg0) {}

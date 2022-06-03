@@ -152,38 +152,38 @@ void func_8008D29C(int arg0)
     lbl_802F20C0 = temp_r31;
 }
 
-void func_8008D330(struct NaomiModel *arg0, u32 arg1, u32 arg2)
+void func_8008D330(struct NlModel *arg0, u32 arg1, u32 arg2)
 {
-	struct NaomiMesh *r6 = (struct NaomiMesh *)arg0->meshStart;
+	struct NlMesh *r6 = (struct NlMesh *)arg0->meshStart;
 
-	while ((u32)r6->unk0 != 0)
+	while ((u32)r6->flags != 0)
 	{
-		r6->unk0 &= arg1;
-		r6->unk0 |= arg2;
-		r6 = (struct NaomiMesh *)(r6->dispListStart + r6->dispListSize);
+		r6->flags &= arg1;
+		r6->flags |= arg2;
+		r6 = (struct NlMesh *)(r6->dispListStart + r6->dispListSize);
 	}
 }
 
-void func_8008D36C(struct NaomiModel *arg0, u32 arg1, u32 arg2)
+void func_8008D36C(struct NlModel *arg0, u32 arg1, u32 arg2)
 {
-	struct NaomiMesh *r6 = (struct NaomiMesh *)arg0->meshStart;
+	struct NlMesh *r6 = (struct NlMesh *)arg0->meshStart;
 
-	while ((u32)r6->unk0 != 0)
+	while ((u32)r6->flags != 0)
 	{
 		r6->unk4 &= arg1;
 		r6->unk4 |= arg2;
-		r6 = (struct NaomiMesh *)(r6->dispListStart + r6->dispListSize);
+		r6 = (struct NlMesh *)(r6->dispListStart + r6->dispListSize);
 	}
 }
 
-void func_8008D3A8(struct NaomiModel *arg0, u32 arg1, u32 arg2)
+void func_8008D3A8(struct NlModel *arg0, u32 arg1, u32 arg2)
 {
-	struct NaomiMesh *r6 = (struct NaomiMesh *)arg0->meshStart;
+	struct NlMesh *r6 = (struct NlMesh *)arg0->meshStart;
 
-	while ((u32)r6->unk0 != 0)
+	while ((u32)r6->flags != 0)
 	{
-		r6->unk8 &= arg1;
-		r6->unk8 |= arg2;
-		r6 = (struct NaomiMesh *)(r6->dispListStart + r6->dispListSize);
+		r6->texFlags &= arg1;
+		r6->texFlags |= arg2;
+		r6 = (struct NlMesh *)(r6->dispListStart + r6->dispListSize);
 	}
 }

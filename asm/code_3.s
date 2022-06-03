@@ -1104,7 +1104,7 @@ lbl_80086B6C:
 /* 80086B74 00082A94  40 82 FF 78 */	bne lbl_80086AEC
 lbl_80086B78:
 /* 80086B78 00082A98  7F C3 F3 78 */	mr r3, r30
-/* 80086B7C 00082A9C  4B FA A6 95 */	bl nl2ngc_draw_model_sorted
+/* 80086B7C 00082A9C  4B FA A6 95 */	bl nl2ngc_draw_model_sort_translucent
 /* 80086B80 00082AA0  4B F8 0C B5 */	bl mathutil_mtxA_pop
 /* 80086B84 00082AA4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 80086B88 00082AA8  38 80 00 00 */	li r4, 0
@@ -1348,7 +1348,7 @@ lbl_80086ED4:
 /* 80086F08 00082E28  C0 22 AC C8 */	lfs f1, lbl_802F54C8@sda21(r2)
 /* 80086F0C 00082E2C  4B F8 0E BD */	bl mathutil_mtxA_scale_s
 /* 80086F10 00082E30  7F 43 D3 78 */	mr r3, r26
-/* 80086F14 00082E34  4B FA A2 FD */	bl nl2ngc_draw_model_sorted
+/* 80086F14 00082E34  4B FA A2 FD */	bl nl2ngc_draw_model_sort_translucent
 lbl_80086F18:
 /* 80086F18 00082E38  BB 41 00 20 */	lmw r26, 0x20(r1)
 /* 80086F1C 00082E3C  80 01 00 3C */	lwz r0, 0x3c(r1)

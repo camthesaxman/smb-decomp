@@ -128,27 +128,27 @@ struct StageBgAnim
     struct Keyframe *translucencyKeyframes;
 };
 
-struct UnkStruct8005562C_child2_child
+struct NightWindowAnim
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s8 unk12;
+    Point3d pos;
+    s16 rotX;
+    s16 rotY;
+    s16 rotZ;
+    s8 id; // Which list of flipbook models to animate
 };
 
-struct UnkStruct8005562C_child2_child2
+struct StormFireAnim
 {
-    Vec unk0;
-    s8 unkC;
+    Point3d pos;
+    s8 frameOffset;
 };
 
-struct UnkStruct8005562C_child2
+struct StageFlipbookAnims
 {
-    s32 unk0;
-    struct UnkStruct8005562C_child2_child *unk4;
-    s32 unk8;
-    struct UnkStruct8005562C_child2_child2 *unkC;
+    s32 nightWindowAnimCount;
+    struct NightWindowAnim *nightWindowAnims;
+    s32 stormFireAnimCount;
+    struct StormFireAnim *stormFireAnims;
 };
 
 struct StageBgModel;
@@ -331,21 +331,21 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct SpritePoolInfo
+struct PoolInfo
 {
              u8 filler0[8];
              s32 unk8;
              s8 *unkC;
              u8 unk10[0x18-0x10];
-             s32 unk18;
-             s8 *unk1C;
+             s32 itemPoolUpperBound; // Max index (+1) of items in item pool
+             s8 *itemStatusList;
              u8 unk20[8];
              s32 unk28;
              s8 *unk2C;
              u8 unk30[4];
              u32 unk34;
              s32 unk38;
-    /*0x3C*/ s8 *statusList;
+    /*0x3C*/ s8 *spriteStatusList;
 };
 
 struct Struct80176434
@@ -389,8 +389,8 @@ typedef u32 (*Func802F20F0)();
 typedef void (*CameraCallback)(struct Camera *, struct Ball *);
 typedef void (*BallCallback)(struct Ball *);
 
-struct NaomiModel;
-struct NaomiObj;
+struct NlModel;
+struct NlObj;
 
 struct Struct80092B98
 {
@@ -514,7 +514,7 @@ struct Struct80206DEC
 
 struct Stage;
 
-struct Struct8003C550
+struct Effect
 {
     u8 filler0[8];
     s16 unk8;
@@ -685,18 +685,18 @@ struct NaomiSpriteParams
     u8 filler40[0x50-0x40];
 };
 
-struct NaomiVtxWithNormal;
-struct NaomiVtxWithColor;
+struct NlVtxTypeB;
+struct NlVtxTypeA;
 
 // Part of the stage whose vertices are manipulated by functions
 struct DynamicStagePart
 {
     void *modelName;
-    struct NaomiModel *origModel;  // original model
-    void (*posNrmTexFunc)(struct NaomiVtxWithNormal *);
-    void (*posColorTexFunc)(struct NaomiVtxWithColor *);
+    struct NlModel *origModel;  // original model
+    void (*posNrmTexFunc)(struct NlVtxTypeB *);
+    void (*posColorTexFunc)(struct NlVtxTypeA *);
     u32 (*raycastDownFunc)(Point3d *rayOrigin, Point3d *outHitPos, Vec *outHitNormal);
-    struct NaomiModel *tempModel;  // modified copy of the model
+    struct NlModel *tempModel;  // modified copy of the model
 };
 
 struct Struct801EEC80
@@ -776,7 +776,7 @@ struct Sphere
 };
 
 struct Preview;
-struct NaomiDispList;
+struct NlDispList;
 
 struct Struct8009544C
 {

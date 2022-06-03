@@ -61,7 +61,7 @@ struct BackgroundInfo  // size = 0xA8
     Mtx unk48;
     int (*unk78)();
     int (*unk7C)();
-    struct NaomiModel *unk80;
+    struct NlModel *unk80;
     float unk84;
     u8 filler88[4];
     BallEnvFunc unk8C;
@@ -150,24 +150,24 @@ struct BGStormWork
 
 struct BGBonusStarpoint
 {
-    Vec unk0;
+    Vec u_pos;
     s16 unkC;
     s16 unkE;
-    float unk10;
-    float unk14;
-    float unk18;
+    float red;
+    float green;
+    float blue;
 };
 
 struct BGBonusWork
 {
     s32 unk0;
-    struct StageBgModel *unk4;
+    struct StageBgModel *mainModel;
     struct GMAModel *shotstarModel;
     struct GMAModel *starlightModel;
-    s32 starpointsCount;
+    s32 starpointCount;
     struct BGBonusStarpoint starpoints[64];
-    GXTexObj *lightmapTex;
-    GXTexObj *lightmapATex;
+    GXTexObj *lightmapTexObjs;
+    GXTexObj *lightmapATexObjs;
     Mtx unk71C;
     Mtx unk74C;
     Mtx unk77C;
@@ -252,7 +252,7 @@ void bg_e3_draw(void);
 void bg_e3_interact(int);
 void animate_bg_models(struct StageBgModel *bgModels, int bgModelCount, float timeSeconds);
 void draw_bg_models();
-void func_80055C6C(Mtx a, struct UnkStruct8005562C_child2 *b);
+void draw_bg_flipbooks(Mtx a, struct StageFlipbookAnims *b);
 void bg_night_init(void);
 void bg_night_main(void);
 void bg_night_finish(void);

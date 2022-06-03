@@ -201,16 +201,16 @@ static int lbl_80065B8C(int arg0, struct GMAModelEntry *arg1)
     switch (arg0)
     {
     case 0:
-        work->unk10 = arg1->modelOffset->texObjs;
+        work->unk10 = arg1->model->texObjs;
         break;
     case 1:
-        work->unk8 = arg1->modelOffset;
+        work->unk8 = arg1->model;
         break;
     case 2:
-        work->unkC = arg1->modelOffset->texObjs;
+        work->unkC = arg1->model->texObjs;
         break;
     case 3:
-        work->unk4 = arg1->modelOffset;
+        work->unk4 = arg1->model;
         break;
     }
     return 1;
@@ -218,7 +218,7 @@ static int lbl_80065B8C(int arg0, struct GMAModelEntry *arg1)
 
 static int lbl_80065BFC(int arg0, struct StageBgModel *arg1)
 {
-    struct Struct8003C550 sp10;
+    struct Effect sp10;
 
     switch (arg0)
     {
@@ -226,7 +226,7 @@ static int lbl_80065BFC(int arg0, struct StageBgModel *arg1)
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 48;
         sp10.unk30 = (void *)arg1;
-        u_spawn_effect_object(&sp10);
+        spawn_effect(&sp10);
         break;
     }
     return 1;

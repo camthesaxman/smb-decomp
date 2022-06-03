@@ -141,7 +141,7 @@ struct GMAShape
 
 struct GMAModelEntry
 {
-    struct GMAModel *modelOffset;
+    struct GMAModel *model;
     char *name;
 };
 

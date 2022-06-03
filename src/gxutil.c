@@ -141,26 +141,26 @@ void u_init_bg_fog_params(void)
 void func_8009AB5C(void)
 {
     avdisp_enable_fog(fogInfo.enabled);
-    func_80033B50(fogInfo.enabled);
+    nl2ngc_enable_fog(fogInfo.enabled);
     if (fogInfo.enabled != 0)
     {
         avdisp_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
         avdisp_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
-        func_80033B58(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
-        u_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
+        nl2ngc_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        nl2ngc_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
     }
 }
 
 void func_8009AC0C(s8 a)
 {
     avdisp_enable_fog(a);
-    func_80033B50(a);
+    nl2ngc_enable_fog(a);
 }
 
 void func_8009AC44(void)
 {
     avdisp_enable_fog(fogInfo.enabled);
-    func_80033B50(fogInfo.enabled);
+    nl2ngc_enable_fog(fogInfo.enabled);
 }
 
 void func_8009AC8C(void)
@@ -194,12 +194,12 @@ void gxutil_set_line_width(int width)
     lineInfo.lineWidth = width;
 }
 
-void u_gxutil_set_some_line_params(int a, int b, int c, int d)
+void gxutil_set_line_blend_params(GXBlendMode mode, GXBlendFactor srcFactor, GXBlendFactor dstFactor, GXLogicOp logicOp)
 {
-    lineInfo.blendMode = a;
-    lineInfo.blendSrcFactor = b;
-    lineInfo.blendDstFactor = c;
-    lineInfo.blendLogicOp = d;
+    lineInfo.blendMode = mode;
+    lineInfo.blendSrcFactor = srcFactor;
+    lineInfo.blendDstFactor = dstFactor;
+    lineInfo.blendLogicOp = logicOp;
 }
 
 void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)

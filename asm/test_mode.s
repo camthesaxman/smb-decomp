@@ -8131,11 +8131,11 @@ lbl_00007454:
 /* 00007468 807D0000 */ lwz r3, 0(r29)
 /* 0000746C 38800000 */ li r4, 0
 /* 00007470 4BFF8CED */ bl GXLoadNrmMtxImm
-/* 00007474 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00007478 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 00007474 3C600000 */ lis r3, g_commonNlObj@ha
+/* 00007478 38630000 */ addi r3, r3, g_commonNlObj@l
 /* 0000747C 80630000 */ lwz r3, 0(r3)
 /* 00007480 806300A8 */ lwz r3, 0xa8(r3)
-/* 00007484 4BFF8CD9 */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 00007484 4BFF8CD9 */ bl nl2ngc_draw_model_sort_translucent_alt2
 lbl_00007488:
 /* 00007488 4BFF8CD5 */ bl mathutil_mtxA_from_mtxB
 /* 0000748C C03E0060 */ lfs f1, 0x60(r30)
@@ -9087,8 +9087,8 @@ lbl_000081BC:
 /* 00008248 4BFF7F15 */ bl event_start
 /* 0000824C 3860000C */ li r3, 0xc
 /* 00008250 4BFF7F0D */ bl camera_set_state
-/* 00008254 3C600000 */ lis r3, spritePoolInfo@ha
-/* 00008258 38630000 */ addi r3, r3, spritePoolInfo@l
+/* 00008254 3C600000 */ lis r3, g_poolInfo@ha
+/* 00008258 38630000 */ addi r3, r3, g_poolInfo@l
 /* 0000825C 3883000C */ addi r4, r3, 0xc
 /* 00008260 8063000C */ lwz r3, 0xc(r3)
 /* 00008264 38000002 */ li r0, 2
@@ -9612,11 +9612,11 @@ lbl_000089D4:
 /* 000089F0 80030000 */ lwz r0, unpausedFrameCounter@l(r3)
 /* 000089F4 5403482C */ slwi r3, r0, 9
 /* 000089F8 4BFF7765 */ bl mathutil_mtxA_rotate_y
-/* 000089FC 3C600000 */ lis r3, naomiCommonObj@ha
-/* 00008A00 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 000089FC 3C600000 */ lis r3, g_commonNlObj@ha
+/* 00008A00 38630000 */ addi r3, r3, g_commonNlObj@l
 /* 00008A04 80630000 */ lwz r3, 0(r3)
 /* 00008A08 8063002C */ lwz r3, 0x2c(r3)
-/* 00008A0C 4BFF7751 */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 00008A0C 4BFF7751 */ bl nl2ngc_draw_model_sort_translucent_alt2
 lbl_00008A10:
 /* 00008A10 4BFF774D */ bl func_80094A34
 /* 00008A14 3C600000 */ lis r3, eventInfo@ha
@@ -10214,7 +10214,7 @@ lbl_00009254:
 /* 000092A8 5400103A */ slwi r0, r0, 2
 /* 000092AC 7C630214 */ add r3, r3, r0
 /* 000092B0 80630004 */ lwz r3, 4(r3)
-/* 000092B4 4BFF6EA9 */ bl nl2ngc_draw_model_sorted
+/* 000092B4 4BFF6EA9 */ bl nl2ngc_draw_model_sort_translucent
 /* 000092B8 4BFF6EA5 */ bl draw_test_camera_target
 /* 000092BC 48000068 */ b lbl_00009324
 lbl_000092C0:
@@ -10229,11 +10229,11 @@ lbl_000092D0:
 lbl_000092D8:
 /* 000092D8 48006AB5 */ bl lbl_0000FD8C
 /* 000092DC 4BFF6E81 */ bl mathutil_mtxA_from_mtxB
-/* 000092E0 3C600000 */ lis r3, naomiCommonObj@ha
-/* 000092E4 38630000 */ addi r3, r3, naomiCommonObj@l
+/* 000092E0 3C600000 */ lis r3, g_commonNlObj@ha
+/* 000092E4 38630000 */ addi r3, r3, g_commonNlObj@l
 /* 000092E8 80630000 */ lwz r3, 0(r3)
 /* 000092EC 8063000C */ lwz r3, 0xc(r3)
-/* 000092F0 4BFF6E6D */ bl u_call_draw_naomi_model_and_do_other_stuff
+/* 000092F0 4BFF6E6D */ bl nl2ngc_draw_model_sort_translucent_alt2
 /* 000092F4 48000030 */ b lbl_00009324
 lbl_000092F8:
 /* 000092F8 4BFFC08D */ bl lbl_00005384

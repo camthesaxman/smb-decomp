@@ -578,7 +578,7 @@ void light_main(void)
 
     s_u_lightPerfTimer = 0;
     func_8000E428(s_bgLightInfo.unk14, s_bgLightInfo.unk18, s_bgLightInfo.unk1C);
-    func_8000E3BC();
+    u_reset_post_mult_color();
     s_lightPoolSize = 0;
 
     light = s_u_lightPool;
@@ -792,7 +792,7 @@ void u_draw_naomi_ball(void)
 {
     u8 dummy[24];
     struct Light *r31;
-    struct NaomiMesh *mesh;
+    struct NlMesh *mesh;
 
     if (lbl_802F1C8C == 0)
         return;
@@ -803,18 +803,18 @@ void u_draw_naomi_ball(void)
     case LIGHT_TYPE_POINT_POW:
     case LIGHT_TYPE_POINT_DARKPOW:
     case LIGHT_TYPE_POINT_DARK:
-        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B)->meshStart;
-        mesh->unk30 = 1.0f;
-        mesh->unk34 = 0.0f;
-        mesh->unk38 = 0.0f;
+        mesh = (struct NlMesh *)NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B)->meshStart;
+        mesh->materialColorR = 1.0f;
+        mesh->materialColorG = 0.0f;
+        mesh->materialColorB = 0.0f;
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        u_nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
+        nl2ngc_set_scale(r31->refDist * 2.0);
+        nl2ngc_draw_model_alpha_sort_all(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
-        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B));
         break;
     case LIGHT_TYPE_INFINITE:
         mathutil_mtxA_from_mtxB();
@@ -822,26 +822,26 @@ void u_draw_naomi_ball(void)
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
         mathutil_mtxA_rotate_x(0x8000);
-        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         break;
     case LIGHT_TYPE_SPOT:
     case LIGHT_TYPE_SPOT_POW:
     case LIGHT_TYPE_SPOT_DARKPOW:
     case LIGHT_TYPE_SPOT_DARK:
-        mesh = (struct NaomiMesh *)NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B)->meshStart;
-        mesh->unk30 = 1.0f;
-        mesh->unk34 = 0.0f;
-        mesh->unk38 = 0.0f;
+        mesh = (struct NlMesh *)NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B)->meshStart;
+        mesh->materialColorR = 1.0f;
+        mesh->materialColorG = 0.0f;
+        mesh->materialColorB = 0.0f;
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_scale_s(r31->refDist * 2.0);
-        u_nl2ngc_set_scale(r31->refDist * 2.0);
-        nl2ngc_draw_model_alpha_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_B), 0.5f);
+        nl2ngc_set_scale(r31->refDist * 2.0);
+        nl2ngc_draw_model_alpha_sort_all(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_B), 0.5f);
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_translate(&r31->pos);
         mathutil_mtxA_rotate_y(r31->rotY);
         mathutil_mtxA_rotate_x(r31->rotX);
-        nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_spotl1));
+        nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_spotl1));
         break;
     }
 }

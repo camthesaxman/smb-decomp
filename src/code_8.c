@@ -7,8 +7,8 @@
 
 static float lbl_802F1F60;
 
-static void lbl_800481A0(struct NaomiVtxWithNormal *);
-static void lbl_800482A4(struct NaomiVtxWithColor *);
+static void lbl_800481A0(struct NlVtxTypeB *);
+static void lbl_800482A4(struct NlVtxTypeA *);
 
 struct Struct80048084
 {
@@ -18,46 +18,46 @@ struct Struct80048084
 };
 
 #ifdef NONMATCHING
-void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
-    struct NaomiMesh *mesh;
-    struct NaomiMesh *next;
+    struct NlMesh *mesh;
+    struct NlMesh *next;
     u32 r30;
     GXTexObj *r29;
 
-    if (arg0->unk0 == -1)
+    if (arg0->u_valid == -1)
         return;
     arg0->flags &= 0xFFFFFFF9;
     memcpy(&lbl_802F1F60, arg2, 4);
     r30 = arg1->unk20;
     r29 = arg1->unk24;
-    mesh = (struct NaomiMesh *)arg0->meshStart;
-    while (mesh->unk0 != 0)
+    mesh = (struct NlMesh *)arg0->meshStart;
+    while (mesh->flags != 0)
     {
-        next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+        next = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
         {
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800482A4);
+            u_apply_func_to_nl_disp_list_type_a((struct NlDispList *)mesh->dispListStart, next, lbl_800482A4);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_800481A0);
+            u_apply_func_to_nl_disp_list_type_b((struct NlDispList *)mesh->dispListStart, next, lbl_800481A0);
             break;
         }
-        mesh->unk0 &= 0xF8FFFFFE;
-        mesh->unk0 |= 0x02000008;
+        mesh->flags &= 0xF8FFFFFE;
+        mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
-        mesh->unk8 = r30;
+        mesh->texFlags = r30;
         mesh->texObj = r29;
         mesh->type = -3;
         mesh = next;
     }
 }
 #else
-asm void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+asm void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
     nofralloc
 #include "../asm/nonmatchings/func_80048084.s"
@@ -65,13 +65,13 @@ asm void func_80048084(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_800481A0(struct NaomiVtxWithNormal *arg0)
+static void lbl_800481A0(struct NlVtxTypeB *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NaomiVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxTypeA *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -98,7 +98,7 @@ static void lbl_800481A0(struct NaomiVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_800482A4(struct NaomiVtxWithColor *arg0)
+static void lbl_800482A4(struct NlVtxTypeA *arg0)
 {
 	u8 dummy[8];
 	Vec spC;
@@ -130,50 +130,50 @@ static void lbl_800482A4(struct NaomiVtxWithColor *arg0)
     arg0->unk14 = 0;
 }
 
-static void lbl_8004853C(struct NaomiVtxWithNormal *);
-static void lbl_8004863C(struct NaomiVtxWithColor *);
+static void lbl_8004853C(struct NlVtxTypeB *);
+static void lbl_8004863C(struct NlVtxTypeA *);
 
 #ifdef NONMATCHING
-void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
-    struct NaomiMesh *mesh;
-    struct NaomiMesh *next;
+    struct NlMesh *mesh;
+    struct NlMesh *next;
     u32 r30;
     GXTexObj *r29;
 
-    if (arg0->unk0 == -1)
+    if (arg0->u_valid == -1)
         return;
     arg0->flags &= 0xFFFFFFF9;
     memcpy(&lbl_802F1F60, arg2, 4);
     r30 = arg1->unk20;
     r29 = arg1->unk24;
-    mesh = (struct NaomiMesh *)arg0->meshStart;
-    while (mesh->unk0 != 0)
+    mesh = (struct NlMesh *)arg0->meshStart;
+    while (mesh->flags != 0)
     {
-        next = (struct NaomiMesh *)(mesh->dispListStart + mesh->dispListSize);
+        next = (struct NlMesh *)(mesh->dispListStart + mesh->dispListSize);
         switch (mesh->type)
         {
         case -2:
             break;
         case -3:
-            u_apply_func_to_naomi_dl_pos_color_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004863C);
+            u_apply_func_to_nl_disp_list_type_a((struct NlDispList *)mesh->dispListStart, next, lbl_8004863C);
             break;
         default:
-            u_apply_func_to_naomi_dl_pos_nrm_tex((struct NaomiDispList *)mesh->dispListStart, next, lbl_8004853C);
+            u_apply_func_to_nl_disp_list_type_b((struct NlDispList *)mesh->dispListStart, next, lbl_8004853C);
             break;
         }
-        mesh->unk0 &= 0xF8FFFFFE;
-        mesh->unk0 |= 0x02000008;
+        mesh->flags &= 0xF8FFFFFE;
+        mesh->flags |= 0x02000008;
         mesh->unk4 &= 0xFFBFFFFF;
         mesh->unk4 |= 0x02000000;
-        mesh->unk8 = r30;
+        mesh->texFlags = r30;
         mesh->texObj = r29;
         mesh->type = -3;
         mesh = next;
     }
 }
 #else
-asm void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, float *arg2)
+asm void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
 	nofralloc
 #include "../asm/nonmatchings/func_80048420.s"
@@ -181,13 +181,13 @@ asm void func_80048420(struct NaomiModel *arg0, struct Struct80048084 *arg1, flo
 #pragma peephole on
 #endif
 
-static void lbl_8004853C(struct NaomiVtxWithNormal *arg0)
+static void lbl_8004853C(struct NlVtxTypeB *arg0)
 {
     u8 dummy[8];
     Vec spC;
     u32 color;
     s32 phi_r4;
-    struct NaomiVtxWithColor *arg0_ = (void *)arg0;
+    struct NlVtxTypeA *arg0_ = (void *)arg0;
 
     spC.x = arg0->nx;
     spC.y = arg0->ny;
@@ -214,7 +214,7 @@ static void lbl_8004853C(struct NaomiVtxWithNormal *arg0)
     arg0_->unk14 = 0;
 }
 
-static void lbl_8004863C(struct NaomiVtxWithColor *arg0)
+static void lbl_8004863C(struct NlVtxTypeA *arg0)
 {
 	u8 dummy[8];
 	Vec spC;

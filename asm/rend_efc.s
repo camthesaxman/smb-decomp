@@ -4022,7 +4022,7 @@ lbl_80098D54:
 /* 80098D70 00094C90  38 80 00 00 */	li r4, 0
 /* 80098D74 00094C94  48 04 B8 0D */	bl GXLoadPosMtxImm
 /* 80098D78 00094C98  C0 22 B0 DC */	lfs f1, lbl_802F58DC@sda21(r2)
-/* 80098D7C 00094C9C  4B F9 7E 2D */	bl u_nl2ngc_set_scale
+/* 80098D7C 00094C9C  4B F9 7E 2D */	bl nl2ngc_set_scale
 /* 80098D80 00094CA0  3C 60 80 0A */	lis r3, lbl_80098264@ha
 /* 80098D84 00094CA4  83 AD 9D 64 */	lwz r29, dynamicStageParts@sda21(r13)
 /* 80098D88 00094CA8  3B C3 82 64 */	addi r30, r3, lbl_80098264@l
@@ -4030,7 +4030,7 @@ lbl_80098D54:
 lbl_80098D90:
 /* 80098D90 00094CB0  80 7D 00 14 */	lwz r3, 0x14(r29)
 /* 80098D94 00094CB4  7F C4 F3 78 */	mr r4, r30
-/* 80098D98 00094CB8  4B F9 B2 B5 */	bl u_draw_naomi_model_with_mesh_func
+/* 80098D98 00094CB8  4B F9 B2 B5 */	bl u_nl2ngc_draw_model_with_mesh_func
 /* 80098D9C 00094CBC  3B BD 00 18 */	addi r29, r29, 0x18
 lbl_80098DA0:
 /* 80098DA0 00094CC0  80 1D 00 00 */	lwz r0, 0(r29)
@@ -4423,7 +4423,7 @@ lbl_80099344:
 lbl_80099374:
 /* 80099374 00095294  80 7E 00 14 */	lwz r3, 0x14(r30)
 /* 80099378 00095298  7F E4 FB 78 */	mr r4, r31
-/* 8009937C 0009529C  4B F9 AC D1 */	bl u_draw_naomi_model_with_mesh_func
+/* 8009937C 0009529C  4B F9 AC D1 */	bl u_nl2ngc_draw_model_with_mesh_func
 /* 80099380 000952A0  3B DE 00 18 */	addi r30, r30, 0x18
 lbl_80099384:
 /* 80099384 000952A4  80 1E 00 00 */	lwz r0, 0(r30)
@@ -5759,7 +5759,7 @@ lbl_8009A724:
 /* 8009A770 00096690  FC 40 08 90 */	fmr f2, f1
 /* 8009A774 00096694  FC 60 08 90 */	fmr f3, f1
 /* 8009A778 00096698  FC 80 08 90 */	fmr f4, f1
-/* 8009A77C 0009669C  4B FF 4F 99 */	bl avdisp_set_post_multiply_color
+/* 8009A77C 0009669C  4B FF 4F 99 */	bl avdisp_set_post_mult_color
 /* 8009A780 000966A0  80 7E 00 1C */	lwz r3, 0x1c(r30)
 /* 8009A784 000966A4  4B FF 3D 19 */	bl avdisp_draw_model_culled_sort_none
 /* 8009A788 000966A8  4B F6 D0 AD */	bl mathutil_mtxA_pop
@@ -5767,7 +5767,7 @@ lbl_8009A78C:
 /* 8009A78C 000966AC  37 FF FF FF */	addic. r31, r31, -1
 /* 8009A790 000966B0  3B DE 00 30 */	addi r30, r30, 0x30
 /* 8009A794 000966B4  41 81 FF 90 */	bgt lbl_8009A724
-/* 8009A798 000966B8  4B F7 3C 25 */	bl func_8000E3BC
+/* 8009A798 000966B8  4B F7 3C 25 */	bl u_reset_post_mult_color
 /* 8009A79C 000966BC  38 60 00 01 */	li r3, 1
 /* 8009A7A0 000966C0  38 80 00 03 */	li r4, 3
 /* 8009A7A4 000966C4  38 A0 00 01 */	li r5, 1

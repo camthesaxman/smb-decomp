@@ -431,7 +431,7 @@ void view_animate_stage(void)
         while (dyn->modelName != NULL)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
-            u_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
+            u_apply_func_to_nl_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
             dyn++;
         }
     }
@@ -469,8 +469,8 @@ void draw_items(void)
     {
         struct GMAModel *models[2];
 
-        models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].modelOffset;
-        models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].modelOffset;
+        models[0] = commonGma->modelEntries[OBJ_BANANA_01_LOD150].model;
+        models[1] = commonGma->modelEntries[OBJ_BANANA_02_LOD100].model;
         for (i = 0; i < animGroupCount; i++)
         {
             struct StageBanana *r24 = decodedStageLzPtr->animGroups[i].bananas;
@@ -506,7 +506,7 @@ void draw_banana_shadows(void)
     if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
-        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);
+        avdisp_set_post_mult_color(0.3f, 0.3f, 0.3f, 0.3f);
         avdisp_set_z_mode(1, 3, 0);
 
         for (i = 0; i < animGroupCount; i++)
@@ -531,11 +531,11 @@ void draw_banana_shadows(void)
                     mathutil_mtxA_mult_left(sp20);
                     mathutil_mtxA_scale_s(0.45f);
                     u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-                    avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].modelOffset);
+                    avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x4E].model);
                 }
             }
         }
-        avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, 1.0f);
+        avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, 1.0f);
         avdisp_set_z_mode(1, 3, 1);
     }
 }
@@ -549,12 +549,12 @@ void draw_stage_geometry(void)
     struct Struct8020A348_child *r26;
     u32 dummy;
 
-    func_80030BB8(1.0f, 1.0f, 1.0f);
+    nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(stageViewInfo->frameCounter << 9);
-    u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
-    func_8000E3BC();
+    nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 10));
+    u_reset_post_mult_color();
     if (decodedStageGmaPtr != NULL)
     {
         animGrp = animGroups;
@@ -588,7 +588,7 @@ void draw_stage_geometry(void)
         dyn = dynamicStageParts;
         while (dyn->modelName != NULL)
         {
-            u_dupe_of_call_draw_naomi_model_1(dyn->tempModel);
+            nl2ngc_draw_model_sort_none_alt2(dyn->tempModel);
             dyn++;
         }
     }
@@ -647,25 +647,25 @@ void draw_stage_objects(void)
                 u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
                 avdisp_draw_model_culled_sort_translucent(goalModel);
             }
-            nl2ngc_draw_model_sorted(NLOBJ_MODEL(naomiCommonObj, 14));
+            nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, 14));
 
             mathutil_mtxA_push();
             mathutil_mtxA_translate_xyz(0.0f, 2.8f, 0.0f);
             u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[32].modelOffset);
+            avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x20].model);
             mathutil_mtxA_pop();
 
             mathutil_mtxA_push();
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 0x1D));
             mathutil_mtxA_translate_xyz(-0.45f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x1D));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 0x1D));
             mathutil_mtxA_pop();
 
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 0x13));
             mathutil_mtxA_translate_xyz(-0.6666f, 0.0f, 0.0f);
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 0x13));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, 0x13));
         }
     }
 

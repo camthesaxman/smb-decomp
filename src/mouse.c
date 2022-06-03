@@ -107,10 +107,10 @@ void ev_mouse_main(void)
             } else {
                 mouse.spriteIdx = INVALID_SPRITE_INDEX;
                 _spriteInfo = &spriteInfo[0];
-                _statusList = spritePoolInfo.statusList;
+                _statusList = g_poolInfo.spriteStatusList;
                 for (
                     i = 0;
-                    i < spritePoolInfo.unk38;
+                    i < g_poolInfo.unk38;
                     i++, _spriteInfo++, _statusList++
                     ) {
                     if (

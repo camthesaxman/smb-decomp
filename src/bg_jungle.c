@@ -128,7 +128,7 @@ void bg_jungle_draw(void)
      || gameSubmode == SMD_GAME_NAMEENTRY_READY_INIT
      || gameSubmode == SMD_GAME_OVER_INIT
      || gameSubmode == SMD_GAME_OVER_MAIN)
-        avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3, 1.0f);
+        avdisp_set_post_mult_color(0.3f, 0.3f, 0.3, 1.0f);
 
     if (lbl_801EEC90.unk0 & 1)
         r28 = 1 << 4;
@@ -173,7 +173,7 @@ void bg_jungle_draw(void)
      || gameSubmode == SMD_GAME_NAMEENTRY_READY_INIT
      || gameSubmode == SMD_GAME_OVER_INIT
      || gameSubmode == SMD_GAME_OVER_MAIN)
-        func_8000E3BC();
+        u_reset_post_mult_color();
 }
 
 void bg_jungle_interact(int a) {}

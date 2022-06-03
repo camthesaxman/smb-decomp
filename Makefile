@@ -33,7 +33,7 @@ ELF2DOL := tools/elf2dol$(EXE)
 ELF2REL := tools/elf2rel$(EXE)
 LZSS    := tools/lzss$(EXE)
 
-INCLUDE_DIRS := src
+INCLUDE_DIRS := src data
 SYSTEM_INCLUDE_DIRS := include
 
 RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc

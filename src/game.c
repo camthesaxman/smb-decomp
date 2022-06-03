@@ -1077,10 +1077,10 @@ void submode_game_over_dest_func(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        spritePoolInfo.unkC[0] = 0;
-        spritePoolInfo.unkC[1] = 0;
-        spritePoolInfo.unkC[2] = 0;
-        spritePoolInfo.unkC[3] = 0;
+        g_poolInfo.unkC[0] = 0;
+        g_poolInfo.unkC[1] = 0;
+        g_poolInfo.unkC[2] = 0;
+        g_poolInfo.unkC[3] = 0;
         modeCtrl.currPlayer = 0;
         currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         func_80029788();
@@ -1633,7 +1633,7 @@ double force_float_order_802F2C00(void) { return 0.5; }
 void func_800165C0(struct Ball *ball)
 {
     int i;
-    struct Struct8003C550 sp1C;
+    struct Effect sp1C;
     Vec sp10;
     u16 r28 = 1 << ball->playerId;
 
@@ -1655,7 +1655,7 @@ void func_800165C0(struct Ball *ball)
         sp1C.unk4E = rand() & 0x7FFF;
         sp1C.unk50 = rand() & 0x7FFF;
         sp1C.unk16 = r28;
-        u_spawn_effect_object(&sp1C);
+        spawn_effect(&sp1C);
     }
 }
 
@@ -1934,7 +1934,7 @@ int get_next_player(void)
     for (i = 0; i < 4; i++)
     {
         nextPlayer = (modeCtrl.currPlayer + i + 1) & 3;
-        if (spritePoolInfo.unkC[nextPlayer] == 4)
+        if (g_poolInfo.unkC[nextPlayer] == 4)
             break;
     }
     return nextPlayer;
@@ -1946,14 +1946,14 @@ void u_init_player_data_1(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] != 0)
+        if (g_poolInfo.unkC[i] != 0)
             break;
     }
     modeCtrl.currPlayer = i;
     for (i = i + 1; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] == 2)
-            spritePoolInfo.unkC[i] = 4;
+        if (g_poolInfo.unkC[i] == 2)
+            g_poolInfo.unkC[i] = 4;
     }
     modeCtrl.levelSetFlags |= (1 << 8);
     for (i = 0; i < 4; i++)
@@ -1967,12 +1967,12 @@ void u_init_player_data_2(void)
 {
     u32 r0;
 
-    if (spritePoolInfo.unkC[modeCtrl.currPlayer] == 2)
-        spritePoolInfo.unkC[modeCtrl.currPlayer] = 4;
+    if (g_poolInfo.unkC[modeCtrl.currPlayer] == 2)
+        g_poolInfo.unkC[modeCtrl.currPlayer] = 4;
     playerInfos[modeCtrl.currPlayer] = infoWork;
     lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.levelSetFlags;
     r0 = get_next_player();
-    spritePoolInfo.unkC[r0] = 2;
+    g_poolInfo.unkC[r0] = 2;
     if (modeCtrl.currPlayer != r0)
     {
         modeCtrl.currPlayer = r0;
@@ -1985,7 +1985,7 @@ void u_init_player_data_2(void)
 // Marks a player as having reached Game Over
 void mark_player_finished(int playerId)
 {
-    spritePoolInfo.unkC[playerId] = 0;
+    g_poolInfo.unkC[playerId] = 0;
 }
 
 // Returns true if all players have reached Game Over
@@ -1996,7 +1996,7 @@ BOOL are_all_players_finished(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (spritePoolInfo.unkC[i] != 0)
+        if (g_poolInfo.unkC[i] != 0)
         {
             ret = FALSE;
             break;

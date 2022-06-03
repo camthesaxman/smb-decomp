@@ -269,7 +269,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     if (!(ball->flags & BALL_FLAG_GOAL))
         return 2;
 
-    for (i = 0; i < spritePoolInfo.unk8; i++)
+    for (i = 0; i < g_poolInfo.unk8; i++)
     {
         if (ball->rank - 1 == ballInfo[i].rank
          && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
@@ -502,10 +502,10 @@ void func_80037B20(void)
 {
     struct Ball *ball = &ballInfo[0];
     struct Ball *ballBackup = currentBallStructPtr;
-    s8 *r7 = spritePoolInfo.unkC;
+    s8 *r7 = g_poolInfo.unkC;
     int i;
 
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r7++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r7++)
     {
         if (*r7 == 2)
         {
@@ -529,7 +529,7 @@ void ev_ball_init(void)
         lbl_80206B80[j] = -1;
 
     ball = &ballInfo[0];
-    r21 = spritePoolInfo.unkC;
+    r21 = g_poolInfo.unkC;
 
     lbl_802F1F0C = 0;
     func_8008C4A0(1.0f);
@@ -868,9 +868,9 @@ void ev_ball_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    r28 = spritePoolInfo.unkC;
+    r28 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r28++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r28++)
     {
         if (*r28 == 0 || *r28 == 4)
             continue;
@@ -886,9 +886,9 @@ void ev_ball_main(void)
             func_80038528(ball);
     }
 
-    r3 = spritePoolInfo.unkC;
+    r3 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++)
     {
         if (r3[i] == 0 || r3[i] == 4)
             continue;
@@ -897,9 +897,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        r28 = spritePoolInfo.unkC;
+        r28 = g_poolInfo.unkC;
         ball = &ballInfo[0];
-        for (i = 0; i < spritePoolInfo.unk8; i++, ball++)
+        for (i = 0; i < g_poolInfo.unk8; i++, ball++)
         {
             struct Ball *nextBall;
             int j;
@@ -907,7 +907,7 @@ void ev_ball_main(void)
             if (r28[i] == 0 || r28[i] == 4)
                 continue;
             nextBall = ball + 1;
-            for (j = i + 1; j < spritePoolInfo.unk8; j++, nextBall++)
+            for (j = i + 1; j < g_poolInfo.unk8; j++, nextBall++)
             {
                 float f29;
                 float f2;
@@ -931,7 +931,7 @@ void ev_ball_main(void)
                     else
                         f1 = (f1 - (f29 * 0.25)) / (f29 * 0.25);
 
-                    for (k = 0; k < spritePoolInfo.unk8; k++)
+                    for (k = 0; k < g_poolInfo.unk8; k++)
                     {
                         if (j != k)
                         {
@@ -954,9 +954,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        r28 = spritePoolInfo.unkC;
+        r28 = g_poolInfo.unkC;
         ball = &ballInfo[0];
-        for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r28++)
+        for (i = 0; i < g_poolInfo.unk8; i++, ball++, r28++)
         {
             if (*r28 == 0 || *r28 == 4)
                 continue;
@@ -1092,9 +1092,9 @@ void ball_draw(void)
             func = NULL;
     }
 
-    r27 = spritePoolInfo.unkC;
+    r27 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r27++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r27++)
     {
         if (*r27 == 0 || *r27 == 4)
             continue;
@@ -1125,25 +1125,25 @@ void ball_draw(void)
         mathutil_mtxA_from_mtxB();
         mathutil_mtxA_mult_right(ball->unk30);
         mathutil_mtxA_scale_s(ball->modelScale);
-        u_nl2ngc_set_scale(ball->modelScale);
+        nl2ngc_set_scale(ball->modelScale);
 
         if (dipSwitches & (DIP_STCOLI | DIP_TRIANGLE))
         {
-            u_call_draw_model_with_alpha_deferred(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId), 0.3f);
+            nl2ngc_draw_model_alpha_sort_all_alt(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId), 0.3f);
         }
         else
         {
-            u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, ball->oldModelId));
+            nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, ball->oldModelId));
         }
 
         if (func != NULL)
         {
             mathutil_mtxA_push();
             mathutil_mtxA_from_mtx(ball->unk30);
-            if (func(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
+            if (func(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
             {
                 mathutil_mtxA_pop();
-                u_call_draw_naomi_model_1(lbl_802F1B4C);
+                nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
             }
             else
                 mathutil_mtxA_pop();
@@ -1154,18 +1154,18 @@ void ball_draw(void)
         {
             u_avdisp_set_some_func_1(envFunc);
             u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+            avdisp_draw_model_culled_sort_all(commonGma->modelEntries[ENV_ABSORBER].model);
             u_avdisp_set_some_func_1(NULL);
         }
 
         mathutil_mtxA_push();
         mathutil_mtxA_sq_from_identity();
         mathutil_mtxA_scale_s(ball->modelScale);
-        u_nl2ngc_set_scale(ball->modelScale);
-        u_call_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BALL_EDGE));
+        nl2ngc_set_scale(ball->modelScale);
+        nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BALL_EDGE));
         mathutil_mtxA_pop();
 
-        func_8000E3BC();
+        u_reset_post_mult_color();
     }
 }
 
@@ -1240,7 +1240,7 @@ void u_ball_shadow_something_1(void)
     sp18.unk20.z = 0.0f;
     mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
 
-    tex1 = &commonGma->modelEntries[circle_white].modelOffset->texObjs[0];
+    tex1 = &commonGma->modelEntries[circle_white].model->texObjs[0];
     GXInitTexObj((tex2 = &lbl_801B7EC4),
         GXGetTexObjData(tex1),
         GXGetTexObjWidth(tex1),
@@ -1253,9 +1253,9 @@ void u_ball_shadow_something_1(void)
 
     sp18.unk3C = lbl_801B7EC0;
 
-    r26 = spritePoolInfo.unkC;
+    r26 = g_poolInfo.unkC;
     ball = &ballInfo[0];
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r26++)
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r26++)
     {
         if (*r26 == 0 || *r26 == 4)
             continue;
@@ -1298,11 +1298,11 @@ void u_ball_shadow_something_2(void)
 
     sp30.unk20 = 0.025f;
     sp30.unk24 = 0.05f;
-    sp30.unk28 = commonGma->modelEntries[polyshadow01].modelOffset;
+    sp30.unk28 = commonGma->modelEntries[polyshadow01].model;
 
     ball = &ballInfo[0];
-    r25 = spritePoolInfo.unkC;
-    for (i = 0; i < spritePoolInfo.unk8; i++, ball++, r25++)
+    r25 = g_poolInfo.unkC;
+    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r25++)
     {
         float f2;
 
@@ -1372,7 +1372,7 @@ void func_800390C8(int a, Vec *sphereCenter, float c)
 
     ball = &ballInfo[0];
     r28 = currentBallStructPtr->playerId;
-    r29 = spritePoolInfo.unkC;
+    r29 = g_poolInfo.unkC;
     lbl_802F1F0C = 0;
 
     for (i = 0; i < 4; i++, ball++, r29++)
@@ -2647,7 +2647,7 @@ void func_8003C4A0(struct Ball *ball, int b)
 
 void func_8003C550(struct Ball *ball)
 {
-    struct Struct8003C550 sp30;
+    struct Effect sp30;
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -2686,7 +2686,7 @@ void func_8003C550(struct Ball *ball)
     sp30.unk34 = spC;
     sp30.unk88 = sp24;
     sp30.unkA8 = ball->unk130;
-    u_spawn_effect_object(&sp30);
+    spawn_effect(&sp30);
 
     memset(&sp30, 0, sizeof(sp30));
 
@@ -2705,7 +2705,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        u_spawn_effect_object(&sp30);
+        spawn_effect(&sp30);
     }
     r30 -= r30 >> 1;
 
@@ -2729,7 +2729,7 @@ void func_8003C550(struct Ball *ball)
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
 
-        u_spawn_effect_object(&sp30);
+        spawn_effect(&sp30);
     }
 }
 
@@ -2828,13 +2828,13 @@ void func_8003CCB0(void)
 
     if (bvar)
     {
-        struct Struct8003C550 sp8;
+        struct Effect sp8;
 
         memset(&sp8, 0, sizeof(sp8));
         sp8.unk8 = 10;
         sp8.unk14 = ball->playerId;
         sp8.unk34 = ball->pos;
-        u_spawn_effect_object(&sp8);
+        spawn_effect(&sp8);
     }
 }
 
@@ -2970,7 +2970,7 @@ void func_8003D3C4(struct Ball *ball)
     if (f26 > 1.5f)
     {
         Vec spC4;
-        struct Struct8003C550 sp18;
+        struct Effect sp18;
         Vec spC;
         float f2;
         int r29;
@@ -3005,7 +3005,7 @@ void func_8003D3C4(struct Ball *ball)
             sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
             sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
 
-            u_spawn_effect_object(&sp18);
+            spawn_effect(&sp18);
         }
     }
 }
@@ -3064,26 +3064,26 @@ void draw_ball_hemispheres(struct Ball *ball, int unused)
 
     // Draw inside of clear hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereInsideParts[lod]].model);
 
     // Draw inside of colored hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[0 + lod]].model);
 
     // Draw edge ring between ball halves
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[6 + lod]].model);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
     // Draw outside of clear hemisphere
-    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[clearHemisphereOutsideParts[lod]].model);
 
     // Draw outside of colored hemisphere
     avdisp_set_bound_sphere_scale(ball->modelScale);
-    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].modelOffset);
+    avdisp_draw_model_unculled_sort_none(entries[coloredParts[3 + lod]].model);
 
-    func_8000E3BC();
+    u_reset_post_mult_color();
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 }
 
@@ -3108,12 +3108,12 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         mathutil_mtxA_push();
         mathutil_mtxA_from_mtx(ball->unk30);
-        if (r30(NLOBJ_MODEL(naomiCommonObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
+        if (r30(NLOBJ_MODEL(g_commonNlObj, NLMODEL_common_BSKBALL_FACE), lbl_802F1B4C) != 0)
         {
             mathutil_mtxA_pop();
             mathutil_mtxA_push();
             mathutil_mtxA_scale_s(1.01f);
-            u_call_draw_naomi_model_1(lbl_802F1B4C);
+            nl2ngc_draw_model_sort_none_alt(lbl_802F1B4C);
             mathutil_mtxA_pop();
         }
         else
@@ -3125,7 +3125,7 @@ void ball_draw_callback(struct BallDrawNode *node)
     {
         u_avdisp_set_some_func_1(envFunc);
         u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].modelOffset);
+        avdisp_draw_model_culled_sort_none(commonGma->modelEntries[ENV_ABSORBER].model);
         u_avdisp_set_some_func_1(NULL);
     }
 }

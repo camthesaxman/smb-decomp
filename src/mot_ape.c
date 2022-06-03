@@ -97,7 +97,7 @@ u8 lbl_802F2094[8];
 int lbl_802F2090;
 u8 lbl_802F208C;
 Mtx **u_animTransformMatrices;
-struct NaomiObj *apeFaceObj;
+struct NlObj *apeFaceObj;
 struct TPL *apeFaceTpl;
 s32 lbl_802F207C;
 float lbl_802F2078;
@@ -933,7 +933,7 @@ void u_load_character_graphics(int chara, int lod)
 
         for (i = 0; i < 2; i++)
         {
-            model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].modelOffset;
+            model = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[i]].model;
             lbl_802B47F0[lod * 2 + i] = u_find_some_mesh_with_red(model);
         }
         lbl_802B4800[index + 0] = NULL;
@@ -941,8 +941,8 @@ void u_load_character_graphics(int chara, int lod)
     }
     else
     {
-        struct GMAModel *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].modelOffset;
-        struct GMAModel *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].modelOffset;
+        struct GMAModel *model1 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[0]].model;
+        struct GMAModel *model2 = charaGMAs[index]->modelEntries[apeGfxFileInfo[index].unk1C[1]].model;
 
         func_8008CBD0(chara, lod, model1, model2);
     }
@@ -1640,7 +1640,7 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
         struct JointBoneThing *r22 = &b[r29->unk2];
-        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].modelOffset;
+        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].model;
 
         if (model != NULL)
         {
@@ -1678,7 +1678,7 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
             u_animTransformMatrices[i] = &r4->transformMtx;
     }
 
-    model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].modelOffset;
+    model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].model;
     func_8008CCB8(ape, model);
     avdisp_draw_model_unculled_sort_none(model);  // Draws torso and limbs?
 }
@@ -1749,18 +1749,18 @@ void func_8008CAAC(struct Ape *ape, float b)
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_translate(&ape->unk30);
     mathutil_mtxA_scale_xyz(ape->modelScale, ape->modelScale, ape->modelScale);
-    u_nl2ngc_set_scale(ape->modelScale);
+    nl2ngc_set_scale(ape->modelScale);
     mathutil_mtxA_translate(&ape->unk3C);
     mathutil_mtxA_mult_right(lbl_802B39C0);
     sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];
     sp10.y = ape->unk0->unk81A8[0].transformMtx[1][3];
     sp10.z = ape->unk0->unk81A8[0].transformMtx[2][3];
-    if (u_test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
+    if (test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
     {
         apeDummyFuncs[r30](ape);
         u_draw_ape_transformed(ape, r29);
     }
-    func_8000E3BC();
+    u_reset_post_mult_color();
 }
 
 u16 lbl_801C7D80[] = { 9, 1, 3, 2 };

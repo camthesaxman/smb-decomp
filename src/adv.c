@@ -287,7 +287,7 @@ void submode_adv_demo_init_func(void)
     event_finish_all();
     free_all_bitmap_groups_except_com();
     for (i = 0; i < 4; i++)
-        spritePoolInfo.unkC[i] = 2;
+        g_poolInfo.unkC[i] = 2;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
@@ -1993,9 +1993,9 @@ void submode_adv_ranking_main_func(void)
     }
 
     r30 = currentBallStructPtr;
-    r28 = spritePoolInfo.unkC;
+    r28 = g_poolInfo.unkC;
     r29 = &ballInfo[0];
-    for (i = 0; i < spritePoolInfo.unk8; i++, r29++, r28++)
+    for (i = 0; i < g_poolInfo.unk8; i++, r29++, r28++)
     {
         if (*r28 == 2)
         {
@@ -2155,10 +2155,10 @@ void submode_adv_start_main_func(void)
 
 void func_80011D90(void)
 {
-    spritePoolInfo.unkC[0] = 2;
-    spritePoolInfo.unkC[1] = 0;
-    spritePoolInfo.unkC[2] = 0;
-    spritePoolInfo.unkC[3] = 0;
+    g_poolInfo.unkC[0] = 2;
+    g_poolInfo.unkC[1] = 0;
+    g_poolInfo.unkC[2] = 0;
+    g_poolInfo.unkC[3] = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;

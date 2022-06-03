@@ -174,8 +174,8 @@ lbl_00000260:
 /* 000002D8 38630000 */ addi r3, r3, currStageId@l
 /* 000002DC A8630000 */ lha r3, 0(r3)
 /* 000002E0 4BFFFE55 */ bl light_init
-/* 000002E4 3C600000 */ lis r3, spritePoolInfo@ha
-/* 000002E8 38830000 */ addi r4, r3, spritePoolInfo@l
+/* 000002E4 3C600000 */ lis r3, g_poolInfo@ha
+/* 000002E8 38830000 */ addi r4, r3, g_poolInfo@l
 /* 000002EC 3C600000 */ lis r3, worldInfo@ha
 /* 000002F0 80C4000C */ lwz r6, 0xc(r4)
 /* 000002F4 38030000 */ addi r0, r3, worldInfo@l
@@ -16652,11 +16652,11 @@ lbl_0000F44C:
 /* 0000F4A8 4BFF0C8D */ bl mathutil_mtxA_translate_xyz
 /* 0000F4AC C03F37B4 */ lfs f1, 0x37b4(r31)
 /* 0000F4B0 4BFF0C85 */ bl mathutil_mtxA_scale_s
-/* 0000F4B4 3C600000 */ lis r3, naomiCommonObj@ha
-/* 0000F4B8 3AA30000 */ addi r21, r3, naomiCommonObj@l
+/* 0000F4B4 3C600000 */ lis r3, g_commonNlObj@ha
+/* 0000F4B8 3AA30000 */ addi r21, r3, g_commonNlObj@l
 /* 0000F4BC 80750000 */ lwz r3, 0(r21)
 /* 0000F4C0 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F4C4 4BFF0C71 */ bl nl2ngc_draw_model_sorted
+/* 0000F4C4 4BFF0C71 */ bl nl2ngc_draw_model_sort_translucent
 /* 0000F4C8 C03F37B8 */ lfs f1, 0x37b8(r31)
 /* 0000F4CC 4BFF0C69 */ bl nl2ngc_set_line_width
 /* 0000F4D0 C01F3778 */ lfs f0, 0x3778(r31)
@@ -16739,16 +16739,16 @@ lbl_0000F4FC:
 /* 0000F600 4BFF0B35 */ bl nl2ngc_draw_line
 /* 0000F604 80750000 */ lwz r3, 0(r21)
 /* 0000F608 806300A8 */ lwz r3, 0xa8(r3)
-/* 0000F60C 4BFF0B29 */ bl nl2ngc_draw_model_sorted
+/* 0000F60C 4BFF0B29 */ bl nl2ngc_draw_model_sort_translucent
 /* 0000F610 3A100001 */ addi r16, r16, 1
 /* 0000F614 2C100034 */ cmpwi r16, 0x34
 /* 0000F618 39EF0028 */ addi r15, r15, 0x28
 /* 0000F61C 3A310030 */ addi r17, r17, 0x30
 /* 0000F620 4180FEDC */ blt lbl_0000F4FC
 /* 0000F624 3C800000 */ lis r4, lbl_0001CAD8@ha
-/* 0000F628 3C600000 */ lis r3, naomiCommonObj@ha
+/* 0000F628 3C600000 */ lis r3, g_commonNlObj@ha
 /* 0000F62C 3A440000 */ addi r18, r4, lbl_0001CAD8@l
-/* 0000F630 3A230000 */ addi r17, r3, naomiCommonObj@l
+/* 0000F630 3A230000 */ addi r17, r3, g_commonNlObj@l
 /* 0000F634 3A000000 */ li r16, 0
 /* 0000F638 39E00000 */ li r15, 0
 lbl_0000F63C:
@@ -16763,7 +16763,7 @@ lbl_0000F63C:
 /* 0000F65C 80710000 */ lwz r3, 0(r17)
 /* 0000F660 C03F37BC */ lfs f1, 0x37bc(r31)
 /* 0000F664 806300BC */ lwz r3, 0xbc(r3)
-/* 0000F668 4BFF0ACD */ bl nl2ngc_draw_model_alpha_sorted
+/* 0000F668 4BFF0ACD */ bl nl2ngc_draw_model_alpha_sort_all
 /* 0000F66C 3A100001 */ addi r16, r16, 1
 /* 0000F670 2C100006 */ cmpwi r16, 6
 /* 0000F674 39EF0018 */ addi r15, r15, 0x18
@@ -16858,9 +16858,9 @@ lbl_0000F77C:
 /* 0000F7B4 C03F37BC */ lfs f1, 0x37bc(r31)
 /* 0000F7B8 4BFF097D */ bl mathutil_mtxA_scale_s
 /* 0000F7BC 7FE3FB78 */ mr r3, r31
-/* 0000F7C0 4BFF0975 */ bl u_draw_naomi_model_3
+/* 0000F7C0 4BFF0975 */ bl nl2ngc_draw_opaque_model_meshes
 /* 0000F7C4 387F1AA8 */ addi r3, r31, 0x1aa8
-/* 0000F7C8 4BFF096D */ bl u_draw_naomi_model_3
+/* 0000F7C8 4BFF096D */ bl nl2ngc_draw_opaque_model_meshes
 /* 0000F7CC 48000064 */ b lbl_0000F830
 lbl_0000F7D0:
 /* 0000F7D0 806F0000 */ lwz r3, 0(r15)
@@ -18783,7 +18783,7 @@ lbl_000112EC:
 /* 0001142C C09737A8 */ lfs f4, 0x37a8(r23)
 /* 00011430 FC40E890 */ fmr f2, f29
 /* 00011434 FC60E890 */ fmr f3, f29
-/* 00011438 4BFEECFD */ bl avdisp_set_post_multiply_color
+/* 00011438 4BFEECFD */ bl avdisp_set_post_mult_color
 /* 0001143C 807B0000 */ lwz r3, 0(r27)
 /* 00011440 80630008 */ lwz r3, 8(r3)
 /* 00011444 80630270 */ lwz r3, 0x270(r3)
@@ -18818,7 +18818,7 @@ lbl_00011480:
 /* 000114AC FC400890 */ fmr f2, f1
 /* 000114B0 FC600890 */ fmr f3, f1
 /* 000114B4 FC800890 */ fmr f4, f1
-/* 000114B8 4BFEEC7D */ bl avdisp_set_post_multiply_color
+/* 000114B8 4BFEEC7D */ bl avdisp_set_post_mult_color
 /* 000114BC C03737A8 */ lfs f1, 0x37a8(r23)
 /* 000114C0 4BFEEC75 */ bl mathutil_mtxA_scale_s
 /* 000114C4 C0373778 */ lfs f1, 0x3778(r23)
@@ -18886,7 +18886,7 @@ lbl_00011584:
 /* 000115A8 FC400890 */ fmr f2, f1
 /* 000115AC FC600890 */ fmr f3, f1
 /* 000115B0 FC800890 */ fmr f4, f1
-/* 000115B4 4BFEEB81 */ bl avdisp_set_post_multiply_color
+/* 000115B4 4BFEEB81 */ bl avdisp_set_post_mult_color
 /* 000115B8 38600001 */ li r3, 1
 /* 000115BC 38800003 */ li r4, 3
 /* 000115C0 38A00001 */ li r5, 1

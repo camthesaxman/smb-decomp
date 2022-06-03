@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
+#include "functions.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -33,7 +34,7 @@ struct GoalTape_sub
 
 struct GoalTape
 {
-    u32 unk0;
+    u32 u_flags;
     float unk4;
     float unk8;
     float unkC;
@@ -46,7 +47,7 @@ struct GoalTape goalTapes[MAX_GOALS];
 
 struct GoalBag  // The "party ball", known as a "goal bag" internally
 {
-    u32 unk0;
+    u32 u_flags;
     /*0x04*/ float openness;
     float unk8;
     /*0x0C*/ struct Stobj *stobj;
@@ -84,7 +85,7 @@ s16 largeLCDModelIDs[] =
     NLMODEL_common_L_LCD_9,
 };
 
-static void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NaomiModel *arg2, struct NaomiModel *arg3);
+static void func_8006DDA0(struct GoalTape_sub *arg0, int arg1, struct NlModel *arg2, struct NlModel *arg3);
 static void open_goal_bag(int goalId, struct PhysicsBall *arg1);
 static void func_8006FB20(int arg0);
 static float func_8006FCD0(Point3d *, float);
@@ -127,7 +128,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
-            tape->unk0 = 0;
+            tape->u_flags = 0;
             stobj.extraData = tape;
             spawn_stobj(&stobj);
             totalGoals++;
@@ -167,7 +168,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
             stobj.rotY = goal->rotY;
             stobj.rotZ = goal->rotZ;
             stobj.animGroupId = i;
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->goal = *goal;
             stobj.extraData = bag;
             spawn_stobj(&stobj);
@@ -177,8 +178,8 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
     }
 }
 
-struct NaomiModel *smallLCDModels[10];
-struct NaomiModel *largeLCDModels[10];
+struct NlModel *smallLCDModels[10];
+struct NlModel *largeLCDModels[10];
 
 // https://decomp.me/scratch/L6SNU
 #ifdef NONMATCHING
@@ -191,13 +192,13 @@ void stobj_goaltape_init(struct Stobj *stobj)
     int j;
     struct GoalTape_sub *var_r7;
     struct GoalTape *temp_r31;
-    struct NaomiModel **mdlPtr;
+    struct NlModel **mdlPtr;
     //s16 *idxPtr;
     Point3d sp28;
 
     stobj->state = 0;
     stobj->unk8 |= 2;
-    stobj->model = (struct GMAModel *)naomiCommonObj->modelPtrs[NLMODEL_common_GOAL_TAPE];
+    stobj->model = (struct GMAModel *)g_commonNlObj->models[NLMODEL_common_GOAL_TAPE];
     stobj->boundSphereRadius = 1.3125f;
     stobj->u_model_origin = stobj->model->boundSphereCenter;
     temp_r31 = stobj->extraData;
@@ -245,29 +246,29 @@ void stobj_goaltape_init(struct Stobj *stobj)
 
     mdlPtr = smallLCDModels;
     //idxPtr = smallLCDModelIDs;
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[0]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[1]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[2]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[3]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[4]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[5]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[6]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[7]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[8]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[smallLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNlObj->models[smallLCDModelIDs[9]];
 
     mdlPtr = largeLCDModels;
     //idxPtr = largeLCDModelIDs;
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[0]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[1]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[2]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[3]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[4]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[5]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[6]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[7]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[8]];
-    *mdlPtr++ = naomiCommonObj->modelPtrs[largeLCDModelIDs[9]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[0]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[1]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[2]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[3]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[4]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[5]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[6]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[7]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[8]];
+    *mdlPtr++ = g_commonNlObj->models[largeLCDModelIDs[9]];
 }
 #else
 float  force_lbl_802F48F0() { return 1.3125f; }
@@ -538,13 +539,13 @@ void stobj_goaltape_draw(struct Stobj *stobj)
             mathutil_mtxA_push();
             func_8006DDA0(temp_r28, var_r27, (void *)stobj->model, lbl_802F1B4C);
             mathutil_mtxA_pop();
-            u_dupe_of_call_draw_naomi_model_1(lbl_802F1B4C);
+            nl2ngc_draw_model_sort_none_alt2(lbl_802F1B4C);
         }
     }
     apply_curr_light_group_ambient();
-    func_80030BB8(1.0f, 1.0f, 1.0f);
+    nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
     temp_r5 = lbl_80250A68.unk14;
-    if (spritePoolInfo.unkC[temp_r5] == 2 && (ballInfo[temp_r5].flags & 0x01000000))
+    if (g_poolInfo.unkC[temp_r5] == 2 && (ballInfo[temp_r5].flags & 0x01000000))
         time = (100.0 * func_80049E7C(lbl_80250A68.unk0[temp_r5], lbl_80250A68.unk10)) / 60.0;
     else
     {
@@ -564,13 +565,13 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(smallLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(smallLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(smallLCDModels[digit]);
 
     mathutil_mtxA_pop();
 
@@ -578,21 +579,21 @@ void stobj_goaltape_draw(struct Stobj *stobj)
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
     mathutil_mtxA_translate(&spC);
 
     digit = time % 10;
     time /= 10;
-    u_call_draw_naomi_model_and_do_other_stuff(largeLCDModels[digit]);
+    nl2ngc_draw_model_sort_translucent_alt2(largeLCDModels[digit]);
 
-    func_8000E3BC();
+    u_reset_post_mult_color();
 }
 
 void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
@@ -687,31 +688,31 @@ void stobj_goaltape_destroy(struct Stobj *stobj) {}
 
 void stobj_goaltape_debug(struct Stobj *stobj) {}
 
-static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NaomiModel *model1, struct NaomiModel *model2)
+static void func_8006DDA0(struct GoalTape_sub *arg0, int faceCount, struct NlModel *model1, struct NlModel *model2)
 {
     Point3d sp24;
     Point3d sp18;
     s16 rotX;
-    struct NaomiVtxWithNormal *vtx;
+    struct NlVtxTypeB *vtx;
     s16 rotY;
-    struct NaomiMesh *mesh2;
-    struct NaomiMesh *mesh1;
+    struct NlMesh *mesh2;
+    struct NlMesh *mesh1;
     u32 var_r4;
 
     memcpy(model2, model1, sizeof(*model2));
 
-    mesh2 = (struct NaomiMesh *)model2->meshStart;
-    mesh1 = (struct NaomiMesh *)model1->meshStart;
+    mesh2 = (struct NlMesh *)model2->meshStart;
+    mesh1 = (struct NlMesh *)model1->meshStart;
     memcpy(mesh2, mesh1, sizeof(*mesh2));
 
     mesh2->dispListSize = (faceCount * 64) + 8;
-    var_r4 = ((struct NaomiDispList *)mesh1->dispListStart)->unk0;
+    var_r4 = ((struct NlDispList *)mesh1->dispListStart)->flags;
     var_r4 &= ~0x14;
     var_r4 |= 0x10;
-    ((struct NaomiDispList *)mesh2->dispListStart)->unk0 = var_r4;
-    ((struct NaomiDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
+    ((struct NlDispList *)mesh2->dispListStart)->flags = var_r4;
+    ((struct NlDispList *)mesh2->dispListStart)->faceCount = faceCount * 2;
 
-    vtx = (void *)(mesh2 = (void *)((struct NaomiDispList *)mesh2->dispListStart)->vtxData);
+    vtx = (void *)(mesh2 = (void *)((struct NlDispList *)mesh2->dispListStart)->vtxData);
     while (faceCount > 0)
     {
         sp24.x = arg0->unkC.x;
@@ -761,7 +762,7 @@ void stobj_goalbag_init(struct Stobj *stobj)
 
     stobj->state = 1;
     stobj->unk8 = 0x12;
-    stobj->model = commonGma->modelEntries[NEW_SCENT_BAG_WHOLE].modelOffset;
+    stobj->model = commonGma->modelEntries[NEW_SCENT_BAG_WHOLE].model;
     stobj->boundSphereRadius = stobj->model->boundSphereRadius;
     stobj->u_model_origin = stobj->model->boundSphereCenter;
     stobj->u_some_pos = stobj->unkA8;
@@ -860,7 +861,7 @@ void stobj_goalbag_main(struct Stobj *stobj)
         if (bag->openness < 0.0)
         {
             bag->openness = 0.0f;
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->unk24 = -1;
             if (stobj->counter < 0)
             {
@@ -1023,7 +1024,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
         mathutil_mtxA_translate(&spC);
         mathutil_mtxA_push();
         mathutil_mtxA_rotate_z(-(s16)(int)rotZ);
-        model = commonGma->modelEntries[NEW_SCENT_BAG_A].modelOffset;
+        model = commonGma->modelEntries[NEW_SCENT_BAG_A].model;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
         {
@@ -1041,7 +1042,7 @@ void stobj_goalbag_draw(struct Stobj *stobj)
         }
         mathutil_mtxA_pop();
         mathutil_mtxA_rotate_z((s16)rotZ);
-        model = commonGma->modelEntries[NEW_SCENT_BAG_B].modelOffset;
+        model = commonGma->modelEntries[NEW_SCENT_BAG_B].model;
         alpha = func_8006FCD0(&model->boundSphereCenter, model->boundSphereRadius);
         if (alpha > 0.0f)
         {
@@ -1131,7 +1132,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     stobj->u_local_vel.y += temp_f0 * stobj->u_local_pos.y;
     stobj->u_local_vel.z += temp_f0 * stobj->u_local_pos.z;
     bag = stobj->extraData;
-    if (bag->unk0 != 0)
+    if (bag->u_flags != 0)
     {
         temp_f0 = -2.0 * mathutil_vec_dot_prod(&stobj->u_local_pos, &spEC);
         if (temp_f0 < 0.0)
@@ -1139,7 +1140,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     }
     if (var_f26 > 0.1f)
     {
-        struct Struct8003C550 sp34;
+        struct Effect sp34;
         Vec sp28 = lbl_80117A70;
         Vec sp1C;
         Vec sp10;
@@ -1186,7 +1187,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
                 sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
                 sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
                 sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
-                u_spawn_effect_object(&sp34);
+                spawn_effect(&sp34);
                 var_r30--;
             }
             var_r30 = 12.0f + (12.0f * var_f26);
@@ -1205,7 +1206,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
                 sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
                 sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
                 sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
-                u_spawn_effect_object(&sp34);
+                spawn_effect(&sp34);
                 var_r30--;
             }
             var_f24 *= 0.5f;
@@ -1261,7 +1262,7 @@ void u_break_goal_tape(int goalId, struct PhysicsBall *arg1)
     if (goalId < 8)
     {
         tape = &goalTapes[goalId];
-        if (tape->unk0 == 0)
+        if (tape->u_flags == 0)
         {
             stobj = tape->unk14;
             mathutil_mtxA_from_identity();
@@ -1300,7 +1301,7 @@ void u_break_goal_tape(int goalId, struct PhysicsBall *arg1)
                 var_r29[1].unk1C.y += sp10.y;
                 var_r29[1].unk1C.z += sp10.z;
                 stobj->state = 1;
-                tape->unk0 = 1;
+                tape->u_flags = 1;
             }
         }
     }
@@ -1318,9 +1319,9 @@ void func_8006F5F0(int arg0)
     tape = goalTapes;
     for (i = ARRAY_COUNT(goalTapes); i > 0; i--, tape++)
     {
-        if (tape->unk10 <= arg0 && tape->unk0 != 0)
+        if (tape->unk10 <= arg0 && tape->u_flags != 0)
         {
-            tape->unk0 = 0;
+            tape->u_flags = 0;
             var_r26 = tape->unk18;
             for (j = 8; j > 0; j--, var_r26++)
             {
@@ -1341,7 +1342,7 @@ void func_8006F5F0(int arg0)
 
 static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
 {
-    struct Struct8003C550 sp34;
+    struct Effect sp34;
     Point3d sp28;
     Point3d sp1C;
     Point3d sp10;
@@ -1355,9 +1356,9 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
     {
         bag = &goalBags[goalId];
         stobj = bag->stobj;
-        if (bag->unk0 == 0)
+        if (bag->u_flags == 0)
         {
-            bag->unk0 = 1;
+            bag->u_flags = 1;
             stobj->state = 2;
             stobj->boundSphereRadius = 0.5 * stobj->model->boundSphereRadius;
             stobj->u_model_origin = stobj->model->boundSphereCenter;
@@ -1382,7 +1383,7 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
             sp34.unk40.x += sp1C.x - sp10.x;
             sp34.unk40.y += sp1C.y - sp10.y;
             sp34.unk40.z += sp1C.z - sp10.z;
-            temp_f27 = stobj->model->boundSphereRadius - commonGma->modelEntries[PAPER_PIECE_DEEPGREEN].modelOffset->boundSphereRadius;
+            temp_f27 = stobj->model->boundSphereRadius - commonGma->modelEntries[PAPER_PIECE_DEEPGREEN].model->boundSphereRadius;
             mathutil_mtxA_from_mtx(animGroups[stobj->animGroupId].transform);
             mathutil_mtxA_translate(&stobj->position);
             if (gameMode == MD_GAME && modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
@@ -1422,7 +1423,7 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
                     sp34.unk16 = temp_r30;
                 else
                     sp34.unk16 = 0;
-                u_spawn_effect_object(&sp34);
+                spawn_effect(&sp34);
                 confettiCount--;
             }
         }
@@ -1438,9 +1439,9 @@ static void func_8006FB20(int arg0)
     bag = goalBags;
     for (i = ARRAY_COUNT(goalBags); i > 0; i--, bag++)
     {
-        if (bag->unk24 <= arg0 && bag->unk0 != 0)
+        if (bag->unk24 <= arg0 && bag->u_flags != 0)
         {
-            bag->unk0 = 0;
+            bag->u_flags = 0;
             bag->openness = 0.0f;
             bag->unk8 = 0.0f;
             stobj = bag->stobj;
@@ -1474,7 +1475,7 @@ static void func_8006FD44(struct GoalTape *tape)
     float y;
     u8 unused[8];
 
-    tape->unk0 = 0;
+    tape->u_flags = 0;
     tape->unk10 = -1;
     y = tape->unk8;
     var_r29 = tape->unk18;
