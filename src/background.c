@@ -15,6 +15,9 @@
 #include "stage.h"
 #include "light.h"
 
+#include "bg_nig.gma.h"
+#include "bg_stm.gma.h"
+
 #pragma force_active on
 
 struct BackgroundInfo backgroundInfo =
@@ -753,145 +756,195 @@ void draw_bg_models(Mtx viewFromWorld, struct StageBgModel *bgModels, int bgMode
     }
 }
 
-// 890
-s16 s_nightFlipbookModels65[] =
+// Dancing monkey flipbook animations in windows in Night bg
+// "mado" is "window" in Japanese
+
+s16 s_nightWindowAModels[] =
 {
-    0x09,
-    0x0A,
-    0x0B,
-    0x0C,
-    0x0D,
-    0x0E,
-    0x0F,
-    0x10,
-    0x11,
-    0x12,
-    0x13,
-    0x14,
-    0x15,
-    0x16,
+    NIG_MADO_A_PT00,
+    NIG_MADO_A_PT01,
+    NIG_MADO_A_PT02,
+    NIG_MADO_A_PT03,
+    NIG_MADO_A_PT04,
+    NIG_MADO_A_PT05,
+    NIG_MADO_A_PT06,
+    NIG_MADO_A_PT07,
+    NIG_MADO_A_PT08,
+    NIG_MADO_A_PT09,
+    NIG_MADO_A_PT10,
+    NIG_MADO_A_PT11,
+    NIG_MADO_A_PT12,
+    NIG_MADO_A_PT13,
 };
 
-// 8AC
-s16 s_nightFlipbookModels66[] =
+s16 s_nightWindowBModels[] =
 {
-    0x17, 0x18,
-    0x19, 0x1A,
-    0x1B, 0x1C,
-    0x1D, 0x1E,
-    0x1F, 0x20,
-    0x21,
+    NIG_MADO_B_PT00,
+    NIG_MADO_B_PT01,
+    NIG_MADO_B_PT02,
+    NIG_MADO_B_PT03,
+    NIG_MADO_B_PT04,
+    NIG_MADO_B_PT05,
+    NIG_MADO_B_PT06,
+    NIG_MADO_B_PT07,
+    NIG_MADO_B_PT08,
+    NIG_MADO_B_PT09,
+    NIG_MADO_B_PT10,
 };
 
-// 8C4
-s16 s_nightFlipbookModels67[] =
+s16 s_nightWindowCModels[] =
 {
-    0x22, 0x23,
-    0x24, 0x25,
-    0x26, 0x27,
-    0x28, 0x29,
-    0x2A, 0x2B,
-    0x2C, 0x2D,
-    0x2E, 0x2F,
-    0x30, 0x31,
-    0x32, 0x33,
+    NIG_MADO_C_PT00,
+    NIG_MADO_C_PT01,
+    NIG_MADO_C_PT02,
+    NIG_MADO_C_PT03,
+    NIG_MADO_C_PT04,
+    NIG_MADO_C_PT05,
+    NIG_MADO_C_PT06,
+    NIG_MADO_C_PT07,
+    NIG_MADO_C_PT08,
+    NIG_MADO_C_PT09,
+    NIG_MADO_C_PT10,
+    NIG_MADO_C_PT11,
+    NIG_MADO_C_PT12,
+    NIG_MADO_C_PT13,
+    NIG_MADO_C_PT14,
+    NIG_MADO_C_PT15,
+    NIG_MADO_C_PT16,
+    NIG_MADO_C_PT17,
 };
 
-// 8E8
-s16 s_nightFlipbookModels68[] =
+s16 s_nightWindowDModels[] =
 {
-    0x34, 0x35,
-    0x36, 0x37,
-    0x38, 0x39,
-    0x3A, 0x3B,
-    0x3C, 0x3D,
-    0x3E, 0x3F,
-    0x40, 0x41,
-    0x42, 0x43,
-    0x44, 0x45,
+    NIG_MADO_D_PT00,
+    NIG_MADO_D_PT01,
+    NIG_MADO_D_PT02,
+    NIG_MADO_D_PT03,
+    NIG_MADO_D_PT04,
+    NIG_MADO_D_PT05,
+    NIG_MADO_D_PT06,
+    NIG_MADO_D_PT07,
+    NIG_MADO_D_PT08,
+    NIG_MADO_D_PT09,
+    NIG_MADO_D_PT10,
+    NIG_MADO_D_PT11,
+    NIG_MADO_D_PT12,
+    NIG_MADO_D_PT13,
+    NIG_MADO_D_PT14,
+    NIG_MADO_D_PT15,
+    NIG_MADO_D_PT16,
+    NIG_MADO_D_PT17,
 };
 
-// 90C
-s16 s_nightFlipbookModels69[] =
+s16 s_nightWindowEModels[] =
 {
-    0x46,
-    0x47,
-    0x48, 0x49,
-    0x4A, 0x4B,
-    0x4C, 0x4D,
-    0x4E, 0x4F,
-    0x50, 0x51,
-    0x52, 0x53,
-    0x54, 0x55,
-    0x56, 0x57,
+    NIG_MADO_E_PT00,
+    NIG_MADO_E_PT01,
+    NIG_MADO_E_PT02,
+    NIG_MADO_E_PT03,
+    NIG_MADO_E_PT04,
+    NIG_MADO_E_PT05,
+    NIG_MADO_E_PT06,
+    NIG_MADO_E_PT07,
+    NIG_MADO_E_PT08,
+    NIG_MADO_E_PT09,
+    NIG_MADO_E_PT10,
+    NIG_MADO_E_PT11,
+    NIG_MADO_E_PT12,
+    NIG_MADO_E_PT13,
+    NIG_MADO_E_PT14,
+    NIG_MADO_E_PT15,
+    NIG_MADO_E_PT16,
+    NIG_MADO_E_PT17,
 };
 
-// 930
-s16 s_nightFlipbookModels70[] =
+s16 s_nightWindowFModels[] =
 {
-    0x5C,
-    0x5D,
-    0x5E,
-    0x5F,
-    0x60,
-    0x61,
-    0x62,
-    0x63,
-    0x64,
-    0x65,
-    0x66,
-    0x67,
-    0x68,
-    0x69,
-    0x6A,
-    0x6B,
+    NIG_MADO_F_PT00,
+    NIG_MADO_F_PT01,
+    NIG_MADO_F_PT02,
+    NIG_MADO_F_PT03,
+    NIG_MADO_F_PT04,
+    NIG_MADO_F_PT05,
+    NIG_MADO_F_PT06,
+    NIG_MADO_F_PT07,
+    NIG_MADO_F_PT08,
+    NIG_MADO_F_PT09,
+    NIG_MADO_F_PT10,
+    NIG_MADO_F_PT11,
+    NIG_MADO_F_PT12,
+    NIG_MADO_F_PT13,
+    NIG_MADO_F_PT14,
+    NIG_MADO_F_PT15,
 };
 
-// 950
-s16 s_nightFlipbookModels71[] =
+s16 s_nightWindowGModels[] =
 {
-    0x6C, 0x6D,
-    0x6E, 0x6F,
-    0x70, 0x71,
-    0x72, 0x73,
-    0x74, 0x75,
-    0x76, 0x77,
-    0x78, 0x79,
-    0x7A,
+    NIG_MADO_G_PT00,
+    NIG_MADO_G_PT01,
+    NIG_MADO_G_PT02,
+    NIG_MADO_G_PT03,
+    NIG_MADO_G_PT04,
+    NIG_MADO_G_PT05,
+    NIG_MADO_G_PT06,
+    NIG_MADO_G_PT07,
+    NIG_MADO_G_PT08,
+    NIG_MADO_G_PT09,
+    NIG_MADO_G_PT10,
+    NIG_MADO_G_PT11,
+    NIG_MADO_G_PT12,
+    NIG_MADO_G_PT13,
+    NIG_MADO_G_PT14,
 };
 
 // Models to flipbook animate for flames in Storm
-s16 s_stormFlipbookModels[] =
+s16 s_stormFireModels[] =
 {
-    0x08, 0x09,
-    0x0A, 0x0B,
-    0x0C, 0x0D,
-    0x0E, 0x0F,
-    0x10, 0x11,
-    0x12, 0x13,
-    0x14, 0x15,
-    0x16, 0x17,
-    0x18, 0x19,
-    0x1A, 0x1B,
-    0x1C, 0x1D,
-    0x1E, 0x1F,
-    0x20, 0x21,
-    0x22, 0x23,
-    0x24, 0x25,
-    0x26, 0x27,
+    STM_FIRE00,
+    STM_FIRE01,
+    STM_FIRE02,
+    STM_FIRE03,
+    STM_FIRE04,
+    STM_FIRE05,
+    STM_FIRE06,
+    STM_FIRE07,
+    STM_FIRE08,
+    STM_FIRE09,
+    STM_FIRE10,
+    STM_FIRE11,
+    STM_FIRE12,
+    STM_FIRE13,
+    STM_FIRE14,
+    STM_FIRE15,
+    STM_FIRE16,
+    STM_FIRE17,
+    STM_FIRE18,
+    STM_FIRE19,
+    STM_FIRE20,
+    STM_FIRE21,
+    STM_FIRE22,
+    STM_FIRE23,
+    STM_FIRE24,
+    STM_FIRE25,
+    STM_FIRE26,
+    STM_FIRE27,
+    STM_FIRE28,
+    STM_FIRE29,
+    STM_FIRE30,
+    STM_FIRE31,
 };
 
-void draw_bg_flipbooks(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
+void draw_bg_flipbooks(Mtx viewFromWorld, struct StageFlipbookAnims *flipbooks)
 {
     u8 unused[8];
     u32 t;
 
-    if (flipbooks->nightSilhouetteFlipbooks != NULL)
+    if (flipbooks->nightWindowAnims != NULL)
     {
-        struct NightSilhouetteFlipbook *nightFlipbook = flipbooks->nightSilhouetteFlipbooks;
+        struct NightWindowAnim *nightFlipbook = flipbooks->nightWindowAnims;
         int i;
 
-        for (i = 0; i < flipbooks->nightSilhouetteFlipbookCount; i++, nightFlipbook++)
+        for (i = 0; i < flipbooks->nightWindowAnimCount; i++, nightFlipbook++)
         {
             int modelId;
 
@@ -908,36 +961,36 @@ void draw_bg_flipbooks(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
             {
             default:
             case 65:
-                modelId = s_nightFlipbookModels65[t % ARRAY_COUNT(s_nightFlipbookModels65)];
+                modelId = s_nightWindowAModels[t % ARRAY_COUNT(s_nightWindowAModels)];
                 break;
             case 66:
-                modelId = s_nightFlipbookModels66[t % ARRAY_COUNT(s_nightFlipbookModels66)];
+                modelId = s_nightWindowBModels[t % ARRAY_COUNT(s_nightWindowBModels)];
                 break;
             case 67:
-                modelId = s_nightFlipbookModels67[t % ARRAY_COUNT(s_nightFlipbookModels67)];
+                modelId = s_nightWindowCModels[t % ARRAY_COUNT(s_nightWindowCModels)];
                 break;
             case 68:
-                modelId = s_nightFlipbookModels68[t % ARRAY_COUNT(s_nightFlipbookModels68)];
+                modelId = s_nightWindowDModels[t % ARRAY_COUNT(s_nightWindowDModels)];
                 break;
             case 69:
-                modelId = s_nightFlipbookModels69[t % ARRAY_COUNT(s_nightFlipbookModels69)];
+                modelId = s_nightWindowEModels[t % ARRAY_COUNT(s_nightWindowEModels)];
                 break;
             case 70:
-                modelId = s_nightFlipbookModels70[t % ARRAY_COUNT(s_nightFlipbookModels70)];
+                modelId = s_nightWindowFModels[t % ARRAY_COUNT(s_nightWindowFModels)];
                 break;
             case 71:
-                modelId = s_nightFlipbookModels71[(t % ARRAY_COUNT(s_nightFlipbookModels71))];
+                modelId = s_nightWindowGModels[(t % ARRAY_COUNT(s_nightWindowGModels))];
                 break;
             }
             avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
-    if (flipbooks->stormFlameFlipbooks != NULL)
+    if (flipbooks->stormFireAnims != NULL)
     {
-        struct StormFlameFlipbook *stormFlipbook = flipbooks->stormFlameFlipbooks;
+        struct StormFireAnim *stormFlipbook = flipbooks->stormFireAnims;
         int i;
 
-        for (i = 0; i < flipbooks->stormFlameFlipbookCount; i++, stormFlipbook++)
+        for (i = 0; i < flipbooks->stormFireAnimCount; i++, stormFlipbook++)
         {
             int modelId;
 
@@ -948,7 +1001,7 @@ void draw_bg_flipbooks(Mtx viewFromWorld, struct StageBgFlipbooks *flipbooks)
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
             t = (unpausedFrameCounter + stormFlipbook->frameOffset * 4);
-            modelId = s_stormFlipbookModels[t % ARRAY_COUNT(s_stormFlipbookModels)];
+            modelId = s_stormFireModels[t % ARRAY_COUNT(s_stormFireModels)];
             avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }
     }

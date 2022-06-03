@@ -128,7 +128,7 @@ struct StageBgAnim
     struct Keyframe *translucencyKeyframes;
 };
 
-struct NightSilhouetteFlipbook
+struct NightWindowAnim
 {
     Point3d pos;
     s16 rotX;
@@ -137,18 +137,18 @@ struct NightSilhouetteFlipbook
     s8 id; // Which list of flipbook models to animate
 };
 
-struct StormFlameFlipbook
+struct StormFireAnim
 {
     Point3d pos;
     s8 frameOffset;
 };
 
-struct StageBgFlipbooks
+struct StageFlipbookAnims
 {
-    s32 nightSilhouetteFlipbookCount;
-    struct NightSilhouetteFlipbook *nightSilhouetteFlipbooks;
-    s32 stormFlameFlipbookCount;
-    struct StormFlameFlipbook *stormFlameFlipbooks;
+    s32 nightWindowAnimCount;
+    struct NightWindowAnim *nightWindowAnims;
+    s32 stormFireAnimCount;
+    struct StormFireAnim *stormFireAnims;
 };
 
 struct StageBgModel;

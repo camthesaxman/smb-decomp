@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <dolphin.h>
 #include <string.h>
+#include <dolphin/GXEnum.h>
 
 #include "bitmap.h"
 #include "global.h"
@@ -11,7 +12,6 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
-#include <dolphin/GXEnum.h>
 
 float s_fogEndZ;
 float s_fogStartZ;

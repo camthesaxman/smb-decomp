@@ -1826,7 +1826,7 @@ void load_stagedef(int stageId)
             if (r28->anim != NULL)
                 func_800473C0(&r28->anim, decodedStageLzPtr);
             if (r28->unk34 != NULL)
-                func_800474D8(&r28->unk34, decodedStageLzPtr);
+                adjust_stage_flipbook_anims_ptrs(&r28->unk34, decodedStageLzPtr);
         }
     }
 
@@ -1848,7 +1848,7 @@ void load_stagedef(int stageId)
             if (r28->anim != NULL)
                 func_800473C0(&r28->anim, decodedStageLzPtr);
             if (r28->unk34 != NULL)
-                func_800474D8(&r28->unk34, decodedStageLzPtr);
+                adjust_stage_flipbook_anims_ptrs(&r28->unk34, decodedStageLzPtr);
         }
     }
 
@@ -1965,13 +1965,13 @@ void func_800473C0(struct StageBgAnim **unkp, struct Stage *baseptr)
         (*unkp)->translucencyKeyframes = OFFSET_TO_PTR(baseptr, (*unkp)->translucencyKeyframes);
 }
 
-void func_800474D8(struct StageBgFlipbooks **unkp, struct Stage *baseptr)
+void adjust_stage_flipbook_anims_ptrs(struct StageFlipbookAnims **flipbookAnims, struct Stage *baseptr)
 {
-    *unkp = OFFSET_TO_PTR(baseptr, *unkp);
-    if ((*unkp)->nightSilhouetteFlipbooks != NULL)
-        (*unkp)->nightSilhouetteFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->nightSilhouetteFlipbooks);
-    if ((*unkp)->stormFlameFlipbooks != NULL)
-        (*unkp)->stormFlameFlipbooks = OFFSET_TO_PTR(baseptr, (*unkp)->stormFlameFlipbooks);
+    *flipbookAnims = OFFSET_TO_PTR(baseptr, *flipbookAnims);
+    if ((*flipbookAnims)->nightWindowAnims != NULL)
+        (*flipbookAnims)->nightWindowAnims = OFFSET_TO_PTR(baseptr, (*flipbookAnims)->nightWindowAnims);
+    if ((*flipbookAnims)->stormFireAnims != NULL)
+        (*flipbookAnims)->stormFireAnims = OFFSET_TO_PTR(baseptr, (*flipbookAnims)->stormFireAnims);
 }
 
 #pragma force_active on
