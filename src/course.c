@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "game.h"
 #include "info.h"
 #include "input.h"
 #include "mode.h"
@@ -143,16 +144,33 @@ s16 lbl_801BA4E4[] =  // 0x10C
 };
 #pragma force_active reset
 
-u8 lbl_8027CC58[0x1B0];
+struct Struct8027CC58_sub
+{
+    s32 unk0;
+    s32 unk4;
+};
+
+struct Struct8027CC58
+{
+    struct Struct8027CC58_sub unk0[4];
+    /*
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 unkC;
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
+    s32 unk1C;
+    */
+    s16 unk20;
+    s16 unk22;
+};
+
+struct Struct8027CC58 lbl_8027CC58[4][3];
 FORCE_BSS_ORDER(lbl_8027CC58)
 
-struct
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-} lbl_8027CE08;  // 0x1B0
+u32 lbl_8027CE08[4];
 FORCE_BSS_ORDER(lbl_8027CE08)
 
 struct
@@ -171,10 +189,10 @@ void func_80065C58(void)
     int count;
     u8 unused[4];
 
-    lbl_8027CE08.unk0 = 0;
-    lbl_8027CE08.unk4 = 0;
-    lbl_8027CE08.unk8 = 0;
-    lbl_8027CE08.unkC = 0;
+    lbl_8027CE08[0] = 0;
+    lbl_8027CE08[1] = 0;
+    lbl_8027CE08[2] = 0;
+    lbl_8027CE08[3] = 0;
     lbl_802F1FBC = 0;
     lbl_802F1FB8 = 0;
 
@@ -306,6 +324,7 @@ u32 lbl_801BA590[] =
     0,
     0,
     0,
+
     0,
     0,
     0,
@@ -313,6 +332,7 @@ u32 lbl_801BA590[] =
     0,
     0,
     0,
+
     0x01000000,
     0x00000001,
     0,
@@ -320,6 +340,7 @@ u32 lbl_801BA590[] =
     0,
     0,
     0,
+
     0x02000000,
     0x00000002,
     0,
@@ -327,6 +348,7 @@ u32 lbl_801BA590[] =
     0,
     0,
     0,
+
     0,
     0,
     0,
@@ -334,6 +356,7 @@ u32 lbl_801BA590[] =
     0,
     0,
     0,
+
     0x00020000,
     0x00000042,
     0,
@@ -3580,8 +3603,11 @@ u32 lbl_801BD508[] =
     0,
 };
 
-u32 lbl_801BD86C[] =
+struct Struct802F1F98 lbl_801BD86C[] =
 {
+    {
+        2,
+    /*
     0x02000000,
     0,
     0,
@@ -3589,13 +3615,20 @@ u32 lbl_801BD86C[] =
     0,
     0,
     0,
+    */
+    },
+    {
+        0 /*
     0,
     0,
     0,
     0,
     0,
     0,
-    0,
+    0,*/
+    },
+    {
+        1, 0, 1 /*
     0x01000000,
     0x00000001,
     0,
@@ -3603,97 +3636,128 @@ u32 lbl_801BD86C[] =
     0,
     0,
     0,
+    */
+    },
+    {
+        2/*
     0x02000000,
     0,
     0,
     0,
     0,
     0,
+    0,*/
+    },
+    {
+    0/*0,
     0,
     0,
     0,
     0,
     0,
     0,
-    0,
-    0,
-    0x01000000,
+    */
+    },
+    {
+    1, 0, 1/*0x01000000,
     0x00000001,
     0,
     0,
     0,
     0,
-    0,
-    0x02000000,
-    0,
-    0,
-    0,
-    0,
-    0,
+    0,*/
+    },
+
+    {
+    2/*0x02000000,
     0,
     0,
     0,
     0,
     0,
+    0,*/
+    },
+    {
+    0/*0,
     0,
     0,
     0,
-    0x01000000,
+    0,
+    0,
+    0,*/
+    },
+    {
+    1, 0, 1/*0x01000000,
     0x00000001,
     0,
     0,
     0,
     0,
-    0,
-    0x02000000,
-    0,
-    0,
-    0,
-    0,
+    0,*/
+    },
+    {
+    2/*0x02000000,
     0,
     0,
     0,
     0,
     0,
+    0,*/
+    },
+    {
+    0/*0,
     0,
     0,
     0,
     0,
-    0x01000000,
+    0,
+    0,*/
+    },
+    {
+    1, 0, 1/*0x01000000,
     0x00000001,
     0,
     0,
     0,
     0,
-    0,
-    0x02000000,
-    0,
-    0,
-    0,
-    0,
+    0,*/
+    },
+    {
+    2/*0x02000000,
     0,
     0,
     0,
     0,
     0,
-    0,
-    0,
-    0,
-    0,
-    0x01020000,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0x03000000,
+    0,*/
+    },
+    {
+    0/*0,
     0,
     0,
     0,
     0,
     0,
+    0,*/
+    },
+    {
+    1, 2, /*0x01020000,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,*/
+    },
+    {
+    3/*0x03000000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,*/
+    }
 };
 
 void *lbl_801BDA2C[] =
@@ -4172,4 +4236,363 @@ u32 is_bonus_stage(int stageId)
         }
     }
     return isBonus;
+}
+
+#pragma force_active on
+void func_80067310(void)
+{
+    int i;
+
+    for (i = 0; i < lbl_802F1FB0; i++)
+    {
+        lbl_801BD86C[i * 3].unk4 = level_num_to_stage_id(lbl_8027CE24[i].unk2, lbl_8027CE24[i].unk0, lbl_8027CE24[i].unk4);
+        lbl_801BD86C[i * 3 + 2].unk1 = 0;
+    }
+    lbl_801BD86C[(lbl_802F1FB0 - 1) * 3 + 2].unk1 = 2;
+}
+#pragma force_active reset
+
+int func_800673BC(void)
+{
+    struct Struct802F1F98 *r3 = lbl_802F1F98;
+
+    while (r3->unk0 != 3)
+    {
+        //! why the nested while loop?
+        while (r3->unk0 != 3)
+        {
+            if (r3->unk0 == 2 && r3->unk1 == 0)
+                return r3->unk4;
+            r3++;
+        }
+    }
+    return -1;
+}
+
+#pragma force_active on
+int func_80067408(int arg0, int arg1, u32 arg2)
+{
+    int var_r7 = 0;
+
+    if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_STG_ALL))
+        return 1;
+
+    if (arg2 & 0x10)
+        var_r7 = 0x6E;
+    else if (arg2 & 8)
+    {
+        switch (arg0)
+        {
+        case 0:
+            var_r7 = 0x5A;
+            break;
+        case 1:
+            var_r7 = 0x5F;
+            break;
+        case 2:
+            var_r7 = 0x64;
+            break;
+        }
+    }
+    else
+    {
+        switch (arg0)
+        {
+        case 0:
+            var_r7 = 0;
+            break;
+        case 1:
+            var_r7 = 0xA;
+            break;
+        case 2:
+            var_r7 = 0x28;
+            break;
+        }
+    }
+    var_r7 += arg1 - 1;
+    if ((1 << (var_r7 % 32)) & lbl_8027CE08[var_r7 / 32])
+        return 1;
+    else
+        return 0;
+}
+#pragma force_active reset
+
+void func_80067508(int arg0, int arg1, u32 arg2)
+{
+    int var_r7 = 0;
+
+    if (arg2 & 0x10)
+        var_r7 = 0x6E;
+    else if (arg2 & 8)
+    {
+        switch (arg0)
+        {
+        case 0:
+            var_r7 = 0x5A;
+            break;
+        case 1:
+            var_r7 = 0x5F;
+            break;
+        case 2:
+            var_r7 = 0x64;
+            break;
+        }
+    }
+    else
+    {
+        switch (arg0)
+        {
+        case 0:
+            var_r7 = 0;
+            break;
+        case 1:
+            var_r7 = 0xA;
+            break;
+        case 2:
+            var_r7 = 0x28;
+            break;
+        }
+    }
+    var_r7 += arg1 - 1;
+    lbl_8027CE08[var_r7 / 32] |= (1 << (var_r7 % 32));
+}
+
+int u_is_minigame_unlocked(int minigame)
+{
+    int isUnlocked = FALSE;
+
+    if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_STG_ALL))
+        return TRUE;
+
+    switch (minigame)
+    {
+    case 6:
+        if (lbl_802F1C0D & 1)
+            isUnlocked = TRUE;
+        break;
+    case 7:
+        if (lbl_802F1C0D & 2)
+            isUnlocked = TRUE;
+        break;
+    case 8:
+        if (lbl_802F1C0D & 4)
+            isUnlocked = TRUE;
+        break;
+    }
+    return isUnlocked;
+}
+
+int u_get_max_continues(void)
+{
+    return (lbl_802F1C0D >> 4) + 5;
+}
+
+int get_num_continues(void)
+{
+    if (func_800676C0() != 0)
+        return 10;
+    return u_get_max_continues() - infoWork.continuesUsed;
+}
+
+int func_800676C0(void)
+{
+    if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_STG_ALL))
+        return 1;
+    return lbl_802F1C0D & 8;
+}
+
+void func_800676E8(void)
+{
+    int i, j;
+
+    for (i = 0; i < 4; i++)
+    {
+        struct Struct8027CC58 *r4 = lbl_8027CC58[i];
+
+        for (j = 0; j < 3; j++, r4++)
+        {
+            r4->unk0[0].unk0 = 0;
+            r4->unk0[0].unk4 = -1;
+            r4->unk0[1].unk0 = 0;
+            r4->unk0[1].unk4 = -1;
+            r4->unk0[2].unk0 = 0;
+            r4->unk0[2].unk4 = -1;
+            r4->unk0[3].unk0 = 0;
+            r4->unk0[3].unk4 = -1;
+            r4->unk20 = -1;
+            r4->unk22 = -1;
+        }
+    }
+}
+
+static void test(void)
+{
+    int temp_r27_3;
+    int var_r3_3;
+    struct Struct8027CC58 *temp_r3_3;
+
+    temp_r27_3 = modeCtrl.currPlayer;
+    if (modeCtrl.gameType == 0)
+        var_r3_3 = get_next_player();
+    else
+        var_r3_3 = temp_r27_3;
+    temp_r3_3 = lbl_8027CC58[var_r3_3];
+    if (temp_r27_3 == var_r3_3)
+        infoWork.unk32 = lbl_8027CC58[temp_r27_3][0].unk0[1].unk4;
+    else if (temp_r3_3->unk22 == -1)
+        infoWork.unk32 = temp_r3_3->unk0[0].unk4;
+    else
+        infoWork.unk32 = temp_r3_3->unk0[temp_r3_3->unk22 + 1].unk4;
+}
+
+static void test2(struct Struct8027CC58 *temp_r28)
+{
+    temp_r28->unk0[0].unk0 = infoWork.unk20;
+    temp_r28->unk0[0].unk4 = currStageId;
+    temp_r28->unk0[1].unk0 = 0;
+    temp_r28->unk0[1].unk4 = -1;
+    temp_r28->unk0[2].unk0 = 0;
+    temp_r28->unk0[2].unk4 = -1;
+    temp_r28->unk0[3].unk0 = 0;
+    temp_r28->unk0[3].unk4 = -1;
+}
+
+static void inline1(void)
+{
+    int temp_r27_3;
+    int var_r3_3;
+    struct Struct8027CC58 *temp_r3_3;
+
+    temp_r27_3 = modeCtrl.currPlayer;
+    if (modeCtrl.gameType == 0)
+        var_r3_3 = get_next_player();
+    else
+        var_r3_3 = temp_r27_3;
+    temp_r3_3 = lbl_8027CC58[var_r3_3];
+    if (temp_r27_3 == var_r3_3)
+        infoWork.unk32 = lbl_8027CC58[temp_r27_3][0].unk0[1].unk4;
+    else if (temp_r3_3->unk22 == -1)
+        infoWork.unk32 = temp_r3_3->unk0[0].unk4;
+    else
+        infoWork.unk32 = temp_r3_3->unk0[temp_r3_3->unk22 + 1].unk4;
+}
+
+// https://decomp.me/scratch/gVFFx
+#ifdef NONMATCHING
+void func_80067808(void)
+{
+    int temp_r27_2;
+    struct Struct8027CC58 *temp_r28;
+    struct Struct802F1F98 *var_r3_2;
+    int var_r5;
+    struct Struct8027CC58_sub *var_r6;
+    int var_r4;
+    int var_r7;
+    struct Struct802F1F98 *var_r8;
+    int var_r3;
+    struct Struct8027CC58 *var_r25;
+    u8 unused[0x18];
+
+    temp_r27_2 = modeCtrl.currPlayer;
+    if (modeCtrl.gameType == 0)
+        get_next_player();  // return value not used
+
+    if (infoWork.unk20 == lbl_8027CC58[temp_r27_2][0].unk0[0].unk0)
+    {
+        inline1();
+        return;
+    }
+
+    #define var_r26 var_r7
+    var_r26 = 1;
+    var_r25 = &lbl_8027CC58[temp_r27_2][1];
+    for (; var_r26 >= 0; var_r26--, var_r25--)
+    {
+        if (var_r25->unk0[0].unk0 != 0)
+        {
+            memcpy(var_r25 + 1, var_r25, 0x24U);
+        }
+    }
+    #undef var_r26
+
+    temp_r28 = lbl_8027CC58[temp_r27_2];
+    var_r6 = temp_r28->unk0;
+    temp_r28->unk0[0].unk0 = infoWork.unk20;
+    temp_r28->unk0[0].unk4 = currStageId;
+    temp_r28->unk0[1].unk0 = 0;
+    temp_r28->unk0[1].unk4 = -1;
+    temp_r28->unk0[2].unk0 = 0;
+    temp_r28->unk0[2].unk4 = -1;
+    temp_r28->unk0[3].unk0 = 0;
+    temp_r28->unk0[3].unk4 = -1;
+
+    var_r8 = lbl_802F1F98;
+    for (var_r7 = 0; var_r7 < 3 && var_r8->unk0 != 3; var_r8++)
+    {
+        if (var_r8->unk0 == 2 && var_r8->unk1 == 0)
+            break;
+        if (var_r8->unk0 == 1)
+        {
+            switch (var_r8->unk1)
+            {
+            case 0:
+            default:
+                var_r6[1].unk0 = infoWork.unk20 + var_r8->unk4;
+                var_r5 = var_r8->unk4;
+                var_r3_2 = lbl_802F1F98;
+                var_r4 = -1;
+                while (var_r3_2->unk0 != 3)
+                {
+                    if (var_r3_2->unk0 == 2 && var_r3_2->unk1 == 0
+                     && --var_r5 <= 0)
+                    {
+                        var_r4 = var_r3_2->unk4;
+                        break;
+                    }
+                    var_r3_2++;
+                }
+                var_r6[1].unk4 = var_r4;
+                break;
+            case 1:
+            case 2:
+                var_r6[1].unk0 = -1;
+                var_r6[1].unk4 = -1;
+                break;
+            }
+            var_r6++;
+            var_r7++;
+        }
+    }
+    temp_r28->unk20 = var_r7;
+    temp_r28->unk22 = -1;
+    inline1();
+}
+#else
+asm void func_80067808(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_80067808.s"
+}
+#pragma peephole on
+#endif
+
+void func_80067AD4(void)
+{
+    struct Struct8027CC58 *temp_r8 = lbl_8027CC58[modeCtrl.currPlayer];
+    int i;
+
+    for (i = 0; i < 3; i++)
+    {
+        int var = temp_r8->unk0[i+1].unk4;
+
+        if (var == infoWork.unk2E || infoWork.unk2E == -1)
+        {
+            temp_r8->unk22 = i;
+            if (infoWork.unk2E == -1)
+                temp_r8->unk0[temp_r8->unk22 + 1].unk4 = -1;
+            break;
+        }
+    }
+
+    inline1();
 }
