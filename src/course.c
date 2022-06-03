@@ -6,6 +6,7 @@
 #include "info.h"
 #include "input.h"
 #include "mode.h"
+#include "sprite.h"
 #include "stage.h"
 #include "textbox.h"
 
@@ -4595,4 +4596,104 @@ void func_80067AD4(void)
     }
 
     inline1();
+}
+
+void lbl_80067C20(struct Sprite *sprite)
+{
+    struct Struct8027CC58_sub *var_r31;
+    int var_r0;
+    int var_r4;
+    int j;
+    int i;
+    struct Struct8027CC58 *var_r27;
+    int x;
+    int y;
+
+    reset_text_draw_settings();
+    set_text_font(sprite->fontId);
+    set_text_scale(sprite->scaleX, sprite->scaleY);
+    x = sprite->x;
+    y = sprite->y;
+
+    var_r27 = &lbl_8027CC58[modeCtrl.currPlayer][2];
+    for (i = 2; i >= 0; i--, var_r27--)
+    {
+        if (var_r27->unk0[0].unk0 != 0)
+        {
+            if (i == 0)
+                set_text_mul_color(RGBA(0, 255, 0, 0));
+            set_text_pos(x, y);
+            func_80072AC0("%d(%03d)", var_r27->unk0[0].unk0, var_r27->unk0[0].unk4);
+            if (i == 0)
+                set_text_mul_color(RGBA(255, 255, 255, 0));
+            var_r0 = var_r27->unk0[0].unk0;
+            var_r4 = 6;
+            while (var_r0 != 0)
+            {
+                var_r0 /= 10;
+                if (var_r0 > 0)
+                    var_r4++;
+            }
+
+            for (j = 0; j < 3; j++)
+            {
+                var_r31 = var_r27->unk0 + j;
+                if (i > 0 && j > 0)
+                    break;
+                if (var_r31[1].unk0 == 0)
+                    break;
+
+                set_text_pos(
+                    x + sprite->scaleX * (var_r4 * 8),
+                    y + sprite->scaleY * (j * 8));
+                if (i > 0)
+                    u_draw_text("\x16>");
+                else if ((var_r27->unk20 > 1) && (j == 0))
+                    u_draw_text("\x13>");
+                else if ((var_r27->unk20 > 1) && (j == (s32) (var_r27->unk20 - 1)))
+                    u_draw_text("\x1A>");
+                else if (var_r27->unk20 > 1)
+                    u_draw_text("\x11>");
+                else
+                    u_draw_text("\x16>");
+
+                if (i > 0)
+                    break;
+
+                if (var_r31[1].unk0 == infoWork.unk20 && unpausedFrameCounter % 60 < 45)
+                    set_text_mul_color(RGBA(0, 255, 0, 0));
+                set_text_pos(
+                    x + sprite->scaleX * (var_r4 * 8) + sprite->scaleX * 16.0f,
+                    y + sprite->scaleY * (j * 8));
+                if (var_r31[1].unk4 == -1)
+                    u_draw_text("CLEAR");
+                else if (var_r31[1].unk4 == -1)  //! typo?
+                    u_draw_text("END");
+                else
+                    func_80072AC0("%d(%03d)", var_r31[1].unk0, var_r31[1].unk4);
+                set_text_mul_color(RGBA(255, 255, 255, 0));
+            }
+            x += sprite->scaleX * (var_r4 * 8) + sprite->scaleX * 16.0f;
+        }
+    }
+}
+
+void func_80067FD0(struct MemcardGameData *data)
+{
+    data->unk5844.unk90 = lbl_8027CE08[0];
+    data->unk5844.unk94 = lbl_8027CE08[1];
+    data->unk5844.unk98 = lbl_8027CE08[2];
+    data->unk5844.unk9C = lbl_8027CE08[3];
+    data->unk5844.unk2C0 = lbl_802F1FBC;
+    data->unk5844.unk2C4 = lbl_802F1FB8;
+}
+
+void func_8006800C(struct MemcardGameData *data)
+{
+    lbl_8027CE08[0] = data->unk5844.unk90;
+    lbl_8027CE08[1] = data->unk5844.unk94;
+    lbl_8027CE08[2] = data->unk5844.unk98;
+    lbl_8027CE08[3] = data->unk5844.unk9C;
+    lbl_802F1FBC = data->unk5844.unk2C0;
+    lbl_802F1FB8 = data->unk5844.unk2C4;
 }

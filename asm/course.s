@@ -2304,7 +2304,7 @@ lbl_80067C08:
 /* 80067C14 00063B34  7C 08 03 A6 */	mtlr r0
 /* 80067C18 00063B38  38 21 00 18 */	addi r1, r1, 0x18
 /* 80067C1C 00063B3C  4E 80 00 20 */	blr
-.endif
+
 .global lbl_80067C20
 lbl_80067C20:
 /* 80067C20 00063B40  7C 08 02 A6 */	mflr r0
@@ -2597,7 +2597,7 @@ func_8006800C:
 /* 8006803C 00063F5C  80 03 5B 08 */	lwz r0, 0x5b08(r3)
 /* 80068040 00063F60  90 0D 9D D8 */	stw r0, lbl_802F1FB8@sda21(r13)
 /* 80068044 00063F64  4E 80 00 20 */	blr
-
+.endif
 .section .data
 
 .if 0
@@ -6145,7 +6145,7 @@ glabel string_a_You_have_used__d_Play_Points_
 	.asciz "a/You have used %d Play Points."
 glabel string_b_c_0xff8000_a_b_Your_number_of_continues_has_been_increased_to__d__
 	.asciz "b/c/0xff8000/a/b/Your number of continues has been increased to %d !"
-.endif
+
 	.balign 4
 
 .global lbl_801BDC34
@@ -6154,6 +6154,7 @@ lbl_801BDC34:
 glabel string__d__03d_
 	.asciz "%d(%03d)"
 	.balign 4
+.endif
 
 .section .sdata2
 
@@ -6163,12 +6164,13 @@ lbl_802F4650:
 	# ROM: 0x1EE070
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
+
 .global lbl_802F4658
 lbl_802F4658:
 	# ROM: 0x1EE078
 	.4byte 0x41800000
 	.4byte 0
+.endif
 
 .section .sdata
 
@@ -6178,7 +6180,6 @@ lbl_802F0B00:
 	# ROM: 0x1EB240
 	.4byte 0x00280046
 	.4byte 0x00830000
-.endif
 
 .global lbl_802F0B08
 lbl_802F0B08:
@@ -6212,6 +6213,7 @@ lbl_802F0B20:
 	# ROM: 0x1EB260
 	.4byte 0x454E4400
 	.4byte 0
+.endif
 
 .section .sbss
 
