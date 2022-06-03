@@ -43,7 +43,7 @@ void bg_old_space_draw(void)
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
     nl2ngc_draw_model_sort_translucent_alt2(NLOBJ_MODEL(g_bgNlObj, 0));
     memcpy(lbl_802F1B4C, NLOBJ_MODEL(g_bgNlObj, 2), NLMODEL_HEADER(NLOBJ_MODEL(g_bgNlObj, 2))->unk4->modelSize);
-    u_apply_func_to_naomi_model_vertices(lbl_802F1B4C, lbl_8005872C, lbl_80058764);
+    u_apply_func_to_nl_model_vertices(lbl_802F1B4C, lbl_8005872C, lbl_80058764);
     nl2ngc_draw_model_sort_none_alt2(lbl_802F1B4C);
 }
 

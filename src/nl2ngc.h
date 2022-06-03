@@ -140,8 +140,8 @@ struct NlObj
 // ? nl2ngc_draw_line_deferred();
 void nl2ngc_set_scale(float);
 void nl2ngc_set_material_color(float r, float g, float b);
-BOOL load_naomi_archive(struct NlObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
-BOOL free_naomi_archive(struct NlObj **pobj, struct TPL **ptpl);
+BOOL load_nlobj(struct NlObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
+BOOL free_nlobj(struct NlObj **pobj, struct TPL **ptpl);
 void init_nl_model_textures(struct NlModel *model, struct TPL *tpl);
 void nl2ngc_draw_model_sort_translucent(struct NlModel *);
 void nl2ngc_draw_model_sort_none(struct NlModel *model);

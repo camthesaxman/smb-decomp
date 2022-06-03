@@ -767,7 +767,7 @@ bg_old_water_draw:
 /* 8005AD04 00056C24  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD08 00056C28  38 A4 AE A8 */	addi r5, r4, lbl_8005AEA8@l
 /* 8005AD0C 00056C2C  38 80 00 00 */	li r4, 0
-/* 8005AD10 00056C30  4B FE D1 09 */	bl u_apply_func_to_naomi_model_vertices
+/* 8005AD10 00056C30  4B FE D1 09 */	bl u_apply_func_to_nl_model_vertices
 /* 8005AD14 00056C34  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005AD18 00056C38  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
@@ -784,7 +784,7 @@ bg_old_water_draw:
 /* 8005AD48 00056C68  3C A0 80 06 */	lis r5, lbl_8005B0C8@ha
 /* 8005AD4C 00056C6C  38 84 AF B8 */	addi r4, r4, lbl_8005AFB8@l
 /* 8005AD50 00056C70  38 A5 B0 C8 */	addi r5, r5, lbl_8005B0C8@l
-/* 8005AD54 00056C74  4B FE D0 C5 */	bl u_apply_func_to_naomi_model_vertices
+/* 8005AD54 00056C74  4B FE D0 C5 */	bl u_apply_func_to_nl_model_vertices
 /* 8005AD58 00056C78  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005AD5C 00056C7C  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD60 00056C80  4B FA CB 51 */	bl mathutil_mtxA_from_mtx

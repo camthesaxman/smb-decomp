@@ -683,7 +683,7 @@ lbl_800572F0:
 /* 80057314 00053234  38 A3 79 40 */	addi r5, r3, lbl_80057940@l
 /* 80057318 00053238  80 64 00 30 */	lwz r3, 0x30(r4)
 /* 8005731C 0005323C  38 80 00 00 */	li r4, 0
-/* 80057320 00053240  4B FF 0A F9 */	bl u_apply_func_to_naomi_model_vertices
+/* 80057320 00053240  4B FF 0A F9 */	bl u_apply_func_to_nl_model_vertices
 lbl_80057324:
 /* 80057324 00053244  80 01 01 0C */	lwz r0, 0x10c(r1)
 /* 80057328 00053248  CB E1 01 00 */	lfd f31, 0x100(r1)

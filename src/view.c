@@ -431,7 +431,7 @@ void view_animate_stage(void)
         while (dyn->modelName != NULL)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
-            u_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
+            u_apply_func_to_nl_model_vertices(dyn->tempModel, dyn->posNrmTexFunc, dyn->posColorTexFunc);
             dyn++;
         }
     }

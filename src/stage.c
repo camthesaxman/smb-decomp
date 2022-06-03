@@ -249,7 +249,7 @@ void ev_stage_main(void)
         {
             memcpy(dyn->tempModel, dyn->origModel, NLMODEL_HEADER(dyn->origModel)->unk4->modelSize);
             // responsible for warping vertices in the Bonus Wave model
-            u_apply_func_to_naomi_model_vertices(dyn->tempModel, dyn->posNrmTexFunc,
+            u_apply_func_to_nl_model_vertices(dyn->tempModel, dyn->posNrmTexFunc,
                                                  dyn->posColorTexFunc);
             dyn++;
         }
@@ -512,7 +512,7 @@ void load_stage(int stageId)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_naomi_archive(&g_stageNlObj, &g_stageNlTpl);
+        free_nlobj(&g_stageNlObj, &g_stageNlTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -567,7 +567,7 @@ void unload_stage(void)
             free_gma(decodedStageGmaPtr);
             decodedStageGmaPtr = NULL;
         }
-        free_naomi_archive(&g_stageNlObj, &g_stageNlTpl);
+        free_nlobj(&g_stageNlObj, &g_stageNlTpl);
         free_stagedef();
 
         OSSetCurrentHeap(oldHeap);
@@ -678,7 +678,7 @@ void load_stage_files(int stageId)
         {
             sprintf(gmaName, "st%03d_p.lz", stageId);
             sprintf(tplName, "st%03d.lz", stageId);
-            load_naomi_archive(&g_stageNlObj, &g_stageNlTpl, gmaName, tplName);
+            load_nlobj(&g_stageNlObj, &g_stageNlTpl, gmaName, tplName);
         }
         OSSetCurrentHeap(oldHeap);
         DVDChangeDir("/test");
@@ -711,7 +711,7 @@ FORCE_BSS_ORDER(lbl_80209488)
 FORCE_BSS_ORDER(lbl_802095A8)
 FORCE_BSS_ORDER(lbl_802099E8)
 
-static struct NlObj **naomiObjList[] = {&g_stageNlObj, &g_commonNlObj, NULL};
+static struct NlObj **nlObjList[] = {&g_stageNlObj, &g_commonNlObj, NULL};
 
 void func_80044E18_inline(struct Struct8020A348 *r7)
 {
@@ -775,7 +775,7 @@ void func_80044E18(void)
             strncat(mapObjName, "_MAP", sizeof(mapObjName));  //! BUG: n is the number of chars to copy, not the total size of the buffer
             model2 = NULL;
 
-            objIter = naomiObjList;
+            objIter = nlObjList;
             while (*objIter != NULL)
             {
                 if (**objIter != NULL)
@@ -793,7 +793,7 @@ void func_80044E18(void)
                 objIter++;
             }
 
-            objIter = naomiObjList;
+            objIter = nlObjList;
             while (*objIter != NULL)
             {
                 if (**objIter != NULL)
@@ -844,7 +844,7 @@ void func_80044E18(void)
     {
         int r19_;
 
-        objIter = naomiObjList;
+        objIter = nlObjList;
         model2 = NULL;
         r19_ = 0;
 
@@ -1035,7 +1035,7 @@ void u_initialize_stuff_for_dynamic_stage_parts(int stageId)
 
         model = NULL;
         r27 = 0;
-        objIter = &naomiObjList[0];
+        objIter = &nlObjList[0];
         while (*objIter != NULL)
         {
             struct NlObj *nobj = **objIter;
@@ -1619,7 +1619,7 @@ float func_80046884(struct NlModel *model)
     lbl_8020ADE4.unk0 = model->boundSphereCenter;
     lbl_8020ADE4.unkC = 0.0f;
     lbl_8020ADE4.unk10 = 0.0f;
-    u_apply_func_to_naomi_model_vertices(model, u_some_stage_vtx_callback_1,
+    u_apply_func_to_nl_model_vertices(model, u_some_stage_vtx_callback_1,
                                          u_some_stage_vtx_callback_2);
     return lbl_8020ADE4.unk10;
 }
@@ -2357,7 +2357,7 @@ void draw_stage_preview(void)
     }
 }
 
-void u_apply_func_to_naomi_model_vertices(struct NlModel *model,
+void u_apply_func_to_nl_model_vertices(struct NlModel *model,
                                           void (*b)(struct NlVtxTypeB *),
                                           void (*c)(struct NlVtxTypeA *))
 {
@@ -2375,18 +2375,18 @@ void u_apply_func_to_naomi_model_vertices(struct NlModel *model,
             break;
         case -3: // display list has pos, color, tex
             if (c != NULL)
-                u_apply_func_to_naomi_dl_pos_color_tex((void *)r6->dispListStart, r31, c);
+                u_apply_func_to_nl_disp_list_type_a((void *)r6->dispListStart, r31, c);
             break;
         default: // display list has pos, normal, tex
             if (b != NULL)
-                u_apply_func_to_naomi_dl_pos_nrm_tex((void *)r6->dispListStart, r31, b);
+                u_apply_func_to_nl_disp_list_type_b((void *)r6->dispListStart, r31, b);
             break;
         }
         r6 = r31;
     }
 }
 
-void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
+void u_apply_func_to_nl_disp_list_type_b(struct NlDispList *dl, void *end,
                                           void (*func)(struct NlVtxTypeB *))
 {
     int i;
@@ -2435,8 +2435,8 @@ void u_apply_func_to_naomi_dl_pos_nrm_tex(struct NlDispList *dl, void *end,
     }
 }
 
-// duplicate of u_apply_func_to_naomi_dl_pos_nrm_tex
-void u_apply_func_to_naomi_dl_pos_color_tex(struct NlDispList *dl, void *end,
+// duplicate of u_apply_func_to_nl_disp_list_type_b
+void u_apply_func_to_nl_disp_list_type_a(struct NlDispList *dl, void *end,
                                             void (*func)(struct NlVtxTypeA *))
 {
     int i;

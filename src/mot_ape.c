@@ -999,7 +999,7 @@ void mot_ape_init(void)
     mathutil_mtxA_to_mtx(lbl_802B4820);
     mathutil_mtxA_pop();
     func_8008B0AC();
-    load_naomi_archive(&apeFaceObj, &apeFaceTpl, "ape/face_p.lz", "ape/face.lz");
+    load_nlobj(&apeFaceObj, &apeFaceTpl, "ape/face_p.lz", "ape/face.lz");
 }
 
 void func_8008B0AC(void)
