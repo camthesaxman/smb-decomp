@@ -139,7 +139,6 @@ SOURCES := \
 	asm/bg_pilot.s \
 	src/bg_end.c \
 	src/course.c \
-	asm/course.s \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \

@@ -11,6 +11,8 @@
 
 struct Item itemInfo[256];
 
+s16 lbl_802F1FC8;
+
 #pragma force_active on
 char *itemNames[] =
 {

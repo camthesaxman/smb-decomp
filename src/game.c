@@ -174,7 +174,7 @@ void submode_game_ready_init_func(void)
             u_init_player_data_1();
         else
             u_init_player_data_2();
-        level_num_to_stage_id(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
+        floor_num_to_stage_id(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
         break;
     }
     load_stage(loadingStageId);

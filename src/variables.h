@@ -61,7 +61,7 @@ extern const struct Struct8003699C_child_child *const lbl_80116634[];
 // extern ? lbl_801179B8;
 // extern ? lbl_801179C4;
 // extern ? s_bonusStages;
-// extern ? lbl_80117A04;
+// extern ? courseFloorCounts;
 // extern ? lbl_80117A38;
 // extern ? lbl_80117A48;
 // extern ? lbl_80117A58;

@@ -191,7 +191,7 @@ static void sel_stage_handle_input(void)
             r3 = stageSelection.levelNum;
 
         stageSelection.levelNum = r3;
-        loadingStageIdRequest = level_num_to_stage_id(modeCtrl.levelSet, stageSelection.levelNum, modeCtrl.levelSetFlags);
+        loadingStageIdRequest = floor_num_to_stage_id(modeCtrl.levelSet, stageSelection.levelNum, modeCtrl.levelSetFlags);
     }
     if (lbl_0000185D != loadingStageIdRequest)
     {
