@@ -10,7 +10,6 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "obj_collision.h"
-#include "functions.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"

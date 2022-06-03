@@ -164,7 +164,7 @@ struct BGBonusWork
     struct StageBgModel *mainModel;
     struct GMAModel *shotstarModel;
     struct GMAModel *starlightModel;
-    s32 startpointCount;
+    s32 starpointCount;
     struct BGBonusStarpoint starpoints[64];
     GXTexObj *lightmapTexObjs;
     GXTexObj *lightmapATexObjs;

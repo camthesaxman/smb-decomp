@@ -50,7 +50,7 @@ void bg_bonus_init(void)
     // find models
     if (work->unk0 == 0)
     {
-        work->startpointCount = 0;
+        work->starpointCount = 0;
         u_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
         work->unk0 = 1;
     }
@@ -66,7 +66,7 @@ void bg_bonus_init(void)
         bonus_main_find_proc);
 
     starpoint = work->starpoints;
-    for (i = work->startpointCount; i > 0; i--, starpoint++)
+    for (i = work->starpointCount; i > 0; i--, starpoint++)
     {
         starpoint->unkC = rand() & 0x7FFF;
         starpoint->unkE = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
@@ -85,7 +85,7 @@ void bg_bonus_main(void)
         return;
 
     starpoint = work->starpoints;
-    for (i = work->startpointCount; i > 0; i--, starpoint++)
+    for (i = work->starpointCount; i > 0; i--, starpoint++)
     {
         float f2;
         starpoint->unkC += starpoint->unkE;
@@ -147,7 +147,7 @@ void bg_bonus_draw(void)
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
     starlightModel = work->starlightModel;
-    for (i = work->startpointCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
+    for (i = work->starpointCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
     {
         float f30 = (starpoint->red + starpoint->green + starpoint->blue) * 0.75f;
 
@@ -295,12 +295,12 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
         work->lightmapATexObjs = entry->model->texObjs;
         break;
     case 4:  // STARPOINT
-        if (work->startpointCount < 64)
+        if (work->starpointCount < 64)
         {
-            struct BGBonusStarpoint *starpoint = &work->starpoints[work->startpointCount];
+            struct BGBonusStarpoint *starpoint = &work->starpoints[work->starpointCount];
 
             starpoint->u_pos = entry->model->boundSphereCenter;
-            work->startpointCount++;
+            work->starpointCount++;
         }
         break;
     }
