@@ -1640,15 +1640,3 @@ lbl_801B9F64:
 .global lbl_8027CC28
 lbl_8027CC28:
 	.skip 0x30
-.global lbl_8027CC58
-lbl_8027CC58:
-	.skip 0x1B0
-.global lbl_8027CE08
-lbl_8027CE08:
-	.skip 0x10
-.global lbl_8027CE18
-lbl_8027CE18:
-	.skip 0xC
-.global lbl_8027CE24
-lbl_8027CE24:
-	.skip 0x34

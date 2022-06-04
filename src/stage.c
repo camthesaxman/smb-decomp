@@ -7,6 +7,7 @@
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "global.h"
 #include "gma.h"
@@ -1213,15 +1214,15 @@ int get_stage_background(int stageId)
 
     if (gameSubmode == SMD_GAME_ENDING_INIT)
     {
-        switch (modeCtrl.levelSet)
+        switch (modeCtrl.difficulty)
         {
-        case LVLSET_BEGINNER:
+        case DIFFICULTY_BEGINNER:
             bg = BG_TYPE_BLUESKY_A;
             break;
-        case LVLSET_ADVANCED:
+        case DIFFICULTY_ADVANCED:
             bg = BG_TYPE_SUNSET_C;
             break;
-        case LVLSET_EXPERT:
+        case DIFFICULTY_EXPERT:
         default:
             bg = BG_TYPE_NIGHT_B;
             break;
@@ -1241,11 +1242,11 @@ int get_stage_background(int stageId)
 int get_stage_background_2(int stageId)
 {
     int bg;
-    int backup = infoWork.unk20;
+    int currFloor = infoWork.currFloor;
 
-    infoWork.unk20++;
+    infoWork.currFloor++;
     bg = get_stage_background(stageId);
-    infoWork.unk20 = backup;
+    infoWork.currFloor = currFloor;
     return bg;
 }
 

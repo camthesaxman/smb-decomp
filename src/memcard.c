@@ -8,6 +8,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "course.h"
 #include "event.h"
 #include "input.h"
 #include "mathutil.h"

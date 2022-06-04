@@ -48,7 +48,7 @@ int u_get_next_stage_id(void);
 int func_80017004(void);
 u32 lose_life(void);
 void func_80017140(void);
-// ? get_next_player();
+int get_next_player(void);
 void u_init_player_data_1(void);
 void u_init_player_data_2(void);
 void mark_player_finished(int);

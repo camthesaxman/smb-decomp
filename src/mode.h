@@ -220,16 +220,16 @@ enum
 
 enum
 {
-    LVLSET_BEGINNER,
-    LVLSET_ADVANCED,
-    LVLSET_EXPERT,  // or Master (also referred to as Extra 2 in some places)
+    DIFFICULTY_BEGINNER,
+    DIFFICULTY_ADVANCED,
+    DIFFICULTY_EXPERT,
 };
 
 enum
 {
     // (1 << 2) = used a continue?
-    LVLSET_FLAG_EXTRA = (1 << 3),
-    LVLSET_FLAG_MASTER = (1 << 4),
+    COURSE_FLAG_EXTRA = (1 << 3),
+    COURSE_FLAG_MASTER = (1 << 4),
 };
 
 enum
@@ -248,8 +248,8 @@ enum
 struct ModeControl
 {
     s32 submodeTimer;
-    s32 levelSet;
-    u32 levelSetFlags;
+    s32 difficulty;
+    u32 courseFlags;
     u8 fillerC[0x10-0xC];
     s32 unk10;
     u32 unk14;

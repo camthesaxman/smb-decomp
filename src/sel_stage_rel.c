@@ -9,6 +9,7 @@
 #include "bitmap.h"
 #include "ball.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "game.h"
 #include "info.h"
@@ -88,12 +89,12 @@ static void sel_stage_init(void)
 
     func_800972CC();
     camera_set_state(12);
-    lbl_802F1FA4 = 0;
+    u_isCompetitionModeCourse = 0;
     func_800123DC();
     create_sel_stage_sprites();
     dummy_func_C90();
     func_800668A0();
-    loadingStageId = infoWork.unk2E;
+    loadingStageId = infoWork.u_currStageId;
     start_screen_fade(FADE_IN, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
@@ -107,21 +108,21 @@ static void sel_stage_handle_input(void)
 
     if (CONTROLLER_SOMETHING(0, PAD_BUTTON_UP))
     {
-        if (--stageSelection.levelSet < 0)
-            stageSelection.levelSet = 7;
+        if (--stageSelection.difficulty < 0)
+            stageSelection.difficulty = 7;
     }
     else if (CONTROLLER_SOMETHING(0, PAD_BUTTON_DOWN))
     {
-        if (++stageSelection.levelSet >= 8)
-           stageSelection.levelSet = 0;
+        if (++stageSelection.difficulty >= 8)
+           stageSelection.difficulty = 0;
     }
 
-    switch (stageSelection.levelSet)
+    switch (stageSelection.difficulty)
     {
     case 0:  // all stages
-        modeCtrl.levelSetFlags &= ~(1 << 0);
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.courseFlags &= ~(1 << 0);
+        modeCtrl.courseFlags &= ~COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
         {
             if (--loadingStageIdRequest < 1)
@@ -134,49 +135,49 @@ static void sel_stage_handle_input(void)
         }
         break;
     case 1:  // Beginner
-        modeCtrl.levelSet = LVLSET_BEGINNER;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_BEGINNER;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags &= ~COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 2:  // Advanced
-        modeCtrl.levelSet = LVLSET_ADVANCED;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_ADVANCED;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags &= ~COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 3:  // Expert
-        modeCtrl.levelSet = LVLSET_EXPERT;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_EXPERT;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags &= ~COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 4:  // Beginner Extra
-        modeCtrl.levelSet = LVLSET_BEGINNER;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_BEGINNER;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags |=  COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 5:  // Advanced Extra
-        modeCtrl.levelSet = LVLSET_ADVANCED;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_ADVANCED;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags |=  COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 6:  // Expert Extra
-        modeCtrl.levelSet = LVLSET_EXPERT;
-        modeCtrl.levelSetFlags |=  (1 << 0);
-        modeCtrl.levelSetFlags |=  LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags &= ~LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_EXPERT;
+        modeCtrl.courseFlags |=  (1 << 0);
+        modeCtrl.courseFlags |=  COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags &= ~COURSE_FLAG_MASTER;
         break;
     case 7:  // Master
-        modeCtrl.levelSet = LVLSET_EXPERT;
-        modeCtrl.levelSetFlags |= (1 << 0);
-        modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
-        modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
+        modeCtrl.difficulty = DIFFICULTY_EXPERT;
+        modeCtrl.courseFlags |= (1 << 0);
+        modeCtrl.courseFlags |= COURSE_FLAG_EXTRA;
+        modeCtrl.courseFlags |= COURSE_FLAG_MASTER;
         break;
     }
-    if (stageSelection.levelSet != 0)
+    if (stageSelection.difficulty != 0)
     {
         if (CONTROLLER_SOMETHING(0, PAD_BUTTON_LEFT))
             stageSelection.levelNum--;
@@ -185,13 +186,13 @@ static void sel_stage_handle_input(void)
 
         if (stageSelection.levelNum < 1)
             r3 = 1;
-        else if (stageSelection.levelNum > get_last_level_num_of_set(modeCtrl.levelSet, modeCtrl.levelSetFlags))
-            r3 = get_last_level_num_of_set(modeCtrl.levelSet, modeCtrl.levelSetFlags);
+        else if (stageSelection.levelNum > course_floor_count(modeCtrl.difficulty, modeCtrl.courseFlags))
+            r3 = course_floor_count(modeCtrl.difficulty, modeCtrl.courseFlags);
         else
             r3 = stageSelection.levelNum;
 
         stageSelection.levelNum = r3;
-        loadingStageIdRequest = level_num_to_stage_id(modeCtrl.levelSet, stageSelection.levelNum, modeCtrl.levelSetFlags);
+        loadingStageIdRequest = floor_to_stage_id(modeCtrl.difficulty, stageSelection.levelNum, modeCtrl.courseFlags);
     }
     if (lbl_0000185D != loadingStageIdRequest)
     {
@@ -200,7 +201,7 @@ static void sel_stage_handle_input(void)
         preload_stage_files(loadingStageIdRequest);
         lbl_0000185D = loadingStageIdRequest;
     }
-    infoWork.unk2E = loadingStageIdRequest;
+    infoWork.u_currStageId = loadingStageIdRequest;
     loadingStageId = loadingStageIdRequest;
     if (lbl_0000185D != currStageId && !is_load_queue_not_empty())
     {

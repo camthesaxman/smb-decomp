@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "adv.h"
+#include "course.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -10,6 +11,8 @@
 #include "stcoli.h"
 
 struct Item itemPool[256];
+
+s16 lbl_802F1FC8;
 
 #pragma force_active on
 char *itemNames[] =
@@ -163,7 +166,7 @@ void ev_item_init(void)
     case GAMETYPE_MAIN_COMPETITION:
         if (is_bonus_stage(currStageId) != 0
          || gameMode == MD_SEL
-         || (modeCtrl.levelSetFlags & (1 << 12))
+         || (modeCtrl.courseFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
             spawn_stage_banana_items(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;

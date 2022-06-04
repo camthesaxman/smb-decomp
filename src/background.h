@@ -406,5 +406,6 @@ void bg_end_init(void);
 void bg_end_main(void);
 void bg_end_finish(void);
 void bg_end_draw(void);
+void bg_end_interact(int);
 
 #endif

@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "input.h"
 #include "info.h"
 #include "item.h"
@@ -25,11 +26,13 @@ s32 lbl_802F1CA8;
 
 struct Struct801F3A58 infoWork;
 
+static void func_80023AF4(void);
+
 void func_80022F14(void)
 {
     infoWork.unk8 = 0;
     infoWork.unk1E = 1;
-    infoWork.unk20 = 1;
+    infoWork.currFloor = 1;
     infoWork.livesLost = 0;
     infoWork.continuesUsed = 0;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
@@ -48,7 +51,7 @@ void ev_info_init(void)
 
     // Initialize timer
     infoWork.timerCurr = 60 * 60;
-    if (modeCtrl.levelSetFlags & 1)
+    if (modeCtrl.courseFlags & 1)
         infoWork.timerCurr = u_get_stage_time_limit();
     if (gameSubmode == SMD_ADV_INFO_INIT)
         infoWork.timerCurr = 90 * 60;
@@ -58,7 +61,7 @@ void ev_info_init(void)
 
     if (is_bonus_stage(currStageId))
         infoWork.flags |= INFO_FLAG_BONUS_STAGE;
-    if (func_80067264(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags) != 0)
+    if (is_final_floor(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags) != 0)
         infoWork.flags |= INFO_FLAG_FINAL_FLOOR;
 }
 
@@ -376,23 +379,23 @@ void ev_info_dest(void)
     func_80023AF4();
 }
 
-void func_80023AF4(void)
+static void func_80023AF4(void)
 {
     int unk8 = infoWork.unk8;
     int unk1E = infoWork.unk1E;
-    int unk20 = infoWork.unk20;
+    int currFloor = infoWork.currFloor;
     int livesLost = infoWork.livesLost;
     int continuesUsed = infoWork.continuesUsed;
-    int unk2E = infoWork.unk2E;
+    int u_currStageId = infoWork.u_currStageId;
 
     memset(&infoWork, 0, sizeof(infoWork));
 
     infoWork.unk8  = unk8;
     infoWork.unk1E = unk1E;
-    infoWork.unk20 = unk20;
+    infoWork.currFloor = currFloor;
     infoWork.livesLost = livesLost;
     infoWork.continuesUsed = continuesUsed;
-    infoWork.unk2E = unk2E;
+    infoWork.u_currStageId = u_currStageId;
     infoWork.unk22 = 1;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         lbl_802F1CA8 = 0;
@@ -477,7 +480,7 @@ void func_80023DB8(struct Ball *ball)
         return;
 
     r5 = lbl_802F1CB0[ball->rank];
-    if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->winStreak > 0)
+    if ((modeCtrl.courseFlags & (1 << 11)) && ball->winStreak > 0)
         r5 *= ball->winStreak;
     ball->unk138 = r5;
 }
@@ -582,7 +585,7 @@ void rank_icon_sprite_main(s8 *dummy, struct Sprite *sprite)
                 sprintf(bananaSprite->text, "bonus banana.pic");
             }
         }
-        if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->winStreak > 1)
+        if ((modeCtrl.courseFlags & (1 << 11)) && ball->winStreak > 1)
         {
             struct Sprite *sprite = create_sprite();
 

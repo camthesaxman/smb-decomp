@@ -303,9 +303,9 @@ void ev_camera_main(void)
                 }
                 break;
             case 6:
-                switch (modeCtrl.levelSet)
+                switch (modeCtrl.difficulty)
                 {
-                case LVLSET_BEGINNER:
+                case DIFFICULTY_BEGINNER:
                     if (camera->timerCurr <= 1140)
                     {
                         camera->sub28.unk28 = 0.0f;
@@ -2253,7 +2253,7 @@ void camera_func_26(struct Camera *camera, struct Ball *ball)
 
     if (camera->state == 26)
     {
-        if ((modeCtrl.levelSetFlags & (1 << 2)) && modeCtrl.unk10 == 1)
+        if ((modeCtrl.courseFlags & (1 << 2)) && modeCtrl.unk10 == 1)
         {
             sp1C.z = -5.0f;
             sp10.z = -3.6f;

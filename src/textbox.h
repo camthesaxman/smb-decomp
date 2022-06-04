@@ -35,10 +35,9 @@ struct TextBox
     /*0x14*/ s8 numColumns;  // number of text columns that the box can fit
     /*0x15*/ s8 numRows;  // number of text rows that the box can fit
     /*0x16*/ s8 style;
-    u8 unk17;
-    u8 unk18;
-    u8 unk19;
-    u8 filler1A[2];
+    s8 unk17;
+    s8 unk18;
+    s8 unk19;
     /*0x1C*/ void (*callback)(struct TextBox *);
     /*0x20*/ s32 id;
     /*0x24*/ s32 bgColor;
@@ -51,7 +50,7 @@ void textbox_main(void);
 void textbox_destroy_all(void);
 void textbox_draw_all(void);
 void textbox_set_properties(int id, int state, struct TextBox *template);
-void textbox_set_text(int id, const char *str);
-void textbox_set_textf(int id, const char *fmt, ...);
+void textbox_add_text(int id, const char *str);
+void textbox_add_textf(int id, const char *fmt, ...);
 
 #endif

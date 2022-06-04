@@ -5956,37 +5956,6 @@ lbl_802F3CF0:
 	.4byte 0xBEE66666
 	.4byte 0
 
-.section .rodata
-
-    .balign 8
-.global lbl_801179E8
-lbl_801179E8:
-	# ROM: 0x1149E8
-	.4byte 0x0000005B
-	.4byte 0x0000005C
-	.4byte 0x0000005D
-	.4byte 0x0000005E
-	.4byte 0x0000005F
-	.4byte 0x00000086
-	.4byte 0
-
-.global lbl_80117A04
-lbl_80117A04:
-	# ROM: 0x114A04
-	.4byte 0x0000000A
-	.4byte 0x0000001E
-	.4byte 0x00000032
-	.4byte 0x00000003
-	.4byte 0x00000005
-	.4byte 0x0000000A
-	.4byte 0x0000000A
-	.4byte 0x0000000A
-	.4byte 0x0000000A
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 .section .data
 
 .global lbl_801B8858

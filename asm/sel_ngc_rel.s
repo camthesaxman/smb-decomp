@@ -143,7 +143,7 @@ lbl_00000234:
 /* 00000254 39600000 */ li r11, 0
 /* 00000258 B0E80002 */ sth r7, 2(r8)
 /* 0000025C 3D400000 */ lis r10, lbl_10000000@ha
-/* 00000260 3CC00000 */ lis r6, lbl_802F1FA4@ha
+/* 00000260 3CC00000 */ lis r6, u_isCompetitionModeCourse@ha
 /* 00000264 90E80004 */ stw r7, 4(r8)
 /* 00000268 3CA00000 */ lis r5, lbl_801EED50@ha
 /* 0000026C 3C800000 */ lis r4, lbl_802F1FB0@ha
@@ -165,7 +165,7 @@ lbl_00000234:
 /* 000002AC B1280028 */ sth r9, 0x28(r8)
 /* 000002B0 B0E8002A */ sth r7, 0x2a(r8)
 /* 000002B4 90E8002C */ stw r7, 0x2c(r8)
-/* 000002B8 90E60000 */ stw r7, lbl_802F1FA4@l(r6)
+/* 000002B8 90E60000 */ stw r7, u_isCompetitionModeCourse@l(r6)
 /* 000002BC 88050000 */ lbz r0, lbl_801EED50@l(r5)
 /* 000002C0 7C000774 */ extsb r0, r0
 /* 000002C4 90040000 */ stw r0, lbl_802F1FB0@l(r4)
@@ -326,15 +326,15 @@ lbl_000004FC:
 /* 00000508 480000A0 */ b lbl_000005A8
 lbl_0000050C:
 /* 0000050C 38600006 */ li r3, 6
-/* 00000510 4BFFFC79 */ bl func_800675E0
+/* 00000510 4BFFFC79 */ bl u_is_minigame_unlocked
 /* 00000514 2C030000 */ cmpwi r3, 0
 /* 00000518 41820034 */ beq lbl_0000054C
 /* 0000051C 38600007 */ li r3, 7
-/* 00000520 4BFFFC69 */ bl func_800675E0
+/* 00000520 4BFFFC69 */ bl u_is_minigame_unlocked
 /* 00000524 2C030000 */ cmpwi r3, 0
 /* 00000528 41820024 */ beq lbl_0000054C
 /* 0000052C 38600008 */ li r3, 8
-/* 00000530 4BFFFC59 */ bl func_800675E0
+/* 00000530 4BFFFC59 */ bl u_is_minigame_unlocked
 /* 00000534 2C030000 */ cmpwi r3, 0
 /* 00000538 41820014 */ beq lbl_0000054C
 /* 0000053C 38600006 */ li r3, 6
@@ -348,15 +348,15 @@ lbl_0000054C:
 /* 00000558 48000050 */ b lbl_000005A8
 lbl_0000055C:
 /* 0000055C 38600006 */ li r3, 6
-/* 00000560 4BFFFC29 */ bl func_800675E0
+/* 00000560 4BFFFC29 */ bl u_is_minigame_unlocked
 /* 00000564 2C030000 */ cmpwi r3, 0
 /* 00000568 41820034 */ beq lbl_0000059C
 /* 0000056C 38600007 */ li r3, 7
-/* 00000570 4BFFFC19 */ bl func_800675E0
+/* 00000570 4BFFFC19 */ bl u_is_minigame_unlocked
 /* 00000574 2C030000 */ cmpwi r3, 0
 /* 00000578 41820024 */ beq lbl_0000059C
 /* 0000057C 38600008 */ li r3, 8
-/* 00000580 4BFFFC09 */ bl func_800675E0
+/* 00000580 4BFFFC09 */ bl u_is_minigame_unlocked
 /* 00000584 2C030000 */ cmpwi r3, 0
 /* 00000588 41820014 */ beq lbl_0000059C
 /* 0000058C 38600006 */ li r3, 6
@@ -2050,7 +2050,7 @@ lbl_00001C78:
 /* 00001CD8 3C600000 */ lis r3, lbl_0001225C@ha
 /* 00001CDC 38830000 */ addi r4, r3, lbl_0001225C@l
 /* 00001CE0 38600001 */ li r3, 1
-/* 00001CE4 4BFFE4A5 */ bl textbox_set_text
+/* 00001CE4 4BFFE4A5 */ bl textbox_add_text
 /* 00001CE8 38000001 */ li r0, 1
 /* 00001CEC 901D0000 */ stw r0, 0(r29)
 /* 00001CF0 38000000 */ li r0, 0
@@ -2274,19 +2274,19 @@ lbl_00001FF8:
 /* 00001FF8 3B400001 */ li r26, 1
 lbl_00001FFC:
 /* 00001FFC 38600006 */ li r3, 6
-/* 00002000 4BFFE189 */ bl func_800675E0
+/* 00002000 4BFFE189 */ bl u_is_minigame_unlocked
 /* 00002004 2C030000 */ cmpwi r3, 0
 /* 00002008 41820008 */ beq lbl_00002010
 /* 0000200C 3B5A0001 */ addi r26, r26, 1
 lbl_00002010:
 /* 00002010 38600007 */ li r3, 7
-/* 00002014 4BFFE175 */ bl func_800675E0
+/* 00002014 4BFFE175 */ bl u_is_minigame_unlocked
 /* 00002018 2C030000 */ cmpwi r3, 0
 /* 0000201C 41820008 */ beq lbl_00002024
 /* 00002020 3B5A0001 */ addi r26, r26, 1
 lbl_00002024:
 /* 00002024 38600008 */ li r3, 8
-/* 00002028 4BFFE161 */ bl func_800675E0
+/* 00002028 4BFFE161 */ bl u_is_minigame_unlocked
 /* 0000202C 2C030000 */ cmpwi r3, 0
 /* 00002030 41820008 */ beq lbl_00002038
 /* 00002034 3B5A0001 */ addi r26, r26, 1
@@ -2309,8 +2309,8 @@ lbl_00002068:
 /* 0000206C 418001D8 */ blt lbl_00002244
 /* 00002070 2C1A0003 */ cmpwi r26, 3
 /* 00002074 418101D0 */ bgt lbl_00002244
-/* 00002078 3C600000 */ lis r3, lbl_802F1FBC@ha
-/* 0000207C 80030000 */ lwz r0, lbl_802F1FBC@l(r3)
+/* 00002078 3C600000 */ lis r3, totalPlayPoints@ha
+/* 0000207C 80030000 */ lwz r0, totalPlayPoints@l(r3)
 /* 00002080 280009C4 */ cmplwi r0, 0x9c4
 /* 00002084 418001C0 */ blt lbl_00002244
 /* 00002088 38600017 */ li r3, 0x17
@@ -2326,19 +2326,19 @@ lbl_000020A4:
 /* 000020AC 40820078 */ bne lbl_00002124
 /* 000020B0 3B400000 */ li r26, 0
 /* 000020B4 38600006 */ li r3, 6
-/* 000020B8 4BFFE0D1 */ bl func_800675E0
+/* 000020B8 4BFFE0D1 */ bl u_is_minigame_unlocked
 /* 000020BC 2C030000 */ cmpwi r3, 0
 /* 000020C0 41820008 */ beq lbl_000020C8
 /* 000020C4 3B400001 */ li r26, 1
 lbl_000020C8:
 /* 000020C8 38600007 */ li r3, 7
-/* 000020CC 4BFFE0BD */ bl func_800675E0
+/* 000020CC 4BFFE0BD */ bl u_is_minigame_unlocked
 /* 000020D0 2C030000 */ cmpwi r3, 0
 /* 000020D4 41820008 */ beq lbl_000020DC
 /* 000020D8 3B5A0001 */ addi r26, r26, 1
 lbl_000020DC:
 /* 000020DC 38600008 */ li r3, 8
-/* 000020E0 4BFFE0A9 */ bl func_800675E0
+/* 000020E0 4BFFE0A9 */ bl u_is_minigame_unlocked
 /* 000020E4 2C030000 */ cmpwi r3, 0
 /* 000020E8 41820008 */ beq lbl_000020F0
 /* 000020EC 3B5A0001 */ addi r26, r26, 1
@@ -2389,8 +2389,8 @@ lbl_0000215C:
 /* 00002190 90030048 */ stw r0, 0x48(r3)
 /* 00002194 480000B0 */ b lbl_00002244
 lbl_00002198:
-/* 00002198 3C600000 */ lis r3, lbl_802F1FBC@ha
-/* 0000219C 80030000 */ lwz r0, lbl_802F1FBC@l(r3)
+/* 00002198 3C600000 */ lis r3, totalPlayPoints@ha
+/* 0000219C 80030000 */ lwz r0, totalPlayPoints@l(r3)
 /* 000021A0 280009C4 */ cmplwi r0, 0x9c4
 /* 000021A4 4180006C */ blt lbl_00002210
 /* 000021A8 381E0001 */ addi r0, r30, 1
@@ -4221,15 +4221,15 @@ lbl_00003BAC:
 /* 00003BB0 A8030000 */ lha r0, currStageId@l(r3)
 /* 00003BB4 38600006 */ li r3, 6
 /* 00003BB8 901F003C */ stw r0, 0x3c(r31)
-/* 00003BBC 4BFFC5CD */ bl func_800675E0
+/* 00003BBC 4BFFC5CD */ bl u_is_minigame_unlocked
 /* 00003BC0 2C030000 */ cmpwi r3, 0
 /* 00003BC4 4182004C */ beq lbl_00003C10
 /* 00003BC8 38600007 */ li r3, 7
-/* 00003BCC 4BFFC5BD */ bl func_800675E0
+/* 00003BCC 4BFFC5BD */ bl u_is_minigame_unlocked
 /* 00003BD0 2C030000 */ cmpwi r3, 0
 /* 00003BD4 4182003C */ beq lbl_00003C10
 /* 00003BD8 38600008 */ li r3, 8
-/* 00003BDC 4BFFC5AD */ bl func_800675E0
+/* 00003BDC 4BFFC5AD */ bl u_is_minigame_unlocked
 /* 00003BE0 2C030000 */ cmpwi r3, 0
 /* 00003BE4 4182002C */ beq lbl_00003C10
 /* 00003BE8 3C600000 */ lis r3, lbl_802014E0@ha
@@ -4373,15 +4373,15 @@ lbl_00003DBC:
 /* 00003DE0 48005A74 */ b lbl_00009854
 lbl_00003DE4:
 /* 00003DE4 38600006 */ li r3, 6
-/* 00003DE8 4BFFC3A1 */ bl func_800675E0
+/* 00003DE8 4BFFC3A1 */ bl u_is_minigame_unlocked
 /* 00003DEC 2C030000 */ cmpwi r3, 0
 /* 00003DF0 4182004C */ beq lbl_00003E3C
 /* 00003DF4 38600007 */ li r3, 7
-/* 00003DF8 4BFFC391 */ bl func_800675E0
+/* 00003DF8 4BFFC391 */ bl u_is_minigame_unlocked
 /* 00003DFC 2C030000 */ cmpwi r3, 0
 /* 00003E00 4182003C */ beq lbl_00003E3C
 /* 00003E04 38600008 */ li r3, 8
-/* 00003E08 4BFFC381 */ bl func_800675E0
+/* 00003E08 4BFFC381 */ bl u_is_minigame_unlocked
 /* 00003E0C 2C030000 */ cmpwi r3, 0
 /* 00003E10 4182002C */ beq lbl_00003E3C
 /* 00003E14 3C600000 */ lis r3, lbl_802014E0@ha
@@ -4413,15 +4413,15 @@ lbl_00003E60:
 /* 00003E74 90030048 */ stw r0, 0x48(r3)
 lbl_00003E78:
 /* 00003E78 38600006 */ li r3, 6
-/* 00003E7C 4BFFC30D */ bl func_800675E0
+/* 00003E7C 4BFFC30D */ bl u_is_minigame_unlocked
 /* 00003E80 2C030000 */ cmpwi r3, 0
 /* 00003E84 41820024 */ beq lbl_00003EA8
 /* 00003E88 38600007 */ li r3, 7
-/* 00003E8C 4BFFC2FD */ bl func_800675E0
+/* 00003E8C 4BFFC2FD */ bl u_is_minigame_unlocked
 /* 00003E90 2C030000 */ cmpwi r3, 0
 /* 00003E94 41820014 */ beq lbl_00003EA8
 /* 00003E98 38600008 */ li r3, 8
-/* 00003E9C 4BFFC2ED */ bl func_800675E0
+/* 00003E9C 4BFFC2ED */ bl u_is_minigame_unlocked
 /* 00003EA0 2C030000 */ cmpwi r3, 0
 /* 00003EA4 40820008 */ bne lbl_00003EAC
 lbl_00003EA8:
@@ -4454,19 +4454,19 @@ lbl_00003EF0:
 /* 00003F00 40825954 */ bne lbl_00009854
 /* 00003F04 39E00000 */ li r15, 0
 /* 00003F08 38600006 */ li r3, 6
-/* 00003F0C 4BFFC27D */ bl func_800675E0
+/* 00003F0C 4BFFC27D */ bl u_is_minigame_unlocked
 /* 00003F10 2C030000 */ cmpwi r3, 0
 /* 00003F14 40820008 */ bne lbl_00003F1C
 /* 00003F18 39E00001 */ li r15, 1
 lbl_00003F1C:
 /* 00003F1C 38600007 */ li r3, 7
-/* 00003F20 4BFFC269 */ bl func_800675E0
+/* 00003F20 4BFFC269 */ bl u_is_minigame_unlocked
 /* 00003F24 2C030000 */ cmpwi r3, 0
 /* 00003F28 40820008 */ bne lbl_00003F30
 /* 00003F2C 3A200001 */ li r17, 1
 lbl_00003F30:
 /* 00003F30 38600008 */ li r3, 8
-/* 00003F34 4BFFC255 */ bl func_800675E0
+/* 00003F34 4BFFC255 */ bl u_is_minigame_unlocked
 /* 00003F38 2C030000 */ cmpwi r3, 0
 /* 00003F3C 40820008 */ bne lbl_00003F44
 /* 00003F40 3A400001 */ li r18, 1
@@ -4497,8 +4497,8 @@ lbl_00003F44:
 /* 00003FA0 91E30048 */ stw r15, 0x48(r3)
 /* 00003FA4 480058B0 */ b lbl_00009854
 lbl_00003FA8:
-/* 00003FA8 3C600000 */ lis r3, lbl_802F1FBC@ha
-/* 00003FAC 80030000 */ lwz r0, lbl_802F1FBC@l(r3)
+/* 00003FA8 3C600000 */ lis r3, totalPlayPoints@ha
+/* 00003FAC 80030000 */ lwz r0, totalPlayPoints@l(r3)
 /* 00003FB0 3A600000 */ li r19, 0
 /* 00003FB4 280009C4 */ cmplwi r0, 0x9c4
 /* 00003FB8 418000E4 */ blt lbl_0000409C
@@ -4768,7 +4768,7 @@ lbl_0000430C:
 /* 0000436C 4BFFBE1D */ bl textbox_set_properties
 /* 00004370 38600001 */ li r3, 1
 /* 00004374 389E0150 */ addi r4, r30, 0x150
-/* 00004378 4BFFBE11 */ bl textbox_set_text
+/* 00004378 4BFFBE11 */ bl textbox_add_text
 /* 0000437C 91F00000 */ stw r15, 0(r16)
 /* 00004380 480000C8 */ b lbl_00004448
 lbl_00004384:
@@ -6226,9 +6226,9 @@ lbl_00005790:
 /* 00005790 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00005794 38A30000 */ addi r5, r3, lbl_801EEDA8@l
 /* 00005798 38000018 */ li r0, 0x18
-/* 0000579C 3C600000 */ lis r3, lbl_802F1FA4@ha
+/* 0000579C 3C600000 */ lis r3, u_isCompetitionModeCourse@ha
 /* 000057A0 90050000 */ stw r0, 0(r5)
-/* 000057A4 38830000 */ addi r4, r3, lbl_802F1FA4@l
+/* 000057A4 38830000 */ addi r4, r3, u_isCompetitionModeCourse@l
 /* 000057A8 80040000 */ lwz r0, 0(r4)
 /* 000057AC 2C000000 */ cmpwi r0, 0
 /* 000057B0 4182009C */ beq lbl_0000584C
@@ -6294,7 +6294,7 @@ lbl_0000584C:
 /* 0000588C A8650002 */ lha r3, 2(r5)
 /* 00005890 A8850000 */ lha r4, 0(r5)
 /* 00005894 80A50004 */ lwz r5, 4(r5)
-/* 00005898 4BFFA8F1 */ bl level_num_to_stage_id
+/* 00005898 4BFFA8F1 */ bl floor_to_stage_id
 /* 0000589C 7C6F1B79 */ or. r15, r3, r3
 /* 000058A0 40820008 */ bne lbl_000058A8
 /* 000058A4 39E00001 */ li r15, 1
@@ -6362,7 +6362,7 @@ lbl_0000597C:
 /* 00005990 A8650002 */ lha r3, 2(r5)
 /* 00005994 A8850000 */ lha r4, 0(r5)
 /* 00005998 80A50004 */ lwz r5, 4(r5)
-/* 0000599C 4BFFA7ED */ bl level_num_to_stage_id
+/* 0000599C 4BFFA7ED */ bl floor_to_stage_id
 /* 000059A0 7C771B79 */ or. r23, r3, r3
 /* 000059A4 40820008 */ bne lbl_000059AC
 /* 000059A8 3AE00001 */ li r23, 1
@@ -6401,9 +6401,9 @@ lbl_00005A1C:
 /* 00005A20 38830000 */ addi r4, r3, lbl_801EEDA8@l
 /* 00005A24 38000019 */ li r0, 0x19
 /* 00005A28 90040000 */ stw r0, 0(r4)
-/* 00005A2C 3C600000 */ lis r3, lbl_802F1FA4@ha
+/* 00005A2C 3C600000 */ lis r3, u_isCompetitionModeCourse@ha
 /* 00005A30 38C00000 */ li r6, 0
-/* 00005A34 90C30000 */ stw r6, lbl_802F1FA4@l(r3)
+/* 00005A34 90C30000 */ stw r6, u_isCompetitionModeCourse@l(r3)
 /* 00005A38 3CA00000 */ lis r5, lbl_802F1FB0@ha
 /* 00005A3C 38000001 */ li r0, 1
 /* 00005A40 90050000 */ stw r0, lbl_802F1FB0@l(r5)
@@ -6471,7 +6471,7 @@ lbl_00005AF0:
 /* 00005B20 A8650002 */ lha r3, 2(r5)
 /* 00005B24 A8850000 */ lha r4, 0(r5)
 /* 00005B28 80A50004 */ lwz r5, 4(r5)
-/* 00005B2C 4BFFA65D */ bl level_num_to_stage_id
+/* 00005B2C 4BFFA65D */ bl floor_to_stage_id
 /* 00005B30 7C711B79 */ or. r17, r3, r3
 /* 00005B34 40820008 */ bne lbl_00005B3C
 /* 00005B38 3A200001 */ li r17, 1
@@ -6519,7 +6519,7 @@ lbl_00005BB4:
 /* 00005BD8 A8650002 */ lha r3, 2(r5)
 /* 00005BDC A8850000 */ lha r4, 0(r5)
 /* 00005BE0 80A50004 */ lwz r5, 4(r5)
-/* 00005BE4 4BFFA5A5 */ bl level_num_to_stage_id
+/* 00005BE4 4BFFA5A5 */ bl floor_to_stage_id
 /* 00005BE8 907F003C */ stw r3, 0x3c(r31)
 /* 00005BEC 801F003C */ lwz r0, 0x3c(r31)
 /* 00005BF0 2C000000 */ cmpwi r0, 0
@@ -6826,7 +6826,7 @@ lbl_00006018:
 /* 0000603C A8650002 */ lha r3, 2(r5)
 /* 00006040 A8850000 */ lha r4, 0(r5)
 /* 00006044 80A50004 */ lwz r5, 4(r5)
-/* 00006048 4BFFA141 */ bl level_num_to_stage_id
+/* 00006048 4BFFA141 */ bl floor_to_stage_id
 /* 0000604C 907F003C */ stw r3, 0x3c(r31)
 /* 00006050 801F003C */ lwz r0, 0x3c(r31)
 /* 00006054 2C000000 */ cmpwi r0, 0
@@ -6932,7 +6932,7 @@ lbl_000061B4:
 /* 000061BC 808F0000 */ lwz r4, 0(r15)
 /* 000061C0 A8640002 */ lha r3, 2(r4)
 /* 000061C4 80840004 */ lwz r4, 4(r4)
-/* 000061C8 4BFF9FC1 */ bl get_last_level_num_of_set
+/* 000061C8 4BFF9FC1 */ bl course_floor_count
 /* 000061CC 80AF0000 */ lwz r5, 0(r15)
 /* 000061D0 7C751B78 */ mr r21, r3
 /* 000061D4 A8850000 */ lha r4, 0(r5)
@@ -7221,7 +7221,7 @@ lbl_000065B8:
 /* 000065DC A8650002 */ lha r3, 2(r5)
 /* 000065E0 A8850000 */ lha r4, 0(r5)
 /* 000065E4 80A50004 */ lwz r5, 4(r5)
-/* 000065E8 4BFF9BA1 */ bl level_num_to_stage_id
+/* 000065E8 4BFF9BA1 */ bl floor_to_stage_id
 /* 000065EC 907F003C */ stw r3, 0x3c(r31)
 /* 000065F0 801F003C */ lwz r0, 0x3c(r31)
 /* 000065F4 2C000000 */ cmpwi r0, 0
@@ -7291,7 +7291,7 @@ lbl_000066C0:
 /* 000066E4 A8650002 */ lha r3, 2(r5)
 /* 000066E8 A8850000 */ lha r4, 0(r5)
 /* 000066EC 80A50004 */ lwz r5, 4(r5)
-/* 000066F0 4BFF9A99 */ bl level_num_to_stage_id
+/* 000066F0 4BFF9A99 */ bl floor_to_stage_id
 /* 000066F4 907F003C */ stw r3, 0x3c(r31)
 /* 000066F8 801F003C */ lwz r0, 0x3c(r31)
 /* 000066FC 2C000000 */ cmpwi r0, 0
@@ -7342,7 +7342,7 @@ lbl_00006750:
 lbl_000067A4:
 /* 000067A4 A8650002 */ lha r3, 2(r5)
 /* 000067A8 80A50004 */ lwz r5, 4(r5)
-/* 000067AC 4BFF99DD */ bl level_num_to_stage_id
+/* 000067AC 4BFF99DD */ bl floor_to_stage_id
 /* 000067B0 907F003C */ stw r3, 0x3c(r31)
 /* 000067B4 801F003C */ lwz r0, 0x3c(r31)
 /* 000067B8 2C000000 */ cmpwi r0, 0
@@ -7525,10 +7525,10 @@ lbl_00006A20:
 /* 00006A34 7C030000 */ cmpw r3, r0
 /* 00006A38 41802E1C */ blt lbl_00009854
 /* 00006A3C 4BFF974D */ bl func_80067310
-/* 00006A40 3C800000 */ lis r4, lbl_802F1FA4@ha
+/* 00006A40 3C800000 */ lis r4, u_isCompetitionModeCourse@ha
 /* 00006A44 38000001 */ li r0, 1
 /* 00006A48 3C600000 */ lis r3, modeCtrl@ha
-/* 00006A4C 90040000 */ stw r0, lbl_802F1FA4@l(r4)
+/* 00006A4C 90040000 */ stw r0, u_isCompetitionModeCourse@l(r4)
 /* 00006A50 38630000 */ addi r3, r3, modeCtrl@l
 /* 00006A54 80030028 */ lwz r0, 0x28(r3)
 /* 00006A58 3A030028 */ addi r16, r3, 0x28
@@ -13645,7 +13645,7 @@ lbl_0000C1D4:
 /* 0000C230 90120000 */ stw r0, 0(r18)
 /* 0000C234 A8650002 */ lha r3, 2(r5)
 /* 0000C238 80840000 */ lwz r4, 0(r4)
-/* 0000C23C 4BFF3F4D */ bl get_last_level_num_of_set
+/* 0000C23C 4BFF3F4D */ bl course_floor_count
 /* 0000C240 80940000 */ lwz r4, 0(r20)
 /* 0000C244 7C711B78 */ mr r17, r3
 /* 0000C248 80720000 */ lwz r3, 0(r18)
@@ -15928,8 +15928,8 @@ lbl_0000E368:
 /* 0000E390 38A00000 */ li r5, 0
 /* 0000E394 2C000002 */ cmpwi r0, 2
 /* 0000E398 40820018 */ bne lbl_0000E3B0
-/* 0000E39C 3C800000 */ lis r4, lbl_802F1FA4@ha
-/* 0000E3A0 80040000 */ lwz r0, lbl_802F1FA4@l(r4)
+/* 0000E39C 3C800000 */ lis r4, u_isCompetitionModeCourse@ha
+/* 0000E3A0 80040000 */ lwz r0, u_isCompetitionModeCourse@l(r4)
 /* 0000E3A4 2C000000 */ cmpwi r0, 0
 /* 0000E3A8 40820008 */ bne lbl_0000E3B0
 /* 0000E3AC 38A00001 */ li r5, 1
@@ -17620,19 +17620,19 @@ lbl_0000FD2C:
 /* 0000FD38 480000C0 */ b lbl_0000FDF8
 lbl_0000FD3C:
 /* 0000FD3C 38600006 */ li r3, 6
-/* 0000FD40 4BFF0449 */ bl func_800675E0
+/* 0000FD40 4BFF0449 */ bl u_is_minigame_unlocked
 /* 0000FD44 2C030000 */ cmpwi r3, 0
 /* 0000FD48 4182002C */ beq lbl_0000FD74
 /* 0000FD4C 480000AC */ b lbl_0000FDF8
 lbl_0000FD50:
 /* 0000FD50 38600007 */ li r3, 7
-/* 0000FD54 4BFF0435 */ bl func_800675E0
+/* 0000FD54 4BFF0435 */ bl u_is_minigame_unlocked
 /* 0000FD58 2C030000 */ cmpwi r3, 0
 /* 0000FD5C 41820018 */ beq lbl_0000FD74
 /* 0000FD60 48000098 */ b lbl_0000FDF8
 lbl_0000FD64:
 /* 0000FD64 38600008 */ li r3, 8
-/* 0000FD68 4BFF0421 */ bl func_800675E0
+/* 0000FD68 4BFF0421 */ bl u_is_minigame_unlocked
 /* 0000FD6C 2C030000 */ cmpwi r3, 0
 /* 0000FD70 40820088 */ bne lbl_0000FDF8
 lbl_0000FD74:
@@ -19478,10 +19478,10 @@ lbl_00011824:
 /* 000118A8 C05E0008 */ lfs f2, 8(r30)
 /* 000118AC EC21002A */ fadds f1, f1, f0
 /* 000118B0 4BFEE8D9 */ bl set_text_pos
-/* 000118B4 3C600000 */ lis r3, lbl_802F1FBC@ha
+/* 000118B4 3C600000 */ lis r3, totalPlayPoints@ha
 /* 000118B8 4CC63182 */ crclr 6
 /* 000118BC 3CA00000 */ lis r5, lbl_00017490@ha
-/* 000118C0 80830000 */ lwz r4, lbl_802F1FBC@l(r3)
+/* 000118C0 80830000 */ lwz r4, totalPlayPoints@l(r3)
 /* 000118C4 38650000 */ addi r3, r5, lbl_00017490@l
 /* 000118C8 4BFEE8C1 */ bl func_80072AC0
 /* 000118CC 8001001C */ lwz r0, 0x1c(r1)
