@@ -26,7 +26,7 @@ u32 lbl_802F1FB4;  // not used
 int lbl_802F1FB0;
 u32 lbl_802F1FAC;  // not used
 u32 lbl_802F1FA8;  // not used
-int lbl_802F1FA4;
+int u_isCompetitionModeCourse;
 u32 lbl_802F1FA0;
 s32 lbl_802F1F9C;
 
@@ -1079,7 +1079,7 @@ int func_80066868(void)
 
 void func_800668A0(void)
 {
-    int var = difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags);
+    int var = difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags);
 
     courseScriptPtr = s_courseScripts[var];
     infoWork.unk2E = courseScriptPtr->value;
@@ -1092,7 +1092,7 @@ void ev_course_init(void)
     lbl_802F1F9C = -1;
     func_80067808();
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
-        func_80067508(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
+        func_80067508(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags);
 }
 
 void ev_course_main(void)
@@ -1161,12 +1161,12 @@ void ev_course_main(void)
                 lbl_802F1FC0++;
                 if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
                     playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
                 }
                 else
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
                     playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
                 }
             }
@@ -1230,12 +1230,12 @@ static void course_sub_give_play_points(struct CourseCommand *unused)
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
@@ -1250,12 +1250,12 @@ static void course_sub_give_play_points_dupe(struct CourseCommand *unused)
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
@@ -1280,7 +1280,7 @@ int u_get_stage_time_limit(void)
     u8 temp_r0;
     struct CourseCommand *var_r3;
 
-    if (lbl_802F1FA4 != 0)
+    if (u_isCompetitionModeCourse != 0)
     {
         floorCnt = 0;
         var_r6 = 0;
@@ -1347,11 +1347,11 @@ int difficulty_to_course_id(int difficulty, u32 flags)
 {
     int index = 0;
 
-    if (flags & LVLSET_FLAG_EXTRA)
+    if (flags & COURSE_FLAG_EXTRA)
         index = 3;
-    if (flags & LVLSET_FLAG_MASTER)
+    if (flags & COURSE_FLAG_MASTER)
         index = 6;
-    if (lbl_802F1FA4 != 0)
+    if (u_isCompetitionModeCourse != 0)
         index = 9;
     index += difficulty;
     return index;
@@ -1386,22 +1386,22 @@ static const int s_courseFloorCounts[] =
 };
 
 #pragma force_active on
-int get_last_level_num_of_set(int arg0, int arg1)
+int course_floor_count(int difficulty, int flags)
 {
-    if (lbl_802F1FA4 != 0)
+    if (u_isCompetitionModeCourse != 0)
         return lbl_802F1FB0;
-    return s_courseFloorCounts[difficulty_to_course_id(arg0, arg1)];
+    return s_courseFloorCounts[difficulty_to_course_id(difficulty, flags)];
 }
 #pragma force_active reset
 
-u32 func_80067264(int arg0, int arg1, int arg2)
+u32 is_final_floor(int difficulty, int floorNum, int flags)
 {
-    int r0 = get_last_level_num_of_set(arg0, arg2);
+    int final = course_floor_count(difficulty, flags);
 
-    if (arg1 == r0)
-        return 1;
+    if (floorNum == final)
+        return TRUE;
     else
-        return 0;
+        return FALSE;
 }
 
 u32 is_bonus_stage(int stageId)

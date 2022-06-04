@@ -648,7 +648,7 @@ struct Struct8020A348
 
 struct StageSelection
 {
-    s32 levelSet;
+    s32 difficulty;
     s32 levelNum;
 };
 

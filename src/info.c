@@ -49,7 +49,7 @@ void ev_info_init(void)
 
     // Initialize timer
     infoWork.timerCurr = 60 * 60;
-    if (modeCtrl.levelSetFlags & 1)
+    if (modeCtrl.courseFlags & 1)
         infoWork.timerCurr = u_get_stage_time_limit();
     if (gameSubmode == SMD_ADV_INFO_INIT)
         infoWork.timerCurr = 90 * 60;
@@ -59,7 +59,7 @@ void ev_info_init(void)
 
     if (is_bonus_stage(currStageId))
         infoWork.flags |= INFO_FLAG_BONUS_STAGE;
-    if (func_80067264(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags) != 0)
+    if (is_final_floor(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags) != 0)
         infoWork.flags |= INFO_FLAG_FINAL_FLOOR;
 }
 
@@ -478,7 +478,7 @@ void func_80023DB8(struct Ball *ball)
         return;
 
     r5 = lbl_802F1CB0[ball->rank];
-    if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->winStreak > 0)
+    if ((modeCtrl.courseFlags & (1 << 11)) && ball->winStreak > 0)
         r5 *= ball->winStreak;
     ball->unk138 = r5;
 }
@@ -583,7 +583,7 @@ void rank_icon_sprite_main(s8 *dummy, struct Sprite *sprite)
                 sprintf(bananaSprite->text, "bonus banana.pic");
             }
         }
-        if ((modeCtrl.levelSetFlags & (1 << 11)) && ball->winStreak > 1)
+        if ((modeCtrl.courseFlags & (1 << 11)) && ball->winStreak > 1)
         {
             struct Sprite *sprite = create_sprite();
 

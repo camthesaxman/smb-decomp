@@ -1295,7 +1295,7 @@ extern int lbl_802F1F80;
 // extern ? courseScriptPtr;
 // extern ? lbl_802F1F9C;
 // extern ? lbl_802F1FA0;
-extern int lbl_802F1FA4;
+extern int u_isCompetitionModeCourse;
 extern int lbl_802F1FB0;
 // extern ? lbl_802F1FB8;
 extern u32 totalPlayPoints;

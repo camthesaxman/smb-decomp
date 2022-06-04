@@ -374,9 +374,9 @@ void init_bg_lighting(int stageId)
         }
         if (backgroundInfo.bgId == BG_TYPE_END)
         {
-            switch (modeCtrl.levelSet)
+            switch (modeCtrl.difficulty)
             {
-            case LVLSET_BEGINNER:
+            case DIFFICULTY_BEGINNER:
                 s_bgLightInfo.infLightRotY += 45056;
                 break;
             }

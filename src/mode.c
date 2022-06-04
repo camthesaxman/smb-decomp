@@ -476,7 +476,7 @@ void gm_init(void)
     gameSubmodeRequest = -1;
     unusedCallback = NULL;
     lbl_802F1B7C = NULL;
-    modeCtrl.levelSetFlags = 0;
+    modeCtrl.courseFlags = 0;
     modeCtrl.submodeTimer = 0;
     modeCtrl.splitscreenMode = 0;
     modeCtrl.unk1C = 0;
@@ -490,11 +490,11 @@ void gm_main(void)
     else
         u_menu_input_notdebug();
 
-    if ((modeCtrl.levelSetFlags & (1 << 9))
+    if ((modeCtrl.courseFlags & (1 << 9))
      && gameModeRequest != -1 && gameModeRequest != gameMode)
     {
         relocation_unload_module(&lbl_802F021C);
-        modeCtrl.levelSetFlags &= ~(1 << 9);
+        modeCtrl.courseFlags &= ~(1 << 9);
     }
 
     if (gameModeRequest != -1)
@@ -508,7 +508,7 @@ void gm_main(void)
         modeStringPtr = gameModeNames[gameMode];
         gameModeRequest = -1;
         if (gameMode == MD_TEST || gameMode == MD_OPTION)
-            modeCtrl.levelSetFlags |= 0x200;
+            modeCtrl.courseFlags |= 0x200;
     }
 
     if (gameSubmodeRequest != -1)
@@ -518,7 +518,7 @@ void gm_main(void)
         gameSubmodeRequest = -1;
     }
 
-    if (modeCtrl.levelSetFlags & (1 << 9))
+    if (modeCtrl.courseFlags & (1 << 9))
     {
         if (lbl_802F021C.info == NULL)
         {
@@ -582,13 +582,13 @@ int title_screen_debug_menu(void)
             {
             case 0:  // "GAME START"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 1;
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 1;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 1:  // "STAGE SELECT"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 2:  // "MINI MODE"
@@ -598,8 +598,8 @@ int title_screen_debug_menu(void)
                 break;
             case 3:  // "OPTION"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 0x40000;
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 0x40000;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 4:  // "TEST MODE"
@@ -660,7 +660,7 @@ void u_menu_input_debug(void)
             if (controllerInfo[i].unk0[2].button & PAD_BUTTON_START)
                 bvar = TRUE;
         }
-        if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
+        if ((gameMode == MD_GAME && (modeCtrl.courseFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
             if (!(u_unkInputArr1[0] & PAD_TRIGGER_Z))
@@ -755,9 +755,9 @@ void u_menu_input_notdebug(void)
     switch (gameMode)
     {
     case MD_ADV:
-        if (!(modeCtrl.levelSetFlags & (1 << 1))
+        if (!(modeCtrl.courseFlags & (1 << 1))
          && gameSubmode == SMD_ADV_TITLE_MAIN
-         && (modeCtrl.levelSetFlags & (1 << 2)))
+         && (modeCtrl.courseFlags & (1 << 2)))
         {
             struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
             if (sprite != NULL && sprite->counter > 0)
@@ -767,14 +767,14 @@ void u_menu_input_notdebug(void)
                 empty_load_queue();
                 if (modeCtrl.unk10 == 0)
                 {
-                    modeCtrl.levelSetFlags |= 1;
-                    modeCtrl.levelSetFlags |= 2;
+                    modeCtrl.courseFlags |= 1;
+                    modeCtrl.courseFlags |= 2;
                     gameSubmodeRequest = SMD_ADV_START_INIT;
                 }
                 else
                 {
-                    modeCtrl.levelSetFlags |= 0x40000;
-                    modeCtrl.levelSetFlags |= 2;
+                    modeCtrl.courseFlags |= 0x40000;
+                    modeCtrl.courseFlags |= 2;
                     gameSubmodeRequest = SMD_ADV_START_INIT;
                 }
             }

@@ -466,7 +466,7 @@ void draw_items(void)
 
     if (modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION
      || is_bonus_stage(currStageId)
-     || (modeCtrl.levelSetFlags & (1 << 12)))
+     || (modeCtrl.courseFlags & (1 << 12)))
     {
         struct GMAModel *models[2];
 
@@ -504,7 +504,7 @@ void draw_banana_shadows(void)
     Vec sp14;
     Vec sp8 = { 0, 0, -1 };
 
-    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.levelSetFlags & (1 << 12)))
+    if ((modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION || is_bonus_stage(currStageId) != 0 || (modeCtrl.courseFlags & (1 << 12)))
      && decodedStageLzPtr->bananaCount > 0)
     {
         avdisp_set_post_multiply_color(0.3f, 0.3f, 0.3f, 0.3f);

@@ -167,7 +167,7 @@ void draw_3d_scene(void)
                 draw_normal_game_scene();
                 break;
             default:
-                if (modeCtrl.levelSetFlags & (1 << 5))
+                if (modeCtrl.courseFlags & (1 << 5))
                     draw_normal_game_scene();
                 break;
             }
@@ -733,7 +733,7 @@ void draw_continue_scene(void)
 
     r5 = FALSE;
     if ((gameSubmode == SMD_GAME_CONTINUE_INIT || gameSubmode == SMD_GAME_CONTINUE_MAIN)
-     && (modeCtrl.levelSetFlags & (1 << 2))
+     && (modeCtrl.courseFlags & (1 << 2))
      && modeCtrl.unk10 == 1)
         r5 = TRUE;
 
@@ -744,7 +744,7 @@ void draw_continue_scene(void)
 
         if (gameSubmode != SMD_GAME_CONTINUE_INIT && gameSubmode != SMD_GAME_CONTINUE_MAIN)
             f1 = 0.0f;
-        else if ((modeCtrl.levelSetFlags & (1 << 2)) && modeCtrl.unk10 == 0)
+        else if ((modeCtrl.courseFlags & (1 << 2)) && modeCtrl.unk10 == 0)
             f1 = r4 / 60.0f;
         else
             f1 = 1.0f;
@@ -1255,7 +1255,7 @@ void set_backdrop_color(void)
         case SMD_GAME_INTR_SEL_MAIN:
         case SMD_GAME_OVER_POINT_INIT:
         case SMD_GAME_OVER_POINT_MAIN:
-            if ((modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))) == 0)
+            if ((modeCtrl.courseFlags & ((1 << 5)|(1 << 6))) == 0)
             {
                 color.r = 0;
                 color.g = 0;
@@ -1366,7 +1366,7 @@ void func_8000E1A4(float a)
     case SMD_GAME_OVER_INIT:
     case SMD_GAME_OVER_MAIN:
     case SMD_GAME_NAMEENTRY_READY_INIT:
-        if (!(modeCtrl.levelSetFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
+        if (!(modeCtrl.courseFlags & (1 << 5)) && modeCtrl.gameType != GAMETYPE_MAIN_COMPETITION)
         {
             func_80030BB8(0.8f, 0.8f, 0.8f);
             avdisp_set_post_multiply_color(0.8f, 0.8f, 0.8f, a);
@@ -1378,7 +1378,7 @@ void func_8000E1A4(float a)
         }
         break;
     default:
-        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        if (modeCtrl.courseFlags & COURSE_FLAG_MASTER)
         {
             func_80030BB8(1.0f, 1.0f, 1.0f);
             avdisp_set_post_multiply_color(1.0f, 1.0f, 1.0f, a);

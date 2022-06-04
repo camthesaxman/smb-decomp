@@ -139,7 +139,7 @@ void u_spawn_goal_stobjs(struct StageAnimGroup *arg0, int arg1)
     memset(goalBags, 0, sizeof(goalBags));
     memset(&stobj, 0, sizeof(stobj));
 
-    if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+    if (modeCtrl.courseFlags & COURSE_FLAG_MASTER)
         stobj.type = SOT_GOALBAG_EXMASTER;
     else
         stobj.type = SOT_GOALBAG;

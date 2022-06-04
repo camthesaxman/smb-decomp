@@ -156,7 +156,7 @@ void ev_item_init(void)
     case GAMETYPE_MAIN_COMPETITION:
         if (is_bonus_stage(currStageId) != 0
          || gameMode == MD_SEL
-         || (modeCtrl.levelSetFlags & (1 << 12))
+         || (modeCtrl.courseFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
             make_stage_bananas(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;

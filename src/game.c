@@ -51,7 +51,7 @@ void submode_game_first_init_func(void)
 {
     int i;
 
-    modeCtrl.levelSetFlags &= ~(1 << 6);
+    modeCtrl.courseFlags &= ~(1 << 6);
     modeCtrl.currPlayer = 0;
     event_finish_all();
     free_all_bitmap_groups_except_com();
@@ -66,13 +66,13 @@ void submode_game_first_init_func(void)
     func_80022F14();
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
         func_80066294();
-    if (stageSelection.levelSet != 0)
+    if (stageSelection.difficulty != 0)
         infoWork.unk20 = stageSelection.levelNum;
     lbl_802F1C18 = -1;
     func_800AEAD0();
     func_800AF164();
     func_80048BD4();
-    if (modeCtrl.levelSetFlags & (1 << 0))
+    if (modeCtrl.courseFlags & (1 << 0))
         start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
     lbl_802F1C20 = -1;
     switch (modeCtrl.gameType)
@@ -171,11 +171,11 @@ void submode_game_ready_init_func(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_NORMAL:
-        if (!(modeCtrl.levelSetFlags & (1 << 8)))
+        if (!(modeCtrl.courseFlags & (1 << 8)))
             u_init_player_data_1();
         else
             u_init_player_data_2();
-        floor_num_to_stage_id(modeCtrl.levelSet, infoWork.unk20, modeCtrl.levelSetFlags);
+        floor_num_to_stage_id(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags);
         break;
     }
     load_stage(loadingStageId);
@@ -186,7 +186,7 @@ void submode_game_ready_init_func(void)
     event_start(EVENT_INFO);
     event_start(EVENT_ITEM);
     event_start(EVENT_OBJ_COLLISION);
-    if (modeCtrl.levelSetFlags & 1)
+    if (modeCtrl.courseFlags & 1)
         event_start(EVENT_COURSE);
     event_start(EVENT_MINIMAP);
     event_start(EVENT_CAMERA);
@@ -392,12 +392,12 @@ void submode_game_goal_init_func(void)
     if (!(infoWork.flags & INFO_FLAG_13))
     {
         modeCtrl.submodeTimer = 360;
-        modeCtrl.levelSetFlags &= ~(1 << 10);
+        modeCtrl.courseFlags &= ~(1 << 10);
     }
     else
     {
         modeCtrl.submodeTimer = 120;
-        modeCtrl.levelSetFlags &= ~(1 << 10);
+        modeCtrl.courseFlags &= ~(1 << 10);
         u_play_sound(11);
         u_play_sound(0x128);
     }
@@ -438,12 +438,12 @@ void submode_game_goal_main_func(void)
         BALL_FOREACH(
             if (!(ball->flags & BALL_FLAG_09) && (ball->ape->flags & (1 << 14)))
             {
-                modeCtrl.levelSetFlags |= 0x400;
+                modeCtrl.courseFlags |= 0x400;
                 u_play_sound(0x126);
             }
         )
     }
-    if (!r31 && (modeCtrl.levelSetFlags & (1 << 10))
+    if (!r31 && (modeCtrl.courseFlags & (1 << 10))
      && modeCtrl.submodeTimer > 60 && modeCtrl.submodeTimer < 240)
         modeCtrl.submodeTimer = 60;
     if (--modeCtrl.submodeTimer <= 0)
@@ -467,7 +467,7 @@ void submode_game_goal_replay_init_func(void)
     modeCtrl.submodeTimer += f1 * 300.0;
     if (modeCtrl.submodeTimer > 300.0)
         modeCtrl.submodeTimer = 300;
-    modeCtrl.levelSetFlags &= ~(1 << 10);
+    modeCtrl.courseFlags &= ~(1 << 10);
     modeCtrl.unk18 = 30;
     BALL_FOREACH( ball->flags &= ~BALL_FLAG_09; )
     BALL_FOREACH( ball->state = 9; )
@@ -505,7 +505,7 @@ void submode_game_goal_replay_main_func(void)
         {
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
-            modeCtrl.levelSetFlags |= 0x400;
+            modeCtrl.courseFlags |= 0x400;
             u_play_sound(0x126);
         }
     )
@@ -568,14 +568,14 @@ void submode_game_goal_replay_main_func(void)
     {
         u32 gotoExtra;
 
-        if (modeCtrl.levelSet == LVLSET_EXPERT)
-            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.continuesUsed == 0);
+        if (modeCtrl.difficulty == DIFFICULTY_EXPERT)
+            gotoExtra = ((modeCtrl.courseFlags & 1) && infoWork.continuesUsed == 0);
         else
-            gotoExtra = ((modeCtrl.levelSetFlags & 1) && infoWork.livesLost == 0);
+            gotoExtra = ((modeCtrl.courseFlags & 1) && infoWork.livesLost == 0);
 
-        if (gotoExtra && (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA) && modeCtrl.levelSet != LVLSET_EXPERT)
+        if (gotoExtra && (modeCtrl.courseFlags & COURSE_FLAG_EXTRA) && modeCtrl.difficulty != DIFFICULTY_EXPERT)
             gotoExtra = FALSE;
-        if (gotoExtra && (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER))
+        if (gotoExtra && (modeCtrl.courseFlags & COURSE_FLAG_MASTER))
             gotoExtra = FALSE;
 
         if (gotoExtra)
@@ -609,7 +609,7 @@ void submode_game_continue_init_func(void)
     func_80017140();
     modeCtrl.submodeTimer = 659;
     modeCtrl.unk10 = 1;
-    modeCtrl.levelSetFlags &= ~(1 << 2);
+    modeCtrl.courseFlags &= ~(1 << 2);
     event_finish(EVENT_STAGE);
     event_finish(EVENT_WORLD);
     event_finish(EVENT_STOBJ);
@@ -625,7 +625,7 @@ void submode_game_continue_init_func(void)
         {
             modeCtrl.unk10 = 0;
             modeCtrl.submodeTimer = (modeCtrl.playerCount == 1) ? 480 : 180;
-            modeCtrl.levelSetFlags |= (1 << 2);
+            modeCtrl.courseFlags |= (1 << 2);
         }
         else
             hud_show_continue_interface();
@@ -658,7 +658,7 @@ void submode_game_continue_main_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    if (!(modeCtrl.levelSetFlags & (1 << 2)))
+    if (!(modeCtrl.courseFlags & (1 << 2)))
     {
         if (!normalSinglePlayer || func_80066868() != 0)
         {
@@ -688,7 +688,7 @@ void submode_game_continue_main_func(void)
                     u_play_sound(10);
                     u_play_sound(80);
                     modeCtrl.submodeTimer = 60;
-                    modeCtrl.levelSetFlags |= (1 << 2);
+                    modeCtrl.courseFlags |= (1 << 2);
                     textbox_set_properties(1, 20, NULL);
                 }
                 else
@@ -697,7 +697,7 @@ void submode_game_continue_main_func(void)
                     u_play_sound(48);
                     currentBallStructPtr->ape->flags |= 0x40000;
                     modeCtrl.submodeTimer = 60;
-                    modeCtrl.levelSetFlags |= (1 << 2);
+                    modeCtrl.courseFlags |= (1 << 2);
                 }
             }
         }
@@ -710,7 +710,7 @@ void submode_game_continue_main_func(void)
         if (modeCtrl.unk10 == 0 && modeCtrl.submodeTimer == 60)
         {
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
-             && (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]) >= 0
+             && (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]) >= 0
                  || (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) == (DIP_DEBUG|DIP_NAMEENTRY)))
                 start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), modeCtrl.submodeTimer);
             else
@@ -722,10 +722,10 @@ void submode_game_continue_main_func(void)
             return;
         if (modeCtrl.unk10 == 1)
             gameSubmodeRequest = SMD_GAME_RESTART_INIT;
-        else if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
+        else if (modeCtrl.courseFlags & COURSE_FLAG_EXTRA)
         {
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
-                modeCtrl.levelSetFlags |= 0x100000;
+                modeCtrl.courseFlags |= 0x100000;
             gameSubmodeRequest = SMD_GAME_ENDING_INIT;
         }
         else
@@ -922,7 +922,7 @@ void submode_game_bonus_clear_init_func(void)
         return;
 
     modeCtrl.submodeTimer = 180;
-    modeCtrl.levelSetFlags &= ~(1 << 10);
+    modeCtrl.courseFlags &= ~(1 << 10);
     event_finish(EVENT_WORLD);
     event_finish(EVENT_VIBRATION);
     func_800846B0(1);
@@ -952,11 +952,11 @@ void submode_game_bonus_clear_main_func(void)
         {
             ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
             ball->flags |= BALL_FLAG_09;
-            modeCtrl.levelSetFlags |= (1 << 10);
+            modeCtrl.courseFlags |= (1 << 10);
             u_play_sound(0x126);
         }
     )
-    if ((modeCtrl.levelSetFlags & (1 << 10))
+    if ((modeCtrl.courseFlags & (1 << 10))
      && modeCtrl.submodeTimer > 60 && modeCtrl.submodeTimer < 240)
         modeCtrl.submodeTimer = 60;
     loadingStageId = u_get_next_stage_id();
@@ -987,12 +987,12 @@ void submode_game_over_init_func(void)
         event_start(EVENT_SPRITE);
     event_start(EVENT_SOUND);
     modeCtrl.submodeTimer = 120;
-    if (!(modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))))
+    if (!(modeCtrl.courseFlags & ((1 << 5)|(1 << 6))))
         BALL_FOREACH( u_play_sound(0x22C); )
     hud_show_game_over_banner(120);
     if (screenFadeInfo.timer == 0)
     {
-        if (!(modeCtrl.levelSetFlags & ((1 << 5)|(1 << 6))))
+        if (!(modeCtrl.courseFlags & ((1 << 5)|(1 << 6))))
             start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 120);
         else
             start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), 120);
@@ -1129,21 +1129,21 @@ void submode_game_nameentry_ready_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.levelSetFlags &= ~(1 << 5);
-    if (!(modeCtrl.levelSetFlags & (1 << 0)) && (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) != (DIP_DEBUG|DIP_NAMEENTRY))
+    modeCtrl.courseFlags &= ~(1 << 5);
+    if (!(modeCtrl.courseFlags & (1 << 0)) && (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) != (DIP_DEBUG|DIP_NAMEENTRY))
     {
         gameSubmodeRequest = SMD_GAME_OVER_INIT;
         return;
     }
     if (modeCtrl.gameType != GAMETYPE_MAIN_NORMAL
-     || (func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]) < 0
+     || (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]) < 0
          && (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) != (DIP_DEBUG|DIP_NAMEENTRY)))
     {
         gameSubmodeRequest = SMD_GAME_OVER_INIT;
         return;
     }
     modeCtrl.submodeTimer = 300;
-    modeCtrl.levelSetFlags |= (1 << 5);
+    modeCtrl.courseFlags |= (1 << 5);
     load_stage(199);
     event_finish_all();
     event_start(EVENT_BALL);
@@ -1191,7 +1191,7 @@ void submode_game_nameentry_ready_main_func(void)
     {
         textbox_set_properties(1, 20, NULL);
         hud_show_name_entry_info(
-            func_800AECCC(modeCtrl.levelSet, &lbl_802C67D4[modeCtrl.currPlayer]),
+            func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]),
             lbl_802C67D4[modeCtrl.currPlayer].unk4);
         hud_show_name_entry_banner(modeCtrl.submodeTimer);
     }
@@ -1249,10 +1249,10 @@ void submode_game_ending_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    modeCtrl.levelSetFlags |= (1 << 6);
+    modeCtrl.courseFlags |= (1 << 6);
     func_800B6234();
     if (modeCtrl.gameType == 0 && modeCtrl.playerCount == 1
-     && !(modeCtrl.levelSetFlags & (1 << 20)))
+     && !(modeCtrl.courseFlags & (1 << 20)))
         func_800662E0();
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
     u_play_music(68, 0);
@@ -1269,9 +1269,9 @@ void submode_game_ending_main_func(void)
     {
         func_800B6430();
         gameSubmodeRequest = SMD_GAME_ROLL_INIT;
-        lbl_802F22C8 |= 1 << (modeCtrl.levelSet + 2);
+        lbl_802F22C8 |= 1 << (modeCtrl.difficulty + 2);
         if (modeCtrl.gameType == 0 && modeCtrl.playerCount == 1
-         && !(modeCtrl.levelSetFlags & (1 << 20)))
+         && !(modeCtrl.courseFlags & (1 << 20)))
             func_8006634C();
     }
 }
@@ -1473,9 +1473,9 @@ void submode_game_extra_init_func(void)
         return;
 
     modeCtrl.submodeTimer = 600;
-    if (modeCtrl.levelSetFlags & LVLSET_FLAG_EXTRA)
-        modeCtrl.levelSetFlags |= LVLSET_FLAG_MASTER;
-    modeCtrl.levelSetFlags |= LVLSET_FLAG_EXTRA;
+    if (modeCtrl.courseFlags & COURSE_FLAG_EXTRA)
+        modeCtrl.courseFlags |= COURSE_FLAG_MASTER;
+    modeCtrl.courseFlags |= COURSE_FLAG_EXTRA;
     u_smth_with_lights_smd_extra(currStageId);
     event_finish(EVENT_CAMERA);
     event_finish(EVENT_SPRITE);
@@ -1508,12 +1508,12 @@ void submode_game_extra_wait_func(void)
         tbox.numRows = 2;
         tbox.callback = NULL;
         textbox_set_properties(1, 1, &tbox);
-        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        if (modeCtrl.courseFlags & COURSE_FLAG_MASTER)
         {
             textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
             textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
         }
-        else if (modeCtrl.levelSet == LVLSET_EXPERT)
+        else if (modeCtrl.difficulty == DIFFICULTY_EXPERT)
         {
             textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][0]);
             textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][1]);
@@ -1535,12 +1535,12 @@ void submode_game_extra_wait_func(void)
         tbox.numRows = 2;
         tbox.callback = 0;
         textbox_set_properties(1, 21, &tbox);
-        if (modeCtrl.levelSetFlags & LVLSET_FLAG_MASTER)
+        if (modeCtrl.courseFlags & COURSE_FLAG_MASTER)
         {
             textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
             textbox_add_text(1, masterIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
         }
-        else if (modeCtrl.levelSet == LVLSET_EXPERT)
+        else if (modeCtrl.difficulty == DIFFICULTY_EXPERT)
         {
             textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][2]);
             textbox_add_text(1, expertExIntroSpeech[playerCharacterSelection[currentBallStructPtr->playerId]][3]);
@@ -1885,7 +1885,7 @@ int u_get_next_stage_id(void)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         return currStageId;
-    if (modeCtrl.levelSetFlags & (1 << 0))
+    if (modeCtrl.courseFlags & (1 << 0))
         return infoWork.unk2E;
     if (currStageId + 1 > 200)
         return -1;
@@ -1894,7 +1894,7 @@ int u_get_next_stage_id(void)
 
 int func_80017004(void)
 {
-    if (modeCtrl.levelSetFlags & (1 << 0))
+    if (modeCtrl.courseFlags & (1 << 0))
         return infoWork.unk32;
     if (currStageId + 1 <= 200)
         return currStageId + 1;
@@ -1956,11 +1956,11 @@ void u_init_player_data_1(void)
         if (spritePoolInfo.unkC[i] == 2)
             spritePoolInfo.unkC[i] = 4;
     }
-    modeCtrl.levelSetFlags |= (1 << 8);
+    modeCtrl.courseFlags |= (1 << 8);
     for (i = 0; i < 4; i++)
     {
         playerInfos[i] = infoWork;
-        lbl_801F3A8C[i] = modeCtrl.levelSetFlags;
+        lbl_801F3A8C[i] = modeCtrl.courseFlags;
     }
 }
 
@@ -1971,14 +1971,14 @@ void u_init_player_data_2(void)
     if (spritePoolInfo.unkC[modeCtrl.currPlayer] == 2)
         spritePoolInfo.unkC[modeCtrl.currPlayer] = 4;
     playerInfos[modeCtrl.currPlayer] = infoWork;
-    lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.levelSetFlags;
+    lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.courseFlags;
     r0 = get_next_player();
     spritePoolInfo.unkC[r0] = 2;
     if (modeCtrl.currPlayer != r0)
     {
         modeCtrl.currPlayer = r0;
         infoWork = playerInfos[modeCtrl.currPlayer];
-        modeCtrl.levelSetFlags = lbl_801F3A8C[modeCtrl.currPlayer];
+        modeCtrl.courseFlags = lbl_801F3A8C[modeCtrl.currPlayer];
         loadingStageId = u_get_next_stage_id();
     }
 }

@@ -1210,15 +1210,15 @@ int get_stage_background(int stageId)
 
     if (gameSubmode == SMD_GAME_ENDING_INIT)
     {
-        switch (modeCtrl.levelSet)
+        switch (modeCtrl.difficulty)
         {
-        case LVLSET_BEGINNER:
+        case DIFFICULTY_BEGINNER:
             bg = BG_TYPE_BLUESKY_A;
             break;
-        case LVLSET_ADVANCED:
+        case DIFFICULTY_ADVANCED:
             bg = BG_TYPE_SUNSET_C;
             break;
-        case LVLSET_EXPERT:
+        case DIFFICULTY_EXPERT:
         default:
             bg = BG_TYPE_NIGHT_B;
             break;

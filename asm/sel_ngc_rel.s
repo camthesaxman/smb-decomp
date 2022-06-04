@@ -143,7 +143,7 @@ lbl_00000234:
 /* 00000254 39600000 */ li r11, 0
 /* 00000258 B0E80002 */ sth r7, 2(r8)
 /* 0000025C 3D400000 */ lis r10, lbl_10000000@ha
-/* 00000260 3CC00000 */ lis r6, lbl_802F1FA4@ha
+/* 00000260 3CC00000 */ lis r6, u_isCompetitionModeCourse@ha
 /* 00000264 90E80004 */ stw r7, 4(r8)
 /* 00000268 3CA00000 */ lis r5, lbl_801EED50@ha
 /* 0000026C 3C800000 */ lis r4, lbl_802F1FB0@ha
@@ -165,7 +165,7 @@ lbl_00000234:
 /* 000002AC B1280028 */ sth r9, 0x28(r8)
 /* 000002B0 B0E8002A */ sth r7, 0x2a(r8)
 /* 000002B4 90E8002C */ stw r7, 0x2c(r8)
-/* 000002B8 90E60000 */ stw r7, lbl_802F1FA4@l(r6)
+/* 000002B8 90E60000 */ stw r7, u_isCompetitionModeCourse@l(r6)
 /* 000002BC 88050000 */ lbz r0, lbl_801EED50@l(r5)
 /* 000002C0 7C000774 */ extsb r0, r0
 /* 000002C4 90040000 */ stw r0, lbl_802F1FB0@l(r4)
@@ -6226,9 +6226,9 @@ lbl_00005790:
 /* 00005790 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00005794 38A30000 */ addi r5, r3, lbl_801EEDA8@l
 /* 00005798 38000018 */ li r0, 0x18
-/* 0000579C 3C600000 */ lis r3, lbl_802F1FA4@ha
+/* 0000579C 3C600000 */ lis r3, u_isCompetitionModeCourse@ha
 /* 000057A0 90050000 */ stw r0, 0(r5)
-/* 000057A4 38830000 */ addi r4, r3, lbl_802F1FA4@l
+/* 000057A4 38830000 */ addi r4, r3, u_isCompetitionModeCourse@l
 /* 000057A8 80040000 */ lwz r0, 0(r4)
 /* 000057AC 2C000000 */ cmpwi r0, 0
 /* 000057B0 4182009C */ beq lbl_0000584C
@@ -6401,9 +6401,9 @@ lbl_00005A1C:
 /* 00005A20 38830000 */ addi r4, r3, lbl_801EEDA8@l
 /* 00005A24 38000019 */ li r0, 0x19
 /* 00005A28 90040000 */ stw r0, 0(r4)
-/* 00005A2C 3C600000 */ lis r3, lbl_802F1FA4@ha
+/* 00005A2C 3C600000 */ lis r3, u_isCompetitionModeCourse@ha
 /* 00005A30 38C00000 */ li r6, 0
-/* 00005A34 90C30000 */ stw r6, lbl_802F1FA4@l(r3)
+/* 00005A34 90C30000 */ stw r6, u_isCompetitionModeCourse@l(r3)
 /* 00005A38 3CA00000 */ lis r5, lbl_802F1FB0@ha
 /* 00005A3C 38000001 */ li r0, 1
 /* 00005A40 90050000 */ stw r0, lbl_802F1FB0@l(r5)
@@ -6932,7 +6932,7 @@ lbl_000061B4:
 /* 000061BC 808F0000 */ lwz r4, 0(r15)
 /* 000061C0 A8640002 */ lha r3, 2(r4)
 /* 000061C4 80840004 */ lwz r4, 4(r4)
-/* 000061C8 4BFF9FC1 */ bl get_last_level_num_of_set
+/* 000061C8 4BFF9FC1 */ bl course_floor_count
 /* 000061CC 80AF0000 */ lwz r5, 0(r15)
 /* 000061D0 7C751B78 */ mr r21, r3
 /* 000061D4 A8850000 */ lha r4, 0(r5)
@@ -7525,10 +7525,10 @@ lbl_00006A20:
 /* 00006A34 7C030000 */ cmpw r3, r0
 /* 00006A38 41802E1C */ blt lbl_00009854
 /* 00006A3C 4BFF974D */ bl func_80067310
-/* 00006A40 3C800000 */ lis r4, lbl_802F1FA4@ha
+/* 00006A40 3C800000 */ lis r4, u_isCompetitionModeCourse@ha
 /* 00006A44 38000001 */ li r0, 1
 /* 00006A48 3C600000 */ lis r3, modeCtrl@ha
-/* 00006A4C 90040000 */ stw r0, lbl_802F1FA4@l(r4)
+/* 00006A4C 90040000 */ stw r0, u_isCompetitionModeCourse@l(r4)
 /* 00006A50 38630000 */ addi r3, r3, modeCtrl@l
 /* 00006A54 80030028 */ lwz r0, 0x28(r3)
 /* 00006A58 3A030028 */ addi r16, r3, 0x28
@@ -13645,7 +13645,7 @@ lbl_0000C1D4:
 /* 0000C230 90120000 */ stw r0, 0(r18)
 /* 0000C234 A8650002 */ lha r3, 2(r5)
 /* 0000C238 80840000 */ lwz r4, 0(r4)
-/* 0000C23C 4BFF3F4D */ bl get_last_level_num_of_set
+/* 0000C23C 4BFF3F4D */ bl course_floor_count
 /* 0000C240 80940000 */ lwz r4, 0(r20)
 /* 0000C244 7C711B78 */ mr r17, r3
 /* 0000C248 80720000 */ lwz r3, 0(r18)
@@ -15928,8 +15928,8 @@ lbl_0000E368:
 /* 0000E390 38A00000 */ li r5, 0
 /* 0000E394 2C000002 */ cmpwi r0, 2
 /* 0000E398 40820018 */ bne lbl_0000E3B0
-/* 0000E39C 3C800000 */ lis r4, lbl_802F1FA4@ha
-/* 0000E3A0 80040000 */ lwz r0, lbl_802F1FA4@l(r4)
+/* 0000E39C 3C800000 */ lis r4, u_isCompetitionModeCourse@ha
+/* 0000E3A0 80040000 */ lwz r0, u_isCompetitionModeCourse@l(r4)
 /* 0000E3A4 2C000000 */ cmpwi r0, 0
 /* 0000E3A8 40820008 */ bne lbl_0000E3B0
 /* 0000E3AC 38A00001 */ li r5, 1
