@@ -67,7 +67,7 @@ void submode_game_first_init_func(void)
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
         func_80066294();
     if (stageSelection.difficulty != 0)
-        infoWork.unk20 = stageSelection.levelNum;
+        infoWork.currFloor = stageSelection.levelNum;
     lbl_802F1C18 = -1;
     func_800AEAD0();
     func_800AF164();
@@ -175,7 +175,7 @@ void submode_game_ready_init_func(void)
             u_init_player_data_1();
         else
             u_init_player_data_2();
-        floor_num_to_stage_id(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags);
+        floor_to_stage_id(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags);
         break;
     }
     load_stage(loadingStageId);
@@ -258,9 +258,9 @@ void submode_game_ready_init_func(void)
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         int sp4[] = { 0x186, 0x187, 0x188, 0x189, 0x18A };
-        int soundId = sp4[infoWork.unk20 - 1];
+        int soundId = sp4[infoWork.currFloor - 1];
 
-        if (lbl_802F1FB0 == infoWork.unk20)
+        if (lbl_802F1FB0 == infoWork.currFloor)
             soundId = 0x184;
         u_play_sound(soundId);
     }
@@ -1561,9 +1561,9 @@ void submode_game_extra_wait_func(void)
         func_8007EB2C((600 - modeCtrl.submodeTimer) / 120);
     if (--modeCtrl.submodeTimer > 0)
         return;
-    infoWork.unk20 = 1;
+    infoWork.currFloor = 1;
     func_800668A0();
-    loadingStageId = infoWork.unk2E;
+    loadingStageId = infoWork.u_currStageId;
     start_screen_fade(FADE_IN, RGBA(0, 0, 0, 0), 30);
     infoWork.unk1E = 1;
     gameSubmodeRequest = SMD_GAME_READY_INIT;
@@ -1886,7 +1886,7 @@ int u_get_next_stage_id(void)
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         return currStageId;
     if (modeCtrl.courseFlags & (1 << 0))
-        return infoWork.unk2E;
+        return infoWork.u_currStageId;
     if (currStageId + 1 > 200)
         return -1;
     return currStageId + 1;

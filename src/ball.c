@@ -368,7 +368,7 @@ void u_choose_ape_anim(struct Ape *ape, float b)
             if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
                 r28 = func_8003721C_inline(ball);
             else if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE))
-                r28 = (infoWork.unk20 & 1) + 2;
+                r28 = (infoWork.currFloor & 1) + 2;
             else
                 r28 = 0;
         }

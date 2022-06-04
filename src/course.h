@@ -25,7 +25,7 @@ void ev_course_init(void);
 void ev_course_main(void);
 void ev_course_dest(void);
 int u_get_stage_time_limit(void);
-int floor_num_to_stage_id(int, int, int);
+int floor_to_stage_id(int, int, int);
 int course_floor_count(int, int);
 u32 is_final_floor();
 u32 is_bonus_stage(int stageId);

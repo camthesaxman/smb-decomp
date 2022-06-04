@@ -26,11 +26,13 @@ s32 lbl_802F1CA8;
 
 struct Struct801F3A58 infoWork;
 
+static void func_80023AF4(void);
+
 void func_80022F14(void)
 {
     infoWork.unk8 = 0;
     infoWork.unk1E = 1;
-    infoWork.unk20 = 1;
+    infoWork.currFloor = 1;
     infoWork.livesLost = 0;
     infoWork.continuesUsed = 0;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
@@ -59,7 +61,7 @@ void ev_info_init(void)
 
     if (is_bonus_stage(currStageId))
         infoWork.flags |= INFO_FLAG_BONUS_STAGE;
-    if (is_final_floor(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags) != 0)
+    if (is_final_floor(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags) != 0)
         infoWork.flags |= INFO_FLAG_FINAL_FLOOR;
 }
 
@@ -377,23 +379,23 @@ void ev_info_dest(void)
     func_80023AF4();
 }
 
-void func_80023AF4(void)
+static void func_80023AF4(void)
 {
     int unk8 = infoWork.unk8;
     int unk1E = infoWork.unk1E;
-    int unk20 = infoWork.unk20;
+    int currFloor = infoWork.currFloor;
     int livesLost = infoWork.livesLost;
     int continuesUsed = infoWork.continuesUsed;
-    int unk2E = infoWork.unk2E;
+    int u_currStageId = infoWork.u_currStageId;
 
     memset(&infoWork, 0, sizeof(infoWork));
 
     infoWork.unk8  = unk8;
     infoWork.unk1E = unk1E;
-    infoWork.unk20 = unk20;
+    infoWork.currFloor = currFloor;
     infoWork.livesLost = livesLost;
     infoWork.continuesUsed = continuesUsed;
-    infoWork.unk2E = unk2E;
+    infoWork.u_currStageId = u_currStageId;
     infoWork.unk22 = 1;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         lbl_802F1CA8 = 0;

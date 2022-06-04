@@ -6294,7 +6294,7 @@ lbl_0000584C:
 /* 0000588C A8650002 */ lha r3, 2(r5)
 /* 00005890 A8850000 */ lha r4, 0(r5)
 /* 00005894 80A50004 */ lwz r5, 4(r5)
-/* 00005898 4BFFA8F1 */ bl floor_num_to_stage_id
+/* 00005898 4BFFA8F1 */ bl floor_to_stage_id
 /* 0000589C 7C6F1B79 */ or. r15, r3, r3
 /* 000058A0 40820008 */ bne lbl_000058A8
 /* 000058A4 39E00001 */ li r15, 1
@@ -6362,7 +6362,7 @@ lbl_0000597C:
 /* 00005990 A8650002 */ lha r3, 2(r5)
 /* 00005994 A8850000 */ lha r4, 0(r5)
 /* 00005998 80A50004 */ lwz r5, 4(r5)
-/* 0000599C 4BFFA7ED */ bl floor_num_to_stage_id
+/* 0000599C 4BFFA7ED */ bl floor_to_stage_id
 /* 000059A0 7C771B79 */ or. r23, r3, r3
 /* 000059A4 40820008 */ bne lbl_000059AC
 /* 000059A8 3AE00001 */ li r23, 1
@@ -6471,7 +6471,7 @@ lbl_00005AF0:
 /* 00005B20 A8650002 */ lha r3, 2(r5)
 /* 00005B24 A8850000 */ lha r4, 0(r5)
 /* 00005B28 80A50004 */ lwz r5, 4(r5)
-/* 00005B2C 4BFFA65D */ bl floor_num_to_stage_id
+/* 00005B2C 4BFFA65D */ bl floor_to_stage_id
 /* 00005B30 7C711B79 */ or. r17, r3, r3
 /* 00005B34 40820008 */ bne lbl_00005B3C
 /* 00005B38 3A200001 */ li r17, 1
@@ -6519,7 +6519,7 @@ lbl_00005BB4:
 /* 00005BD8 A8650002 */ lha r3, 2(r5)
 /* 00005BDC A8850000 */ lha r4, 0(r5)
 /* 00005BE0 80A50004 */ lwz r5, 4(r5)
-/* 00005BE4 4BFFA5A5 */ bl floor_num_to_stage_id
+/* 00005BE4 4BFFA5A5 */ bl floor_to_stage_id
 /* 00005BE8 907F003C */ stw r3, 0x3c(r31)
 /* 00005BEC 801F003C */ lwz r0, 0x3c(r31)
 /* 00005BF0 2C000000 */ cmpwi r0, 0
@@ -6826,7 +6826,7 @@ lbl_00006018:
 /* 0000603C A8650002 */ lha r3, 2(r5)
 /* 00006040 A8850000 */ lha r4, 0(r5)
 /* 00006044 80A50004 */ lwz r5, 4(r5)
-/* 00006048 4BFFA141 */ bl floor_num_to_stage_id
+/* 00006048 4BFFA141 */ bl floor_to_stage_id
 /* 0000604C 907F003C */ stw r3, 0x3c(r31)
 /* 00006050 801F003C */ lwz r0, 0x3c(r31)
 /* 00006054 2C000000 */ cmpwi r0, 0
@@ -7221,7 +7221,7 @@ lbl_000065B8:
 /* 000065DC A8650002 */ lha r3, 2(r5)
 /* 000065E0 A8850000 */ lha r4, 0(r5)
 /* 000065E4 80A50004 */ lwz r5, 4(r5)
-/* 000065E8 4BFF9BA1 */ bl floor_num_to_stage_id
+/* 000065E8 4BFF9BA1 */ bl floor_to_stage_id
 /* 000065EC 907F003C */ stw r3, 0x3c(r31)
 /* 000065F0 801F003C */ lwz r0, 0x3c(r31)
 /* 000065F4 2C000000 */ cmpwi r0, 0
@@ -7291,7 +7291,7 @@ lbl_000066C0:
 /* 000066E4 A8650002 */ lha r3, 2(r5)
 /* 000066E8 A8850000 */ lha r4, 0(r5)
 /* 000066EC 80A50004 */ lwz r5, 4(r5)
-/* 000066F0 4BFF9A99 */ bl floor_num_to_stage_id
+/* 000066F0 4BFF9A99 */ bl floor_to_stage_id
 /* 000066F4 907F003C */ stw r3, 0x3c(r31)
 /* 000066F8 801F003C */ lwz r0, 0x3c(r31)
 /* 000066FC 2C000000 */ cmpwi r0, 0
@@ -7342,7 +7342,7 @@ lbl_00006750:
 lbl_000067A4:
 /* 000067A4 A8650002 */ lha r3, 2(r5)
 /* 000067A8 80A50004 */ lwz r5, 4(r5)
-/* 000067AC 4BFF99DD */ bl floor_num_to_stage_id
+/* 000067AC 4BFF99DD */ bl floor_to_stage_id
 /* 000067B0 907F003C */ stw r3, 0x3c(r31)
 /* 000067B4 801F003C */ lwz r0, 0x3c(r31)
 /* 000067B8 2C000000 */ cmpwi r0, 0

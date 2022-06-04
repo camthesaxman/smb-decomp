@@ -1293,7 +1293,7 @@ extern int lbl_802F1F80;
 // extern ? lbl_802F1F88;
 // extern ? lbl_802F1F90;
 // extern ? courseScriptPtr;
-// extern ? lbl_802F1F9C;
+// extern ? u_jumpFloors;
 // extern ? lbl_802F1FA0;
 extern int u_isCompetitionModeCourse;
 extern int lbl_802F1FB0;

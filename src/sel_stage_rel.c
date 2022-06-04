@@ -94,7 +94,7 @@ static void sel_stage_init(void)
     create_sel_stage_sprites();
     dummy_func_C90();
     func_800668A0();
-    loadingStageId = infoWork.unk2E;
+    loadingStageId = infoWork.u_currStageId;
     start_screen_fade(FADE_IN, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_SEL_STAGE_MAIN;
 }
@@ -192,7 +192,7 @@ static void sel_stage_handle_input(void)
             r3 = stageSelection.levelNum;
 
         stageSelection.levelNum = r3;
-        loadingStageIdRequest = floor_num_to_stage_id(modeCtrl.difficulty, stageSelection.levelNum, modeCtrl.courseFlags);
+        loadingStageIdRequest = floor_to_stage_id(modeCtrl.difficulty, stageSelection.levelNum, modeCtrl.courseFlags);
     }
     if (lbl_0000185D != loadingStageIdRequest)
     {
@@ -201,7 +201,7 @@ static void sel_stage_handle_input(void)
         preload_stage_files(loadingStageIdRequest);
         lbl_0000185D = loadingStageIdRequest;
     }
-    infoWork.unk2E = loadingStageIdRequest;
+    infoWork.u_currStageId = loadingStageIdRequest;
     loadingStageId = loadingStageIdRequest;
     if (lbl_0000185D != currStageId && !is_load_queue_not_empty())
     {

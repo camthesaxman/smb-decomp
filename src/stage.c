@@ -1238,11 +1238,11 @@ int get_stage_background(int stageId)
 int get_stage_background_2(int stageId)
 {
     int bg;
-    int backup = infoWork.unk20;
+    int currFloor = infoWork.currFloor;
 
-    infoWork.unk20++;
+    infoWork.currFloor++;
     bg = get_stage_background(stageId);
-    infoWork.unk20 = backup;
+    infoWork.currFloor = currFloor;
     return bg;
 }
 

@@ -28,7 +28,7 @@ u32 lbl_802F1FAC;  // not used
 u32 lbl_802F1FA8;  // not used
 int u_isCompetitionModeCourse;
 u32 lbl_802F1FA0;
-s32 lbl_802F1F9C;
+s32 u_jumpFloors;  // number of floors to jump (or -1 if not jumping floors)
 
 // Play points per floor in each course
 
@@ -1082,23 +1082,23 @@ void func_800668A0(void)
     int var = difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags);
 
     courseScriptPtr = s_courseScripts[var];
-    infoWork.unk2E = courseScriptPtr->value;
+    infoWork.u_currStageId = courseScriptPtr->value;
     courseScriptPtr++;
     func_800676E8();
 }
 
 void ev_course_init(void)
 {
-    lbl_802F1F9C = -1;
+    u_jumpFloors = -1;
     func_80067808();
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
-        func_80067508(modeCtrl.difficulty, infoWork.unk20, modeCtrl.courseFlags);
+        func_80067508(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags);
 }
 
 void ev_course_main(void)
 {
     struct CourseCommand *cmd;
-    int var_r28_2;
+    int jumpCnt;
     int prevOpcode;
     u32 condResult;
     u32 var_r4_2;
@@ -1128,18 +1128,18 @@ void ev_course_main(void)
             break;
         }
 
-        if (lbl_802F1F9C != -1)
+        if (u_jumpFloors != -1)
         {
             var_r4_2 = FALSE;
-            var_r28_2 = 0;
+            jumpCnt = 0;
             if (infoWork.unk22 != 1)
-                lbl_802F1F9C = infoWork.unk22;
+                u_jumpFloors = infoWork.unk22;
             while (cmd->opcode != CMD_COURSE_END)
             {
                 if (cmd->opcode == CMD_FLOOR && cmd->type == FLOOR_STAGE_ID)
                 {
-                    var_r28_2++;
-                    if (var_r28_2 == lbl_802F1F9C)
+                    jumpCnt++;
+                    if (jumpCnt == u_jumpFloors)
                     {
                         var_r4_2 = TRUE;
                         break;
@@ -1152,8 +1152,8 @@ void ev_course_main(void)
             else
             {
                 course_sub_give_play_points_dupe(cmd);
-                infoWork.unk20 += 10;
-                lbl_802F1F9C = -1;
+                infoWork.currFloor += 10;
+                u_jumpFloors = -1;
                 return;
             }
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
@@ -1161,20 +1161,20 @@ void ev_course_main(void)
                 lbl_802F1FC0++;
                 if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
                     playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
                 }
                 else
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
                     playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
                 }
             }
-            infoWork.unk2E = cmd->value;
+            infoWork.u_currStageId = cmd->value;
             func_80067AD4();
-            infoWork.unk22 = var_r28_2;
-            infoWork.unk20 += infoWork.unk22;
-            lbl_802F1F9C = -1;
+            infoWork.unk22 = jumpCnt;
+            infoWork.currFloor += infoWork.unk22;
+            u_jumpFloors = -1;
             return;
         }
         prevOpcode = cmd->opcode;
@@ -1220,46 +1220,46 @@ static u32 course_if_time_elapsed(struct CourseCommand *cmd)
 
 static void course_then_jump_floor(struct CourseCommand *cmd)
 {
-    lbl_802F1F9C = cmd->value;
+    u_jumpFloors = cmd->value;
 }
 
-static void course_sub_give_play_points(struct CourseCommand *unused)
+static void course_sub_give_play_points(struct CourseCommand *cmd)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
-    infoWork.unk2E = -1;
+    infoWork.u_currStageId = -1;
 }
 
 // duplicate of course_sub_give_play_points
-static void course_sub_give_play_points_dupe(struct CourseCommand *unused)
+static void course_sub_give_play_points_dupe(struct CourseCommand *cmd)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.unk20 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
             playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
-    infoWork.unk2E = -1;
+    infoWork.u_currStageId = -1;
 }
 
 struct Struct8027CE24
@@ -1284,12 +1284,12 @@ int u_get_stage_time_limit(void)
     {
         floorCnt = 0;
         var_r6 = 0;
-        if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 8)
+        if (lbl_8027CE24[infoWork.currFloor - 1].unk4 & 8)
             var_r6 = 3;
-        if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 0x10)
+        if (lbl_8027CE24[infoWork.currFloor - 1].unk4 & 0x10)
             var_r6 = 6;
-        var_r3 = s_courseScripts[var_r6 + lbl_8027CE24[infoWork.unk20 - 1].unk2];
-        temp_r5 = lbl_8027CE24[infoWork.unk20 - 1].unk0;
+        var_r3 = s_courseScripts[var_r6 + lbl_8027CE24[infoWork.currFloor - 1].unk2];
+        temp_r5 = lbl_8027CE24[infoWork.currFloor - 1].unk0;
         while (var_r3->opcode != CMD_COURSE_END)
         {
             if (var_r3->opcode == CMD_FLOOR && var_r3->type == FLOOR_STAGE_ID)
@@ -1311,7 +1311,7 @@ int u_get_stage_time_limit(void)
     return 60 * 60;
 }
 
-int floor_num_to_stage_id(int courseId, int floorNum, int flags)
+int floor_to_stage_id(int courseId, int floor, int flags)
 {
     int stageId;
     int floorCnt;
@@ -1320,11 +1320,11 @@ int floor_num_to_stage_id(int courseId, int floorNum, int flags)
 
     // get the nth command with unk0=2 and unk1=0?
     floorCnt = 1;
-    while (floorCnt <= floorNum && courseScriptPtr->opcode != CMD_COURSE_END)
+    while (floorCnt <= floor && courseScriptPtr->opcode != CMD_COURSE_END)
     {
         if (courseScriptPtr->opcode == CMD_FLOOR && courseScriptPtr->type == FLOOR_STAGE_ID)
         {
-            if (floorCnt == floorNum)
+            if (floorCnt == floor)
                 break;
             floorCnt++;
         }
@@ -1394,11 +1394,11 @@ int course_floor_count(int difficulty, int flags)
 }
 #pragma force_active reset
 
-u32 is_final_floor(int difficulty, int floorNum, int flags)
+u32 is_final_floor(int difficulty, int floor, int flags)
 {
     int final = course_floor_count(difficulty, flags);
 
-    if (floorNum == final)
+    if (floor == final)
         return TRUE;
     else
         return FALSE;
@@ -1427,7 +1427,7 @@ void func_80067310(void)
 
     for (i = 0; i < lbl_802F1FB0; i++)
     {
-        lbl_801BD86C[i * 3].value = floor_num_to_stage_id(lbl_8027CE24[i].unk2, lbl_8027CE24[i].unk0, lbl_8027CE24[i].unk4);
+        lbl_801BD86C[i * 3].value = floor_to_stage_id(lbl_8027CE24[i].unk2, lbl_8027CE24[i].unk0, lbl_8027CE24[i].unk4);
         lbl_801BD86C[i * 3 + 2].type = FLOOR_STAGE_ID;
     }
     lbl_801BD86C[(lbl_802F1FB0 - 1) * 3 + 2].type = 2;
@@ -1548,15 +1548,15 @@ int u_is_minigame_unlocked(int minigame)
 
     switch (minigame)
     {
-    case 6:
+    case GAMETYPE_MINI_BILLIARDS:
         if (lbl_802F1C0D & 1)
             isUnlocked = TRUE;
         break;
-    case 7:
+    case GAMETYPE_MINI_BOWLING:
         if (lbl_802F1C0D & 2)
             isUnlocked = TRUE;
         break;
-    case 8:
+    case GAMETYPE_MINI_GOLF:
         if (lbl_802F1C0D & 4)
             isUnlocked = TRUE;
         break;
@@ -1649,7 +1649,7 @@ static inline void inline3(struct Struct8027CC58 *temp_r28)
             case 0:
             default:
 
-                var_r6[1].unk0 = infoWork.unk20 + var_r8->value;
+                var_r6[1].unk0 = infoWork.currFloor + var_r8->value;
                 var_r5 = var_r8->value;
                 var_r3_2 = courseScriptPtr;
                 var_r4 = -1;
@@ -1692,7 +1692,7 @@ static void func_80067808(void)
     if (modeCtrl.gameType == 0)
         get_next_player();  // return value not used
 
-    if (infoWork.unk20 == lbl_8027CC58[temp_r27_2][0].unk0[0].unk0)
+    if (infoWork.currFloor == lbl_8027CC58[temp_r27_2][0].unk0[0].unk0)
     {
         inline1();
         return;
@@ -1707,7 +1707,7 @@ static void func_80067808(void)
     }
 
 
-    temp_r28->unk0[0].unk0 = infoWork.unk20;
+    temp_r28->unk0[0].unk0 = infoWork.currFloor;
     temp_r28->unk0[0].unk4 = currStageId;
     temp_r28->unk0[1].unk0 = 0;
     temp_r28->unk0[1].unk4 = -1;
@@ -1730,10 +1730,10 @@ void func_80067AD4(void)
     {
         int var = temp_r8->unk0[i+1].unk4;
 
-        if (var == infoWork.unk2E || infoWork.unk2E == -1)
+        if (var == infoWork.u_currStageId || infoWork.u_currStageId == -1)
         {
             temp_r8->unk22 = i;
-            if (infoWork.unk2E == -1)
+            if (infoWork.u_currStageId == -1)
                 temp_r8->unk0[temp_r8->unk22 + 1].unk4 = -1;
             break;
         }
@@ -1804,7 +1804,7 @@ void lbl_80067C20(struct Sprite *sprite)
                 if (i > 0)
                     break;
 
-                if (var_r31[1].unk0 == infoWork.unk20 && unpausedFrameCounter % 60 < 45)
+                if (var_r31[1].unk0 == infoWork.currFloor && unpausedFrameCounter % 60 < 45)
                     set_text_mul_color(RGBA(0, 255, 0, 0));
                 set_text_pos(
                     x + sprite->scaleX * (var_r4 * 8) + sprite->scaleX * 16.0f,

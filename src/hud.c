@@ -1370,7 +1370,7 @@ void hud_show_stage_name_banner(void)
         sprite->mainFunc = floor_intro_sprite_main;
         sprite->drawFunc = floor_intro_sprite_draw;
 
-        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.currFloor;
         if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
             sprintf(sprite->text, "ROUND %d", floorNum);
         else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 0x10))
@@ -1657,7 +1657,7 @@ void hud_show_normal_mode_info(void)
         sprite->textAlign = ALIGN_LB;
         sprite->mainFunc = lbl_8007A774;
 
-        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.unk20;
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.currFloor;
         if (flags & 0x10)
             sprintf(sprite->text, "MASTER %d", floorNum);
         else if (flags & 8)
@@ -2078,12 +2078,12 @@ void hud_show_competition_mode_info(void)
     int i;
     s8 *phi_r28;
 
-    if (lbl_802F1FB0 != infoWork.unk20)
+    if (lbl_802F1FB0 != infoWork.currFloor)
     {
         sprite = create_sprite();
         if (sprite != NULL)
         {
-            sprintf(sprite->text, "ROUND %d", infoWork.unk20);
+            sprintf(sprite->text, "ROUND %d", infoWork.currFloor);
             sprite->x = -20.0f * strlen(sprite->text);
             sprite->y = 250.0f;
             sprite->fontId = FONT_ASC_20x20;
@@ -2943,7 +2943,7 @@ void hud_show_goal_banner(int duration)
             sprite->userVar = duration;
             sprite->flags |= 0x1000;
             sprite->mainFunc = warp_sprite_main;
-            sprintf(sprite->text, "JUMP TO FLOOR %d", infoWork.unk20);
+            sprintf(sprite->text, "JUMP TO FLOOR %d", infoWork.currFloor);
         }
     }
 }
@@ -3085,7 +3085,7 @@ static void warp_sprite_main(s8 *arg0, struct Sprite *sprite)
             warpSprite->opacity = 0.5f;
             warpSprite->flags |= 0x1000;
             warpSprite->mainFunc = lbl_8007CDCC;
-            sprintf(warpSprite->text, "JUMP TO FLOOR %d", infoWork.unk20);
+            sprintf(warpSprite->text, "JUMP TO FLOOR %d", infoWork.currFloor);
         }
     }
 
