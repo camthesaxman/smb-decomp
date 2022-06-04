@@ -1454,6 +1454,7 @@ void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
     mathutil_mtxA_to_mtx(r31->transformMtx);
 }
 
+// something related to animation of the head
 void func_8008C090(struct Ape *ape, Vec *b)
 {
     struct JointBoneThing *r27 = ape->unk0->unk81A8;
