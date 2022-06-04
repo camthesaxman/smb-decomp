@@ -1597,13 +1597,43 @@ entry mathutil_mtxA_scale_xyz
 }
 #endif
 
-asm void mathutil_mtxA_tf_point(Vec *src, Vec *dest)
+#ifdef MATHUTIL_C_ONLY
+static void mtxA_tf(Vec *dest, float x, float y, float z, float w)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    dest->x = (*m)[0][0] * x + (*m)[0][1] * y + (*m)[0][2] * z + (*m)[0][3] * w;
+    dest->y = (*m)[1][0] * x + (*m)[1][1] * y + (*m)[1][2] * z + (*m)[1][3] * w;
+    dest->z = (*m)[2][0] * x + (*m)[2][1] * y + (*m)[2][2] * z + (*m)[2][3] * w;
+}
+
+void mathutil_mtxA_tf_point(Point3d *src, Point3d *dest)
+{
+    mtxA_tf(dest, src->x, src->y, src->z, 1.0f);
+}
+
+void mathutil_mtxA_tf_vec(Vec *src, Vec *dest)
+{
+    mtxA_tf(dest, src->x, src->y, src->z, 0.0f);
+}
+
+void mathutil_mtxA_tf_point_xyz(Point3d *point, float x, float y, float z)
+{
+    mtxA_tf(point, x, y, z, 1.0f);
+}
+
+void mathutil_mtxA_tf_vec_xyz(Vec *vec, float x, float y, float z)
+{
+    mtxA_tf(vec, x, y, z, 0.0f);
+}
+#else
+asm void mathutil_mtxA_tf_point(Point3d *src, Point3d *dest)
 {
     nofralloc
 
     lis r5, LC_CACHE_BASE@ha
-    psq_l f1, 0(r3), 0, GQR_F32
-    psq_l f3, 8(r3), 1, GQR_F32
+    psq_l f1, 0(r3), 0, GQR_F32  // f1 = (x, y)
+    psq_l f3, 8(r3), 1, GQR_F32  // f3 = (z, 1)
     b @do_tf
 
 // void mathutil_mtxA_tf_vec(Vec *src, Vec *dest)
@@ -1611,48 +1641,49 @@ entry mathutil_mtxA_tf_vec
     lis r5, LC_CACHE_BASE@ha
     lfs f3, 8(r3)
     lfs f0, OFFSET_constZeroF(r5)
-    psq_l f1, 0(r3), 0, GQR_F32
-    ps_merge00 f3, f3, f0
+    psq_l f1, 0(r3), 0, GQR_F32  // f1 = (x, y)
+    ps_merge00 f3, f3, f0  // f3 = (z, 0)
     b @do_tf
 
-// void mathutil_mtxA_tf_point_xyz(Vec *vec, float x, float y, float z)
+// void mathutil_mtxA_tf_point_xyz(Point3d *point, float x, float y, float z)
 entry mathutil_mtxA_tf_point_xyz
     lis r5, LC_CACHE_BASE@ha
-    ps_merge00 f1, f1, f2
+    ps_merge00 f1, f1, f2  // f1 = (x, y)
     lfs f0, OFFSET_constOneF(r5)
     mr r4, r3
-    ps_merge00 f3, f3, f0
+    ps_merge00 f3, f3, f0  // f3 = (z, 1)
     b @do_tf
 
 // void mathutil_mtxA_tf_vec_xyz(Vec *vec, float x, float y, float z)
 entry mathutil_mtxA_tf_vec_xyz
     lis r5, LC_CACHE_BASE@ha
-    ps_merge00 f1, f1, f2
+    ps_merge00 f1, f1, f2  // f1 = (x, y)
     lfs f0, OFFSET_constZeroF(r5)
     mr r4, r3
-    ps_merge00 f3, f3, f0
+    ps_merge00 f3, f3, f0  // f3 = (z, 0)
 
 @do_tf:
-    psq_l f4, 0(r5), 0, GQR_F32
-    psq_l f6, 16(r5), 0, GQR_F32
-    ps_mul f4, f4, f1
-    psq_l f8, 32(r5), 0, GQR_F32
-    ps_mul f6, f6, f1
-    psq_l f5, 8(r5), 0, GQR_F32
-    ps_mul f8, f8, f1
-    psq_l f7, 24(r5), 0, GQR_F32
-    ps_madd f4, f5, f3, f4
-    psq_l f9, 40(r5), 0, GQR_F32
-    ps_madd f6, f7, f3, f6
-    ps_madd f8, f9, f3, f8
+    psq_l f4, 0x00(r5), 0, GQR_F32  // f4 = (mtxA[0][0], mtxA[0][1])
+    psq_l f6, 0x10(r5), 0, GQR_F32  // f6 = (mtxA[1][0], mtxA[1][1])
+    ps_mul f4, f4, f1               // f4 = (mtxA[0][0] * x, mtxA[0][1] * y)
+    psq_l f8, 0x20(r5), 0, GQR_F32  // f8 = (mtxA[2][0], mtxA[2][1])
+    ps_mul f6, f6, f1               // f6 = (mtxA[1][0] * x, mtxA[1][1] * y)
+    psq_l f5, 0x08(r5), 0, GQR_F32  // f5 = (mtxA[0][2], mtxA[0][3])
+    ps_mul f8, f8, f1               // f8 = (mtxA[2][0] * x, mtxA[2][1] * y)
+    psq_l f7, 0x18(r5), 0, GQR_F32  // f7 = (mtxA[1][2], mtxA[1][3])
+    ps_madd f4, f5, f3, f4          // f4 = (mtxA[0][2] * z + mtxA[0][0] * x, mtxA[0][3] * w + mtxA[0][1] * y)
+    psq_l f9, 0x28(r5), 0, GQR_F32  // f9 = (mtxA[2][2], mtxA[2][3])
+    ps_madd f6, f7, f3, f6          // f6 = (mtxA[1][2] * z + mtxA[1][0] * x, mtxA[1][3] * w + mtxA[1][1] * y)
+    ps_madd f8, f9, f3, f8          // f8 = (mtxA[2][2] * z + mtxA[2][0] * x, mtxA[2][3] * w + mtxA[2][1] * y)
     ps_sum0 f4, f4, f4, f4
-    stfs f4, 0(r4)
+    stfs f4, 0(r4)                  // vec->x = mtxA[0][2] * z + mtxA[0][0] * x + mtxA[0][3] * w + mtxA[0][1] * y
     ps_sum0 f6, f6, f6, f6
-    stfs f6, 4(r4)
+    stfs f6, 4(r4)                  // vec->y = mtxA[1][2] * z + mtxA[1][0] * x + mtxA[1][3] * w + mtxA[1][1] * y
     ps_sum0 f8, f8, f8, f8
-    stfs f8, 8(r4)
+    stfs f8, 8(r4)                  // vec->z = mtxA[2][2] * z + mtxA[2][0] * x + mtxA[2][3] * w + mtxA[2][1] * y
     blr
 }
+#endif
 
 asm void mathutil_mtxA_rigid_inv_tf_point(Vec *a, Vec *b)
 {
@@ -1723,6 +1754,30 @@ lbl_80007F7C:
     blr
 }
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_rotate_x_sin_cos(float sinAngle, float cosAngle)
+{
+    Mtx *m = &mathutilData->mtxA;
+    float a = (*m)[0][1] * cosAngle + (*m)[0][2] * sinAngle;
+    float b = (*m)[1][1] * cosAngle + (*m)[1][2] * sinAngle;
+    float c = (*m)[2][1] * cosAngle + (*m)[2][2] * sinAngle;
+    float d = (*m)[0][1] * -sinAngle + (*m)[0][2] * cosAngle;
+    float e = (*m)[1][1] * -sinAngle + (*m)[1][2] * cosAngle;
+    float f = (*m)[2][1] * -sinAngle + (*m)[2][2] * cosAngle;
+
+    (*m)[0][1] = a;
+    (*m)[1][1] = b;
+    (*m)[2][1] = c;
+    (*m)[0][2] = d;
+    (*m)[1][2] = e;
+    (*m)[2][2] = f;
+}
+
+void mathutil_mtxA_rotate_x(int angle)
+{
+    mathutil_mtxA_rotate_x_sin_cos(mathutil_sin(angle), mathutil_cos(angle));
+}
+#else
 asm void mathutil_mtxA_rotate_x(int angle)
 {
     nofralloc
@@ -1733,34 +1788,61 @@ asm void mathutil_mtxA_rotate_x(int angle)
 
 // void mathutil_mtxA_rotate_x_sin_cos(float sinAngle, float cosAngle)
 entry mathutil_mtxA_rotate_x_sin_cos
+    // f1 = sin
+    // f2 = cos
     lis r4, LC_CACHE_BASE@ha
-    ps_merge00 f0, f2, f1
-    psq_l f3, OFFSET_mtxA+4(r4), 0, GQR_F32
-    psq_l f4, OFFSET_mtxA+20(r4), 0, GQR_F32
-    psq_l f5, OFFSET_mtxA+36(r4), 0, GQR_F32
-    ps_mul f6, f3, f0
-    ps_mul f7, f4, f0
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f2, f1  // f0 = (cos, sin)
+    psq_l f3, OFFSET_mtxA+0x04(r4), 0, GQR_F32  // f3 = (mtxA[0][1], mtxA[0][2])
+    psq_l f4, OFFSET_mtxA+0x14(r4), 0, GQR_F32  // f4 = (mtxA[1][1], mtxA[1][2])
+    psq_l f5, OFFSET_mtxA+0x24(r4), 0, GQR_F32  // f5 = (mtxA[2][1], mtxA[2][2])
+    ps_mul f6, f3, f0                           // f6 = (mtxA[0][1] * cos, mtxA[0][2] * sin)
+    ps_mul f7, f4, f0                           // f7 = (mtxA[1][1] * cos, mtxA[1][2] * sin)
+    ps_mul f8, f5, f0                           // f8 = (mtxA[2][1] * cos, mtxA[2][2] * sin)
     fneg f1, f1
     ps_sum0 f6, f6, f6, f6
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
-    ps_merge00 f0, f1, f2
-    stfs f6, OFFSET_mtxA+4(r4)
-    ps_mul f6, f3, f0
-    stfs f7, OFFSET_mtxA+20(r4)
-    ps_mul f7, f4, f0
-    stfs f8, OFFSET_mtxA+36(r4)
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f1, f2          // f0 = (-sin, cos)
+    stfs f6, OFFSET_mtxA+0x04(r4)  // mtxA[0][1] = mtxA[0][1] * cos + mtxA[0][2] * sin
+    ps_mul f6, f3, f0              // f6 = (mtxA[0][1] * -sin, mtxA[0][2] * cos)
+    stfs f7, OFFSET_mtxA+0x14(r4)  // mtxA[1][1] = mtxA[1][1] * cos + mtxA[1][2] * sin
+    ps_mul f7, f4, f0              // f7 = (mtxA[1][1] * -sin, mtxA[1][2] * cos)
+    stfs f8, OFFSET_mtxA+0x24(r4)  // mtxA[2][1] = mtxA[2][1] * cos + mtxA[2][2] * sin
+    ps_mul f8, f5, f0              // f8 = (mtxA[2][1] * -sin, mtxA[2][2] * cos)
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_mtxA+8(r4)
+    stfs f6, OFFSET_mtxA+0x08(r4)  // mtxA[0][2] = mtxA[0][1] * -sin + mtxA[0][2] * cos
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_mtxA+24(r4)
+    stfs f7, OFFSET_mtxA+0x18(r4)  // mtxA[1][2] = mtxA[1][1] * -sin + mtxA[1][2] * cos
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_mtxA+40(r4)
+    stfs f8, OFFSET_mtxA+0x28(r4)  // mtxA[2][2] = mtxA[2][1] * -sin + mtxA[2][2] * cos
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_rotate_y_sin_cos(float sinAngle, float cosAngle)
+{
+    Mtx *m = &mathutilData->mtxA;
+    float a = (*m)[0][0] * sinAngle + (*m)[0][2] * cosAngle;
+    float b = (*m)[1][0] * sinAngle + (*m)[1][2] * cosAngle;
+    float c = (*m)[2][0] * sinAngle + (*m)[2][2] * cosAngle;
+    float d = (*m)[0][0] * cosAngle + (*m)[0][2] * -sinAngle;
+    float e = (*m)[1][0] * cosAngle + (*m)[1][2] * -sinAngle;
+    float f = (*m)[2][0] * cosAngle + (*m)[2][2] * -sinAngle;
+
+    (*m)[0][2] = a;
+    (*m)[1][2] = b;
+    (*m)[2][2] = c;
+    (*m)[0][0] = d;
+    (*m)[1][0] = e;
+    (*m)[2][0] = f;
+}
+
+void mathutil_mtxA_rotate_y(int angle)
+{
+    mathutil_mtxA_rotate_y_sin_cos(mathutil_sin(angle), mathutil_cos(angle));
+}
+#else
 asm void mathutil_mtxA_rotate_y(int angle)
 {
     nofralloc
@@ -1771,40 +1853,67 @@ asm void mathutil_mtxA_rotate_y(int angle)
 
 // void mathutil_mtxA_rotate_y_sin_cos(float sinAngle, float cosAngle)
 entry mathutil_mtxA_rotate_y_sin_cos
+    // f1 = sin
+    // f2 = cos
     lis r4, LC_CACHE_BASE@ha
-    ps_merge00 f0, f1, f2
-    lfs f3, OFFSET_mtxA+0(r4)
-    lfs f6, OFFSET_mtxA+8(r4)
-    lfs f4, OFFSET_mtxA+16(r4)
-    lfs f7, OFFSET_mtxA+24(r4)
-    lfs f5, OFFSET_mtxA+32(r4)
-    lfs f8, OFFSET_mtxA+40(r4)
-    ps_merge00 f3, f3, f6
-    ps_merge00 f4, f4, f7
-    ps_merge00 f5, f5, f8
-    ps_mul f6, f3, f0
-    ps_mul f7, f4, f0
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f1, f2  // f0 = (sin, cos)
+    lfs f3, OFFSET_mtxA+0x00(r4)  // f3 = mtxA[0][0]
+    lfs f6, OFFSET_mtxA+0x08(r4)  // f6 = mtxA[0][2]
+    lfs f4, OFFSET_mtxA+0x10(r4)  // f4 = mtxA[1][0]
+    lfs f7, OFFSET_mtxA+0x18(r4)  // f7 = mtxA[1][2]
+    lfs f5, OFFSET_mtxA+0x20(r4)  // f5 = mtxA[2][0]
+    lfs f8, OFFSET_mtxA+0x28(r4)  // f8 = mtxA[2][2]
+    ps_merge00 f3, f3, f6  // f3 = (mtxA[0][0], mtxA[0][2])
+    ps_merge00 f4, f4, f7  // f4 = (mtxA[1][0], mtxA[1][2])
+    ps_merge00 f5, f5, f8  // f5 = (mtxA[2][0], mtxA[2][2])
+    ps_mul f6, f3, f0  // f6 = (mtxA[0][0] * sin, mtxA[0][2] * cos)
+    ps_mul f7, f4, f0  // f7 = (mtxA[1][0] * sin, mtxA[1][2] * cos)
+    ps_mul f8, f5, f0  // f8 = (mtxA[2][0] * sin, mtxA[2][2] * cos)
     fneg f1, f1
     ps_sum0 f6, f6, f6, f6
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
-    ps_merge00 f0, f2, f1
-    stfs f6, OFFSET_mtxA+8(r4)
-    ps_mul f6, f3, f0
-    stfs f7, OFFSET_mtxA+24(r4)
-    ps_mul f7, f4, f0
-    stfs f8, OFFSET_mtxA+40(r4)
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f2, f1  // f0 = (cos, -sin)
+    stfs f6, OFFSET_mtxA+0x08(r4)  // mtxA[0][2] = mtxA[0][0] * sin + mtxA[0][2] * cos
+    ps_mul f6, f3, f0              // f6 = (mtxA[0][0] * cos, mtxA[0][2] * -sin)
+    stfs f7, OFFSET_mtxA+0x18(r4)  // mtxA[1][2] = mtxA[1][0] * sin + mtxA[1][2] * cos
+    ps_mul f7, f4, f0              // f7 = (mtxA[1][0] * cos, mtxA[1][2] * -sin)
+    stfs f8, OFFSET_mtxA+0x28(r4)  // mtxA[2][2] = mtxA[2][0] * sin + mtxA[2][2] * cos
+    ps_mul f8, f5, f0              // f8 = (mtxA[2][0] * cos, mtxA[2][2] * -sin)
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_mtxA+0(r4)
+    stfs f6, OFFSET_mtxA+0x00(r4)  // mtxA[0][0] = mtxA[0][0] * cos + mtxA[0][2] * -sin
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_mtxA+16(r4)
+    stfs f7, OFFSET_mtxA+0x10(r4)  // mtxA[1][0] = mtxA[1][0] * cos + mtxA[1][2] * -sin
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_mtxA+32(r4)
+    stfs f8, OFFSET_mtxA+0x20(r4)  // mtxA[2][0] = mtxA[2][0] * cos + mtxA[2][2] * -sin
     blr
 }
+#endif
 
+#ifdef MATHUTIL_C_ONLY
+void mathutil_mtxA_rotate_z_sin_cos(float sinAngle, float cosAngle)
+{
+    Mtx *m = &mathutilData->mtxA;
+    float a = (*m)[0][0] * cosAngle + (*m)[0][1] * sinAngle;
+    float b = (*m)[1][0] * cosAngle + (*m)[1][1] * sinAngle;
+    float c = (*m)[2][0] * cosAngle + (*m)[2][1] * sinAngle;
+    float d = (*m)[0][0] * -sinAngle + (*m)[0][1] * cosAngle;
+    float e = (*m)[1][0] * -sinAngle + (*m)[1][1] * cosAngle;
+    float f = (*m)[2][0] * -sinAngle + (*m)[2][1] * cosAngle;
+
+    (*m)[0][0] = a;
+    (*m)[1][0] = b;
+    (*m)[2][0] = c;
+    (*m)[0][1] = d;
+    (*m)[1][1] = e;
+    (*m)[2][1] = f;
+}
+
+void mathutil_mtxA_rotate_z(int angle)
+{
+    mathutil_mtxA_rotate_z_sin_cos(mathutil_sin(angle), mathutil_cos(angle));
+}
+#else
 asm void mathutil_mtxA_rotate_z(int angle)
 {
     nofralloc
@@ -1815,33 +1924,36 @@ asm void mathutil_mtxA_rotate_z(int angle)
 
 // void mathutil_mtxA_rotate_z_sin_cos(float sinAngle, float cosAngle)
 entry mathutil_mtxA_rotate_z_sin_cos
+    // f1 = sin
+    // f2 = cos
     lis r4, LC_CACHE_BASE@ha
-    ps_merge00 f0, f2, f1
-    psq_l f3, OFFSET_mtxA+0(r4), 0, GQR_F32
-    psq_l f4, OFFSET_mtxA+16(r4), 0, GQR_F32
-    psq_l f5, OFFSET_mtxA+32(r4), 0, GQR_F32
-    ps_mul f6, f3, f0
-    ps_mul f7, f4, f0
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f2, f1  // f0 = (cos, sin)
+    psq_l f3, OFFSET_mtxA+0x00(r4), 0, GQR_F32  // f3 = (mtxA[0][0], mtxA[0][1])
+    psq_l f4, OFFSET_mtxA+0x10(r4), 0, GQR_F32  // f4 = (mtxA[1][0], mtxA[1][1])
+    psq_l f5, OFFSET_mtxA+0x20(r4), 0, GQR_F32  // f5 = (mtxA[2][0], mtxA[2][1])
+    ps_mul f6, f3, f0  // f6 = (mtxA[0][0] * cos, mtxA[0][1] * sin)
+    ps_mul f7, f4, f0  // f7 = (mtxA[1][0] * cos, mtxA[1][1] * sin)
+    ps_mul f8, f5, f0  // f8 = (mtxA[2][0] * cos, mtxA[2][1] * sin)
     fneg f1, f1
     ps_sum0 f6, f6, f6, f6
     ps_sum0 f7, f7, f7, f7
     ps_sum0 f8, f8, f8, f8
-    ps_merge00 f0, f1, f2
-    stfs f6, OFFSET_mtxA+0(r4)
-    ps_mul f6, f3, f0
-    stfs f7, OFFSET_mtxA+16(r4)
-    ps_mul f7, f4, f0
-    stfs f8, OFFSET_mtxA+32(r4)
-    ps_mul f8, f5, f0
+    ps_merge00 f0, f1, f2  // f0 = (-sin, cos)
+    stfs f6, OFFSET_mtxA+0x00(r4)  // mtxA[0][0] = mtxA[0][0] * cos + mtxA[0][1] * sin
+    ps_mul f6, f3, f0              // f6 = (mtxA[0][0] * -sin, mtxA[0][1] * cos)
+    stfs f7, OFFSET_mtxA+0x10(r4)  // mtxA[1][0] = mtxA[1][0] * cos + mtxA[1][1] * sin
+    ps_mul f7, f4, f0              // f7 = (mtxA[1][0] * -sin, mtxA[1][1] * cos)
+    stfs f8, OFFSET_mtxA+0x20(r4)  // mtxA[2][0] = mtxA[2][0] * cos + mtxA[2][1] * sin
+    ps_mul f8, f5, f0              // f8 = (mtxA[2][0] * -sin, mtxA[2][1] * cos)
     ps_sum0 f6, f6, f6, f6
-    stfs f6, OFFSET_mtxA+4(r4)
+    stfs f6, OFFSET_mtxA+0x04(r4)  // mtxA[0][1] = mtxA[0][0] * -sin + mtxA[0][1] * cos
     ps_sum0 f7, f7, f7, f7
-    stfs f7, OFFSET_mtxA+20(r4)
+    stfs f7, OFFSET_mtxA+0x14(r4)  // mtxA[1][1] = mtxA[1][0] * -sin + mtxA[1][1] * cos
     ps_sum0 f8, f8, f8, f8
-    stfs f8, OFFSET_mtxA+36(r4)
+    stfs f8, OFFSET_mtxA+0x24(r4)  // mtxA[2][1] = mtxA[2][0] * -sin + mtxA[2][1] * cos
     blr
 }
+#endif
 
 // Normalize a vector and return its original length
 asm float mathutil_vec_normalize_len(register Vec *vec)
