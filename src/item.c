@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "adv.h"
+#include "course.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"

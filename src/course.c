@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "course.h"
 #include "game.h"
 #include "info.h"
 #include "input.h"
@@ -10,17 +11,16 @@
 #include "stage.h"
 #include "textbox.h"
 
-struct Struct802F1F98
-{
-    u8 unk0;
-    u8 unk1;
-    s32 unk4;
-    u8 filler8[0x1C-0x8];  // unused filler?
-};
+// Super Monkey Ball levels are organized into 3 "difficulties", which are
+// Beginner, Advanced, and Expert.
+// These difficulties are further subdivided into "courses", which are a sequence
+// of floors. Each difficulty consists of 2 or 3 courses. All three difficulties
+// have a "main" course and an "extra" course. Expert has these two plus an
+// additional "master" course.
 
 u32 playPointsReceived;
 s8 lbl_802F1FC0;
-u32 lbl_802F1FBC;
+u32 totalPlayPoints;
 u32 lbl_802F1FB8;
 u32 lbl_802F1FB4;  // not used
 int lbl_802F1FB0;
@@ -29,104 +29,64 @@ u32 lbl_802F1FA8;  // not used
 int lbl_802F1FA4;
 u32 lbl_802F1FA0;
 s32 lbl_802F1F9C;
-struct Struct802F1F98 *lbl_802F1F98;
 
-s16 lbl_801BA3D8[] =
+// Play points per floor in each course
+
+static s16 beginnerMainPlayPoints[] =
 {
-    0x0015, 0x0016,
-    0x0017, 0x0018,
-    0x0032, 0x001A,
-    0x001B, 0x001C,
-    0x001D, 0x0064,
-};
-s16 lbl_801BA3EC[] =
-{
-    0x0016, 0x0017,
-    0x0018, 0x0019,
-    0x0033, 0x001B,
-    0x001C, 0x001D,
-    0x001E, 0x0065,
-    0x0020, 0x0021,
-    0x0022, 0x0023,
-    0x0024, 0x0025,
-    0x0026, 0x0027,
-    0x0028, 0x00C9,
-    0x002A, 0x002B,
-    0x002C, 0x002D,
-    0x002E, 0x002F,
-    0x0030, 0x0031,
-    0x0032, 0x012C,
-};
-s16 lbl_801BA428[] =
-{
-    0x0017, 0x0018,
-    0x0019, 0x001A,
-    0x0034, 0x001C,
-    0x001D, 0x001E,
-    0x001F, 0x0066,
-    0x0021, 0x0022,
-    0x0023, 0x0024,
-    0x0025, 0x0026,
-    0x0027, 0x0028,
-    0x0029, 0x00CA,
-    0x002B, 0x002C,
-    0x002D, 0x002E,
-    0x002F, 0x0030,
-    0x0031, 0x0032,
-    0x0033, 0x012E,
-    0x0035, 0x0036,
-    0x0037, 0x0038,
-    0x0039, 0x003A,
-    0x003B, 0x003C,
-    0x003D, 0x0192,
-    0x003F, 0x0040,
-    0x0041, 0x0042,
-    0x0043, 0x0044,
-    0x0045, 0x0046,
-    0x0047, 0x01F4,
-};
-s16 lbl_802F0B00[4] =
-{
-    0x0028, 0x0046,
-    0x0083, 0x0000,
-};
-s16 lbl_801BA48C[] =
-{
-    0x0032, 0x0050,
-    0x006E, 0x008C,
-    0x015F, 0x0000,
-};
-s16 lbl_801BA498[] =
-{
-    0x004B, 0x005A,
-    0x0069, 0x0078,
-    0x0087, 0x0096,
-    0x00A5, 0x00B4,
-    0x00C3, 0x0259,
-};
-s16 lbl_801BA4AC[] =
-{
-    0x00FA, 0x0104,
-    0x010E, 0x0118,
-    0x0122, 0x012C,
-    0x0136, 0x0140,
-    0x014A, 0x02BC,
+    21, 22, 23, 24, 50, 26, 27, 28, 29, 100,
 };
 
-#pragma force_active on
-s16 *lbl_801BA4C0[] =
+static s16 advancedMainPlayPoints[] =
 {
-    lbl_801BA3D8,
-    lbl_801BA3EC,
-    lbl_801BA428,
-    lbl_802F0B00,
-    lbl_801BA48C,
-    lbl_801BA498,
-    lbl_801BA4AC,
-    lbl_801BA4AC,
-    lbl_801BA4AC,
+    22, 23, 24, 25, 51, 27, 28, 29, 30, 101,
+    32, 33, 34, 35, 36, 37, 38, 39, 40, 201,
+    42, 43, 44, 45, 46, 47, 48, 49, 50, 300,
 };
-s16 lbl_801BA4E4[] =  // 0x10C
+
+static s16 expertMainPlayPoints[] =
+{
+    23, 24, 25, 26, 52, 28, 29, 30, 31, 102,
+    33, 34, 35, 36, 37, 38, 39, 40, 41, 202,
+    43, 44, 45, 46, 47, 48, 49, 50, 51, 302,
+    53, 54, 55, 56, 57, 58, 59, 60, 61, 402,
+    63, 64, 65, 66, 67, 68, 69, 70, 71, 500,
+};
+
+static s16 beginnerExtraPlayPoints[3] =
+{
+    40, 70, 131,
+};
+
+static s16 advancedExtraPlayPoints[] =
+{
+    50, 80, 110, 140, 351,
+};
+
+static s16 expertExtraPlayPoints[] =
+{
+    75, 90, 105, 120, 135, 150, 165, 180, 195, 601,
+};
+
+static s16 masterPlayPoints[] =
+{
+    250, 260, 270, 280, 290, 300, 310, 320, 330, 700,
+};
+
+static s16 *coursePlayPointLists[] =
+{
+    beginnerMainPlayPoints,
+    advancedMainPlayPoints,
+    expertMainPlayPoints,
+    beginnerExtraPlayPoints,
+    advancedExtraPlayPoints,
+    expertExtraPlayPoints,
+    masterPlayPoints,
+    masterPlayPoints,
+    masterPlayPoints,
+};
+
+s16 u_unkPlayPointList[] =
 {
     0x0000, 0x0001,
     0x0001, 0x0002,
@@ -164,7 +124,6 @@ s16 lbl_801BA4E4[] =  // 0x10C
     0x0021, 0x0022,
     0x0022, 0x0023,
 };
-#pragma force_active reset
 
 struct Struct8027CC58_sub
 {
@@ -179,21 +138,15 @@ struct Struct8027CC58
     s16 unk22;
 };
 
-struct Struct8027CC58 lbl_8027CC58[4][3];
-FORCE_BSS_ORDER(lbl_8027CC58)
+static struct Struct8027CC58 lbl_8027CC58[4][3];
+static u32 lbl_8027CE08[4];
+struct Struct8027CE18 lbl_8027CE18;
 
-u32 lbl_8027CE08[4];
-FORCE_BSS_ORDER(lbl_8027CE08)
-
-struct
-{
-    u32 unk0;
-    u32 unk4;
-    u32 unk8;
-} lbl_8027CE18;  // 0x1C0
-FORCE_BSS_ORDER(lbl_8027CE18)
-
-extern u32 lbl_802F1FB8;
+static int difficulty_to_course_id(int, u32);
+static void func_80067508(int, int, u32);
+static void func_800676E8(void);
+static void func_80067808(void);
+static void func_80067AD4(void);
 
 void func_80065C58(void)
 {
@@ -205,43 +158,39 @@ void func_80065C58(void)
     lbl_8027CE08[1] = 0;
     lbl_8027CE08[2] = 0;
     lbl_8027CE08[3] = 0;
-    lbl_802F1FBC = 0;
+    totalPlayPoints = 0;
     lbl_802F1FB8 = 0;
 
     count = 0;
     lbl_8027CE18.unk0 = 0;
     for (i = 0; i < 10; i++, count++)
-        lbl_8027CE18.unk0 += lbl_801BA3D8[i] + lbl_801BA4E4[i];
+        lbl_8027CE18.unk0 += beginnerMainPlayPoints[i] + u_unkPlayPointList[i];
     for (i = 0; i < 3; i++, count++)
-        lbl_8027CE18.unk0 += lbl_802F0B00[i] + lbl_801BA4E4[count];
+        lbl_8027CE18.unk0 += beginnerExtraPlayPoints[i] + u_unkPlayPointList[count];
 
     count = 0;
     lbl_8027CE18.unk4 = 0;
     for (i = 0; i < 30; i++, count++)
-        lbl_8027CE18.unk4 += lbl_801BA3EC[i] + lbl_801BA4E4[i];
+        lbl_8027CE18.unk4 += advancedMainPlayPoints[i] + u_unkPlayPointList[i];
     for (i = 0; i < 5; i++, count++)
-        lbl_8027CE18.unk4 += lbl_801BA48C[i] + lbl_801BA4E4[count];
+        lbl_8027CE18.unk4 += advancedExtraPlayPoints[i] + u_unkPlayPointList[count];
 
     count = 0;
     lbl_8027CE18.unk8 = 0;
     for (i = 0; i < 50; i++, count++)
-        lbl_8027CE18.unk8 += lbl_801BA428[i] + lbl_801BA4E4[i];
+        lbl_8027CE18.unk8 += expertMainPlayPoints[i] + u_unkPlayPointList[i];
     for (i = 0; i < 10; i++, count++)
-        lbl_8027CE18.unk8 += lbl_801BA498[i] + lbl_801BA4E4[count];
+        lbl_8027CE18.unk8 += expertExtraPlayPoints[i] + u_unkPlayPointList[count];
     for (i = 0; i < 10; i++, count++)
-        lbl_8027CE18.unk8 += lbl_801BA4AC[i] + lbl_801BA4E4[count];
+        lbl_8027CE18.unk8 += masterPlayPoints[i] + u_unkPlayPointList[count];
 }
-
-extern u32 playPointsReceived;
-extern s8 lbl_802F1FC0;
-extern u32 lbl_802F1FBC;
 
 void func_80066294(void)
 {
     playPointsReceived = 0;
     lbl_802F1FC0 = 0;
     if (func_800676C0() != 0)
-        lbl_802F1FBC = 0;
+        totalPlayPoints = 0;
 }
 
 void func_800662D4(void)
@@ -251,15 +200,15 @@ void func_800662D4(void)
 
 void func_800662E0(void)
 {
-    lbl_802F1FBC = MIN(lbl_802F1FBC + playPointsReceived, 9999);
-    if (func_800676C0() != 0 && lbl_802F1FBC > lbl_802F1FB8)
-        lbl_802F1FB8 = lbl_802F1FBC;
+    totalPlayPoints = MIN(totalPlayPoints + playPointsReceived, 9999);
+    if (func_800676C0() != 0 && totalPlayPoints > lbl_802F1FB8)
+        lbl_802F1FB8 = totalPlayPoints;
 }
 
 #pragma force_active on
 void func_8006633C(void)
 {
-    lbl_802F1FBC -= 2500;
+    totalPlayPoints -= 2500;
 }
 #pragma force_active reset
 
@@ -268,12 +217,12 @@ void func_8006634C(void)
     int temp_r4;
     int var_r4;
 
-    if (u_is_minigame_unlocked(6) == 0 || u_is_minigame_unlocked(7) == 0 || u_is_minigame_unlocked(8) == 0)
+    if (!u_is_minigame_unlocked(6) || !u_is_minigame_unlocked(7) || !u_is_minigame_unlocked(8))
         return;
-    if (func_800676C0() == 0 && lbl_802F1FBC >= 0x9C4)
+    if (func_800676C0() == 0 && totalPlayPoints >= 2500)
     {
         var_r4 = 0;
-        while (lbl_802F1FBC >= 0x9C4)
+        while (totalPlayPoints >= 2500)
         {
             func_8006633C();
             var_r4++;
@@ -284,7 +233,7 @@ void func_8006634C(void)
             lbl_802F1C0D |= 8;
             lbl_802F1C0D &= ~0x70;
             lbl_802F1C0D |= 0x50;
-            lbl_802F1FBC = 0;
+            totalPlayPoints = 0;
         }
         else
         {
@@ -294,561 +243,719 @@ void func_8006634C(void)
     }
 }
 
-u32 func_80066C78(struct Struct802F1F98 *);
-u32 func_80066D44(struct Struct802F1F98 *);
-u32 func_80066CD4(struct Struct802F1F98 *);
-void func_80066D6C(struct Struct802F1F98 *);
-void func_80066D78(struct Struct802F1F98 *);
-void func_80066EC0(struct Struct802F1F98 *);
-
-u32 (*lbl_801BA570[])(struct Struct802F1F98 *) =
+enum
 {
-    func_80066C78,
-    func_80066D44,
-    func_80066CD4,
-    0,
+    CMD_IF = 0,
+    CMD_THEN = 1,
+    CMD_FLOOR = 2,
+    CMD_COURSE_END = 3,
 };
 
-void (*lbl_801BA580[])(struct Struct802F1F98 *) =
+enum  // CMD_IF conditions
 {
-    func_80066D6C,
-    func_80066D78,
-    func_80066EC0,
-    0,
+    IF_FLOOR_CLEAR = 0,
+    IF_GOAL_TYPE = 2,
 };
 
-struct Struct802F1F98 lbl_801BA590[] =
+enum  // CMD_THEN actions
 {
-    { 2, 0,    1 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    2 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    3 },
-    { 2, 0,    3 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    4 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   91 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    5 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    6 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    7 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    8 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    9 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    THEN_JUMP_FLOOR = 0,
 };
 
-struct Struct802F1F98 lbl_801BA964[] =
+enum  // CMD_FLOOR value types
 {
-    { 2, 0,   11 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   12 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   13 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   14 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   91 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   15 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    4 },
-    { 2, 0,   16 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   17 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   18 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   92 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   21 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    3 },
-    { 2, 0,   22 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   23 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   24 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   25 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   26 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   27 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   28 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    2 },
-    { 0, 0,    0 },
-    { 0, 2,   82 },
-    { 1, 0,    7 },
-    { 2, 0,   29 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   93 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   31 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   32 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   33 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   34 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   35 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    3 },
-    { 2, 0,   36 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   37 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   38 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   39 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   40 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    FLOOR_STAGE_ID = 0,
+    FLOOR_TIME = 1,
 };
 
-struct Struct802F1F98 lbl_801BB710[] =
+struct CourseCommand
 {
-    { 2, 0,   41 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   42 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   82 },
-    { 1, 0,    3 },
-    { 2, 0,   43 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    2 },
-    { 2, 0,   44 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   91 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   45 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   46 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   47 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   48 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   92 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   51 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   52 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   53 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   54 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   55 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   56 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   57 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   58 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   59 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   93 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   61 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   62 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   63 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   64 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   65 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   66 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   67 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   68 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   69 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   94 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   71 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   72 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   73 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   74 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   75 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   76 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   77 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   78 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   79 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   95 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   81 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   82 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    2 },
-    { 0, 0,    0 },
-    { 0, 2,   82 },
-    { 1, 0,    3 },
-    { 2, 0,   83 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   84 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   85 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   86 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 0, 2,   66 },
-    { 1, 0,    1 },
-    { 0, 0,    0 },
-    { 0, 2,   71 },
-    { 1, 0,    2 },
-    { 2, 0,   87 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   88 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   89 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,   90 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    u8 opcode;
+    u8 type;
+    s32 value;
+    u8 filler8[0x1C-0x8];  // unused filler?
 };
 
-struct Struct802F1F98 lbl_801BCD0C[] =
+static u32 course_if_cleared_floor(struct CourseCommand *);
+static u32 course_if_time_elapsed(struct CourseCommand *);
+static u32 course_if_goal_type(struct CourseCommand *);
+static void course_then_jump_floor(struct CourseCommand *);
+static void course_sub_give_play_points(struct CourseCommand *);
+static void course_sub_give_play_points_dupe(struct CourseCommand *);
+
+static u32 (*courseIfFuncs[])(struct CourseCommand *) =
 {
-    { 2, 0,  101 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  102 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  103 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    course_if_cleared_floor,
+    course_if_time_elapsed,
+    course_if_goal_type,
+    NULL,
 };
 
-struct Struct802F1F98 lbl_801BCE78[] =
+static void (*courseThenFuncs[])(struct CourseCommand *) =
 {
-    { 2, 0,  101 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  104 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  105 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  103 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  106 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    course_then_jump_floor,
+    course_sub_give_play_points,
+    course_sub_give_play_points_dupe,
+    NULL,
 };
 
-struct Struct802F1F98 lbl_801BD08C[] =
+static struct CourseCommand s_beginnerMainScript[] =
 {
-    { 2, 0,  101 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  107 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  104 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  108 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  109 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  110 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  111 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  103 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  112 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  113 },
-    { 2, 1, 1800 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_001_PLAIN },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_002_DIAMOND },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {    CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {    CMD_THEN, THEN_JUMP_FLOOR, 3 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_003_HAIRPIN },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_004_WIDE_BRIDGE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_091_BONUS_BASIC },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_005_SLOPES },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_006_STEPS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_007_BLOCKS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_008_JUMP_SINGLE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_009_EXAM_A },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2, 0 },
+
+    { CMD_COURSE_END },
 };
 
-struct Struct802F1F98 lbl_801BD508[] =
+static struct CourseCommand s_advancedMainScript[] =
 {
-    { 2, 0,  121 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  122 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  123 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  124 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  125 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  126 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  127 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  128 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  129 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,  130 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_011_BUMP },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_012_WALKING },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_013_REPULSE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_014_NARROW_BRIDGE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_091_BONUS_BASIC },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_015_BREAK },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 4 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID,   ST_016_CURVES },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_017_DOWNHILL },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID,   ST_018_BLOCKS_SLIM },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_092_BONUS_WAVE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_021_CHOICE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    {   CMD_IF, IF_FLOOR_CLEAR },
+    {     CMD_IF, IF_GOAL_TYPE, 'B' },
+    {       CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    {   CMD_IF, IF_FLOOR_CLEAR },
+    {     CMD_IF, IF_GOAL_TYPE, 'G' },
+    {       CMD_THEN, THEN_JUMP_FLOOR, 3 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_022_BOWL },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_023_JUMPIES },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_024_STOPPERS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_025_FLOOR_BENT },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_026_CONVEYOR },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_027_EXAM_B },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_028_CHASER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 2 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'R' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 7 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_029_JUMP_DOUBLE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_093_BONUS_GRID },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_031_MIDDLE_JAM },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_032_ANTLION },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_033_COLLAPSE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_034_SWING_BAR },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_035_LABYRINTH },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 3 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_036_SPIRAL },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_037_WAVY_JUMP },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_038_SPIKY },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_039_UNREST },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_040_POLAR },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
 };
 
-struct Struct802F1F98 lbl_801BD86C[] =
+static struct CourseCommand s_expertMainScript[] =
 {
-    { 2, 0,    0 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    0 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    0 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    0 },
-    { 0, 0,    0 },
-    { 1, 0,    1 },
-    { 2, 0,    0 },
-    { 0, 0,    0 },
-    { 1, 2,    0 },
-    { 3, 0,    0 },
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_041_RUIN },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_042_BRANCH },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'R' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 3 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_043_OVERTURN },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 2 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_044_EXCURSION },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_091_BONUS_BASIC },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_045_DODECAGON },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_046_EXAM_C },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_047_SKELETON },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_048_TRACKS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_092_BONUS_WAVE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_051_DOWNHILL_HARD },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_052_GEARS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_053_DESTRUCTION },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_054_INVASION },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_055_DIVING },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_056_FLOOR_SLANT },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_057_TRAM },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_058_SWING_BAR_LONG },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_059_PAPERWORK },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_093_BONUS_GRID },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_061_TWIN_ATTACKER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_062_SEGA_LOGO },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_063_SNAKE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_064_WIND },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_065_WINDY_SLIDE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_066_FALL_DOWN },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_067_TWIN_CROSS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_068_SPIRAL_HARD },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_069_CONVEYOR_PARTS },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_094_BONUS_BUMPY },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_071_GAPS },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_072_CURVATURE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_073_ANT_LION_SUPER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_074_DRUM },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_075_TWIST_AND_SPIN },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_076_SPEEDY_JAM },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_077_QUAKE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_078_CASSIOPEIA },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_079_PIRATES },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_095_BONUS_HUNTING },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_081_BOWL_OPEN },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_082_CHECKER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 2 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'R' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 3 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_083_CARPET },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_084_RIDGE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_085_MIXER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_086_RINGS },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'B' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 1 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_IF, IF_GOAL_TYPE, 'G' },
+    {     CMD_THEN, THEN_JUMP_FLOOR, 2 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_087_STAIRS },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_088_CLOVER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_089_COFFEE_CUP },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_090_METAMORPHASIS },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
 };
 
-struct Struct802F1F98 *lbl_801BDA2C[] =
+static struct CourseCommand s_beginnerExtraScript[] =
 {
-    lbl_801BA590,  // beginner
-    lbl_801BA964,  // advanced
-    lbl_801BB710,  // expert
-    lbl_801BCD0C,  // beginner ex
-    lbl_801BCE78,  // advanced ex
-    lbl_801BD08C,  // expert ex
-    lbl_801BD508,
-    lbl_801BD508,
-    lbl_801BD508,  // master
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_101_BLUR_BRIDGE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_102_HITTER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_103_AV_LOGO },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
+};
+
+static struct CourseCommand s_advancedExtraScript[] =
+{
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_101_BLUR_BRIDGE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_104_HARD_HITTER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_105_PUZZLE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_103_AV_LOGO },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_106_POLAR_LARGE },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
+};
+
+static struct CourseCommand s_expertExtraScript[] =
+{
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_101_BLUR_BRIDGE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_107_BREATHE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_104_HARD_HITTER },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_108_FERRIS_WHEEL },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_109_FACTORY },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_110_CURL_PIPE },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_111_MAGIC_HAND },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_103_AV_LOGO },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_112_SANCTUARY },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_113_DAA_LOO_MAA },
+    { CMD_FLOOR, FLOOR_TIME,     1800 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
+};
+
+static struct CourseCommand s_masterScript[] =
+{
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_121_WAVE_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_122_FAN_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_123_STAMINA_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_124_SPRING_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_125_DANCE_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_126_ROLL_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_127_EDGE_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_128_DODGE_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_129_BRIDGE_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, ST_130_MONKEY_MASTER },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
+};
+
+static struct CourseCommand lbl_801BD86C[] =
+{
+    { CMD_FLOOR, FLOOR_STAGE_ID, 0 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, 0 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, 0 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, 0 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, THEN_JUMP_FLOOR, 1 },
+
+    { CMD_FLOOR, FLOOR_STAGE_ID, 0 },
+    { CMD_IF, IF_FLOOR_CLEAR },
+    {   CMD_THEN, 2,    0 },
+
+    { CMD_COURSE_END },
+};
+
+static struct CourseCommand *s_courseScripts[] =
+{
+    s_beginnerMainScript,
+    s_advancedMainScript,
+    s_expertMainScript,
+    s_beginnerExtraScript,
+    s_advancedExtraScript,
+    s_expertExtraScript,
+    s_masterScript,
+    s_masterScript,
+    s_masterScript,
     lbl_801BD86C,
     lbl_801BD86C,
     lbl_801BD86C,
 };
+
+struct CourseCommand *courseScriptPtr;
 
 int u_get_max_continues(void);
 
-void lbl_80066430(struct TextBox *tbox)
+static void course_end_textbox_callback(struct TextBox *tbox)
 {
     if (tbox->unk19 == 0 && tbox->state == 20 && tbox->timer == tbox->timerMax - 1)
     {
@@ -859,25 +966,25 @@ void lbl_80066430(struct TextBox *tbox)
     {
         if (func_800676C0() != 0)
         {
-            textbox_add_textf(1, "a/Play Point record for this time : ft/%4d", lbl_802F1FBC);
+            textbox_add_textf(1, "a/Play Point record for this time : ft/%4d", totalPlayPoints);
             textbox_add_textf(1, "a/Highest Play Point record c/0xffffff/a/timec/0x000000/ : ft/%4d", lbl_802F1FB8);
             lbl_802F1FA0++;
         }
         else if (playPointsReceived == 0)
         {
             textbox_add_text(1, "a/You didn't get any play points.");
-            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", lbl_802F1FBC);
+            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", totalPlayPoints);
             lbl_802F1FA0++;
         }
         else
         {
             textbox_add_textf(1, "a/You received %d Play Points.", playPointsReceived);
-            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", lbl_802F1FBC);
+            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", totalPlayPoints);
             lbl_802F1FA0++;
         }
         return;
     }
-    if (func_800676C0() == 0 && lbl_802F1FBC >= 2500)
+    if (func_800676C0() == 0 && totalPlayPoints >= 2500)
     {
         if (++lbl_802F1FA0 == 480)
         {
@@ -914,7 +1021,7 @@ void lbl_80066430(struct TextBox *tbox)
                         func_8002B5C8(0x16D);
                         tbox->unk17 = 1;
                     }
-                    var_r30 = lbl_802F1FBC / 2500;
+                    var_r30 = totalPlayPoints / 2500;
                     if (var_r30 + u_get_max_continues() > 9)
                     {
                         var_r30 = MIN(var_r30, 10 - u_get_max_continues());
@@ -936,21 +1043,21 @@ void lbl_80066430(struct TextBox *tbox)
         tbox->unk18 = 1;
 }
 
-void func_8006677C(int arg0, s16 arg1, s16 arg2)
+void show_course_end_textbox(int arg0, s16 x, s16 y)
 {
     struct TextBox tbox;
 
     memset(&tbox, 0, sizeof(tbox));
-    tbox.style = 0xE;
-    tbox.x = arg1;
-    tbox.y = arg2;
+    tbox.style = 14;
+    tbox.x = x;
+    tbox.y = y;
     tbox.numColumns = 0;
     tbox.numRows = 2;
-    tbox.unk17 = (u8) 0;
-    tbox.unk18 = (u8) 0;
+    tbox.unk17 = 0;
+    tbox.unk18 = 0;
     tbox.unk19 = arg0;
-    tbox.callback = (void*)lbl_80066430;
-    lbl_802F1FA0 = (s32) 0;
+    tbox.callback = course_end_textbox_callback;
+    lbl_802F1FA0 = 0;
     if (tbox.unk19 == 2)
     {
         lbl_802F1FA0 = 0xB3;
@@ -972,11 +1079,11 @@ int func_80066868(void)
 
 void func_800668A0(void)
 {
-    int var = u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags);
+    int var = difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags);
 
-    lbl_802F1F98 = lbl_801BDA2C[var];
-    infoWork.unk2E = lbl_802F1F98->unk4;
-    lbl_802F1F98++;
+    courseScriptPtr = s_courseScripts[var];
+    infoWork.unk2E = courseScriptPtr->value;
+    courseScriptPtr++;
     func_800676E8();
 }
 
@@ -990,42 +1097,46 @@ void ev_course_init(void)
 
 void ev_course_main(void)
 {
-    struct Struct802F1F98 *var_r29;
+    struct CourseCommand *cmd;
     int var_r28_2;
-    int var_r4;
-    u32 var_r28;
+    int prevOpcode;
+    u32 condResult;
     u32 var_r4_2;
 
     if (gamePauseStatus & 0xA)
         return;
-    var_r4 = -1;
-    var_r28 = 0;
-    for (var_r29 = lbl_802F1F98; var_r29->unk0 != 3; var_r29++)
+    prevOpcode = -1;
+    condResult = 0;
+    for (cmd = courseScriptPtr; cmd->opcode != CMD_COURSE_END; cmd++)
     {
-        if (var_r29->unk0 == 2 && var_r29->unk1 == 0)
+        // Stop processing commands if we've reached the next floor's commands
+        if (cmd->opcode == CMD_FLOOR && cmd->type == FLOOR_STAGE_ID)
             return;
-        switch (var_r29->unk0)
+
+        // Handle conditional script logic
+        switch (cmd->opcode)
         {
-        case 0:
-            if (var_r4 != 0)
-                var_r28 = lbl_801BA570[var_r29->unk1](var_r29);
-            else if (var_r28 != 0)
-                var_r28 &= lbl_801BA570[var_r29->unk1](var_r29);
+        case CMD_IF:
+            if (prevOpcode != CMD_IF)
+                condResult = courseIfFuncs[cmd->type](cmd);
+            else if (condResult != 0)  // nest conditionals by logically ANDing the result with the previous
+                condResult &= courseIfFuncs[cmd->type](cmd);
             break;
-        case 1:
-            if (var_r28 != 0)
-                lbl_801BA580[var_r29->unk1](var_r29);
+        case CMD_THEN:
+            if (condResult)  // if previous condition was nonzero, execute the result
+                courseThenFuncs[cmd->type](cmd);
             break;
         }
+
         if (lbl_802F1F9C != -1)
         {
             var_r4_2 = FALSE;
             var_r28_2 = 0;
             if (infoWork.unk22 != 1)
                 lbl_802F1F9C = infoWork.unk22;
-            while (var_r29->unk0 != 3)
+            while (cmd->opcode != CMD_COURSE_END)
             {
-                if (var_r29->unk0 == 2 && var_r29->unk1 == 0)
+                if (cmd->opcode == CMD_FLOOR && cmd->type == FLOOR_STAGE_ID)
                 {
                     var_r28_2++;
                     if (var_r28_2 == lbl_802F1F9C)
@@ -1034,13 +1145,13 @@ void ev_course_main(void)
                         break;
                     }
                 }
-                var_r29++;
+                cmd++;
             }
             if (var_r4_2)
-                lbl_802F1F98 = var_r29 + 1;
+                courseScriptPtr = cmd + 1;
             else
             {
-                func_80066EC0(var_r29);
+                course_sub_give_play_points_dupe(cmd);
                 infoWork.unk20 += 10;
                 lbl_802F1F9C = -1;
                 return;
@@ -1050,39 +1161,40 @@ void ev_course_main(void)
                 lbl_802F1FC0++;
                 if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
                 {
-                    playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
-                    playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1] * 10;
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+                    playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
                 }
                 else
                 {
-                    playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
-                    playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1];
+                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+                    playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
                 }
             }
-            infoWork.unk2E = var_r29->unk4;
+            infoWork.unk2E = cmd->value;
             func_80067AD4();
             infoWork.unk22 = var_r28_2;
             infoWork.unk20 += infoWork.unk22;
             lbl_802F1F9C = -1;
             return;
         }
-        var_r4 = var_r29->unk0;
+        prevOpcode = cmd->opcode;
     }
 }
 
 void ev_course_dest(void) {}
 
-u32 func_80066C78(struct Struct802F1F98 *unused)
+static u32 course_if_cleared_floor(struct CourseCommand *cmd)
 {
     if ((infoWork.flags & INFO_FLAG_GOAL) || (infoWork.flags & INFO_FLAG_09))
-        return 1;
+        return TRUE;
+    // In bonus stages or competition mode, falling out or timing over counts as completing the stage
     if (((infoWork.flags & INFO_FLAG_BONUS_STAGE) || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
      && ((infoWork.flags & INFO_FLAG_TIMEOVER) || (infoWork.flags & INFO_FLAG_FALLOUT)))
-        return 1;
-    return 0;
+        return TRUE;
+    return FALSE;
 }
 
-u32 func_80066CD4(struct Struct802F1F98 *arg0)
+static u32 course_if_goal_type(struct CourseCommand *cmd)
 {
     int i;
     struct StageGoal *goal = decodedStageLzPtr->animGroups[0].goals;
@@ -1092,58 +1204,59 @@ u32 func_80066CD4(struct Struct802F1F98 *arg0)
         if (i == infoWork.goalEntered)
             break;
     }
-    if (goal->type == (s8)arg0->unk4)
-        return 1;
-    return 0;
+    if (goal->type == (s8)cmd->value)
+        return TRUE;
+    else
+        return FALSE;
 }
 
-u32 func_80066D44(struct Struct802F1F98 *arg0)
+static u32 course_if_time_elapsed(struct CourseCommand *cmd)
 {
-    if (infoWork.timerCurr >= arg0->unk4)
+    if (infoWork.timerCurr >= cmd->value)
         return 1;
     else
         return 0;
 }
 
-void func_80066D6C(struct Struct802F1F98 *arg0)
+static void course_then_jump_floor(struct CourseCommand *cmd)
 {
-    lbl_802F1F9C = arg0->unk4;
+    lbl_802F1F9C = cmd->value;
 }
 
-void func_80066D78(struct Struct802F1F98 *unused)
+static void course_sub_give_play_points(struct CourseCommand *unused)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
-            playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
-            playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
     infoWork.unk2E = -1;
 }
 
-// duplicate of func_80066D78
-void func_80066EC0(struct Struct802F1F98 *unused)
+// duplicate of course_sub_give_play_points
+static void course_sub_give_play_points_dupe(struct CourseCommand *unused)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
         lbl_802F1FC0++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
-            playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1] * 10;
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1] * 10;
+            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
         }
         else
         {
-            playPointsReceived += lbl_801BA4C0[u_course_num_to_course_index(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
-            playPointsReceived += lbl_801BA4E4[lbl_802F1FC0 - 1];
+            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.levelSet, modeCtrl.levelSetFlags)][infoWork.unk20 - 1];
+            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
         }
     }
     infoWork.unk2E = -1;
@@ -1163,59 +1276,62 @@ int u_get_stage_time_limit(void)
     s32 temp_r3_2;
     s32 temp_r5;
     s32 var_r6;
-    s32 var_r7;
+    s32 floorCnt;
     u8 temp_r0;
-    struct Struct802F1F98 *var_r3;
+    struct CourseCommand *var_r3;
 
     if (lbl_802F1FA4 != 0)
     {
-        var_r7 = 0;
+        floorCnt = 0;
         var_r6 = 0;
         if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 8)
             var_r6 = 3;
         if (lbl_8027CE24[infoWork.unk20 - 1].unk4 & 0x10)
             var_r6 = 6;
-        var_r3 = lbl_801BDA2C[var_r6 + lbl_8027CE24[infoWork.unk20 - 1].unk2];
+        var_r3 = s_courseScripts[var_r6 + lbl_8027CE24[infoWork.unk20 - 1].unk2];
         temp_r5 = lbl_8027CE24[infoWork.unk20 - 1].unk0;
-        while (var_r3->unk0 != 3)
+        while (var_r3->opcode != CMD_COURSE_END)
         {
-            if (var_r3->unk0 == 2 && var_r3->unk1 == 0)
+            if (var_r3->opcode == CMD_FLOOR && var_r3->type == FLOOR_STAGE_ID)
             {
-                var_r7++;
-                if (var_r7 == temp_r5)
+                floorCnt++;
+                if (floorCnt == temp_r5)
                 {
-                    if (var_r3[1].unk0 != 2 || var_r3[1].unk1 != 1)
-                        break;
-                    return var_r3[1].unk4;
+                    if (var_r3[1].opcode == CMD_FLOOR && var_r3[1].type == FLOOR_TIME)
+                        return var_r3[1].value;
+                    break;
                 }
             }
             var_r3++;
         }
-        return 3600;
+        return 60 * 60;
     }
-    if (lbl_802F1F98->unk0 == 2 && lbl_802F1F98->unk1 == 1)
-        return lbl_802F1F98->unk4;
-    return 3600;
+    if (courseScriptPtr->opcode == CMD_FLOOR && courseScriptPtr->type == FLOOR_TIME)
+        return courseScriptPtr->value;
+    return 60 * 60;
 }
 
 int floor_num_to_stage_id(int courseId, int floorNum, int flags)
 {
     int stageId;
-    int var_r4;
+    int floorCnt;
 
-    lbl_802F1F98 = lbl_801BDA2C[u_course_num_to_course_index(courseId, flags)];
-    var_r4 = 1;
-    while (var_r4 <= floorNum && lbl_802F1F98->unk0 != 3)
+    courseScriptPtr = &s_courseScripts[difficulty_to_course_id(courseId, flags)][0];
+
+    // get the nth command with unk0=2 and unk1=0?
+    floorCnt = 1;
+    while (floorCnt <= floorNum && courseScriptPtr->opcode != CMD_COURSE_END)
     {
-        if (lbl_802F1F98->unk0 == 2 && lbl_802F1F98->unk1 == 0)
+        if (courseScriptPtr->opcode == CMD_FLOOR && courseScriptPtr->type == FLOOR_STAGE_ID)
         {
-            if (var_r4 == floorNum)
+            if (floorCnt == floorNum)
                 break;
-            var_r4++;
+            floorCnt++;
         }
-        lbl_802F1F98++;
+        courseScriptPtr++;
     }
-    stageId = lbl_802F1F98->unk4;
+
+    stageId = courseScriptPtr->value;
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         if (stageId == ST_126_ROLL_MASTER)
@@ -1223,11 +1339,11 @@ int floor_num_to_stage_id(int courseId, int floorNum, int flags)
         if (stageId == ST_127_EDGE_MASTER)
             stageId = ST_115_ALTERNATE_EDGE_MASTER;
     }
-    lbl_802F1F98++;
+    courseScriptPtr++;
     return stageId;
 }
 
-int u_course_num_to_course_index(int arg0, u32 flags)
+int difficulty_to_course_id(int difficulty, u32 flags)
 {
     int index = 0;
 
@@ -1237,7 +1353,7 @@ int u_course_num_to_course_index(int arg0, u32 flags)
         index = 6;
     if (lbl_802F1FA4 != 0)
         index = 9;
-    index += arg0;
+    index += difficulty;
     return index;
 }
 
@@ -1252,7 +1368,7 @@ static const int s_bonusStages[] =
     0,
 };
 
-static const int courseFloorCounts[] =
+static const int s_courseFloorCounts[] =
 {
     10,  // beginner
     30,  // advanced
@@ -1274,7 +1390,7 @@ int get_last_level_num_of_set(int arg0, int arg1)
 {
     if (lbl_802F1FA4 != 0)
         return lbl_802F1FB0;
-    return courseFloorCounts[u_course_num_to_course_index(arg0, arg1)];
+    return s_courseFloorCounts[difficulty_to_course_id(arg0, arg1)];
 }
 #pragma force_active reset
 
@@ -1311,24 +1427,24 @@ void func_80067310(void)
 
     for (i = 0; i < lbl_802F1FB0; i++)
     {
-        lbl_801BD86C[i * 3].unk4 = floor_num_to_stage_id(lbl_8027CE24[i].unk2, lbl_8027CE24[i].unk0, lbl_8027CE24[i].unk4);
-        lbl_801BD86C[i * 3 + 2].unk1 = 0;
+        lbl_801BD86C[i * 3].value = floor_num_to_stage_id(lbl_8027CE24[i].unk2, lbl_8027CE24[i].unk0, lbl_8027CE24[i].unk4);
+        lbl_801BD86C[i * 3 + 2].type = FLOOR_STAGE_ID;
     }
-    lbl_801BD86C[(lbl_802F1FB0 - 1) * 3 + 2].unk1 = 2;
+    lbl_801BD86C[(lbl_802F1FB0 - 1) * 3 + 2].type = 2;
 }
 #pragma force_active reset
 
 int func_800673BC(void)
 {
-    struct Struct802F1F98 *r3 = lbl_802F1F98;
+    struct CourseCommand *r3 = courseScriptPtr;
 
-    while (r3->unk0 != 3)
+    while (r3->opcode != CMD_COURSE_END)
     {
         //! why the nested while loop?
-        while (r3->unk0 != 3)
+        while (r3->opcode != CMD_COURSE_END)
         {
-            if (r3->unk0 == 2 && r3->unk1 == 0)
-                return r3->unk4;
+            if (r3->opcode == CMD_FLOOR && r3->type == FLOOR_STAGE_ID)
+                return r3->value;
             r3++;
         }
     }
@@ -1383,7 +1499,7 @@ int func_80067408(int arg0, int arg1, u32 arg2)
 }
 #pragma force_active reset
 
-void func_80067508(int arg0, int arg1, u32 arg2)
+static void func_80067508(int arg0, int arg1, u32 arg2)
 {
     int var_r7 = 0;
 
@@ -1467,7 +1583,7 @@ int func_800676C0(void)
     return lbl_802F1C0D & 8;
 }
 
-void func_800676E8(void)
+static void func_800676E8(void)
 {
     int i, j;
 
@@ -1513,36 +1629,36 @@ static void inline1(void)
 
 static inline void inline3(struct Struct8027CC58 *temp_r28)
 {
-    struct Struct802F1F98 *var_r8;
+    struct CourseCommand *var_r8;
     int i;
     struct Struct8027CC58_sub *var_r6;
     int var_r5;
     int var_r4;
-    struct Struct802F1F98 *var_r3_2;
+    struct CourseCommand *var_r3_2;
 
     var_r6 = temp_r28->unk0;
-    var_r8 = lbl_802F1F98;
-    for (i = 0; i < 3 && var_r8->unk0 != 3; var_r8++)
+    var_r8 = courseScriptPtr;
+    for (i = 0; i < 3 && var_r8->opcode != CMD_COURSE_END; var_r8++)
     {
-        if (var_r8->unk0 == 2 && var_r8->unk1 == 0)
+        if (var_r8->opcode == CMD_FLOOR && var_r8->type == FLOOR_STAGE_ID)
             break;
-        if (var_r8->unk0 == 1)
+        if (var_r8->opcode == CMD_THEN)
         {
-            switch (var_r8->unk1)
+            switch (var_r8->type)
             {
             case 0:
             default:
 
-                var_r6[1].unk0 = (s32) (infoWork.unk20 + var_r8->unk4);
-                var_r5 = var_r8->unk4;
-                var_r3_2 = lbl_802F1F98;
+                var_r6[1].unk0 = infoWork.unk20 + var_r8->value;
+                var_r5 = var_r8->value;
+                var_r3_2 = courseScriptPtr;
                 var_r4 = -1;
-                while (var_r3_2->unk0 != 3)
+                while (var_r3_2->opcode != CMD_COURSE_END)
                 {
-                    if (var_r3_2->unk0 == 2 && var_r3_2->unk1 == 0
+                    if (var_r3_2->opcode == CMD_FLOOR && var_r3_2->type == FLOOR_STAGE_ID
                      && --var_r5 <= 0)
                     {
-                        var_r4 = var_r3_2->unk4;
+                        var_r4 = var_r3_2->value;
                         break;
                     }
                     var_r3_2++;
@@ -1564,7 +1680,7 @@ static inline void inline3(struct Struct8027CC58 *temp_r28)
 
 }
 
-void func_80067808(void)
+static void func_80067808(void)
 {
     int temp_r27_2;
     struct Struct8027CC58 *temp_r28;
@@ -1712,7 +1828,7 @@ void func_80067FD0(struct MemcardGameData *data)
     data->unk5844.unk94 = lbl_8027CE08[1];
     data->unk5844.unk98 = lbl_8027CE08[2];
     data->unk5844.unk9C = lbl_8027CE08[3];
-    data->unk5844.unk2C0 = lbl_802F1FBC;
+    data->unk5844.unk2C0 = totalPlayPoints;
     data->unk5844.unk2C4 = lbl_802F1FB8;
 }
 
@@ -1722,6 +1838,6 @@ void func_8006800C(struct MemcardGameData *data)
     lbl_8027CE08[1] = data->unk5844.unk94;
     lbl_8027CE08[2] = data->unk5844.unk98;
     lbl_8027CE08[3] = data->unk5844.unk9C;
-    lbl_802F1FBC = data->unk5844.unk2C0;
+    totalPlayPoints = data->unk5844.unk2C0;
     lbl_802F1FB8 = data->unk5844.unk2C4;
 }

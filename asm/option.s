@@ -7615,11 +7615,11 @@ lbl_00006FB0:
 /* 0000708C 3B5A0004 */ addi r26, r26, 4
 /* 00007090 4180FE18 */ blt lbl_00006EA8
 /* 00007094 C01F0160 */ lfs f0, 0x160(r31)
-/* 00007098 3C600000 */ lis r3, lbl_802F1FBC@ha
+/* 00007098 3C600000 */ lis r3, totalPlayPoints@ha
 /* 0000709C 380000B0 */ li r0, 0xb0
 /* 000070A0 4CC63182 */ crclr 6
 /* 000070A4 D0010020 */ stfs f0, 0x20(r1)
-/* 000070A8 3B630000 */ addi r27, r3, lbl_802F1FBC@l
+/* 000070A8 3B630000 */ addi r27, r3, totalPlayPoints@l
 /* 000070AC C01F0164 */ lfs f0, 0x164(r31)
 /* 000070B0 387D0000 */ addi r3, r29, 0
 /* 000070B4 389E0930 */ addi r4, r30, 0x930

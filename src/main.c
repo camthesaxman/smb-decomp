@@ -6,6 +6,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "input.h"
 #include "load.h"

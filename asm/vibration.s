@@ -12065,7 +12065,7 @@ lbl_800C0FF8:
 lbl_800C1014:
 /* 800C1014 000BCF34  80 0D 9D E4 */	lwz r0, playPointsReceived@sda21(r13)
 /* 800C1018 000BCF38  38 A0 09 C4 */	li r5, 0x9c4
-/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, lbl_802F1FBC@sda21(r13)
+/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, totalPlayPoints@sda21(r13)
 /* 800C1020 000BCF40  90 01 00 0C */	stw r0, 0xc(r1)
 /* 800C1024 000BCF44  90 61 00 10 */	stw r3, 0x10(r1)
 /* 800C1028 000BCF48  90 61 00 14 */	stw r3, 0x14(r1)

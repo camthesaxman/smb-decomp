@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "input.h"
 #include "info.h"
 #include "item.h"

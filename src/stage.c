@@ -7,6 +7,7 @@
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "global.h"
 #include "gma.h"

@@ -12,6 +12,7 @@
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "game.h"
 #include "hud.h"
@@ -643,7 +644,7 @@ void submode_game_continue_init_func(void)
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
         func_800662E0();
-        func_8006677C(1, 0x140, 0x198);
+        show_course_end_textbox(1, 0x140, 0x198);
     }
     lbl_802F1C20 = lbl_802014E0.unk0;
     u_play_music(40, 0);
@@ -1013,7 +1014,7 @@ void submode_game_over_main_func(void)
      && u_is_minigame_unlocked(6) != 0
      && u_is_minigame_unlocked(7) != 0
      && u_is_minigame_unlocked(8) != 0
-     && func_800676C0() == 0 && lbl_802F1FBC >= 0x9C4)
+     && func_800676C0() == 0 && totalPlayPoints >= 0x9C4)
         gameSubmodeRequest = SMD_GAME_OVER_POINT_INIT;
     else if (func_8009F4C4() == 1)
     {
@@ -1034,7 +1035,7 @@ void submode_game_over_point_init_func(void)
     event_finish_all();
     event_start(EVENT_SPRITE);
     event_start(EVENT_SOUND);
-    func_8006677C(2, 0x140, 0x168);
+    show_course_end_textbox(2, 0x140, 0x168);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 15);
     u_play_music(0x3E, 0);
     gameSubmodeRequest = SMD_GAME_OVER_POINT_MAIN;
@@ -1859,7 +1860,7 @@ void submode_game_intr_sel_init_func(void)
     event_start(16);
     event_start(18);
     func_800662E0();
-    func_8006677C(0, 0x140, 0x168);
+    show_course_end_textbox(0, 0x140, 0x168);
     start_screen_fade(FADE_UNK2|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 1);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 15);
     u_play_music(0x3E, 0);
