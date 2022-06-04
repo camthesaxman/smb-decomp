@@ -494,7 +494,6 @@ define COMPILE =
 @echo "Compiling " $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-$(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
 # relocatable modules must not use the small data sections
@@ -510,6 +509,10 @@ endef
 %.s.o: %.s
 	@echo Assembling $<
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
+
+# disassemble object file
+%.dump: %.o
+	$(OBJDUMP) -Drz $< > $@
 
 clean:
 	$(RM) $(DOL) $(ELF) $(MAP) $(ALL_RELS) $(ELF2DOL) $(ELF2REL)
