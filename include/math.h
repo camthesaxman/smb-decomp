@@ -24,7 +24,7 @@ float acosf(float x);
 
 double ldexp(double x, int exp);
 
-inline int abs(int n) { return(__abs(n)); }
+static inline int abs(int n) { return(__abs(n)); }
 
 double scalbn(double x, int n);
 

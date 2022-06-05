@@ -1681,7 +1681,7 @@ FORCE_BSS_ORDER(lbl_801EEEC0)
 
 struct Struct801EEEC0 lbl_801EEECC[4];
 
-inline void u_something_with_rankings(struct Ball *ball)
+static inline void u_something_with_rankings(struct Ball *ball)
 {
     int j;
     int k;

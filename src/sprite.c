@@ -2677,6 +2677,7 @@ static inline int func_80071E58_inline(int chr, int fontId, struct FontParams *f
         case ' ':
             return 12;
         }
+        // fall through
     default:
     case FONT_JAP_24x24_I:
         return font->spaceWidth;
@@ -3106,6 +3107,7 @@ float func_80072DA8(int fontId, char *str, int c)
                     break;
                 }
             }
+            // fall through
         default:
             f2 = 1.0f;
             break;

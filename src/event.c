@@ -65,6 +65,7 @@ void event_main(void)
         {
         case 1:
             event_start(i);
+            // fall through
         case EV_STATE_RUNNING:
             event->main();
             break;
