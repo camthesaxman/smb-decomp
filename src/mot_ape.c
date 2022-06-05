@@ -40,9 +40,7 @@ u32 lbl_801C7A90[] = { 1, 5, 7, 8, 12, 13, 16, 18, 19, 21, 22, 23, 24, 26, 27 };
 
 // yaw angles for something?
 float lbl_801C7ACC[] = { 23.0f, 21.1f, 22.0f, 21.5f };
-
-u32 lbl_801C7ADC[] = { 16, 8, 32, 6, 9, 16 };
-u32 lbl_801C7AF4[] = { 24, 4, 6, 4, 14, 20, 24, 30, 20, 20 };
+u32 lbl_801C7ADC[] = { 16, 8, 32, 6, 9, 16, 24, 4, 6, 4, 14, 20, 24, 30, 20, 20 };
 s32 lbl_801C7B1C[] = { 0, 4, 6, 14, 6, 10 };
 
 void ape_dummy_1(struct Ape *);
@@ -490,7 +488,7 @@ void func_80089CF4(struct Ape *ape, int r29)
         struct Struct802B39C0_B0_child *var = &ape->unk98[i];
 
         var->unkC = 0;
-        var->unk20 = 0;
+        var->unk14[3] = 0;
     }
     func_80089CF4_inline(ape);
     for (i = 0; i < ape->unk94; i++)
@@ -686,11 +684,11 @@ void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
         r8 = dummy = b->unk4 < b->unk8;
     else
         r8 = dummy = b->unk4 >= b->unk8;
-    if (b->unk20 < 0 && b->unkC != NULL)
+    if (b->unk14[3] < 0 && b->unkC != NULL)
         r8 = 1;
     if (r8)
         b->unk4 = b->unk8;
-    if (--b->unk20 > 0)
+    if (--b->unk14[3] > 0)
         return;
     if (!r8)
         return;
@@ -701,13 +699,13 @@ void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
         b->unk0 = r7->unk0 & ~(1 << 31);
         b->unk8 = r7->unk8;
         if (r7->unk4 < d)
-            b->unk20 = (c + r7->unk4) - d;
+            b->unk14[3] = (c + r7->unk4) - d;
         else
-            b->unk20 = r7->unk4 - d;
-        if (b->unk20 == 0)
+            b->unk14[3] = r7->unk4 - d;
+        if (b->unk14[3] == 0)
             b->unk10 = 0.0f;
         else
-            b->unk10 = ((float)b->unk8 - b->unk4) / b->unk20;
+            b->unk10 = ((float)b->unk8 - b->unk4) / b->unk14[3];
         if (r7->unkC < 0x10000000)
         {
             if (r7->unkC > 0x0C000000)
@@ -740,7 +738,7 @@ void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
     {
         b->unk4 = b->unk8;
         b->unk10 = 0.0f;
-        b->unk20 = 0;
+        b->unk14[3] = 0;
     }
 }
 
@@ -1019,7 +1017,11 @@ void func_8008B0AC(void)
             // hmm...
             motInfo[i].unk30[j] = (void *)((uintptr_t)motInfo + 0x2000 + (i * 0x80 + r10) * 0x20);
 #ifdef NONMATCHING
-            motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7AF4[j];
+            // Avoids negative array access to emulate the original behavior
+            if (j >= 10)
+                motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7B1C[j - 10];
+            else
+                motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7ADC[j + 6];
 #else
             motInfo[i].unk70[j] = lbl_801C7ADC[j] - lbl_801C7B1C[j - 10];
 #endif
@@ -1154,7 +1156,7 @@ struct Ape *u_make_ape_sub(char *skelName, char *modelName /*unused*/)
         var->unk8 = 0;
         var->unkC = 0;
         var->unk10 = 0.0f;
-        var->unk20 = 0;
+        var->unk14[3] = 0;
     }
 
     ape->unk0 = r24;
@@ -1290,7 +1292,7 @@ void func_8008BAA8(int *a, int *b)
         *b -= lbl_801C7B1C[i];
         (*a)++;
     }
-    *b += lbl_801C7ADC[*a] - lbl_801C7AF4[*a];
+    *b += lbl_801C7ADC[*a] - lbl_801C7ADC[6 + *a];
 }
 #pragma force_active reset
 
