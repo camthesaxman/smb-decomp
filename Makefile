@@ -518,7 +518,6 @@ endef
 # These currently cause problems when compiled with gcc
 MWCC_ONLY_OBJECTS := \
 	src/mathutil.c.o \
-	src/ball.c.o \
 	src/nl2ngc.c.o \
 	libraries/os/__start.c.o \
 	libraries/os/__ppc_eabi_init.c.o \
