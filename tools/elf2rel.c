@@ -242,7 +242,6 @@ static int is_supported_reloc_type(int type)
     case R_PPC_ADDR16_HA:
     case R_PPC_REL24:
     case R_PPC_REL14:
-    case R_PPC_REL32:
         return 1;
     }
     return 0;
