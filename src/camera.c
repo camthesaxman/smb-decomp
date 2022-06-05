@@ -366,8 +366,7 @@ void ev_camera_dest(void) {}
 
 void func_80017FCC(void)
 {
-    u8 unused[0x10];
-    Mtx sp1C;
+    Mtx44 mtx;
 
     currentCameraStructPtr = &cameraInfo[0];
     u_cameraId1 = 4;
@@ -377,8 +376,8 @@ void func_80017FCC(void)
     mathutil_mtx_copy(cameraInfo[0].unk174, lbl_802F1B3C->matrices[3]);
     mathutil_mtx_copy(cameraInfo[0].unk1A4, lbl_802F1B3C->matrices[0]);
     mathutil_mtx_copy(cameraInfo[0].unk1D4, lbl_802F1B3C->matrices[4]);
-    MTXPerspective(sp1C, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
-    GXSetProjection(sp1C, 0);
+    MTXPerspective(mtx, 59.996337f, SCREEN_ASPECT, 0.1f, 20000.0f);
+    GXSetProjection(mtx, 0);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
     func_80020AB8(&(Vec){0.0f, 0.0f, 0.0f}, &(S16Vec){0, 0, 0}, 59.996337, SCREEN_ASPECT, 0.0f, 0.0f);
@@ -478,9 +477,8 @@ void camera_setup_singleplayer_viewport(void)
 
 void camera_apply_viewport(int cameraId)
 {
-    u8 unused[0x10];
     struct Camera *camera = &cameraInfo[cameraId];
-    Mtx projMtx;
+    Mtx44 projMtx;
 
     u_cameraId1 = cameraId;
     u_cameraId2 = cameraId;
@@ -544,9 +542,8 @@ void u_call_camera_apply_viewport(int cameraId)
 // almost identical to camera_apply_viewport
 void camera_apply_viewport_2(int cameraId)
 {
-    u8 unused[0x10];
     struct Camera *camera = &cameraInfo[cameraId];
-    Mtx projMtx;
+    Mtx44 projMtx;
 
     u_cameraId1 = cameraId;
     currentCameraStructPtr = camera;
@@ -597,9 +594,8 @@ void func_800188A8(int cameraId)
 
 void func_800188D4(void)
 {
-    u8 unused[0x10];
     struct Camera *camera = &cameraInfo[0];
-    Mtx projMtx;
+    Mtx44 projMtx;
 
     MTXPerspective(
         projMtx,

@@ -372,14 +372,13 @@ void draw_adv_demo_scene(void)
 void u_draw_tutorial_button_and_joystick(void)
 {
     Vec sp48;
-    u8 filler[16];
     int i;
     float baseScale;  // scale value for the base model
     float stickX;
     float stickY;
     int stickXRot;
     int stickZRot;
-    Mtx projMtx;
+    Mtx44 projMtx;
 
     MTXPerspective(projMtx, 1.0f, 1.33333333f, 0.1f, 100000.0f);
     GXSetProjection(projMtx, 0);
@@ -1027,8 +1026,7 @@ void draw_timer_bomb_fuse(void)
     float y;
     float scale;
     Vec sp94;
-    u8 filler84[0x10];
-    Mtx mtx;
+    Mtx44 mtx;
     Vec sp48;
     Vec sp3C;
     Vec sp30;

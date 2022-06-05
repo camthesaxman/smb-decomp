@@ -1371,7 +1371,12 @@ struct GMAShape *draw_shape(struct GMAModel *model, struct GMAShape *shape, stru
     return (struct GMAShape *)dlist;
 }
 
-#ifdef __MWERKS__
+#ifdef C_ONLY
+void func_8008FBB0(register u32 _flags, register void *_base, void *c, u32 d)
+{
+    // TODO
+}
+#else
 asm void func_8008FBB0(register u32 _flags, register void *_base, void *c, u32 d)
 {
     nofralloc
@@ -1426,11 +1431,6 @@ lbl_8008FC38:
     subf. r6, r8, r6
     bgt next_strip
     blr
-}
-#else
-void func_8008FBB0(u32 _flags, void *_base, void *c, u32 d)
-{
-    // TODO
 }
 #endif
 

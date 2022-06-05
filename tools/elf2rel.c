@@ -119,6 +119,7 @@ typedef struct
 #define R_PPC_ADDR14_BRNTAKEN	9
 #define R_PPC_REL24		10	/* PC relative 26 bit */
 #define R_PPC_REL14		11	/* PC relative 16 bit */
+#define R_PPC_REL32		26  // TODO: handle this
 
 #define R_DOLPHIN_SECTION 202
 #define R_DOLPHIN_END     203
@@ -241,6 +242,7 @@ static int is_supported_reloc_type(int type)
     case R_PPC_ADDR16_HA:
     case R_PPC_REL24:
     case R_PPC_REL14:
+    case R_PPC_REL32:
         return 1;
     }
     return 0;

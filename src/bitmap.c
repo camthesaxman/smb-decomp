@@ -334,8 +334,7 @@ void bitmap_init_tev(void)
 void bitmap_main(void)
 {
     float projParams[GX_PROJECTION_SZ];
-    u8 unused[16];
-    Mtx m;
+    Mtx44 m;
     struct Bitmap *bmp;
 
     bitmap_init_tev();

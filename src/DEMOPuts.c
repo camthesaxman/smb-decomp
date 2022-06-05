@@ -282,6 +282,7 @@ void DEMORFPrintf(s16 x, s16 y, s16 z, char *fmt, ...)
 }
 
 // unused
+#ifndef NONMATCHING
 char* DEMODumpROMFont(char* string)
 {
     u32   image[48/2*48/4];   // 48 x 48
@@ -324,6 +325,7 @@ char* DEMODumpROMFont(char* string)
 
     return string;
 }
+#endif
 
 int DEMOGetRFTextWidth(char *string)
 {

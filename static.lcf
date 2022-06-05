@@ -23,11 +23,17 @@ SECTIONS
         .sbss       ALIGN(0x20) : {}  /* 0x802F1AE0  n/a           0x000D15 */
         .sdata2     ALIGN(0x20) : {}  /* 0x802F2800  0x1EC220      0x004480 */
         .sbss2      ALIGN(0x20) : {}  /* unused */
+
+        /* GCC generated sections */
+        .rodata.str1.4 ALIGN(0x20) : {}
+        .rodata.cst4   ALIGN(0x20) : {}
+        .rodata.cst8   ALIGN(0x20) : {}
+
         .stack      ALIGN(0x100) : {}
     } > text
 
     /* stack immediately follows last section */
-    _stack_end = _f_sbss2 + SIZEOF(.sbss2);
+    _stack_end = _f_stack;
     _stack_addr = (_stack_end + 0x10000 + 0x7) & ~0x7;
 
     /* debug immediately follows normal stack */
@@ -54,3 +60,6 @@ FORCEACTIVE
 lbl_80292C00_alias = lbl_80292C00;
 
 lbl_802F4650 = 0x802F4650;
+
+/* For GCC compatibility */
+__udivdi3 = __div2i;
