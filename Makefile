@@ -272,7 +272,6 @@ SOURCES := \
 	libraries/gx/asm/GXStubs.s \
 	libraries/gx/GXDisplayList.c \
 	libraries/gx/GXTransform.c \
-	libraries/gx/asm/GXTransform.s \
 	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \
 	libraries/perf/asm/perfdraw.s \
