@@ -1169,8 +1169,11 @@ void ball_draw(void)
     }
 }
 
-u8 lbl_801B7EC0[] = {1, 0, 0, 0};  // + 0x348
-GXTexObj lbl_801B7EC4 = {0};  // + 0x34C
+struct
+{
+    u8 unk0[4];
+    GXTexObj unk4;
+} lbl_801B7EC0 = {{1, 0, 0, 0}};
 
 void u_ball_shadow_something_1(void)
 {
@@ -1178,7 +1181,6 @@ void u_ball_shadow_something_1(void)
     Vec spC;
     int unused;
     GXTexObj *tex1;
-    GXTexObj *tex2;
     int r29;
     struct Ball *ball;
     s8 *r26;
@@ -1241,7 +1243,7 @@ void u_ball_shadow_something_1(void)
     mathutil_mtxA_tf_vec(&sp18.unk20, &sp18.unk20);
 
     tex1 = &commonGma->modelEntries[circle_white].model->texObjs[0];
-    GXInitTexObj((tex2 = &lbl_801B7EC4),
+    GXInitTexObj(&lbl_801B7EC0.unk4,
         GXGetTexObjData(tex1),
         GXGetTexObjWidth(tex1),
         GXGetTexObjHeight(tex1),
@@ -1249,9 +1251,9 @@ void u_ball_shadow_something_1(void)
         0,
         0,
         GXGetTexObjMipMap(tex1));
-    GXInitTexObjLOD(tex2, 1, 1, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+    GXInitTexObjLOD(&lbl_801B7EC0.unk4, 1, 1, 0.0f, 0.0f, 0.0f, 0, 0, 0);
 
-    sp18.unk3C = lbl_801B7EC0;
+    sp18.unk3C = &lbl_801B7EC0;
 
     r26 = g_poolInfo.unkC;
     ball = &ballInfo[0];

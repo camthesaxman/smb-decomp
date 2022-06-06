@@ -55,28 +55,36 @@ void gxutil_set_vtx_attrs(u32 attrs)
 
 void gxutil_dummy(void) {}
 
-#ifdef __MWERKS__
-asm void u_gxutil_upload_some_mtx(Mtx a, int b)
+#ifdef C_ONLY
+void u_gxutil_upload_some_mtx(register Mtx mtx, register int index)
+{
+    GXLoadPosMtxImm(mtx, index * 3);
+    GXLoadNrmMtxImm(mtx, index * 3);
+}
+#else
+asm void u_gxutil_upload_some_mtx(register Mtx mtx, register int index)
 {
     nofralloc
     mr r5, r4
-    add r4, r4, r4
-    add r4, r4, r5
+    add r4, r4, r4  // r4 = index * 2
+    add r4, r4, r5  // r4 = index * 3
     li r7, 0x10
-    add r5, r4, r4
+    add r5, r4, r4  // r5 = index * 6
     lis r6, GXFIFO_ADDR@h
-    add r4, r5, r4
+    add r4, r5, r4  // r4 = index * 9
     ori r6, r6, GXFIFO_ADDR@l
-    add r5, r5, r5
+    add r5, r5, r5   // r5 = index * 12
     addis r5, r5, 0xb
     stb r7, 0(r6)
     stw r5, 0(r6)
-    psq_l f0, 0(r3), 0, qr0
-    psq_l f1, 8(r3), 0, qr0
-    psq_l f2, 16(r3), 0, qr0
-    psq_l f3, 24(r3), 0, qr0
-    psq_l f4, 32(r3), 0, qr0
-    psq_l f5, 40(r3), 0, qr0
+
+    // Copy matrix into FIFO
+    psq_l f0, 0(mtx), 0, qr0
+    psq_l f1, 8(mtx), 0, qr0
+    psq_l f2, 16(mtx), 0, qr0
+    psq_l f3, 24(mtx), 0, qr0
+    psq_l f4, 32(mtx), 0, qr0
+    psq_l f5, 40(mtx), 0, qr0
     psq_st f0, 0(r6), 0, qr0
     psq_st f1, 0(r6), 0, qr0
     psq_st f2, 0(r6), 0, qr0
@@ -95,8 +103,6 @@ asm void u_gxutil_upload_some_mtx(Mtx a, int b)
     psq_st f5, 0(r6), 1, qr0
     blr
 }
-#else
-// TODO
 #endif
 
 #pragma peephole on  // above function isn't pure asm?

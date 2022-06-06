@@ -766,7 +766,7 @@ static void build_mesh_tev_material(struct NlMesh *pmesh)
     }
     else
     {
-        GXTexMapID u_texMapId = s_nlMaterialCache.texMapId;
+        int u_texMapId = s_nlMaterialCache.texMapId;
 
         if (s_nlMaterialCache.texObj != mesh.texObj)
         {

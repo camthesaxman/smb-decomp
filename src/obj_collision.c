@@ -13,7 +13,6 @@
 #include "stobj.h"
 
 static void do_object_collision(void);
-static void func_8006AD3C(Vec *, Vec *, Vec *, float, float);
 
 void ev_obj_collision_init(void) {}
 
@@ -202,7 +201,7 @@ u32 func_8006AAEC(Point3d *arg0, Point3d *arg1, Point3d *arg2, Point3d *arg3, fl
 }
 
 #ifdef NONMATCHING
-static void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
+void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
 {
     float temp_f4 = arg3 * arg4;
 
@@ -255,7 +254,7 @@ static void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg
     #undef z2
 }
 #else
-static asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
+asm void func_8006AD3C(Point3d *arg0, Point3d *arg1, Point3d *arg2, float arg3, float arg4)
 {
     nofralloc
 #include "../asm/nonmatchings/func_8006AD3C.s"

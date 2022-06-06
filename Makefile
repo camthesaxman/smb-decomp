@@ -13,6 +13,8 @@ ifeq ($(VERBOSE),0)
   QUIET := @
 endif
 
+COMPILER ?= mwcc
+
 # default recipe
 default: all
 
@@ -22,7 +24,7 @@ default: all
 
 COMPILER_DIR := mwcc_compiler/$(COMPILER_VERSION)
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
-CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
+MWCC    := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
 OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
@@ -33,21 +35,37 @@ ELF2DOL := tools/elf2dol$(EXE)
 ELF2REL := tools/elf2rel$(EXE)
 LZSS    := tools/lzss$(EXE)
 
+# Game include directories
 INCLUDE_DIRS := src data
 SYSTEM_INCLUDE_DIRS := include
 
-RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc
-
 ASFLAGS     := -mgekko -I asm
-CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
-CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
-#CPPFLAGS    += -DMATHUTIL_C_ONLY
+
+# Metrowerks compiler flags
+MWCC_CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
+MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+# GNU compiler flags
+GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
+
+ifeq ($(COMPILER),mwcc)
+  CC        = $(MWCC)
+  CFLAGS    = $(MWCC_CFLAGS)
+  CPPFLAGS  = $(MWCC_CPPFLAGS)
+  REL_FLAGS := -sdata 0 -sdata2 0 -g
+else
+  CC        = $(GCC)
+  CFLAGS    = $(GCC_CFLAGS)
+  CPPFLAGS  = $(GCC_CPPFLAGS)
+  REL_FLAGS := -mno-sdata
+endif
+
 DOL_LDFLAGS := -nodefaults -fp hard
 REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -fsigned-char -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) $(GCC_CFLAGS) -fsyntax-only $(GCC_CPPFLAGS)
 
 #-------------------------------------------------------------------------------
 # Files
@@ -497,8 +515,20 @@ $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 endef
 
+# These currently cause problems when compiled with gcc
+MWCC_ONLY_OBJECTS := \
+	src/mathutil.c.o \
+	libraries/os/__start.c.o \
+	libraries/os/__ppc_eabi_init.c.o \
+	libraries/os/OSSync.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/%.o \
+	libraries/TRK_MINNOW_DOLPHIN/%.o
+$(MWCC_ONLY_OBJECTS): CC       := $(MWCC)
+$(MWCC_ONLY_OBJECTS): CFLAGS   := $(MWCC_CFLAGS)
+$(MWCC_ONLY_OBJECTS): CPPFLAGS  = $(MWCC_CPPFLAGS)
+
 # relocatable modules must not use the small data sections
-%.plf: CFLAGS += -sdata 0 -sdata2 0 -g
+%.plf: CFLAGS += $(REL_FLAGS)
 
 %.c.o: %.c
 	$(COMPILE)
@@ -545,13 +575,14 @@ RUNTIME_OBJECTS := \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o
+	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
-$(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
+$(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += libraries/PowerPC_EABI_Support/Runtime/Inc
 
 libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c.o: CC_CHECK := true
-libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
+libraries/PowerPC_EABI_Support/%.o: MWCC_CFLAGS += -fp_contract on
 
 # Automatic dependency files
 DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))

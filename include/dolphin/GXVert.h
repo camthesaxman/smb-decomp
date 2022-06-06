@@ -19,7 +19,11 @@ typedef union
     f64 f64;
 } PPCWGPipe;
 
-volatile PPCWGPipe GXWGFifo AT_ADDRESS(GXFIFO_ADDR);
+#ifdef __MWERKS__
+volatile PPCWGPipe GXWGFifo : GXFIFO_ADDR;
+#else
+#define GXWGFifo (*(volatile PPCWGPipe *)GXFIFO_ADDR)
+#endif
 
 static inline void GXPosition2f32(const f32 x, const f32 y)
 {

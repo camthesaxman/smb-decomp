@@ -4,10 +4,6 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
-#ifndef __MWERKS__
-#define MATHUTIL_C_ONLY
-#endif
-
 #define PI 3.14159265358979323846f
 
 struct MathutilData
@@ -147,7 +143,7 @@ u16 mathutil_calc_crc16(s32 length, u8 *data);
 
 static inline float mathutil_floor(register float n)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     // TODO
     return (s32)n;
 #else
@@ -172,7 +168,7 @@ static inline float mathutil_floor(register float n)
 
 static inline float mathutil_ceil(register float n)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     // TODO
     return (s32)n;
 #else
@@ -197,7 +193,7 @@ static inline float mathutil_ceil(register float n)
 
 static inline float mathutil_trunc(register float n)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     // TODO
     return (s32)n;
 #else
@@ -222,7 +218,7 @@ static inline float mathutil_trunc(register float n)
 
 static inline float mathutil_sum_of_sq_2(register float a, register float b)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     return a * a + b * b;
 #else
     asm
@@ -236,7 +232,7 @@ static inline float mathutil_sum_of_sq_2(register float a, register float b)
 
 static inline float mathutil_sum_of_sq_3(register float a, register float b, register float c)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     return a * a + b * b + c * c;
 #else
     asm
@@ -251,7 +247,7 @@ static inline float mathutil_sum_of_sq_3(register float a, register float b, reg
 
 static inline float mathutil_vec_len(register Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     return mathutil_sqrt(v->x * v->x + v->y * v->y + v->z * v->z);
 #else
     register float x, y, z;
@@ -270,7 +266,7 @@ static inline float mathutil_vec_len(register Vec *v)
 
 static inline float mathutil_vec_sq_len(register Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     return v->x * v->x + v->y * v->y + v->z * v->z;
 #else
     register float result;
@@ -290,7 +286,7 @@ static inline float mathutil_vec_sq_len(register Vec *v)
 
 static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     float result = (a->x - b->x) * (a->x - b->x)
                  + (a->y - b->y) * (a->y - b->y)
                  + (a->z - b->z) * (a->z - b->z);
@@ -319,7 +315,7 @@ static inline float mathutil_vec_distance(register Vec *a, register Vec *b)
 
 static inline float mathutil_vec_dot_prod(register Vec *a, register Vec *b)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     return a->x * b->x + a->y * b->y + a->z * b->z;
 #else
     register float result;
@@ -341,9 +337,9 @@ static inline float mathutil_vec_dot_prod(register Vec *a, register Vec *b)
 #endif
 }
 
-extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
+inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, register Vec *result)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     float x = a->y * b->z - a->z * b->y;
     float y = a->z * b->x - a->x * b->z;
     float z = a->x * b->y - a->y * b->x;
@@ -379,7 +375,7 @@ extern inline void mathutil_vec_cross_prod(register Vec *a, register Vec *b, reg
 
 static inline void mathutil_mtxA_get_translate(Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
     v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
     v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
@@ -405,7 +401,7 @@ static inline void mathutil_mtxA_get_translate(Vec *v)
 
 static inline void mathutil_mtxA_get_translate_alt(register Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
     v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
     v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
@@ -434,7 +430,7 @@ static inline void mathutil_mtxA_get_translate_alt(register Vec *v)
 
 static inline void mathutil_mtxA_get_translate_alt2(register Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
     v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
     v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
@@ -460,7 +456,7 @@ static inline void mathutil_mtxA_get_translate_alt2(register Vec *v)
 
 static inline void mathutil_mtxA_set_translate(register Vec *v)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = v->x;
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3] = v->y;
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = v->z;
@@ -483,7 +479,7 @@ static inline void mathutil_mtxA_set_translate(register Vec *v)
 
 static inline void mathutil_mtxA_set_translate_xyz(register float x, register float y, register float z)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3] = x;
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3] = y;
     ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3] = z;
@@ -502,7 +498,7 @@ static inline void mathutil_mtxA_set_translate_xyz(register float x, register fl
 
 static inline void mathutil_mtxA_copy_translate(register Mtx mtx)
 {
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     mtx[0][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
     mtx[1][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][3];
     mtx[2][3] = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][3];
@@ -527,7 +523,7 @@ static inline void mathutil_unk_inline(register float a, register Vec *v)
 {
     register void *mtxA;
     register float var1, var2, var3, var4, var5, var6;
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
     var1 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][2];
     var2 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][3];
     var3 = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][2];

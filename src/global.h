@@ -35,8 +35,33 @@ u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
 
 // intrinsics
 #ifndef __MWERKS__
-extern u32 __cntlzw(u32);
-u32 __lwbrx(void *, u32);
+static inline u32 __cntlzw(u32 n)
+{
+    u32 ret;
+    asm("cntlzw %0, %1" : "=r"(ret) : "r"(n));
+    return ret;
+}
+
+static inline u32 __lwbrx(void *ptr, u32 offset)
+{
+    u32 ret;
+    asm("lwbrx %0, %1, %2" : "=r"(ret) : "r"(ptr), "r"(offset));
+    return ret;
+}
+
+static inline float __fabs(float n)
+{
+    float ret;
+    asm("fabs %0, %1" : "=f"(ret) : "f"(n));
+    return ret;
+}
+
+static inline float __frsqrte(float n)
+{
+    float ret;
+    asm("frsqrte %0, %1" : "=f"(ret) : "f"(n));
+    return ret;
+}
 #endif
 
 #define qr0 0

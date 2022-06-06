@@ -178,8 +178,7 @@ struct Struct802B39C0_B0_child
     s32 unk8;
     struct Struct80089CBC *unkC;
     float unk10;
-    s32 unk14[3];
-    s32 unk20;
+    s32 unk14[4];
 };  // size = 0x24
 
 struct MotionTransform

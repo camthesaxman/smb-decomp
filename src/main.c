@@ -52,6 +52,10 @@ struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *g_minigameNlTpl;
 
+#ifdef __GNUC__
+void __eabi(void) {}
+__attribute__((section(".text")))
+#endif
 void main(void)
 {
     globalFrameCounter = 0;

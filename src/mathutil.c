@@ -142,7 +142,22 @@ asm float approx_rsqrt(register float num, register float oneHalf)
 }
 #endif
 
-#ifdef __MWERKS__
+#ifdef C_ONLY
+float mathutil_rsqrt(double n)
+{
+    float x = __frsqrte(n);
+
+    x = x * (1.5f - 0.5f * n * x * x);
+    x = x * (1.5f - 0.5f * n * x * x);
+    x = x * (1.5f - 0.5f * n * x * x);
+    return x;
+}
+
+float mathutil_sqrt(double n)
+{
+    return mathutil_rsqrt(n) * n;
+}
+#else
 asm float mathutil_sqrt_(double n)
 {
     nofralloc
@@ -187,7 +202,9 @@ entry mathutil_rsqrt
     frsp f1, f1
     blr
 }
+#endif
 
+#ifdef __MWERKS__
 asm float func_8000716C(double a)
 {
     nofralloc
@@ -228,7 +245,7 @@ lbl_800071D0:
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 float mathutil_sin(register s16 angle)
 {
     int index = angle & 0x3FFF;
@@ -300,7 +317,7 @@ lbl_80007264:
     blr
 }
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 float mathutil_tan(register u32 angle)
 {
     int index = angle & 0x3FFF;
@@ -486,7 +503,7 @@ s16 func_80007424(float a)
     return (0x4000 - r3) & 0xFFFF;
 }
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 {
     float f12 = vecA->z * vecA->z + vecA->y * vecA->y + vecA->x * vecA->x;
@@ -525,7 +542,7 @@ asm float mathutil_vec_dot_normalized(register Vec *vecA, register Vec *vecB)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtx_from_identity(register Mtx mtx)
 {
     int row, col;
@@ -557,7 +574,7 @@ asm void mathutil_mtx_from_identity(register Mtx mtx)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_identity(void)
 {
     mathutil_mtx_from_identity(mathutilData->mtxA);
@@ -604,7 +621,7 @@ asm void mathutil_mtxA_sq_from_identity(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_translate(register Vec *vec)
 {
     mathutil_mtxA_from_translate_xyz(vec->x, vec->y, vec->z);
@@ -656,7 +673,7 @@ lbl_800075E0:
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_rotate_x(s16 angle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -701,7 +718,7 @@ asm void mathutil_mtxA_from_rotate_x(s16 angle)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_rotate_y(s16 angle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -745,7 +762,7 @@ asm void mathutil_mtxA_from_rotate_y(s16 angle)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_rotate_z(s16 angle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -788,7 +805,7 @@ asm void mathutil_mtxA_from_rotate_z(s16 angle)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_mtxB_translate_xyz(float x, float y, float z)
 {
     Mtx *a = &mathutilData->mtxA;
@@ -861,7 +878,7 @@ lbl_800076FC:
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_normalize_basis(void)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -936,7 +953,7 @@ asm void mathutil_mtxA_normalize_basis(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_push(void)
 {
     mathutilData->mtxStackPtr--;
@@ -973,7 +990,7 @@ asm void mathutil_mtxA_push(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_pop(void)
 {
     mathutil_mtx_copy(*mathutilData->mtxStackPtr, mathutilData->mtxA);
@@ -1011,7 +1028,7 @@ asm void mathutil_mtxA_pop(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_to_mtx(register Mtx mtx)
 {
     mathutil_mtx_copy(mathutilData->mtxA, mtx);
@@ -1043,7 +1060,7 @@ asm void mathutil_mtxA_to_mtx(register Mtx mtx)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_mtx(register Mtx mtx)
 {
     mathutil_mtx_copy(mtx, mathutilData->mtxA);
@@ -1075,7 +1092,7 @@ asm void mathutil_mtxA_from_mtx(register Mtx mtx)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_peek(void)
 {
     mathutil_mtx_copy(*mathutilData->mtxStackPtr, mathutilData->mtxA);
@@ -1108,7 +1125,7 @@ asm void mathutil_mtxA_peek(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_incr_mtx_stack(void)
 {
     mathutilData->mtxStackPtr++;
@@ -1127,7 +1144,7 @@ asm void mathutil_incr_mtx_stack(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 {
     const Mtx *mtxA = &mathutilData->mtxA;
@@ -1162,7 +1179,7 @@ asm void mathutil_mtxA_sq_to_mtx(register Mtx mtx)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
 {
     Mtx *mtxA = &mathutilData->mtxA;
@@ -1197,7 +1214,7 @@ asm void mathutil_mtxA_sq_from_mtx(register Mtx mtx)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_mtxB(void)
 {
     mathutil_mtx_copy(mathutilData->mtxB, mathutilData->mtxA);
@@ -1229,7 +1246,7 @@ asm void mathutil_mtxA_from_mtxB(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_to_mtxB(void)
 {
     mathutil_mtx_copy(mathutilData->mtxA, mathutilData->mtxB);
@@ -1261,7 +1278,7 @@ asm void mathutil_mtxA_to_mtxB(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtx_copy(register Mtx src, register Mtx dest)
 {
     memcpy(dest, src, sizeof(Mtx));
@@ -1433,7 +1450,7 @@ asm void mathutil_mtxA_rigid_invert(void)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtx_mult(Mtx a, Mtx b, Mtx result)
 {
     // row 0
@@ -1562,7 +1579,7 @@ entry mathutil_mtx_mult
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_translate_xyz(float x, float y, float z)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -1651,7 +1668,7 @@ entry mathutil_mtxA_translate_neg_xyz
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_scale_xyz(float x, float y, float z)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -1717,7 +1734,7 @@ entry mathutil_mtxA_scale_xyz
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 static void mtxA_tf(Vec *dest, float x, float y, float z, float w)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -1805,7 +1822,7 @@ entry mathutil_mtxA_tf_vec_xyz
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 static void do_tf(Vec *dest, float x, float y, float z, BOOL negate)
 {
     Mtx *mtxA = &mathutilData->mtxA;
@@ -1914,7 +1931,7 @@ lbl_80007F7C:
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_rotate_x_sin_cos(float sinAngle, float cosAngle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -1979,7 +1996,7 @@ entry mathutil_mtxA_rotate_x_sin_cos
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_rotate_y_sin_cos(float sinAngle, float cosAngle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -2050,7 +2067,7 @@ entry mathutil_mtxA_rotate_y_sin_cos
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_rotate_z_sin_cos(float sinAngle, float cosAngle)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -2115,7 +2132,7 @@ entry mathutil_mtxA_rotate_z_sin_cos
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 float mathutil_vec_normalize_len(register Vec *vec)
 {
     float sqLen = vec->x*vec->x + vec->y*vec->y + vec->z*vec->z;
@@ -2177,7 +2194,7 @@ bad_result:
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_vec_set_len(Vec *src, Vec *dest, float len)
 {
     float srcSqLen = src->x*src->x + src->y*src->y + src->z*src->z;
@@ -2238,7 +2255,7 @@ bad_result:
 // is invalid
 // (return 0 if a vector is the zero vector, or returns INFINITY if a vector has
 // a component that's INFINITY).
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 float mathutil_vec_dot_normalized_safe(register Vec *a, register Vec *b)
 {
     float f7 = a->x*b->x + a->y*b->y + a->z*b->z;
@@ -2288,7 +2305,7 @@ asm float mathutil_vec_dot_normalized_safe(register Vec *a, register Vec *b)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void print_mtx(Mtx m)
 {
     int row;
@@ -2298,7 +2315,7 @@ void print_mtx(Mtx m)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_mtxA_from_quat(Quaternion *quat)
 {
     Mtx *m = &mathutilData->mtxA;
@@ -2379,7 +2396,7 @@ asm void mathutil_mtxA_from_quat(register Quaternion *quat)
 }
 #endif
 
-#ifdef MATHUTIL_C_ONLY
+#ifdef C_ONLY
 void mathutil_quat_mult(Quaternion *result, Quaternion *a, Quaternion *b)
 {
     float x = a->w*b->x + a->x*b->w + a->y*b->z - a->z*b->y;

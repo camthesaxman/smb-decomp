@@ -174,8 +174,7 @@ void view_draw(void)
     struct Camera *camera;
     struct Ball *ballBackup;
     struct Camera cameraBackup = cameraInfo[modeCtrl.currPlayer];
-    u8 dummy[16];
-    Mtx projMtx;
+    Mtx44 projMtx;
     camera = &cameraInfo[modeCtrl.currPlayer];
 
     lbl_801EEC90.unk0 |= 2;
