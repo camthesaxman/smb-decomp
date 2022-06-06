@@ -532,13 +532,14 @@ struct Effect
     s16 unk4C;
     s16 unk4E;
     s16 unk50;
-    u8 filler52[2];
+    s16 unk52;
     s16 unk54;
-    u8 filler56[0x70-0x56];
+    s16 unk56;
+    u8 filler58[0x70-0x58];
     Vec unk70;
     Vec unk7C;
     Vec unk88;
-    u8 filler94[0xA0-0x94];
+    Vec unk94;
     s16 unkA0;
     s16 unkA2;
     s16 unkA4;
