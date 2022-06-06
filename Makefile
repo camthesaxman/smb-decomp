@@ -45,7 +45,10 @@ ASFLAGS     := -mgekko -I asm
 MWCC_CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
 MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
 # GNU compiler flags
-GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-switch -Wno-main -Wno-unknown-pragmas \
+                    -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare \
+                    -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables \
+                    -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
 GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
 
 ifeq ($(COMPILER),mwcc)
@@ -268,6 +271,7 @@ SOURCES := \
 	libraries/gx/asm/GXDraw.s \
 	libraries/gx/asm/GXStubs.s \
 	libraries/gx/GXDisplayList.c \
+	libraries/gx/GXTransform.c \
 	libraries/gx/asm/GXTransform.s \
 	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \

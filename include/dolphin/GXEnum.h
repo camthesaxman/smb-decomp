@@ -753,4 +753,10 @@ typedef enum
     GX_MAX_INDTEXSTAGE,
 } GXIndTexStageID;
 
+typedef enum
+{
+    GX_CLIP_ENABLE = 0,
+    GX_CLIP_DISABLE = 1,
+} GXClipMode;
+
 #endif
