@@ -258,7 +258,7 @@ SOURCES := \
 	libraries/gx/asm/GXFifo.s \
 	libraries/gx/asm/GXAttr.s \
 	libraries/gx/asm/GXMisc.s \
-	libraries/gx/asm/GXGeometry.s \
+	libraries/gx/GXGeometry.c \
 	libraries/gx/asm/GXFrameBuf.s \
 	libraries/gx/asm/GXLight.s \
 	libraries/gx/asm/GXTexture.s \
