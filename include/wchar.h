@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+typedef unsigned short wchar_t;
+
 int fwide(FILE *stream, int mode);
 
 #endif
