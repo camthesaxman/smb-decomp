@@ -308,7 +308,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp \
 	libraries/PowerPC_EABI_Support/asm/Runtime/Src/runtime.s \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/abort_exit.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/abort_exit.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Src/ansi_fp.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/char_io.s \
