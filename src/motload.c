@@ -12,150 +12,155 @@ struct Struct800341BC_4
     u8 *unk4;
 };
 
-void u_clear_mot_transforms(struct JointBoneThing *b);
-void u_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b);
-void u_read_transform_list_from_dat(struct MotDat *a, struct MotionTransform *b);
+void u_reset_channels_in_joints(struct AnimJoint *b);
+void u_load_channels_from_dat_into_joints(struct MotDat *dat, struct AnimJoint *b);
+void u_read_channel_from_dat(struct MotDat *a, struct MotionChannel *b);
 
-void func_800341BC(struct JointBoneThing *a, struct MotSkeletonEntry1 *skel, u16 c)
+void u_create_joints_from_skeleton(struct AnimJoint *joint, struct MotSkeletonEntry1 *skel, u16 c)
 {
-    struct JointBoneThing *r31 = a;
+    struct AnimJoint *jointArr = joint;
     const u32 *flags;
     Vec *r29;
     Vec *r28;
     struct Struct80116F18 *r27;
     struct MotRotation *rotation;
-    int r25;
+    int jointIdx;
 
     r29 = skel->unkC;
     r28 = skel->unk10;
     r27 = skel->unk4;
     rotation = skel->rotations;
-    flags = lbl_80114F68[c];
+    flags = u_jointFlagLists[c];
     mathutil_mtxA_from_identity();
-    a->unk1A0 = -1;
+    joint->unk1A0 = -1;
 
-    r25 = 0;
+    jointIdx = 0;
     while (1)
     {
         u8 i;
 
-        a->flags = *flags;
-        mathutil_mtxA_to_mtx(a->rotateMtx);
-        mathutil_mtxA_to_mtx(a->transformMtx);
-        if (a->flags & (1 << 6))
+        joint->flags = *flags;
+        mathutil_mtxA_to_mtx(joint->rotateMtx);
+        mathutil_mtxA_to_mtx(joint->transformMtx);
+        if (joint->flags & (1 << 6))
         {
             mathutil_mtxA_push();
             mathutil_mtxA_rotate_z(RADIANS_TO_S16(rotation->rotZ));
             mathutil_mtxA_rotate_y(RADIANS_TO_S16(rotation->rotY));
             mathutil_mtxA_rotate_x(RADIANS_TO_S16(rotation->rotX));
-            mathutil_mtxA_to_mtx(a->unk1C);
+            mathutil_mtxA_to_mtx(joint->unk1C);
             rotation++;
             mathutil_mtxA_pop();
         }
-        a->unk4C = r27->length;
-        a->unk50 = r27->unk4;
-        for (i = 0; i < a->unk4C; i++)
-            r31[a->unk50[i]].unk1A0 = (u8)r25;
-        if (a->flags & (1 << 1))
+        joint->unk4C = r27->length;
+        joint->unk50 = r27->unk4;
+        for (i = 0; i < joint->unk4C; i++)
+            jointArr[joint->unk50[i]].unk1A0 = (u8)jointIdx;
+        if (joint->flags & (1 << 1))
         {
-            a->unk4 = *r29++;
-            a->unk10 = *r28++;
+            joint->unk4 = *r29++;
+            joint->unk10 = *r28++;
         }
 
         flags++;
         if (*flags == 0)
             break;
-        a++;
+        joint++;
         r27++;
-        r25++;
+        jointIdx++;
     }
-    a++;
-    a->flags = *flags;
+    joint++;
+    joint->flags = *flags;
 }
 
-void func_80034360(struct JointBoneThing *a, u16 b)
+void u_load_new_anim_into_joints(struct AnimJoint *joints, u16 animIdx)
 {
     struct MotDat dat;
 
-    u_clear_mot_transforms(a);
-    dat = motDat[b - 1];
-    u_load_mot_transforms(&dat, a);
+    u_reset_channels_in_joints(joints);
+    dat = motDat[animIdx - 1];
+    u_load_channels_from_dat_into_joints(&dat, joints);
 }
 
-void u_clear_mot_transforms(struct JointBoneThing *b)
+void u_reset_channels_in_joints(struct AnimJoint *joint)
 {
-    while (b->flags != 0)
+    while (joint->flags != 0)
     {
-        struct MotionTransform *r5 = b->transforms;
+        struct MotionChannel *chan = joint->channels;
         u8 i;
 
-        for (i = 6; i != 0; i--, r5++)
+        for (i = 6; i != 0; i--, chan++)
         {
-            r5->unk1 = 0;
-            r5->unk0 = 0;
+            chan->currKeyframe = 0;
+            chan->keyframeCount = 0;
         }
-        b++;
+        joint++;
     }
 }
 
-void u_load_mot_transforms(struct MotDat *dat, struct JointBoneThing *b)
+// Loads channels for an array of joints
+void u_load_channels_from_dat_into_joints(struct MotDat *dat, struct AnimJoint *joint)
 {
-    struct MotDat_child2 *r30 = dat->unk4;
-    int i;
+    struct MotDatJoint *jointInfo = dat->jointInfo;
+    int jointIdx;
 
-    for (i = 0; b->flags != 0; i++, b++)
+    for (jointIdx = 0; joint->flags != 0; jointIdx++, joint++)
     {
-        if (r30->unk0 == (u8)i)
+        if (jointInfo->jointIdx == (u8)jointIdx)
         {
-            u32 r31 = r30->unk2;
+            u32 chanFlags = jointInfo->chanFlags;
 
-            if (r31 & (1 << 8))
-                u_read_transform_list_from_dat(dat, &b->transforms[0]);
-            if (r31 & (1 << 7))
-                u_read_transform_list_from_dat(dat, &b->transforms[1]);
-            if (r31 & (1 << 6))
-                u_read_transform_list_from_dat(dat, &b->transforms[2]);
-            if (r31 & (1 << 5))
-                u_read_transform_list_from_dat(dat, &b->transforms[3]);
-            if (r31 & (1 << 4))
-                u_read_transform_list_from_dat(dat, &b->transforms[4]);
-            if (r31 & (1 << 3))
-                u_read_transform_list_from_dat(dat, &b->transforms[5]);
-            if (r31 & (1 << 2))
-                u_read_transform_list_from_dat(dat, NULL);
-            if (r31 & (1 << 1))
-                u_read_transform_list_from_dat(dat, NULL);
-            if (r31 & (1 << 0))
-                u_read_transform_list_from_dat(dat, NULL);
-            r30++;
+            if (chanFlags & (1 << 8))
+                u_read_channel_from_dat(dat, &joint->channels[0]);
+            if (chanFlags & (1 << 7))
+                u_read_channel_from_dat(dat, &joint->channels[1]);
+            if (chanFlags & (1 << 6))
+                u_read_channel_from_dat(dat, &joint->channels[2]);
+            if (chanFlags & (1 << 5))
+                u_read_channel_from_dat(dat, &joint->channels[3]);
+            if (chanFlags & (1 << 4))
+                u_read_channel_from_dat(dat, &joint->channels[4]);
+            if (chanFlags & (1 << 3))
+                u_read_channel_from_dat(dat, &joint->channels[5]);
+            if (chanFlags & (1 << 2))
+                u_read_channel_from_dat(dat, NULL);
+            if (chanFlags & (1 << 1))
+                u_read_channel_from_dat(dat, NULL);
+            if (chanFlags & (1 << 0))
+                u_read_channel_from_dat(dat, NULL);
+            jointInfo++;
         }
     }
 }
 
-void u_read_transform_list_from_dat(struct MotDat *dat, struct MotionTransform *transform)
+// Reads a channel from motDat
+void u_read_channel_from_dat(struct MotDat *dat, struct MotionChannel *chan)
 {
-    u8 r5 = dat->unk8->unk0;
-    int r6;
-    u8 *r4;
+    u8 keyframeCount = *dat->keyframeCounts;
+    int totalValues;
+    u8 *valueCounts;
 
-    if (transform != NULL)
+    if (chan != NULL)
     {
-        transform->unk0 = r5;
-        transform->unk4 = dat->unkC;
-        transform->numComponents = dat->unk10;
-        transform->values = dat->unk14;
+        chan->keyframeCount = keyframeCount;
+        chan->times = dat->times;
+        chan->valueCounts = dat->valueCounts;
+        chan->values = dat->values;
     }
-    dat->unk8++;
-    dat->unkC += r5;
-    r4 = dat->unk10;
-    dat->unk10 += r5;
-    r6 = 0;
-    while (r5 != 0)
+
+    // advance pointers to next channel
+    dat->keyframeCounts++;
+    dat->times += keyframeCount;
+    valueCounts = dat->valueCounts;
+    dat->valueCounts += keyframeCount;
+    // advance 'values' pointer to next keyframe
+    totalValues = 0;
+    while (keyframeCount != 0)
     {
-        r5--;
-        r6 += *r4++;
+        keyframeCount--;
+        totalValues += *valueCounts++;
     }
-    dat->unk14 += (u16)r6;
+    dat->values += (u16)totalValues;
 }
 
 static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
@@ -245,11 +250,11 @@ void adjust_motdat_pointers(struct MotDat *a)
 
     for (i = u_motAnimCount; i >= 0; i--)
     {
-        temp->unk4 = OFFSET_TO_PTR(temp->unk4, a);
-        temp->unk8 = OFFSET_TO_PTR(temp->unk8, a);
-        temp->unkC = OFFSET_TO_PTR(temp->unkC, a);
-        temp->unk10 = OFFSET_TO_PTR(temp->unk10, a);
-        temp->unk14 = OFFSET_TO_PTR(temp->unk14, a);
+        temp->jointInfo = OFFSET_TO_PTR(temp->jointInfo, a);
+        temp->keyframeCounts = OFFSET_TO_PTR(temp->keyframeCounts, a);
+        temp->times = OFFSET_TO_PTR(temp->times, a);
+        temp->valueCounts = OFFSET_TO_PTR(temp->valueCounts, a);
+        temp->values = OFFSET_TO_PTR(temp->values, a);
         temp++;
     }
 }
@@ -323,7 +328,7 @@ void adjust_motinfo_pointers(struct MotInfo *a)
     }
 }
 
-u16 func_80034F44(u16 index)
+u16 u_get_motdat_unk0(u16 index)
 {
     return motDat[index - 1].unk0;
 }

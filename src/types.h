@@ -181,16 +181,17 @@ struct Struct802B39C0_B0_child
     s32 unk14[4];
 };  // size = 0x24
 
-struct MotionTransform
+// Represents a joint's channel (x, y, z, rotX, rotY, rotZ) whose value changes during the animation
+struct MotionChannel
 {
-    u8 unk0;
-    u8 unk1;
-    u16 *unk4;  // delta times?
-    u8 *numComponents;  // list of value counts
+    u8 keyframeCount;
+    u8 currKeyframe;
+    u16 *times;
+    u8 *valueCounts;
     float *values;
 };  // size = 0x10
 
-struct JointBoneThing  // Joint object?
+struct AnimJoint
 {
     u32 flags;
     Vec unk4;
@@ -198,7 +199,7 @@ struct JointBoneThing  // Joint object?
     Mtx unk1C;
     u32 unk4C;
     const u8 *unk50;
-    /*0x54*/ struct MotionTransform transforms[6];  // x, y, z, rotX, rotY, rotZ
+    /*0x54*/ struct MotionChannel channels[6];  // x, y, z, rotX, rotY, rotZ
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
     float unk198;
@@ -230,8 +231,8 @@ struct Struct8003699C_child_sub
     u16 unk2A;
     float unk2C;
     u8 filler30[4];
-    struct JointBoneThing *unk34;
-    struct JointBoneThing unk38[29];
+    struct AnimJoint *unk34;
+    struct AnimJoint unk38[29];
 };  // size = 0x4090
 
 struct Struct8003699C_child_child
@@ -263,7 +264,7 @@ struct Struct8003699C_child
     struct Struct8003699C_child_sub unk84;
     struct Struct8003699C_child_sub unk4114;
     const struct Struct8003699C_child_child *unk81A4;
-    struct JointBoneThing unk81A8[29];
+    /*0x81A8*/ struct AnimJoint joints[29];
 };
 
 struct MotRotation
@@ -319,6 +320,7 @@ struct Ape
     u32 unk94;
     struct Struct802B39C0_B0_child *unk98;
     u32 unk9C;
+    // Sometimes treated as a Vec, sometimes treated as a Quaternion
     Vec unkA0;
     float unkAC;
     u32 unkB0;
@@ -547,26 +549,21 @@ struct Effect
 
 // motload
 
-struct MotDat_child
+struct MotDatJoint
 {
-    u8 unk0;
-};
-
-struct MotDat_child2
-{
-    u8 unk0;
-    u16 unk2;
+    u8 jointIdx;
+    u16 chanFlags;  // specifies which channels are present in the animation
 };  // size = 0x4
 
+// struct containing all transformation values for all joints in an animation
 struct MotDat
 {
     u16 unk0;
-    u8 filler2[2];
-    struct MotDat_child2 *unk4;  // could be u8*?
-    struct MotDat_child *unk8;
-    u16 *unkC;  // could be u16*?
-    u8 *unk10;
-    float *unk14;
+    struct MotDatJoint *jointInfo; // ptr to array of structs
+    u8 *keyframeCounts;  // number of keyframes per channel
+    u16 *times;  // times for each keyframe
+    u8 *valueCounts;  // number of values for each keyframe
+    float *values;
 };  // size = 0x18
 
 struct MotSkeletonEntry1
@@ -906,10 +903,10 @@ struct Struct802C67D4
 
 struct ApeFacePart
 {
-    s16 unk0;
-    s16 unk2;
+    s16 modelId;
+    s16 jointIdx;
     Vec unk4;
-    void (*unk10)();
+    void (*draw)(struct Ape *, struct ApeFacePart *, struct Struct802B39C0_B0_child *);
     char *name;
     u8 filler18[0x20-0x18];
 };

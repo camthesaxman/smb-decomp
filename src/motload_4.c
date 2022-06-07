@@ -1818,7 +1818,7 @@ void func_80036000(struct Struct8003699C_child_sub *arg0, u16 arg1, u16 arg2)
     if (arg1 != 0)
     {
         arg0->unk8 = arg1;
-        arg0->unkC = func_80034F44(arg1);
+        arg0->unkC = u_get_motdat_unk0(arg1);
         func_800366F8(arg0);
     }
     else
@@ -1867,7 +1867,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
                 if (temp_r3 != 0)
                 {
                     phi_r30->unk8 = temp_r3;
-                    phi_r30->unkC = func_80034F44(temp_r3);
+                    phi_r30->unkC = u_get_motdat_unk0(temp_r3);
                     func_800366F8(phi_r30);
                 }
                 else
@@ -1890,7 +1890,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
                 if (temp_r3 != 0)
                 {
                     phi_r29->unk8 = temp_r3;
-                    phi_r29->unkC = func_80034F44(temp_r3);
+                    phi_r29->unkC = u_get_motdat_unk0(temp_r3);
                     func_800366F8(phi_r29);
                 }
                 else
@@ -1913,7 +1913,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
                 if (temp_r3 != 0)
                 {
                     phi_r30->unk8 = temp_r3;
-                    phi_r30->unkC = func_80034F44(temp_r3);
+                    phi_r30->unkC = u_get_motdat_unk0(temp_r3);
                     func_800366F8(phi_r30);
                 }
                 else
@@ -1934,7 +1934,7 @@ void func_80036064(struct Struct8003699C_child *arg0)
                 if (temp_r3 != 0)
                 {
                     phi_r29->unk8 = temp_r3;
-                    phi_r29->unkC = func_80034F44(temp_r3);
+                    phi_r29->unkC = u_get_motdat_unk0(temp_r3);
                     func_800366F8(phi_r29);
                 }
                 else
@@ -2045,7 +2045,7 @@ void func_80036544(struct Struct8003699C_child_sub *arg0)
 
 void func_800366F8(struct Struct8003699C_child_sub *arg0)
 {
-    func_80034360(arg0->unk38, arg0->unk8);
+    u_load_new_anim_into_joints(arg0->unk38, arg0->unk8);
 }
 
 extern const struct Struct80034F5C_3 *const lbl_80114DD0[];
@@ -2053,23 +2053,23 @@ extern const struct Struct80034F5C_2 *const lbl_80114DE0[];
 
 void func_80036720(struct Struct8003699C_child_sub *arg0)
 {
-    struct JointBoneThing *temp_r31 = arg0->unk38;
+    struct AnimJoint *temp_r31 = arg0->unk38;
     const struct Struct80034F5C_3 *r4 = lbl_80114DD0[arg0->unk6];
     const struct Struct80034F5C_2 *r5 = lbl_80114DE0[arg0->unk6];
-    float f1 = arg0->unkA + arg0->unk14;
+    float t = arg0->unkA + arg0->unk14;
     u32 r6 = arg0->unk0 & (1 << 2);
 
-    u_interpolate_joint_motion(temp_r31, r4, r5, f1, r6);
+    u_interpolate_joint_motion(temp_r31, r4, r5, t, r6);
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(temp_r31->unk168);
     mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);
     func_80035748(temp_r31, temp_r31);
 }
 
-void func_800367E4(struct JointBoneThing *arg0, u16 arg1, u16 arg2)
+void u_create_joints_from_hardcoded_arrays(struct AnimJoint *arg0, u16 arg1, u16 arg2)
 {
-    struct JointBoneThing *r31 = arg0;
-    const u32 *r30 = lbl_80114F68[arg1];
+    struct AnimJoint *r31 = arg0;
+    const u32 *r30 = u_jointFlagLists[arg1];
     const Vec *r29 = lbl_801171FC[arg1];
     const Vec *r28 = lbl_801177AC[arg2];
     const struct Struct80116F18 *r27 = lbl_80117074[arg1];

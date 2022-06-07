@@ -6,232 +6,253 @@
 #include "global.h"
 #include "mathutil.h"
 
-void u_interpolate_joint_motion(struct JointBoneThing *a, const struct Struct80034F5C_3 *b, const struct Struct80034F5C_2 *c, float e, u32 d)
+struct InterpolateStuff
+{
+    float time;
+    float val1;
+    float val2;
+};
+
+static void u_interp_pos_motion(struct AnimJoint *, struct AnimJoint *, u32, float);
+static void u_interp_rot_motion(struct AnimJoint *, struct AnimJoint *, const struct Struct80034F5C_3 *, u32, float);
+static float interpolate_channel_keyframes(struct MotionChannel *, float);
+static float u_crazy_interpolation_stuff(struct InterpolateStuff *a, struct InterpolateStuff *b, float c);
+static void read_channel_keyframe_values(struct MotionChannel *, float *, float *, float *);
+static void seek_channel_next_keyframe(struct MotionChannel *);
+static void seek_channel_prev_keyframe(struct MotionChannel *);
+
+void u_interpolate_joint_motion(struct AnimJoint *joints, const struct Struct80034F5C_3 *b, const struct Struct80034F5C_2 *c, float t, u32 d)
 {
     u32 flags;
-    struct JointBoneThing *r30 = a;
+    struct AnimJoint *joint = joints;
 
     if (b == NULL || c == NULL)
         d = 0;
 
-    flags = r30->flags;
+    flags = joint->flags;
     while (flags != 0)
     {
-        flags &= ~(3<<(31-0x11));
-        r30->flags = flags;
+        flags &= ~(3 << 14);
+        joint->flags = flags;
         if (flags & (1 << 2))
         {
             if (d != 0)
-                u_interp_pos_motion(r30, &a[c->unk2], d, e);
+                u_interp_pos_motion(joint, &joints[c->unk2], d, t);
             else
-                u_interp_pos_motion(r30, r30, d, e);
+                u_interp_pos_motion(joint, joint, d, t);
             c++;
         }
         if (flags & (1 << 3))
         {
             if (d != 0)
-                u_interp_rot_motion(r30, &a[b->unk2], b, d, e);
+                u_interp_rot_motion(joint, &joints[b->unk2], b, d, t);
             else
-                u_interp_rot_motion(r30, r30, b, d, e);
+                u_interp_rot_motion(joint, joint, b, d, t);
             b++;
         }
-        r30++;
-        flags = r30->flags;
+        joint++;
+        flags = joint->flags;
     }
 }
 
-void u_interp_pos_motion(struct JointBoneThing *a, struct JointBoneThing *b, u32 c, float d)
+static void u_interp_pos_motion(struct AnimJoint *a, struct AnimJoint *b, u32 c, float t)
 {
-    struct MotionTransform *r3 = &a->transforms[0];
+    struct MotionChannel *chan = &a->channels[0];
     int unused;
 
-    if (r3->unk0 != 0)
+    if (chan->keyframeCount != 0)
     {
-        b->unk1C0.x = u_interp_skelanim_value_maybe(r3, d);
+        b->unk1C0.x = interpolate_channel_keyframes(chan, t);
         if (c != 0)
             b->unk1C0.x = -b->unk1C0.x;
     }
     else
         b->unk1C0.x = 0.0f;
-    r3++;
+    chan++;
 
-    if (r3->unk0 != 0)
-        b->unk1C0.y = u_interp_skelanim_value_maybe(r3, d);
+    if (chan->keyframeCount != 0)
+        b->unk1C0.y = interpolate_channel_keyframes(chan, t);
     else
         b->unk1C0.y = 0.0f;
-    r3++;
+    chan++;
 
-    if (r3->unk0 != 0)
-        b->unk1C0.z = u_interp_skelanim_value_maybe(r3, d);
+    if (chan->keyframeCount != 0)
+        b->unk1C0.z = interpolate_channel_keyframes(chan, t);
     else
         b->unk1C0.z = 0.0f;
 
 }
 
-void u_interp_rot_motion(struct JointBoneThing *a, struct JointBoneThing *b, const struct Struct80034F5C_3 *c, u32 d, float e)
+static void u_interp_rot_motion(struct AnimJoint *a, struct AnimJoint *b, const struct Struct80034F5C_3 *c, u32 d, float t)
 {
-    float f31;
-    struct MotionTransform *sub;
+    float radToS16;
+    struct MotionChannel *chan;
 
     mathutil_mtxA_from_identity();
-    f31 = 10430.3779296875f;
+    radToS16 = 10430.3779296875f;
 
-    sub = &a->transforms[5];
-    if (sub->unk0 != 0)
+    chan = &a->channels[5];
+    if (chan->keyframeCount != 0)
     {
-        float f1 = u_interp_skelanim_value_maybe(sub, e);
+        float val = interpolate_channel_keyframes(chan, t);
         if (d != 0)
-            f1 = c->unk18 + f1 * c->unkC;
-        mathutil_mtxA_rotate_z((s16)(f31 * f1));
+            val = c->unk18 + val * c->unkC;
+        mathutil_mtxA_rotate_z((s16)(radToS16 * val));
     }
 
-    sub--;
-    if (sub->unk0 != 0)
+    chan--;
+    if (chan->keyframeCount != 0)
     {
-        float f1 = u_interp_skelanim_value_maybe(sub, e);
+        float val = interpolate_channel_keyframes(chan, t);
         if (d != 0)
-            f1 = c->unk14 + f1 * c->unk8;
-        mathutil_mtxA_rotate_y((s16)(f31 * f1));
+            val = c->unk14 + val * c->unk8;
+        mathutil_mtxA_rotate_y((s16)(radToS16 * val));
     }
 
-    sub--;
-    if (sub->unk0 != 0)
+    chan--;
+    if (chan->keyframeCount != 0)
     {
-        float f1 = u_interp_skelanim_value_maybe(sub, e);
+        float val = interpolate_channel_keyframes(chan, t);
         if (d != 0)
-            f1 = c->unk10 + f1 * c->unk4;
-        mathutil_mtxA_rotate_x((s16)(f31 * f1));
+            val = c->unk10 + val * c->unk4;
+        mathutil_mtxA_rotate_x((s16)(radToS16 * val));
     }
 
     mathutil_mtxA_sq_to_mtx(b->rotateMtx);
 }
 
-float u_interp_skelanim_value_maybe(struct MotionTransform *transform, float t)
+static float interpolate_channel_keyframes(struct MotionChannel *chan, float t)
 {
     float ret;
     float dummy1;
     float dummy2;
-    Vec sp2C;
-    Vec sp20;
-    struct MotionTransform sp10;
-    u8 endSomething = transform->unk0;
-    u8 r31 = transform->unk1;
+    struct InterpolateStuff sp2C;
+    struct InterpolateStuff sp20;
+    struct MotionChannel prev;
+    u8 keyframeCount = chan->keyframeCount;
+    u8 keyframe = chan->currKeyframe;
     u8 type = 0;
 
-    while (r31 < endSomething)
+    // Find which keyframe we are on
+    while (keyframe < keyframeCount)
     {
-        float f1 = *transform->unk4;
+        float frameT = *chan->times;
 
-        if (__fabs(f1 - t) < FLT_EPSILON)
+        if (__fabs(frameT - t) < FLT_EPSILON)
         {
             type = 1;
             break;
         }
-        else if (f1 > t)
+        else if (frameT > t)
         {
-            if (r31 != 0)
+            if (keyframe != 0)
                 type = 3;
             else
                 type = 2;
             break;
         }
-        r31++;
-        u_skelanim_seek_next(transform);
+        keyframe++;
+        seek_channel_next_keyframe(chan);
     }
 
     switch (type)
     {
     default:
-        if (transform->unk1 < endSomething)
-            u_skelanim_seek_prev(transform);
+        if (chan->currKeyframe < keyframeCount)
+            seek_channel_prev_keyframe(chan);
         // fall through
     case 1:
     case 2:
-        read_transform_values(transform, &dummy1, &dummy2, &ret);
+        read_channel_keyframe_values(chan, &dummy1, &dummy2, &ret);
         break;
     case 3:
-        sp20.x = *transform->unk4;
-        read_transform_values(transform, &sp20.z, &dummy2, &sp20.y);
-        sp10.unk4 = transform->unk4;
-        sp10.numComponents = transform->numComponents;
-        sp10.values = transform->values;
-        u_skelanim_seek_prev(&sp10);
-        sp2C.x = *sp10.unk4;
-        read_transform_values(&sp10, &dummy1, &sp2C.z, &sp2C.y);
+        sp20.time = *chan->times;
+        read_channel_keyframe_values(chan, &sp20.val2, &dummy2, &sp20.val1);
+
+        prev.times = chan->times;
+        prev.valueCounts = chan->valueCounts;
+        prev.values = chan->values;
+        seek_channel_prev_keyframe(&prev);
+
+        sp2C.time = *prev.times;
+        read_channel_keyframe_values(&prev, &dummy1, &sp2C.val2, &sp2C.val1);
+
         ret = u_crazy_interpolation_stuff(&sp2C, &sp20, t);
         break;
     }
-    transform->unk1 = r31;
+    chan->currKeyframe = keyframe;
     return ret;
 }
 
-float u_crazy_interpolation_stuff(Vec *a, Vec *b, float c)
+static float u_crazy_interpolation_stuff(struct InterpolateStuff *a, struct InterpolateStuff *b, float c)
 {
-    float unkx, unkx2, dx, z1, f5, f0;
+    float unkx, unkx2, dt, z1, f5, f0;
 
-    z1 = a->z;
-    dx = b->x - a->x;
-    unkx = (c - a->x) / dx;
+    z1 = a->val2;
+    dt = b->time - a->time;
+    unkx = (c - a->time) / dt;
     unkx2 = unkx * unkx;
-    dx *= (1.0 / 30.0);
+    dt *= (1.0 / 30.0);
     f0 = unkx2 - unkx;
     f5 = unkx * unkx2 - unkx2;
-    return a->y
-         + (f5 + f5 - unkx2) * (a->y - b->y)
-         + dx * (f5 * (z1 + b->z) - z1 * f0);
+    return a->val1
+         + (f5 + f5 - unkx2) * (a->val1 - b->val1)
+         + dt * (f5 * (z1 + b->val2) - z1 * f0);
 }
 
-void read_transform_values(struct MotionTransform *transform, float *b, float *c, float *d)
+static void read_channel_keyframe_values(struct MotionChannel *chan, float *val1, float *val2, float *val3)
 {
-    switch (*transform->numComponents)
+    switch (*chan->valueCounts)
     {
     default:
     case 0:
-        *b = *c = *d = 0.0f;
+        *val1 = *val2 = *val3 = 0.0f;
         break;
     case 1:
-        *b = *c = 0.0f;
-        *d = transform->values[0];
+        *val1 = *val2 = 0.0f;
+        *val3 = chan->values[0];
         break;
     case 2:
-        *b = *c = transform->values[0];
-        *d = transform->values[1];
+        *val1 = *val2 = chan->values[0];
+        *val3 = chan->values[1];
         break;
     case 3:
-        *b = transform->values[0];
-        *c = transform->values[1];
-        *d = transform->values[2];
+        *val1 = chan->values[0];
+        *val2 = chan->values[1];
+        *val3 = chan->values[2];
         break;
     }
 }
 
-void u_skelanim_seek_next(struct MotionTransform *transform)
+// Advances channel pointers to the next keyframe
+static void seek_channel_next_keyframe(struct MotionChannel *chan)
 {
-    transform->unk4++;
-    transform->values += *transform->numComponents;
-    transform->numComponents++;
+    chan->times++;
+    chan->values += *chan->valueCounts;
+    chan->valueCounts++;
 }
 
-void u_skelanim_seek_prev(struct MotionTransform *transform)
+// Moves channel pointers back to the previous keyframe
+static void seek_channel_prev_keyframe(struct MotionChannel *chan)
 {
-    transform->unk4--;
-    transform->numComponents--;
-    transform->values -= *transform->numComponents;
+    chan->times--;
+    chan->valueCounts--;
+    chan->values -= *chan->valueCounts;
 }
 
 void func_800355B8(struct Struct8003699C_child *a)
 {
-    a->unk3A = func_80034F44(a->unk32);
-    func_80034360(a->unk81A8, a->unk32);
+    a->unk3A = u_get_motdat_unk0(a->unk32);
+    u_load_new_anim_into_joints(a->joints, a->unk32);
 }
 
 void func_800355FC(struct Struct8003699C_child *a)
 {
-    struct JointBoneThing *unk;
+    struct AnimJoint *joints;
 
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(a->unk54);
     func_80035648(a);
-    unk = a->unk81A8;
-    func_80035748(unk, unk);
+    joints = a->joints;
+    func_80035748(joints, joints);
 }
