@@ -23,14 +23,14 @@ bg_sand_init:
 /* 8005B8FC 0005781C  BF 41 00 78 */	stmw r26, 0x78(r1)
 /* 8005B900 00057820  3B A4 9B B0 */	addi r29, r4, lbl_801B9BB0@l
 /* 8005B904 00057824  83 C3 00 9C */	lwz r30, 0x9c(r3)
-/* 8005B908 00057828  4B FF 9B E5 */	bl bg_e3_init
+/* 8005B908 00057828  4B FF 9B E5 */	bl bg_default_init
 /* 8005B90C 0005782C  80 1E 00 00 */	lwz r0, 0(r30)
 /* 8005B910 00057830  2C 00 00 00 */	cmpwi r0, 0
 /* 8005B914 00057834  40 82 00 1C */	bne lbl_8005B930
 /* 8005B918 00057838  3C 60 80 06 */	lis r3, lbl_8005E000@ha
 /* 8005B91C 0005783C  38 83 E0 00 */	addi r4, r3, lbl_8005E000@l
 /* 8005B920 00057840  38 7D 00 EC */	addi r3, r29, 0xec
-/* 8005B924 00057844  4B FF AD 61 */	bl u_search_bg_models
+/* 8005B924 00057844  4B FF AD 61 */	bl find_background_gma_models
 /* 8005B928 00057848  38 00 00 01 */	li r0, 1
 /* 8005B92C 0005784C  90 1E 00 00 */	stw r0, 0(r30)
 lbl_8005B930:
@@ -44,13 +44,13 @@ lbl_8005B930:
 /* 8005B94C 0005786C  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8005B950 00057870  80 64 00 6C */	lwz r3, 0x6c(r4)
 /* 8005B954 00057874  80 84 00 68 */	lwz r4, 0x68(r4)
-/* 8005B958 00057878  4B FF AE 85 */	bl u_search_bg_models_from_list
+/* 8005B958 00057878  4B FF AE 85 */	bl find_background_objects
 /* 8005B95C 0005787C  80 8D 9D 50 */	lwz r4, decodedStageLzPtr@sda21(r13)
 /* 8005B960 00057880  7F E6 FB 78 */	mr r6, r31
 /* 8005B964 00057884  38 BD 01 70 */	addi r5, r29, 0x170
 /* 8005B968 00057888  80 64 00 74 */	lwz r3, 0x74(r4)
 /* 8005B96C 0005788C  80 84 00 70 */	lwz r4, 0x70(r4)
-/* 8005B970 00057890  4B FF AE 6D */	bl u_search_bg_models_from_list
+/* 8005B970 00057890  4B FF AE 6D */	bl find_background_objects
 /* 8005B974 00057894  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 8005B978 00057898  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 8005B97C 0005789C  80 03 00 30 */	lwz r0, 0x30(r3)
@@ -368,7 +368,7 @@ bg_sand_main:
 /* 8005BE3C 00057D5C  DB 21 00 28 */	stfd f25, 0x28(r1)
 /* 8005BE40 00057D60  BF 61 00 14 */	stmw r27, 0x14(r1)
 /* 8005BE44 00057D64  83 C3 00 9C */	lwz r30, 0x9c(r3)
-/* 8005BE48 00057D68  4B FF 96 A9 */	bl bg_e3_main
+/* 8005BE48 00057D68  4B FF 96 A9 */	bl bg_default_main
 /* 8005BE4C 00057D6C  80 0D 9D 00 */	lwz r0, gamePauseStatus@sda21(r13)
 /* 8005BE50 00057D70  70 00 00 0A */	andi. r0, r0, 0xa
 /* 8005BE54 00057D74  41 82 00 18 */	beq lbl_8005BE6C
@@ -658,7 +658,7 @@ lbl_8005C258:
 /* 8005C268 00058188  90 04 00 00 */	stw r0, 0(r4)
 /* 8005C26C 0005818C  42 00 FF EC */	bdnz lbl_8005C258
 lbl_8005C270:
-/* 8005C270 00058190  4B FF 92 E9 */	bl bg_e3_draw
+/* 8005C270 00058190  4B FF 92 E9 */	bl bg_default_draw
 /* 8005C274 00058194  83 5F 00 40 */	lwz r26, 0x40(r31)
 /* 8005C278 00058198  28 1A 00 00 */	cmplwi r26, 0
 /* 8005C27C 0005819C  41 82 00 A4 */	beq lbl_8005C320

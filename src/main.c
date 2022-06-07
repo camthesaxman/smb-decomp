@@ -86,7 +86,7 @@ void main(void)
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;
     u_reset_gamedata();
-    func_80065C58();
+    course_init();
     globalFrameCounter++;
     srand(OSGetTime());
 

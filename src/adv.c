@@ -1551,7 +1551,7 @@ void submode_adv_info_main_func(void)
     if (modeCtrl.submodeTimer == 583)
     {
         ballInfo[0].flags &= ~BALL_FLAG_11;
-        infoWork.flags &= ~INFO_FLAG_03;
+        infoWork.flags &= ~INFO_FLAG_TIMER_PAUSED;
     }
     if (infoWork.flags & INFO_FLAG_GOAL)
     {
@@ -1693,7 +1693,7 @@ void submode_adv_game_ready_init_func(void)
     func_8002FFEC();
     event_start(EVENT_INFO);
     func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    infoWork.flags |= INFO_FLAG_04|INFO_FLAG_11;
+    infoWork.flags |= INFO_FLAG_REPLAY|INFO_FLAG_11;
     load_stage(currStageId);
     event_start(EVENT_STAGE);
     event_start(EVENT_WORLD);
@@ -1713,7 +1713,7 @@ void submode_adv_game_ready_init_func(void)
     light_init(currStageId);
     func_800846B0(4);
     bitmap_load_group(BMP_NML);
-    infoWork.flags |= INFO_FLAG_03|INFO_FLAG_08;
+    infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_08;
     modeCtrl.submodeTimer = 120;
     ballInfo[0].state = 2;
     ballInfo[0].bananas = 0;
@@ -1770,13 +1770,13 @@ void submode_adv_game_play_init_func(void)
     if (gamePauseStatus & 0xA)
         return;
     modeCtrl.submodeTimer = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]) + 30.0;
-    event_resume(2);
+    event_resume(EVENT_WORLD);
     hud_show_go_banner(60);
-    infoWork.flags &= ~(INFO_FLAG_03|INFO_FLAG_08);
+    infoWork.flags &= ~(INFO_FLAG_TIMER_PAUSED|INFO_FLAG_08);
     ballInfo[0].state = 9;
     worldInfo[0].state = 9;
     camera_set_state(0);
-    infoWork.flags |= INFO_FLAG_04|INFO_FLAG_11;
+    infoWork.flags |= INFO_FLAG_REPLAY|INFO_FLAG_11;
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
     animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
     gameSubmodeRequest = SMD_ADV_GAME_PLAY_MAIN;
@@ -1898,7 +1898,7 @@ void submode_adv_ranking_main_func(void)
         }
     }
     if (r31->state == 4 || r31->state == 6)
-        infoWork.flags &= ~(INFO_FLAG_04|INFO_FLAG_11);
+        infoWork.flags &= ~(INFO_FLAG_REPLAY|INFO_FLAG_11);
     if (r31->state != 10)
         modeCtrl.unk18--;
     if (modeCtrl.unk18 < 0
@@ -1925,7 +1925,7 @@ void submode_adv_ranking_main_func(void)
             u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-            infoWork.flags |= INFO_FLAG_04;
+            infoWork.flags |= INFO_FLAG_REPLAY;
             load_stage(currStageId);
             event_start(EVENT_STAGE);
             event_start(EVENT_STOBJ);

@@ -129,7 +129,7 @@ void ev_stage_main(void)
             lbl_80206DEC.u_stageTimer = 120 - modeCtrl.submodeTimer;
         lbl_80206DEC.unk0 = 0x77;
     }
-    else if (infoWork.flags & INFO_FLAG_04)
+    else if (infoWork.flags & INFO_FLAG_REPLAY)
     {
         lbl_80206DEC.u_stageTimer =
             func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]);
@@ -941,7 +941,7 @@ void func_80045194(void)
     int i;
     struct Struct80209D48 *phi_r24;
     struct AnimGroupModel *phi_r25;
-    struct StageBgModel *phi_r24_2;
+    struct StageBgObject *phi_r24_2;
     struct StageAnimGroup *ag;
     int phi_r6;
     struct Struct8020A348 *phi_r7;
@@ -971,8 +971,8 @@ void func_80045194(void)
         ag++;
     }
 
-    phi_r24_2 = decodedStageLzPtr->bgModels;
-    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, phi_r24_2++)
+    phi_r24_2 = decodedStageLzPtr->bgObjects;
+    for (i = 0; i < decodedStageLzPtr->bgObjectCount; i++, phi_r24_2++)
     {
         model = find_model_in_gma_list(phi_r24_2->name);
         if (model == NULL && (gamePauseStatus & 4))
@@ -980,8 +980,8 @@ void func_80045194(void)
         phi_r24_2->model = model;
     }
 
-    phi_r24_2 = decodedStageLzPtr->fgModels;
-    for (i = 0; i < decodedStageLzPtr->fgModelCount; i++, phi_r24_2++)
+    phi_r24_2 = decodedStageLzPtr->fgObjects;
+    for (i = 0; i < decodedStageLzPtr->fgObjectCount; i++, phi_r24_2++)
     {
         model = find_model_in_gma_list(phi_r24_2->name);
         if (model == NULL && (gamePauseStatus & 4))
@@ -1808,48 +1808,48 @@ void load_stagedef(int stageId)
     if (decodedStageLzPtr->reflObjs != NULL)
         decodedStageLzPtr->reflObjs = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->reflObjs);
 
-    if (decodedStageLzPtr->bgModels != NULL)
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
-        struct StageBgModel *r28;
+        struct StageBgObject *bgObj;
 
-        decodedStageLzPtr->bgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bgModels);
-        for (i = 0, r28 = decodedStageLzPtr->bgModels; i < decodedStageLzPtr->bgModelsCount;
-             i++, r28++)
+        decodedStageLzPtr->bgObjects = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->bgObjects);
+        for (i = 0, bgObj = decodedStageLzPtr->bgObjects; i < decodedStageLzPtr->bgObjectCount;
+             i++, bgObj++)
         {
-            u32 r3 = r28->flags;
+            u32 r3 = bgObj->flags;
 
             if (r3 & (1 << 15))
             {
-                r28->flags &= 0xF;
-                r28->flags |= (r3 >> 12) & 0xFFFF0;
+                bgObj->flags &= 0xF;
+                bgObj->flags |= (r3 >> 12) & 0xFFFF0;
             }
-            r28->name = OFFSET_TO_PTR(decodedStageLzPtr, r28->name);
-            if (r28->anim != NULL)
-                func_800473C0(&r28->anim, decodedStageLzPtr);
-            if (r28->unk34 != NULL)
-                adjust_stage_flipbook_anims_ptrs(&r28->unk34, decodedStageLzPtr);
+            bgObj->name = OFFSET_TO_PTR(decodedStageLzPtr, bgObj->name);
+            if (bgObj->anim != NULL)
+                func_800473C0(&bgObj->anim, decodedStageLzPtr);
+            if (bgObj->flipbooks != NULL)
+                adjust_stage_flipbook_anims_ptrs(&bgObj->flipbooks, decodedStageLzPtr);
         }
     }
 
-    if (decodedStageLzPtr->fgModels != NULL)
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
-        struct StageBgModel *r28;
+        struct StageBgObject *bgObj;
 
-        decodedStageLzPtr->fgModels = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->fgModels);
-        for (i = 0, r28 = decodedStageLzPtr->fgModels; i < decodedStageLzPtr->fgModelCount; i++, r28++)
+        decodedStageLzPtr->fgObjects = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->fgObjects);
+        for (i = 0, bgObj = decodedStageLzPtr->fgObjects; i < decodedStageLzPtr->fgObjectCount; i++, bgObj++)
         {
-            u32 r3 = r28->flags;
+            u32 r3 = bgObj->flags;
 
             if (r3 & (1 << 15))
             {
-                r28->flags = r3 & 0xF;
-                r28->flags |= (r3 >> 12) & 0xFFFF0;
+                bgObj->flags = r3 & 0xF;
+                bgObj->flags |= (r3 >> 12) & 0xFFFF0;
             }
-            r28->name = OFFSET_TO_PTR(decodedStageLzPtr, r28->name);
-            if (r28->anim != NULL)
-                func_800473C0(&r28->anim, decodedStageLzPtr);
-            if (r28->unk34 != NULL)
-                adjust_stage_flipbook_anims_ptrs(&r28->unk34, decodedStageLzPtr);
+            bgObj->name = OFFSET_TO_PTR(decodedStageLzPtr, bgObj->name);
+            if (bgObj->anim != NULL)
+                func_800473C0(&bgObj->anim, decodedStageLzPtr);
+            if (bgObj->flipbooks != NULL)
+                adjust_stage_flipbook_anims_ptrs(&bgObj->flipbooks, decodedStageLzPtr);
         }
     }
 
@@ -2277,7 +2277,7 @@ void stage_draw(void)
                 mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
                 mathutil_mtxA_rotate_y(-unpausedFrameCounter << 9);
             }
-            if (infoWork.unk1E == 1)
+            if (infoWork.attempts == 1)
             {
                 if (modeCtrl.submodeTimer > 120)
                     nl2ngc_draw_model_sort_translucent_alt2(

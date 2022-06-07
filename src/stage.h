@@ -272,7 +272,7 @@ struct ColiCircle
     S16Vec rot;
 };
 
-struct StageBgModel
+struct StageBgObject
 {
     u32 flags;
     /*0x04*/ char *name;
@@ -287,7 +287,7 @@ struct StageBgModel
     /*0x2C*/ float translucency;
 
     /*0x30*/ struct StageBgAnim *anim;
-    /*0x34*/ struct StageFlipbookAnims *unk34;
+    /*0x34*/ struct StageFlipbookAnims *flipbooks;
 };
 
 struct StageAnimGroupAnim
@@ -492,10 +492,10 @@ struct Stage
     /*0x5C*/ struct AnimGroupModel *animGroupModels;
     u8 filler60[4];
     void *unk64;
-    /*0x68*/ s32 bgModelsCount;
-    /*0x6C*/ struct StageBgModel *bgModels;
-    s32 fgModelCount;
-    struct StageBgModel *fgModels; // Like bg models but tilt with the stage
+    /*0x68*/ s32 bgObjectCount;
+    /*0x6C*/ struct StageBgObject *bgObjects;
+    /*0x70*/ s32 fgObjectCount;
+    /*0x74*/ struct StageBgObject *fgObjects; // Like bgObjects but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
     /*0x80*/ s32 reflObjsCount;

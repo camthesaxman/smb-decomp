@@ -663,7 +663,7 @@ void u_menu_input_debug(void)
         if ((gameMode == MD_GAME && (modeCtrl.courseFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(u_unkInputArr1[0] & PAD_TRIGGER_Z))
+            if (!(g_currPlayerButtons[0] & PAD_TRIGGER_Z))
                 bvar = FALSE;
         }
 

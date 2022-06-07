@@ -1,3 +1,6 @@
+/**
+ * bg_water.c - Code for the underwater background
+ */
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,7 +17,7 @@
 #include "mode.h"
 #include "stage.h"
 
-static struct BGModelSearch bgWaterModelFind1[] =
+static struct BGModelSearch waterBgModelFind[] =
 {
     { BG_MDL_CMP_FULL,   "WAT_SUIMEN_MAT_ONLY" },
     { BG_MDL_CMP_FULL,   "WAT_SANSYO_TEX_WATER" },
@@ -26,7 +29,7 @@ static struct BGModelSearch bgWaterModelFind1[] =
     { BG_MDL_CMP_END,    NULL },
 };
 
-static struct BGModelSearch bgWaterModelFind2[] =
+static struct BGModelSearch waterBgObjFind[] =
 {
     { BG_MDL_CMP_PREFIX, "WAT_SUB_SUKRYU" },
     { BG_MDL_CMP_FULL,   "WAT_SUIMEN" },
@@ -39,19 +42,19 @@ static struct BGModelSearch bgWaterModelFind2[] =
 };
 
 static void lbl_8005E914(void);
-static void lbl_8005E998(struct Struct80061BC4 *);
+static void lbl_8005E998(struct EnvMapSomething *);
 static void lbl_8005EB8C();
-static void func_8005ED80(struct Struct80061BC4 *);
-static void lbl_8005F124(struct Struct80061BC4 *);
-static void lbl_8005F520(struct Struct80061BC4 *);
-static int model_find_proc_1(int, struct GMAModelEntry *);
-static int model_find_proc_2(int, struct StageBgModel *);
+static void func_8005ED80(struct EnvMapSomething *);
+static void lbl_8005F124(struct EnvMapSomething *);
+static void lbl_8005F520(struct EnvMapSomething *);
+static int model_find_proc(int, struct GMAModelEntry *);
+static int obj_find_proc(int, struct StageBgObject *);
 
 void bg_water_init(void)
 {
     struct BGWaterWork *work = backgroundInfo.work;
 
-    bg_e3_init();
+    bg_default_init();
     if (modeCtrl.unk30 < 2)
     {
         backgroundInfo.unk8C = lbl_8005E998;
@@ -61,21 +64,21 @@ void bg_water_init(void)
     if (work->unk0 == 0)
     {
         u_debug_set_cursor_pos(4, 4);
-        u_search_bg_models(bgWaterModelFind1, model_find_proc_1);
+        find_background_gma_models(waterBgModelFind, model_find_proc);
         work->unk0 = 1;
     }
     func_80056934();
     work->waterSurface = NULL;
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->bgModels,
-        decodedStageLzPtr->bgModelsCount,
-        bgWaterModelFind2,
-        model_find_proc_2);
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->fgModels,
-        decodedStageLzPtr->fgModelCount,
-        bgWaterModelFind2,
-        model_find_proc_2);
+    find_background_objects(
+        decodedStageLzPtr->bgObjects,
+        decodedStageLzPtr->bgObjectCount,
+        waterBgObjFind,
+        obj_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->fgObjects,
+        decodedStageLzPtr->fgObjectCount,
+        waterBgObjFind,
+        obj_find_proc);
     backgroundInfo.unk14.x = (rand() / 32767.0f) - 0.5f;
     backgroundInfo.unk14.y = (rand() / 32767.0f) - 0.5f;
     backgroundInfo.unk14.z = (rand() / 32767.0f) - 0.5f;
@@ -109,7 +112,7 @@ void bg_water_main(void)
 
     if ((gamePauseStatus & 0xA) && eventInfo[12].state != 2)
         return;
-    bg_e3_main();
+    bg_default_main();
     work = backgroundInfo.work;
     backgroundInfo.unk14.x = backgroundInfo.unk14.x + backgroundInfo.unk20.x;
     backgroundInfo.unk14.y = backgroundInfo.unk14.y + backgroundInfo.unk20.y;
@@ -166,7 +169,7 @@ void bg_water_finish(void) {}
 void bg_water_draw(void)
 {
     struct BGWaterWork *work = backgroundInfo.work;
-    struct StageBgModel *temp_r31;
+    struct StageBgObject *temp_r31;
 
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
     temp_r31 = work->waterSurface;
@@ -184,7 +187,7 @@ void bg_water_draw(void)
     u_avdisp_set_some_func_1(lbl_8005F520);
     avdisp_draw_model_culled_sort_none(work->waterSurfaceMat);
     u_avdisp_set_some_func_1(NULL);
-    bg_e3_draw();
+    bg_default_draw();
 }
 
 void bg_water_interact(int a) {}
@@ -209,7 +212,7 @@ static void lbl_8005E914(void)
 
 struct Struct80061BC4_sub lbl_8027CBF8;
 
-static void lbl_8005E998(struct Struct80061BC4 *arg0)
+static void lbl_8005E998(struct EnvMapSomething *arg0)
 {
     struct Struct80061BC4_sub sp24 = arg0->unkC;
     float spC[2][3];
@@ -243,7 +246,7 @@ static void lbl_8005E998(struct Struct80061BC4 *arg0)
     func_8005ED80(arg0);
 }
 
-static void lbl_8005EB8C(struct Struct80061BC4 *arg0)
+static void lbl_8005EB8C(struct EnvMapSomething *arg0)
 {
     struct Struct80061BC4_sub sp24 = arg0->unkC;
     float spC[2][3];
@@ -277,7 +280,7 @@ static void lbl_8005EB8C(struct Struct80061BC4 *arg0)
     func_8005ED80(arg0);
 }
 
-static void func_8005ED80(struct Struct80061BC4 *arg0)
+static void func_8005ED80(struct EnvMapSomething *arg0)
 {
     struct BGWaterWork *work = backgroundInfo.work;
     struct Struct80061BC4_sub sp2C = arg0->unkC;
@@ -323,7 +326,7 @@ static void func_8005ED80(struct Struct80061BC4 *arg0)
     arg0->unkC = sp2C;
 }
 
-static void lbl_8005F124(struct Struct80061BC4 *arg0)
+static void lbl_8005F124(struct EnvMapSomething *arg0)
 {
     struct BGWaterWork *work = backgroundInfo.work;
     struct Struct80061BC4_sub sp2C = arg0->unkC;
@@ -382,7 +385,7 @@ static void lbl_8005F124(struct Struct80061BC4 *arg0)
 }
 
 #ifdef NONMATCHING
-static void lbl_8005F520(struct Struct80061BC4 *arg0)
+static void lbl_8005F520(struct EnvMapSomething *arg0)
 {
     struct BGWaterWork *work = backgroundInfo.work;
     struct Struct80061BC4_sub sp2C = arg0->unkC;
@@ -444,7 +447,7 @@ const float lbl_802F4324 = 360.0f;
 const float lbl_802F4328 = 0.004999999888241291f;
 const float lbl_802F432C = 0.25f;
 const float lbl_802F4330 = -0.0099999997764825821f;
-static asm void lbl_8005F520(struct Struct80061BC4 *arg0)
+static asm void lbl_8005F520(struct EnvMapSomething *arg0)
 {
     nofralloc
 #include "../asm/nonmatchings/lbl_8005F520.s"
@@ -452,56 +455,56 @@ static asm void lbl_8005F520(struct Struct80061BC4 *arg0)
 #pragma peephole on
 #endif
 
-static int model_find_proc_1(int arg0, struct GMAModelEntry *arg1)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
     struct BGWaterWork *work = backgroundInfo.work;
 
-    switch (arg0)
+    switch (index)
     {
     case 0:  // WAT_SUIMEN_MAT_ONLY
-        work->waterSurfaceMat = arg1->model;
+        work->waterSurfaceMat = entry->model;
         break;
     case 1:  // WAT_SANSYO_TEX_WATER
-        work->causticTex = &arg1->model->texObjs[0];
+        work->causticTex = &entry->model->texObjs[0];
         break;
     case 2:  // WAT_SUIMEN_TEST_LOW_CONT
-        work->waterSurfaceTestTex = &arg1->model->texObjs[0];
+        work->waterSurfaceTestTex = &entry->model->texObjs[0];
         break;
     case 3:  // WAT_BUBBLE_
-        work->bubbleModel = arg1->model;
+        work->bubbleModel = entry->model;
         break;
     case 4:  // WAT_LIGHTMAP
-        work->lightmapTex = &arg1->model->texObjs[0];
+        work->lightmapTex = &entry->model->texObjs[0];
         break;
     case 5:  // WAT_LIGHTMAP_STAGE
-        work->lightmapStageTex = &arg1->model->texObjs[0];
+        work->lightmapStageTex = &entry->model->texObjs[0];
         break;
     case 6:  // WAT_LIGHTMAP_GRAD
-        work->lightmapGradTex = &arg1->model->texObjs[0];
+        work->lightmapGradTex = &entry->model->texObjs[0];
         break;
     }
     return 1;
 }
 
-static int model_find_proc_2(int arg0, struct StageBgModel *arg1)
+static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
     struct BGWaterWork *work = backgroundInfo.work;
     struct Effect effect;
 
-    switch (arg0)
+    switch (index)
     {
     case 0:  // WAT_SUB_SUKRYU
         // submarine propeller
         memset(&effect, 0, sizeof(effect));
         effect.unk8 = 20;
-        effect.unk30 = (void *)arg1;
+        effect.unk30 = (void *)bgObj;
         spawn_effect(&effect);
         break;
     case 1:  // WAT_SUIMEN
-        work->waterSurface = arg1;
+        work->waterSurface = bgObj;
         break;
     default:
-        arg1->flags |= 0x1000000;
+        bgObj->flags |= 0x1000000;
         break;
     }
     return 1;

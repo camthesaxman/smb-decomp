@@ -807,7 +807,7 @@ void ev_name_entry_init(void);
 void ev_name_entry_main(void);
 void ev_name_entry_dest(void);
 void func_800AE408(void);
-int func_800AE894(void);
+int u_is_name_entry_finished(void);
 // ? func_800AE8D0();
 // ? func_800AE930();
 void func_800AEAD0(void);

@@ -1,3 +1,6 @@
+/**
+ * bg_end.c - Code for the ending cutscene background
+ */
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
@@ -9,25 +12,7 @@
 #include "mathutil.h"
 #include "stage.h"
 
-struct Struct800654F4_sub
-{
-    GXTevStageID unk0;
-    GXTexCoordID unk4;
-    s32 unk8;
-    GXTexMapID unkC;
-    GXIndTexStageID unk10;
-    u8 filler14[0x1C-0x14];
-    GXIndTexMtxID unk1C;
-    u8 filler20[0xC];
-};
-
-struct Struct800654F4
-{
-    u8 filler0[0xC];
-    struct Struct800654F4_sub unkC;
-};
-
-static struct BGModelSearch bgEndFind1[] =
+static struct BGModelSearch endBgModelFind[] =
 {
     { BG_MDL_CMP_PREFIX, "END_STG_CLOUD_" },
     { BG_MDL_CMP_FULL,   "END_YOUSAI_WATER_C" },
@@ -36,37 +21,37 @@ static struct BGModelSearch bgEndFind1[] =
     { BG_MDL_CMP_END,    NULL },
 };
 
-static struct BGModelSearch bgEndFind2[] =
+static struct BGModelSearch endBgObjFind[] =
 {
     { BG_MDL_CMP_PREFIX, "END_PARADISE_" },
     { BG_MDL_CMP_END,    NULL },
 };
 
-static void lbl_800654F4(struct Struct800654F4 *arg0);
-static void lbl_8006582C(struct Struct800654F4 *arg0);
-static int lbl_80065B8C(int, struct GMAModelEntry *);
-static int lbl_80065BFC(int, struct StageBgModel *);
+static void lbl_800654F4(struct EnvMapSomething *arg0);
+static void lbl_8006582C(struct EnvMapSomething *arg0);
+static int model_find_proc(int, struct GMAModelEntry *);
+static int obj_find_proc(int, struct StageBgObject *);
 
 void bg_end_init(void)
 {
     struct BGEndWork *work = backgroundInfo.work;
 
-    bg_e3_init();
+    bg_default_init();
     if (work->unk0 == 0)
     {
-        u_search_bg_models(bgEndFind1, lbl_80065B8C);
+        find_background_gma_models(endBgModelFind, model_find_proc);
         work->unk0 = 1;
     }
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->bgModels,
-        decodedStageLzPtr->bgModelsCount,
-        bgEndFind2,
-        lbl_80065BFC);
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->fgModels,
-        decodedStageLzPtr->fgModelCount,
-        bgEndFind2,
-        lbl_80065BFC);
+    find_background_objects(
+        decodedStageLzPtr->bgObjects,
+        decodedStageLzPtr->bgObjectCount,
+        endBgObjFind,
+        obj_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->fgObjects,
+        decodedStageLzPtr->fgObjectCount,
+        endBgObjFind,
+        obj_find_proc);
     work->unk14 = lbl_8006582C;
     work->unk18 = lbl_800654F4;
     work->unk28 = 0.005555555555555556 * (0.8f + 0.4f * (rand() / 32767.0f));
@@ -83,7 +68,7 @@ void bg_end_main(void)
     struct BGEndWork *work = backgroundInfo.work;
     float temp_f1;
 
-    bg_e3_main();
+    bg_default_main();
     if (gamePauseStatus & 0xA)
         return;
     work->unk1C.x += work->unk28;
@@ -100,19 +85,19 @@ void bg_end_finish(void) {}
 
 void bg_end_draw(void)
 {
-    bg_e3_draw();
+    bg_default_draw();
 }
 
 void bg_end_interact(int arg0) {}
 
-static void lbl_800654F4(struct Struct800654F4 *arg0)
+static void lbl_800654F4(struct EnvMapSomething *arg0)
 {
     struct BGEndWork *work = backgroundInfo.work;
-    struct Struct800654F4_sub sp2C = arg0->unkC;
+    struct Struct80061BC4_sub sp2C = arg0->unkC;
     float sp14[2][3];
 
-    GXLoadTexObj_cached(work->unkC, sp2C.unkC);
-    GXLoadTexObj_cached(work->unk10, sp2C.unkC + 1);
+    GXLoadTexObj_cached(work->waterSpecTex, sp2C.u_texMapId);
+    GXLoadTexObj_cached(work->cloudTex, sp2C.u_texMapId + 1);
     sp14[0][0] = 0.0f;
     sp14[0][1] = 0.5f * mathutil_sin(backgroundInfo.unkA4 << 8);
     sp14[0][2] = 0.0f;
@@ -132,10 +117,10 @@ static void lbl_800654F4(struct Struct800654F4 *arg0)
     mathutil_mtxA_pop();
     GXSetTexCoordGen(sp2C.unk4, 1, 1, sp2C.unk8);
     GXSetTexCoordGen(sp2C.unk4 + 1, 1, 4, sp2C.unk8 + 3);
-    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.unkC + 1);
+    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.u_texMapId + 1);
     GXSetTevIndirect(sp2C.unk0, sp2C.unk10, 0, 7, sp2C.unk1C, 0, 0, 0, 0, 0);
     GXSetTevSwapMode_cached(sp2C.unk0, 0, 0);
-    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.unkC, 0xFF);
+    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.u_texMapId, 0xFF);
     GXSetTevColorIn_cached(sp2C.unk0, 8, 0xF, 0xF, 0);
     GXSetTevColorOp_cached(sp2C.unk0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(sp2C.unk0, 7, 7, 7, 0);
@@ -145,19 +130,19 @@ static void lbl_800654F4(struct Struct800654F4 *arg0)
     sp2C.unk4 += 2;
     sp2C.unk8 += 6;
     sp2C.unk1C += 1;
-    sp2C.unkC += 2;
+    sp2C.u_texMapId += 2;
     arg0->unkC = sp2C;
 }
 
-static void lbl_8006582C(struct Struct800654F4 *arg0)
+static void lbl_8006582C(struct EnvMapSomething *arg0)
 {
     struct BGEndWork *work = backgroundInfo.work;
-    struct Struct800654F4_sub sp2C = arg0->unkC;
+    struct Struct80061BC4_sub sp2C = arg0->unkC;
     float sp14[2][3];
     float temp_f2;
 
-    GXLoadTexObj_cached(work->unkC, sp2C.unkC);
-    GXLoadTexObj_cached(work->unk10, sp2C.unkC + 1);
+    GXLoadTexObj_cached(work->waterSpecTex, sp2C.u_texMapId);
+    GXLoadTexObj_cached(work->cloudTex, sp2C.u_texMapId + 1);
     sp14[0][0] = 0.0f;
     sp14[0][1] = 0.5f * mathutil_sin(backgroundInfo.unkA4 << 8);
     sp14[0][2] = 0.0f;
@@ -177,10 +162,10 @@ static void lbl_8006582C(struct Struct800654F4 *arg0)
     mathutil_mtxA_pop();
     GXSetTexCoordGen(sp2C.unk4, 1, 1, sp2C.unk8);
     GXSetTexCoordGen(sp2C.unk4 + 1, 1, 4, sp2C.unk8 + 3);
-    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.unkC + 1);
+    GXSetIndTexOrder(sp2C.unk10, sp2C.unk4 + 1, sp2C.u_texMapId + 1);
     GXSetTevIndirect(sp2C.unk0, sp2C.unk10, 0, 7, sp2C.unk1C, 0, 0, 0, 0, 0);
     GXSetTevSwapMode_cached(sp2C.unk0, 0, 0);
-    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.unkC, 0xFF);
+    GXSetTevOrder_cached(sp2C.unk0, sp2C.unk4, sp2C.u_texMapId, 0xFF);
     GXSetTevColorIn_cached(sp2C.unk0, 8, 0xF, 0xF, 0);
     GXSetTevColorOp_cached(sp2C.unk0, 0, 0, 0, 1, 0);
     GXSetTevAlphaIn_cached(sp2C.unk0, 7, 7, 7, 0);
@@ -190,42 +175,42 @@ static void lbl_8006582C(struct Struct800654F4 *arg0)
     sp2C.unk4 += 2;
     sp2C.unk8 += 6;
     sp2C.unk1C += 1;
-    sp2C.unkC += 2;
+    sp2C.u_texMapId += 2;
     arg0->unkC = sp2C;
 }
 
-static int lbl_80065B8C(int arg0, struct GMAModelEntry *arg1)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
     struct BGEndWork *work = backgroundInfo.work;
 
-    switch (arg0)
+    switch (index)
     {
-    case 0:
-        work->unk10 = arg1->model->texObjs;
+    case 0:  // END_STG_CLOUD_
+        work->cloudTex = &entry->model->texObjs[0];
         break;
-    case 1:
-        work->unk8 = arg1->model;
+    case 1:  // END_YOUSAI_WATER_C
+        work->waterModel = entry->model;
         break;
-    case 2:
-        work->unkC = arg1->model->texObjs;
+    case 2:  // END_YOUSAI_WATER_SPEC
+        work->waterSpecTex = &entry->model->texObjs[0];
         break;
-    case 3:
-        work->unk4 = arg1->model;
+    case 3:  // END_FUNSUI_WATER_
+        work->fountainWaterModel = entry->model;
         break;
     }
     return 1;
 }
 
-static int lbl_80065BFC(int arg0, struct StageBgModel *arg1)
+static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
     struct Effect sp10;
 
-    switch (arg0)
+    switch (index)
     {
-    case 0:
+    case 0:  // END_PARADISE_
         memset(&sp10, 0, sizeof(sp10));
         sp10.unk8 = 48;
-        sp10.unk30 = (void *)arg1;
+        sp10.unk30 = (void *)bgObj;
         spawn_effect(&sp10);
         break;
     }

@@ -6,7 +6,7 @@
 
 // code_5.c
 struct Struct802F1C10 lbl_802F1C10;
-u8 lbl_802F1C0D;
+u8 g_unlockFlags;
 u8 lbl_802F1C0C;
 struct Struct802F1C04 lbl_802F1C04;
 struct Struct802F1BFC lbl_802F1BFC;
@@ -79,7 +79,7 @@ void u_reset_gamedata(void)
     lbl_802F1C10.unk4[2] = 2;
     lbl_802F1C10.unk4[3] = 3;
 
-    lbl_802F1C0D = 0;
+    g_unlockFlags = 0;
     lbl_802F1C0C = 0;
 
     lbl_801EED50.unk0 = 3;
@@ -148,7 +148,7 @@ void u_store_gamedata(struct MemcardGameData *data)
     data->unk5844.unk4A = lbl_802F1C10.unk4[2];
     data->unk5844.unk4B = lbl_802F1C10.unk4[3];
 
-    data->unk5844.unk2BF = lbl_802F1C0D;
+    data->unk5844.unk2BF = g_unlockFlags;
     data->unk5844.unk4F = lbl_802F1C0C;
 
     data->unk5844.unk50 = lbl_801EED50.unk0;
@@ -216,7 +216,7 @@ void u_load_gamedata(struct MemcardGameData *data)
     lbl_802F1C10.unk4[2] = data->unk5844.unk4A;
     lbl_802F1C10.unk4[3] = data->unk5844.unk4B;
 
-    lbl_802F1C0D = data->unk5844.unk2BF;
+    g_unlockFlags = data->unk5844.unk2BF;
     lbl_802F1C0C = data->unk5844.unk4F;
 
     lbl_801EED50.unk0 = data->unk5844.unk50;

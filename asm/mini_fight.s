@@ -11987,8 +11987,8 @@ lbl_0000B47C:
 /* 0000B48C 801E0000 */ lwz r0, 0(r30)
 /* 0000B490 2C000000 */ cmpwi r0, 0
 /* 0000B494 40820064 */ bne lbl_0000B4F8
-/* 0000B498 3C600000 */ lis r3, u_unkInputArr1@ha
-/* 0000B49C 38630000 */ addi r3, r3, u_unkInputArr1@l
+/* 0000B498 3C600000 */ lis r3, g_currPlayerButtons@ha
+/* 0000B49C 38630000 */ addi r3, r3, g_currPlayerButtons@l
 /* 0000B4A0 A0030004 */ lhz r0, 4(r3)
 /* 0000B4A4 540005EF */ rlwinm. r0, r0, 0, 0x17, 0x17
 /* 0000B4A8 41820050 */ beq lbl_0000B4F8
@@ -12492,8 +12492,8 @@ lbl_0000BBD4:
 /* 0000BBD8 80030000 */ lwz r0, dipSwitches@l(r3)
 /* 0000BBDC 540007FF */ clrlwi. r0, r0, 0x1f
 /* 0000BBE0 41820034 */ beq lbl_0000BC14
-/* 0000BBE4 3C600000 */ lis r3, u_unkInputArr1@ha
-/* 0000BBE8 38630000 */ addi r3, r3, u_unkInputArr1@l
+/* 0000BBE4 3C600000 */ lis r3, g_currPlayerButtons@ha
+/* 0000BBE8 38630000 */ addi r3, r3, g_currPlayerButtons@l
 /* 0000BBEC A0630000 */ lhz r3, 0(r3)
 /* 0000BBF0 5460056B */ rlwinm. r0, r3, 0, 0x15, 0x15
 /* 0000BBF4 41820020 */ beq lbl_0000BC14
@@ -13335,8 +13335,8 @@ lbl_0000C7D4:
 /* 0000C814 80040008 */ lwz r0, 8(r4)
 /* 0000C818 5400056B */ rlwinm. r0, r0, 0, 0x15, 0x15
 /* 0000C81C 41820020 */ beq lbl_0000C83C
-/* 0000C820 3C600000 */ lis r3, u_unkInputArr1@ha
-/* 0000C824 38630000 */ addi r3, r3, u_unkInputArr1@l
+/* 0000C820 3C600000 */ lis r3, g_currPlayerButtons@ha
+/* 0000C824 38630000 */ addi r3, r3, g_currPlayerButtons@l
 /* 0000C828 A0030004 */ lhz r0, 4(r3)
 /* 0000C82C 540005EF */ rlwinm. r0, r0, 0, 0x17, 0x17
 /* 0000C830 4182000C */ beq lbl_0000C83C
@@ -13704,8 +13704,8 @@ lbl_0000CD30:
 /* 0000CD64 801F0000 */ lwz r0, 0(r31)
 /* 0000CD68 2C00003C */ cmpwi r0, 0x3c
 /* 0000CD6C 4081002C */ ble lbl_0000CD98
-/* 0000CD70 3C600000 */ lis r3, u_unkInputArr1@ha
-/* 0000CD74 38630000 */ addi r3, r3, u_unkInputArr1@l
+/* 0000CD70 3C600000 */ lis r3, g_currPlayerButtons@ha
+/* 0000CD74 38630000 */ addi r3, r3, g_currPlayerButtons@l
 /* 0000CD78 A0030004 */ lhz r0, 4(r3)
 /* 0000CD7C 540005EF */ rlwinm. r0, r0, 0, 0x17, 0x17
 /* 0000CD80 41820018 */ beq lbl_0000CD98

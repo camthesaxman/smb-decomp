@@ -18,17 +18,29 @@
 // have a "main" course and an "extra" course. Expert has these two plus an
 // additional "master" course.
 
-u32 playPointsReceived;
-s8 lbl_802F1FC0;
-u32 totalPlayPoints;
-u32 lbl_802F1FB8;
-u32 lbl_802F1FB4;  // not used
+static struct CourseCommand *s_courseScriptPtr;
+static s32 u_jumpFloors;  // number of floors to jump (or -1 if not jumping floors)
+static u32 lbl_802F1FA0;
+
+u32 g_playPointsEarned;
+s8 g_currFloorStreak;  // number of floors cleared since last continue
+u32 g_totalPlayPoints;
+u32 g_maxPlayPointRecord;
+u32 lbl_802F1FB4;  // not used in this file
 int lbl_802F1FB0;
-u32 lbl_802F1FAC;  // not used
-u32 lbl_802F1FA8;  // not used
+u32 lbl_802F1FAC;  // not used in this file
+u32 lbl_802F1FA8;  // not used in this file
 int u_isCompetitionModeCourse;
-u32 lbl_802F1FA0;
-s32 u_jumpFloors;  // number of floors to jump (or -1 if not jumping floors)
+
+// g_unlockFlags bits
+#define UNLOCKED_BILLIARDS (1 << 0)  // bit 0 set if billiards unlocked
+#define UNLOCKED_BOWLING   (1 << 1)  // bit 1 set if bowling unlocked
+#define UNLOCKED_GOLF      (1 << 2)  // bit 2 set if golf unlocked
+#define UNLOCKED_ALL_CONTINUES       (1 << 3)  // bit 3 set if all minigames and all extra continues unlocked
+// bits 4-6: extra continues (up to 5) unlocked. This is in addition to the 5 continues that the
+// player starts out with, for a maximum of 10 total continues
+#define UNLOCKED_CONTINUES_SHIFT 4
+#define UNLOCKED_CONTINUES_MASK (7 << UNLOCKED_CONTINUES_SHIFT)
 
 // Play points per floor in each course
 
@@ -139,27 +151,24 @@ struct Struct8027CC58
 };
 
 static struct Struct8027CC58 lbl_8027CC58[4][3];
-static u32 lbl_8027CE08[4];
+static u32 s_visitedFloors[4];  // bit mask of floors that have been played on at least once
 struct Struct8027CE18 lbl_8027CE18;
 
 static int difficulty_to_course_id(int, u32);
-static void func_80067508(int, int, u32);
+static void mark_floor_visited(int, int, u32);
 static void func_800676E8(void);
 static void func_80067808(void);
 static void func_80067AD4(void);
 
-void func_80065C58(void)
+void course_init(void)
 {
     int i;
     int count;
-    u8 unused[4];
 
-    lbl_8027CE08[0] = 0;
-    lbl_8027CE08[1] = 0;
-    lbl_8027CE08[2] = 0;
-    lbl_8027CE08[3] = 0;
-    totalPlayPoints = 0;
-    lbl_802F1FB8 = 0;
+    for (i = 0; i < 4; i++)
+        s_visitedFloors[i] = 0;
+    g_totalPlayPoints = 0;
+    g_maxPlayPointRecord = 0;
 
     count = 0;
     lbl_8027CE18.unk0 = 0;
@@ -185,60 +194,67 @@ void func_80065C58(void)
         lbl_8027CE18.unk8 += masterPlayPoints[i] + u_unkPlayPointList[count];
 }
 
-void func_80066294(void)
+void reset_earned_play_points(void)
 {
-    playPointsReceived = 0;
-    lbl_802F1FC0 = 0;
-    if (func_800676C0() != 0)
-        totalPlayPoints = 0;
+    g_playPointsEarned = 0;
+    g_currFloorStreak = 0;
+    if (are_all_continues_unlocked())
+        g_totalPlayPoints = 0;
 }
 
 void func_800662D4(void)
 {
-    lbl_802F1FC0 = 0;
+    g_currFloorStreak = 0;
 }
 
-void func_800662E0(void)
+void record_play_points(void)
 {
-    totalPlayPoints = MIN(totalPlayPoints + playPointsReceived, 9999);
-    if (func_800676C0() != 0 && totalPlayPoints > lbl_802F1FB8)
-        lbl_802F1FB8 = totalPlayPoints;
+    g_totalPlayPoints = MIN(g_totalPlayPoints + g_playPointsEarned, 9999);
+    if (are_all_continues_unlocked() != 0 && g_totalPlayPoints > g_maxPlayPointRecord)
+        g_maxPlayPointRecord = g_totalPlayPoints;
 }
 
 #pragma force_active on
-void func_8006633C(void)
+void spend_play_points(void)
 {
-    totalPlayPoints -= 2500;
+    g_totalPlayPoints -= 2500;
 }
 #pragma force_active reset
 
-void func_8006634C(void)
+// Automatically spends remaining play points on extra continues if minigames are already unlocked
+void buy_extra_continues(void)
 {
-    int temp_r4;
-    int var_r4;
+    int extraContinues;
+    int continuesBought;
 
-    if (!u_is_minigame_unlocked(6) || !u_is_minigame_unlocked(7) || !u_is_minigame_unlocked(8))
+    // Extra continues can only be bought once all minigames have been unlocked
+    if (!is_minigame_unlocked(GAMETYPE_MINI_BILLIARDS)
+     || !is_minigame_unlocked(GAMETYPE_MINI_BOWLING)
+     || !is_minigame_unlocked(GAMETYPE_MINI_GOLF))
         return;
-    if (func_800676C0() == 0 && totalPlayPoints >= 2500)
+
+    if (are_all_continues_unlocked() == 0 && g_totalPlayPoints >= 2500)
     {
-        var_r4 = 0;
-        while (totalPlayPoints >= 2500)
+        continuesBought = 0;
+        while (g_totalPlayPoints >= 2500)
         {
-            func_8006633C();
-            var_r4++;
+            spend_play_points();
+            continuesBought++;
         }
-        temp_r4 = var_r4 + ((lbl_802F1C0D >> 4) & 7);
-        if (temp_r4 >= 5)
+        extraContinues = continuesBought + ((g_unlockFlags >> 4) & 7);
+        if (extraContinues >= 5)
         {
-            lbl_802F1C0D |= 8;
-            lbl_802F1C0D &= ~0x70;
-            lbl_802F1C0D |= 0x50;
-            totalPlayPoints = 0;
+            g_unlockFlags |= UNLOCKED_ALL_CONTINUES;  // We have now unlocked everything!
+            // Set new continues
+            g_unlockFlags &= ~UNLOCKED_CONTINUES_MASK;
+            g_unlockFlags |= 5 << UNLOCKED_CONTINUES_SHIFT;
+            g_totalPlayPoints = 0;
         }
         else
         {
-            lbl_802F1C0D &= ~0x70;
-            lbl_802F1C0D |= temp_r4 * 0x10;
+            // Set new continues
+            g_unlockFlags &= ~UNLOCKED_CONTINUES_MASK;
+            g_unlockFlags |= extraContinues << UNLOCKED_CONTINUES_SHIFT;
         }
     }
 }
@@ -951,40 +967,36 @@ static struct CourseCommand *s_courseScripts[] =
     lbl_801BD86C,
 };
 
-struct CourseCommand *courseScriptPtr;
-
-int u_get_max_continues(void);
-
-static void course_end_textbox_callback(struct TextBox *tbox)
+static void play_points_textbox_callback(struct TextBox *tbox)
 {
     if (tbox->unk19 == 0 && tbox->state == 20 && tbox->timer == tbox->timerMax - 1)
     {
-        func_8006634C();
+        buy_extra_continues();
         return;
     }
     if (lbl_802F1FA0 == 0)
     {
-        if (func_800676C0() != 0)
+        if (are_all_continues_unlocked() != 0)
         {
-            textbox_add_textf(1, "a/Play Point record for this time : ft/%4d", totalPlayPoints);
-            textbox_add_textf(1, "a/Highest Play Point record c/0xffffff/a/timec/0x000000/ : ft/%4d", lbl_802F1FB8);
+            textbox_add_textf(1, "a/Play Point record for this time : ft/%4d", g_totalPlayPoints);
+            textbox_add_textf(1, "a/Highest Play Point record c/0xffffff/a/timec/0x000000/ : ft/%4d", g_maxPlayPointRecord);
             lbl_802F1FA0++;
         }
-        else if (playPointsReceived == 0)
+        else if (g_playPointsEarned == 0)
         {
             textbox_add_text(1, "a/You didn't get any play points.");
-            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", totalPlayPoints);
+            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", g_totalPlayPoints);
             lbl_802F1FA0++;
         }
         else
         {
-            textbox_add_textf(1, "a/You received %d Play Points.", playPointsReceived);
-            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", totalPlayPoints);
+            textbox_add_textf(1, "a/You received %d Play Points.", g_playPointsEarned);
+            textbox_add_textf(1, "z9/a/You now have a total of %d Play Points.", g_totalPlayPoints);
             lbl_802F1FA0++;
         }
         return;
     }
-    if (func_800676C0() == 0 && totalPlayPoints >= 2500)
+    if (are_all_continues_unlocked() == 0 && g_totalPlayPoints >= 2500)
     {
         if (++lbl_802F1FA0 == 480)
         {
@@ -993,10 +1005,12 @@ static void course_end_textbox_callback(struct TextBox *tbox)
         }
         else
         {
-            if (tbox->unk18 == 0 && (u_unkInputArr1[2] & 0x100)
+            if (tbox->unk18 == 0 && (g_currPlayerButtons[2] & 0x100)
              && lbl_802F1FA0 > 60 && lbl_802F1FA0 < 180)
             {
-                if (u_is_minigame_unlocked(6) == 0 || u_is_minigame_unlocked(7) == 0 || u_is_minigame_unlocked(8) == 0)
+                if (!is_minigame_unlocked(GAMETYPE_MINI_BILLIARDS)
+                 || !is_minigame_unlocked(GAMETYPE_MINI_BOWLING)
+                 || !is_minigame_unlocked(GAMETYPE_MINI_GOLF))
                     lbl_802F1FA0 = 180;
                 else if (tbox->unk19 != 0)
                     lbl_802F1FA0 = 240;
@@ -1007,7 +1021,9 @@ static void course_end_textbox_callback(struct TextBox *tbox)
                 tbox->unk18 = 1;
             if (lbl_802F1FA0 == 180)
             {
-                if (u_is_minigame_unlocked(6) == 0 || u_is_minigame_unlocked(7) == 0 || u_is_minigame_unlocked(8) == 0)
+                if (!is_minigame_unlocked(GAMETYPE_MINI_BILLIARDS)
+                 || !is_minigame_unlocked(GAMETYPE_MINI_BOWLING)
+                 || !is_minigame_unlocked(GAMETYPE_MINI_GOLF))
                 {
                     textbox_add_text(1, "b/c/0xff8000/a/b/You can unlock a Mini Game!");
                     textbox_add_text(1, "a/Unlock a Mini Game by selecting it!");
@@ -1015,23 +1031,23 @@ static void course_end_textbox_callback(struct TextBox *tbox)
                 }
                 else if (tbox->unk19 == 0)
                 {
-                    int var_r30;
+                    int buyContinues;
                     if (tbox->unk17 == 0)
                     {
                         func_8002B5C8(0x16D);
                         tbox->unk17 = 1;
                     }
-                    var_r30 = totalPlayPoints / 2500;
-                    if (var_r30 + u_get_max_continues() > 9)
+                    buyContinues = g_totalPlayPoints / 2500;
+                    if (buyContinues + get_max_continues() > 9)
                     {
-                        var_r30 = MIN(var_r30, 10 - u_get_max_continues());
+                        buyContinues = MIN(buyContinues, 10 - get_max_continues());
                         textbox_add_text(1, "b/c/0xff8000/a/b/You can get unlimited continues!");
-                        textbox_add_textf(1, "a/You have used %d Play Points.", var_r30 * 2500);
+                        textbox_add_textf(1, "a/You have used %d Play Points.", buyContinues * 2500);
                     }
                     else
                     {
-                        textbox_add_textf(1, "b/c/0xff8000/a/b/Your number of continues has been increased to %d !", var_r30 + u_get_max_continues());
-                        textbox_add_textf(1, "a/You have used %d Play Points.", var_r30 * 2500);
+                        textbox_add_textf(1, "b/c/0xff8000/a/b/Your number of continues has been increased to %d !", buyContinues + get_max_continues());
+                        textbox_add_textf(1, "a/You have used %d Play Points.", buyContinues * 2500);
                     }
                 }
             }
@@ -1043,7 +1059,7 @@ static void course_end_textbox_callback(struct TextBox *tbox)
         tbox->unk18 = 1;
 }
 
-void show_course_end_textbox(int arg0, s16 x, s16 y)
+void show_play_points_textbox(int arg0, s16 x, s16 y)
 {
     struct TextBox tbox;
 
@@ -1056,7 +1072,7 @@ void show_course_end_textbox(int arg0, s16 x, s16 y)
     tbox.unk17 = 0;
     tbox.unk18 = 0;
     tbox.unk19 = arg0;
-    tbox.callback = course_end_textbox_callback;
+    tbox.callback = play_points_textbox_callback;
     lbl_802F1FA0 = 0;
     if (tbox.unk19 == 2)
     {
@@ -1068,7 +1084,7 @@ void show_course_end_textbox(int arg0, s16 x, s16 y)
     textbox_set_properties(1, 1, &tbox);
 }
 
-int func_80066868(void)
+int is_play_points_textbox_done(void)
 {
     if (textBoxes[1].state == 0)
         return FALSE;
@@ -1081,9 +1097,9 @@ void func_800668A0(void)
 {
     int var = difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags);
 
-    courseScriptPtr = s_courseScripts[var];
-    infoWork.u_currStageId = courseScriptPtr->value;
-    courseScriptPtr++;
+    s_courseScriptPtr = s_courseScripts[var];
+    infoWork.u_currStageId = s_courseScriptPtr->value;
+    s_courseScriptPtr++;
     func_800676E8();
 }
 
@@ -1092,7 +1108,7 @@ void ev_course_init(void)
     u_jumpFloors = -1;
     func_80067808();
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL)
-        func_80067508(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags);
+        mark_floor_visited(modeCtrl.difficulty, infoWork.currFloor, modeCtrl.courseFlags);
 }
 
 void ev_course_main(void)
@@ -1107,7 +1123,7 @@ void ev_course_main(void)
         return;
     prevOpcode = -1;
     condResult = 0;
-    for (cmd = courseScriptPtr; cmd->opcode != CMD_COURSE_END; cmd++)
+    for (cmd = s_courseScriptPtr; cmd->opcode != CMD_COURSE_END; cmd++)
     {
         // Stop processing commands if we've reached the next floor's commands
         if (cmd->opcode == CMD_FLOOR && cmd->type == FLOOR_STAGE_ID)
@@ -1148,7 +1164,7 @@ void ev_course_main(void)
                 cmd++;
             }
             if (var_r4_2)
-                courseScriptPtr = cmd + 1;
+                s_courseScriptPtr = cmd + 1;
             else
             {
                 course_sub_give_play_points_dupe(cmd);
@@ -1158,16 +1174,16 @@ void ev_course_main(void)
             }
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
             {
-                lbl_802F1FC0++;
+                g_currFloorStreak++;
                 if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
-                    playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
+                    g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
+                    g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1] * 10;
                 }
                 else
                 {
-                    playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
-                    playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
+                    g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
+                    g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1];
                 }
             }
             infoWork.u_currStageId = cmd->value;
@@ -1185,7 +1201,7 @@ void ev_course_dest(void) {}
 
 static u32 course_if_cleared_floor(struct CourseCommand *cmd)
 {
-    if ((infoWork.flags & INFO_FLAG_GOAL) || (infoWork.flags & INFO_FLAG_09))
+    if ((infoWork.flags & INFO_FLAG_GOAL) || (infoWork.flags & INFO_FLAG_BONUS_CLEAR))
         return TRUE;
     // In bonus stages or competition mode, falling out or timing over counts as completing the stage
     if (((infoWork.flags & INFO_FLAG_BONUS_STAGE) || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
@@ -1227,16 +1243,16 @@ static void course_sub_give_play_points(struct CourseCommand *cmd)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
-        lbl_802F1FC0++;
+        g_currFloorStreak++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
-            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
+            g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
+            g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
-            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
+            g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
+            g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1];
         }
     }
     infoWork.u_currStageId = -1;
@@ -1247,16 +1263,16 @@ static void course_sub_give_play_points_dupe(struct CourseCommand *cmd)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount == 1)
     {
-        lbl_802F1FC0++;
+        g_currFloorStreak++;
         if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_PNT_X10))
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
-            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1] * 10;
+            g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1] * 10;
+            g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1] * 10;
         }
         else
         {
-            playPointsReceived += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
-            playPointsReceived += u_unkPlayPointList[lbl_802F1FC0 - 1];
+            g_playPointsEarned += coursePlayPointLists[difficulty_to_course_id(modeCtrl.difficulty, modeCtrl.courseFlags)][infoWork.currFloor - 1];
+            g_playPointsEarned += u_unkPlayPointList[g_currFloorStreak - 1];
         }
     }
     infoWork.u_currStageId = -1;
@@ -1306,8 +1322,8 @@ int u_get_stage_time_limit(void)
         }
         return 60 * 60;
     }
-    if (courseScriptPtr->opcode == CMD_FLOOR && courseScriptPtr->type == FLOOR_TIME)
-        return courseScriptPtr->value;
+    if (s_courseScriptPtr->opcode == CMD_FLOOR && s_courseScriptPtr->type == FLOOR_TIME)
+        return s_courseScriptPtr->value;
     return 60 * 60;
 }
 
@@ -1316,22 +1332,22 @@ int floor_to_stage_id(int courseId, int floor, int flags)
     int stageId;
     int floorCnt;
 
-    courseScriptPtr = &s_courseScripts[difficulty_to_course_id(courseId, flags)][0];
+    s_courseScriptPtr = &s_courseScripts[difficulty_to_course_id(courseId, flags)][0];
 
     // get the nth command with unk0=2 and unk1=0?
     floorCnt = 1;
-    while (floorCnt <= floor && courseScriptPtr->opcode != CMD_COURSE_END)
+    while (floorCnt <= floor && s_courseScriptPtr->opcode != CMD_COURSE_END)
     {
-        if (courseScriptPtr->opcode == CMD_FLOOR && courseScriptPtr->type == FLOOR_STAGE_ID)
+        if (s_courseScriptPtr->opcode == CMD_FLOOR && s_courseScriptPtr->type == FLOOR_STAGE_ID)
         {
             if (floorCnt == floor)
                 break;
             floorCnt++;
         }
-        courseScriptPtr++;
+        s_courseScriptPtr++;
     }
 
-    stageId = courseScriptPtr->value;
+    stageId = s_courseScriptPtr->value;
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
         if (stageId == ST_126_ROLL_MASTER)
@@ -1339,7 +1355,7 @@ int floor_to_stage_id(int courseId, int floor, int flags)
         if (stageId == ST_127_EDGE_MASTER)
             stageId = ST_115_ALTERNATE_EDGE_MASTER;
     }
-    courseScriptPtr++;
+    s_courseScriptPtr++;
     return stageId;
 }
 
@@ -1436,7 +1452,7 @@ void func_80067310(void)
 
 int func_800673BC(void)
 {
-    struct CourseCommand *r3 = courseScriptPtr;
+    struct CourseCommand *r3 = s_courseScriptPtr;
 
     while (r3->opcode != CMD_COURSE_END)
     {
@@ -1452,94 +1468,98 @@ int func_800673BC(void)
 }
 
 #pragma force_active on
-int func_80067408(int arg0, int arg1, u32 arg2)
+// Returns TRUE if the floor has been played at least once. This determines whether the floor can be
+// selected in Practice Mode.
+int is_floor_visited(int difficulty, int floor, u32 flags)
 {
-    int var_r7 = 0;
+    int bit = 0;
 
     if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_STG_ALL))
-        return 1;
+        return TRUE;
 
-    if (arg2 & 0x10)
-        var_r7 = 0x6E;
-    else if (arg2 & 8)
+    if (flags & COURSE_FLAG_MASTER)
+        bit = 110;
+    else if (flags & COURSE_FLAG_EXTRA)
     {
-        switch (arg0)
+        switch (difficulty)
         {
-        case 0:
-            var_r7 = 0x5A;
+        case DIFFICULTY_BEGINNER:
+            bit = 90;
             break;
-        case 1:
-            var_r7 = 0x5F;
+        case DIFFICULTY_ADVANCED:
+            bit = 95;
             break;
-        case 2:
-            var_r7 = 0x64;
+        case DIFFICULTY_EXPERT:
+            bit = 100;
             break;
         }
     }
     else
     {
-        switch (arg0)
+        switch (difficulty)
         {
-        case 0:
-            var_r7 = 0;
+        case DIFFICULTY_BEGINNER:
+            bit = 0;
             break;
-        case 1:
-            var_r7 = 0xA;
+        case DIFFICULTY_ADVANCED:
+            bit = 10;
             break;
-        case 2:
-            var_r7 = 0x28;
+        case DIFFICULTY_EXPERT:
+            bit = 40;
             break;
         }
     }
-    var_r7 += arg1 - 1;
-    if ((1 << (var_r7 % 32)) & lbl_8027CE08[var_r7 / 32])
-        return 1;
+    bit += floor - 1;
+    if ((1 << (bit % 32)) & s_visitedFloors[bit / 32])
+        return TRUE;
     else
-        return 0;
+        return FALSE;
 }
 #pragma force_active reset
 
-static void func_80067508(int arg0, int arg1, u32 arg2)
+// Marks the floor as having been played on at least once
+static void mark_floor_visited(int difficulty, int floor, u32 flags)
 {
-    int var_r7 = 0;
+    int bit = 0;
 
-    if (arg2 & 0x10)
-        var_r7 = 0x6E;
-    else if (arg2 & 8)
+    if (flags & COURSE_FLAG_MASTER)
+        bit = 110;
+    else if (flags & COURSE_FLAG_EXTRA)
     {
-        switch (arg0)
+        switch (difficulty)
         {
-        case 0:
-            var_r7 = 0x5A;
+        case DIFFICULTY_BEGINNER:
+            bit = 90;
             break;
-        case 1:
-            var_r7 = 0x5F;
+        case DIFFICULTY_ADVANCED:
+            bit = 95;
             break;
-        case 2:
-            var_r7 = 0x64;
+        case DIFFICULTY_EXPERT:
+            bit = 100;
             break;
         }
     }
     else
     {
-        switch (arg0)
+        switch (difficulty)
         {
-        case 0:
-            var_r7 = 0;
+        case DIFFICULTY_BEGINNER:
+            bit = 0;
             break;
-        case 1:
-            var_r7 = 0xA;
+        case DIFFICULTY_ADVANCED:
+            bit = 10;
             break;
-        case 2:
-            var_r7 = 0x28;
+        case DIFFICULTY_EXPERT:
+            bit = 40;
             break;
         }
     }
-    var_r7 += arg1 - 1;
-    lbl_8027CE08[var_r7 / 32] |= (1 << (var_r7 % 32));
+    bit += floor - 1;
+    s_visitedFloors[bit / 32] |= (1 << (bit % 32));
 }
 
-int u_is_minigame_unlocked(int minigame)
+// Returns TRUE if the specified minigame (modeCtrl.gameType value) is unlocked
+int is_minigame_unlocked(int minigame)
 {
     int isUnlocked = FALSE;
 
@@ -1549,38 +1569,44 @@ int u_is_minigame_unlocked(int minigame)
     switch (minigame)
     {
     case GAMETYPE_MINI_BILLIARDS:
-        if (lbl_802F1C0D & 1)
+        if (g_unlockFlags & UNLOCKED_BILLIARDS)
             isUnlocked = TRUE;
         break;
     case GAMETYPE_MINI_BOWLING:
-        if (lbl_802F1C0D & 2)
+        if (g_unlockFlags & UNLOCKED_BOWLING)
             isUnlocked = TRUE;
         break;
     case GAMETYPE_MINI_GOLF:
-        if (lbl_802F1C0D & 4)
+        if (g_unlockFlags & UNLOCKED_GOLF)
             isUnlocked = TRUE;
         break;
     }
     return isUnlocked;
 }
 
-int u_get_max_continues(void)
+// Returns the total maximum number of continues that the player has. This includes 5 which the
+// player starts out with plus an additional 5 unlockable continues.
+int get_max_continues(void)
 {
-    return (lbl_802F1C0D >> 4) + 5;
+    return 5 + (g_unlockFlags >> UNLOCKED_CONTINUES_SHIFT);
 }
 
-int get_num_continues(void)
+// Returns the number of continues the player has left in the current run.
+int get_available_continues(void)
 {
-    if (func_800676C0() != 0)
+    // If the player has unlocked all extra continues, continues are unlimited,
+    // so we always return 10 here.
+    if (are_all_continues_unlocked())
         return 10;
-    return u_get_max_continues() - infoWork.continuesUsed;
+    return get_max_continues() - infoWork.continuesUsed;
 }
 
-int func_800676C0(void)
+// Returns nonzero if the player has unlocked all continues
+int are_all_continues_unlocked(void)
 {
     if ((dipSwitches & DIP_DEBUG) && (dipSwitches & DIP_PLAY_STG_ALL))
-        return 1;
-    return lbl_802F1C0D & 8;
+        return TRUE;
+    return g_unlockFlags & UNLOCKED_ALL_CONTINUES;
 }
 
 static void func_800676E8(void)
@@ -1637,7 +1663,7 @@ static inline void inline3(struct Struct8027CC58 *temp_r28)
     struct CourseCommand *var_r3_2;
 
     var_r6 = temp_r28->unk0;
-    var_r8 = courseScriptPtr;
+    var_r8 = s_courseScriptPtr;
     for (i = 0; i < 3 && var_r8->opcode != CMD_COURSE_END; var_r8++)
     {
         if (var_r8->opcode == CMD_FLOOR && var_r8->type == FLOOR_STAGE_ID)
@@ -1651,7 +1677,7 @@ static inline void inline3(struct Struct8027CC58 *temp_r28)
 
                 var_r6[1].unk0 = infoWork.currFloor + var_r8->value;
                 var_r5 = var_r8->value;
-                var_r3_2 = courseScriptPtr;
+                var_r3_2 = s_courseScriptPtr;
                 var_r4 = -1;
                 while (var_r3_2->opcode != CMD_COURSE_END)
                 {
@@ -1824,20 +1850,20 @@ void lbl_80067C20(struct Sprite *sprite)
 
 void func_80067FD0(struct MemcardGameData *data)
 {
-    data->unk5844.unk90 = lbl_8027CE08[0];
-    data->unk5844.unk94 = lbl_8027CE08[1];
-    data->unk5844.unk98 = lbl_8027CE08[2];
-    data->unk5844.unk9C = lbl_8027CE08[3];
-    data->unk5844.unk2C0 = totalPlayPoints;
-    data->unk5844.unk2C4 = lbl_802F1FB8;
+    data->unk5844.unk90 = s_visitedFloors[0];
+    data->unk5844.unk94 = s_visitedFloors[1];
+    data->unk5844.unk98 = s_visitedFloors[2];
+    data->unk5844.unk9C = s_visitedFloors[3];
+    data->unk5844.unk2C0 = g_totalPlayPoints;
+    data->unk5844.unk2C4 = g_maxPlayPointRecord;
 }
 
 void func_8006800C(struct MemcardGameData *data)
 {
-    lbl_8027CE08[0] = data->unk5844.unk90;
-    lbl_8027CE08[1] = data->unk5844.unk94;
-    lbl_8027CE08[2] = data->unk5844.unk98;
-    lbl_8027CE08[3] = data->unk5844.unk9C;
-    totalPlayPoints = data->unk5844.unk2C0;
-    lbl_802F1FB8 = data->unk5844.unk2C4;
+    s_visitedFloors[0] = data->unk5844.unk90;
+    s_visitedFloors[1] = data->unk5844.unk94;
+    s_visitedFloors[2] = data->unk5844.unk98;
+    s_visitedFloors[3] = data->unk5844.unk9C;
+    g_totalPlayPoints = data->unk5844.unk2C0;
+    g_maxPlayPointRecord = data->unk5844.unk2C4;
 }

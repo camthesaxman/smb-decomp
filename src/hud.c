@@ -1434,7 +1434,7 @@ static void floor_intro_sprite_main(s8 *arg0, struct Sprite *sprite)
     else
         sprite->opacity = 1.0f;
     sprite->counter++;
-    if (u_unkInputArr1[0] & PAD_BUTTON_A)
+    if (g_currPlayerButtons[0] & PAD_BUTTON_A)
         sprite->counter++;
     if (sprite->userVar != 0)
     {
@@ -1537,7 +1537,7 @@ void hud_show_ready_banner(int duration)
 {
     struct Sprite *sprite;
 
-    if (modeCtrl.gameType == 0 && modeCtrl.playerCount > 1)
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL && modeCtrl.playerCount > 1)
     {
         sprite = create_sprite();
         if (sprite != NULL)
@@ -3000,7 +3000,7 @@ static void goal_sprite_draw(struct Sprite *sprite)
     {
         temp_r6 = t - 180;
         sprite->x = 320.0 + temp_r6 * 8.03333;
-        if (modeCtrl.gameType == 1)
+        if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
             sprite->y = 240.0 + temp_r6 * 6.0;
         else
             sprite->y = 320.0 + temp_r6 * 3.33333;
@@ -3336,7 +3336,7 @@ void hud_show_continue_interface(void)
         sprite->mainFunc = continue_sprite_main;
         strcpy(sprite->text, "CONTINUE?");
     }
-    if (func_800676C0() == 0)
+    if (are_all_continues_unlocked() == 0)
     {
         sprite = create_sprite();
         if (sprite != NULL)
@@ -3409,7 +3409,7 @@ static void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
-     && func_80066868() == 0)
+     && !is_play_points_textbox_done())
     {
         sprite->opacity += 0.1 * -sprite->opacity;
         return;
@@ -3426,11 +3426,11 @@ static void num_continues_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
-     && func_80066868() == 0)
+     && !is_play_points_textbox_done())
         sprite->opacity += 0.1 * -sprite->opacity;
     else
         sprite->opacity += 0.1 * (1.0 - sprite->opacity);
-    sprintf(sprite->text, "a/Continue(s):%d", get_num_continues());
+    sprintf(sprite->text, "a/Continue(s):%d", get_available_continues());
 }
 
 static void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
@@ -3495,7 +3495,7 @@ static void continue_yes_no_sprite_main(s8 *arg0, struct Sprite *sprite)
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
      && modeCtrl.playerCount == 1
-     && func_80066868() == 0)
+     && !is_play_points_textbox_done())
     {
         sprite->opacity += 0.1 * -sprite->opacity;
         return;
@@ -3743,7 +3743,7 @@ void show_replay_text(int arg0)
 static void replay_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     sprite->counter--;
-    if (sprite->counter < 0 || !(infoWork.flags & INFO_FLAG_04))
+    if (sprite->counter < 0 || !(infoWork.flags & INFO_FLAG_REPLAY))
     {
         sprite->x += 8.0f;
         if (sprite->x > 760.0f)

@@ -10,7 +10,7 @@
 #include "stcoli.h"
 #include "gma.h"
 
-static struct BGModelSearch stormModelFind[] =
+static struct BGModelSearch stormBgModelFind[] =
 {
     { BG_MDL_CMP_FULL, "STM_RAIN00" },
     { BG_MDL_CMP_FULL, "STM_RAIN01" },
@@ -18,7 +18,7 @@ static struct BGModelSearch stormModelFind[] =
     { BG_MDL_CMP_END,  NULL },
 };
 
-static int storm_model_find_proc(int, struct GMAModelEntry *);
+static int model_find_proc(int, struct GMAModelEntry *);
 
 void bg_storm_init(void)
 {
@@ -26,9 +26,9 @@ void bg_storm_init(void)
     int i;
     struct BGStormWork_child *r28;
 
-    bg_e3_init();
+    bg_default_init();
     if (work->unk0 == 0)
-        u_search_bg_models(stormModelFind, storm_model_find_proc);
+        find_background_gma_models(stormBgModelFind, model_find_proc);
     work->unk10.x = ((rand() / 32767.0f) - 0.5f) * 6.0f;
     work->unk10.y = ((rand() / 32767.0f) - 0.5f) * 9.0f;
     work->unk10.z = ((rand() / 32767.0f) - 0.5f) * 6.0f;
@@ -59,7 +59,7 @@ void bg_storm_main(void)
         return;
 
     work = backgroundInfo.work;
-    bg_e3_main();
+    bg_default_main();
 
     spDC = work->unk10;
 
@@ -150,7 +150,7 @@ void bg_storm_draw(void)
     struct GMAModel *raindropModel;
     float f25;
 
-    bg_e3_draw();
+    bg_default_draw();
     if (lbl_801EEC90.unk0 & (1 << 2))
         return;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -242,7 +242,7 @@ void bg_storm_draw(void)
 
 void bg_storm_interact(int a) {}
 
-static int storm_model_find_proc(int index, struct GMAModelEntry *entry)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
     struct BGStormWork *work = backgroundInfo.work;
 

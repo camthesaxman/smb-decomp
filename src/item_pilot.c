@@ -357,7 +357,7 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
     if (item->subType == 0 || item->subType == 1 || item->subType == 2)
     {
         if (item->unk5E < 0
-         && (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11)))
+         && (!(infoWork.flags & INFO_FLAG_REPLAY) || (infoWork.flags & INFO_FLAG_11)))
         {
             struct Effect sp178;
 
@@ -444,13 +444,13 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
     if (item->subType == 2)
     {
         u_play_sound(0x39);
-        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_REPLAY))
             u_play_sound(0x2820);
     }
     else if (item->subType == 0 || item->subType == 1)
     {
         u_play_sound(3);
-        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_04))
+        if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_REPLAY))
             u_play_sound(0x281F);
     }
 }

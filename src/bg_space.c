@@ -1,3 +1,6 @@
+/**
+ * bg_space.c - Code for the space background
+ */
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,43 +15,23 @@
 #include "mode.h"
 #include "stage.h"
 
-static struct BGModelSearch bgSpaceModelFind1[] =
+static struct BGModelSearch spaceBgModelFind[] =
 {
     { BG_MDL_CMP_PREFIX, "SPA_INSEKI_" },
     { BG_MDL_CMP_FULL,   "SPA_DOSEI_IND_MAP" },
     { BG_MDL_CMP_END },
 };
 
-static struct BGModelSearch bgSpaceModelFind2[] =
+static struct BGModelSearch spaceBgObjFind[] =
 {
     { BG_MDL_CMP_FULL, "SPA_YOUSAI_CORE" },
     { BG_MDL_CMP_FULL, "SPA_DOSEI" },
     { BG_MDL_CMP_END },
 };
 
-static void lbl_800609AC(struct Struct80061BC4 *);
-static int space_model_find_proc_1(int, struct GMAModelEntry *);
-static int space_model_find_proc_2(int, struct StageBgModel *);
-
-struct BGSpaceWork
-{
-    s32 unk0;
-    Vec corePos;
-    float coreScale;
-    s32 meteorModelCount;
-    struct GMAModel *meteorModels[8];
-    s32 unk38;
-    float unk3C;
-    struct StageBgModel *saturnModel;
-    GXTexObj *saturnIndMap;
-    Vec unk48;
-    float unk54;
-    float unk58;
-    float unk5C;
-    float unk60;
-    Mtx unk64;
-    float unk94[2][3];
-};
+static void lbl_800609AC(struct EnvMapSomething *);
+static int model_find_proc(int, struct GMAModelEntry *);
+static int obj_find_proc(int, struct StageBgObject *);
 
 void func_80094748(float);
 
@@ -60,7 +43,7 @@ void bg_space_init(void)
     int i;
     float temp_f31;
 
-    bg_e3_init();
+    bg_default_init();
     func_800940B8();
     switch (currStageId)
     {
@@ -95,25 +78,25 @@ void bg_space_init(void)
     backgroundInfo.unk8 |= 1;
     if (work->unk0 == 0)
     {
-        u_search_bg_models(bgSpaceModelFind1, space_model_find_proc_1);
+        find_background_gma_models(spaceBgModelFind, model_find_proc);
         work->unk0 = 1;
     }
     work->corePos.x = 0.0f;
     work->corePos.y = 0.0f;
     work->corePos.z = 0.0f;
     work->coreScale = 230.0f;
-    work->saturnModel = NULL;
+    work->saturn = NULL;
 
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->bgModels,
-        decodedStageLzPtr->bgModelsCount,
-        bgSpaceModelFind2,
-        space_model_find_proc_2);
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->fgModels,
-        decodedStageLzPtr->fgModelCount,
-        bgSpaceModelFind2,
-        space_model_find_proc_2);
+    find_background_objects(
+        decodedStageLzPtr->bgObjects,
+        decodedStageLzPtr->bgObjectCount,
+        spaceBgObjFind,
+        obj_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->fgObjects,
+        decodedStageLzPtr->fgObjectCount,
+        spaceBgObjFind,
+        obj_find_proc);
 
     switch (modeCtrl.gameType)
     {
@@ -210,7 +193,7 @@ void bg_space_main(void)
     struct BGSpaceWork *work = backgroundInfo.work;
 
     func_800940E0();
-    bg_e3_main();
+    bg_default_main();
     if (!(gamePauseStatus & 0xA) || (eventInfo[EVENT_VIEW].state == EV_STATE_RUNNING))
     {
         work->unk38--;
@@ -264,40 +247,40 @@ void bg_space_finish(void) {}
 
 void bg_space_draw(void)
 {
-    struct StageBgModel *temp_r31 = ((struct BGSpaceWork *)backgroundInfo.work)->saturnModel;
+    struct StageBgObject *saturnObj = ((struct BGSpaceWork *)backgroundInfo.work)->saturn;
     float scale;
     u8 unused[8];
 
-    if (temp_r31 != NULL)
+    if (saturnObj != NULL)
     {
-        temp_r31->flags &= 0xFFFEFFFF;
+        saturnObj->flags &= 0xFFFEFFFF;
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        mathutil_mtxA_translate(&temp_r31->pos);
-        mathutil_mtxA_rotate_z(temp_r31->rotZ);
-        mathutil_mtxA_rotate_y(temp_r31->rotY);
-        mathutil_mtxA_rotate_x(temp_r31->rotX);
-        mathutil_mtxA_scale(&temp_r31->scale);
+        mathutil_mtxA_translate(&saturnObj->pos);
+        mathutil_mtxA_rotate_z(saturnObj->rotZ);
+        mathutil_mtxA_rotate_y(saturnObj->rotY);
+        mathutil_mtxA_rotate_x(saturnObj->rotX);
+        mathutil_mtxA_scale(&saturnObj->scale);
         GXLoadPosMtxImm(mathutilData->mtxA, 0U);
         GXLoadNrmMtxImm(mathutilData->mtxA, 0U);
-        scale = MAX(MAX(temp_r31->scale.x, temp_r31->scale.y), temp_r31->scale.z);
+        scale = MAX(MAX(saturnObj->scale.x, saturnObj->scale.y), saturnObj->scale.z);
         avdisp_set_bound_sphere_scale(scale);
         if (!(lbl_801EEC90.unk0 & 4))
         {
             u_avdisp_set_some_func_1(lbl_800609AC);
-            avdisp_draw_model_culled_sort_translucent(temp_r31->model);
+            avdisp_draw_model_culled_sort_translucent(saturnObj->model);
             u_avdisp_set_some_func_1(NULL);
         }
         else
-            avdisp_draw_model_culled_sort_translucent(temp_r31->model);
+            avdisp_draw_model_culled_sort_translucent(saturnObj->model);
     }
-    bg_e3_draw();
+    bg_default_draw();
 }
 
 void bg_space_interact(int arg0) {}
 
 static struct Struct80061BC4_sub lbl_8027CC28;
 
-static void lbl_800609AC(struct Struct80061BC4 *arg0)
+static void lbl_800609AC(struct EnvMapSomething *arg0)
 {
     struct BGSpaceWork *work = backgroundInfo.work;
     struct Struct80061BC4_sub sp14 = arg0->unkC;
@@ -333,7 +316,7 @@ static void lbl_800609AC(struct Struct80061BC4 *arg0)
     arg0->unkC = sp14;
 }
 
-static int space_model_find_proc_1(int index, struct GMAModelEntry *entry)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
     struct BGSpaceWork *work = backgroundInfo.work;
 
@@ -353,20 +336,20 @@ static int space_model_find_proc_1(int index, struct GMAModelEntry *entry)
     return 1;
 }
 
-static int space_model_find_proc_2(int index, struct StageBgModel *arg1)
+static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
     struct BGSpaceWork *work = backgroundInfo.work;
 
     switch (index)
     {
     case 0:  // SPA_YOUSAI_CORE
-        work->corePos = arg1->pos;
-        work->coreScale = MAX(MAX(arg1->scale.x, arg1->scale.y), arg1->scale.z);
+        work->corePos = bgObj->pos;
+        work->coreScale = MAX(MAX(bgObj->scale.x, bgObj->scale.y), bgObj->scale.z);
         work->coreScale *= 230.0f;
         break;
     case 1:  // SPA_DOSEI  "Saturn"
-        if (arg1->model != NULL)
-            work->saturnModel = arg1;
+        if (bgObj->model != NULL)
+            work->saturn = bgObj;
         break;
     }
     return 1;

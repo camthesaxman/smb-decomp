@@ -100,7 +100,7 @@ struct NlModelHeader_child
 
 struct NlModelHeader_child2
 {
-    u8 filler0[4];
+    char unk0[4];
     char name[];
 };
 

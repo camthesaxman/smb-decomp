@@ -231,7 +231,7 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B9B48;
 // extern ? lbl_801B9B58;
 // extern ? lbl_801B9B68;
-// extern ? jungleModelFind;
+// extern ? jungleBgObjFind;
 // extern ? lbl_801B9BB0;
 // extern ? lbl_801B9D48;
 // extern ? lbl_801B9D78;
@@ -593,12 +593,6 @@ extern struct
 // extern ? lbl_8027CBC8;
 // extern ? lbl_8027CBF8;
 // extern ? lbl_8027CC28;
-// extern ? lbl_8027CC58;
-// extern ? lbl_8027CE08;
-// extern ? lbl_8027CE18;
-// extern ? lbl_8027CE24;
-
-// extern ? lbl_80285A58;
 
 // extern ? goalTapes;
 // extern ? goalBags;
@@ -1143,7 +1137,7 @@ extern struct Struct802F1BF4 lbl_802F1BF4;
 extern struct Struct802F1BFC lbl_802F1BFC;
 extern struct Struct802F1C04 lbl_802F1C04;
 extern u8 lbl_802F1C0C;
-extern u8 lbl_802F1C0D;
+extern u8 g_unlockFlags;
 extern struct Struct802F1C10 lbl_802F1C10;
 extern s32 lbl_802F1C18;
 extern s32 lbl_802F1C1C;
@@ -1290,15 +1284,7 @@ extern s16 currStageId;
 extern int lbl_802F1F80;
 // extern ? lbl_802F1F88;
 // extern ? lbl_802F1F90;
-// extern ? courseScriptPtr;
-// extern ? u_jumpFloors;
-// extern ? lbl_802F1FA0;
-extern int u_isCompetitionModeCourse;
-extern int lbl_802F1FB0;
-// extern ? lbl_802F1FB8;
-extern u32 totalPlayPoints;
-// extern ? lbl_802F1FC0;
-// extern ? playPointsReceived;
+
 extern s16 lbl_802F1FC8;
 // extern ? lbl_802F1FD0;
 // extern ? lbl_802F1FD4;

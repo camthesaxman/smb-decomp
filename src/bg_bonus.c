@@ -16,7 +16,7 @@
 #include "mathutil.h"
 #include "stage.h"
 
-static struct BGModelSearch bonusMiscFind[] =
+static struct BGModelSearch bonusBgModelFind[] =
 {
     { BG_MDL_CMP_FULL,   "BNS_SHOTSTAR" },
     { BG_MDL_CMP_PREFIX, "STARLIGHT_" },
@@ -26,16 +26,16 @@ static struct BGModelSearch bonusMiscFind[] =
     { BG_MDL_CMP_END,    NULL },
 };
 
-static struct BGModelSearch bonusMainFind[] =
+static struct BGModelSearch bonusBgObjFind[] =
 {
     { BG_MDL_CMP_FULL, "BNS_MAIN" },
     { BG_MDL_CMP_END,  NULL },
 };
 
-void lbl_80061B58(void);
-void lbl_80061BC4(struct Struct80061BC4 *a);
-static int bonus_misc_find_proc(int, struct GMAModelEntry *);
-static int bonus_main_find_proc(int, struct StageBgModel *);
+static void lbl_80061B58(void);
+static void lbl_80061BC4(struct EnvMapSomething *a);
+static int model_find_proc(int, struct GMAModelEntry *);
+static int obj_find_proc(int, struct StageBgObject *);
 
 void bg_bonus_init(void)
 {
@@ -43,56 +43,58 @@ void bg_bonus_init(void)
     int i;
     struct BGBonusStarpoint *starpoint;
 
-    bg_e3_init();
+    bg_default_init();
     backgroundInfo.ballEnvFunc = lbl_80061BC4;
     backgroundInfo.unk98 = lbl_80061B58;
 
     // find models
-    if (work->unk0 == 0)
+    if (!work->initialized)
     {
         work->starpointCount = 0;
-        u_search_bg_models(bonusMiscFind, bonus_misc_find_proc);
-        work->unk0 = 1;
+        find_background_gma_models(bonusBgModelFind, model_find_proc);
+        work->initialized = TRUE;
     }
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->bgModels,
-        decodedStageLzPtr->bgModelsCount,
-        bonusMainFind,
-        bonus_main_find_proc);
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->fgModels,
-        decodedStageLzPtr->fgModelCount,
-        bonusMainFind,
-        bonus_main_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->bgObjects,
+        decodedStageLzPtr->bgObjectCount,
+        bonusBgObjFind,
+        obj_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->fgObjects,
+        decodedStageLzPtr->fgObjectCount,
+        bonusBgObjFind,
+        obj_find_proc);
 
     starpoint = work->starpoints;
     for (i = work->starpointCount; i > 0; i--, starpoint++)
     {
-        starpoint->unkC = rand() & 0x7FFF;
-        starpoint->unkE = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
+        starpoint->pulse = rand() & 0x7FFF;
+        starpoint->pulseSpeed = (((rand() / 32767.0f) * 0.5f + 1.0f) * 65536.0f) / 180.0f;
     }
 }
 
 void bg_bonus_main(void)
 {
-    struct BGBonusWork *work = (void *)backgroundInfo.work;
+    struct BGBonusWork *work = backgroundInfo.work;
     int i;
     struct BGBonusStarpoint *starpoint;
     Vec sp8;
 
-    bg_e3_main();
+    bg_default_main();
     if (gamePauseStatus & 0xA)
         return;
 
     starpoint = work->starpoints;
     for (i = work->starpointCount; i > 0; i--, starpoint++)
     {
-        float f2;
-        starpoint->unkC += starpoint->unkE;
-        f2 = (mathutil_sin(starpoint->unkC) + 1.0f) * 0.25f + 0.5f;
-        starpoint->red = f2 * 1.1f;
-        starpoint->green = f2 * 1.05f;
-        starpoint->blue = f2;
+        float intensity;
+
+        // Pulse the star's glow (a slightly off-white color)
+        starpoint->pulse += starpoint->pulseSpeed;
+        intensity = (mathutil_sin(starpoint->pulse) + 1.0f) * 0.25f + 0.5f;
+        starpoint->red = intensity * 1.1f;
+        starpoint->green = intensity * 1.05f;
+        starpoint->blue = intensity;
         if (starpoint->red > 1.0f)
             starpoint->red = 1.0f;
         if (starpoint->green > 1.0f)
@@ -129,50 +131,52 @@ void bg_bonus_draw(void)
 {
     struct BGBonusWork *work = (void *)backgroundInfo.work;
     int i;
-    Vec sp14;
-    Vec mainModelScale;
+    Vec starPos;
+    Vec bgScale;  // scale of the entire background
     struct BGBonusStarpoint *starpoint;
     struct GMAModel *starlightModel;
-    struct StageBgModel *mainModel;
+    struct StageBgObject *mainObj;
 
-    bg_e3_draw();
-    mainModel = work->mainModel;
-    mainModelScale = mainModel->scale;
+    bg_default_draw();
+    mainObj = work->mainObj;
+    bgScale = mainObj->scale;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-    mathutil_mtxA_translate(&mainModel->pos);
-    mathutil_mtxA_rotate_z(mainModel->rotZ);
-    mathutil_mtxA_rotate_y(mainModel->rotY);
-    mathutil_mtxA_rotate_x(mainModel->rotX);
-    mathutil_mtxA_scale(&mainModelScale);
+    mathutil_mtxA_translate(&mainObj->pos);
+    mathutil_mtxA_rotate_z(mainObj->rotZ);
+    mathutil_mtxA_rotate_y(mainObj->rotY);
+    mathutil_mtxA_rotate_x(mainObj->rotX);
+    mathutil_mtxA_scale(&bgScale);
 
     avdisp_set_z_mode(GX_ENABLE, GX_LEQUAL, GX_DISABLE);
     starlightModel = work->starlightModel;
     for (i = work->starpointCount, starpoint = work->starpoints; i > 0; i--, starpoint++)
     {
-        float f30 = (starpoint->red + starpoint->green + starpoint->blue) * 0.75f;
+        float pulse = (starpoint->red + starpoint->green + starpoint->blue) * 0.75f;
 
         if (lbl_801EEC90.unk0 & (1 << 2))
         {
-            sp14.x = starpoint->u_pos.x * mainModelScale.x;
-            sp14.y = starpoint->u_pos.y * mainModelScale.y;
-            sp14.z = starpoint->u_pos.z * mainModelScale.z;
-            if (func_8000E53C(&sp14) < -(starlightModel->boundSphereRadius * f30))
+            starPos.x = starpoint->u_pos.x * bgScale.x;
+            starPos.y = starpoint->u_pos.y * bgScale.y;
+            starPos.z = starpoint->u_pos.z * bgScale.z;
+            if (func_8000E53C(&starPos) < -(starlightModel->boundSphereRadius * pulse))
                 continue;
         }
+
+        // Draw star light billboard
         mathutil_mtxA_push();
         mathutil_mtxA_translate(&starpoint->u_pos);
         mathutil_mtxA_sq_from_identity();
-        mathutil_mtxA_get_translate_alt(&sp14);
-        if (sp14.z < -30.0f)
+        mathutil_mtxA_get_translate_alt(&starPos);
+        if (starPos.z < -30.0f)
         {
-            float f3 = (26.0f + sp14.z) / sp14.z;
+            float f3 = (26.0f + starPos.z) / starPos.z;
 
-            sp14.x *= f3;
-            sp14.y *= f3;
-            sp14.z *= f3;
-            mathutil_mtxA_set_translate(&sp14);
-            f30 *= f3;
-            mathutil_mtxA_scale_s(f30);
+            starPos.x *= f3;
+            starPos.y *= f3;
+            starPos.z *= f3;
+            mathutil_mtxA_set_translate(&starPos);
+            pulse *= f3;
+            mathutil_mtxA_scale_s(pulse);
             avdisp_set_post_mult_color(starpoint->red, starpoint->green, starpoint->blue, 1.0f);
             avdisp_draw_model_culled_sort_translucent(starlightModel);
             u_reset_post_mult_color();
@@ -216,7 +220,7 @@ void bg_bonus_interact(int a)
     }
 }
 
-void lbl_80061B58(void)
+static void lbl_80061B58(void)
 {
     struct BGBonusWork *work = (void *)backgroundInfo.work;
     Mtx sp8;
@@ -231,7 +235,7 @@ void lbl_80061B58(void)
     mathutil_mtxA_to_mtx(work->unk7DC);
 }
 
-void lbl_80061BC4(struct Struct80061BC4 *a)
+static void lbl_80061BC4(struct EnvMapSomething *a)
 {
     struct BGBonusWork *work = (void *)backgroundInfo.work;
     struct Struct80061BC4_sub spC = a->unkC;
@@ -276,7 +280,7 @@ void lbl_80061BC4(struct Struct80061BC4 *a)
     a->unkC = spC;
 }
 
-static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
     struct BGBonusWork *work = backgroundInfo.work;
 
@@ -307,14 +311,14 @@ static int bonus_misc_find_proc(int index, struct GMAModelEntry *entry)
     return 1;
 }
 
-static int bonus_main_find_proc(int index, struct StageBgModel *b)
+static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
     struct BGBonusWork *work = backgroundInfo.work;
 
     switch (index)
     {
     case 0:  // BNS_MAIN
-        work->mainModel = b;
+        work->mainObj = bgObj;
         break;
     }
     return 1;

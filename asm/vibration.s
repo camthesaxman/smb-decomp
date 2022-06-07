@@ -1039,8 +1039,8 @@ lbl_800B6D60:
 /* 800B6D60 000B2C80  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B6D64 000B2C84  2C 00 00 00 */	cmpwi r0, 0
 /* 800B6D68 000B2C88  40 82 01 04 */	bne lbl_800B6E6C
-/* 800B6D6C 000B2C8C  3C 60 80 1F */	lis r3, u_unkInputArr1@ha
-/* 800B6D70 000B2C90  38 63 3D 88 */	addi r3, r3, u_unkInputArr1@l
+/* 800B6D6C 000B2C8C  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B6D70 000B2C90  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B6D74 000B2C94  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B6D78 000B2C98  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B6D7C 000B2C9C  41 82 00 F0 */	beq lbl_800B6E6C
@@ -2174,8 +2174,8 @@ lbl_800B7E28:
 /* 800B7E28 000B3D48  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B7E2C 000B3D4C  2C 00 00 00 */	cmpwi r0, 0
 /* 800B7E30 000B3D50  40 82 01 04 */	bne lbl_800B7F34
-/* 800B7E34 000B3D54  3C 60 80 1F */	lis r3, u_unkInputArr1@ha
-/* 800B7E38 000B3D58  38 63 3D 88 */	addi r3, r3, u_unkInputArr1@l
+/* 800B7E34 000B3D54  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B7E38 000B3D58  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B7E3C 000B3D5C  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B7E40 000B3D60  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B7E44 000B3D64  41 82 00 F0 */	beq lbl_800B7F34
@@ -3125,8 +3125,8 @@ lbl_800B8C30:
 /* 800B8C30 000B4B50  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B8C34 000B4B54  2C 00 00 00 */	cmpwi r0, 0
 /* 800B8C38 000B4B58  40 82 01 04 */	bne lbl_800B8D3C
-/* 800B8C3C 000B4B5C  3C 60 80 1F */	lis r3, u_unkInputArr1@ha
-/* 800B8C40 000B4B60  38 63 3D 88 */	addi r3, r3, u_unkInputArr1@l
+/* 800B8C3C 000B4B5C  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B8C40 000B4B60  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B8C44 000B4B64  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B8C48 000B4B68  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B8C4C 000B4B6C  41 82 00 F0 */	beq lbl_800B8D3C
@@ -12040,7 +12040,7 @@ func_800C0F94:
 /* 800C0FB8 000BCED8  38 00 00 00 */	li r0, 0
 /* 800C0FBC 000BCEDC  98 01 00 18 */	stb r0, 0x18(r1)
 /* 800C0FC0 000BCEE0  38 60 00 06 */	li r3, 6
-/* 800C0FC4 000BCEE4  4B FA 66 1D */	bl u_is_minigame_unlocked
+/* 800C0FC4 000BCEE4  4B FA 66 1D */	bl is_minigame_unlocked
 /* 800C0FC8 000BCEE8  2C 03 00 00 */	cmpwi r3, 0
 /* 800C0FCC 000BCEEC  41 82 00 10 */	beq lbl_800C0FDC
 /* 800C0FD0 000BCEF0  88 61 00 18 */	lbz r3, 0x18(r1)
@@ -12048,7 +12048,7 @@ func_800C0F94:
 /* 800C0FD8 000BCEF8  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C0FDC:
 /* 800C0FDC 000BCEFC  38 60 00 07 */	li r3, 7
-/* 800C0FE0 000BCF00  4B FA 66 01 */	bl u_is_minigame_unlocked
+/* 800C0FE0 000BCF00  4B FA 66 01 */	bl is_minigame_unlocked
 /* 800C0FE4 000BCF04  2C 03 00 00 */	cmpwi r3, 0
 /* 800C0FE8 000BCF08  41 82 00 10 */	beq lbl_800C0FF8
 /* 800C0FEC 000BCF0C  88 61 00 18 */	lbz r3, 0x18(r1)
@@ -12056,16 +12056,16 @@ lbl_800C0FDC:
 /* 800C0FF4 000BCF14  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C0FF8:
 /* 800C0FF8 000BCF18  38 60 00 08 */	li r3, 8
-/* 800C0FFC 000BCF1C  4B FA 65 E5 */	bl u_is_minigame_unlocked
+/* 800C0FFC 000BCF1C  4B FA 65 E5 */	bl is_minigame_unlocked
 /* 800C1000 000BCF20  2C 03 00 00 */	cmpwi r3, 0
 /* 800C1004 000BCF24  41 82 00 10 */	beq lbl_800C1014
 /* 800C1008 000BCF28  88 61 00 18 */	lbz r3, 0x18(r1)
 /* 800C100C 000BCF2C  38 03 00 01 */	addi r0, r3, 1
 /* 800C1010 000BCF30  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C1014:
-/* 800C1014 000BCF34  80 0D 9D E4 */	lwz r0, playPointsReceived@sda21(r13)
+/* 800C1014 000BCF34  80 0D 9D E4 */	lwz r0, g_playPointsEarned@sda21(r13)
 /* 800C1018 000BCF38  38 A0 09 C4 */	li r5, 0x9c4
-/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, totalPlayPoints@sda21(r13)
+/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, g_totalPlayPoints@sda21(r13)
 /* 800C1020 000BCF40  90 01 00 0C */	stw r0, 0xc(r1)
 /* 800C1024 000BCF44  90 61 00 10 */	stw r3, 0x10(r1)
 /* 800C1028 000BCF48  90 61 00 14 */	stw r3, 0x14(r1)
@@ -12073,7 +12073,7 @@ lbl_800C1014:
 /* 800C1030 000BCF50  20 00 00 03 */	subfic r0, r0, 3
 /* 800C1034 000BCF54  98 01 00 19 */	stb r0, 0x19(r1)
 /* 800C1038 000BCF58  80 81 00 14 */	lwz r4, 0x14(r1)
-/* 800C103C 000BCF5C  88 0D 9A 2D */	lbz r0, lbl_802F1C0D@sda21(r13)
+/* 800C103C 000BCF5C  88 0D 9A 2D */	lbz r0, g_unlockFlags@sda21(r13)
 /* 800C1040 000BCF60  7C 83 2A 38 */	eqv r3, r4, r5
 /* 800C1044 000BCF64  7C 84 28 10 */	subfc r4, r4, r5
 /* 800C1048 000BCF68  54 63 0F FE */	srwi r3, r3, 0x1f
@@ -12089,7 +12089,7 @@ lbl_800C1014:
 /* 800C1070 000BCF90  7C 00 01 94 */	addze r0, r0
 /* 800C1074 000BCF94  54 00 07 FE */	clrlwi r0, r0, 0x1f
 /* 800C1078 000BCF98  90 01 00 24 */	stw r0, 0x24(r1)
-/* 800C107C 000BCF9C  4B FA 65 E9 */	bl u_get_max_continues
+/* 800C107C 000BCF9C  4B FA 65 E9 */	bl get_max_continues
 /* 800C1080 000BCFA0  98 61 00 2C */	stb r3, 0x2c(r1)
 /* 800C1084 000BCFA4  38 00 09 C4 */	li r0, 0x9c4
 /* 800C1088 000BCFA8  80 81 00 14 */	lwz r4, 0x14(r1)
@@ -12158,7 +12158,7 @@ lbl_800C1164:
 /* 800C1170 000BD090  90 A1 00 34 */	stw r5, 0x34(r1)
 /* 800C1174 000BD094  54 00 07 FE */	clrlwi r0, r0, 0x1f
 /* 800C1178 000BD098  7C 00 00 34 */	cntlzw r0, r0
-/* 800C117C 000BD09C  80 AD 9D D8 */	lwz r5, lbl_802F1FB8@sda21(r13)
+/* 800C117C 000BD09C  80 AD 9D D8 */	lwz r5, g_maxPlayPointRecord@sda21(r13)
 /* 800C1180 000BD0A0  54 00 D9 7E */	srwi r0, r0, 5
 /* 800C1184 000BD0A4  90 01 00 38 */	stw r0, 0x38(r1)
 /* 800C1188 000BD0A8  38 84 EC 20 */	addi r4, r4, modeCtrl@l

@@ -31,7 +31,7 @@ static void func_80023AF4(void);
 void func_80022F14(void)
 {
     infoWork.unk8 = 0;
-    infoWork.unk1E = 1;
+    infoWork.attempts = 1;
     infoWork.currFloor = 1;
     infoWork.livesLost = 0;
     infoWork.continuesUsed = 0;
@@ -106,7 +106,7 @@ void ev_info_main(void)
             }
             if (ball->flags & BALL_FLAG_24)
             {
-                infoWork.flags &= ~(INFO_FLAG_04|INFO_FLAG_11);
+                infoWork.flags &= ~(INFO_FLAG_REPLAY|INFO_FLAG_11);
                 ball->flags |= BALL_FLAG_GOAL;
                 ball->state = 5;
                 ball->unk150 = ball->pos;
@@ -114,7 +114,7 @@ void ev_info_main(void)
             if (!(ball->flags & BALL_FLAG_GOAL) && !(infoWork.flags & INFO_FLAG_05))
             {
                 func_8004923C(0x5A);
-                infoWork.flags &= ~(INFO_FLAG_04|INFO_FLAG_11);
+                infoWork.flags &= ~(INFO_FLAG_REPLAY|INFO_FLAG_11);
                 r20++;
                 ball->flags |= BALL_FLAG_GOAL;
                 ball->state = 5;
@@ -122,7 +122,7 @@ void ev_info_main(void)
                 cameraInfo[i].state = 14;
                 if (r20 == 1)
                     infoWork.unk2C++;
-                if (!(infoWork.flags & INFO_FLAG_04) && !(infoWork.flags & INFO_FLAG_BONUS_STAGE))
+                if (!(infoWork.flags & INFO_FLAG_REPLAY) && !(infoWork.flags & INFO_FLAG_BONUS_STAGE))
                 {
                     ball->rank = infoWork.unk2C;
                     if (ball->rank == 1)  // first place
@@ -165,7 +165,7 @@ void ev_info_main(void)
                 if (!(spC8.flags & 1))
                     break;
             }
-            infoWork.flags &= ~(INFO_FLAG_04|INFO_FLAG_11);
+            infoWork.flags &= ~(INFO_FLAG_REPLAY|INFO_FLAG_11);
             ball->flags |= BALL_FLAG_GOAL;
             ball->state = BALL_STATE_GOAL_INIT;
             if (!(infoWork.flags & INFO_FLAG_05))
@@ -210,17 +210,17 @@ void ev_info_main(void)
      && !(infoWork.flags & INFO_FLAG_05)
      && infoWork.bananasLeft == 0)
     {
-        infoWork.flags |= INFO_FLAG_03|INFO_FLAG_05|INFO_FLAG_09;
+        infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_05|INFO_FLAG_BONUS_CLEAR;
         func_800493C4(ball->playerId);
         BALL_FOREACH( ball->flags |= BALL_FLAG_13; )
     }
 
     // Press X+Y in debug mode to instantly complete level
     if (!(infoWork.flags & INFO_FLAG_05)
-     && !(infoWork.flags & INFO_FLAG_03)
+     && !(infoWork.flags & INFO_FLAG_TIMER_PAUSED)
      && (dipSwitches & DIP_DEBUG)
      && ((infoWork.flags & INFO_FLAG_BONUS_STAGE) || decodedStageLzPtr->goals != NULL)
-     && (u_unkInputArr1[0] & PAD_BUTTON_X) && (u_unkInputArr1[0] & PAD_BUTTON_Y))
+     && (g_currPlayerButtons[0] & PAD_BUTTON_X) && (g_currPlayerButtons[0] & PAD_BUTTON_Y))
     {
         struct StageGoal *goal;
         int goalId;
@@ -241,25 +241,25 @@ void ev_info_main(void)
             }
         }
         // Holding up, right, or down selects the red, green, and blue goals, respectively
-        if ((u_unkInputArr1[0] & PAD_BUTTON_UP)
-         || (u_unkInputArr1[0] & PAD_BUTTON_RIGHT)
-         || (u_unkInputArr1[0] & PAD_BUTTON_DOWN))
+        if ((g_currPlayerButtons[0] & PAD_BUTTON_UP)
+         || (g_currPlayerButtons[0] & PAD_BUTTON_RIGHT)
+         || (g_currPlayerButtons[0] & PAD_BUTTON_DOWN))
         {
             // fake match
             goal = ((volatile struct StageAnimGroup *)&decodedStageLzPtr->animGroups[0])->goals;
             for (i = 0; i < decodedStageLzPtr->animGroups[0].goalCount; i++, goal++)
             {
-                if ((u_unkInputArr1[0] & PAD_BUTTON_UP) && goal->type == 'R')
+                if ((g_currPlayerButtons[0] & PAD_BUTTON_UP) && goal->type == 'R')
                 {
                     goalId = i;
                     break;
                 }
-                if ((u_unkInputArr1[0] & PAD_BUTTON_RIGHT) && goal->type == 'G')
+                if ((g_currPlayerButtons[0] & PAD_BUTTON_RIGHT) && goal->type == 'G')
                 {
                     goalId = i;
                     break;
                 }
-                if ((u_unkInputArr1[0] & PAD_BUTTON_DOWN) && goal->type == 'B')
+                if ((g_currPlayerButtons[0] & PAD_BUTTON_DOWN) && goal->type == 'B')
                 {
                     goalId = i;
                     break;
@@ -270,7 +270,7 @@ void ev_info_main(void)
         infoWork.unkE = 0;
         infoWork.unk10 = ball->vel;
         infoWork.unk1C = infoWork.timerCurr;
-        if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE) && (u_unkInputArr1[0] & PAD_BUTTON_LEFT))
+        if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE) && (g_currPlayerButtons[0] & PAD_BUTTON_LEFT))
             infoWork.unk22 = 10;
 
         BALL_FOREACH(
@@ -322,7 +322,7 @@ void ev_info_main(void)
                 ball->flags |= BALL_FLAG_11;
                 break;
             default:
-                infoWork.flags |= INFO_FLAG_FALLOUT|INFO_FLAG_03;
+                infoWork.flags |= INFO_FLAG_FALLOUT|INFO_FLAG_TIMER_PAUSED;
                 ball->flags |= BALL_FLAG_11;
                 func_800492FC(ball->playerId);
                 break;
@@ -330,7 +330,7 @@ void ev_info_main(void)
         }
     }
 
-    if (!(infoWork.flags & INFO_FLAG_03) && !(dipSwitches & DIP_TIME_STOP))
+    if (!(infoWork.flags & INFO_FLAG_TIMER_PAUSED) && !(dipSwitches & DIP_TIME_STOP))
     {
         infoWork.unk8++;
         if (!(infoWork.flags & INFO_FLAG_11))
@@ -348,21 +348,21 @@ void ev_info_main(void)
                     infoWork.flags |= INFO_FLAG_13;
                     break;
                 }
-                infoWork.flags |= INFO_FLAG_03|INFO_FLAG_TIMEOVER;
+                infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_TIMEOVER;
                 func_80049368(ball->playerId);
                 if (!(infoWork.flags & INFO_FLAG_BONUS_STAGE))
                     BALL_FOREACH( ball->winStreak = 0; ball->unk128++; )
                 BALL_FOREACH( ball->flags |= BALL_FLAG_TIMEOVER; )
                 break;
             case 4:
-                infoWork.flags |= INFO_FLAG_03|INFO_FLAG_TIMEOVER;
+                infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_TIMEOVER;
                 break;
             default:
                 {
                     struct Ball *ball;
 
                     ball = currentBallStructPtr;
-                    infoWork.flags |= INFO_FLAG_03|INFO_FLAG_TIMEOVER;
+                    infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_TIMEOVER;
                     func_80049368(ball->playerId);
                     ball->flags |= BALL_FLAG_TIMEOVER;
                 }
@@ -382,7 +382,7 @@ void ev_info_dest(void)
 static void func_80023AF4(void)
 {
     int unk8 = infoWork.unk8;
-    int unk1E = infoWork.unk1E;
+    int attempts = infoWork.attempts;
     int currFloor = infoWork.currFloor;
     int livesLost = infoWork.livesLost;
     int continuesUsed = infoWork.continuesUsed;
@@ -391,7 +391,7 @@ static void func_80023AF4(void)
     memset(&infoWork, 0, sizeof(infoWork));
 
     infoWork.unk8  = unk8;
-    infoWork.unk1E = unk1E;
+    infoWork.attempts = attempts;
     infoWork.currFloor = currFloor;
     infoWork.livesLost = livesLost;
     infoWork.continuesUsed = continuesUsed;
@@ -454,9 +454,9 @@ BOOL check_ball_entered_goal(struct Ball *ball, u32 *outGoalId, s32 *outGoalAnim
 void u_time_over_all_competition_mode_balls(void)
 {
     if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
-        infoWork.flags |= INFO_FLAG_03|INFO_FLAG_05|INFO_FLAG_09|INFO_FLAG_10;
+        infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_05|INFO_FLAG_BONUS_CLEAR|INFO_FLAG_10;
     else
-        infoWork.flags |= INFO_FLAG_03|INFO_FLAG_05|INFO_FLAG_GOAL;
+        infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_05|INFO_FLAG_GOAL;
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {

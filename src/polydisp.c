@@ -1173,7 +1173,7 @@ void draw_timer_bomb_fuse(void)
     switch (lbl_801EEC90.unk4C)
     {
     case 0:
-        if (!(infoWork.flags & INFO_FLAG_03))
+        if (!(infoWork.flags & INFO_FLAG_TIMER_PAUSED))
         {
             lbl_801EEC90.unk4C = 1;
             lbl_801EEC90.unk60 = 0.125f;
@@ -1191,7 +1191,7 @@ void draw_timer_bomb_fuse(void)
         }
         break;
     case 2:
-        if (infoWork.flags & INFO_FLAG_03)
+        if (infoWork.flags & INFO_FLAG_TIMER_PAUSED)
             lbl_801EEC90.unk4C = 3;
         break;
     case 3:
@@ -1201,7 +1201,7 @@ void draw_timer_bomb_fuse(void)
         lbl_801EEC90.unk4C = 0;
         break;
     }
-    if (infoWork.flags & INFO_FLAG_03)
+    if (infoWork.flags & INFO_FLAG_TIMER_PAUSED)
         lbl_801EEC90.unk58 -= (lbl_801EEC90.unk58 >> 3);
     else if (t > 0.5)
         lbl_801EEC90.unk58 += (-768 - lbl_801EEC90.unk58) >> 4;

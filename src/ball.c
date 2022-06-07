@@ -334,7 +334,7 @@ void u_choose_ape_anim(struct Ape *ape, float b)
         }
         else if (ape->flags & (1 << 1))
             r29 = 3;
-        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & INFO_FLAG_04))
+        else if ((ball->flags & (BALL_FLAG_GOAL|BALL_FLAG_13)) && !(infoWork.flags & INFO_FLAG_REPLAY))
         {
             r29 = 5;
             if (gameMode == MD_ADV && gameSubmode == SMD_ADV_INFO_MAIN)
@@ -1777,7 +1777,7 @@ void ball_func_replay_main(struct Ball *ball)
     ball->flags = spC.unk18 | BALL_FLAG_24;
     ball->unk130 = spC.unk1C;
 
-    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & INFO_FLAG_04))
+    if (lbl_80250A68.unk10 <= 0.0 || !(infoWork.flags & INFO_FLAG_REPLAY))
         ball->state = 4;
 
     mathutil_mtxA_from_translate(&ball->pos);
@@ -2883,8 +2883,8 @@ void func_8003CDC0(struct Ball *ball)
          && gameSubmode != SMD_GAME_OVER_SAVE
          && gameSubmode != SMD_GAME_OVER_DEST)
         {
-            if ((!(infoWork.flags & INFO_FLAG_05) && !(infoWork.flags & INFO_FLAG_03))
-             || (infoWork.flags & INFO_FLAG_04))
+            if ((!(infoWork.flags & INFO_FLAG_05) && !(infoWork.flags & INFO_FLAG_TIMER_PAUSED))
+             || (infoWork.flags & INFO_FLAG_REPLAY))
             {
                 if (!(ball->flags & BALL_FLAG_08) && !(ball->flags & BALL_FLAG_09))
                     func_8003CDC0_sub(ball);
@@ -2990,7 +2990,7 @@ void func_8003D3C4(struct Ball *ball)
         sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
         sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
-        if (!(infoWork.flags & INFO_FLAG_04) || (infoWork.flags & INFO_FLAG_11))
+        if (!(infoWork.flags & INFO_FLAG_REPLAY) || (infoWork.flags & INFO_FLAG_11))
             f2 = 0.85f;
         else
             f2 = 0.1f;

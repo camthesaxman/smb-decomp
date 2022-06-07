@@ -11,53 +11,53 @@
 #include "mode.h"
 #include "stage.h"
 
-static struct BGModelSearch sunsetModelFind[] =
+static struct BGModelSearch sunsetBgObjFind[] =
 {
     { BG_MDL_CMP_FULL,   "SUN_GROUND" },
     { BG_MDL_CMP_PREFIX, "SUN_CLOUD_" },
     { BG_MDL_CMP_END,    NULL },
 };
 
-static int sunset_model_find_proc(int, struct StageBgModel *);
+static int obj_find_proc(int, struct StageBgObject *);
 
 void bg_sunset_init(void)
 {
-    struct BGSunsetModel *sunsetModel;
+    struct BGSunsetLayer *layer;
     struct BGSunsetWork *work = backgroundInfo.work;
     int i;
     Vec sp8;
 
-    bg_e3_init();
+    bg_default_init();
 
     // find models
-    work->bgModelsCount = 0;
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->bgModels,
-        decodedStageLzPtr->bgModelsCount,
-        sunsetModelFind,
-        sunset_model_find_proc);
-    u_search_bg_models_from_list(
-        decodedStageLzPtr->fgModels,
-        decodedStageLzPtr->fgModelCount,
-        sunsetModelFind,
-        sunset_model_find_proc);
-    if (work->bgModelsCount == 0)
+    work->layersCount = 0;
+    find_background_objects(
+        decodedStageLzPtr->bgObjects,
+        decodedStageLzPtr->bgObjectCount,
+        sunsetBgObjFind,
+        obj_find_proc);
+    find_background_objects(
+        decodedStageLzPtr->fgObjects,
+        decodedStageLzPtr->fgObjectCount,
+        sunsetBgObjFind,
+        obj_find_proc);
+    if (work->layersCount == 0)
         return;
 
     work->mode = 0;
 
-    sunsetModel = work->bgModels;
-    for (i = work->bgModelsCount; i > 0; i--, sunsetModel++)
+    layer = work->layers;
+    for (i = work->layersCount; i > 0; i--, layer++)
     {
-        sunsetModel->texTranslation.x = rand() / 32767.0f;
-        sunsetModel->texTranslation.y = rand() / 32767.0f;
-        sunsetModel->texTranslation.z = rand() / 32767.0f;
+        layer->texTranslation.x = rand() / 32767.0f;
+        layer->texTranslation.y = rand() / 32767.0f;
+        layer->texTranslation.z = rand() / 32767.0f;
         mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
         sp8.x = 0.0f;
         sp8.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0015151514671742916f;
         sp8.z = 0.0f;
-        mathutil_mtxA_tf_vec(&sp8, &sunsetModel->desiredTexVel);
-        sunsetModel->currTexVel = sunsetModel->desiredTexVel;
+        mathutil_mtxA_tf_vec(&sp8, &layer->desiredTexVel);
+        layer->currTexVel = layer->desiredTexVel;
     }
 }
 
@@ -65,14 +65,14 @@ void bg_sunset_main(void)
 {
     struct BGSunsetWork *work = backgroundInfo.work;
     int i;
-    struct BGSunsetModel *sunsetModel;
+    struct BGSunsetLayer *layer;
     int speedUpTexVel;
     Vec newTexVel;
 
-    bg_e3_main();
+    bg_default_main();
     if (gamePauseStatus & 0xA)
         return;
-    if (work->bgModelsCount == 0)
+    if (work->layersCount == 0)
         return;
 
     // Speed up texture scroll vel 11s before time over
@@ -84,8 +84,8 @@ void bg_sunset_main(void)
     else
         speedUpTexVel = 0;
 
-    sunsetModel = work->bgModels;
-    for (i = work->bgModelsCount; i > 0; i--, sunsetModel++)
+    layer = work->layers;
+    for (i = work->layersCount; i > 0; i--, layer++)
     {
         if (speedUpTexVel)
         {
@@ -93,14 +93,14 @@ void bg_sunset_main(void)
             newTexVel.x = 0.0f;
             newTexVel.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0030303029343485832f;
             newTexVel.z = 0.0f;
-            mathutil_mtxA_tf_vec(&newTexVel, &sunsetModel->desiredTexVel);
+            mathutil_mtxA_tf_vec(&newTexVel, &layer->desiredTexVel);
         }
-        sunsetModel->currTexVel.x += (sunsetModel->desiredTexVel.x - sunsetModel->currTexVel.x) * 0.05f;
-        sunsetModel->currTexVel.y += (sunsetModel->desiredTexVel.y - sunsetModel->currTexVel.y) * 0.05f;
-        sunsetModel->texTranslation.x += sunsetModel->currTexVel.x;
-        sunsetModel->texTranslation.y += sunsetModel->currTexVel.y;
-        mathutil_mtxA_from_translate(&sunsetModel->texTranslation);
-        mathutil_mtxA_to_mtx(sunsetModel->texMtx);
+        layer->currTexVel.x += (layer->desiredTexVel.x - layer->currTexVel.x) * 0.05f;
+        layer->currTexVel.y += (layer->desiredTexVel.y - layer->currTexVel.y) * 0.05f;
+        layer->texTranslation.x += layer->currTexVel.x;
+        layer->texTranslation.y += layer->currTexVel.y;
+        mathutil_mtxA_from_translate(&layer->texTranslation);
+        mathutil_mtxA_to_mtx(layer->texMtx);
     }
 }
 
@@ -109,53 +109,51 @@ void bg_sunset_finish(void) {}
 void bg_sunset_draw(void)
 {
     struct BGSunsetWork *work = backgroundInfo.work;
-    struct StageBgModel *bgModel;
+    struct StageBgObject *bgObj;
     u32 r28;
     int i;
-    struct BGSunsetModel *sunsetModel;
+    struct BGSunsetLayer *layer;
 
     if (lbl_801EEC90.unk0 & 1)
         r28 = 1 << 4;
+    else if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
+        r28 = 1 << (modeCtrl.unk30 - 1);
     else
-    {
-        if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
-            r28 = 1 << (modeCtrl.unk30 - 1);
-        else
-            r28 = 1 << 0;
-    }
-    sunsetModel = work->bgModels;
-    for (i = work->bgModelsCount; i > 0; i--, sunsetModel++)
-        sunsetModel->bgModel->flags &= ~0x10000;
+        r28 = 1 << 0;
+
+    layer = work->layers;
+    for (i = work->layersCount; i > 0; i--, layer++)
+        layer->bgObj->flags &= ~0x10000;
     // draw cloud layers
-    if (work->bgModelsCount != 0)
+    if (work->layersCount != 0)
     {
         avdisp_enable_custom_tex_mtx(1);
-        sunsetModel = work->bgModels;
-        for (i = work->bgModelsCount; i > 0; i--, sunsetModel++)
+        layer = work->layers;
+        for (i = work->layersCount; i > 0; i--, layer++)
         {
-            bgModel = sunsetModel->bgModel;
-            if (bgModel->flags & r28)
+            bgObj = layer->bgObj;
+            if (bgObj->flags & r28)
             {
-                avdisp_set_custom_tex_mtx(0, sunsetModel->texMtx);
+                avdisp_set_custom_tex_mtx(0, layer->texMtx);
                 mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-                mathutil_mtxA_translate(&bgModel->pos);
-                mathutil_mtxA_rotate_z(bgModel->rotZ);
-                mathutil_mtxA_rotate_y(bgModel->rotY);
-                mathutil_mtxA_rotate_x(bgModel->rotX);
-                mathutil_mtxA_scale(&bgModel->scale);
+                mathutil_mtxA_translate(&bgObj->pos);
+                mathutil_mtxA_rotate_z(bgObj->rotZ);
+                mathutil_mtxA_rotate_y(bgObj->rotY);
+                mathutil_mtxA_rotate_x(bgObj->rotX);
+                mathutil_mtxA_scale(&bgObj->scale);
                 GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
                 GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-                avdisp_draw_model_culled_sort_translucent(bgModel->model);
+                avdisp_draw_model_culled_sort_translucent(bgObj->model);
             }
         }
         avdisp_enable_custom_tex_mtx(0);
     }
-    bg_e3_draw();
+    bg_default_draw();
 }
 
 void bg_sunset_interact(int a) {}
 
-static int sunset_model_find_proc(int index, struct StageBgModel *bgModel)
+static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
     struct BGSunsetWork *work = backgroundInfo.work;
 
@@ -163,10 +161,10 @@ static int sunset_model_find_proc(int index, struct StageBgModel *bgModel)
     {
     case 0:  // SUN_GROUND
     case 1:  // SUN_CLOUD_
-        if (bgModel->model != NULL && work->bgModelsCount < 8)
+        if (bgObj->model != NULL && work->layersCount < 8)
         {
-            work->bgModels[work->bgModelsCount].bgModel = bgModel;
-            work->bgModelsCount++;
+            work->layers[work->layersCount].bgObj = bgObj;
+            work->layersCount++;
         }
         break;
     }

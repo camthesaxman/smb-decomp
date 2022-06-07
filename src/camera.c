@@ -1233,7 +1233,7 @@ void camera_func_ready_main(struct Camera *camera, struct Ball *ball)
         {
             camera->timerCurr--;
             // Speed up the fly-in if the A button is held.
-            if (infoWork.unk1E == 1 && (u_unkInputArr1[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
+            if (infoWork.attempts == 1 && (g_currPlayerButtons[0] & PAD_BUTTON_A) && modeCtrl.submodeTimer > 120)
                 camera->timerCurr--;
         }
 
@@ -1853,7 +1853,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
     camera->flags |= 4;
 
     if ((controllerInfo[lbl_80206BD0[ball->playerId]].unk0[0].button & PAD_BUTTON_A)
-     && (u_unkInputArr1[0] & PAD_BUTTON_A))
+     && (g_currPlayerButtons[0] & PAD_BUTTON_A))
     {
         camera->state = 48;
         cameraFuncs[camera->state](camera, ball);
@@ -2717,7 +2717,7 @@ void camera_func_42(struct Camera *camera, struct Ball *ball)
 
     camera_face_direction(camera, &sp10);
 
-    if (u_unkInputArr1[0] & PAD_BUTTON_A)
+    if (g_currPlayerButtons[0] & PAD_BUTTON_A)
         camera->timerCurr += 2;
     else
         camera->timerCurr += 1;

@@ -1577,8 +1577,8 @@ lbl_800AE880:
 /* 800AE88C 000AA7AC  7C 08 03 A6 */	mtlr r0
 /* 800AE890 000AA7B0  4E 80 00 20 */	blr
 
-.global func_800AE894
-func_800AE894:
+.global u_is_name_entry_finished
+u_is_name_entry_finished:
 /* 800AE894 000AA7B4  3C 60 80 17 */	lis r3, eventInfo@ha
 /* 800AE898 000AA7B8  38 63 3C C8 */	addi r3, r3, eventInfo@l
 /* 800AE89C 000AA7BC  88 03 00 C0 */	lbz r0, 0xc0(r3)

@@ -151,7 +151,7 @@ struct StageFlipbookAnims
     struct StormFireAnim *stormFireAnims;
 };
 
-struct StageBgModel;
+struct StageBgObject;
 struct Camera;
 struct Sprite;
 struct FontParams;
@@ -937,7 +937,7 @@ struct Struct80061BC4_sub
     u8 filler20[0x2C-0x24];
 };
 
-struct Struct80061BC4
+struct EnvMapSomething
 {
     s32 unk0;
     u8 filler4[0xC-0x4];
@@ -945,7 +945,7 @@ struct Struct80061BC4
     u32 unk2C;
 };
 
-typedef void (*BallEnvFunc)(struct Struct80061BC4 *);
+typedef void (*BallEnvFunc)(struct EnvMapSomething *);
 
 struct BgLightInfo
 {

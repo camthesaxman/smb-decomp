@@ -9,13 +9,13 @@ enum
     INFO_FLAG_GOAL        = (1 << 0),
     INFO_FLAG_TIMEOVER    = (1 << 1),
     INFO_FLAG_FALLOUT     = (1 << 2),
-    INFO_FLAG_03          = (1 << 3),
-    INFO_FLAG_04          = (1 << 4),
+    INFO_FLAG_TIMER_PAUSED = (1 << 3),
+    INFO_FLAG_REPLAY          = (1 << 4),
     INFO_FLAG_05          = (1 << 5),
     INFO_FLAG_BONUS_STAGE = (1 << 6),
     INFO_FLAG_07          = (1 << 7),
     INFO_FLAG_08          = (1 << 8),  // 0x100
-    INFO_FLAG_09          = (1 << 9),  // 0x200  bonus clear (all bananas)?
+    INFO_FLAG_BONUS_CLEAR = (1 << 9),  // 0x200  bonus clear (all bananas)?
     INFO_FLAG_10          = (1 << 10),  // 0x400
     INFO_FLAG_11          = (1 << 11),  // 0x800
     INFO_FLAG_FINAL_FLOOR = (1 << 12),  // 0x1000
@@ -32,7 +32,7 @@ struct Struct801F3A58
     s16 unkE;
     Vec unk10;
     s16 unk1C;
-    s16 unk1E;  // number of tries on current stage?
+    /*0x1E*/ s16 attempts;  // number of tries on current stage
     /*0x20*/ s16 currFloor;  // also the round number in competition mode
     s16 unk22;
     /*0x24*/ s32 bananasLeft;

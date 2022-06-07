@@ -14,9 +14,9 @@
 
 void bg_old_bonus_init(void)
 {
-    struct Effect sp8;
-    struct NlModel **r29;
-    int r28;
+    struct Effect effect;
+    struct NlModel **modelIter;
+    int len;
 
     func_8008D36C(NLOBJ_MODEL(g_bgNlObj, 1), 0xFBFFFFFF, 0x4000000);
     backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNlObj, 39);
@@ -24,21 +24,21 @@ void bg_old_bonus_init(void)
     mathutil_mtxA_from_identity();
     mathutil_mtxA_scale_xyz(0.66666668653488159f, 0.66666668653488159f, 0.66666668653488159f);
     mathutil_mtxA_to_mtx(backgroundInfo.unk48);
-    memset(&sp8, 0, sizeof(sp8));
-    sp8.unk8 = 11;
-    sp8.unk30 = (void *)NLOBJ_MODEL(g_bgNlObj, 1);
-    sp8.unk10 = 0;
-    r28 = strlen("obj_STARPOINT_");
-    r29 = g_bgNlObj->models;
-    while (*r29 != NULL)
+    memset(&effect, 0, sizeof(effect));
+    effect.unk8 = 11;
+    effect.unk30 = (void *)NLOBJ_MODEL(g_bgNlObj, 1);
+    effect.unk10 = 0;
+    len = strlen("obj_STARPOINT_");
+    modelIter = g_bgNlObj->models;
+    while (*modelIter != NULL)
     {
-        if (strncmp((void *)NLMODEL_HEADER(*r29)->unk0, "obj_STARPOINT_", r28) == 0)
+        if (strncmp(NLMODEL_HEADER(*modelIter)->unk0->unk0, "obj_STARPOINT_", len) == 0)
         {
-            sp8.unk34 = (*r29)->boundSphereCenter;
-            spawn_effect(&sp8);
-            sp8.unk10 += 30.0;
+            effect.unk34 = (*modelIter)->boundSphereCenter;
+            spawn_effect(&effect);
+            effect.unk10 += 30.0;
         }
-        r29++;
+        modelIter++;
     }
 }
 
