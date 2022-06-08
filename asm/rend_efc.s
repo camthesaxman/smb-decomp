@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global ev_rend_efc_init
 ev_rend_efc_init:
 /* 8009523C 0009115C  7C 08 02 A6 */	mflr r0
@@ -64,6 +65,7 @@ lbl_800952EC:
 /* 80095308 00091228  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 8009530C 0009122C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80095310 00091230  4E 80 00 20 */	blr
+
 .global ev_rend_efc_dest
 ev_rend_efc_dest:
 /* 80095314 00091234  7C 08 02 A6 */	mflr r0
@@ -238,6 +240,7 @@ lbl_80095560:
 /* 80095570 00091490  83 A1 00 1C */	lwz r29, 0x1c(r1)
 /* 80095574 00091494  38 21 00 28 */	addi r1, r1, 0x28
 /* 80095578 00091498  4E 80 00 20 */	blr
+
 .global func_8009557C
 func_8009557C:
 /* 8009557C 0009149C  7C 08 02 A6 */	mflr r0
@@ -292,6 +295,7 @@ lbl_8009561C:
 .global func_8009562C
 func_8009562C:
 /* 8009562C 0009154C  4E 80 00 20 */	blr
+.endif
 .global func_80095630
 func_80095630:
 /* 80095630 00091550  7C 08 02 A6 */	mflr r0
@@ -6117,8 +6121,58 @@ lbl_802F59A8:
 	.4byte 0x3F4CCCCD
 	.4byte 0
 
-.section .bss
+.section .data
 
-.global lbl_802BA1A0
-lbl_802BA1A0:
-	.skip 0x60
+.if 0
+.global lbl_801D3CE8
+lbl_801D3CE8:
+	# ROM: 0x1D0CE8
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte func_8009557C  ;# ptr
+	.4byte func_800955FC  ;# ptr
+	.4byte func_8009562C  ;# ptr
+	.4byte func_80095630  ;# ptr
+	.4byte func_80095C6C  ;# ptr
+	.4byte func_80095D3C  ;# ptr
+	.4byte func_80095D90  ;# ptr
+	.4byte func_80095D94  ;# ptr
+	.4byte func_80096134  ;# ptr
+	.4byte func_80096228  ;# ptr
+	.4byte func_80096258  ;# ptr
+	.4byte func_800963AC  ;# ptr
+	.4byte func_80096A30  ;# ptr
+	.4byte func_80096B3C  ;# ptr
+	.4byte func_80096BA8  ;# ptr
+	.4byte func_80096BE0  ;# ptr
+	.4byte func_800973A0  ;# ptr
+	.4byte func_80097664  ;# ptr
+	.4byte func_800976B8  ;# ptr
+	.4byte func_800976BC  ;# ptr
+	.4byte func_8009826C  ;# ptr
+	.4byte func_800983A0  ;# ptr
+	.4byte func_8009840C  ;# ptr
+	.4byte func_80098410  ;# ptr
+.endif
+
+.global lbl_801D3D58
+lbl_801D3D58:
+	# ROM: 0x1D0D58
+	.4byte lbl_80097304  ;# ptr
+	.4byte lbl_80097390  ;# ptr
+	.4byte lbl_80097304  ;# ptr
+	.4byte lbl_80097390  ;# ptr
+	.4byte lbl_80097304  ;# ptr
+	.4byte lbl_80097390  ;# ptr
+	.4byte lbl_80097390  ;# ptr
+	.4byte lbl_80097304  ;# ptr
+
+.global lbl_801D3D78
+lbl_801D3D78:
+	# ROM: 0x1D0D78
+	.4byte func_800993A8  ;# ptr
+	.4byte func_800994A8  ;# ptr
+	.4byte func_80099518  ;# ptr
+	.4byte func_80099968  ;# ptr

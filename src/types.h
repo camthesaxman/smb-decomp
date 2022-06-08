@@ -778,11 +778,21 @@ struct Sphere
 struct Preview;
 struct NlDispList;
 
-struct Struct8009544C
+struct Struct8009557C
 {
-    u8 filler0[0x6];
+    GXTexObj unk0;
+    void *unk20;
+};
+
+struct Struct802BA1A0
+{
+    s8 unk0;
+    u8 filler1[5];
     u16 unk6;
-    u8 filler8[0x18-0x8];
+    u32 unk8;
+    u8 fillerC[4];
+    struct Struct8009557C *unk10;
+    struct Struct802BA1A0_child *unk14;
 };  // size = 0x18
 
 struct Struct801EED88

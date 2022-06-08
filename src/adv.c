@@ -1908,7 +1908,7 @@ void submode_adv_ranking_main_func(void)
         if (modeCtrl.submodeTimer > 180.0)
         {
             struct ReplayInfo sp38;
-            struct Struct8009544C sp20;
+            struct Struct802BA1A0 sp20;
             float f1;
             struct ReplayInfo sp8;
 
