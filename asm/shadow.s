@@ -1581,50 +1581,6 @@ lbl_80171AA4:
 	.4byte 0
 	.4byte 0xBF800000
 
-.global lbl_80171AB0
-lbl_80171AB0:
-	# ROM: 0x16EAB0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-.global lbl_80171B10
-lbl_80171B10:
-	# ROM: 0x16EB10
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 .section .data
 
     .balign 8

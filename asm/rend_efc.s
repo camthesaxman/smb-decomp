@@ -1623,7 +1623,7 @@ lbl_80096A04:
 /* 80096A24 00092944  83 A1 00 4C */	lwz r29, 0x4c(r1)
 /* 80096A28 00092948  38 21 00 78 */	addi r1, r1, 0x78
 /* 80096A2C 0009294C  4E 80 00 20 */	blr
-.endif
+
 .global func_80096A30
 func_80096A30:
 /* 80096A30 00092950  7C 08 02 A6 */	mflr r0
@@ -1696,6 +1696,7 @@ lbl_80096B20:
 /* 80096B30 00092A50  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 80096B34 00092A54  38 21 00 20 */	addi r1, r1, 0x20
 /* 80096B38 00092A58  4E 80 00 20 */	blr
+
 .global func_80096B3C
 func_80096B3C:
 /* 80096B3C 00092A5C  7C 08 02 A6 */	mflr r0
@@ -1728,6 +1729,7 @@ lbl_80096B94:
 /* 80096B9C 00092ABC  38 21 00 18 */	addi r1, r1, 0x18
 /* 80096BA0 00092AC0  7C 08 03 A6 */	mtlr r0
 /* 80096BA4 00092AC4  4E 80 00 20 */	blr
+
 .global func_80096BA8
 func_80096BA8:
 /* 80096BA8 00092AC8  3C 80 80 1F */	lis r4, controllerInfo@ha
@@ -1744,6 +1746,7 @@ func_80096BA8:
 /* 80096BD4 00092AF4  38 00 00 00 */	li r0, 0
 /* 80096BD8 00092AF8  90 05 00 00 */	stw r0, 0(r5)
 /* 80096BDC 00092AFC  4E 80 00 20 */	blr
+
 .global func_80096BE0
 func_80096BE0:
 /* 80096BE0 00092B00  7C 08 02 A6 */	mflr r0
@@ -2268,6 +2271,7 @@ lbl_80097390:
 /* 80097394 000932B4  38 21 00 20 */	addi r1, r1, 0x20
 /* 80097398 000932B8  7C 08 03 A6 */	mtlr r0
 /* 8009739C 000932BC  4E 80 00 20 */	blr
+
 .global func_800973A0
 func_800973A0:
 /* 800973A0 000932C0  7C 08 02 A6 */	mflr r0
@@ -2468,6 +2472,7 @@ lbl_80097648:
 /* 80097658 00093578  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 8009765C 0009357C  38 21 00 20 */	addi r1, r1, 0x20
 /* 80097660 00093580  4E 80 00 20 */	blr
+
 .global func_80097664
 func_80097664:
 /* 80097664 00093584  7C 08 02 A6 */	mflr r0
@@ -3022,7 +3027,7 @@ lbl_80097E60:
 /* 80097E74 00093D94  83 81 03 B0 */	lwz r28, 0x3b0(r1)
 /* 80097E78 00093D98  38 21 03 C0 */	addi r1, r1, 0x3c0
 /* 80097E7C 00093D9C  4E 80 00 20 */	blr
-
+.endif
 .global func_80097E80
 func_80097E80:
 /* 80097E80 00093DA0  7C 08 02 A6 */	mflr r0
@@ -5794,6 +5799,7 @@ lbl_8009A78C:
 
 .section .sdata2
 
+blah:
 .if 0
     .balign 8
 .global lbl_802F5868
@@ -5868,7 +5874,7 @@ lbl_802F58A4:
 lbl_802F58A8:
 	# ROM: 0x1EF2C8
 	.4byte 0x40A00000
-.endif
+
 .global lbl_802F58AC
 lbl_802F58AC:
 	# ROM: 0x1EF2CC
@@ -5891,7 +5897,7 @@ lbl_802F58C0:
 	# ROM: 0x1EF2E0
 	.4byte 0
 	.4byte 0
-
+#
 .global lbl_802F58C8
 lbl_802F58C8:
 	# ROM: 0x1EF2E8
@@ -5949,6 +5955,7 @@ lbl_802F58F8:
 	# ROM: 0x1EF318
 	.4byte 0x43300000
 	.4byte 0
+.endif
 
 .global lbl_802F5900
 lbl_802F5900:
@@ -6164,7 +6171,6 @@ lbl_801D3CE8:
 	.4byte func_800983A0  ;# ptr
 	.4byte func_8009840C  ;# ptr
 	.4byte func_80098410  ;# ptr
-.endif
 
 .global lbl_801D3D58
 lbl_801D3D58:
@@ -6177,6 +6183,7 @@ lbl_801D3D58:
 	.4byte lbl_80097390  ;# ptr
 	.4byte lbl_80097390  ;# ptr
 	.4byte lbl_80097304  ;# ptr
+.endif
 
 .global lbl_801D3D78
 lbl_801D3D78:
@@ -6185,3 +6192,52 @@ lbl_801D3D78:
 	.4byte func_800994A8  ;# ptr
 	.4byte func_80099518  ;# ptr
 	.4byte func_80099968  ;# ptr
+
+.section .rodata
+
+.if 0
+.global lbl_80171AB0
+lbl_80171AB0:
+	# ROM: 0x16EAB0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+.endif
+blah2:
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+
+.global lbl_80171B10
+lbl_80171B10:
+	# ROM: 0x16EB10
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3F800000
+	.4byte 0
+	.4byte 0
+	.4byte 0

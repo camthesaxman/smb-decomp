@@ -464,6 +464,12 @@ struct DecodedStageLzPtr_child6
     struct StageAnimGroupAnim *unk10;
 };
 
+struct StageReflObj
+{
+    char *name;
+    struct GMAModel *model;  // filled in at runtime
+};
+
 struct Stage
 {
     s32 loopStartSeconds;
@@ -508,7 +514,7 @@ struct Stage
 void ev_stage_init(void);
 void ev_stage_main(void);
 void ev_stage_dest(void);
-// ? stage_find_model();
+struct GMAModel *stage_find_model(struct GMA *gma, char *name);
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
 void animate_anim_groups(float);

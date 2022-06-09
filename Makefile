@@ -183,6 +183,7 @@ SOURCES := \
 	asm/mini.s \
 	src/mouse.c \
 	src/rend_efc.c \
+	src/rend_efc_2.c \
 	asm/rend_efc.s \
 	src/relocation.c \
 	src/gxutil.c \

@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "camera.h"
+#include "input.h"
 #include "event.h"
 #include "gxcache.h"
 #include "gxutil.h"
@@ -318,7 +319,7 @@ void func_80095D94(int arg0, struct Struct802BA1A0 *arg1)
     float temp_f31;
 
     temp_r31 = arg1->unk10;
-    C_MTXPerspective(sp18, 59.996338f, 1.3333334f, 0.1f, 20000.0f);
+    MTXPerspective(sp18, 59.996338f, 1.3333334f, 0.1f, 20000.0f);
     GXSetProjection(sp18, GX_PERSPECTIVE);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
@@ -568,4 +569,199 @@ void func_800963AC(int arg0, struct Struct802BA1A0 *arg1)
     GXEnd();
 
     GXSetZMode_cached(1, GX_LEQUAL, 1);
+}
+
+struct Struct80096A30
+{
+    s32 unk0;
+    GXTexObj unk4;
+    GXTexObj unk24;
+    void *unk44;
+    void *unk48;
+};
+
+void func_80096A30(struct Struct802BA1A0 *arg0)
+{
+    struct Struct80096A30 *temp_r3;
+    size_t bufSize;
+
+    arg0->unk8 = 2;
+    temp_r3 = OSAlloc(sizeof(*temp_r3));
+    if (temp_r3 == NULL)
+    {
+        arg0->unk0 = 0;
+        arg0->unk10 = NULL;
+        return;
+    }
+    arg0->unk10 = (void *)temp_r3;
+    temp_r3->unk0 = 0;
+    bufSize = GXGetTexBufferSize(640, 448, 5, 0, 0);
+    temp_r3->unk44 = OSAlloc(bufSize);
+    if (temp_r3->unk44 == NULL)
+    {
+        OSFree(temp_r3);
+        arg0->unk0 = 0;
+        return;
+    }
+    bufSize = GXGetTexBufferSize(640, 448, 1, 0, 0);
+    temp_r3->unk48 = OSAlloc(bufSize);
+    if (temp_r3->unk48 == NULL)
+    {
+        OSFree(temp_r3->unk44);
+        OSFree(temp_r3);
+        arg0->unk0 = 0;
+    }
+}
+
+void func_80096B3C(struct Struct802BA1A0 *arg0)
+{
+    struct Struct80096A30 *temp_r3 = (void *)arg0->unk10;
+
+    if (temp_r3 != NULL)
+    {
+        if (temp_r3->unk44 != NULL)
+            OSFree(temp_r3->unk44);
+        if (((struct Struct80096A30 *)arg0->unk10)->unk48 != NULL)
+            OSFree(((struct Struct80096A30 *)arg0->unk10)->unk48);
+        OSFree(arg0->unk10);
+    }
+}
+
+void func_80096BA8(struct Struct802BA1A0 *arg0)
+{
+    struct Struct80096A30 *temp_r5 = (void *)arg0->unk10;
+
+    if (controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
+    {
+        if (++temp_r5->unk0 >= 3)
+            temp_r5->unk0 = 0;
+    }
+}
+
+void func_80096BE0(int arg0, struct Struct802BA1A0 *arg1)
+{
+    GXColor color;
+    Mtx44 mtx;
+    u8 unused[4];
+    struct Struct80096A30 *temp_r31 = (void *)arg1->unk10;
+    float temp_f30;
+    float temp_f31;
+
+    MTXPerspective(mtx, 59.996338f, 1.3333334f, 0.1f, 20000.0f);
+    GXSetProjection(mtx, GX_PERSPECTIVE);
+    GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
+    GXSetScissor(0U, 0U, currRenderMode->fbWidth, currRenderMode->xfbHeight);
+    GXSetNumChans(0U);
+    switch (temp_r31->unk0)
+    {
+    case 0:
+        GXSetTexCopySrc(0xC0, 0x70, 0x100U, 0x100U);
+        GXSetTexCopyDst(0x100U, 0x100U, 5, 0);
+        GXCopyTex(temp_r31->unk44, 0);
+        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, 0x100U, 0x100U, GX_TF_RGB5A3, GX_REPEAT, GX_REPEAT, 0U);
+        break;
+    case 1:
+        GXSetTexCopySrc(0xC0, 0x70, 0x100U, 0x100U);
+        GXSetTexCopyDst(0x100U, 0x100U, 5, 0);
+        GXCopyTex(temp_r31->unk44, 0);
+        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, 0x100U, 0x100U, GX_TF_RGB5A3, GX_MIRROR, GX_MIRROR, 0U);
+        break;
+    case 2:
+        GXSetTexCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
+        GXSetTexCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight, 5, 0);
+        GXCopyTex(temp_r31->unk44, 0);
+        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_RGB5A3, GX_CLAMP, GX_CLAMP, 0U);
+        GXSetTexCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
+        GXSetTexCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight, 1, 0);
+        GXCopyTex(temp_r31->unk48, 0);
+        GXInitTexObj(&temp_r31->unk24, temp_r31->unk48, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_I8, GX_CLAMP, GX_CLAMP, 0U);
+        break;
+    }
+    switch (temp_r31->unk0)
+    {
+    case 0:
+    case 1:
+        GXLoadTexObj_cached(&temp_r31->unk4, GX_TEXMAP0);
+        break;
+    case 2:
+        GXLoadTexObj_cached(&temp_r31->unk24, GX_TEXMAP0);
+        break;
+    }
+    color.a = 0xFF;
+    GXSetTevKColor_cached(GX_KCOLOR0, color);
+    GXSetTevKAlphaSel_cached(GX_TEVSTAGE0, GX_TEV_KASEL_K0_A);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 0x3CU);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+    GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetTevColorIn_cached(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+    GXSetTevColorOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 0U, GX_TEVPREV);
+    GXSetTevAlphaIn_cached(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
+    GXSetTevAlphaOp_cached(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, 1U, GX_TEVPREV);
+    GXSetNumTevStages_cached(1U);
+    GXSetNumTexGens(1U);
+    GXSetNumIndStages(0U);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+    GXSetZMode_cached(0, GX_ALWAYS, 0);
+    GXSetCullMode_cached(GX_CULL_BACK);
+    func_8009AC8C();
+    gxutil_set_vtx_attrs(0x2200);
+    mathutil_mtxA_from_identity();
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    temp_f30 = mathutil_tan(0x1555U);
+    temp_f31 = 1.3333334f * temp_f30;
+    switch (temp_r31->unk0)
+    {
+    case 0:
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(-temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 0.0f);
+        GXPosition3f32(temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(4.0f, 0.0f);
+        GXPosition3f32(temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(4.0f, 3.0f);
+        GXPosition3f32(-temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 3.0f);
+        GXEnd();
+        break;
+    case 1:
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(-temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 0.0f);
+        GXPosition3f32(temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(4.0f, 0.0f);
+        GXPosition3f32(temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(4.0f, 4.0f);
+        GXPosition3f32(-temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 4.0f);
+        GXEnd();
+        break;
+    case 2:
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(-temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 0.0f);
+        GXPosition3f32(temp_f31, temp_f30, -1.0f);
+        GXTexCoord2f32(1.0f, 0.0f);
+        GXPosition3f32(temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(1.0f, 1.0f);
+        GXPosition3f32(-temp_f31, -temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 1.0f);
+        GXEnd();
+
+        GXLoadTexObj_cached(&temp_r31->unk4, GX_TEXMAP0);
+
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        GXPosition3f32(0.1 + -temp_f31, temp_f30 - 0.075, -1.0f);
+        GXTexCoord2f32(0.0f, 0.0f);
+        GXPosition3f32(temp_f31 - 0.1, temp_f30 - 0.075, -1.0f);
+        GXTexCoord2f32(1.0f, 0.0f);
+        GXPosition3f32(temp_f31 - 0.1, 0.075 + -temp_f30, -1.0f);
+        GXTexCoord2f32(1.0f, 1.0f);
+        GXPosition3f32(0.1 + -temp_f31, 0.075 + -temp_f30, -1.0f);
+        GXTexCoord2f32(0.0f, 1.0f);
+        GXEnd();
+        break;
+    }
+    GXSetZMode_cached(1U, GX_LEQUAL, 1U);
+    camera_apply_viewport(u_cameraId1);
 }
