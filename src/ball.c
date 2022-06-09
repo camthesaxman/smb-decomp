@@ -279,10 +279,9 @@ static inline int func_8003721C_inline(struct Ball *ball)
     return 2;
 }
 
-void u_choose_ape_anim(struct Ape *ape, float b)
+void u_choose_ape_anim(struct Ape *ape, float speed)
 {
     struct Ball *ball = &ballInfo[ape->ballId];
-    float f31 = b;
     int r29;
     int r28 = 0;
     int r27 = 0;
@@ -292,7 +291,7 @@ void u_choose_ape_anim(struct Ape *ape, float b)
 
     if (gameSubmode == SMD_GAME_RESULT_MAIN || gameSubmode == SMD_GAME_RESULT_MENU)
     {
-        f31 = ape->unk54++;
+        speed = ape->unk54++;
         if (ball->rank == 0)
         {
             r29 = 1;
@@ -375,8 +374,8 @@ void u_choose_ape_anim(struct Ape *ape, float b)
         else if (ball->flags & BALL_FLAG_05)
         {
             r29 = 4;
-            f31 = mathutil_vec_len(&ball->vel);
-            lbl_80205E20[ball->playerId] = f31;
+            speed = mathutil_vec_len(&ball->vel);
+            lbl_80205E20[ball->playerId] = speed;
         }
         else if (ball->flags & BALL_FLAG_01)
         {
@@ -386,7 +385,7 @@ void u_choose_ape_anim(struct Ape *ape, float b)
         else if (ape->flags & 1)
         {
             r29 = 1;
-            f31 = ape->unk54++;
+            speed = ape->unk54++;
             if (gameSubmode == SMD_ADV_INFO_MAIN)
             {
                 int r3 = (modeCtrl.submodeTimer < 0x9D8 && modeCtrl.submodeTimer > 0x8AC);
@@ -398,7 +397,7 @@ void u_choose_ape_anim(struct Ape *ape, float b)
     }
     if (r29 != 1 || gameSubmode == SMD_GAME_READY_MAIN)
         ape->unk54 = 0;
-    u_set_ape_anim(ape, r29, r28, r27, f31);
+    u_set_ape_anim(ape, r29, r28, r27, speed);
 }
 
 void func_8003765C(struct Ape *ape)
@@ -447,7 +446,7 @@ void lbl_8003781C(struct Ape *ape, int b)
     struct Ball *r29 = &ballInfo[ape->ballId];
     struct RaycastHit sp50;
     int r27;
-    float f31;
+    float speed;
 
     switch (b)
     {
@@ -471,11 +470,11 @@ void lbl_8003781C(struct Ape *ape, int b)
     func_8003699C(ape);
     if (r27)
     {
-        f31 = func_80036CAC(ape);
+        speed = func_80036CAC(ape);
     }
     else
     {
-        f31 = 0.0f;
+        speed = 0.0f;
         mathutil_mtxA_from_quat(&ape->unk60);
         mathutil_mtxA_normalize_basis();
         if (ape->flags & (1 << 1))
@@ -483,11 +482,11 @@ void lbl_8003781C(struct Ape *ape, int b)
     }
 
     if (r29->flags & BALL_FLAG_05)
-        f31 = mathutil_vec_len(&r29->vel);
+        speed = mathutil_vec_len(&r29->vel);
 
     func_80036EB8(ape);
     mathutil_mtxA_to_quat(&ape->unk60);
-    u_choose_ape_anim(ape, f31);
+    u_choose_ape_anim(ape, speed);
     u_do_ape_anim(ape);
     if (!(ape->flags & (1 << 3)))
         func_8003765C(ape);

@@ -254,5 +254,5 @@ void func_800355FC(struct Struct8003699C_child *a)
     mathutil_mtxA_to_mtx(a->unk54);
     func_80035648(a);
     joints = a->joints;
-    func_80035748(joints, joints);
+    u_joint_tree_calc_some_matrix(joints, joints);
 }

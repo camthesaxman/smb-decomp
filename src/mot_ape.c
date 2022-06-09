@@ -347,7 +347,6 @@ struct Struct8003699C_child *u_create_joints_probably(struct MotSkeletonEntry1 *
 void u_iter_joints_80089BD4(struct AnimJoint *joint)
 {
     int i;
-    struct AnimJoint *r4;
     Vec spC;
     struct AnimJoint *var = joint;
 
@@ -360,16 +359,18 @@ void u_iter_joints_80089BD4(struct AnimJoint *joint)
         }
         mathutil_mtxA_from_mtx(joint->transformMtx);
         mathutil_mtxA_to_quat(&joint->unk1B0);
-        if (joint->unk1A0 != 0xFFFFFFFF)
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            r4 = var + joint->unk1A0;
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            struct AnimJoint *parent = &var[joint->parentIdx];
+
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = var + r4->unk1A0;
+                parent = &var[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
         }
         else
             mathutil_mtxA_from_identity();
@@ -543,17 +544,18 @@ void u_iter_joints_8008A124(struct AnimJoint *joint, float b)
         mathutil_mtxA_to_quat(&sp10);
         mathutil_quat_slerp(&sp10, &joint->unk1B0, &sp10, b);
         mathutil_quat_normalize(&sp10);
-        if (joint->unk1A0 != 0xFFFFFFFF)
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            struct AnimJoint *r4 = &a[joint->unk1A0];
+            struct AnimJoint *parent = &a[joint->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
             mathutil_mtxA_translate(&joint->unk1A4);
         }
         else
@@ -588,17 +590,18 @@ void u_iter_joints_8008A2C4(struct AnimJoint *joint)
             continue;
         }
         mathutil_mtxA_from_mtx(joint->transformMtx);
-        if (joint->unk1A0 != 0xFFFFFFFF)
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            struct AnimJoint *r4 = &a[joint->unk1A0];
+            struct AnimJoint *parent = &a[joint->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
         }
         else
         {
@@ -635,17 +638,18 @@ void u_iter_joints_8008A3A4(struct AnimJoint *r28, struct AnimJoint *r29, float 
         mathutil_mtxA_to_quat(&sp20);
         mathutil_quat_slerp(&sp20, &r29->unk1B0, &sp20, c);
         mathutil_quat_normalize(&sp20);
-        if (r28->unk1A0 != 0xFFFFFFFF)
+        if (r28->parentIdx != 0xFFFFFFFF)
         {
-            struct AnimJoint *r4 = &a[r28->unk1A0];
+            struct AnimJoint *parent = &a[r28->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
             mathutil_mtxA_translate(&r28->unk1A4);
         }
         else
@@ -1296,7 +1300,7 @@ void func_8008BAA8(int *a, int *b)
 }
 #pragma force_active reset
 
-void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
+void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float speed)
 {
     struct MotInfo *r30;
     struct Struct8003699C_child *r7;
@@ -1326,7 +1330,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
             r9++; r9--;  // needed to match
             for (i = 0; i < 2; i++, r9++)
             {
-                if (r8[r9].unk0 > e * 216.0f)
+                if (r8[r9].unk0 > speed * 216.0f)
                     break;
             }
         }
@@ -1340,7 +1344,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
         {
             for (i = 0; r8[i].unk4 == 0; i++, r9++)
             {
-                if (r8[i].unk0 > e / 60.0f)
+                if (r8[i].unk0 > speed / 60.0f)
                     break;
             }
             r5 = &r8[r9];
@@ -1354,7 +1358,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
     case 4:
         for (i = 2; i > 0; i--)
         {
-            if (r8[i].unk0 < e * 216.0f)
+            if (r8[i].unk0 < speed * 216.0f)
                 break;
         }
         r9 = i;
@@ -1366,7 +1370,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
         {
             for (i = 0; r8[i].unk4 == 0; i++, r9++)
             {
-                if (r8[i].unk0 > e * 216.0f)
+                if (r8[i].unk0 > speed * 216.0f)
                     break;
             }
         }
@@ -1374,7 +1378,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
     case 0:
         for (i = 0; r8[i].unk4 == 0; i++, r9++)
         {
-            if (r8[i].unk0 > e * 216.0f)
+            if (r8[i].unk0 > speed * 216.0f)
                 break;
         }
         break;
@@ -1656,7 +1660,7 @@ void u_draw_ape_transformed(struct Ape *ape, struct AnimJoint *joints)
                 r29->draw(ape, r29, *ptr);
             else
                 avdisp_draw_model_unculled_sort_none(model);  // fallback code (not called)?
-            
+
             mathutil_mtxA_pop();
         }
     }

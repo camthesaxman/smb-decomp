@@ -178,8 +178,8 @@ void func_800355B8(struct Struct8003699C_child *);
 void func_800355FC(struct Struct8003699C_child *);
 
 void func_80035648(struct Struct8003699C_child *);
-void func_80035748();
-// ? func_80035B14();
+void u_joint_tree_calc_some_matrix();
+// ? u_joint_tree_calc_some_other_matrix();
 // ? func_80035DEC();
 // ? func_80035E7C();
 void u_init_something_joints_from_something(struct Struct8003699C_child_sub *arg0, struct Struct8003699C_child *arg1, s32 arg2, u16 arg3);

@@ -152,86 +152,86 @@ void func_80035648(struct Struct8003699C_child *a)
     }
 }
 
-void func_80035B14(struct AnimJoint *, struct AnimJoint *);
+void u_joint_tree_calc_some_other_matrix(struct AnimJoint *, struct AnimJoint *);
 void func_80035DEC(Vec *);
 
-void func_80035748(struct AnimJoint *arg0, struct AnimJoint *arg1)
+void u_joint_tree_calc_some_matrix(struct AnimJoint *jointArr, struct AnimJoint *joint)
 {
-    u32 temp_r28;
+    u32 childCount;
     u32 flags;
     u32 i;
 
-    flags = arg1->flags;
+    flags = joint->flags;
     switch (flags & 0x3F00)
     {
     default:
-        mathutil_mtxA_set_translate(&arg1->unk1CC);
-        mathutil_mtxA_sq_from_mtx(arg0->unk168);
+        mathutil_mtxA_set_translate(&joint->unk1CC);
+        mathutil_mtxA_sq_from_mtx(jointArr[0].unk168);
         if (flags & 8)
-            mathutil_mtxA_mult_right(arg1->rotateMtx);
-        mathutil_mtxA_to_mtx(arg1->transformMtx);
+            mathutil_mtxA_mult_right(joint->rotateMtx);
+        mathutil_mtxA_to_mtx(joint->transformMtx);
         break;
     case 0x100:
         if ((flags & 0x80) && !(flags & 0x4000))
         {
             mathutil_mtxA_push();
-            func_80035B14(arg0, arg1);
+            u_joint_tree_calc_some_other_matrix(jointArr, joint);
             mathutil_mtxA_pop();
         }
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk10);
+            mathutil_mtxA_translate(&joint->unk10);
         if (flags & 0x4000)
         {
-            mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
-            mathutil_mtxA_copy_translate(arg1->transformMtx);
+            mathutil_mtxA_sq_from_mtx(joint->transformMtx);
+            mathutil_mtxA_copy_translate(joint->transformMtx);
         }
         else
         {
             if (flags & 8)
-                mathutil_mtxA_mult_right(arg1->rotateMtx);
-            mathutil_mtxA_rigid_inv_tf_point(&arg1[1].unk1CC, &arg1->unk1CC);
-            func_80035DEC(&arg1->unk1CC);
-            mathutil_mtxA_to_mtx(arg1->transformMtx);
+                mathutil_mtxA_mult_right(joint->rotateMtx);
+            mathutil_mtxA_rigid_inv_tf_point(&joint[1].unk1CC, &joint->unk1CC);
+            func_80035DEC(&joint->unk1CC);
+            mathutil_mtxA_to_mtx(joint->transformMtx);
         }
         break;
     case 0x200:
         if (!(flags & 0x4000))
         {
             mathutil_mtxA_push();
-            func_80035B14(arg0, arg1);
+            u_joint_tree_calc_some_other_matrix(jointArr, joint);
             mathutil_mtxA_pop();
         }
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk10);
-        mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
-        mathutil_mtxA_copy_translate(arg1->transformMtx);
+            mathutil_mtxA_translate(&joint->unk10);
+        mathutil_mtxA_sq_from_mtx(joint->transformMtx);
+        mathutil_mtxA_copy_translate(joint->transformMtx);
         break;
     case 0x400:
-        mathutil_mtxA_translate(&arg1->unk10);
+        mathutil_mtxA_translate(&joint->unk10);
         if (flags & 0x4000)
         {
-            mathutil_mtxA_sq_from_mtx(arg1->transformMtx);
-            mathutil_mtxA_copy_translate(arg1->transformMtx);
+            mathutil_mtxA_sq_from_mtx(joint->transformMtx);
+            mathutil_mtxA_copy_translate(joint->transformMtx);
         }
         else
         {
-            mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-            mathutil_mtxA_to_mtx(arg1->transformMtx);
+            mathutil_mtxA_rotate_z_sin_cos(joint->unk198, joint->unk19C);
+            mathutil_mtxA_to_mtx(joint->transformMtx);
         }
         break;
     case 0x800:
         if ((flags & 0x80) && !(flags & 0x4000))
         {
             mathutil_mtxA_push();
-            func_80035B14(arg0, arg1);
+            u_joint_tree_calc_some_other_matrix(jointArr, joint);
             mathutil_mtxA_pop();
         }
-        mathutil_mtxA_translate(&arg1->unk10);
+        mathutil_mtxA_translate(&joint->unk10);
         if (flags & 0x10)
-            mathutil_mtxA_sq_from_mtx(arg0->unk168);
+            mathutil_mtxA_sq_from_mtx(jointArr[0].unk168);
         if (flags & 1)
-            mathutil_mtxA_to_mtx(arg1->transformMtx);
-        mathutil_mtxA_get_translate_alt2(&arg1->unk1CC);
+            mathutil_mtxA_to_mtx(joint->transformMtx);
+        mathutil_mtxA_get_translate_alt2(&joint->unk1CC);
         break;
     case 0x1000:
         if (flags & 2)
@@ -239,17 +239,17 @@ void func_80035748(struct AnimJoint *arg0, struct AnimJoint *arg1)
             if ((flags & 0x80) && !(flags & 0x4000))
             {
                 mathutil_mtxA_push();
-                func_80035B14(arg0, arg1);
+                u_joint_tree_calc_some_other_matrix(jointArr, joint);
                 mathutil_mtxA_pop();
             }
-            mathutil_mtxA_translate(&arg1->unk10);
+            mathutil_mtxA_translate(&joint->unk10);
         }
         if (flags & 8)
-            mathutil_mtxA_mult_right(arg1->rotateMtx);
+            mathutil_mtxA_mult_right(joint->rotateMtx);
         else if (flags & 0x40)
-            mathutil_mtxA_mult_right(arg1->unk1C);
+            mathutil_mtxA_mult_right(joint->unk1C);
         if (flags & 1)
-            mathutil_mtxA_to_mtx(arg1->transformMtx);
+            mathutil_mtxA_to_mtx(joint->transformMtx);
         break;
     case 0x2000:
         if (flags & 2)
@@ -257,70 +257,70 @@ void func_80035748(struct AnimJoint *arg0, struct AnimJoint *arg1)
             if ((flags & 0x80) && !(flags & 0x4000))
             {
                 mathutil_mtxA_push();
-                func_80035B14(arg0, arg1);
+                u_joint_tree_calc_some_other_matrix(jointArr, joint);
                 mathutil_mtxA_pop();
             }
-            mathutil_mtxA_translate((Point3d *) &arg1->unk10);
+            mathutil_mtxA_translate((Point3d *) &joint->unk10);
         }
         if (flags & 8)
-            mathutil_mtxA_mult_right(arg1->rotateMtx);
+            mathutil_mtxA_mult_right(joint->rotateMtx);
         if (flags & 0x40)
-            mathutil_mtxA_mult_right(arg1->unk1C);
+            mathutil_mtxA_mult_right(joint->unk1C);
         if (flags & 1)
-            mathutil_mtxA_to_mtx(arg1->transformMtx);
+            mathutil_mtxA_to_mtx(joint->transformMtx);
         break;
     }
-    temp_r28 = arg1->unk4C;
-    if (temp_r28 > 1)
+    childCount = joint->childCount;
+    if (childCount > 1)
     {
-        for (i = 0; i < temp_r28; i++)
+        for (i = 0; i < childCount; i++)
         {
             if (i == 0)
                 mathutil_mtxA_push();
-            else if (i == (u32)(temp_r28 - 1))
+            else if (i == (u32)(childCount - 1))
                 mathutil_mtxA_pop();
             else
                 mathutil_mtxA_peek();
-            func_80035748(arg0, &arg0[arg1->unk50[i]]);
+            u_joint_tree_calc_some_matrix(jointArr, &jointArr[joint->childIndexes[i]]);
         }
     }
-    else if (temp_r28 != 0)
-        func_80035748(arg0, &arg0[arg1->unk50[0]]);
+    else if (childCount != 0)
+        u_joint_tree_calc_some_matrix(jointArr, &jointArr[joint->childIndexes[0]]);
 }
 
 void func_80035E7C(float *, float *, float, float, float);
 
-void func_80035B14(struct AnimJoint *arg0, struct AnimJoint *arg1)
+void u_joint_tree_calc_some_other_matrix(struct AnimJoint *jointArr, struct AnimJoint *joint)
 {
     f32 temp_f31;
     u32 flags;
     struct AnimJoint *temp_r28;
     struct AnimJoint *temp_r27;
-    u32 temp_r27_2;
+    u32 childCount;
     u32 i;
 
-    flags = arg1->flags;
+    flags = joint->flags;
     flags |= 0x4000;
-    arg1->flags = flags;
+    joint->flags = flags;
     switch (flags & 0x3F00)
     {
     case 0x100:
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk4);
-        mathutil_mtxA_mult_right(arg1->rotateMtx);
-        mathutil_mtxA_rigid_inv_tf_point(&arg1[1].unk1CC, &arg1->unk1CC);
-        func_80035DEC(&arg1->unk1CC);
-        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
+            mathutil_mtxA_translate(&joint->unk4);
+        mathutil_mtxA_mult_right(joint->rotateMtx);
+        mathutil_mtxA_rigid_inv_tf_point(&joint[1].unk1CC, &joint->unk1CC);
+        func_80035DEC(&joint->unk1CC);
+        mathutil_mtxA_sq_to_mtx(joint->transformMtx);
         break;
     case 0x200:
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk4);
-        mathutil_mtxA_mult_right(arg1->rotateMtx);
-        temp_r27 = arg1 + 2;
-        temp_r28 = arg1 + 1;
-        mathutil_mtxA_rigid_inv_tf_point(&temp_r27->unk1CC, &arg1->unk1CC);
-        temp_f31 = mathutil_vec_len(&arg1->unk1CC);
-        func_80035E7C(&arg1->unk198, &arg1->unk19C, temp_r28->unk4.x, temp_f31, temp_r27->unk4.x);
+            mathutil_mtxA_translate(&joint->unk4);
+        mathutil_mtxA_mult_right(joint->rotateMtx);
+        temp_r27 = joint + 2;
+        temp_r28 = joint + 1;
+        mathutil_mtxA_rigid_inv_tf_point(&temp_r27->unk1CC, &joint->unk1CC);
+        temp_f31 = mathutil_vec_len(&joint->unk1CC);
+        func_80035E7C(&joint->unk198, &joint->unk19C, temp_r28->unk4.x, temp_f31, temp_r27->unk4.x);
         func_80035E7C(&temp_r28->unk198, &temp_r28->unk19C, temp_r28->unk4.x, temp_r27->unk4.x, temp_f31);
         if (temp_r28->flags & 0x20)
         {
@@ -329,58 +329,58 @@ void func_80035B14(struct AnimJoint *arg0, struct AnimJoint *arg1)
         }
         else
         {
-            arg1->unk198 = -arg1->unk198;
+            joint->unk198 = -joint->unk198;
             temp_r28->unk19C = -temp_r28->unk19C;
         }
-        func_80035DEC(&arg1->unk1CC);
-        mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
+        func_80035DEC(&joint->unk1CC);
+        mathutil_mtxA_rotate_z_sin_cos(joint->unk198, joint->unk19C);
+        mathutil_mtxA_sq_to_mtx(joint->transformMtx);
         break;
     case 0x400:
-        mathutil_mtxA_translate(&arg1->unk4);
-        mathutil_mtxA_rotate_z_sin_cos(arg1->unk198, arg1->unk19C);
-        mathutil_mtxA_sq_to_mtx(arg1->transformMtx);
+        mathutil_mtxA_translate(&joint->unk4);
+        mathutil_mtxA_rotate_z_sin_cos(joint->unk198, joint->unk19C);
+        mathutil_mtxA_sq_to_mtx(joint->transformMtx);
         break;
     case 0x800:
-        mathutil_mtxA_translate(&arg1->unk4);
+        mathutil_mtxA_translate(&joint->unk4);
         if (flags & 0x10)
-            mathutil_mtxA_sq_from_mtx(arg0->unk168);
+            mathutil_mtxA_sq_from_mtx(jointArr[0].unk168);
         break;
     case 0x1000:
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk4);
+            mathutil_mtxA_translate(&joint->unk4);
         if (flags & 8)
-            mathutil_mtxA_mult_right(arg1->rotateMtx);
+            mathutil_mtxA_mult_right(joint->rotateMtx);
         else if (flags & 0x40)
-            mathutil_mtxA_mult_right(arg1->unk1C);
+            mathutil_mtxA_mult_right(joint->unk1C);
         break;
     case 0x2000:
         if (flags & 2)
-            mathutil_mtxA_translate(&arg1->unk4);
+            mathutil_mtxA_translate(&joint->unk4);
         if (flags & 8)
-            mathutil_mtxA_mult_right(arg1->rotateMtx);
+            mathutil_mtxA_mult_right(joint->rotateMtx);
         if (flags & 0x40)
-            mathutil_mtxA_mult_right(arg1->unk1C);
+            mathutil_mtxA_mult_right(joint->unk1C);
         break;
     }
     if (flags & 0x80)
     {
-        temp_r27_2 = arg1->unk4C;
-        if (temp_r27_2 > 1)
+        childCount = joint->childCount;
+        if (childCount > 1)
         {
-            for (i = 0; i < temp_r27_2; i++)
+            for (i = 0; i < childCount; i++)
             {
                 if (i == 0)
                     mathutil_mtxA_push();
-                else if (i == (u32)(temp_r27_2 - 1))
+                else if (i == (u32)(childCount - 1))
                     mathutil_mtxA_pop();
                 else
                     mathutil_mtxA_peek();
-                func_80035B14(arg0, &arg0[arg1->unk50[i]]);
+                u_joint_tree_calc_some_other_matrix(jointArr, &jointArr[joint->childIndexes[i]]);
             }
         }
-        else if (temp_r27_2 != 0)
-            func_80035B14(arg0, &arg0[arg1->unk50[0]]);
+        else if (childCount != 0)
+            u_joint_tree_calc_some_other_matrix(jointArr, &jointArr[joint->childIndexes[0]]);
     }
 }
 

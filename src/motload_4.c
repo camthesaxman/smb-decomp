@@ -1539,7 +1539,7 @@ const u8 lbl_802F3368[1] = { 0x0E };
 const u8 lbl_802F336C[1] = { 0x0F };
 const u8 lbl_802F3370[1] = { 0x10 };
 
-const struct Struct80116F18 lbl_80116F18[] =
+const struct ChildJointList lbl_80116F18[] =
 {
     { ARRAY_COUNT(lbl_802F3340), lbl_802F3340 },
     { ARRAY_COUNT(lbl_802F3348), lbl_802F3348 },
@@ -1575,7 +1575,7 @@ const u8 lbl_80116FD4[] = { 0x0E };
 const u8 lbl_80116FD8[] = { 0x0F };
 const u8 lbl_80116FDC[] = { 0x10 };
 
-const struct Struct80116F18 lbl_80116FE0[] =
+const struct ChildJointList lbl_80116FE0[] =
 {
     { ARRAY_COUNT(lbl_80116FAC), lbl_80116FAC },
     { ARRAY_COUNT(lbl_80116FB4), lbl_80116FB4 },
@@ -1598,7 +1598,7 @@ const struct Struct80116F18 lbl_80116FE0[] =
 
 const struct MotRotation lbl_80117068 = { -0.555491f, 0.259482f, 0.868701f };
 
-const struct Struct80116F18 *const lbl_80117074[] = { NULL, NULL, lbl_80116F18, lbl_80116FE0 };
+const struct ChildJointList *const lbl_80117074[] = { NULL, NULL, lbl_80116F18, lbl_80116FE0 };
 
 const struct MotRotation *const lbl_80117084[] = { NULL, NULL, &lbl_80116FA0, &lbl_80117068 };
 
@@ -2063,7 +2063,7 @@ void func_80036720(struct Struct8003699C_child_sub *arg0)
     mathutil_mtxA_from_identity();
     mathutil_mtxA_to_mtx(temp_r31->unk168);
     mathutil_mtxA_get_translate_alt2(&temp_r31->unk1CC);
-    func_80035748(temp_r31, temp_r31);
+    u_joint_tree_calc_some_matrix(temp_r31, temp_r31);
 }
 
 void u_create_joints_from_hardcoded_arrays(struct AnimJoint *arg0, u16 arg1, u16 arg2)
@@ -2072,13 +2072,13 @@ void u_create_joints_from_hardcoded_arrays(struct AnimJoint *arg0, u16 arg1, u16
     const u32 *r30 = u_jointFlagLists[arg1];
     const Vec *r29 = lbl_801171FC[arg1];
     const Vec *r28 = lbl_801177AC[arg2];
-    const struct Struct80116F18 *r27 = lbl_80117074[arg1];
+    const struct ChildJointList *childList = lbl_80117074[arg1];
     const struct MotRotation *rotation = lbl_80117084[arg1];
     int r25;
     u8 r5;
 
     mathutil_mtxA_from_identity();
-    arg0->unk1A0 = -1;
+    arg0->parentIdx = -1;
 
     r25 = 0;
     while (1)
@@ -2096,10 +2096,10 @@ void u_create_joints_from_hardcoded_arrays(struct AnimJoint *arg0, u16 arg1, u16
             rotation++;
             mathutil_mtxA_pop();
         }
-        arg0->unk4C = r27->length;
-        arg0->unk50 = (void *)r27->unk4;
-        for (r5 = 0; r5 < arg0->unk4C; r5++)
-            r31[arg0->unk50[r5]].unk1A0 = (u8)r25;
+        arg0->childCount = childList->count;
+        arg0->childIndexes = childList->children;
+        for (r5 = 0; r5 < arg0->childCount; r5++)
+            r31[arg0->childIndexes[r5]].parentIdx = (u8)r25;
         if (arg0->flags & 2)
         {
             arg0->unk4 = *r29++;
@@ -2110,7 +2110,7 @@ void u_create_joints_from_hardcoded_arrays(struct AnimJoint *arg0, u16 arg1, u16
         if (*r30 == 0)
             break;
         arg0++;
-        r27++;
+        childList++;
         r25++;
     }
     arg0++;

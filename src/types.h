@@ -197,14 +197,14 @@ struct AnimJoint
     Vec unk4;
     Vec unk10;
     Mtx unk1C;
-    u32 unk4C;
-    const u8 *unk50;
+    /*0x4C*/ u32 childCount;
+    /*0x50*/ const u8 *childIndexes;  // indexes of joints that are attached to this one
     /*0x54*/ struct MotionChannel channels[6];  // x, y, z, rotX, rotY, rotZ
     u8 fillerB4[0x168-0xB4];
     Mtx unk168;
     float unk198;
     float unk19C;
-    s32 unk1A0;
+    /*0x1A0*/ s32 parentIdx;  // index of this joint's parent, or -1 if this is the root
     Vec unk1A4;
     Quaternion unk1B0;
     Point3d unk1C0;
@@ -272,12 +272,6 @@ struct MotRotation
     float rotX;
     float rotY;
     float rotZ;
-};
-
-struct Struct80116F18
-{
-    u32 length;
-    const u8 *unk4;
 };
 
 struct Ape_child
@@ -566,11 +560,17 @@ struct MotDat
     float *values;
 };  // size = 0x18
 
+struct ChildJointList
+{
+    u32 count;
+    const u8 *children;
+};
+
 struct MotSkeletonEntry1
 {
     void *unk0;
-    struct Struct80116F18 *unk4;
-    struct MotRotation *rotations;
+    /*0x04*/ struct ChildJointList *childLists;
+    /*0x08*/ struct MotRotation *rotations;
     Vec *unkC;
     Vec *unk10;
     /*0x14*/ char *name;  // skeleton name?
