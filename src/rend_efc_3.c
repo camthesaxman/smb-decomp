@@ -8,11 +8,13 @@
 #include "ball.h"
 #include "event.h"
 #include "gxcache.h"
+#include "gxutil.h"
 #include "item.h"
 #include "light.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "ord_tbl.h"
+#include "rend_efc.h"
 #include "stobj.h"
 #include "stage.h"
 
@@ -76,17 +78,17 @@ struct BGPilotWork
     Mtx unk1BC;
 };
 
-void func_800993A8(struct Struct802BA1A0 *arg0);
-void func_800994A8(struct Struct802BA1A0 *arg0);
-void func_80099518(struct Struct802BA1A0 *arg0);
-void func_80099968(int arg0, struct Struct802BA1A0 *arg1);
-void func_800999CC(int unused, struct Struct802BA1A0 *arg1);
-void func_8009A13C(int arg0, struct Struct802BA1A0 *arg1);
-void func_8009A2A4(struct Struct802BA1A0 *arg0);
+void func_800993A8(struct RenderEffect *rendEfc);
+void func_800994A8(struct RenderEffect *rendEfc);
+void func_80099518(struct RenderEffect *rendEfc);
+void func_80099968(int arg0, struct RenderEffect *arg1);
+void func_800999CC(int unused, struct RenderEffect *arg1);
+void func_8009A13C(int arg0, struct RenderEffect *arg1);
+void func_8009A2A4(struct RenderEffect *rendEfc);
 void lbl_8009A31C(struct EnvMapSomething *arg0);
-void func_8009A6E0(struct Struct802BA1A0 *arg0);
+void func_8009A6E0(struct RenderEffect *rendEfc);
 
-void (*lbl_801D3D78[])() =
+struct RenderEffectFuncs lbl_801D3D78 =
 {
     func_800993A8,
     func_800994A8,
@@ -94,53 +96,53 @@ void (*lbl_801D3D78[])() =
     func_80099968,
 };
 
-void func_800993A8(struct Struct802BA1A0 *arg0)
+void func_800993A8(struct RenderEffect *rendEfc)
 {
-    struct Struct800993A8 *temp_r3;
+    struct Struct800993A8 *work;
     size_t bufSize;
 
-    arg0->unk8 = 3;
-    temp_r3 = OSAllocFromHeap(stageHeap, 0x3090U);
-    if (temp_r3 == NULL)
+    rendEfc->enableFlags = 3;
+    work = OSAllocFromHeap(stageHeap, sizeof(*work));
+    if (work == NULL)
     {
-        arg0->unk0 = 0;
+        rendEfc->state = 0;
         return;
     }
-    memset(temp_r3, 0, 0x3090U);
-    arg0->unk10 = (void *)temp_r3;
-    temp_r3->unk20 = 4;
-    temp_r3->unk28 = 0x280;
-    temp_r3->unk2A = 0x1C0;
-    temp_r3->unk24 = lbl_802F1B40;
-    bufSize = GXGetTexBufferSize(0x100U, 0x100U, 3U, 0U, 0U);
-    temp_r3->unk4C = OSAllocFromHeap(stageHeap, bufSize);
-    if (temp_r3->unk4C == NULL)
+    memset(work, 0, sizeof(*work));
+    rendEfc->work = work;
+    work->unk20 = 4;
+    work->unk28 = 0x280;
+    work->unk2A = 0x1C0;
+    work->unk24 = lbl_802F1B40;
+    bufSize = GXGetTexBufferSize(256, 256, GX_TF_IA8, GX_FALSE, 0U);
+    work->unk4C = OSAllocFromHeap(stageHeap, bufSize);
+    if (work->unk4C == NULL)
     {
-        OSFreeToHeap(stageHeap, temp_r3);
-        arg0->unk0 = 0;
+        OSFreeToHeap(stageHeap, work);
+        rendEfc->state = 0;
         return;
     }
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_to_mtx(temp_r3->unk50);
-    temp_r3->unk84 = 0x60;
-    ((struct BGPilotWork *)backgroundInfo.work)->unkE0 = temp_r3;
+    mathutil_mtxA_to_mtx(work->unk50);
+    work->unk84 = 0x60;
+    ((struct BGPilotWork *)backgroundInfo.work)->unkE0 = work;
 }
 
-void func_800994A8(struct Struct802BA1A0 *arg0)
+void func_800994A8(struct RenderEffect *rendEfc)
 {
-    struct Struct800993A8 *temp_r3 = (void *)arg0->unk10;
+    struct Struct800993A8 *temp_r3 = (void *)rendEfc->work;
 
     if (temp_r3 != NULL)
     {
         if (temp_r3->unk4C != NULL)
             OSFreeToHeap(stageHeap, temp_r3->unk4C);
-        OSFreeToHeap(stageHeap, arg0->unk10);
+        OSFreeToHeap(stageHeap, rendEfc->work);
     }
     if (backgroundInfo.bgId == BG_TYPE_PIL)
         ((struct BGPilotWork *)backgroundInfo.work)->unkE0 = NULL;
 }
 
-void func_80099518(struct Struct802BA1A0 *arg0)
+void func_80099518(struct RenderEffect *rendEfc)
 {
     Vec sp18;
     Vec spC;
@@ -156,7 +158,7 @@ void func_80099518(struct Struct802BA1A0 *arg0)
     if (gamePauseStatus & 0xA)
         return;
 
-    temp_r31 = (void *)arg0->unk10;
+    temp_r31 = (void *)rendEfc->work;
     temp_r29 = backgroundInfo.work;
     temp_r28 = &ballInfo[modeCtrl.currPlayer];
 
@@ -221,7 +223,7 @@ void func_80099518(struct Struct802BA1A0 *arg0)
     }
 }
 
-void func_80099968(int arg0, struct Struct802BA1A0 *arg1)
+void func_80099968(int arg0, struct RenderEffect *arg1)
 {
     switch (arg0)
     {
@@ -234,7 +236,7 @@ void func_80099968(int arg0, struct Struct802BA1A0 *arg1)
     }
 }
 
-void func_800999CC(int arg0, struct Struct802BA1A0 *arg1)
+void func_800999CC(int arg0, struct RenderEffect *arg1)
 {
     struct Camera cameraBackup;
     Vec sp11C;
@@ -244,7 +246,7 @@ void func_800999CC(int arg0, struct Struct802BA1A0 *arg1)
     int r31;
 
     camera_apply_viewport(modeCtrl.currPlayer);
-    temp_r30 = (void *)arg1->unk10;
+    temp_r30 = (void *)arg1->work;
     camera = currentCameraStructPtr;
     cameraBackup = *camera;  // save camera
     push_light_group();
@@ -401,9 +403,9 @@ void func_800999CC(int arg0, struct Struct802BA1A0 *arg1)
     pop_light_group();
 }
 
-void func_8009A13C(int arg0, struct Struct802BA1A0 *arg1)
+void func_8009A13C(int arg0, struct RenderEffect *arg1)
 {
-    struct Struct800993A8 *temp_r31 = (void *)arg1->unk10;
+    struct Struct800993A8 *temp_r31 = (void *)arg1->work;
     u8 unused[8];
 
     func_8009AC0C(0);
@@ -421,13 +423,13 @@ void func_8009A13C(int arg0, struct Struct802BA1A0 *arg1)
     camera_apply_viewport(modeCtrl.currPlayer);
 }
 
-void func_8009A2A4(struct Struct802BA1A0 *arg0)
+void func_8009A2A4(struct RenderEffect *rendEfc)
 {
     struct Struct800993A8 *temp_r31;
     struct BGPilotWork *temp_r30;
     void (*temp_r30_2)(struct EnvMapSomething *);
 
-    temp_r31 = (void *)arg0->unk10;
+    temp_r31 = (void *)rendEfc->work;
     temp_r30 = (struct BGPilotWork *)backgroundInfo.work;
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(temp_r31->unk50);
@@ -486,13 +488,13 @@ void lbl_8009A31C(struct EnvMapSomething *arg0)
     arg0->unkC = sp10;
 }
 
-void func_8009A6E0(struct Struct802BA1A0 *arg0)
+void func_8009A6E0(struct RenderEffect *rendEfc)
 {
     struct Struct800993A8 *temp_r31;
     int i;
     struct Struct800993A8_sub *var_r30;
 
-    temp_r31 = (void *)arg0->unk10;
+    temp_r31 = (void *)rendEfc->work;
     mathutil_mtxA_from_mtxB();
     mathutil_mtxA_mult_right(temp_r31->unk50);
     avdisp_set_z_mode(1U, GX_ALWAYS, 0U);

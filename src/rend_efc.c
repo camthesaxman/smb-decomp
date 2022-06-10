@@ -8,41 +8,45 @@
 #include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
+#include "rend_efc.h"
 
-struct Struct802BA1A0_child
+static struct RenderEffect s_renderEffects[4];
+
+static struct RenderEffectFuncs s_renderEffectFuncs[] =
 {
-    void (*unk0)(struct Struct802BA1A0 *);
-    void (*unk4)(struct Struct802BA1A0 *);
-    void (*unk8)(struct Struct802BA1A0 *);
-    void (*unkC)(int, struct Struct802BA1A0 *);
+    { NULL,                       NULL,                          NULL,                       NULL                       },
+    { rend_efc_blur_init,         rend_efc_blur_destroy,         rend_efc_blur_main,         rend_efc_blur_draw         },
+    { rend_efc_motion_blur_init,  rend_efc_motion_blur_destroy,  rend_efc_motion_blur_main,  rend_efc_motion_blur_draw  },
+    { rend_efc_focus_init,        rend_efc_focus_destroy,        rend_efc_focus_main,        rend_efc_focus_draw        },
+    { rend_efc_kaleidoscope_init, rend_efc_kaleidoscope_destroy, rend_efc_kaleidoscope_main, rend_efc_kaleidoscope_draw },
+    { rend_efc_flat_mirror_init,  rend_efc_flat_mirror_destroy,  rend_efc_flat_mirror_main,  rend_efc_flat_mirror_draw  },
+    { rend_efc_wavy_mirror_init,  rend_efc_wavy_mirror_destroy,  rend_efc_wavy_mirror_main,  rend_efc_wavy_mirror_draw  },
 };
-
-struct Struct802BA1A0 lbl_802BA1A0[4];
 
 void ev_rend_efc_init(void)
 {
-    memset(lbl_802BA1A0, 0, sizeof(lbl_802BA1A0));
+    memset(s_renderEffects, 0, sizeof(s_renderEffects));
 }
 
 void ev_rend_efc_main(void)
 {
     int i;
-    struct Struct802BA1A0 *r29 = lbl_802BA1A0;
+    struct RenderEffect *rendEfc = s_renderEffects;
 
-    for (i = 4; i > 0; i--, r29++)
+    for (i = 4; i > 0; i--, rendEfc++)
     {
-        if (r29->unk0 != 0)
+        if (rendEfc->state != 0)
         {
-            struct Struct802BA1A0_child *r31 = r29->unk14;
-            void (*r0)(struct Struct802BA1A0 *) = r31->unk8;
+            struct RenderEffectFuncs *funcs = rendEfc->funcs;
+            void (*main)(struct RenderEffect *) = funcs->main;
 
-            if (r0 != NULL)
-                r0(r29);
-            if (r29->unk0 == 3)
+            if (main != NULL)
+                main(rendEfc);
+            if (rendEfc->state == 3)
             {
-                if (r31->unk4 != NULL)
-                    r31->unk4(r29);
-                r29->unk0 = 0;
+                if (funcs->destroy != NULL)
+                    funcs->destroy(rendEfc);
+                rendEfc->state = 0;
             }
         }
     }
@@ -51,147 +55,140 @@ void ev_rend_efc_main(void)
 void ev_rend_efc_dest(void)
 {
     int i;
-    struct Struct802BA1A0 *r29 = lbl_802BA1A0;
+    struct RenderEffect *rendEfc = s_renderEffects;
 
-    for (i = 4; i > 0; i--, r29++)
+    for (i = 4; i > 0; i--, rendEfc++)
     {
-        if (r29->unk0 != 0)
+        if (rendEfc->state != 0)
         {
-            void (*r0)(struct Struct802BA1A0 *) = r29->unk14->unk4;
+            void (*destroy)(struct RenderEffect *) = rendEfc->funcs->destroy;
 
-            if (r0 != NULL)
-                r0(r29);
-            r29->unk0 = 0;
+            if (destroy != NULL)
+                destroy(rendEfc);
+            rendEfc->state = 0;
         }
     }
 }
 
-void func_80095398(int arg0)
+void rend_efc_draw(int enableFlags)
 {
     int i;
-    struct Struct802BA1A0 *r29 = lbl_802BA1A0;
-    u16 r31 = 1 << u_cameraId1;
+    struct RenderEffect *rendEfc = s_renderEffects;
+    u16 cameraMask = 1 << u_cameraId1;
 
-    for (i = 4; i > 0; i--, r29++)
+    for (i = 4; i > 0; i--, rendEfc++)
     {
-        if (r29->unk0 != 0 && (r29->unk8 & arg0) && (r29->unk6 & r31))
+        if (rendEfc->state != 0 && (rendEfc->enableFlags & enableFlags) && (rendEfc->cameraMask & cameraMask))
         {
-            void (*r0)(int, struct Struct802BA1A0 *) = r29->unk14->unkC;
+            void (*draw)(int, struct RenderEffect *) = rendEfc->funcs->draw;
 
-            if (r0 != NULL)
-                r0(arg0, r29);
+            if (draw != NULL)
+                draw(enableFlags, rendEfc);
         }
     }
 }
 
-struct Struct802BA1A0_child lbl_801D3CE8[] =
+void rend_efc_enable(int index, int type, struct RenderEffect *params)
 {
-    { NULL,          NULL,          NULL,          NULL          },
-    { func_8009557C, func_800955FC, func_8009562C, func_80095630 },
-    { func_80095C6C, func_80095D3C, func_80095D90, func_80095D94 },
-    { func_80096134, func_80096228, func_80096258, func_800963AC },
-    { func_80096A30, func_80096B3C, func_80096BA8, func_80096BE0 },
-    { func_800973A0, func_80097664, func_800976B8, func_800976BC },
-    { func_8009826C, func_800983A0, func_8009840C, func_80098410 },
-};
-
-void func_8009544C(int arg0, int arg1, struct Struct802BA1A0 *arg2)
-{
-    struct Struct802BA1A0 *temp_r3;
-    void (*temp_r0)(struct Struct802BA1A0 *);
+    struct RenderEffect *rendEfc;
 
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
     {
-        temp_r3 = &lbl_802BA1A0[arg0];
-        if (temp_r3->unk0 != 0)
+        rendEfc = &s_renderEffects[index];
+        if (rendEfc->state != 0)
         {
-            temp_r0 = temp_r3->unk14->unk4;
-            if (temp_r0 != NULL)
-                temp_r0(temp_r3);
-            temp_r3->unk0 = 0;
+            void (*destroy)(struct RenderEffect *) = rendEfc->funcs->destroy;
+            if (destroy != NULL)
+                destroy(rendEfc);
+            rendEfc->state = 0;
         }
-        memcpy(temp_r3, arg2, sizeof(*temp_r3));
-        if (arg1 != 0)
-            temp_r3->unk14 = &lbl_801D3CE8[arg1];
-        if (temp_r3->unk14 == NULL)
+        memcpy(rendEfc, params, sizeof(*rendEfc));
+        if (type != 0)
+            rendEfc->funcs = &s_renderEffectFuncs[type];
+        if (rendEfc->funcs == NULL)
         {
-            temp_r3->unk0 = 0;
+            rendEfc->state = 0;
             return;
         }
-        temp_r3->unk0 = 1;
-        if (temp_r3->unk14->unk0 != NULL)
-            temp_r3->unk14->unk0(temp_r3);
-        if (temp_r3->unk0 == 3)
+        rendEfc->state = 1;
+        if (rendEfc->funcs->init != NULL)
+            rendEfc->funcs->init(rendEfc);
+        if (rendEfc->state == 3)
         {
-            if (temp_r3->unk14->unk4 != NULL)
-                temp_r3->unk14->unk4(temp_r3);
-            temp_r3->unk0 = 0;
+            if (rendEfc->funcs->destroy != NULL)
+                rendEfc->funcs->destroy(rendEfc);
+            rendEfc->state = 0;
         }
     }
 }
 
-void func_8009557C(struct Struct802BA1A0 *arg0)
+struct RenderEffectBlur
 {
-    struct Struct8009557C *temp_r3;
+    GXTexObj texObj;
+    void *imageBuf;
+};
 
-    arg0->unk8 = 8;
-    temp_r3 = OSAlloc(sizeof(*temp_r3));
-    if (temp_r3 == NULL)
+void rend_efc_blur_init(struct RenderEffect *rendEfc)
+{
+    struct RenderEffectBlur *work;
+
+    rendEfc->enableFlags = 8;
+    work = OSAlloc(sizeof(*work));
+    if (work == NULL)
     {
-        arg0->unk10 = NULL;
-        arg0->unk0 = 0;
+        rendEfc->work = NULL;
+        rendEfc->state = 0;
         return;
     }
-    arg0->unk10 = temp_r3;
-    temp_r3->unk20 = lbl_802F1B40;
-    GXInitTexObj(&temp_r3->unk0, temp_r3->unk20, 640, 448, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0);
+    rendEfc->work = work;
+    work->imageBuf = lbl_802F1B40;
+    GXInitTexObj(&work->texObj, work->imageBuf, 640, 448, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0);
 }
 
-void func_800955FC(struct Struct802BA1A0 *arg0)
+void rend_efc_blur_destroy(struct RenderEffect *rendEfc)
 {
-    if (arg0->unk10 != NULL)
-        OSFree(arg0->unk10);
+    if (rendEfc->work != NULL)
+        OSFree(rendEfc->work);
 }
 
-void func_8009562C(struct Struct802BA1A0 *arg0) {}
+void rend_efc_blur_main(struct RenderEffect *rendEfc) {}
 
-void func_80095630(int arg0, struct Struct802BA1A0 *arg1)
+void rend_efc_blur_draw(int arg0, struct RenderEffect *rendEfc)
 {
+    float fbWidth;
+    float fbHeight;
     u16 left;
     u16 top;
     u16 width;
     u16 height;
-    struct Struct8009557C *temp_r29;
+    struct RenderEffectBlur *work;
     float temp_f31;
     float temp_f31_2;
     float temp_f30;
     float temp_f30_2;
     float temp_f29;
     float temp_f28;
-    float temp_f4;
-    float temp_f5;
     u8 unused[8];
 
-    temp_r29 = arg1->unk10;
+    work = rendEfc->work;
 
-    temp_f5 = currRenderMode->fbWidth;
-    temp_f4 = currRenderMode->xfbHeight;
-    left = temp_f5 * currentCameraStructPtr->sub28.vp.left;
-    top = temp_f4 * currentCameraStructPtr->sub28.vp.top;
-    width = temp_f5 * currentCameraStructPtr->sub28.vp.width;
-    height = temp_f4 * currentCameraStructPtr->sub28.vp.height;
-
-    left = left & ~1;
-    top = top & ~1;
-    width = (width + 1) & ~1;
+    fbWidth  = currRenderMode->fbWidth;
+    fbHeight = currRenderMode->xfbHeight;
+    left   = fbWidth * currentCameraStructPtr->sub28.vp.left;
+    top    = fbHeight * currentCameraStructPtr->sub28.vp.top;
+    width  = fbWidth * currentCameraStructPtr->sub28.vp.width;
+    height = fbHeight * currentCameraStructPtr->sub28.vp.height;
+    left   = left & ~1;
+    top    = top & ~1;
+    width  = (width + 1) & ~1;
     height = (height + 1) & ~1;
 
     GXSetTexCopySrc(left, top, width, height);
     GXSetTexCopyDst(width, height, 4, 0);
-    GXCopyTex(temp_r29->unk20, 0);
-    GXInitTexObj(&temp_r29->unk0, temp_r29->unk20, width, height, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0U);
+    GXCopyTex(work->imageBuf, 0);
+    GXInitTexObj(&work->texObj, work->imageBuf, width, height, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0U);
     GXSetNumChans(0);
-    GXLoadTexObj_cached(&temp_r29->unk0, GX_TEXMAP0);
+    GXLoadTexObj_cached(&work->texObj, GX_TEXMAP0);
 
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 30);
     GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
@@ -272,61 +269,61 @@ void func_80095630(int arg0, struct Struct802BA1A0 *arg1)
     GXSetZMode_cached(1, GX_LEQUAL, 1);
 }
 
-void func_80095C6C(struct Struct802BA1A0 *arg0)
+void rend_efc_motion_blur_init(struct RenderEffect *rendEfc)
 {
-    struct Struct8009557C *temp_r3;
+    struct RenderEffectBlur *work;
     u32 bufSize;
 
-    arg0->unk8 = 2;
-    temp_r3 = OSAlloc(sizeof(*temp_r3));
-    if (temp_r3 == NULL)
+    rendEfc->enableFlags = 2;
+    work = OSAlloc(sizeof(*work));
+    if (work == NULL)
     {
-        arg0->unk0 = 0;
-        arg0->unk10 = NULL;
+        rendEfc->state = 0;
+        rendEfc->work = NULL;
         return;
     }
-    arg0->unk10 = temp_r3;
-    bufSize = GXGetTexBufferSize(640, 448, 6, 0, 0);
-    temp_r3->unk20 = OSAlloc(bufSize);
-    if (temp_r3->unk20 == NULL)
+    rendEfc->work = work;
+    bufSize = GXGetTexBufferSize(640, 448, GX_TF_RGBA8, GX_FALSE, 0);
+    work->imageBuf = OSAlloc(bufSize);
+    if (work->imageBuf == NULL)
     {
-        OSFree(temp_r3);
-        arg0->unk0 = 0;
+        OSFree(work);
+        rendEfc->state = 0;
         return;
     }
-    GXInitTexObj(&temp_r3->unk0, temp_r3->unk20, 640, 448, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, 0);
+    GXInitTexObj(&work->texObj, work->imageBuf, 640, 448, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, 0);
 }
 
-void func_80095D3C(struct Struct802BA1A0 *arg0)
+void rend_efc_motion_blur_destroy(struct RenderEffect *rendEfc)
 {
-    if (arg0->unk10 != NULL)
+    if (rendEfc->work != NULL)
     {
-        if (arg0->unk10->unk20 != NULL)
-            OSFree(arg0->unk10->unk20);
-        OSFree(arg0->unk10);
+        if (((struct RenderEffectBlur *)rendEfc->work)->imageBuf != NULL)
+            OSFree(((struct RenderEffectBlur *)rendEfc->work)->imageBuf);
+        OSFree(rendEfc->work);
     }
 }
 
-void func_80095D90(struct Struct802BA1A0 *arg0) {}
+void rend_efc_motion_blur_main(struct RenderEffect *rendEfc) {}
 
-void func_80095D94(int arg0, struct Struct802BA1A0 *arg1)
+void rend_efc_motion_blur_draw(int arg0, struct RenderEffect *rendEfc)
 {
-    GXColor sp10;
+    GXColor color;
     Mtx44 sp18;
     u8 unused[4];
-    struct Struct8009557C *temp_r31;
+    struct RenderEffectBlur *work;
     float temp_f30;
     float temp_f31;
 
-    temp_r31 = arg1->unk10;
+    work = rendEfc->work;
     MTXPerspective(sp18, 59.996338f, 1.3333334f, 0.1f, 20000.0f);
     GXSetProjection(sp18, GX_PERSPECTIVE);
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
     GXSetNumChans(0);
-    GXLoadTexObj_cached(&temp_r31->unk0, GX_TEXMAP0);
-    sp10.a = 192;
-    GXSetTevKColor_cached(GX_KCOLOR0, sp10);
+    GXLoadTexObj_cached(&work->texObj, GX_TEXMAP0);
+    color.a = 192;
+    GXSetTevKColor_cached(GX_KCOLOR0, color);
     GXSetTevKAlphaSel_cached(GX_TEVSTAGE0, GX_TEV_KASEL_K0_A);
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 60);
     GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
@@ -362,8 +359,8 @@ void func_80095D94(int arg0, struct Struct802BA1A0 *arg1)
 
     GXSetTexCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
     GXSetTexCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight, 6, 0);
-    GXCopyTex(temp_r31->unk20, 0);
-    GXInitTexObj(&temp_r31->unk0, temp_r31->unk20, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, 0U);
+    GXCopyTex(work->imageBuf, 0);
+    GXInitTexObj(&work->texObj, work->imageBuf, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_RGBA8, GX_CLAMP, GX_CLAMP, 0U);
     GXSetZMode_cached(1, GX_LEQUAL, 1);
     camera_apply_viewport(u_cameraId1);
 }
@@ -376,14 +373,14 @@ struct Struct8009557C_alt_sub
     float unkC;
 };
 
-struct Struct8009557C_alt
+struct RenderEffectFocus
 {
     GXTexObj unk0;
     void *unk20;
     struct Struct8009557C_alt_sub unk24[4];
 };
 
-void func_80096134_inline(struct Struct8009557C_alt *ptr)
+void func_80096134_inline(struct RenderEffectFocus *ptr)
 {
     int i;
     struct Camera *camera = cameraInfo;
@@ -397,39 +394,39 @@ void func_80096134_inline(struct Struct8009557C_alt *ptr)
     }
 }
 
-void func_80096134(struct Struct802BA1A0 *arg0)
+void rend_efc_focus_init(struct RenderEffect *rendEfc)
 {
-    struct Struct8009557C_alt *temp_r3;
+    struct RenderEffectFocus *work;
 
-    arg0->unk8 = 8;
-    temp_r3 = OSAlloc(sizeof(*temp_r3));
-    if (temp_r3 == NULL)
+    rendEfc->enableFlags = 8;
+    work = OSAlloc(sizeof(*work));
+    if (work == NULL)
     {
-        arg0->unk0 = 0;
-        arg0->unk10 = NULL;
+        rendEfc->state = 0;
+        rendEfc->work = NULL;
         return;
     }
-    arg0->unk10 = (void *)temp_r3;
-    temp_r3->unk20 = lbl_802F1B40;
-    GXInitTexObj(&temp_r3->unk0, temp_r3->unk20, 640, 448, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0);
-    func_80096134_inline(temp_r3);
+    rendEfc->work = work;
+    work->unk20 = lbl_802F1B40;
+    GXInitTexObj(&work->unk0, work->unk20, 640, 448, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0);
+    func_80096134_inline(work);
 }
 
-void func_80096228(struct Struct802BA1A0 *arg0)
+void rend_efc_focus_destroy(struct RenderEffect *rendEfc)
 {
-    if (arg0->unk10 != NULL)
-        OSFree(arg0->unk10);
+    if (rendEfc->work != NULL)
+        OSFree(rendEfc->work);
 }
 
-void func_80096258(struct Struct802BA1A0 *arg0)
+void rend_efc_focus_main(struct RenderEffect *rendEfc)
 {
     int i;
     struct Struct8009557C_alt_sub *r30;
     struct Camera *camera;
-    struct Struct8009557C_alt *ptr = (struct Struct8009557C_alt *)arg0->unk10;
+    struct RenderEffectFocus *work = rendEfc->work;
 
     camera = cameraInfo;
-    r30 = ptr->unk24;
+    r30 = work->unk24;
     for (i = 4; i > 0; i--, camera++, r30++)
     {
         int fov = camera->sub28.fov;
@@ -447,7 +444,7 @@ void func_80096258(struct Struct802BA1A0 *arg0)
     }
 }
 
-void func_800963AC(int arg0, struct Struct802BA1A0 *arg1)
+void rend_efc_focus_draw(int arg0, struct RenderEffect *rendEfc)
 {
     float temp_f31;
     float temp_f31_2;
@@ -455,10 +452,10 @@ void func_800963AC(int arg0, struct Struct802BA1A0 *arg1)
     float temp_f30_2;
     float temp_f29;
     float temp_f28;
-    float temp_f4;
-    float temp_f6;
     float var_f31;
-    struct Struct8009557C_alt *temp_r29;
+    struct RenderEffectFocus *work;
+    float fbWidth;
+    float fbHeight;
     u16 left;
     u16 top;
     u16 width;
@@ -468,34 +465,34 @@ void func_800963AC(int arg0, struct Struct802BA1A0 *arg1)
     if ((gamePauseStatus & 0xA))
         return;
 
-    temp_r29 = (void *)arg1->unk10;
+    work = (void *)rendEfc->work;
 
     if (currentCameraStructPtr->unk26 != 5)
         return;
-    var_f31 = temp_r29->unk24[u_cameraId1].unkC;
+    var_f31 = work->unk24[u_cameraId1].unkC;
     if (var_f31 <= 0.0f)
         return;
 
     if (var_f31 > 5.0f)
         var_f31 = 5.0f;
 
-    temp_f6 = currRenderMode->fbWidth;
-    temp_f4 = currRenderMode->xfbHeight;
-    left = temp_f6 * currentCameraStructPtr->sub28.vp.left;
-    top = temp_f4 * currentCameraStructPtr->sub28.vp.top;
-    width = temp_f6 * currentCameraStructPtr->sub28.vp.width;
-    height = temp_f4 * currentCameraStructPtr->sub28.vp.height;
-    left = left & ~1;
-    top = top & ~1;
-    width = (width + 1) & ~1;
+    fbWidth  = currRenderMode->fbWidth;
+    fbHeight = currRenderMode->xfbHeight;
+    left   = fbWidth * currentCameraStructPtr->sub28.vp.left;
+    top    = fbHeight * currentCameraStructPtr->sub28.vp.top;
+    width  = fbWidth * currentCameraStructPtr->sub28.vp.width;
+    height = fbHeight * currentCameraStructPtr->sub28.vp.height;
+    left   = left & ~1;
+    top    = top & ~1;
+    width  = (width + 1) & ~1;
     height = (height + 1) & ~1;
 
     GXSetTexCopySrc(left, top, width, height);
     GXSetTexCopyDst(width, height, 4, 0);
-    GXCopyTex(temp_r29->unk20, 0);
-    GXInitTexObj(&temp_r29->unk0, temp_r29->unk20, width, height, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0U);
+    GXCopyTex(work->unk20, 0);
+    GXInitTexObj(&work->unk0, work->unk20, width, height, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0U);
     GXSetNumChans(0);
-    GXLoadTexObj_cached(&temp_r29->unk0, GX_TEXMAP0);
+    GXLoadTexObj_cached(&work->unk0, GX_TEXMAP0);
     GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, 0x1E);
     GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
     GXSetTevSwapMode_cached(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
@@ -571,7 +568,7 @@ void func_800963AC(int arg0, struct Struct802BA1A0 *arg1)
     GXSetZMode_cached(1, GX_LEQUAL, 1);
 }
 
-struct Struct80096A30
+struct RenderEffectKaleidoscope
 {
     s32 unk0;
     GXTexObj unk4;
@@ -580,70 +577,70 @@ struct Struct80096A30
     void *unk48;
 };
 
-void func_80096A30(struct Struct802BA1A0 *arg0)
+void rend_efc_kaleidoscope_init(struct RenderEffect *rendEfc)
 {
-    struct Struct80096A30 *temp_r3;
+    struct RenderEffectKaleidoscope *work;
     size_t bufSize;
 
-    arg0->unk8 = 2;
-    temp_r3 = OSAlloc(sizeof(*temp_r3));
-    if (temp_r3 == NULL)
+    rendEfc->enableFlags = 2;
+    work = OSAlloc(sizeof(*work));
+    if (work == NULL)
     {
-        arg0->unk0 = 0;
-        arg0->unk10 = NULL;
+        rendEfc->state = 0;
+        rendEfc->work = NULL;
         return;
     }
-    arg0->unk10 = (void *)temp_r3;
-    temp_r3->unk0 = 0;
-    bufSize = GXGetTexBufferSize(640, 448, 5, 0, 0);
-    temp_r3->unk44 = OSAlloc(bufSize);
-    if (temp_r3->unk44 == NULL)
+    rendEfc->work = work;
+    work->unk0 = 0;
+    bufSize = GXGetTexBufferSize(640, 448, GX_TF_RGB5A3, GX_FALSE, 0);
+    work->unk44 = OSAlloc(bufSize);
+    if (work->unk44 == NULL)
     {
-        OSFree(temp_r3);
-        arg0->unk0 = 0;
+        OSFree(work);
+        rendEfc->state = 0;
         return;
     }
-    bufSize = GXGetTexBufferSize(640, 448, 1, 0, 0);
-    temp_r3->unk48 = OSAlloc(bufSize);
-    if (temp_r3->unk48 == NULL)
+    bufSize = GXGetTexBufferSize(640, 448, GX_TF_I8, GX_FALSE, 0);
+    work->unk48 = OSAlloc(bufSize);
+    if (work->unk48 == NULL)
     {
-        OSFree(temp_r3->unk44);
-        OSFree(temp_r3);
-        arg0->unk0 = 0;
+        OSFree(work->unk44);
+        OSFree(work);
+        rendEfc->state = 0;
     }
 }
 
-void func_80096B3C(struct Struct802BA1A0 *arg0)
+void rend_efc_kaleidoscope_destroy(struct RenderEffect *rendEfc)
 {
-    struct Struct80096A30 *temp_r3 = (void *)arg0->unk10;
+    struct RenderEffectKaleidoscope *work = (void *)rendEfc->work;
 
-    if (temp_r3 != NULL)
+    if (work != NULL)
     {
-        if (temp_r3->unk44 != NULL)
-            OSFree(temp_r3->unk44);
-        if (((struct Struct80096A30 *)arg0->unk10)->unk48 != NULL)
-            OSFree(((struct Struct80096A30 *)arg0->unk10)->unk48);
-        OSFree(arg0->unk10);
+        if (work->unk44 != NULL)
+            OSFree(work->unk44);
+        if (((struct RenderEffectKaleidoscope *)rendEfc->work)->unk48 != NULL)
+            OSFree(((struct RenderEffectKaleidoscope *)rendEfc->work)->unk48);
+        OSFree(rendEfc->work);
     }
 }
 
-void func_80096BA8(struct Struct802BA1A0 *arg0)
+void rend_efc_kaleidoscope_main(struct RenderEffect *rendEfc)
 {
-    struct Struct80096A30 *temp_r5 = (void *)arg0->unk10;
+    struct RenderEffectKaleidoscope *work = (void *)rendEfc->work;
 
     if (controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
     {
-        if (++temp_r5->unk0 >= 3)
-            temp_r5->unk0 = 0;
+        if (++work->unk0 >= 3)
+            work->unk0 = 0;
     }
 }
 
-void func_80096BE0(int arg0, struct Struct802BA1A0 *arg1)
+void rend_efc_kaleidoscope_draw(int arg0, struct RenderEffect *rendEfc)
 {
     GXColor color;
     Mtx44 mtx;
     u8 unused[4];
-    struct Struct80096A30 *temp_r31 = (void *)arg1->unk10;
+    struct RenderEffectKaleidoscope *work = (void *)rendEfc->work;
     float temp_f30;
     float temp_f31;
 
@@ -652,39 +649,39 @@ void func_80096BE0(int arg0, struct Struct802BA1A0 *arg1)
     GXSetViewport(0.0f, 0.0f, currRenderMode->fbWidth, currRenderMode->xfbHeight, 0.0f, 1.0f);
     GXSetScissor(0U, 0U, currRenderMode->fbWidth, currRenderMode->xfbHeight);
     GXSetNumChans(0U);
-    switch (temp_r31->unk0)
+    switch (work->unk0)
     {
     case 0:
-        GXSetTexCopySrc(0xC0, 0x70, 0x100U, 0x100U);
-        GXSetTexCopyDst(0x100U, 0x100U, 5, 0);
-        GXCopyTex(temp_r31->unk44, 0);
-        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, 0x100U, 0x100U, GX_TF_RGB5A3, GX_REPEAT, GX_REPEAT, 0U);
+        GXSetTexCopySrc(192, 112, 256, 256);
+        GXSetTexCopyDst(256, 256, 5, 0);
+        GXCopyTex(work->unk44, 0);
+        GXInitTexObj(&work->unk4, work->unk44, 256, 256, GX_TF_RGB5A3, GX_REPEAT, GX_REPEAT, 0U);
         break;
     case 1:
-        GXSetTexCopySrc(0xC0, 0x70, 0x100U, 0x100U);
-        GXSetTexCopyDst(0x100U, 0x100U, 5, 0);
-        GXCopyTex(temp_r31->unk44, 0);
-        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, 0x100U, 0x100U, GX_TF_RGB5A3, GX_MIRROR, GX_MIRROR, 0U);
+        GXSetTexCopySrc(192, 112, 256, 256);
+        GXSetTexCopyDst(256, 256, 5, 0);
+        GXCopyTex(work->unk44, 0);
+        GXInitTexObj(&work->unk4, work->unk44, 256, 256, GX_TF_RGB5A3, GX_MIRROR, GX_MIRROR, 0U);
         break;
     case 2:
         GXSetTexCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
         GXSetTexCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight, 5, 0);
-        GXCopyTex(temp_r31->unk44, 0);
-        GXInitTexObj(&temp_r31->unk4, temp_r31->unk44, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_RGB5A3, GX_CLAMP, GX_CLAMP, 0U);
+        GXCopyTex(work->unk44, 0);
+        GXInitTexObj(&work->unk4, work->unk44, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_RGB5A3, GX_CLAMP, GX_CLAMP, 0U);
         GXSetTexCopySrc(0, 0, currRenderMode->fbWidth, currRenderMode->xfbHeight);
         GXSetTexCopyDst(currRenderMode->fbWidth, currRenderMode->xfbHeight, 1, 0);
-        GXCopyTex(temp_r31->unk48, 0);
-        GXInitTexObj(&temp_r31->unk24, temp_r31->unk48, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_I8, GX_CLAMP, GX_CLAMP, 0U);
+        GXCopyTex(work->unk48, 0);
+        GXInitTexObj(&work->unk24, work->unk48, currRenderMode->fbWidth, currRenderMode->xfbHeight, GX_TF_I8, GX_CLAMP, GX_CLAMP, 0U);
         break;
     }
-    switch (temp_r31->unk0)
+    switch (work->unk0)
     {
     case 0:
     case 1:
-        GXLoadTexObj_cached(&temp_r31->unk4, GX_TEXMAP0);
+        GXLoadTexObj_cached(&work->unk4, GX_TEXMAP0);
         break;
     case 2:
-        GXLoadTexObj_cached(&temp_r31->unk24, GX_TEXMAP0);
+        GXLoadTexObj_cached(&work->unk24, GX_TEXMAP0);
         break;
     }
     color.a = 0xFF;
@@ -705,12 +702,12 @@ void func_80096BE0(int arg0, struct Struct802BA1A0 *arg1)
     GXSetZMode_cached(0, GX_ALWAYS, 0);
     GXSetCullMode_cached(GX_CULL_BACK);
     func_8009AC8C();
-    gxutil_set_vtx_attrs(0x2200);
+    gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_TEX0));
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
     temp_f30 = mathutil_tan(0x1555U);
     temp_f31 = 1.3333334f * temp_f30;
-    switch (temp_r31->unk0)
+    switch (work->unk0)
     {
     case 0:
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
@@ -748,7 +745,7 @@ void func_80096BE0(int arg0, struct Struct802BA1A0 *arg1)
         GXTexCoord2f32(0.0f, 1.0f);
         GXEnd();
 
-        GXLoadTexObj_cached(&temp_r31->unk4, GX_TEXMAP0);
+        GXLoadTexObj_cached(&work->unk4, GX_TEXMAP0);
 
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition3f32(0.1 + -temp_f31, temp_f30 - 0.075, -1.0f);

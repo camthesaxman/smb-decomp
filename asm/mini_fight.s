@@ -11425,7 +11425,7 @@ lbl_0000AC3C:
 /* 0000AC8C 2C000002 */ cmpwi r0, 2
 /* 0000AC90 4082000C */ bne lbl_0000AC9C
 /* 0000AC94 38600004 */ li r3, 4
-/* 0000AC98 4BFF54CD */ bl func_80095398
+/* 0000AC98 4BFF54CD */ bl rend_efc_draw
 lbl_0000AC9C:
 /* 0000AC9C 4BFF54C9 */ bl draw_monkey
 /* 0000ACA0 881F0018 */ lbz r0, 0x18(r31)
@@ -11441,7 +11441,7 @@ lbl_0000ACBC:
 /* 0000ACC0 2C000002 */ cmpwi r0, 2
 /* 0000ACC4 4082000C */ bne lbl_0000ACD0
 /* 0000ACC8 38600010 */ li r3, 0x10
-/* 0000ACCC 4BFF5499 */ bl func_80095398
+/* 0000ACCC 4BFF5499 */ bl rend_efc_draw
 lbl_0000ACD0:
 /* 0000ACD0 4BFF5495 */ bl func_80094A34
 /* 0000ACD4 881F01C8 */ lbz r0, 0x1c8(r31)
@@ -11486,7 +11486,7 @@ lbl_0000AD54:
 /* 0000AD58 2C000002 */ cmpwi r0, 2
 /* 0000AD5C 4082000C */ bne lbl_0000AD68
 /* 0000AD60 38600008 */ li r3, 8
-/* 0000AD64 4BFF5401 */ bl func_80095398
+/* 0000AD64 4BFF5401 */ bl rend_efc_draw
 lbl_0000AD68:
 /* 0000AD68 3B180001 */ addi r24, r24, 1
 /* 0000AD6C 2C180004 */ cmpwi r24, 4
@@ -11515,7 +11515,7 @@ lbl_0000AD9C:
 /* 0000ADC4 2C000002 */ cmpwi r0, 2
 /* 0000ADC8 4082000C */ bne lbl_0000ADD4
 /* 0000ADCC 38600004 */ li r3, 4
-/* 0000ADD0 4BFF5395 */ bl func_80095398
+/* 0000ADD0 4BFF5395 */ bl rend_efc_draw
 lbl_0000ADD4:
 /* 0000ADD4 3C600000 */ lis r3, eventInfo@ha
 /* 0000ADD8 38630000 */ addi r3, r3, eventInfo@l
@@ -11546,7 +11546,7 @@ lbl_0000AE2C:
 /* 0000AE30 2C000002 */ cmpwi r0, 2
 /* 0000AE34 4082000C */ bne lbl_0000AE40
 /* 0000AE38 38600010 */ li r3, 0x10
-/* 0000AE3C 4BFF5329 */ bl func_80095398
+/* 0000AE3C 4BFF5329 */ bl rend_efc_draw
 lbl_0000AE40:
 /* 0000AE40 3C600000 */ lis r3, eventInfo@ha
 /* 0000AE44 38630000 */ addi r3, r3, eventInfo@l
@@ -11590,7 +11590,7 @@ lbl_0000AEC4:
 /* 0000AEC8 2C000002 */ cmpwi r0, 2
 /* 0000AECC 4082000C */ bne lbl_0000AED8
 /* 0000AED0 38600008 */ li r3, 8
-/* 0000AED4 4BFF5291 */ bl func_80095398
+/* 0000AED4 4BFF5291 */ bl rend_efc_draw
 lbl_0000AED8:
 /* 0000AED8 80010014 */ lwz r0, 0x14(r1)
 /* 0000AEDC 83E1000C */ lwz r31, 0xc(r1)
@@ -11761,7 +11761,7 @@ lbl_0000B03C:
 /* 0000B150 84030000 */ lwzu r0, infoWork@l(r3)
 /* 0000B154 60000008 */ ori r0, r0, 8
 /* 0000B158 90030000 */ stw r0, 0(r3)
-/* 0000B15C 4BFF5009 */ bl func_800972CC
+/* 0000B15C 4BFF5009 */ bl rend_efc_mirror_enable
 /* 0000B160 3C600000 */ lis r3, g_poolInfo@ha
 /* 0000B164 38630000 */ addi r3, r3, g_poolInfo@l
 /* 0000B168 3C800000 */ lis r4, currentBallStructPtr@ha
@@ -13459,7 +13459,7 @@ lbl_0000C928:
 /* 0000C9E4 4BFF3781 */ bl event_start
 /* 0000C9E8 A87D0000 */ lha r3, 0(r29)
 /* 0000C9EC 4BFF3779 */ bl light_init
-/* 0000C9F0 4BFF3775 */ bl func_800972CC
+/* 0000C9F0 4BFF3775 */ bl rend_efc_mirror_enable
 /* 0000C9F4 3C600000 */ lis r3, g_poolInfo@ha
 /* 0000C9F8 38630000 */ addi r3, r3, g_poolInfo@l
 /* 0000C9FC 389E014C */ addi r4, r30, 0x14c

@@ -170,7 +170,7 @@ lbl_0000020C:
 /* 000002D0 4BFFFE91 */ bl event_start
 /* 000002D4 386000B3 */ li r3, 0xb3
 /* 000002D8 4BFFFE89 */ bl light_init
-/* 000002DC 4BFFFE85 */ bl func_800972CC
+/* 000002DC 4BFFFE85 */ bl rend_efc_mirror_enable
 /* 000002E0 3C600000 */ lis r3, lbl_80206DEC@ha
 /* 000002E4 38830000 */ addi r4, r3, lbl_80206DEC@l
 /* 000002E8 8064001C */ lwz r3, 0x1c(r4)
@@ -835,14 +835,14 @@ lbl_00000C38:
 /* 00000C48 2C000002 */ cmpwi r0, 2
 /* 00000C4C 4082000C */ bne lbl_00000C58
 /* 00000C50 38600010 */ li r3, 0x10
-/* 00000C54 4BFFF50D */ bl func_80095398
+/* 00000C54 4BFFF50D */ bl rend_efc_draw
 lbl_00000C58:
 /* 00000C58 4BFFF509 */ bl draw_test_camera_target
 /* 00000C5C 881A0000 */ lbz r0, 0(r26)
 /* 00000C60 2C000002 */ cmpwi r0, 2
 /* 00000C64 4082000C */ bne lbl_00000C70
 /* 00000C68 38600008 */ li r3, 8
-/* 00000C6C 4BFFF4F5 */ bl func_80095398
+/* 00000C6C 4BFFF4F5 */ bl rend_efc_draw
 lbl_00000C70:
 /* 00000C70 480090A9 */ bl lbl_00009D18
 lbl_00000C74:
@@ -3824,7 +3824,7 @@ lbl_00003804:
 /* 00003834 4BFFC92D */ bl event_start
 /* 00003838 386000B3 */ li r3, 0xb3
 /* 0000383C 4BFFC925 */ bl light_init
-/* 00003840 4BFFC921 */ bl func_800972CC
+/* 00003840 4BFFC921 */ bl rend_efc_mirror_enable
 /* 00003844 38000002 */ li r0, 2
 /* 00003848 981E000A */ stb r0, 0xa(r30)
 /* 0000384C 38000000 */ li r0, 0

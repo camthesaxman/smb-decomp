@@ -464,7 +464,7 @@ struct DecodedStageLzPtr_child6
     struct StageAnimGroupAnim *unk10;
 };
 
-struct StageReflObj
+struct StageMirror
 {
     char *name;
     struct GMAModel *model;  // filled in at runtime
@@ -504,8 +504,8 @@ struct Stage
     /*0x74*/ struct StageBgObject *fgObjects; // Like bgObjects but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
-    /*0x80*/ s32 reflObjsCount;
-    /*0x84*/ void *reflObjs;
+    /*0x80*/ s32 mirrorCount;
+    /*0x84*/ void *mirrors;
     struct DecodedStageLzPtr_child6 *unk88;
     u8 filler8C[4];
     void *unk90;

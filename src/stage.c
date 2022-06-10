@@ -1805,8 +1805,8 @@ void load_stagedef(int stageId)
             OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->animGroupModels);
     if (decodedStageLzPtr->unk64 != NULL)
         decodedStageLzPtr->unk64 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk64);
-    if (decodedStageLzPtr->reflObjs != NULL)
-        decodedStageLzPtr->reflObjs = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->reflObjs);
+    if (decodedStageLzPtr->mirrors != NULL)
+        decodedStageLzPtr->mirrors = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->mirrors);
 
     if (decodedStageLzPtr->bgObjects != NULL)
     {

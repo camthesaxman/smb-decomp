@@ -11,6 +11,7 @@
 #include "item.h"
 #include "obj_collision.h"
 #include "perf.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stobj.h"
