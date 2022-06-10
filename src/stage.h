@@ -309,7 +309,7 @@ struct StageAnimGroupAnim
 struct DecodedStageLzPtr_child_child4
 {
     void *unk0;
-    u8 filler4[4];
+    struct GMAModel *unk4;
 };  // size = 8
 
 struct StageCollHdr_child2
