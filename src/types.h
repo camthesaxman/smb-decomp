@@ -357,12 +357,12 @@ struct Struct80176434
 
 struct AnimGroupInfo
 {
-    Point3d pos;
-    Point3d prevPos;
-    S16Vec rot;
-    S16Vec prevRot;
-    Mtx transform;     // Transform from anim group space to world space
-    Mtx prevTransform; // Previous frame transform from animGroup space to world space
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ Point3d prevPos;
+    /*0x18*/ S16Vec rot;
+    /*0x1E*/ S16Vec prevRot;
+    /*0x24*/ Mtx transform;     // Transform from anim group space to world space
+    /*0x54*/ Mtx prevTransform; // Previous frame transform from animGroup space to world space
 };
 
 struct ReplayInfo
@@ -777,13 +777,6 @@ struct Sphere
 
 struct Preview;
 struct NlDispList;
-
-struct Struct8009544C
-{
-    u8 filler0[0x6];
-    u16 unk6;
-    u8 filler8[0x18-0x8];
-};  // size = 0x18
 
 struct Struct801EED88
 {

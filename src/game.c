@@ -22,6 +22,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stobj.h"
@@ -197,7 +198,7 @@ void submode_game_ready_init_func(void)
     event_start(EVENT_REND_EFC);
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_VIBRATION);
-    func_800972CC();
+    rend_efc_mirror_enable();
     event_suspend(EVENT_WORLD);
     light_init(currStageId);
     r30 = func_80017004();
@@ -356,6 +357,7 @@ void submode_game_play_main_func(void)
         u_play_sound(6);
     if (g_currPlayerButtons[2] & PAD_BUTTON_A)
         minimap_change_size();
+
     if (infoWork.flags & INFO_FLAG_GOAL)
     {
         infoWork.flags &= ~INFO_FLAG_GOAL;

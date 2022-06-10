@@ -17,6 +17,7 @@
 #include "mathutil.h"
 #include "load.h"
 #include "mode.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 
@@ -87,7 +88,7 @@ static void sel_stage_init(void)
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_REND_EFC);
 
-    func_800972CC();
+    rend_efc_mirror_enable();
     camera_set_state(12);
     u_isCompetitionModeCourse = 0;
     func_800123DC();
@@ -217,7 +218,7 @@ static void sel_stage_handle_input(void)
         event_start(EVENT_BACKGROUND);
         event_start(EVENT_REND_EFC);
         camera_set_state(12);
-        func_800972CC();
+        rend_efc_mirror_enable();
     }
 
     if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)

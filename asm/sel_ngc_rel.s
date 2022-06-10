@@ -19605,7 +19605,7 @@ lbl_00011A68:
 /* 00011A78 2C000002 */ cmpwi r0, 2
 /* 00011A7C 4082000C */ bne lbl_00011A88
 /* 00011A80 38600010 */ li r3, 0x10
-/* 00011A84 4BFEE705 */ bl func_80095398
+/* 00011A84 4BFEE705 */ bl rend_efc_draw
 lbl_00011A88:
 /* 00011A88 3C600000 */ lis r3, eventInfo@ha
 /* 00011A8C 38630000 */ addi r3, r3, eventInfo@l
@@ -19648,7 +19648,7 @@ lbl_00011B08:
 /* 00011B0C 2C000002 */ cmpwi r0, 2
 /* 00011B10 4082000C */ bne lbl_00011B1C
 /* 00011B14 38600008 */ li r3, 8
-/* 00011B18 4BFEE671 */ bl func_80095398
+/* 00011B18 4BFEE671 */ bl rend_efc_draw
 lbl_00011B1C:
 /* 00011B1C C03F0008 */ lfs f1, 8(r31)
 /* 00011B20 38600000 */ li r3, 0

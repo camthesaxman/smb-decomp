@@ -1581,50 +1581,6 @@ lbl_80171AA4:
 	.4byte 0
 	.4byte 0xBF800000
 
-.global lbl_80171AB0
-lbl_80171AB0:
-	# ROM: 0x16EAB0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-.global lbl_80171B10
-lbl_80171B10:
-	# ROM: 0x16EB10
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0x3F800000
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
 .section .data
 
     .balign 8
@@ -13606,58 +13562,6 @@ glabel string_COURSE__d__n
 glabel string_PLAYER__d__n
 	.asciz "PLAYER[%d]\n"
 	.4byte 0
-
-.global lbl_801D3CE8
-lbl_801D3CE8:
-	# ROM: 0x1D0CE8
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte func_8009557C  ;# ptr
-	.4byte func_800955FC  ;# ptr
-	.4byte func_8009562C  ;# ptr
-	.4byte func_80095630  ;# ptr
-	.4byte func_80095C6C  ;# ptr
-	.4byte func_80095D3C  ;# ptr
-	.4byte func_80095D90  ;# ptr
-	.4byte func_80095D94  ;# ptr
-	.4byte func_80096134  ;# ptr
-	.4byte func_80096228  ;# ptr
-	.4byte func_80096258  ;# ptr
-	.4byte func_800963AC  ;# ptr
-	.4byte func_80096A30  ;# ptr
-	.4byte func_80096B3C  ;# ptr
-	.4byte func_80096BA8  ;# ptr
-	.4byte func_80096BE0  ;# ptr
-	.4byte func_800973A0  ;# ptr
-	.4byte func_80097664  ;# ptr
-	.4byte func_800976B8  ;# ptr
-	.4byte func_800976BC  ;# ptr
-	.4byte func_8009826C  ;# ptr
-	.4byte func_800983A0  ;# ptr
-	.4byte func_8009840C  ;# ptr
-	.4byte func_80098410  ;# ptr
-
-.global lbl_801D3D58
-lbl_801D3D58:
-	# ROM: 0x1D0D58
-	.4byte lbl_80097304  ;# ptr
-	.4byte lbl_80097390  ;# ptr
-	.4byte lbl_80097304  ;# ptr
-	.4byte lbl_80097390  ;# ptr
-	.4byte lbl_80097304  ;# ptr
-	.4byte lbl_80097390  ;# ptr
-	.4byte lbl_80097390  ;# ptr
-	.4byte lbl_80097304  ;# ptr
-
-.global lbl_801D3D78
-lbl_801D3D78:
-	# ROM: 0x1D0D78
-	.4byte func_800993A8  ;# ptr
-	.4byte func_800994A8  ;# ptr
-	.4byte func_80099518  ;# ptr
-	.4byte func_80099968  ;# ptr
 
 .section .sdata
 

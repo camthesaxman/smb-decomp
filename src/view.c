@@ -11,17 +11,18 @@
 #include "camera.h"
 #include "course.h"
 #include "event.h"
+#include "gma.h"
 #include "gxutil.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
-#include "gma.h"
 #include "light.h"
 
 #include "../data/common.gma.h"
@@ -194,13 +195,13 @@ void view_draw(void)
     ballBackup = currentBallStructPtr;
     currentBallStructPtr = &ballInfo[0];
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(1);
+        rend_efc_draw(1);
     view_apply_camera(camera);
     u_draw_ball_shadow();
     func_80054FF0();
     u_reset_light_group_stack(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(4);
+        rend_efc_draw(4);
     view_apply_camera(camera);
     if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
         draw_stage_geometry();
@@ -213,7 +214,7 @@ void view_draw(void)
         ord_tbl_set_depth_offset(0.0f);
     }
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(16);
+        rend_efc_draw(16);
     view_apply_camera(camera);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         draw_items();
@@ -221,7 +222,7 @@ void view_draw(void)
         draw_stage_objects();
     ord_tbl_draw_nodes();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(8);
+        rend_efc_draw(8);
     view_apply_camera(camera);
     currentBallStructPtr = ballBackup;
     func_80017FCC();

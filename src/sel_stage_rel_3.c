@@ -11,6 +11,7 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "rend_efc.h"
 #include "stage.h"
 #include "stobj.h"
 
@@ -52,7 +53,7 @@ void sel_stage_draw(void)
         ord_tbl_set_depth_offset(0.0f);
     }
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(16);
+        rend_efc_draw(16);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         item_draw();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)

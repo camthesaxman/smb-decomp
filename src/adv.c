@@ -21,6 +21,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "textbox.h"
@@ -314,7 +315,7 @@ void submode_adv_demo_init_func(void)
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_SOUND);
     light_init(currStageId);
-    func_800972CC();
+    rend_efc_mirror_enable();
     for (i = 0; i < 4; i++)
     {
         ballInfo[i].state = 21;
@@ -605,7 +606,7 @@ void run_cutscene_script(void)
             event_start(EVENT_EFFECT);
             event_start(EVENT_REND_EFC);
             event_start(EVENT_BACKGROUND);
-            func_800972CC();
+            rend_efc_mirror_enable();
             break;
         case 12:
             light_init(0);
@@ -1708,7 +1709,7 @@ void submode_adv_game_ready_init_func(void)
     event_start(EVENT_EFFECT);
     event_start(EVENT_REND_EFC);
     event_start(EVENT_BACKGROUND);
-    func_800972CC();
+    rend_efc_mirror_enable();
     event_suspend(EVENT_WORLD);
     light_init(currStageId);
     func_800846B0(4);
@@ -1908,7 +1909,7 @@ void submode_adv_ranking_main_func(void)
         if (modeCtrl.submodeTimer > 180.0)
         {
             struct ReplayInfo sp38;
-            struct Struct8009544C sp20;
+            struct RenderEffect focusEffect;
             float f1;
             struct ReplayInfo sp8;
 
@@ -1935,10 +1936,10 @@ void submode_adv_ranking_main_func(void)
             event_start(EVENT_BACKGROUND);
             event_start(EVENT_BALL);
             event_start(EVENT_SOUND);
-            func_800972CC();
-            memset(&sp20, 0, sizeof(sp20));
-            sp20.unk6 = 0xFFFF;
-            func_8009544C(2, 3, &sp20);
+            rend_efc_mirror_enable();
+            memset(&focusEffect, 0, sizeof(focusEffect));
+            focusEffect.cameraMask = 0xFFFF;
+            rend_efc_enable(2, REND_EFC_FOCUS, &focusEffect);
             light_init(currStageId);
             ballInfo[0].state = 9;
             ballInfo[0].bananas = 0;

@@ -309,7 +309,7 @@ struct StageAnimGroupAnim
 struct DecodedStageLzPtr_child_child4
 {
     void *unk0;
-    u8 filler4[4];
+    struct GMAModel *unk4;
 };  // size = 8
 
 struct StageCollHdr_child2
@@ -464,6 +464,12 @@ struct DecodedStageLzPtr_child6
     struct StageAnimGroupAnim *unk10;
 };
 
+struct StageMirror
+{
+    char *name;
+    struct GMAModel *model;  // filled in at runtime
+};
+
 struct Stage
 {
     s32 loopStartSeconds;
@@ -498,8 +504,8 @@ struct Stage
     /*0x74*/ struct StageBgObject *fgObjects; // Like bgObjects but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
-    /*0x80*/ s32 reflObjsCount;
-    /*0x84*/ void *reflObjs;
+    /*0x80*/ s32 mirrorCount;
+    /*0x84*/ void *mirrors;
     struct DecodedStageLzPtr_child6 *unk88;
     u8 filler8C[4];
     void *unk90;
@@ -508,7 +514,7 @@ struct Stage
 void ev_stage_init(void);
 void ev_stage_main(void);
 void ev_stage_dest(void);
-// ? stage_find_model();
+struct GMAModel *stage_find_model(struct GMA *gma, char *name);
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
 void animate_anim_groups(float);
