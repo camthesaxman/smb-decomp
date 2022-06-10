@@ -185,7 +185,6 @@ SOURCES := \
 	src/rend_efc.c \
 	src/rend_efc_2.c \
 	src/rend_efc_3.c \
-	asm/rend_efc.s \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \

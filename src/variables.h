@@ -1287,7 +1287,7 @@ extern int lbl_802F1F80;
 
 extern s16 lbl_802F1FC8;
 // extern ? lbl_802F1FD0;
-// extern ? lbl_802F1FD4;
+extern void (*lbl_802F1FD4)(void);
 // extern ? lbl_802F1FD8;
 // extern ? lbl_802F1FDC;
 // extern ? lbl_802F1FE0;
