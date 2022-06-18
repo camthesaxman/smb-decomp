@@ -11,7 +11,9 @@ struct GX
     u32 unk7C;
     u32 unk80;
     u32 unk84;
-    u8 filler88[0xB8-0x88];
+    u8 filler88[0xA8-0x88];
+    u32 unkA8[2];
+    u32 unkB0[2];
     u32 unkB8[GX_MAX_TEXCOORD];
     u8 fillerD8[0xF8-0xD8];
     u32 unkF8;

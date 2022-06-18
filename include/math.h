@@ -20,6 +20,7 @@ double sin(double x);
 double cos(double x);
 
 float sinf(float x);
+float cosf(float x);
 float acosf(float x);
 
 double ldexp(double x, int exp);

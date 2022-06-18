@@ -964,6 +964,7 @@ lbl_800E1B94:
 
 .section .sdata2
 
+	.balign 8
 .global lbl_802F67D8
 lbl_802F67D8:
 	# ROM: 0x1F01F8
@@ -1007,6 +1008,8 @@ lbl_802F67FC:
 	.4byte 0x41200000
 
 .section .data
+
+	.balign 8
 
 .global lbl_801E8F70
 lbl_801E8F70:
