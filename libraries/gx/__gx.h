@@ -57,6 +57,12 @@ extern struct GX *gx;
 #define GX_WRITE_F32(f)	 	\
    GXWGFifo.f32 = (f32)(f);
 
+#define INSERT_FIELD(reg, value, nbits, shift) \
+do \
+{ \
+    (reg) = ((u32)(reg) & ~(((1<<(nbits))-1) << (shift))) | ((u32)(value) << (shift)); \
+} while (0)
+
 void __GXSetDirtyState(void);
 void __GXSaveCPUFifoAux(void *);
 void __GXSendFlushPrim(void);

@@ -43,8 +43,8 @@ void __GXSendFlushPrim(void)
 
 void GXSetLineWidth(u8 width, GXTexOffset texOffsets)
 {
-    gx->unk7C = (gx->unk7C & ~0xFF) | width;
-    gx->unk7C = (gx->unk7C & ~(7 << 16)) | (texOffsets << 16);
+    INSERT_FIELD(gx->unk7C, width,      8,  0);
+    INSERT_FIELD(gx->unk7C, texOffsets, 3, 16);
     GX_WRITE_U8(0x61);
     GX_WRITE_U32(gx->unk7C);
     gx->unk2 = 1;
@@ -52,8 +52,8 @@ void GXSetLineWidth(u8 width, GXTexOffset texOffsets)
 
 void GXSetPointSize(u8 pointSize, GXTexOffset texOffsets)
 {
-    gx->unk7C = (gx->unk7C & ~(0xFF << 8)) | (pointSize << 8);
-    gx->unk7C = (gx->unk7C & ~(7 << 19)) | (texOffsets << 19);
+    INSERT_FIELD(gx->unk7C, pointSize,  8,  8);
+    INSERT_FIELD(gx->unk7C, texOffsets, 3, 19);
     GX_WRITE_U8(0x61);
     GX_WRITE_U32(gx->unk7C);
     gx->unk2 = 1;
@@ -61,8 +61,8 @@ void GXSetPointSize(u8 pointSize, GXTexOffset texOffsets)
 
 void GXEnableTexOffsets(GXTexCoordID coord, GXBool line_enable, GXBool point_enable)
 {
-    gx->unkB8[coord] = (gx->unkB8[coord] & ~(1 << 18)) | (line_enable << 18);
-    gx->unkB8[coord] = (gx->unkB8[coord] & ~(1 << 19)) | (point_enable << 19);
+    INSERT_FIELD(gx->unkB8[coord], line_enable,  1, 18);
+    INSERT_FIELD(gx->unkB8[coord], point_enable, 1, 19);
     GX_WRITE_U8(0x61);
     GX_WRITE_U32(gx->unkB8[coord]);
     gx->unk2 = 1;
@@ -79,13 +79,13 @@ void GXSetCullMode(GXCullMode mode)
         mode = GX_CULL_FRONT;
         break;
     }
-    gx->unk204 = (gx->unk204 & ~(3 << 14)) | (mode << 14);
+    INSERT_FIELD(gx->unk204, mode, 2, 14);
     gx->unk4F0 |= 4;
 }
 
 void GXSetCoPlanar(GXBool enable)
 {
-    gx->unk204 = (gx->unk204 & ~(1 << 19)) | (enable << 19);
+    INSERT_FIELD(gx->unk204, enable, 1, 19);
     GX_WRITE_U8(0x61);
     GX_WRITE_U32(0xFE080000);
     GX_WRITE_U8(0x61);

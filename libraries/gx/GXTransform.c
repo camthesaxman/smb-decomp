@@ -213,11 +213,10 @@ void GXSetScissor(u32 left, u32 top, u32 wd, u32 ht)
     u32 temp_r8 = 340 + left;
     u32 temp_r4 = 340 + top;
 
-    gx->unkF8 = (gx->unkF8 & 0xFFFFF800) | temp_r4;
-    gx->unkF8 = (gx->unkF8 & 0xFF800FFF) | (temp_r8 << 12);
-    gx->unkFC = (gx->unkFC & 0xFFFFF800) | (temp_r4 + ht - 1);
-    gx->unkFC = (gx->unkFC & 0xFF800FFF) | ((temp_r8 + wd - 1) << 12);
-
+    INSERT_FIELD(gx->unkF8, temp_r4,          11,  0);
+    INSERT_FIELD(gx->unkF8, temp_r8,          11, 12);
+    INSERT_FIELD(gx->unkFC, temp_r4 + ht - 1, 11,  0);
+    INSERT_FIELD(gx->unkFC, temp_r8 + wd - 1, 11, 12);
     GX_WRITE_U8(0x61);
     GX_WRITE_U32(gx->unkF8);
     GX_WRITE_U8(0x61);

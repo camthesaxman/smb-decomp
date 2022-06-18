@@ -353,20 +353,12 @@ asm void GXSetChanMatColor(GXChannelID chan, GXColor mat_color)
 
 void GXSetNumChans(u8 nChans)
 {
-    u32 nChans_ = nChans;
-
-    gx->unk204 = (gx->unk204 & 0xFFFFFF8F) | ((nChans_ << 4) & 0xFF0);
+    INSERT_FIELD(gx->unk204, nChans, 3, 4);
     GX_WRITE_U8(0x10);
     GX_WRITE_U32(0x1009);
-    GX_WRITE_U32(nChans_);
+    GX_WRITE_U32(nChans);
     gx->unk4F0 |= 4;
 }
-
-#define INSERT_FIELD(reg, value, nbits, shift) \
-do \
-{ \
-    (reg) = ((u32)(reg) & ~(((1<<(nbits))-1) << (shift))) | ((u32)(value) << (shift)); \
-} while (0)
 
 void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
     GXColorSrc mat_src, u32 light_mask, GXDiffuseFn diff_fn, GXAttnFn attn_fn)
