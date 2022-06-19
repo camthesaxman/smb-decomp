@@ -268,7 +268,7 @@ SOURCES := \
 	libraries/gx/GXLight.c \
 	libraries/gx/asm/GXTexture.s \
 	libraries/gx/asm/GXBump.s \
-	libraries/gx/asm/GXTev.s \
+	libraries/gx/GXTev.c \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
 	libraries/gx/asm/GXStubs.s \

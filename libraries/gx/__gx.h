@@ -18,7 +18,12 @@ struct GX
     u8 fillerD8[0xF8-0xD8];
     u32 unkF8;
     u32 unkFC;
-    u8 filler100[0x204-0x100];
+    u32 unk100[GX_MAX_TEVSTAGE/2];
+    u8 filler120[0x130-0x120];
+    u32 unk130[GX_MAX_TEVSTAGE];
+    u32 unk170[GX_MAX_TEVSTAGE];
+    u32 unk1B0[GX_MAX_TEVSTAGE/2];
+    u8 filler1D0[0x204-0x1D0];
     u32 unk204;
     u8 filler208[0x420-0x208];
     u32 unk420;
@@ -36,7 +41,9 @@ struct GX
     f32 unk450;
     u8 unk454;
     f32 unk458;
-    u8 filler45C[0x4EC-0x45C];
+    u8 filler45C[0x49C-0x45C];
+    u32 unk49C[GX_MAX_TEVSTAGE];
+    u8 filler4DC[0x4EC-0x4DC];
     u8 unk4EC;
     u8 unk4ED;
     u8 filler4EE[0x4F0-0x4EE];
