@@ -7,7 +7,9 @@ struct GX
     u16 unk2;
     u32 unk4;
     u32 unk8;
-    u8 fillerC[0x7C-0xC];
+    u32 unkC;
+    u32 unk10;
+    u8 filler14[0x7C-0x14];
     u32 unk7C;
     u32 unk80;
     u32 unk84;
@@ -70,11 +72,26 @@ do \
     (reg) = ((u32)(reg) & ~(((1<<(nbits))-1) << (shift))) | ((u32)(value) << (shift)); \
 } while (0)
 
+// GXFifoObj private fields
+typedef struct
+{
+    void *base;  // base
+    void *end;  // end
+    u32 size;  // size
+    u32 hiWaterMark;  // hiWaterMark
+    u32 loWaterMark;  // loWaterMark
+    void *readPtr;  // readPtr
+    void *writePtr;  // writePtr
+    s32 unk1C;
+    u8 filler20[4];
+} __GXFifoObj;
+
 void __GXSetDirtyState(void);
-void __GXSaveCPUFifoAux(void *);
+void __GXSaveCPUFifoAux(__GXFifoObj *);
 void __GXSendFlushPrim(void);
 void __GXSetSUTexSize(void);
 void __GXUpdateBPMask(void);
 void __GXSetVCD(void);
 void __GXSetVAT(void);
 void __GXSetMatrixIndex(int);
+void __GXSetRange(f32, f32);

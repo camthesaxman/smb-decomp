@@ -260,7 +260,7 @@ SOURCES := \
 	libraries/card/asm/CARDRename.s \
 	libraries/hio/hio.c \
 	libraries/gx/asm/GXInit.s \
-	libraries/gx/asm/GXFifo.s \
+	libraries/gx/GXFifo.c \
 	libraries/gx/asm/GXAttr.s \
 	libraries/gx/asm/GXMisc.s \
 	libraries/gx/GXGeometry.c \
@@ -271,7 +271,7 @@ SOURCES := \
 	libraries/gx/GXTev.c \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
-	libraries/gx/asm/GXStubs.s \
+	libraries/gx/GXStubs.c \
 	libraries/gx/GXDisplayList.c \
 	libraries/gx/GXTransform.c \
 	libraries/gx/GXPerf.c \

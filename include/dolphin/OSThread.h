@@ -55,5 +55,8 @@ typedef struct OSThread
 } OSThread;
 
 void OSWakeupThread(OSThreadQueue *queue);
+s32 OSSuspendThread(OSThread *thread);
+s32 OSResumeThread(OSThread* thread);
+OSThread* OSGetCurrentThread(void);
 
 #endif
