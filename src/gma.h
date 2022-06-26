@@ -39,11 +39,11 @@ enum
 // colors are disabled, then it gets TEVREG0), and subsequent layers get TEVPREV.
 struct GMATevLayer
 {
-    u32 flags;
-    u16 texIndex;
-    s8 lodBias;
-    u8 maxAniso;
-    GXTexObj *texObj;
+    /*0x00*/ u32 flags;
+    /*0x04*/ u16 texIndex;
+    /*0x06*/ s8 lodBias;
+    /*0x07*/ u8 maxAniso;
+    /*0x08*/ GXTexObj *texObj;
     u8 fillerC[0x20 - 0xC];
 }; // GMAModel.flags
 

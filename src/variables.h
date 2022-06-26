@@ -609,7 +609,7 @@ extern struct ScreenFadeInfo screenFadeInfo;
 // extern ? lbl_80292D18;
 // extern ? lbl_80292D30;
 // extern ? ordTblAllocInfo;
-extern u8 lbl_80292E70[];
+// extern u8 lbl_80292E70[];
 // extern ? lbl_802B2E70;
 // extern ? lbl_802B37B0;
 // extern ? lbl_802B37F0;

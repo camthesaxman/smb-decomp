@@ -16,6 +16,8 @@
 #include "mathutil.h"
 #include "ord_tbl.h"
 
+u8 lbl_80292E70[0x20000];
+
 static void clear_ord_table(struct OrdTblNode *ordTbl, int count, u32 order);
 static void draw_nodes(struct OrdTblNode *node);
 static void reset_alloc_info(void);

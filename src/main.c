@@ -11,6 +11,7 @@
 #include "input.h"
 #include "load.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "perf.h"
