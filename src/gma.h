@@ -122,20 +122,20 @@ struct GMAShape
         GXColor asColor;
     } specularColor;
     /*0x10*/ u8 filler10[1];
-    u8 alpha;
+    /*0x11*/ u8 alpha;
     /*0x12*/ u8 tevLayerCount;
     /*0x13*/ u8 dispListFlags;
     /*0x14*/ u8 unk14;
     /*0x15*/ u8 filler15[0x16 - 0x15];
-    u16 tevLayerIdxs[3];   // Up to 3 indices into model's tev layer list. -1 means end of list
+    /*0x16*/ u16 tevLayerIdxs[3];   // Up to 3 indices into model's tev layer list. -1 means end of list
     /*0x1C*/ u32 vtxAttrs; // One bit for each GXAttr vertex attribute
     /*0x20*/ u8 mtxIndices[8];
     /*0x28*/ u32 dispListSizes[2];
     /*0x30*/ Point3d origin; // Reference point for depth sorting
     u8 filler3C[4];
-    u32 blendFactors; // 0xF bitmask for src blend factor, 0xF0 for dst blend factor
+    /*0x40*/ u32 blendFactors; // 0xF bitmask for src blend factor, 0xF0 for dst blend factor
     u8 filler44[0x60 - 0x44];
-    u8 dispLists[0]; // Start of display lists
+    /*0x60*/ u8 dispLists[0]; // Start of display lists
 };
 // size = 0x60
 

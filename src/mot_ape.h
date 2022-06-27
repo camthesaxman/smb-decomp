@@ -4,6 +4,8 @@
 extern struct GMA *charaGMAs[8];
 extern GXTexObj *lbl_802B47E0[4];
 
+extern Mtx **u_animTransformMatrices;
+
 // ? load_character_resources();
 // ? func_80089A04();
 // ? u_create_joints_probably();
