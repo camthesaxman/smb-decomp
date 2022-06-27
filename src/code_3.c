@@ -4,6 +4,7 @@
 #include "global.h"
 #include "adv.h"
 #include "gma.h"
+#include "gxutil.h"
 #include "light.h"
 #include "mathutil.h"
 #include "mot_ape.h"
@@ -14,6 +15,7 @@ extern s8 lbl_802F2060;
 void func_80086434(int arg0, struct GMAModel *arg1);
 struct GMAShape *func_80086538(struct GMAShape *);
 
+#pragma dont_inline on
 void func_80085C0C(int arg0)
 {
     struct Color3f ambient;
@@ -32,6 +34,7 @@ void func_80085C0C(int arg0)
         }
     }
 }
+#pragma dont_inline reset
 
 u8 lbl_802B2E70[0x900];
 FORCE_BSS_ORDER(lbl_802B2E70)
@@ -344,7 +347,7 @@ static struct GMAShape *func_80086434_sub2(struct GMAModel *model)
 
 void func_80086434(int colorId, struct GMAModel *model)
 {
-    register struct GMAShape *shape;
+    struct GMAShape *shape;
 
     if ((shape = func_80086434_sub1(model)) == NULL)
         return;
@@ -461,4 +464,956 @@ void func_8008669C(u32 *arg0, struct Struct8008669C *arg1, int arg2, float arg8)
             temp_r21[5] = z;
         }
     }
+}
+
+struct Struct80086794
+{
+    s32 unk0;
+    float unk4;
+};
+
+GXColor lbl_801C57E0[] =
+{
+    {128,   0,   0,   2},
+    {  0,   0,   0,  20},
+    {  0,   0,   0,  15},
+    {  0,   0,   0,   0},
+    {127, 255, 255, 255},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+};
+
+GXColor lbl_801C5800[] =
+{
+    {128,   0,   0,   3},
+    {  0,   0,   0,  20},
+    {  0,   0,   0,  15},
+    {  0,   0,   0,   0},
+    {127, 255, 255, 255},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+};
+
+GXColor lbl_801C5820[] =
+{
+    {128,   0,   0,   7},
+    {  0,   0,   0,   2},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   4},
+    {255, 255, 255, 246},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   6},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   8},
+    {255, 255, 255, 246},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,  12},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {127, 255, 255, 255},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+};
+
+GXColor lbl_801C5890[] =
+{
+    {128,   0,   0,   7},
+    {  0,   0,   0,   2},
+    {255, 255, 255, 246},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   4},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   6},
+    {255, 255, 255, 246},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,   8},
+    {  0,   0,   0,  10},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,  10},
+    {255, 255, 255, 246},
+    {  0,   0,   0,   0},
+    {128,   0,   0,   7},
+    {  0,   0,   0,  12},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {127, 255, 255, 255},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+    {  0,   0,   0,   0},
+};
+
+#pragma force_active on
+GXColor *lbl_801C5900[] =
+{
+    lbl_801C57E0,
+    lbl_801C5800,
+    lbl_801C5820,
+    lbl_801C5890,
+};
+#pragma force_active reset
+
+struct Struct80089A04 lbl_801C5A90[] =
+{
+    {
+        "MDL_APE",
+        {
+            "obj_H_APE_KUBI",
+            "obj_M_APE_KUBI",
+            "obj_L_APE_KUBI",
+            "obj_S_APE_KUBI",
+        },
+        5,
+    },
+    {
+        "MDL_APE",
+        {
+            "obj_H_APE_TE_L",
+            "obj_M_APE_MT_L",
+            "obj_L_APE_MT_L",
+            "obj_S_APE_MT_L",
+        },
+        10,
+    },
+    {
+        "MDL_APE",
+        {
+            "obj_H_APE_TE_R",
+            "obj_M_APE_MT_R",
+            "obj_L_APE_MT_R",
+            "obj_S_APE_MT_R",
+        },
+        15,
+    },
+    {
+        "MDL_APE",
+        {
+            "obj_H_APE_KUBI_EAR_L",
+            "obj_M_APE_KUBI_EAR_L",
+            "obj_L_APE_KUBI_EAR_L",
+            "obj_S_APE_KUBI_EAR_L",
+        },
+        5,
+    },
+    {
+        "MDL_APE",
+        {
+            "obj_H_APE_KUBI_EAR_R",
+            "obj_M_APE_KUBI_EAR_R",
+            "obj_L_APE_KUBI_EAR_R",
+            "obj_S_APE_KUBI_EAR_R",
+        },
+        5,
+    },
+};
+
+struct Struct80089A04 lbl_801C5D30[] =
+{
+    {
+        "MDL_GAL",
+        {
+            "obj_H_GAL_KUBI",
+            "obj_M_GAL_KUBI",
+            "obj_L_GAL_KUBI",
+            "obj_S_GAL_KUBI",
+        },
+        5,
+    },
+    {
+        "MDL_GAL",
+        {
+            "obj_M_GAL_MT_L",
+            "obj_M_GAL_MT_L",
+            "obj_L_GAL_MT_L",
+            "obj_S_GAL_MT_L",
+        },
+        10,
+    },
+    {
+        "MDL_GAL",
+        {
+            "obj_M_GAL_MT_R",
+            "obj_M_GAL_MT_R",
+            "obj_L_GAL_MT_R",
+            "obj_S_GAL_MT_R",
+        },
+        15,
+    },
+    {
+        "MDL_GAL",
+        {
+            "obj_H_GAL_KUBI_EAR_L",
+            "obj_M_GAL_KUBI_EAR_L",
+            "obj_L_GAL_KUBI_EAR_L",
+            "obj_S_GAL_KUBI_EAR_L",
+        },
+        5,
+    },
+    {
+        "MDL_GAL",
+        {
+            "obj_H_GAL_KUBI_EAR_R",
+            "obj_M_GAL_KUBI_EAR_R",
+            "obj_L_GAL_KUBI_EAR_R",
+            "obj_S_GAL_KUBI_EAR_R",
+        },
+        5,
+    },
+};
+
+struct Struct80089A04 lbl_801C5FD0[] =
+{
+    {
+        "MDL_KID",
+        {
+            "obj_H_KID_KUBI",
+            "obj_M_KID_KUBI",
+            "obj_L_KID_KUBI",
+            "obj_S_KID_KUBI",
+        },
+        5,
+    },
+    {
+        "MDL_KID",
+        {
+            "obj_M_KID_MT_L",
+            "obj_M_KID_MT_L",
+            "obj_L_KID_MT_L",
+            "obj_S_KID_MT_L",
+        },
+        10,
+    },
+    {
+        "MDL_KID",
+        {
+            "obj_M_KID_MT_R",
+            "obj_M_KID_MT_R",
+            "obj_L_KID_MT_R",
+            "obj_S_KID_MT_R",
+        },
+        15,
+    },
+    {
+        "MDL_KID",
+        {
+            "obj_H_KID_KUBI_EAR_L",
+            "obj_M_KID_KUBI_EAR_L",
+            "obj_L_KID_KUBI_EAR_L",
+            "obj_S_KID_KUBI_EAR_L",
+        },
+        5,
+    },
+    {
+        "MDL_KID",
+        {
+            "obj_H_KID_KUBI_EAR_R",
+            "obj_M_KID_KUBI_EAR_R",
+            "obj_L_KID_KUBI_EAR_R",
+            "obj_S_KID_KUBI_EAR_R",
+        },
+        5,
+    },
+};
+
+struct Struct80089A04 lbl_801C6270[] =
+{
+    {
+        "MDL_GOR",
+        {
+            "obj_H_GOR_KUBI",
+            "obj_M_GOR_KUBI",
+            "obj_L_GOR_KUBI",
+            "obj_S_GOR_KUBI",
+        },
+        5,
+    },
+    {
+        "MDL_GOR",
+        {
+            "obj_M_GOR_MT_L",
+            "obj_M_GOR_MT_L",
+            "obj_L_GOR_MT_L",
+            "obj_S_GOR_MT_L",
+        },
+        10,
+    },
+    {
+        "MDL_GOR",
+        {
+            "obj_M_GOR_MT_R",
+            "obj_M_GOR_MT_R",
+            "obj_L_GOR_MT_R",
+            "obj_S_GOR_MT_R",
+        },
+        15,
+    },
+    {
+        "MDL_GOR",
+        {
+            "obj_H_GOR_KUBI_EAR_L",
+            "obj_M_GOR_KUBI_EAR_L",
+            "obj_L_GOR_KUBI_EAR_L",
+            "obj_S_GOR_KUBI_EAR_L",
+        },
+        5,
+    },
+    {
+        "MDL_GOR",
+        {
+            "obj_H_GOR_KUBI_EAR_R",
+            "obj_M_GOR_KUBI_EAR_R",
+            "obj_L_GOR_KUBI_EAR_R",
+            "obj_S_GOR_KUBI_EAR_R",
+        },
+        5,
+    },
+};
+
+struct Struct80089A04 *lbl_801C63B0[] =
+{
+    lbl_801C5A90,
+    lbl_801C5D30,
+    lbl_801C5FD0,
+    lbl_801C6270,
+};
+
+s32 lbl_801C63C0[] = { 5, 5, 5, 5 };
+
+#pragma force_active on
+char *lbl_801C6420[] =
+{
+    "Smile Face",
+    "Angry Face",
+    "Left Hand Open",
+    "Right Hand Open",
+    "Afraid Face",
+    "Dissut",
+    "Open Mouth",
+    NULL,
+};
+
+char *lbl_801C6470[] =
+{
+    "Face",
+    "Hand Left",
+    "Hand Right",
+    "Ear Left",
+    "Ear Right",
+};
+#pragma force_active reset
+
+#pragma force_active on
+u32 asdf[] =
+{
+    0,
+    0xFFFFFFFF,
+    0,
+    0x00000001,
+    0x00000002,
+    0,
+    0x00000004,
+    0x00000005,
+    0,
+    0x00000007,
+    0x00000008,
+    0,
+    0x0000000A,
+    0x0000000B,
+    0,
+    0x0000000D,
+    0x0000000E,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x40E00000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0xC0400000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0xC0A00000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x428C0000,
+    0,
+    0,
+    0x42C80000,
+    0,
+    0,
+    0x42F00000,
+    0,
+    0,
+    0x428C0000,
+    0,
+    0,
+    0x42C80000,
+    0,
+    0,
+    0x42F00000,
+    0,
+    0,
+    0x428C0000,
+    0,
+    0,
+    0x42C80000,
+    0,
+    0,
+    0x42F00000,
+    0,
+    0,
+    0x428C0000,
+    0,
+    0,
+    0x42C80000,
+    0,
+    0,
+    0x42F00000,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0x42C80000,
+    0,
+    0,
+    0x42C80000,
+    0,
+};
+#pragma force_active reset
+
+u32 lbl_801C6648[][16] =
+{
+    { 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0D, 0x0C, 0x0B, 0x0A, 0x09, 0x08, 0x07, 0x06 },
+    { 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0D, 0x0C, 0x0B, 0x0A, 0x09, 0x08, 0x07, 0x06 },
+    { 0x0E, 0x06, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00, 0x06, 0x0E },
+    { 0x02, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x0F, 0x0E, 0x0D, 0x0C, 0x0B, 0x0A, 0x09, 0x02 },
+    { 0x12, 0x03, 0x09, 0x0A, 0x0B, 0x0C, 0x10, 0x11, 0x11, 0x10, 0x0C, 0x0B, 0x0A, 0x09, 0x03, 0x12 },
+    { 0x10, 0x03, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0E, 0x0E, 0x0C, 0x0B, 0x0A, 0x09, 0x08, 0x03, 0x10 },
+    { 0x10, 0x03, 0x06, 0x07, 0x08, 0x09, 0x0C, 0x0E, 0x0E, 0x0C, 0x09, 0x08, 0x07, 0x06, 0x03, 0x10 },
+    { 0x03, 0x0B, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x17, 0x16, 0x15, 0x14, 0x13, 0x12, 0x0B, 0x03 },
+};
+
+u32 lbl_801C6848[] =
+{
+    0x0F,
+    0x10,
+    0x11,
+    0x12,
+    0x13,
+    0x14,
+    0x15,
+    0x16,
+    0x17,
+    0x18,
+    0x19,
+    0x1A,
+    0x1B,
+    0x1C,
+    0x1D,
+    0x1E,
+    0x1F,
+    0x20,
+    0x21,
+    0x22,
+    0x23,
+    0x24,
+    0x25,
+    0x26,
+    0x27,
+    0x28,
+    0x29,
+    0x2A,
+    0x2B,
+    0x2C,
+    0x2D,
+    0x2E,
+    0x2F,
+    0x30,
+    0x31,
+    0x32,
+    0x33,
+    0x34,
+    0x35,
+    0x36,
+    0x37,
+    0x38,
+    0x39,
+    0x3A,
+    0x3B,
+};
+
+u16 lbl_801C68FC[] = { 3, 17, 19, 18 };
+s16 lbl_801C6904[] = { 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, -1 };
+
+GXColor lbl_801C692C[] =
+{
+    {255, 243, 220, 255},
+    {170, 194, 237, 255},
+    {255, 233, 127, 255},
+    {178, 225, 157, 255},
+};
+
+u32 lbl_801C693C[] =
+{
+    0x112,
+    0x7A,
+    0x5E,
+    0xA1,
+    0x46,
+    0x37,
+    0x46,
+    0x23,
+};
+
+extern u8 lbl_80130AEC[];
+extern u8 lbl_8013FBD4[];
+extern u8 lbl_8015D1DC[];
+extern u8 lbl_80153A54[];
+extern u8 lbl_80162D44[];
+extern u8 lbl_80169884[];
+extern u8 lbl_8016FCDC[];
+extern u8 lbl_8016DD94[];
+extern u8 lbl_8012C234[];
+extern u8 lbl_8013EB94[];
+extern u8 lbl_8014D184[];
+extern u8 lbl_80161684[];
+extern u8 lbl_80168C54[];
+extern u8 lbl_8016CEF4[];
+extern u8 lbl_8012346C[];
+extern u8 lbl_8013B65C[];
+extern u8 lbl_8015A11C[];
+extern u8 lbl_80146F9C[];
+extern u8 lbl_801649B4[];
+extern u8 lbl_801683CC[];
+extern u8 lbl_8016F454[];
+extern u8 lbl_8016BF84[];
+extern u8 lbl_80118D0C[];
+extern u8 lbl_80137A3C[];
+extern u8 lbl_80157BBC[];
+extern u8 lbl_80142D64[];
+extern u8 lbl_8015F80C[];
+extern u8 lbl_8016682C[];
+extern u8 lbl_8016EBCC[];
+extern u8 lbl_8016AEDC[];
+
+void *lbl_801C695C[] =
+{
+    lbl_80130AEC,
+    lbl_8013FBD4,
+    lbl_8015D1DC,
+    lbl_80153A54,
+    lbl_80162D44,
+    lbl_80169884,
+    lbl_8016FCDC,
+    lbl_8016DD94,
+};
+u32 lbl_801C697C[] =
+{
+    0x00000001,
+    0x00000003,
+    0x00000004,
+    0x00000011,
+    0x0000001E,
+    0x00000023,
+    0x00000027,
+    0x00000016,
+};
+u32 lbl_801C699C[] =
+{
+    0x000000B3,
+    0x00000028,
+    0xFFFFFFFF,
+    0x00000102,
+    0x00000038,
+    0x0000001E,
+    0xFFFFFFFF,
+    0x00000024,
+};
+void *lbl_801C69BC[] =
+{
+    lbl_8012C234,
+    lbl_8013EB94,
+    NULL,
+    lbl_8014D184,
+    lbl_80161684,
+    lbl_80168C54,
+    NULL,
+    lbl_8016CEF4,
+};
+u32 lbl_801C69DC[] =
+{
+    0,
+    0x00000002,
+    0xFFFFFFFF,
+    0x00000010,
+    0x0000001D,
+    0x00000022,
+    0xFFFFFFFF,
+    0x00000015,
+};
+u32 lbl_801C69FC[] =
+{
+    0x0000015D,
+    0x00000083,
+    0x00000078,
+    0x000000F1,
+    0x0000004B,
+    0x00000015,
+    0x00000015,
+    0x00000026,
+};
+void *lbl_801C6A1C[] =
+{
+    lbl_8012346C,
+    lbl_8013B65C,
+    lbl_8015A11C,
+    lbl_80146F9C,
+    lbl_801649B4,
+    lbl_801683CC,
+    lbl_8016F454,
+    lbl_8016BF84,
+};
+u32 lbl_801C6A3C[] =
+{
+    0x00000008,
+    0x0000000A,
+    0x0000000C,
+    0x0000000F,
+    0x0000001C,
+    0x00000021,
+    0x00000026,
+    0x00000014,
+};
+u32 lbl_801C6A5C[] =
+{
+    0x0000019C,
+    0x00000094,
+    0x0000005C,
+    0x000000A3,
+    0x0000004B,
+    0x00000044,
+    0x00000015,
+    0x00000029,
+};
+void *lbl_801C6A7C[] =
+{
+    lbl_80118D0C,
+    lbl_80137A3C,
+    lbl_80157BBC,
+    lbl_80142D64,
+    lbl_8015F80C,
+    lbl_8016682C,
+    lbl_8016EBCC,
+    lbl_8016AEDC,
+};
+u32 lbl_801C6A9C[] =
+{
+    0x00000007,
+    0x00000009,
+    0x0000000B,
+    0x0000000D,
+    0x0000001A,
+    0x0000001F,
+    0x00000024,
+    0x00000012,
+};
+
+u32 lbl_801C6ABC[] =
+{
+    14,
+    6,
+    0,
+    1,
+    2,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+    7,
+};
+
+u32 lbl_801C6AFC[] =
+{
+    6,
+    6,
+    8,
+    9,
+    10,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+    14,
+};
+
+u32 lbl_801C6B3C[] =
+{
+    2,
+    10,
+    11,
+    12,
+    16,
+    17,
+    18,
+    18,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+    19,
+};
+
+u32 *lbl_801C6B7C[] =
+{
+    NULL,
+    lbl_801C6AFC,
+    lbl_801C6ABC,
+    lbl_801C6B3C,
+};
+
+const float lbl_802F54A4 = 182.04444885253906f;
+float force_lbl_802F54A8() { return 0.0f; }
+float force_lbl_802F54AC() { return 0.0625f; }
+const double lbl_802F54B0 = 4503601774854144.0;
+float force_lbl_802F54B8() { return 1.0f; }
+float force_lbl_802F54BC() { return 255.0f; }
+double force_lbl_802F54C0() { return 4503599627370496.0; }
+float force_lbl_802F54C8() { return 0.1f; }
+
+void func_80086794_sub(int colorId, struct GMAModel *model)
+{
+    struct GMAShape *shape;
+
+    if ((shape = func_800862F4(model)) == NULL)
+        return;
+    shape->materialColor = lbl_801C692C[colorId];
+    shape->ambientColor = lbl_801C692C[colorId];
+
+    if ((shape = func_8008638C(model)) == NULL)
+        return;
+    shape->materialColor = lbl_801C692C[colorId];
+    shape->ambientColor = lbl_801C692C[colorId];
+}
+
+void func_80086794_sub2(int temp_r27, struct Ape *ape)
+{
+    u32 *temp_r28_4 = lbl_801C6B7C[ape->charaId];
+
+    if (temp_r28_4 != NULL)
+    {
+        lbl_802B37B0[ape->unk70] = 0;
+        ape->flags |= 0x10000;
+        func_80085C0C(0);
+        avdisp_draw_model_unculled_sort_none(charaGMAs[ape->charaId << 1]->modelEntries[temp_r28_4[temp_r27]].model);
+        if (lbl_802F2060 == 0)
+            apply_curr_light_group_ambient();
+    }
+}
+
+void func_80086794(struct Ape *ape, s16 *arg1, struct Struct80086794 *arg2)
+{
+    struct NlModel *nlModel;
+    struct GMAModel *gmaModel;
+    int var_r29;
+    int var_r28;
+    int temp_r27_3;
+    int temp_r0;
+    void *r4;
+    int r5;
+    float one = 1.0f;
+    float f0;
+    struct Color3f sp30;
+    struct Color3f sp24;
+    u8 unused[4];
+    struct Color3f sp14;
+
+    var_r28 = 0;
+    var_r29 = ape->charaId;
+    ape->flags &= 0xFFFEFFFF;
+    if (arg2 != NULL && arg2->unk4 != 0.0f)
+    {
+        if (ape->unk90 >= 2)
+            var_r29 += 4;
+        switch (arg2->unk0)
+        {
+        case 0:
+            if (var_r29 == 1 || var_r29 == 3)
+                var_r28 = 1;
+            // fall through
+        case 6:
+            if (var_r29 == 2)
+            {
+                gmaModel = charaGMAs[(ape->unk90 >> 1) + (var_r29 << 1)]->modelEntries[*arg1].model;
+                if (lbl_802F2060 == 0)
+                {
+                    get_curr_light_group_ambient(&sp30);
+                    avdisp_set_ambient(sp30.r, sp30.g, sp30.b);
+                }
+                func_80086794_sub(ape->colorId, gmaModel);
+                avdisp_draw_model_unculled_sort_none(gmaModel);
+                func_80086794_sub2(arg2->unk4, ape);
+                if (lbl_802F2060 == 0)
+                    apply_curr_light_group_ambient();
+                return;
+            }
+            temp_r0 = lbl_801C69DC[var_r29];
+            if (temp_r0 == -1)
+                goto block_50;
+            r5 = lbl_801C699C[var_r29];
+            r4 = lbl_801C69BC[var_r29];
+            nlModel = apeFaceObj->models[temp_r0];
+            break;
+        case 5:
+            temp_r0 = lbl_801C6A9C[var_r29];
+            if (temp_r0 == -1)
+                goto block_50;
+            r5 = lbl_801C6A5C[var_r29];
+            r4 = lbl_801C6A7C[var_r29];
+            nlModel = apeFaceObj->models[temp_r0];
+            break;
+        case 1:
+            temp_r0 = lbl_801C6A3C[var_r29];
+            if (temp_r0 == -1)
+                goto block_50;
+            r5 = lbl_801C69FC[var_r29];
+            r4 = lbl_801C6A1C[var_r29];
+            nlModel = apeFaceObj->models[temp_r0];
+            break;
+        default:
+            temp_r0 = lbl_801C697C[var_r29];
+            if (temp_r0 == -1)
+                goto block_50;
+            r5 = lbl_801C693C[var_r29];
+            r4 = lbl_801C695C[var_r29];
+            nlModel = apeFaceObj->models[temp_r0];
+            break;
+        }
+        f0 = arg2->unk4;
+        f0 *= 0.0625f;
+        func_8008669C((void *)nlModel, r4, r5, 1.0f - f0 * one);
+        mathutil_mtxA_push();
+        mathutil_mtxA_scale_s(0.1f);
+        if (lbl_802F2060 == 0)
+        {
+            get_curr_light_group_ambient(&sp24);
+            nl2ngc_set_ambient(1.35f * sp24.r, 1.35f * sp24.g, 1.35f * sp24.b);
+        }
+        if (var_r29 == 2 && ape->unk90 < 2)
+        {
+            struct NlMesh_sub *sub;
+            struct NlMesh *var_r5;
+            GXColor *temp_r6;
+
+            var_r5 = (struct NlMesh *)nlModel->meshStart;
+            temp_r6 = &lbl_801C692C[ape->colorId];
+            while (var_r5->flags != 0)
+            {
+                if ((s32) var_r5->tplTexIdx == -1)
+                {
+                    sub = &var_r5->sub2C;
+                    if (sub->materialColorA >= 1.0f)
+                    {
+                        sub->materialColorR = (temp_r6->r / 255.0f);
+                        sub->materialColorG = (temp_r6->g / 255.0f);
+                        sub->materialColorB = (temp_r6->b / 255.0f);
+                    }
+                }
+                var_r5 = (struct NlMesh *)((u8 *)var_r5->dispListStart + var_r5->dispListSize);
+            }
+        }
+        nl2ngc_draw_model_sort_translucent(nlModel);
+        mathutil_mtxA_pop();
+        u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+        if (var_r28 != 0)
+            func_80086794_sub2(arg2->unk4, ape);
+        if (lbl_802F2060 == 0)
+            apply_curr_light_group_ambient();
+        return;
+    }
+
+block_50:
+    temp_r27_3 = ((s32) ape->unk90 >> 1) + (ape->charaId * 2);
+    gmaModel = charaGMAs[temp_r27_3]->modelEntries[*arg1].model;
+    if (lbl_802F2060 == 0)
+    {
+        get_curr_light_group_ambient(&sp14);
+        avdisp_set_ambient(sp14.r, sp14.g, sp14.b);
+    }
+    if (temp_r27_3 == 4)
+        func_80086794_sub(ape->colorId, gmaModel);
+    avdisp_draw_model_unculled_sort_none(gmaModel);
+    if (lbl_802F2060 == 0)
+        apply_curr_light_group_ambient();
 }

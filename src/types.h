@@ -1030,4 +1030,13 @@ struct Struct8008CF00
 
 struct Stobj;
 
+struct Struct80089A04
+{
+    char *unk0;
+    char *unk4[4];
+    u32 unk14;
+    u32 filler18[6];
+    s32 unk30[4];
+};
+
 #endif

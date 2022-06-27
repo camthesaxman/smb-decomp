@@ -842,6 +842,7 @@ lbl_80086774:
 /* 8008678C 000826AC  7C 08 03 A6 */	mtlr r0
 /* 80086790 000826B0  4E 80 00 20 */	blr
 .endif
+.if 0
 .global func_80086794
 func_80086794:
 /* 80086794 000826B4  7C 08 02 A6 */	mflr r0
@@ -889,7 +890,7 @@ lbl_80086824:
 /* 80086830 00082750  40 82 00 08 */	bne lbl_80086838
 lbl_80086834:
 /* 80086834 00082754  3B 80 00 01 */	li r28, 1
-lbl_80086838:
+lbl_80086838:  ;# case 6
 /* 80086838 00082758  2C 1D 00 02 */	cmpwi r29, 2
 /* 8008683C 0008275C  40 82 01 5C */	bne lbl_80086998
 /* 80086840 00082760  80 DA 00 90 */	lwz r6, 0x90(r26)
@@ -994,7 +995,7 @@ lbl_80086998:
 /* 800869BC 000828DC  80 86 11 DC */	lwz r4, 0x11dc(r6)
 /* 800869C0 000828E0  83 C3 00 04 */	lwz r30, 4(r3)
 /* 800869C4 000828E4  48 00 00 90 */	b lbl_80086A54
-lbl_800869C8:
+lbl_800869C8:  ;# case 5
 /* 800869C8 000828E8  57 A0 10 3A */	slwi r0, r29, 2
 /* 800869CC 000828EC  7C DF 02 14 */	add r6, r31, r0
 /* 800869D0 000828F0  80 06 12 BC */	lwz r0, 0x12bc(r6)
@@ -1007,7 +1008,7 @@ lbl_800869C8:
 /* 800869EC 0008290C  80 86 12 9C */	lwz r4, 0x129c(r6)
 /* 800869F0 00082910  83 C3 00 04 */	lwz r30, 4(r3)
 /* 800869F4 00082914  48 00 00 60 */	b lbl_80086A54
-lbl_800869F8:
+lbl_800869F8:  ;# case 1
 /* 800869F8 00082918  57 A0 10 3A */	slwi r0, r29, 2
 /* 800869FC 0008291C  7C DF 02 14 */	add r6, r31, r0
 /* 80086A00 00082920  80 06 12 5C */	lwz r0, 0x125c(r6)
@@ -1020,7 +1021,7 @@ lbl_800869F8:
 /* 80086A1C 0008293C  80 86 12 3C */	lwz r4, 0x123c(r6)
 /* 80086A20 00082940  83 C3 00 04 */	lwz r30, 4(r3)
 /* 80086A24 00082944  48 00 00 30 */	b lbl_80086A54
-lbl_80086A28:
+lbl_80086A28:  ;# default
 /* 80086A28 00082948  57 A0 10 3A */	slwi r0, r29, 2
 /* 80086A2C 0008294C  7C DF 02 14 */	add r6, r31, r0
 /* 80086A30 00082950  80 06 11 9C */	lwz r0, 0x119c(r6)
@@ -1162,7 +1163,7 @@ lbl_80086C30:
 /* 80086C34 00082B54  7C 00 07 75 */	extsb. r0, r0
 /* 80086C38 00082B58  40 82 00 D4 */	bne lbl_80086D0C
 /* 80086C3C 00082B5C  4B F9 BA 5D */	bl apply_curr_light_group_ambient
-/* 80086C40 00082B60  48 00 00 CC */	b lbl_80086D0C
+/* 80086C40 00082B60  48 00 00 CC */	b lbl_80086D0C  ;# return
 lbl_80086C44:
 /* 80086C44 00082B64  80 DA 00 90 */	lwz r6, 0x90(r26)
 /* 80086C48 00082B68  3C 60 80 2B */	lis r3, charaGMAs@ha
@@ -1222,7 +1223,7 @@ lbl_80086D0C:
 /* 80086D14 00082C34  38 21 00 70 */	addi r1, r1, 0x70
 /* 80086D18 00082C38  7C 08 03 A6 */	mtlr r0
 /* 80086D1C 00082C3C  4E 80 00 20 */	blr
-
+.endif
 glabel func_80086D20
 /* 80086D20 00082C40  7C 08 02 A6 */	mflr r0
 /* 80086D24 00082C44  2C 04 00 05 */	cmpwi r4, 5
@@ -3925,7 +3926,6 @@ lbl_802B395C:
 lbl_802F54A0:
 	# ROM: 0x1EEEC0
 	.4byte 0x3FACCCCD
-.endif
 
 .global lbl_802F54A4
 lbl_802F54A4:
@@ -3968,6 +3968,7 @@ lbl_802F54C0:
 lbl_802F54C8:
 	# ROM: 0x1EEEE8
 	.4byte 0x3DCCCCCD
+.endif
 
 .global lbl_802F54CC
 lbl_802F54CC:
@@ -4424,10 +4425,94 @@ lbl_802F56A0:
 	.4byte 0x41A00000
 	.4byte 0
 
-.section .rodata
+.section .sdata
+
+.if 0
+glabel string_MDL_APE
+	.asciz "MDL_APE"
+glabel string_MDL_GAL
+	.asciz "MDL_GAL"
+glabel string_MDL_KID
+	.asciz "MDL_KID"
+glabel string_MDL_GOR
+	.asciz "MDL_GOR"
+glabel string_Dissut
+	.asciz "Dissut"
+	.balign 4
+glabel string_Face
+	.asciz "Face"
+	.balign 4
+.endif
+glabel string_boy_h
+	.asciz "boy_h"
+	.balign 4
+glabel string_boy_l
+	.asciz "boy_l"
+	.balign 4
+glabel string_gal_h
+	.asciz "gal_h"
+	.balign 4
+glabel string_gal_l
+	.asciz "gal_l"
+	.balign 4
+glabel string_kid_h
+	.asciz "kid_h"
+	.balign 4
+glabel string_kid_l
+	.asciz "kid_l"
+	.balign 4
+glabel string_gor_h
+	.asciz "gor_h"
+	.balign 4
+glabel string_gor_l
+	.asciz "gor_l"
+	.balign 4
+
+.global lbl_802F1258
+lbl_802F1258:
+	# ROM: 0x1EB998
+glabel string__07d
+	.asciz "%07d"
+	.balign 4
+
+.global lbl_802F1260
+lbl_802F1260:
+	# ROM: 0x1EB9A0
+	.4byte 0x2D2D0000
+
+.global lbl_802F1264
+lbl_802F1264:
+	# ROM: 0x1EB9A4
+	.4byte 0x25640000
+
+.global lbl_802F1268
+lbl_802F1268:
+	# ROM: 0x1EB9A8
+glabel string_RANKING
+	.asciz "RANKING"
+
+.global lbl_802F1270
+lbl_802F1270:
+	# ROM: 0x1EB9B0
+	.asciz "%s"
+    .balign 4
+
+.global lbl_802F1274
+lbl_802F1274:
+	# ROM: 0x1EB9B4
+	.4byte 0x27532000
+
+.global lbl_802F1278
+lbl_802F1278:
+	# ROM: 0x1EB9B8
+glabel string_REPLAY_2
+	.asciz "REPLAY"
+	.balign 4
+
 
 .section .data
 
+.if 0
 .global lbl_801C57E0
 lbl_801C57E0:
 	# ROM: 0x1C27E0
@@ -4506,10 +4591,12 @@ glabel lbl_801C5890
 	.4byte 0
 	.4byte 0
 	.4byte 0
+asdf:
 	.4byte lbl_801C57E0  ;# ptr
 	.4byte lbl_801C5800  ;# ptr
 	.4byte lbl_801C5820  ;# ptr
 	.4byte lbl_801C5890  ;# ptr
+
 glabel string_obj_H_APE_KUBI
 	.asciz "obj_H_APE_KUBI"
 	.balign 4
@@ -5072,6 +5159,7 @@ lbl_801C63C0:
 	.4byte 0x00000005
 	.4byte 0x00000005
 	.4byte 0x00000005
+
 glabel string_Smile_Face
 	.asciz "Smile Face"
 	.balign 4
@@ -5117,6 +5205,8 @@ glabel lbl_801C6470
 	.4byte string_Hand_Right  ;# ptr
 	.4byte string_Ear_Left  ;# ptr
 	.4byte string_Ear_Right  ;# ptr
+
+asdf:
 	.4byte 0
 	.4byte 0xFFFFFFFF
 	.4byte 0
@@ -5432,6 +5522,7 @@ lbl_801C6904:
 	.4byte 0x000F0010
 	.4byte 0xFFFF0000
 
+	.balign 4
 .global lbl_801C692C
 lbl_801C692C:
 	# ROM: 0x1C392C
@@ -5447,6 +5538,7 @@ lbl_801C692C:
 	.4byte 0x00000037
 	.4byte 0x00000046
 	.4byte 0x00000023
+
 	.4byte lbl_80130AEC  ;# ptr
 	.4byte lbl_8013FBD4  ;# ptr
 	.4byte lbl_8015D1DC  ;# ptr
@@ -5455,6 +5547,7 @@ lbl_801C692C:
 	.4byte lbl_80169884  ;# ptr
 	.4byte lbl_8016FCDC  ;# ptr
 	.4byte lbl_8016DD94  ;# ptr
+
 	.4byte 0x00000001
 	.4byte 0x00000003
 	.4byte 0x00000004
@@ -5590,6 +5683,7 @@ glabel lbl_801C6B3C
 	.4byte lbl_801C6AFC  ;# ptr
 	.4byte lbl_801C6ABC  ;# ptr
 	.4byte lbl_801C6B3C  ;# ptr
+.endif
 glabel string_H_APE_EYE
 	.asciz "H_APE_EYE"
 	.balign 4

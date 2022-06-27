@@ -18,13 +18,6 @@
 #include "ord_tbl.h"
 #include "light.h"
 
-struct Struct80089A04
-{
-    u8 filler0[4];
-    char *unk4[11];
-    s32 unk30[4];
-};
-
 struct Ape_child lbl_801C7A70 =
 {
     0.0f,
