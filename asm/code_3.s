@@ -1223,7 +1223,7 @@ lbl_80086D0C:
 /* 80086D14 00082C34  38 21 00 70 */	addi r1, r1, 0x70
 /* 80086D18 00082C38  7C 08 03 A6 */	mtlr r0
 /* 80086D1C 00082C3C  4E 80 00 20 */	blr
-.endif
+
 glabel func_80086D20
 /* 80086D20 00082C40  7C 08 02 A6 */	mflr r0
 /* 80086D24 00082C44  2C 04 00 05 */	cmpwi r4, 5
@@ -1246,7 +1246,7 @@ glabel func_80086D20
 lbl_80086D68:
 /* 80086D68 00082C88  2C 04 00 07 */	cmpwi r4, 7
 /* 80086D6C 00082C8C  40 80 01 3C */	bge lbl_80086EA8
-lbl_80086D70:
+lbl_80086D70:  ;# 0 6
 /* 80086D70 00082C90  2C 1D 00 02 */	cmpwi r29, 2
 /* 80086D74 00082C94  40 82 00 A4 */	bne lbl_80086E18
 /* 80086D78 00082C98  3C 60 80 2B */	lis r3, charaGMAs@ha
@@ -1302,7 +1302,7 @@ lbl_80086E18:
 /* 80086E3C 00082D5C  80 84 11 DC */	lwz r4, 0x11dc(r4)
 /* 80086E40 00082D60  83 43 00 04 */	lwz r26, 4(r3)
 /* 80086E44 00082D64  48 00 00 90 */	b lbl_80086ED4
-lbl_80086E48:
+lbl_80086E48:  ;# 1
 /* 80086E48 00082D68  57 A0 10 3A */	slwi r0, r29, 2
 /* 80086E4C 00082D6C  7C 9E 02 14 */	add r4, r30, r0
 /* 80086E50 00082D70  80 04 12 5C */	lwz r0, 0x125c(r4)
@@ -1315,7 +1315,7 @@ lbl_80086E48:
 /* 80086E6C 00082D8C  80 84 12 3C */	lwz r4, 0x123c(r4)
 /* 80086E70 00082D90  83 43 00 04 */	lwz r26, 4(r3)
 /* 80086E74 00082D94  48 00 00 60 */	b lbl_80086ED4
-lbl_80086E78:
+lbl_80086E78:  ;# 5
 /* 80086E78 00082D98  57 A0 10 3A */	slwi r0, r29, 2
 /* 80086E7C 00082D9C  7C 9E 02 14 */	add r4, r30, r0
 /* 80086E80 00082DA0  80 04 12 BC */	lwz r0, 0x12bc(r4)
@@ -1328,7 +1328,7 @@ lbl_80086E78:
 /* 80086E9C 00082DBC  80 84 12 9C */	lwz r4, 0x129c(r4)
 /* 80086EA0 00082DC0  83 43 00 04 */	lwz r26, 4(r3)
 /* 80086EA4 00082DC4  48 00 00 30 */	b lbl_80086ED4
-lbl_80086EA8:
+lbl_80086EA8:  ;# def
 /* 80086EA8 00082DC8  57 A0 10 3A */	slwi r0, r29, 2
 /* 80086EAC 00082DCC  7C 9E 02 14 */	add r4, r30, r0
 /* 80086EB0 00082DD0  80 04 11 9C */	lwz r0, 0x119c(r4)
@@ -1364,6 +1364,7 @@ lbl_80086F18:
 /* 80086F20 00082E40  38 21 00 38 */	addi r1, r1, 0x38
 /* 80086F24 00082E44  7C 08 03 A6 */	mtlr r0
 /* 80086F28 00082E48  4E 80 00 20 */	blr
+
 .global func_80086F2C
 func_80086F2C:
 /* 80086F2C 00082E4C  7C 08 02 A6 */	mflr r0
@@ -1738,7 +1739,7 @@ lbl_80087270:
 /* 800874A4 000833C4  38 21 00 B0 */	addi r1, r1, 0xb0
 /* 800874A8 000833C8  7C 08 03 A6 */	mtlr r0
 /* 800874AC 000833CC  4E 80 00 20 */	blr
-
+.endif
 .global func_800874B0
 func_800874B0:
 /* 800874B0 000833D0  7C 08 02 A6 */	mflr r0
@@ -3968,13 +3969,13 @@ lbl_802F54C0:
 lbl_802F54C8:
 	# ROM: 0x1EEEE8
 	.4byte 0x3DCCCCCD
-.endif
 
 .global lbl_802F54CC
 lbl_802F54CC:
 	# ROM: 0x1EEEEC
 	.4byte 0x41200000
-
+.endif
+.if 0
 .global lbl_802F54D0
 lbl_802F54D0:
 	# ROM: 0x1EEEF0
@@ -4028,7 +4029,7 @@ lbl_802F5500:
 	# ROM: 0x1EEF20
 	.4byte 0x43300000
 	.4byte 0x80000000
-
+.endif
 .global lbl_802F5508
 lbl_802F5508:
 	# ROM: 0x1EEF28
@@ -4442,7 +4443,7 @@ glabel string_Dissut
 glabel string_Face
 	.asciz "Face"
 	.balign 4
-.endif
+
 glabel string_boy_h
 	.asciz "boy_h"
 	.balign 4
@@ -4467,7 +4468,7 @@ glabel string_gor_h
 glabel string_gor_l
 	.asciz "gor_l"
 	.balign 4
-
+.endif
 .global lbl_802F1258
 lbl_802F1258:
 	# ROM: 0x1EB998
@@ -5684,6 +5685,7 @@ glabel lbl_801C6B3C
 	.4byte lbl_801C6ABC  ;# ptr
 	.4byte lbl_801C6B3C  ;# ptr
 .endif
+.if 0
 glabel string_H_APE_EYE
 	.asciz "H_APE_EYE"
 	.balign 4
@@ -5747,6 +5749,7 @@ glabel lbl_801C6BA4
 	.4byte string_obj_H_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel string_M_APE_EYE
 	.asciz "M_APE_EYE"
 	.balign 4
@@ -5862,6 +5865,7 @@ glabel lbl_801C6D88
 	.4byte string_obj_L_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel lbl_801C6E48
 	.4byte 0x00070005
 	.4byte 0
@@ -5903,6 +5907,7 @@ glabel lbl_801C6E48
 	.4byte string_obj_S_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel string_H_GAL_EYE
 	.asciz "H_GAL_EYE"
 	.balign 4
@@ -5955,6 +5960,7 @@ glabel lbl_801C6EF4
 	.4byte string_obj_H_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel string_M_GAL_EYE
 	.asciz "M_GAL_EYE"
 	.balign 4
@@ -6007,6 +6013,7 @@ glabel lbl_801C6FC0
 	.4byte string_obj_M_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel string_L_GAL_EYE
 	.asciz "L_GAL_EYE"
 	.balign 4
@@ -6308,6 +6315,7 @@ glabel lbl_801C7480
 	.4byte string_obj_S_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
+
 glabel string_H_GOR_EYE
 	.asciz "H_GOR_EYE"
 	.balign 4
@@ -6509,8 +6517,8 @@ glabel lbl_801C7784
 .global apeGfxFileInfo
 apeGfxFileInfo:
 	# ROM: 0x1C4824
-	.4byte string_boy_h  ;# ptr
-	.4byte lbl_801C6BA4  ;# ptr
+	.4byte string_boy_h  ;# ptr basename
+	.4byte lbl_801C6BA4  ;# ptr facePartInfo
 	.4byte lbl_801C6C9C  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6582,7 +6590,9 @@ apeGfxFileInfo:
 	.4byte 0x00000005
 	.4byte 0
 	.4byte 0
+.endif
 
+	.balign 8
 .global lbl_801C7948
 lbl_801C7948:
 	# ROM: 0x1C4948

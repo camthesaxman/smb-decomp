@@ -329,7 +329,7 @@ extern s32 lbl_801C63C0[];
 // extern ? lbl_801C68FC;
 // extern ? lbl_801C6904;
 // extern ? lbl_801C692C;
-extern struct ApeGfxFileInfo apeGfxFileInfo[7];
+extern struct ApeGfxFileInfo apeGfxFileInfo[8];
 // extern ? lbl_801C7948;
 // extern ? lbl_801C79B8;
 // extern ? lbl_801C79C8;

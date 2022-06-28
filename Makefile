@@ -174,6 +174,7 @@ SOURCES := \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	src/code_3.c \
+	src/code_3_2.c \
 	asm/code_3.s \
 	src/mot_ape.c \
 	src/code_2.c \

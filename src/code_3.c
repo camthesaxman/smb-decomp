@@ -4,8 +4,10 @@
 #include "global.h"
 #include "adv.h"
 #include "gma.h"
+//#include "gxcache.h"
 #include "gxutil.h"
 #include "light.h"
+#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mot_ape.h"
 #include "nl2ngc.h"
@@ -1243,14 +1245,14 @@ u32 *lbl_801C6B7C[] =
     lbl_801C6B3C,
 };
 
-const float lbl_802F54A4 = 182.04444885253906f;
-float force_lbl_802F54A8() { return 0.0f; }
-float force_lbl_802F54AC() { return 0.0625f; }
-const double lbl_802F54B0 = 4503601774854144.0;
-float force_lbl_802F54B8() { return 1.0f; }
-float force_lbl_802F54BC() { return 255.0f; }
+float  force_lbl_802F54A4() { return 182.04444885253906f; };
+float  force_lbl_802F54A8() { return 0.0f; }
+float  force_lbl_802F54AC() { return 0.0625f; }
+double force_lbl_802F54B0() { return 4503601774854144.0; }
+float  force_lbl_802F54B8() { return 1.0f; }
+float  force_lbl_802F54BC() { return 255.0f; }
 double force_lbl_802F54C0() { return 4503599627370496.0; }
-float force_lbl_802F54C8() { return 0.1f; }
+float  force_lbl_802F54C8() { return 0.1f; }
 
 void func_80086794_sub(int colorId, struct GMAModel *model)
 {
@@ -1417,3 +1419,887 @@ block_50:
     if (lbl_802F2060 == 0)
         apply_curr_light_group_ambient();
 }
+
+#pragma force_active on
+void func_80086D20(struct Ape *ape, int arg1, int arg2)
+{
+    int temp_r0;
+    int temp_r29;
+    struct NlModel *nlModel;
+    void *r4;
+    int r5;
+
+    temp_r29 = ape->charaId;
+    switch (arg1)
+    {
+    case 0:
+    case 6:
+        if (temp_r29 == 2)
+        {
+            avdisp_draw_model_unculled_sort_none(charaGMAs[temp_r29 << 1]->modelEntries[15].model);
+            func_80086794_sub2(arg2, ape);
+        }
+        temp_r0 = lbl_801C69DC[temp_r29];
+        if (temp_r0 == -1)
+            return;
+        r5 = lbl_801C699C[temp_r29];
+        r4 = lbl_801C69BC[temp_r29];
+        nlModel = apeFaceObj->models[temp_r0];
+        break;
+    case 1:
+        temp_r0 = lbl_801C6A3C[temp_r29];
+        if (temp_r0 == -1)
+            return;
+        r5 = lbl_801C69FC[temp_r29];
+        r4 = lbl_801C6A1C[temp_r29];
+        nlModel = apeFaceObj->models[temp_r0];
+        break;
+    case 5:
+        temp_r0 = lbl_801C6A9C[temp_r29];
+        if (temp_r0 == -1)
+            return;
+        r5 = lbl_801C6A5C[temp_r29];
+        r4 = lbl_801C6A7C[temp_r29];
+        nlModel = apeFaceObj->models[temp_r0];
+        break;
+    default:
+        temp_r0 = lbl_801C697C[temp_r29];
+        if (temp_r0 == -1)
+            return;
+        r5 = lbl_801C693C[temp_r29];
+        r4 = lbl_801C695C[temp_r29];
+        nlModel = apeFaceObj->models[temp_r0];
+        break;
+    }
+
+    func_8008669C((void *)nlModel, r4, r5, 1.0f - (arg2 / 16.0f));
+    mathutil_mtxA_scale_s(0.1f);
+    nl2ngc_draw_model_sort_translucent(nlModel);
+}
+#pragma force_active reset
+
+struct Struct80086F2C_1
+{
+    s16 unk0;
+    u8 filler2[0x8-0x2];
+    float unk8;
+};
+
+struct Struct80086F2C_2
+{
+    u8 filler0[4];
+    float unk4;
+};
+
+void func_80086F2C(struct Ape *ape, struct Struct80086F2C_1 *arg1, struct Struct80086F2C_2 *arg2)
+{
+    u8 unused[8];
+    struct Color3f sp14;
+    struct GMAModel *temp_r31;
+
+    temp_r31 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->unk0].model;
+    if (lbl_802F2060 == 0)
+    {
+        get_curr_light_group_ambient(&sp14);
+        avdisp_set_ambient(sp14.r, sp14.g, sp14.b);
+    }
+    if ((ape->unk24 == 1 && ape->unk9C != 5) || ape->unk24 == 0)
+    {
+        if (((unpausedFrameCounter << 12) & 0x30000) == 0)
+        {
+            float var_f1 = mathutil_sin(unpausedFrameCounter << 12);
+            if (arg1->unk8 < 0.0f)
+                var_f1 = -var_f1;
+            mathutil_mtxA_rotate_z(DEGREES_TO_S16(10.0f * var_f1));
+        }
+    }
+    else if (arg2 != NULL)
+        mathutil_mtxA_rotate_z(DEGREES_TO_S16(arg2->unk4));
+    u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+    if (ape->charaId == 2)
+        func_80086794_sub(ape->colorId, temp_r31);
+    avdisp_draw_model_unculled_sort_none(temp_r31);
+    if (lbl_802F2060 == 0)
+        apply_curr_light_group_ambient();
+}
+
+struct ApeFacePart lbl_801C6BA4[] =
+{
+    {
+        60,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_H_APE_KUBI",
+    },
+    {
+        6,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "H_APE_EYE",
+    },
+    {
+        14,
+        5,
+        {  0,   0,   0},
+        func_80085C94,
+        "H_APE_HAIR",
+    },
+    {
+        62,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_H_APE_TE_L",
+    },
+    {
+        65,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_H_APE_TE_R",
+    },
+    {
+        2,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_H_APE_KUBI_EAR_L",
+    },
+    {
+        4,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_H_APE_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C6C9C[] =
+{
+    {
+        60,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_M_APE_KUBI",
+    },
+    {
+        6,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "M_APE_EYE",
+    },
+    {
+        14,
+        5,
+        {  0,   0,   0},
+        func_80085C94,
+        "M_APE_HAIR",
+    },
+    {
+        62,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_APE_MT_L",
+    },
+    {
+        65,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_APE_MT_R",
+    },
+    {
+        3,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_M_APE_KUBI_EAR_L",
+    },
+    {
+        5,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_M_APE_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C6D88[] =
+{
+    {
+        19,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_L_APE_KUBI",
+    },
+    {
+        18,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "L_APE_EYE",
+    },
+    {
+        20,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_APE_MT_L",
+    },
+    {
+        22,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_APE_MT_R",
+    },
+    {
+        1,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_L_APE_KUBI_EAR_L",
+    },
+    {
+        2,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_L_APE_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C6E48[] =
+{
+    {
+        7,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_S_APE_KUBI",
+    },
+    {
+        13,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_APE_MT_L",
+    },
+    {
+        15,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_APE_MT_R",
+    },
+    {
+        5,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_S_APE_KUBI_EAR_L",
+    },
+    {
+        6,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_S_APE_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C6EF4[] =
+{
+    {
+        15,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_H_GAL_KUBI",
+    },
+    {
+        6,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "H_GAL_EYE",
+    },
+    {
+        17,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_GAL_MT_L",
+    },
+    {
+        20,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_GAL_MT_R",
+    },
+    {
+        16,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_H_GAL_KUBI_EAR_L",
+    },
+    {
+        18,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_H_GAL_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C6FC0[] =
+{
+    {
+        15,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_M_GAL_KUBI",
+    },
+    {
+        6,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "M_GAL_EYE",
+    },
+    {
+        17,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_GAL_MT_L",
+    },
+    {
+        20,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_GAL_MT_R",
+    },
+    {
+        4,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_M_GAL_KUBI_EAR_L",
+    },
+    {
+        5,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_M_GAL_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C708C[] =
+{
+    {
+        18,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_L_GAL_KUBI",
+    },
+    {
+        16,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "L_GAL_EYE",
+    },
+    {
+        19,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_GAL_MT_L",
+    },
+    {
+        22,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_GAL_MT_R",
+    },
+    {
+        1,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_L_GAL_KUBI_EAR_L",
+    },
+    {
+        2,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_L_GAL_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C714C[] =
+{
+    {
+        7,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_S_GAL_KUBI",
+    },
+    {
+        13,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_GAL_MT_L",
+    },
+    {
+        15,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_GAL_MT_R",
+    },
+    {
+        5,
+        5,
+        {-0.029999999, 0.12, 0.1},
+        func_80086F2C,
+        "obj_S_GAL_KUBI_EAR_L",
+    },
+    {
+        6,
+        5,
+        {-0.029999999, -0.12, 0.1},
+        func_80086F2C,
+        "obj_S_GAL_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C71F8[] =
+{
+    {
+        15,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_H_KID_KUBI",
+    },
+    {
+        14,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "H_KID_EYE",
+    },
+    {
+        17,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_KID_MT_L",
+    },
+    {
+        20,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_KID_MT_R",
+    },
+    {
+        10,
+        5,
+        {-0.0020000001, 0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_H_KID_KUBI_EAR_L",
+    },
+    {
+        12,
+        5,
+        {-0.0020000001, -0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_H_KID_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C72C4[] =
+{
+    {
+        15,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_M_KID_KUBI",
+    },
+    {
+        14,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "M_KID_EYE",
+    },
+    {
+        17,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_KID_MT_L",
+    },
+    {
+        20,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_KID_MT_R",
+    },
+    {
+        11,
+        5,
+        {-0.0020000001, 0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_M_KID_KUBI_EAR_L",
+    },
+    {
+        13,
+        5,
+        {-0.0020000001, -0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_M_KID_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C73A0[] =
+{
+    {
+        19,
+        5,
+        {  0,   0,   0},
+        func_800865A4,
+        "obj_L_KID_KUBI",
+    },
+    {
+        26,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_L_KID_FACE",
+    },
+    {
+        16,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "L_KID_EYE",
+    },
+    {
+        20,
+        10,
+        {  0,   0,   0},
+        func_80085F94,
+        "obj_L_KID_MT_L",
+    },
+    {
+        23,
+        15,
+        {  0,   0,   0},
+        func_80085F94,
+        "obj_L_KID_MT_R",
+    },
+    {
+        1,
+        5,
+        {-0.0020000001, 0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_L_KID_KUBI_EAR_L",
+    },
+    {
+        2,
+        5,
+        {-0.0020000001, -0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_L_KID_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C7480[] =
+{
+    {
+        11,
+        5,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_KID_KUBI",
+    },
+    {
+        13,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_KID_MT_L",
+    },
+    {
+        15,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_KID_MT_R",
+    },
+    {
+        5,
+        5,
+        {-0.0020000001, 0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_S_KID_KUBI_EAR_L",
+    },
+    {
+        10,
+        5,
+        {-0.0020000001, -0.090000004, 0.078000002},
+        func_80086F2C,
+        "obj_S_KID_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C752C[] =
+{
+    {
+        5,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_H_GOR_KUBI",
+    },
+    {
+        2,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "H_GOR_EYE",
+    },
+    {
+        6,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_GOR_MT_L",
+    },
+    {
+        7,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_GOR_MT_R",
+    },
+    {
+        0,
+        5,
+        {  0, 0.19, 0.15000001},
+        func_80086F2C,
+        "obj_H_GOR_KUBI_EAR_L",
+    },
+    {
+        1,
+        5,
+        {  0, -0.19, 0.15000001},
+        func_80086F2C,
+        "obj_H_GOR_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C75F8[] =
+{
+    {
+        5,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_M_GOR_KUBI",
+    },
+    {
+        2,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "M_GOR_EYE",
+    },
+    {
+        6,
+        10,
+        {  0,   0,   0},
+        func_800860E4,
+        "obj_M_GOR_MT_L",
+    },
+    {
+        7,
+        15,
+        {  0,   0,   0},
+        func_800861EC,
+        "obj_M_GOR_MT_R",
+    },
+    {
+        25,
+        5,
+        {  0, 0.19, 0.15000001},
+        func_80086F2C,
+        "obj_M_GOR_KUBI_EAR_L",
+    },
+    {
+        26,
+        5,
+        {  0, -0.19, 0.15000001},
+        func_80086F2C,
+        "obj_M_GOR_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C76C4[] =
+{
+    {
+        4,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_L_GOR_KUBI",
+    },
+    {
+        3,
+        5,
+        {  0,   0,   0},
+        func_80085E44,
+        "L_GOR_EYE",
+    },
+    {
+        7,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_GOR_MT_L",
+    },
+    {
+        9,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_L_GOR_MT_R",
+    },
+    {
+        1,
+        5,
+        {  0, 0.19, 0.15000001},
+        func_80086F2C,
+        "obj_L_GOR_KUBI_EAR_L",
+    },
+    {
+        2,
+        5,
+        {  0, -0.19, 0.15000001},
+        func_80086F2C,
+        "obj_L_GOR_KUBI_EAR_R",
+    },
+};
+
+struct ApeFacePart lbl_801C7784[] =
+{
+    {
+        17,
+        5,
+        {  0,   0,   0},
+        func_80086794,
+        "obj_S_GOR_KUBI",
+    },
+    {
+        24,
+        10,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_GOR_MT_L",
+    },
+    {
+        26,
+        15,
+        {  0,   0,   0},
+        NULL,
+        "obj_S_GOR_MT_R",
+    },
+    {
+        6,
+        5,
+        {  0, 0.19, 0.15000001},
+        func_80086F2C,
+        "obj_S_GOR_KUBI_EAR_L",
+    },
+    {
+        16,
+        5,
+        {  0, -0.19, 0.15000001},
+        func_80086F2C,
+        "obj_S_GOR_KUBI_EAR_R",
+    },
+};
+
+struct ApeGfxFileInfo apeGfxFileInfo[] =
+{
+    {
+        "boy_h",
+        {lbl_801C6BA4, lbl_801C6C9C, NULL, NULL},
+        {           7,            7,    0,    0},
+        {1, 0},
+    },
+    {
+        "boy_l",
+        {lbl_801C6D88, lbl_801C6E48, NULL, NULL},
+        {           6,            5,    0,    0},
+        {0, 4},
+    },
+    {
+        "gal_h",
+        {lbl_801C6EF4, lbl_801C6FC0, NULL, NULL},
+        {           6,            6,    0,    0},
+        {3, 2},
+    },
+    {
+        "gal_l",
+        {lbl_801C708C, lbl_801C714C, NULL, NULL},
+        {           6,            5,    0,    0},
+        {0, 4},
+    },
+    {
+        "kid_h",
+        {lbl_801C71F8, lbl_801C72C4, NULL, NULL},
+        {           6,            6,    0,    0},
+        {9, 8},
+    },
+    {
+        "kid_l",
+        {lbl_801C73A0, lbl_801C7480, NULL, NULL},
+        {           7,            5,    0,    0},
+        {0, 4},
+    },
+    {
+        "gor_h",
+        {lbl_801C752C, lbl_801C75F8, NULL, NULL},
+        {           6,            6,    0,    0},
+        {4, 24},
+    },
+    {
+        "gor_l",
+        {lbl_801C76C4, lbl_801C7784, NULL, NULL},
+        {           6,            5,    0,    0},
+        {0, 5},
+    },
+};
