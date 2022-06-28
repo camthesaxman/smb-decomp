@@ -43,8 +43,8 @@ lbl_80085C80:
 /* 80085C8C 00081BAC  7C 08 03 A6 */	mtlr r0
 /* 80085C90 00081BB0  4E 80 00 20 */	blr
 
-.global func_80085C94
-func_80085C94:
+.global u_draw_aiai_hair
+u_draw_aiai_hair:
 /* 80085C94 00081BB4  7C 08 02 A6 */	mflr r0
 /* 80085C98 00081BB8  3C 80 80 2B */	lis r4, lbl_802B2E70@ha
 /* 80085C9C 00081BBC  90 01 00 04 */	stw r0, 4(r1)
@@ -163,8 +163,8 @@ lbl_80085E30:
 /* 80085E3C 00081D5C  7C 08 03 A6 */	mtlr r0
 /* 80085E40 00081D60  4E 80 00 20 */	blr
 
-.global func_80085E44
-func_80085E44:
+.global u_draw_eye
+u_draw_eye:
 /* 80085E44 00081D64  7C 08 02 A6 */	mflr r0
 /* 80085E48 00081D68  90 01 00 04 */	stw r0, 4(r1)
 /* 80085E4C 00081D6C  94 21 FF F8 */	stwu r1, -8(r1)
@@ -257,8 +257,8 @@ lbl_80085F84:
 /* 80085F8C 00081EAC  7C 08 03 A6 */	mtlr r0
 /* 80085F90 00081EB0  4E 80 00 20 */	blr
 
-.global func_80085F94
-func_80085F94:
+.global u_draw_baby_hand
+u_draw_baby_hand:
 /* 80085F94 00081EB4  7C 08 02 A6 */	mflr r0
 /* 80085F98 00081EB8  90 01 00 04 */	stw r0, 4(r1)
 /* 80085F9C 00081EBC  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -351,8 +351,8 @@ lbl_800860CC:
 /* 800860DC 00081FFC  38 21 00 38 */	addi r1, r1, 0x38
 /* 800860E0 00082000  4E 80 00 20 */	blr
 
-.global func_800860E4
-func_800860E4:
+.global u_draw_left_hand
+u_draw_left_hand:
 /* 800860E4 00082004  7C 08 02 A6 */	mflr r0
 /* 800860E8 00082008  90 01 00 04 */	stw r0, 4(r1)
 /* 800860EC 0008200C  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -424,8 +424,8 @@ lbl_800861C4:
 /* 800861E4 00082104  38 21 00 30 */	addi r1, r1, 0x30
 /* 800861E8 00082108  4E 80 00 20 */	blr
 
-.global func_800861EC
-func_800861EC:
+.global u_draw_right_hand
+u_draw_right_hand:
 /* 800861EC 0008210C  7C 08 02 A6 */	mflr r0
 /* 800861F0 00082110  90 01 00 04 */	stw r0, 4(r1)
 /* 800861F4 00082114  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -1365,8 +1365,8 @@ lbl_80086F18:
 /* 80086F24 00082E44  7C 08 03 A6 */	mtlr r0
 /* 80086F28 00082E48  4E 80 00 20 */	blr
 
-.global func_80086F2C
-func_80086F2C:
+.global u_draw_ear
+u_draw_ear:
 /* 80086F2C 00082E4C  7C 08 02 A6 */	mflr r0
 /* 80086F30 00082E50  3C C0 80 2B */	lis r6, charaGMAs@ha
 /* 80086F34 00082E54  90 01 00 04 */	stw r0, 4(r1)
@@ -5705,7 +5705,7 @@ glabel lbl_801C6BA4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_H_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5713,7 +5713,7 @@ glabel lbl_801C6BA4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085C94  ;# ptr
+	.4byte u_draw_aiai_hair  ;# ptr
 	.4byte string_H_APE_HAIR  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5721,7 +5721,7 @@ glabel lbl_801C6BA4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_H_APE_TE_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5729,7 +5729,7 @@ glabel lbl_801C6BA4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_H_APE_TE_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5737,7 +5737,7 @@ glabel lbl_801C6BA4
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5745,7 +5745,7 @@ glabel lbl_801C6BA4
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5769,7 +5769,7 @@ glabel lbl_801C6C9C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_M_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5777,7 +5777,7 @@ glabel lbl_801C6C9C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085C94  ;# ptr
+	.4byte u_draw_aiai_hair  ;# ptr
 	.4byte string_M_APE_HAIR  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5785,7 +5785,7 @@ glabel lbl_801C6C9C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_APE_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5793,7 +5793,7 @@ glabel lbl_801C6C9C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_APE_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5801,7 +5801,7 @@ glabel lbl_801C6C9C
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5809,7 +5809,7 @@ glabel lbl_801C6C9C
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5829,7 +5829,7 @@ glabel lbl_801C6D88
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_L_APE_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5853,7 +5853,7 @@ glabel lbl_801C6D88
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5861,7 +5861,7 @@ glabel lbl_801C6D88
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5895,7 +5895,7 @@ glabel lbl_801C6E48
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_APE_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5903,7 +5903,7 @@ glabel lbl_801C6E48
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_APE_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5924,7 +5924,7 @@ glabel lbl_801C6EF4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_H_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5932,7 +5932,7 @@ glabel lbl_801C6EF4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5940,7 +5940,7 @@ glabel lbl_801C6EF4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5948,7 +5948,7 @@ glabel lbl_801C6EF4
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5956,7 +5956,7 @@ glabel lbl_801C6EF4
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5977,7 +5977,7 @@ glabel lbl_801C6FC0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_M_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5985,7 +5985,7 @@ glabel lbl_801C6FC0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_GAL_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -5993,7 +5993,7 @@ glabel lbl_801C6FC0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_GAL_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6001,7 +6001,7 @@ glabel lbl_801C6FC0
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6009,7 +6009,7 @@ glabel lbl_801C6FC0
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6030,7 +6030,7 @@ glabel lbl_801C708C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_L_GAL_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6054,7 +6054,7 @@ glabel lbl_801C708C
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6062,7 +6062,7 @@ glabel lbl_801C708C
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6095,7 +6095,7 @@ glabel lbl_801C714C
 	.4byte 0xBCF5C28F
 	.4byte 0x3DF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_GAL_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6103,7 +6103,7 @@ glabel lbl_801C714C
 	.4byte 0xBCF5C28F
 	.4byte 0xBDF5C28F
 	.4byte 0x3DCCCCCD
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_GAL_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6123,7 +6123,7 @@ glabel lbl_801C71F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_H_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6131,7 +6131,7 @@ glabel lbl_801C71F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6139,7 +6139,7 @@ glabel lbl_801C71F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6147,7 +6147,7 @@ glabel lbl_801C71F8
 	.4byte 0xBB03126F
 	.4byte 0x3DB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6155,7 +6155,7 @@ glabel lbl_801C71F8
 	.4byte 0xBB03126F
 	.4byte 0xBDB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6175,7 +6175,7 @@ glabel lbl_801C72C4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_M_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6183,7 +6183,7 @@ glabel lbl_801C72C4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6191,7 +6191,7 @@ glabel lbl_801C72C4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6199,7 +6199,7 @@ glabel lbl_801C72C4
 	.4byte 0xBB03126F
 	.4byte 0x3DB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6207,7 +6207,7 @@ glabel lbl_801C72C4
 	.4byte 0xBB03126F
 	.4byte 0xBDB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6238,7 +6238,7 @@ glabel lbl_801C73A0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_L_KID_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6246,7 +6246,7 @@ glabel lbl_801C73A0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085F94  ;# ptr
+	.4byte u_draw_baby_hand  ;# ptr
 	.4byte string_obj_L_KID_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6254,7 +6254,7 @@ glabel lbl_801C73A0
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085F94  ;# ptr
+	.4byte u_draw_baby_hand  ;# ptr
 	.4byte string_obj_L_KID_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6262,7 +6262,7 @@ glabel lbl_801C73A0
 	.4byte 0xBB03126F
 	.4byte 0x3DB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6270,7 +6270,7 @@ glabel lbl_801C73A0
 	.4byte 0xBB03126F
 	.4byte 0xBDB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6303,7 +6303,7 @@ glabel lbl_801C7480
 	.4byte 0xBB03126F
 	.4byte 0x3DB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_KID_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6311,7 +6311,7 @@ glabel lbl_801C7480
 	.4byte 0xBB03126F
 	.4byte 0xBDB851EC
 	.4byte 0x3D9FBE77
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_KID_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6332,7 +6332,7 @@ glabel lbl_801C752C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_H_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6340,7 +6340,7 @@ glabel lbl_801C752C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6348,7 +6348,7 @@ glabel lbl_801C752C
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6356,7 +6356,7 @@ glabel lbl_801C752C
 	.4byte 0
 	.4byte 0x3E428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6364,7 +6364,7 @@ glabel lbl_801C752C
 	.4byte 0
 	.4byte 0xBE428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_H_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6384,7 +6384,7 @@ glabel lbl_801C75F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_M_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6392,7 +6392,7 @@ glabel lbl_801C75F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800860E4  ;# ptr
+	.4byte u_draw_left_hand  ;# ptr
 	.4byte string_obj_M_GOR_MT_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6400,7 +6400,7 @@ glabel lbl_801C75F8
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_800861EC  ;# ptr
+	.4byte u_draw_right_hand  ;# ptr
 	.4byte string_obj_M_GOR_MT_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6408,7 +6408,7 @@ glabel lbl_801C75F8
 	.4byte 0
 	.4byte 0x3E428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6416,7 +6416,7 @@ glabel lbl_801C75F8
 	.4byte 0
 	.4byte 0xBE428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_M_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6436,7 +6436,7 @@ glabel lbl_801C76C4
 	.4byte 0
 	.4byte 0
 	.4byte 0
-	.4byte func_80085E44  ;# ptr
+	.4byte u_draw_eye  ;# ptr
 	.4byte string_L_GOR_EYE  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6460,7 +6460,7 @@ glabel lbl_801C76C4
 	.4byte 0
 	.4byte 0x3E428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6468,7 +6468,7 @@ glabel lbl_801C76C4
 	.4byte 0
 	.4byte 0xBE428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_L_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6501,7 +6501,7 @@ glabel lbl_801C7784
 	.4byte 0
 	.4byte 0x3E428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_GOR_KUBI_EAR_L  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6509,7 +6509,7 @@ glabel lbl_801C7784
 	.4byte 0
 	.4byte 0xBE428F5C
 	.4byte 0x3E19999A
-	.4byte func_80086F2C  ;# ptr
+	.4byte u_draw_ear  ;# ptr
 	.4byte string_obj_S_GOR_KUBI_EAR_R  ;# ptr
 	.4byte 0
 	.4byte 0
@@ -6591,7 +6591,7 @@ apeGfxFileInfo:
 	.4byte 0
 	.4byte 0
 .endif
-
+.if 0
 	.balign 8
 .global lbl_801C7948
 lbl_801C7948:
@@ -6657,6 +6657,7 @@ lbl_801C79C8:
 	.4byte 0x43F50000
 	.4byte 0x42800000
 	.4byte 0
+.endif
 
 .global lbl_801C7A1C
 lbl_801C7A1C:

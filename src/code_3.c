@@ -46,31 +46,31 @@ u32 lbl_802B37B0[0x10];
 extern u32 lbl_801C6848[];
 extern u32 lbl_801C6648[][16];
 
-void func_80085C94(struct Ape *arg0)
+void u_draw_aiai_hair(struct Ape *ape, struct ApeFacePart *unused1, struct Struct802B39C0_B0_child *unused2)
 {
     int var_r6;
     int r0;
     struct GMAModel *model;
 
-    var_r6 = arg0->unk90 >> 1;
-    r0 = var_r6 + (arg0->charaId << 1);
-    if (arg0->flags & 0x8000)
+    var_r6 = ape->unk90 >> 1;
+    r0 = var_r6 + (ape->charaId << 1);
+    if (ape->flags & 0x8000)
     {
         int r4;
 
         if (!(gamePauseStatus & 0xA))
-            lbl_802B3770[arg0->unk70]++;
-        r4 = lbl_802B3770[arg0->unk70] % 45;
+            lbl_802B3770[ape->unk70]++;
+        r4 = lbl_802B3770[ape->unk70] % 45;
         var_r6 = r4;
         if (r4 == 44)
-            arg0->flags &= 0xFFFF7FFF;
+            ape->flags &= 0xFFFF7FFF;
     }
     else
     {
-        if (arg0->unk24 != 0)
-            arg0->flags |= 0x8000;
+        if (ape->unk24 != 0)
+            ape->flags |= 0x8000;
         var_r6 = 0;
-        lbl_802B3770[arg0->unk70] = 0;
+        lbl_802B3770[ape->unk70] = 0;
     }
     model = charaGMAs[r0]->modelEntries[lbl_801C6848[var_r6]].model;
     avdisp_draw_model_unculled_sort_none(model);
@@ -87,24 +87,24 @@ void func_80085DB0(struct Ape *ape)
         ape->flags |= 0x80;
 }
 
-void func_80085E44(struct Ape *arg0)
+void u_draw_eye(struct Ape *ape, struct ApeFacePart *unused1, struct Struct802B39C0_B0_child *unused2)
 {
     s32 var_r8;
     int var_r7;
     struct GMAModel *model;
     int r0;
 
-    r0 = (arg0->unk90 >> 1) + (arg0->charaId << 1);
-    if (!(arg0->flags & 0x10000))
+    r0 = (ape->unk90 >> 1) + (ape->charaId << 1);
+    if (!(ape->flags & 0x10000))
     {
-        if (arg0->flags & 0x80)
+        if (ape->flags & 0x80)
         {
-            int temp_r4 = lbl_802B37B0[arg0->unk70] % 64;
+            int temp_r4 = lbl_802B37B0[ape->unk70] % 64;
             var_r8 = temp_r4;
             if (temp_r4 > 15)
             {
                 if (var_r8 > 60)
-                    arg0->flags &= 0xFFFFFF7F;
+                    ape->flags &= 0xFFFFFF7F;
                 var_r8 = 0;
             }
         }
@@ -112,17 +112,17 @@ void func_80085E44(struct Ape *arg0)
         {
             if (advDemoInfo.flags & 0x100)
             {
-                if (arg0->charaId == 2)
+                if (ape->charaId == 2)
                     var_r7 = 0xB4;
                 else
                     var_r7 = 0xF0;
-                if (advDemoInfo.unk8 % var_r7 == arg0->charaId * 80)
-                    arg0->flags |= 0x80;
+                if (advDemoInfo.unk8 % var_r7 == ape->charaId * 80)
+                    ape->flags |= 0x80;
             }
-            lbl_802B37B0[arg0->unk70] = 0;
+            lbl_802B37B0[ape->unk70] = 0;
             var_r8 = 0;
         }
-        model = charaGMAs[r0]->modelEntries[lbl_801C6648[((arg0->unk90 >> 1) * 4 + arg0->charaId)][var_r8]].model;
+        model = charaGMAs[r0]->modelEntries[lbl_801C6648[((ape->unk90 >> 1) * 4 + ape->charaId)][var_r8]].model;
         avdisp_draw_model_unculled_sort_none(model);
     }
 }
@@ -157,14 +157,14 @@ static inline void func_80085F94_sub(struct GMAModel *temp_r31, int temp_r10)
     }
 }
 
-void func_80085F94(struct Ape *ape, s16 *arg1)
+void u_draw_baby_hand(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *unused2)
 {
-    u8 unused2[8];
+    u8 unused3[8];
     struct Color3f sp18;
-    u8 unused[8];
+    u8 unused4[4];
     struct GMAModel *temp_r31;
 
-    temp_r31 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[*arg1].model;
+    temp_r31 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     if (lbl_802F2060 == 0)
     {
         get_curr_light_group_ambient(&sp18);
@@ -178,16 +178,16 @@ void func_80085F94(struct Ape *ape, s16 *arg1)
 
 extern s16 lbl_801C6904[];
 
-void func_800860E4(struct Ape *ape, s16 *arg1)
+void u_draw_left_hand(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *unused2)
 {
-    u8 unused[0x10];
-    struct GMAModel *temp_r30 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[*arg1].model;
+    u8 unused[8];
+    struct GMAModel *model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     struct Struct8003699C_child_sub *temp_r29 = &ape->unk0->unk4114;
     struct JointBoneThing *joints = temp_r29->unk38;
     s16 *var_r4;
     Mtx **var_r5;
 
-    if (((gamePauseStatus & 0xA) == 0) && ((ape->flags & 8) == 0))
+    if (!(gamePauseStatus & 0xA) && !(ape->flags & 8))
     {
         mathutil_mtxA_push();
         func_80036510(temp_r29);
@@ -204,20 +204,20 @@ void func_800860E4(struct Ape *ape, s16 *arg1)
     }
 
     if (ape->charaId == 2)
-        func_80086434(ape->colorId, temp_r30);
-    avdisp_draw_model_unculled_sort_none(temp_r30);
+        func_80086434(ape->colorId, model);
+    avdisp_draw_model_unculled_sort_none(model);
 }
 
-void func_800861EC(struct Ape *ape, s16 *arg1)
+void u_draw_right_hand(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *unused2)
 {
-    u8 unused[0x10];
-    struct GMAModel *temp_r30 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[*arg1].model;
+    u8 unused[8];
+    struct GMAModel *model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     struct Struct8003699C_child_sub *temp_r29 = &ape->unk0->unk84;
     struct JointBoneThing *joints = temp_r29->unk38;
     s16 *var_r4;
     Mtx **var_r5;
 
-    if (((gamePauseStatus & 0xA) == 0) && ((ape->flags & 8) == 0))
+    if (!(gamePauseStatus & 0xA) && !(ape->flags & 8))
     {
         mathutil_mtxA_push();
         func_80036510(temp_r29);
@@ -234,8 +234,8 @@ void func_800861EC(struct Ape *ape, s16 *arg1)
     }
 
     if (ape->charaId == 2)
-        func_80086434(ape->colorId, temp_r30);
-    avdisp_draw_model_unculled_sort_none(temp_r30);
+        func_80086434(ape->colorId, model);
+    avdisp_draw_model_unculled_sort_none(model);
 }
 
 struct GMAShape *func_800862F4(struct GMAModel *model)
@@ -362,6 +362,21 @@ void func_80086434(int colorId, struct GMAModel *model)
     shape->ambientColor = lbl_801C692C[colorId];
 }
 
+void func_800865A4_sub(int colorId, struct GMAModel *model)
+{
+    struct GMAShape *shape;
+
+    if ((shape = func_800862F4(model)) == NULL)
+        return;
+    shape->materialColor = lbl_801C692C[colorId];
+    shape->ambientColor = lbl_801C692C[colorId];
+
+    if ((shape = func_8008638C(model)) == NULL)
+        return;
+    shape->materialColor = lbl_801C692C[colorId];
+    shape->ambientColor = lbl_801C692C[colorId];
+}
+
 struct GMAShape *func_80086538(struct GMAShape *shape)
 {
     int i;
@@ -383,35 +398,20 @@ struct GMAShape *func_80086538(struct GMAShape *shape)
     return (struct GMAShape *)ptr;
 }
 
-void func_800865A4(struct Ape *ape, s16 *arg1)
+void func_800865A4(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *unused2)
 {
-    u8 unused2[8];
+    u8 unused3[8];
     struct Color3f sp14;
-    u8 unused[4];
-    s32 colorId;
-    struct GMAModel *temp_r30;
-    struct GMAShape *shape;
+    struct GMAModel *model;
 
-    temp_r30 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[*arg1].model;
+    model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     if (lbl_802F2060 == 0)
     {
         get_curr_light_group_ambient(&sp14);
         avdisp_set_ambient(sp14.r, sp14.g, sp14.b);
     }
-    colorId = ape->colorId;
-    shape = func_800862F4(temp_r30);
-    if (shape != NULL)
-    {
-        shape->materialColor = lbl_801C692C[colorId];
-        shape->ambientColor = lbl_801C692C[colorId];
-        shape = func_8008638C(temp_r30);
-        if (shape != NULL)
-        {
-            shape->materialColor = lbl_801C692C[colorId];
-            shape->ambientColor = lbl_801C692C[colorId];
-        }
-    }
-    avdisp_draw_model_unculled_sort_none(temp_r30);
+    func_800865A4_sub(ape->colorId, model);
+    avdisp_draw_model_unculled_sort_none(model);
     if (lbl_802F2060 == 0)
         apply_curr_light_group_ambient();
 }
@@ -1254,21 +1254,6 @@ float  force_lbl_802F54BC() { return 255.0f; }
 double force_lbl_802F54C0() { return 4503599627370496.0; }
 float  force_lbl_802F54C8() { return 0.1f; }
 
-void func_80086794_sub(int colorId, struct GMAModel *model)
-{
-    struct GMAShape *shape;
-
-    if ((shape = func_800862F4(model)) == NULL)
-        return;
-    shape->materialColor = lbl_801C692C[colorId];
-    shape->ambientColor = lbl_801C692C[colorId];
-
-    if ((shape = func_8008638C(model)) == NULL)
-        return;
-    shape->materialColor = lbl_801C692C[colorId];
-    shape->ambientColor = lbl_801C692C[colorId];
-}
-
 void func_80086794_sub2(int temp_r27, struct Ape *ape)
 {
     u32 *temp_r28_4 = lbl_801C6B7C[ape->charaId];
@@ -1284,7 +1269,7 @@ void func_80086794_sub2(int temp_r27, struct Ape *ape)
     }
 }
 
-void func_80086794(struct Ape *ape, s16 *arg1, struct Struct80086794 *arg2)
+void func_80086794(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *arg2)
 {
     struct NlModel *nlModel;
     struct GMAModel *gmaModel;
@@ -1317,13 +1302,13 @@ void func_80086794(struct Ape *ape, s16 *arg1, struct Struct80086794 *arg2)
         case 6:
             if (var_r29 == 2)
             {
-                gmaModel = charaGMAs[(ape->unk90 >> 1) + (var_r29 << 1)]->modelEntries[*arg1].model;
+                gmaModel = charaGMAs[(ape->unk90 >> 1) + (var_r29 << 1)]->modelEntries[arg1->modelId].model;
                 if (lbl_802F2060 == 0)
                 {
                     get_curr_light_group_ambient(&sp30);
                     avdisp_set_ambient(sp30.r, sp30.g, sp30.b);
                 }
-                func_80086794_sub(ape->colorId, gmaModel);
+                func_800865A4_sub(ape->colorId, gmaModel);
                 avdisp_draw_model_unculled_sort_none(gmaModel);
                 func_80086794_sub2(arg2->unk4, ape);
                 if (lbl_802F2060 == 0)
@@ -1406,15 +1391,15 @@ void func_80086794(struct Ape *ape, s16 *arg1, struct Struct80086794 *arg2)
     }
 
 block_50:
-    temp_r27_3 = ((s32) ape->unk90 >> 1) + (ape->charaId * 2);
-    gmaModel = charaGMAs[temp_r27_3]->modelEntries[*arg1].model;
+    temp_r27_3 = (ape->unk90 >> 1) + (ape->charaId << 1);
+    gmaModel = charaGMAs[temp_r27_3]->modelEntries[arg1->modelId].model;
     if (lbl_802F2060 == 0)
     {
         get_curr_light_group_ambient(&sp14);
         avdisp_set_ambient(sp14.r, sp14.g, sp14.b);
     }
     if (temp_r27_3 == 4)
-        func_80086794_sub(ape->colorId, gmaModel);
+        func_800865A4_sub(ape->colorId, gmaModel);
     avdisp_draw_model_unculled_sort_none(gmaModel);
     if (lbl_802F2060 == 0)
         apply_curr_light_group_ambient();
@@ -1478,26 +1463,13 @@ void func_80086D20(struct Ape *ape, int arg1, int arg2)
 }
 #pragma force_active reset
 
-struct Struct80086F2C_1
-{
-    s16 unk0;
-    u8 filler2[0x8-0x2];
-    float unk8;
-};
-
-struct Struct80086F2C_2
-{
-    u8 filler0[4];
-    float unk4;
-};
-
-void func_80086F2C(struct Ape *ape, struct Struct80086F2C_1 *arg1, struct Struct80086F2C_2 *arg2)
+void u_draw_ear(struct Ape *ape, struct ApeFacePart *arg1, struct Struct802B39C0_B0_child *arg2)
 {
     u8 unused[8];
     struct Color3f sp14;
-    struct GMAModel *temp_r31;
+    struct GMAModel *model;
 
-    temp_r31 = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->unk0].model;
+    model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     if (lbl_802F2060 == 0)
     {
         get_curr_light_group_ambient(&sp14);
@@ -1508,7 +1480,7 @@ void func_80086F2C(struct Ape *ape, struct Struct80086F2C_1 *arg1, struct Struct
         if (((unpausedFrameCounter << 12) & 0x30000) == 0)
         {
             float var_f1 = mathutil_sin(unpausedFrameCounter << 12);
-            if (arg1->unk8 < 0.0f)
+            if (arg1->unk4.y < 0.0f)
                 var_f1 = -var_f1;
             mathutil_mtxA_rotate_z(DEGREES_TO_S16(10.0f * var_f1));
         }
@@ -1517,8 +1489,8 @@ void func_80086F2C(struct Ape *ape, struct Struct80086F2C_1 *arg1, struct Struct
         mathutil_mtxA_rotate_z(DEGREES_TO_S16(arg2->unk4));
     u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
     if (ape->charaId == 2)
-        func_80086794_sub(ape->colorId, temp_r31);
-    avdisp_draw_model_unculled_sort_none(temp_r31);
+        func_800865A4_sub(ape->colorId, model);
+    avdisp_draw_model_unculled_sort_none(model);
     if (lbl_802F2060 == 0)
         apply_curr_light_group_ambient();
 }
@@ -1536,42 +1508,42 @@ struct ApeFacePart lbl_801C6BA4[] =
         6,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "H_APE_EYE",
     },
     {
         14,
         5,
         {  0,   0,   0},
-        func_80085C94,
+        u_draw_aiai_hair,
         "H_APE_HAIR",
     },
     {
         62,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_H_APE_TE_L",
     },
     {
         65,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_H_APE_TE_R",
     },
     {
         2,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_APE_KUBI_EAR_L",
     },
     {
         4,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_APE_KUBI_EAR_R",
     },
 };
@@ -1589,42 +1561,42 @@ struct ApeFacePart lbl_801C6C9C[] =
         6,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "M_APE_EYE",
     },
     {
         14,
         5,
         {  0,   0,   0},
-        func_80085C94,
+        u_draw_aiai_hair,
         "M_APE_HAIR",
     },
     {
         62,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_APE_MT_L",
     },
     {
         65,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_APE_MT_R",
     },
     {
         3,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_APE_KUBI_EAR_L",
     },
     {
         5,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_APE_KUBI_EAR_R",
     },
 };
@@ -1642,7 +1614,7 @@ struct ApeFacePart lbl_801C6D88[] =
         18,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "L_APE_EYE",
     },
     {
@@ -1663,14 +1635,14 @@ struct ApeFacePart lbl_801C6D88[] =
         1,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_APE_KUBI_EAR_L",
     },
     {
         2,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_APE_KUBI_EAR_R",
     },
 };
@@ -1702,14 +1674,14 @@ struct ApeFacePart lbl_801C6E48[] =
         5,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_APE_KUBI_EAR_L",
     },
     {
         6,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_APE_KUBI_EAR_R",
     },
 };
@@ -1727,35 +1699,35 @@ struct ApeFacePart lbl_801C6EF4[] =
         6,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "H_GAL_EYE",
     },
     {
         17,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_GAL_MT_L",
     },
     {
         20,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_GAL_MT_R",
     },
     {
         16,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_GAL_KUBI_EAR_L",
     },
     {
         18,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_GAL_KUBI_EAR_R",
     },
 };
@@ -1773,35 +1745,35 @@ struct ApeFacePart lbl_801C6FC0[] =
         6,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "M_GAL_EYE",
     },
     {
         17,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_GAL_MT_L",
     },
     {
         20,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_GAL_MT_R",
     },
     {
         4,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_GAL_KUBI_EAR_L",
     },
     {
         5,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_GAL_KUBI_EAR_R",
     },
 };
@@ -1819,7 +1791,7 @@ struct ApeFacePart lbl_801C708C[] =
         16,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "L_GAL_EYE",
     },
     {
@@ -1840,14 +1812,14 @@ struct ApeFacePart lbl_801C708C[] =
         1,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_GAL_KUBI_EAR_L",
     },
     {
         2,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_GAL_KUBI_EAR_R",
     },
 };
@@ -1879,14 +1851,14 @@ struct ApeFacePart lbl_801C714C[] =
         5,
         5,
         {-0.029999999, 0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_GAL_KUBI_EAR_L",
     },
     {
         6,
         5,
         {-0.029999999, -0.12, 0.1},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_GAL_KUBI_EAR_R",
     },
 };
@@ -1904,35 +1876,35 @@ struct ApeFacePart lbl_801C71F8[] =
         14,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "H_KID_EYE",
     },
     {
         17,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_KID_MT_L",
     },
     {
         20,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_KID_MT_R",
     },
     {
         10,
         5,
         {-0.0020000001, 0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_KID_KUBI_EAR_L",
     },
     {
         12,
         5,
         {-0.0020000001, -0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_KID_KUBI_EAR_R",
     },
 };
@@ -1950,35 +1922,35 @@ struct ApeFacePart lbl_801C72C4[] =
         14,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "M_KID_EYE",
     },
     {
         17,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_KID_MT_L",
     },
     {
         20,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_KID_MT_R",
     },
     {
         11,
         5,
         {-0.0020000001, 0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_KID_KUBI_EAR_L",
     },
     {
         13,
         5,
         {-0.0020000001, -0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_KID_KUBI_EAR_R",
     },
 };
@@ -2003,35 +1975,35 @@ struct ApeFacePart lbl_801C73A0[] =
         16,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "L_KID_EYE",
     },
     {
         20,
         10,
         {  0,   0,   0},
-        func_80085F94,
+        u_draw_baby_hand,
         "obj_L_KID_MT_L",
     },
     {
         23,
         15,
         {  0,   0,   0},
-        func_80085F94,
+        u_draw_baby_hand,
         "obj_L_KID_MT_R",
     },
     {
         1,
         5,
         {-0.0020000001, 0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_KID_KUBI_EAR_L",
     },
     {
         2,
         5,
         {-0.0020000001, -0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_KID_KUBI_EAR_R",
     },
 };
@@ -2063,14 +2035,14 @@ struct ApeFacePart lbl_801C7480[] =
         5,
         5,
         {-0.0020000001, 0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_KID_KUBI_EAR_L",
     },
     {
         10,
         5,
         {-0.0020000001, -0.090000004, 0.078000002},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_KID_KUBI_EAR_R",
     },
 };
@@ -2088,35 +2060,35 @@ struct ApeFacePart lbl_801C752C[] =
         2,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "H_GOR_EYE",
     },
     {
         6,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_GOR_MT_L",
     },
     {
         7,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_GOR_MT_R",
     },
     {
         0,
         5,
         {  0, 0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_GOR_KUBI_EAR_L",
     },
     {
         1,
         5,
         {  0, -0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_H_GOR_KUBI_EAR_R",
     },
 };
@@ -2134,35 +2106,35 @@ struct ApeFacePart lbl_801C75F8[] =
         2,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "M_GOR_EYE",
     },
     {
         6,
         10,
         {  0,   0,   0},
-        func_800860E4,
+        u_draw_left_hand,
         "obj_M_GOR_MT_L",
     },
     {
         7,
         15,
         {  0,   0,   0},
-        func_800861EC,
+        u_draw_right_hand,
         "obj_M_GOR_MT_R",
     },
     {
         25,
         5,
         {  0, 0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_GOR_KUBI_EAR_L",
     },
     {
         26,
         5,
         {  0, -0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_M_GOR_KUBI_EAR_R",
     },
 };
@@ -2180,7 +2152,7 @@ struct ApeFacePart lbl_801C76C4[] =
         3,
         5,
         {  0,   0,   0},
-        func_80085E44,
+        u_draw_eye,
         "L_GOR_EYE",
     },
     {
@@ -2201,14 +2173,14 @@ struct ApeFacePart lbl_801C76C4[] =
         1,
         5,
         {  0, 0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_GOR_KUBI_EAR_L",
     },
     {
         2,
         5,
         {  0, -0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_L_GOR_KUBI_EAR_R",
     },
 };
@@ -2240,14 +2212,14 @@ struct ApeFacePart lbl_801C7784[] =
         6,
         5,
         {  0, 0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_GOR_KUBI_EAR_L",
     },
     {
         16,
         5,
         {  0, -0.19, 0.15000001},
-        func_80086F2C,
+        u_draw_ear,
         "obj_S_GOR_KUBI_EAR_R",
     },
 };

@@ -899,10 +899,10 @@ struct Struct802C67D4
 
 struct ApeFacePart
 {
-    s16 unk0;
+    s16 modelId;
     s16 unk2;
     Vec unk4;
-    void (*unk10)();
+    void (*unk10)(struct Ape *, struct ApeFacePart *, struct Struct802B39C0_B0_child *);
     char *name;
     u8 filler18[0x20-0x18];
 };

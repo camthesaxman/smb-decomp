@@ -1637,7 +1637,7 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
         struct JointBoneThing *r22 = &b[r29->unk2];
-        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].model;
+        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->modelId].model;
 
         if (model != NULL)
         {
