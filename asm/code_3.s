@@ -2193,7 +2193,7 @@ lbl_80087ADC:
 /* 80087B04 00083A24  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 80087B08 00083A28  38 21 00 50 */	addi r1, r1, 0x50
 /* 80087B0C 00083A2C  4E 80 00 20 */	blr
-.endif
+
 .global func_80087B10
 func_80087B10:
 /* 80087B10 00083A30  7C 08 02 A6 */	mflr r0
@@ -2912,7 +2912,7 @@ lbl_800885C4:
 /* 800885E0 00084500  83 A1 00 94 */	lwz r29, 0x94(r1)
 /* 800885E4 00084504  38 21 00 B8 */	addi r1, r1, 0xb8
 /* 800885E8 00084508  4E 80 00 20 */	blr
-
+.endif
 .global func_800885EC
 func_800885EC:
 /* 800885EC 0008450C  3C 60 80 2B */	lis r3, lbl_802B37F0@ha
@@ -4117,7 +4117,7 @@ lbl_802F5570:
 	# ROM: 0x1EEF90
 	.4byte 0x3FA70A3D
 	.4byte 0x70A3D70A
-.endif
+
 .global lbl_802F5578
 lbl_802F5578:
 	# ROM: 0x1EEF98
@@ -4358,6 +4358,7 @@ lbl_802F5654:
 lbl_802F5658:
 	# ROM: 0x1EF078
 	.4byte 0x3DB851EC
+.endif
 
 .global lbl_802F565C
 lbl_802F565C:
@@ -4468,7 +4469,7 @@ glabel string_gor_h
 glabel string_gor_l
 	.asciz "gor_l"
 	.balign 4
-.endif
+
 .global lbl_802F1258
 lbl_802F1258:
 	# ROM: 0x1EB998
@@ -4485,6 +4486,7 @@ lbl_802F1260:
 lbl_802F1264:
 	# ROM: 0x1EB9A4
 	.4byte 0x25640000
+.endif
 
 .global lbl_802F1268
 lbl_802F1268:

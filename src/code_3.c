@@ -4,7 +4,6 @@
 #include "global.h"
 #include "adv.h"
 #include "gma.h"
-//#include "gxcache.h"
 #include "gxutil.h"
 #include "light.h"
 #define MATHUTIL_SIN_INT_PARAM
