@@ -1739,7 +1739,7 @@ lbl_80087270:
 /* 800874A4 000833C4  38 21 00 B0 */	addi r1, r1, 0xb0
 /* 800874A8 000833C8  7C 08 03 A6 */	mtlr r0
 /* 800874AC 000833CC  4E 80 00 20 */	blr
-.endif
+
 .global func_800874B0
 func_800874B0:
 /* 800874B0 000833D0  7C 08 02 A6 */	mflr r0
@@ -2193,7 +2193,7 @@ lbl_80087ADC:
 /* 80087B04 00083A24  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 80087B08 00083A28  38 21 00 50 */	addi r1, r1, 0x50
 /* 80087B0C 00083A2C  4E 80 00 20 */	blr
-
+.endif
 .global func_80087B10
 func_80087B10:
 /* 80087B10 00083A30  7C 08 02 A6 */	mflr r0
@@ -3912,10 +3912,10 @@ lbl_802B2E70:
 .global lbl_802B37B0
 lbl_802B37B0:
 	.skip 0x40
-.endif
 .global lbl_802B37F0
 lbl_802B37F0:
 	.skip 0x16C
+.endif
 .global lbl_802B395C
 lbl_802B395C:
 	.skip 0x64
@@ -4029,7 +4029,7 @@ lbl_802F5500:
 	# ROM: 0x1EEF20
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
+
 .global lbl_802F5508
 lbl_802F5508:
 	# ROM: 0x1EEF28
@@ -4117,7 +4117,7 @@ lbl_802F5570:
 	# ROM: 0x1EEF90
 	.4byte 0x3FA70A3D
 	.4byte 0x70A3D70A
-
+.endif
 .global lbl_802F5578
 lbl_802F5578:
 	# ROM: 0x1EEF98
@@ -6658,7 +6658,7 @@ lbl_801C79C8:
 	.4byte 0x42800000
 	.4byte 0
 .endif
-
+.if 0
 .global lbl_801C7A1C
 lbl_801C7A1C:
 	# ROM: 0x1C4A1C
@@ -6671,7 +6671,7 @@ lbl_801C7A1C:
 	.4byte lbl_80087744  ;# ptr
 	.4byte lbl_80087744  ;# ptr
 	.4byte lbl_8008772C  ;# ptr
-
+.endif
 .global lbl_801C7A40
 lbl_801C7A40:
 	# ROM: 0x1C4A40
