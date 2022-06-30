@@ -124,6 +124,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/window.s \
+	asm/code_4.s \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
@@ -195,6 +196,7 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
+	asm/code_1.s \
 	src/preview.c \
 	asm/name_entry.s \
 	asm/credits.s \
