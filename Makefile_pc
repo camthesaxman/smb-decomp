@@ -1,7 +1,7 @@
 CC := gcc -m32
-CPPFLAGS := -I include -DNONMATCHING -DC_ONLY
-CFLAGS := -O0 -g
-LDFLAGS := -lm
+CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC
+CFLAGS := -O0 -g -fsanitize=address
+LDFLAGS := -lm -fsanitize=address
 
 EXE :=
 TARGET := supermonkeyball$(EXE)
@@ -101,11 +101,11 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	src/preview.c \
+	libraries/gx_pc/GX.c \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
 	libraries/os/OSAudioSystem.c \
 	libraries/os/OSError.c \
-	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/OSSync.c \
 	libraries/dvd/dvdqueue.c \
@@ -116,12 +116,8 @@ SOURCES := \
 	libraries/dsp/dsp_task.c \
 	libraries/hio/hio.c \
 	libraries/gx/GXFifo.c \
-	libraries/gx/GXGeometry.c \
 	libraries/gx/GXLight.c \
-	libraries/gx/GXTev.c \
 	libraries/gx/GXStubs.c \
-	libraries/gx/GXDisplayList.c \
-	libraries/gx/GXTransform.c \
 	libraries/gx/GXPerf.c \
 	libraries/amcnotstub/amcnotstub.c
 O_FILES := $(addsuffix .o,$(SOURCES))

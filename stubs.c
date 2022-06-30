@@ -1,3 +1,11 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <dolphin/types.h>
+
+#define MEM_SIZE (32 * 1024 * 1024)
+
+u8 LC_CACHE_BASE[4096];
+
 void ARGetDMAStatus(){puts("ARGetDMAStatus is a stub");}
 void ARQPostRequest(){puts("ARQPostRequest is a stub");}
 void ARStartDMA(){puts("ARStartDMA is a stub");}
@@ -112,7 +120,14 @@ void OSGetResetButtonState(){puts("OSGetResetButtonState is a stub");}
 void OSGetStackPointer(){puts("OSGetStackPointer is a stub");}
 void OSGetTick(){puts("OSGetTick is a stub");}
 void OSGetTime(){puts("OSGetTime is a stub");}
-void OSInit(){puts("OSInit is a stub");}
+void OSInit()
+{
+    puts("OSInit is a stub");
+    u8 *arena = malloc(MEM_SIZE);
+    
+    OSSetArenaLo(arena);
+    OSSetArenaHi(arena + MEM_SIZE);
+}
 void OSInitFont(){puts("OSInitFont is a stub");}
 void OSLink(){puts("OSLink is a stub");}
 void OSLoadContext(){puts("OSLoadContext is a stub");}
@@ -151,7 +166,11 @@ void SoundRevID(){puts("SoundRevID is a stub");}
 void VIConfigure(){puts("VIConfigure is a stub");}
 void VIFlush(){puts("VIFlush is a stub");}
 void VIGetNextField(){puts("VIGetNextField is a stub");}
-void VIGetTvFormat(){puts("VIGetTvFormat is a stub");}
+u32 VIGetTvFormat(void)
+{
+    puts("VIGetTvFormat is a stub");
+    return 0;
+}
 void VIInit(){puts("VIInit is a stub");}
 void VISetBlack(){puts("VISetBlack is a stub");}
 void VISetNextFrameBuffer(){puts("VISetNextFrameBuffer is a stub");}
@@ -325,7 +344,7 @@ void func_800B64B0(){puts("func_800B64B0 is a stub");}
 void g_poolInfo(){puts("g_poolInfo is a stub");}
 void gamePauseStatus(){puts("gamePauseStatus is a stub");}
 void gx(){puts("gx is a stub");}
-void gxCache(){puts("gxCache is a stub");}
+void *gxCache;
 void init_loading_gct(){puts("init_loading_gct is a stub");}
 void lbl_801147D8(){puts("lbl_801147D8 is a stub");}
 void lbl_801147F4(){puts("lbl_801147F4 is a stub");}
@@ -439,3 +458,9 @@ void u_something_with_lens_flare_1(){puts("u_something_with_lens_flare_1 is a st
 void u_something_with_lens_flare_2(){puts("u_something_with_lens_flare_2 is a stub");}
 void window_init(){puts("window_init is a stub");}
 void window_main(){puts("window_main is a stub");}
+
+u32 OSGetPhysicalMemSize(void)
+{
+    puts("OSGetPhysicalMemSize is a stub");
+    return 24 * 1024 * 1024;
+}

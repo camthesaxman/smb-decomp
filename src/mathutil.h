@@ -42,7 +42,11 @@ struct MathutilData
     #define OFFSET_constOneZero 0x1AE
 };
 
+#ifdef TARGET_PC
+extern u8 LC_CACHE_BASE[];
+#else
 #define LC_CACHE_BASE 0xE0000000
+#endif
 
 void mathutil_init(void);
 float func_8000716C(double a);
