@@ -1,0 +1,140 @@
+CC := gcc -m32
+CPPFLAGS := -I include -DNONMATCHING -DC_ONLY
+CFLAGS := -O0 -g -fsanitize=address
+
+EXE :=
+TARGET := supermonkeyball$(EXE)
+
+SOURCES := \
+	src/main.c \
+	src/init.c \
+	src/init_2.c \
+	src/mathutil.c \
+	src/mode.c \
+	src/pause_menu.c \
+	src/event.c \
+	src/polydisp.c \
+	src/adv.c \
+	src/code_5.c \
+	src/sel.c \
+	src/game.c \
+	src/camera.c \
+	src/frustum.c \
+	src/light.c \
+	src/gxsync.c \
+	src/info.c \
+	src/code_7.c \
+	src/input.c \
+	src/bitmap.c \
+	src/bmp_list_com.c \
+	src/bmp_list_adv.c \
+	src/bmp_list_end.c \
+	src/bmp_list_rnk.c \
+	src/bmp_list_sel.c \
+	src/bmp_list_nml.c \
+	src/bmp_list_bwl.c \
+	src/bmp_list_rac.c \
+	src/bmp_list_bil.c \
+	src/bmp_list_fgt.c \
+	src/bmp_list_glf.c \
+	src/bmp_list_tgt.c \
+	src/bmp_list_how.c \
+	src/bmp_list_cmd.c \
+	src/trig_tables.c \
+	src/perf.c \
+	src/nl2ngc.c \
+	src/motload.c \
+	src/motload_2.c \
+	src/motload_3.c \
+	src/motload_4.c \
+	src/ball.c \
+	src/mathutil_vec_cross_prod.c \
+	src/stcoli.c \
+	src/world.c \
+	src/interpolate_keyframes.c \
+	src/stage.c \
+	src/code_8.c \
+	src/background.c \
+	src/bg_old_cave.c \
+	src/bg_old_night.c \
+	src/bg_old_space.c \
+	src/bg_old_sunset.c \
+	src/bg_old_bonus.c \
+	src/bg_old_sand.c \
+	src/bg_old_storm.c \
+	src/bg_jungle.c \
+	src/bg_water.c \
+	src/bg_space.c \
+	src/bg_sunset.c \
+	src/bg_bonus.c \
+	src/bg_storm.c \
+	src/bg_end.c \
+	src/course.c \
+	src/item.c \
+	src/item_coin.c \
+	src/item_pilot.c \
+	src/obj_collision.c \
+	src/stobj.c \
+	src/stobj_goal.c \
+	src/sprite.c \
+	src/textbox.c \
+	src/hud.c \
+	src/ord_tbl.c \
+	src/code_3.c \
+	src/code_3_2.c \
+	src/mot_ape.c \
+	src/code_2.c \
+	src/lzs_decompress.c \
+	src/avdisp.c \
+	src/load.c \
+	src/mouse.c \
+	src/rend_efc.c \
+	src/rend_efc_mirror.c \
+	src/rend_efc_3.c \
+	src/relocation.c \
+	src/gxutil.c \
+	src/gxcache.c \
+	src/memcard.c \
+	src/DEMOPuts.c \
+	src/view.c \
+	src/code_6.c \
+	src/preview.c \
+	libraries/os/__start.c \
+	libraries/os/OSAlloc.c \
+	libraries/os/OSArena.c \
+	libraries/os/OSAudioSystem.c \
+	libraries/os/OSError.c \
+	libraries/os/OSMemory.c \
+	libraries/os/OSMutex.c \
+	libraries/os/OSSync.c \
+	libraries/db/db.c \
+	libraries/dvd/dvdqueue.c \
+	libraries/dvd/fstload.c \
+	libraries/demo/DEMOFont.c \
+	libraries/dsp/dsp.c \
+	libraries/dsp/dsp_debug.c \
+	libraries/dsp/dsp_task.c \
+	libraries/hio/hio.c \
+	libraries/gx/GXFifo.c \
+	libraries/gx/GXGeometry.c \
+	libraries/gx/GXLight.c \
+	libraries/gx/GXTev.c \
+	libraries/gx/GXStubs.c \
+	libraries/gx/GXDisplayList.c \
+	libraries/gx/GXTransform.c \
+	libraries/gx/GXPerf.c \
+	libraries/amcnotstub/amcnotstub.c
+O_FILES := $(addsuffix .o,$(SOURCES))
+ALL_O_FILES := $(O_FILES)
+
+$(TARGET): $(ALL_O_FILES)
+	$(CC) $^ -o $@
+
+%.c.o: %.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+
+clean:
+	$(RM) $(TARGET)
+	find . -name '*.o' -exec rm {} +
+	find . -name '*.dep' -exec rm {} +
+	find . -name '*.dump' -exec rm {} +
