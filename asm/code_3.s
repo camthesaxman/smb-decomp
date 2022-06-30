@@ -2912,7 +2912,7 @@ lbl_800885C4:
 /* 800885E0 00084500  83 A1 00 94 */	lwz r29, 0x94(r1)
 /* 800885E4 00084504  38 21 00 B8 */	addi r1, r1, 0xb8
 /* 800885E8 00084508  4E 80 00 20 */	blr
-.endif
+
 .global func_800885EC
 func_800885EC:
 /* 800885EC 0008450C  3C 60 80 2B */	lis r3, lbl_802B37F0@ha
@@ -2929,11 +2929,11 @@ func_800885EC:
 /* 80088618 00084538  39 06 00 20 */	addi r8, r6, 0x20
 /* 8008861C 0008453C  A8 04 00 00 */	lha r0, 0(r4)
 /* 80088620 00084540  38 83 00 0C */	addi r4, r3, 0xc
-/* 80088624 00084544  B0 06 00 20 */	sth r0, 0x20(r6)
+/* 80088624 00084544  B0 06 00 20 */	sth r0, 0x20(r6)  ;# unk0
 /* 80088628 00084548  C0 03 00 00 */	lfs f0, 0(r3)
-/* 8008862C 0008454C  D0 06 00 28 */	stfs f0, 0x28(r6)
+/* 8008862C 0008454C  D0 06 00 28 */	stfs f0, 0x28(r6)  ;# unk8
 /* 80088630 00084550  C0 03 00 04 */	lfs f0, 4(r3)
-/* 80088634 00084554  D0 06 00 30 */	stfs f0, 0x30(r6)
+/* 80088634 00084554  D0 06 00 30 */	stfs f0, 0x30(r6)  ;# unk10
 /* 80088638 00084558  A8 07 00 00 */	lha r0, 0(r7)
 /* 8008863C 0008455C  B4 08 00 18 */	sthu r0, 0x18(r8)
 /* 80088640 00084560  C0 03 00 0C */	lfs f0, 0xc(r3)
@@ -3181,7 +3181,8 @@ lbl_800889A0:
 /* 800889A0 000848C0  38 00 00 08 */	li r0, 8
 /* 800889A4 000848C4  90 04 00 04 */	stw r0, 4(r4)
 /* 800889A8 000848C8  4E 80 00 20 */	blr
-lbl_800889AC:
+
+glabel lbl_800889AC
 /* 800889AC 000848CC  7C 08 02 A6 */	mflr r0
 /* 800889B0 000848D0  90 01 00 04 */	stw r0, 4(r1)
 /* 800889B4 000848D4  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -3200,7 +3201,7 @@ lbl_800889DC:
 /* 800889E4 00084904  38 21 00 18 */	addi r1, r1, 0x18
 /* 800889E8 00084908  7C 08 03 A6 */	mtlr r0
 /* 800889EC 0008490C  4E 80 00 20 */	blr
-lbl_800889F0:
+glabel lbl_800889F0
 /* 800889F0 00084910  7C 08 02 A6 */	mflr r0
 /* 800889F4 00084914  90 01 00 04 */	stw r0, 4(r1)
 /* 800889F8 00084918  94 21 FF F8 */	stwu r1, -8(r1)
@@ -3400,7 +3401,8 @@ lbl_80088CA0:
 /* 80088CA4 00084BC4  38 21 00 08 */	addi r1, r1, 8
 /* 80088CA8 00084BC8  7C 08 03 A6 */	mtlr r0
 /* 80088CAC 00084BCC  4E 80 00 20 */	blr
-lbl_80088CB0:
+
+glabel lbl_80088CB0
 /* 80088CB0 00084BD0  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 80088CB4 00084BD4  3C A0 80 2B */	lis r5, lbl_802B37F0@ha
 /* 80088CB8 00084BD8  38 A5 37 F0 */	addi r5, r5, lbl_802B37F0@l
@@ -3663,7 +3665,8 @@ lbl_8008905C:
 /* 80089064 00084F84  38 21 00 18 */	addi r1, r1, 0x18
 /* 80089068 00084F88  7C 08 03 A6 */	mtlr r0
 /* 8008906C 00084F8C  4E 80 00 20 */	blr
-lbl_80089070:
+
+glabel lbl_80089070
 /* 80089070 00084F90  7C 08 02 A6 */	mflr r0
 /* 80089074 00084F94  90 01 00 04 */	stw r0, 4(r1)
 /* 80089078 00084F98  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -3682,7 +3685,7 @@ lbl_800890A0:
 /* 800890A8 00084FC8  38 21 00 18 */	addi r1, r1, 0x18
 /* 800890AC 00084FCC  7C 08 03 A6 */	mtlr r0
 /* 800890B0 00084FD0  4E 80 00 20 */	blr
-lbl_800890B4:
+glabel lbl_800890B4
 /* 800890B4 00084FD4  7C 08 02 A6 */	mflr r0
 /* 800890B8 00084FD8  90 01 00 04 */	stw r0, 4(r1)
 /* 800890BC 00084FDC  94 21 FF F8 */	stwu r1, -8(r1)
@@ -3902,6 +3905,7 @@ lbl_800893AC:
 /* 800893D0 000852F0  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 800893D4 000852F4  38 21 00 30 */	addi r1, r1, 0x30
 /* 800893D8 000852F8  4E 80 00 20 */	blr
+.endif
 
 .section .bss
 
@@ -3915,10 +3919,10 @@ lbl_802B37B0:
 .global lbl_802B37F0
 lbl_802B37F0:
 	.skip 0x16C
-.endif
 .global lbl_802B395C
 lbl_802B395C:
 	.skip 0x64
+.endif
 
 .section .sdata2
 
@@ -4358,7 +4362,6 @@ lbl_802F5654:
 lbl_802F5658:
 	# ROM: 0x1EF078
 	.4byte 0x3DB851EC
-.endif
 
 .global lbl_802F565C
 lbl_802F565C:
@@ -4426,6 +4429,8 @@ lbl_802F56A0:
 	# ROM: 0x1EF0C0
 	.4byte 0x41A00000
 	.4byte 0
+.endif
+
 
 .section .sdata
 
@@ -4486,7 +4491,6 @@ lbl_802F1260:
 lbl_802F1264:
 	# ROM: 0x1EB9A4
 	.4byte 0x25640000
-.endif
 
 .global lbl_802F1268
 lbl_802F1268:
@@ -4511,7 +4515,7 @@ lbl_802F1278:
 glabel string_REPLAY_2
 	.asciz "REPLAY"
 	.balign 4
-
+.endif
 
 .section .data
 
@@ -6673,13 +6677,14 @@ lbl_801C7A1C:
 	.4byte lbl_80087744  ;# ptr
 	.4byte lbl_80087744  ;# ptr
 	.4byte lbl_8008772C  ;# ptr
-.endif
+
 .global lbl_801C7A40
 lbl_801C7A40:
 	# ROM: 0x1C4A40
 glabel string_RNK_TITILE
 	.asciz "RNK TITILE"
 	.balign 4
+
 glabel string_MASTER__d_2
 	.asciz "MASTER %d"
 	.balign 4
@@ -6689,5 +6694,6 @@ glabel string_EXTRA__d_2
 glabel string_FLOOR__d_2
 	.asciz "FLOOR %d"
 	.balign 4
+.endif
 
 .section .sdata

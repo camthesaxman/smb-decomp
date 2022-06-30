@@ -8,6 +8,7 @@
 #include "gxutil.h"
 #define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
+#include "mode.h"
 #include "sprite.h"
 
 struct Struct800870EC
@@ -97,6 +98,8 @@ void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unu
     GXEnd();
 }
 
+// size = 0xC
+/*
 u32 lbl_801C7948[] =
 {
     0,
@@ -123,44 +126,72 @@ u32 lbl_801C7948[] =
     0x43770000,
     0x43370000,
     0x43370000,
+
     0x300000EE,
     0x310000F6,
     0x320000CC,
     0x330000D1,
 };
+*/
 
-u32 lbl_801C79B8[] =
+struct Color3f lbl_801C7948[] =
 {
-    0x03070302,
-    0x03060305,
-    0x03040306,
-    0x03030000,
+    {   0, 171,  40 },
+    {   0,  86, 228 },
+    { 255, 163,  36 },
+    { 228,  13,  14 },
 };
 
-u32 lbl_801C79C8[] =
+#pragma force_active on
+struct Color3f lbl_801C7948_2[] =
 {
-    0x43160000,
-    0x42800000,
-    0,
-    0x434F0000,
-    0x42980000,
-    0,
-    0x43838000,
-    0x42800000,
-    0,
-    0x439F8000,
-    0x429C0000,
-    0,
-    0x43BC0000,
-    0x42800000,
-    0,
-    0x43D88000,
-    0x42980000,
-    0,
-    0x43F50000,
-    0x42800000,
-    0,
+    { 179, 230, 191 },
+    { 179, 205, 247 },
+    { 255, 228, 190 },
+    { 247, 183, 183 },
 };
+
+struct Struct802B37F0_sub3
+{
+    s8 unk0;
+    s16 unk2;
+};
+
+struct Struct802B37F0_sub3 lbl_801C7948_3[] =
+{
+    { 0x30, 0x00EE },
+    { 0x31, 0x00F6 },
+    { 0x32, 0x00CC },
+    { 0x33, 0x00D1 },
+};
+#pragma force_active reset
+
+s16 lbl_801C79B8[] =
+{
+    0x0307, 0x0302,
+    0x0306, 0x0305,
+    0x0304, 0x0306,
+    0x0303, 0x0000,
+};
+
+struct Struct801C79C8
+{
+    float unk0;
+    float unk4;
+    float unk8;
+};
+
+struct Struct801C79C8 lbl_801C79C8[] =
+{
+    { 150, 64, 0 },
+    { 207, 76, 0 },
+    { 263, 64, 0 },
+    { 319, 78, 0 },
+    { 376, 64, 0 },
+    { 433, 76, 0 },
+    { 490, 64, 0 },
+};
+
 
 struct Struct802B37F0_sub
 {
@@ -194,7 +225,7 @@ struct Struct802B37F0_sub2
 
 struct
 {
-    u8 filler0[4];
+    s32 unk0;
     u32 unk4;
     s32 unk8;
     float unkC;
@@ -207,17 +238,17 @@ struct
     s32 unk12C;
     s32 unk130;
     struct Color3f unk134;
-    float unk140;
-    float unk144;
-    float unk148;
+    struct Color3f unk140;
     struct Color3f unk14C;
-    float unk158;
-    float unk15C;
-    float unk160;
-    s8 unk164;
-    s16 unk166;
-    u8 filler168[4];
+    struct Color3f unk158;
+    //s8 unk164;
+    //u32 unk164;
+    //s16 unk166;
+    struct Struct802B37F0_sub3 unk164;
+    void *unk168;
 } lbl_802B37F0;
+
+void *func_800AEC74();
 
 void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_child *arg3);
 
@@ -386,12 +417,12 @@ void func_800874B0(void)
             if (lbl_802B37F0.unk12C < lbl_802B37F0.unk130)
                 lbl_802B37F0.unk12C = lbl_802B37F0.unk130;
         }
-        lbl_802B37F0.unk134.r += (lbl_802B37F0.unk140 - lbl_802B37F0.unk134.r) * 0.045;
-        lbl_802B37F0.unk134.g += (lbl_802B37F0.unk144 - lbl_802B37F0.unk134.g) * 0.045;
-        lbl_802B37F0.unk134.b += (lbl_802B37F0.unk148 - lbl_802B37F0.unk134.b) * 0.045;
-        lbl_802B37F0.unk14C.r += (lbl_802B37F0.unk158 - lbl_802B37F0.unk14C.r) * 0.045;
-        lbl_802B37F0.unk14C.g += (lbl_802B37F0.unk15C - lbl_802B37F0.unk14C.g) * 0.045;
-        lbl_802B37F0.unk14C.b += (lbl_802B37F0.unk160 - lbl_802B37F0.unk14C.b) * 0.045;
+        lbl_802B37F0.unk134.r += (lbl_802B37F0.unk140.r - lbl_802B37F0.unk134.r) * 0.045;
+        lbl_802B37F0.unk134.g += (lbl_802B37F0.unk140.g - lbl_802B37F0.unk134.g) * 0.045;
+        lbl_802B37F0.unk134.b += (lbl_802B37F0.unk140.b - lbl_802B37F0.unk134.b) * 0.045;
+        lbl_802B37F0.unk14C.r += (lbl_802B37F0.unk158.r - lbl_802B37F0.unk14C.r) * 0.045;
+        lbl_802B37F0.unk14C.g += (lbl_802B37F0.unk158.g - lbl_802B37F0.unk14C.g) * 0.045;
+        lbl_802B37F0.unk14C.b += (lbl_802B37F0.unk158.b - lbl_802B37F0.unk14C.b) * 0.045;
         if (lbl_802B37F0.unk12C == 0 && lbl_802B37F0.unk10 == lbl_802B37F0.unkC && func_80088AF4() != 0)
             func_800885EC();
     }
@@ -559,7 +590,7 @@ void func_80087B10(void)
     params.scaleX = 0.9609375f;
     params.scaleY = 0.06640625f;
     params.u1 = 0.0f;
-    params.v1 = ((18.0f * (lbl_802B37F0.unk164 - 48)) + 0.5f) / 256.0f;
+    params.v1 = ((18.0f * (lbl_802B37F0.unk164.unk0 - 48)) + 0.5f) / 256.0f;
     params.u2 = 0.9609375f;
     params.v2 = params.v1 + 0.06640625f;
     params.unk30 = 2;
@@ -570,7 +601,7 @@ void func_80087B10(void)
     params.x = 0x298 - lbl_802B37F0.unk12C;
     params.y = 7.0f;
     draw_naomi_sprite(&params);
-    params.x = -24 - lbl_802B37F0.unk166 + lbl_802B37F0.unk12C;
+    params.x = -24 - lbl_802B37F0.unk164.unk2 + lbl_802B37F0.unk12C;
     params.y = 455.0f;
     draw_naomi_sprite(&params);
 }
@@ -672,4 +703,400 @@ void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_chil
         set_text_opacity(1.0f);
         break;
     }
+}
+
+#ifdef NONMATCHING
+void func_800885EC(void)
+{
+    int i;
+    struct Struct802B37F0_sub *var;
+    struct Struct801C79C8 *var2;
+    s16 *var3;
+
+    lbl_802B37F0.unk0 = 0;
+    lbl_802B37F0.unk4 = 0;
+    lbl_802B37F0.unk1C = 0;
+
+    var2 = lbl_801C79C8;
+    var = lbl_802B37F0.unk20;
+    var3 = lbl_801C79B8;
+
+    for (i = 0; i < 7; i++, var++)
+    {
+        var2 = &lbl_801C79C8[i];
+        var->unk0 = var3[i];
+        var->unk8 = lbl_801C79C8[i].unk0;
+        var->unk10 = lbl_801C79C8[i].unk4;
+        !var2;
+    }
+    !var;
+    lbl_802B37F0.unkC = 0.0f;
+    lbl_802B37F0.unk10 = 0.0f;
+    lbl_802B37F0.unk12C = 0;
+    lbl_802B37F0.unk130 = 0;
+}
+#else
+asm void func_800885EC(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_800885EC.s"
+}
+#pragma peephole on
+#endif
+
+void lbl_800889AC(s8 *, struct Sprite *);
+void lbl_800889F0(struct Sprite *);
+
+void func_800886E0(int arg0)
+{
+    int temp_r31;
+    struct Sprite *sprite;
+    struct Struct802B37F0_sub2_child *temp_r4;
+    struct Struct802B37F0_sub2 *temp_r5;
+    int i;
+    int var;
+
+    temp_r31 = !lbl_802B37F0.unk0;
+    if (lbl_802B37F0.unk0 == 0)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->mainFunc = lbl_800889AC;
+            sprite->drawFunc = lbl_800889F0;
+            strcpy(sprite->text, "RANKING");
+        }
+    }
+    lbl_802B37F0.unk0 = 1;
+    lbl_802B37F0.unk4 = 1;
+    lbl_802B37F0.unk140 = lbl_801C7948[arg0];
+    lbl_802B37F0.unk158 = lbl_801C7948_2[arg0];
+    lbl_802B37F0.unk164 = lbl_801C7948_3[arg0];
+    switch (gameMode)
+    {
+    case 5:
+        lbl_802B37F0.unk14 = 32.0f;
+        lbl_802B37F0.unk18 = 1;
+        break;
+    default:
+        lbl_802B37F0.unk14 = 0.0f;
+        lbl_802B37F0.unk18 = 0;
+        break;
+    }
+    lbl_802B37F0.unk168 = func_800AEC74(arg0, 0);
+
+    var = 0;
+    temp_r5 = lbl_802B37F0.unkC8;
+    temp_r4 = lbl_802B37F0.unk168;
+    for (i = 0; i < 5; i++, temp_r5++, temp_r4++)
+    {
+        temp_r5->unk8 = var;
+        if (temp_r31 != 0)
+        {
+            temp_r5->unkC = temp_r4;
+            temp_r5->unk10 = 0;
+            temp_r5->unk4 = 640.0f;
+            temp_r5->unk0 = temp_r5->unk4;
+        }
+        else if (temp_r5->unkC != 0)
+            temp_r5->unk10 = temp_r4;
+        else
+            temp_r5->unkC = temp_r4;
+        var += 12;
+    }
+}
+
+void func_8008897C(int arg0)
+{
+    if (lbl_802B37F0.unk0 != 0)
+    {
+        if (arg0 != 0)
+            lbl_802B37F0.unk0 = 0;
+        else
+            lbl_802B37F0.unk4 = 8;
+    }
+}
+
+void lbl_800889AC(s8 *arg0, struct Sprite *sprite)
+{
+    func_800874B0();
+    if (lbl_802B37F0.unk0 == 0)
+        *arg0 = 0;
+}
+
+void lbl_800889F0(struct Sprite *sprite)
+{
+    func_80087B10();
+}
+
+void func_80088A10(void)
+{
+    struct Struct802B37F0_sub2 *temp_r4;
+    int i;
+    int var;
+
+    var = 0;
+    temp_r4 = lbl_802B37F0.unkC8;
+    for (i = 0; i < 5; i++, temp_r4++)
+    {
+        temp_r4->unk4 = -562.0f;
+        temp_r4->unk10 = 0;
+        if (temp_r4->unk0 == 0.0f && temp_r4->unk8 == 0)
+            temp_r4->unk8 = var;
+        var += 12;
+    }
+}
+
+int func_80088AF4(void)
+{
+    struct Struct802B37F0_sub2 *temp_r3;
+    int i;
+    int var = TRUE;
+
+    temp_r3 = lbl_802B37F0.unkC8;
+    for (i = 0; i < 5; i++, temp_r3++)
+    {
+        if (temp_r3->unkC != NULL
+         && temp_r3->unk4 != temp_r3->unk0
+         && temp_r3->unk8 <= 0)
+        {
+            var = FALSE;
+            break;
+        }
+    }
+    if (!var)
+        return FALSE;
+    else
+        return TRUE;
+}
+
+int func_80088C18(void)
+{
+    return lbl_802B37F0.unk12C;
+}
+
+void lbl_80088CB0(s8 *, struct Sprite *);
+
+void func_80088C28(void)
+{
+    struct Sprite *sprite;
+
+    sprite = create_sprite();
+    if (sprite != NULL)
+    {
+        sprite->type = 1;
+        sprite->tag = 3;
+        sprite->x = 8.0f;
+        sprite->y = 8.0f;
+        sprite->mulR = 0xFF;
+        sprite->mulG = 0xFF;
+        sprite->mulB = 0xFF;
+        sprite->textAlign = 0;
+        sprite->bmpId = 0x30C;
+        sprite->unk4C = 0.26f;
+        sprite->mainFunc = lbl_80088CB0;
+        strcpy(sprite->text, "RNK TITILE");
+    }
+}
+
+struct
+{
+    s32 unk0;  // 0x16C
+    u32 unk4;  // 0x170
+    float unk8;  // 0x174
+    float unkC;  // 0x178
+    float unk10;  // 0x17C
+    float unk14;  // 0x180
+    s16 unk18;  // 0x184
+    u8 filler1A[2];
+    struct ReplayInfo unk1C;
+    u32 unk34;  // 0x1A0
+    u32 unk38;  // 0x1A4
+    char unk3C[0x64-0x3C];  // 0x1A8
+} lbl_802B395C;
+
+void lbl_80088CB0(s8 *arg0, struct Sprite *sprite)
+{
+    float temp_f4 = lbl_802B37F0.unk12C;
+
+    if (128.0 + sprite->x > 640.0 - temp_f4)
+    {
+        sprite->x = 640.0 - temp_f4 - 128.0;
+        sprite->rotation += 0x400;
+    }
+    if (temp_f4 >= 640.0)
+        *arg0 = 0;
+}
+
+void func_80088D44(void)
+{
+    int len;
+
+    lbl_802B395C.unk34 = 0xFFFFFF;
+    lbl_802B395C.unk38 = 0;
+    if (lbl_802B395C.unk1C.flags & 0x20)
+    {
+        lbl_802B395C.unk34 = 0xFFFF00;
+        lbl_802B395C.unk38 = 0x404040;
+    }
+    if (lbl_802B395C.unk1C.flags & 0x40)
+        sprintf(lbl_802B395C.unk3C, "MASTER %d", lbl_802B395C.unk1C.floorNum);
+    else if (lbl_802B395C.unk1C.flags & 0x20)
+        sprintf(lbl_802B395C.unk3C, "EXTRA %d", lbl_802B395C.unk1C.floorNum);
+    else
+        sprintf(lbl_802B395C.unk3C, "FLOOR %d", lbl_802B395C.unk1C.floorNum);
+    lbl_802B395C.unk14 = 40.0 + (float)strlen(lbl_802B395C.unk3C) * 20.0;
+    len = strlen(lbl_802B395C.unk3C) * 20;
+    lbl_802B395C.unk14 = 40.0 + (float)len;
+}
+
+void func_80088E90(void)
+{
+    lbl_802B395C.unk0 = 0;
+    lbl_802B395C.unk4 = 1;
+    lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
+    u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+    func_80088D44();
+    lbl_802B395C.unk8 = -lbl_802B395C.unk14;
+    lbl_802B395C.unkC = 0.0f;
+    lbl_802B395C.unk10 = lbl_802B395C.unk8;
+}
+
+void lbl_80089070(s8 *, struct Sprite *);
+void lbl_800890B4(struct Sprite *);
+
+void func_80088F18(void)
+{
+    s32 temp_r31;
+    struct Sprite *sprite;
+
+    temp_r31 = !lbl_802B395C.unk0;
+    if (lbl_802B395C.unk0 == 0)
+    {
+        sprite = create_sprite();
+        if (sprite != NULL)
+        {
+            sprite->mainFunc = lbl_80089070;
+            sprite->drawFunc = lbl_800890B4;
+            strcpy(sprite->text, "RANKING");
+        }
+    }
+    lbl_802B395C.unk0 = 1;
+    lbl_802B395C.unk4 = 1;
+    if (temp_r31 != 0)
+    {
+        lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
+        u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+        func_80088D44();
+    }
+}
+
+void func_80088FD4(int arg0)
+{
+    if (arg0 != 0)
+        func_80088E90();
+    else
+        lbl_802B395C.unk4 = 4;
+}
+
+void func_800890D4(void);
+
+void lbl_80089070(s8 *arg0, struct Sprite *sprite)
+{
+    func_800890D4();
+    if (lbl_802B395C.unk0 == 0)
+        *arg0 = 0;
+}
+
+void func_8008923C(void);
+
+void lbl_800890B4(struct Sprite *sprite)
+{
+    func_8008923C();
+}
+
+void func_800890D4(void)
+{
+    float temp_f1;
+
+    switch (lbl_802B395C.unk4)
+    {
+    case 1:
+        lbl_802B395C.unk4 = 2;
+        lbl_802B395C.unk10 = 8.0f;
+        break;
+    case 2:
+        if (lbl_802B395C.unk18 != lbl_80250A68.unk0[lbl_80250A68.unk14])
+        {
+            lbl_802B395C.unk4 = 3;
+            lbl_802B395C.unk10 = -lbl_802B395C.unk14;
+        }
+        break;
+    case 3:
+        if (lbl_802B395C.unk8 == lbl_802B395C.unk10)
+        {
+            lbl_802B395C.unk4 = 1;
+            lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
+            u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+            func_80088D44();
+        }
+        break;
+    case 4:
+        lbl_802B395C.unk4 = 0;
+        lbl_802B395C.unk10 = -lbl_802B395C.unk14;
+        break;
+    }
+    temp_f1 = lbl_802B395C.unk10;
+    if (lbl_802B395C.unk8 > temp_f1)
+    {
+        lbl_802B395C.unk8 -= 10.666666666666666;
+        if (lbl_802B395C.unk8 < temp_f1)
+            lbl_802B395C.unk8 = temp_f1;
+    }
+    else if (lbl_802B395C.unk8 < temp_f1)
+    {
+        lbl_802B395C.unk8 += 10.666666666666666;
+        if (lbl_802B395C.unk8 > temp_f1)
+            lbl_802B395C.unk8 = temp_f1;
+    }
+}
+
+void func_8008923C(void)
+{
+    float var_f31 = lbl_802B395C.unk8;
+    float f30 = 8.0f;
+    float var_f29;
+
+    if (var_f31 + lbl_802B395C.unk14 > 640.0 - lbl_802B37F0.unk12C)
+        var_f31 = (float)(640.0 - lbl_802B37F0.unk12C) - lbl_802B395C.unk14;
+    var_f29 = 4.0f + var_f31;
+    if (!(lbl_802B395C.unk1C.flags & 0x40))
+    {
+        reset_text_draw_settings();
+        set_text_font(0x5D);
+        set_text_scale(0.5f, 0.5f);
+        set_text_pos(var_f31, f30 + 4.0f);
+        u_draw_char(lbl_802B395C.unk1C.difficulty + 0x34);
+        var_f29 = 40.0f + var_f31;
+    }
+    set_text_font(0x62);
+    set_text_scale(1.0f, 1.0f);
+    set_text_mul_color(lbl_802B395C.unk34);
+    set_text_add_color(lbl_802B395C.unk38);
+    set_text_pos(var_f29, f30);
+    u_draw_text(lbl_802B395C.unk3C);
+    f30 += 20.0f;
+    reset_text_draw_settings();
+    set_text_font(1);
+    set_text_pos(40.0f + var_f31, f30);
+    if (lbl_802B395C.unk1C.unk6[0] != 0)
+    {
+        set_text_mul_color(0xFF8000U);
+        set_text_add_color(0x403030U);
+        func_80072AC0("%s", lbl_802B395C.unk1C.unk6);
+        set_text_mul_color(0xFFFFFFU);
+        set_text_add_color(0U);
+        u_draw_text("'S ");
+    }
+    func_80072AC0("REPLAY");
 }

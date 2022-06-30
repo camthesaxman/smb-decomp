@@ -372,7 +372,7 @@ struct ReplayInfo
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;
-    u8 filler6[0x10-6];
+    char unk6[10];
     u32 unk10;
     u8 filler14[4];
 };

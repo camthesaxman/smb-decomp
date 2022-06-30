@@ -61,12 +61,3 @@ lbl_80292C00_alias = lbl_80292C00;
 
 /* For GCC compatibility */
 __udivdi3 = __div2u;
-
-lbl_802F54F0 = 0x802F54F0;
-lbl_802F5500 = 0x802F5500;
-lbl_802F5530 = 0x802F5530;
-lbl_802F5534 = 0x802F5534;
-lbl_802F5540 = 0x802F5540;
-lbl_802F5560 = 0x802F5560;
-lbl_802F5580 = 0x802F5580;
-lbl_802F55E4 = 0x802F55E4;
