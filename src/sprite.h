@@ -306,7 +306,6 @@ struct Sprite *find_sprite_with_tag(int a);
 void calc_sprite_bounds(struct Sprite *, s32 *, s32 *, s32 *, s32 *);
 int get_char_width(char *a, int b, struct FontParams *c);
 float u_get_char_ratio(char *a, int b);
-// ? parse_char_sequence();
 void reset_text_draw_settings(void);
 void set_text_font(int fontId);
 void set_text_mul_color(u32 color);
@@ -322,7 +321,6 @@ float u_get_text_width(char *str);
 void func_80072AC0(char *str, ...);
 void u_draw_text_sprite(struct Sprite *a);
 void draw_bitmap_sprite(struct Sprite *a);
-// ? func_80072DA8();
 float u_get_ascii_text_width(char *str);
 int u_get_jpn_text_width(int fontId, char *str);
 void u_draw_screen_fade_mask(void);
@@ -333,8 +331,7 @@ void u_draw_screen_fade_mask(void);
 #define FADE_ABOVE_SPRITES (1 << 8)  // fades everything on screen
 void start_screen_fade(s32, u32, int);
 
-// ? add_naomi_sprite();
 int draw_naomi_sprite(struct NaomiSpriteParams *);
-// ? func_80073E00();
+void func_80073E00(int bmpId, GXTexWrapMode s, GXTexWrapMode t);
 
 #endif

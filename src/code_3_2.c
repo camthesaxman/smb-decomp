@@ -11,15 +11,115 @@
 #include "mode.h"
 #include "sprite.h"
 
-struct Struct800870EC
+static void lbl_800889AC(s8 *, struct Sprite *);
+static void lbl_800889F0(struct Sprite *);
+static int func_80088AF4(void);
+static void lbl_80088CB0(s8 *, struct Sprite *);
+static void lbl_80089070(s8 *, struct Sprite *);
+static void lbl_800890B4(struct Sprite *);
+static void func_800890D4(void);
+static void func_8008923C(void);
+
+struct Struct802B37F0_sub
+{
+    s16 unk0;
+    s16 unk2;
+    s16 unk4;
+    u8 filler6[2];
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+};
+
+struct Struct802B37F0_sub2
 {
     float unk0;
     float unk4;
-    float unk8;
+    s32 unk8;
+    struct Struct802B37F0_sub2_child *unkC;
+    struct Struct802B37F0_sub2_child *unk10;
 };
 
+static struct Color3f lbl_801C7948[] =
+{
+    {   0, 171,  40 },
+    {   0,  86, 228 },
+    { 255, 163,  36 },
+    { 228,  13,  14 },
+};
 
-void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unused, float arg8)
+static struct Color3f lbl_801C7948_2[] =
+{
+    { 179, 230, 191 },
+    { 179, 205, 247 },
+    { 255, 228, 190 },
+    { 247, 183, 183 },
+};
+
+struct Struct802B37F0_sub3
+{
+    s8 unk0;
+    s16 unk2;
+};
+
+static struct Struct802B37F0_sub3 lbl_801C7948_3[] =
+{
+    { 0x30, 0x00EE },
+    { 0x31, 0x00F6 },
+    { 0x32, 0x00CC },
+    { 0x33, 0x00D1 },
+};
+
+static s16 lbl_801C79B8[] =
+{
+    0x0307, 0x0302,
+    0x0306, 0x0305,
+    0x0304, 0x0306,
+    0x0303, 0x0000,
+};
+
+struct Struct801C79C8
+{
+    float unk0;
+    float unk4;
+    float unused;
+};
+
+static struct Struct801C79C8 lbl_801C79C8[] =
+{
+    { 150, 64, 0 },
+    { 207, 76, 0 },
+    { 263, 64, 0 },
+    { 319, 78, 0 },
+    { 376, 64, 0 },
+    { 433, 76, 0 },
+    { 490, 64, 0 },
+};
+
+static struct
+{
+    s32 unk0;
+    u32 unk4;
+    s32 unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    u32 unk18;
+    s32 unk1C;
+    struct Struct802B37F0_sub unk20[7];
+    struct Struct802B37F0_sub2 unkC8[5];
+    s32 unk12C;
+    s32 unk130;
+    struct Color3f unk134;
+    struct Color3f unk140;
+    struct Color3f unk14C;
+    struct Color3f unk158;
+    struct Struct802B37F0_sub3 unk164;
+    void *unk168;
+} lbl_802B37F0;
+
+static void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unused, float arg8)
 {
     float r1, g1, b1;
     float r2, g2, b2;
@@ -98,161 +198,7 @@ void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unu
     GXEnd();
 }
 
-// size = 0xC
-/*
-u32 lbl_801C7948[] =
-{
-    0,
-    0x432B0000,
-    0x42200000,
-    0,
-    0x42AC0000,
-    0x43640000,
-    0x437F0000,
-    0x43230000,
-    0x42100000,
-    0x43640000,
-    0x41500000,
-    0x41600000,
-    0x43330000,
-    0x43660000,
-    0x433F0000,
-    0x43330000,
-    0x434D0000,
-    0x43770000,
-    0x437F0000,
-    0x43640000,
-    0x433E0000,
-    0x43770000,
-    0x43370000,
-    0x43370000,
-
-    0x300000EE,
-    0x310000F6,
-    0x320000CC,
-    0x330000D1,
-};
-*/
-
-struct Color3f lbl_801C7948[] =
-{
-    {   0, 171,  40 },
-    {   0,  86, 228 },
-    { 255, 163,  36 },
-    { 228,  13,  14 },
-};
-
-#pragma force_active on
-struct Color3f lbl_801C7948_2[] =
-{
-    { 179, 230, 191 },
-    { 179, 205, 247 },
-    { 255, 228, 190 },
-    { 247, 183, 183 },
-};
-
-struct Struct802B37F0_sub3
-{
-    s8 unk0;
-    s16 unk2;
-};
-
-struct Struct802B37F0_sub3 lbl_801C7948_3[] =
-{
-    { 0x30, 0x00EE },
-    { 0x31, 0x00F6 },
-    { 0x32, 0x00CC },
-    { 0x33, 0x00D1 },
-};
-#pragma force_active reset
-
-s16 lbl_801C79B8[] =
-{
-    0x0307, 0x0302,
-    0x0306, 0x0305,
-    0x0304, 0x0306,
-    0x0303, 0x0000,
-};
-
-struct Struct801C79C8
-{
-    float unk0;
-    float unk4;
-    float unk8;
-};
-
-struct Struct801C79C8 lbl_801C79C8[] =
-{
-    { 150, 64, 0 },
-    { 207, 76, 0 },
-    { 263, 64, 0 },
-    { 319, 78, 0 },
-    { 376, 64, 0 },
-    { 433, 76, 0 },
-    { 490, 64, 0 },
-};
-
-
-struct Struct802B37F0_sub
-{
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    u8 filler6[2];
-    float unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-};  // size = 0x18
-
-struct Struct802B37F0_sub2_child
-{
-    char unk0[4];
-    u32 unk4;
-    u8 filler8[4];
-    u8 unkC;
-    s8 unkD;
-};
-
-struct Struct802B37F0_sub2
-{
-    float unk0;
-    float unk4;
-    s32 unk8;
-    struct Struct802B37F0_sub2_child *unkC;
-    struct Struct802B37F0_sub2_child *unk10;
-};  // size = 0x14
-
-struct
-{
-    s32 unk0;
-    u32 unk4;
-    s32 unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-    u32 unk18;
-    s32 unk1C;
-    struct Struct802B37F0_sub unk20[7];
-    struct Struct802B37F0_sub2 unkC8[5];
-    s32 unk12C;
-    s32 unk130;
-    struct Color3f unk134;
-    struct Color3f unk140;
-    struct Color3f unk14C;
-    struct Color3f unk158;
-    //s8 unk164;
-    //u32 unk164;
-    //s16 unk166;
-    struct Struct802B37F0_sub3 unk164;
-    void *unk168;
-} lbl_802B37F0;
-
-void *func_800AEC74();
-
-void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_child *arg3);
-
-void func_800874B0(void)
+static void func_800874B0(void)
 {
     int i;
     struct Struct802B37F0_sub2 *temp_r3;
@@ -428,7 +374,7 @@ void func_800874B0(void)
     }
 }
 
-void func_80087B10(void)
+static void func_80087B10(void)
 {
     struct NaomiSpriteParams params;
     u8 unused[0x88];
@@ -744,9 +690,6 @@ asm void func_800885EC(void)
 #pragma peephole on
 #endif
 
-void lbl_800889AC(s8 *, struct Sprite *);
-void lbl_800889F0(struct Sprite *);
-
 void func_800886E0(int arg0)
 {
     int temp_r31;
@@ -817,14 +760,14 @@ void func_8008897C(int arg0)
     }
 }
 
-void lbl_800889AC(s8 *arg0, struct Sprite *sprite)
+static void lbl_800889AC(s8 *arg0, struct Sprite *sprite)
 {
     func_800874B0();
     if (lbl_802B37F0.unk0 == 0)
         *arg0 = 0;
 }
 
-void lbl_800889F0(struct Sprite *sprite)
+static void lbl_800889F0(struct Sprite *sprite)
 {
     func_80087B10();
 }
@@ -847,7 +790,7 @@ void func_80088A10(void)
     }
 }
 
-int func_80088AF4(void)
+static int func_80088AF4(void)
 {
     struct Struct802B37F0_sub2 *temp_r3;
     int i;
@@ -875,8 +818,6 @@ int func_80088C18(void)
     return lbl_802B37F0.unk12C;
 }
 
-void lbl_80088CB0(s8 *, struct Sprite *);
-
 void func_80088C28(void)
 {
     struct Sprite *sprite;
@@ -899,23 +840,23 @@ void func_80088C28(void)
     }
 }
 
-struct
+static struct
 {
-    s32 unk0;  // 0x16C
-    u32 unk4;  // 0x170
-    float unk8;  // 0x174
-    float unkC;  // 0x178
-    float unk10;  // 0x17C
-    float unk14;  // 0x180
-    s16 unk18;  // 0x184
+    s32 unk0;
+    u32 unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+    s16 unk18;
     u8 filler1A[2];
     struct ReplayInfo unk1C;
-    u32 unk34;  // 0x1A0
-    u32 unk38;  // 0x1A4
-    char unk3C[0x64-0x3C];  // 0x1A8
+    u32 unk34;
+    u32 unk38;
+    char floorName[0x64-0x3C];
 } lbl_802B395C;
 
-void lbl_80088CB0(s8 *arg0, struct Sprite *sprite)
+static void lbl_80088CB0(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f4 = lbl_802B37F0.unk12C;
 
@@ -928,7 +869,7 @@ void lbl_80088CB0(s8 *arg0, struct Sprite *sprite)
         *arg0 = 0;
 }
 
-void func_80088D44(void)
+static void func_80088D44(void)
 {
     int len;
 
@@ -940,13 +881,13 @@ void func_80088D44(void)
         lbl_802B395C.unk38 = 0x404040;
     }
     if (lbl_802B395C.unk1C.flags & 0x40)
-        sprintf(lbl_802B395C.unk3C, "MASTER %d", lbl_802B395C.unk1C.floorNum);
+        sprintf(lbl_802B395C.floorName, "MASTER %d", lbl_802B395C.unk1C.floorNum);
     else if (lbl_802B395C.unk1C.flags & 0x20)
-        sprintf(lbl_802B395C.unk3C, "EXTRA %d", lbl_802B395C.unk1C.floorNum);
+        sprintf(lbl_802B395C.floorName, "EXTRA %d", lbl_802B395C.unk1C.floorNum);
     else
-        sprintf(lbl_802B395C.unk3C, "FLOOR %d", lbl_802B395C.unk1C.floorNum);
-    lbl_802B395C.unk14 = 40.0 + (float)strlen(lbl_802B395C.unk3C) * 20.0;
-    len = strlen(lbl_802B395C.unk3C) * 20;
+        sprintf(lbl_802B395C.floorName, "FLOOR %d", lbl_802B395C.unk1C.floorNum);
+    lbl_802B395C.unk14 = 40.0 + (float)strlen(lbl_802B395C.floorName) * 20.0;
+    len = strlen(lbl_802B395C.floorName) * 20;
     lbl_802B395C.unk14 = 40.0 + (float)len;
 }
 
@@ -961,9 +902,6 @@ void func_80088E90(void)
     lbl_802B395C.unkC = 0.0f;
     lbl_802B395C.unk10 = lbl_802B395C.unk8;
 }
-
-void lbl_80089070(s8 *, struct Sprite *);
-void lbl_800890B4(struct Sprite *);
 
 void func_80088F18(void)
 {
@@ -999,23 +937,19 @@ void func_80088FD4(int arg0)
         lbl_802B395C.unk4 = 4;
 }
 
-void func_800890D4(void);
-
-void lbl_80089070(s8 *arg0, struct Sprite *sprite)
+static void lbl_80089070(s8 *arg0, struct Sprite *sprite)
 {
     func_800890D4();
     if (lbl_802B395C.unk0 == 0)
         *arg0 = 0;
 }
 
-void func_8008923C(void);
-
-void lbl_800890B4(struct Sprite *sprite)
+static void lbl_800890B4(struct Sprite *sprite)
 {
     func_8008923C();
 }
 
-void func_800890D4(void)
+static void func_800890D4(void)
 {
     float temp_f1;
 
@@ -1061,10 +995,10 @@ void func_800890D4(void)
     }
 }
 
-void func_8008923C(void)
+static void func_8008923C(void)
 {
     float var_f31 = lbl_802B395C.unk8;
-    float f30 = 8.0f;
+    float y = 8.0f;
     float var_f29;
 
     if (var_f31 + lbl_802B395C.unk14 > 640.0 - lbl_802B37F0.unk12C)
@@ -1073,29 +1007,29 @@ void func_8008923C(void)
     if (!(lbl_802B395C.unk1C.flags & 0x40))
     {
         reset_text_draw_settings();
-        set_text_font(0x5D);
+        set_text_font(FONT_ICON_LV);
         set_text_scale(0.5f, 0.5f);
-        set_text_pos(var_f31, f30 + 4.0f);
+        set_text_pos(var_f31, y + 4.0f);
         u_draw_char(lbl_802B395C.unk1C.difficulty + 0x34);
         var_f29 = 40.0f + var_f31;
     }
-    set_text_font(0x62);
+    set_text_font(FONT_ASC_20x20);
     set_text_scale(1.0f, 1.0f);
     set_text_mul_color(lbl_802B395C.unk34);
     set_text_add_color(lbl_802B395C.unk38);
-    set_text_pos(var_f29, f30);
-    u_draw_text(lbl_802B395C.unk3C);
-    f30 += 20.0f;
+    set_text_pos(var_f29, y);
+    u_draw_text(lbl_802B395C.floorName);
+    y += 20.0f;
     reset_text_draw_settings();
-    set_text_font(1);
-    set_text_pos(40.0f + var_f31, f30);
+    set_text_font(FONT_ASC_8x16);
+    set_text_pos(40.0f + var_f31, y);
     if (lbl_802B395C.unk1C.unk6[0] != 0)
     {
-        set_text_mul_color(0xFF8000U);
-        set_text_add_color(0x403030U);
+        set_text_mul_color(RGBA(255, 128, 0, 0));
+        set_text_add_color(RGBA(64, 48, 48, 0));
         func_80072AC0("%s", lbl_802B395C.unk1C.unk6);
-        set_text_mul_color(0xFFFFFFU);
-        set_text_add_color(0U);
+        set_text_mul_color(RGBA(255, 255, 255, 0));
+        set_text_add_color(RGBA(0, 0, 0, 0));
         u_draw_text("'S ");
     }
     func_80072AC0("REPLAY");

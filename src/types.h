@@ -1039,4 +1039,13 @@ struct Struct80089A04
     s32 unk30[4];
 };
 
+struct Struct802B37F0_sub2_child
+{
+    char unk0[4];
+    u32 unk4;
+    u8 filler8[4];
+    u8 unkC;
+    s8 unkD;
+};
+
 #endif
