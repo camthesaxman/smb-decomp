@@ -21,6 +21,7 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"

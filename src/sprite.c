@@ -3422,7 +3422,7 @@ int draw_naomi_sprite(struct NaomiSpriteParams *params)
     return 0;
 }
 
-void func_80073E00(int a, GXTexWrapMode s, GXTexWrapMode t)
+void func_80073E00(int bmpId, GXTexWrapMode s, GXTexWrapMode t)
 {
-    GXInitTexObjWrapMode(&bitmapGroups[(a >> 8) & 0xFF].tpl->texObjs[a & 0xFF], s, t);
+    GXInitTexObjWrapMode(&bitmapGroups[(bmpId >> 8) & 0xFF].tpl->texObjs[bmpId & 0xFF], s, t);
 }

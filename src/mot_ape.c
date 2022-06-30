@@ -13,16 +13,10 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "light.h"
-
-struct Struct80089A04
-{
-    u8 filler0[4];
-    char *unk4[11];
-    s32 unk30[4];
-};
 
 struct Ape_child lbl_801C7A70 =
 {
@@ -1643,7 +1637,7 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
         struct JointBoneThing *r22 = &b[r29->unk2];
-        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->unk0].model;
+        struct GMAModel *model = charaGMAs[index]->modelEntries[r29->modelId].model;
 
         if (model != NULL)
         {

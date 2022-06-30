@@ -173,7 +173,8 @@ SOURCES := \
 	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
-	asm/code_3.s \
+	src/code_3.c \
+	src/code_3_2.c \
 	src/mot_ape.c \
 	src/code_2.c \
 	src/lzs_decompress.c \

@@ -372,7 +372,7 @@ struct ReplayInfo
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;
-    u8 filler6[0x10-6];
+    char unk6[10];
     u32 unk10;
     u8 filler14[4];
 };
@@ -899,10 +899,10 @@ struct Struct802C67D4
 
 struct ApeFacePart
 {
-    s16 unk0;
+    s16 modelId;
     s16 unk2;
     Vec unk4;
-    void (*unk10)();
+    void (*unk10)(struct Ape *, struct ApeFacePart *, struct Struct802B39C0_B0_child *);
     char *name;
     u8 filler18[0x20-0x18];
 };
@@ -1029,5 +1029,23 @@ struct Struct8008CF00
 };
 
 struct Stobj;
+
+struct Struct80089A04
+{
+    char *unk0;
+    char *unk4[4];
+    u32 unk14;
+    u32 filler18[6];
+    s32 unk30[4];
+};
+
+struct Struct802B37F0_sub2_child
+{
+    char unk0[4];
+    u32 unk4;
+    u8 filler8[4];
+    u8 unkC;
+    s8 unkD;
+};
 
 #endif
