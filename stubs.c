@@ -39,13 +39,8 @@ void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
 void DCStoreRange(){puts("DCStoreRange is a stub");}
 void DVDCancel(){puts("DVDCancel is a stub");}
-void DVDChangeDir(){puts("DVDChangeDir is a stub");}
-void DVDClose(){puts("DVDClose is a stub");}
-void DVDConvertPathToEntrynum(){puts("DVDConvertPathToEntrynum is a stub");}
 void DVDFastOpen(){puts("DVDFastOpen is a stub");}
 void DVDGetDriveStatus(){puts("DVDGetDriveStatus is a stub");}
-void DVDInit(){puts("DVDInit is a stub");}
-void DVDOpen(){puts("DVDOpen is a stub");}
 void DVDReadAbsAsyncForBS(){puts("DVDReadAbsAsyncForBS is a stub");}
 void DVDReadAsyncPrio(){puts("DVDReadAsyncPrio is a stub");}
 void DVDReadDiskID(){puts("DVDReadDiskID is a stub");}
@@ -399,8 +394,8 @@ void lbl_802F1ED2(){puts("lbl_802F1ED2 is a stub");}
 void lbl_802F1ED8(){puts("lbl_802F1ED8 is a stub");}
 void lbl_802F1F80(){puts("lbl_802F1F80 is a stub");}
 void lbl_802F2060(){puts("lbl_802F2060 is a stub");}
-void lbl_802F2150(){puts("lbl_802F2150 is a stub");}
-void lbl_802F2154(){puts("lbl_802F2154 is a stub");}
+u32 lbl_802F2150;
+void *lbl_802F2154;
 void lbl_802F21E8(){puts("lbl_802F21E8 is a stub");}
 void lbl_802F21EC(){puts("lbl_802F21EC is a stub");}
 void lbl_802F21F0(){puts("lbl_802F21F0 is a stub");}
@@ -462,5 +457,5 @@ void window_main(){puts("window_main is a stub");}
 u32 OSGetPhysicalMemSize(void)
 {
     puts("OSGetPhysicalMemSize is a stub");
-    return 24 * 1024 * 1024;
+    return MEM_SIZE;
 }

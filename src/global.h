@@ -64,17 +64,17 @@ static inline u32 __lwbrx(void *ptr, u32 offset)
 #endif
 }
 
+#ifdef __PPC__
 static inline float __fabs(float n)
 {
-#ifdef __PPC__
     float ret;
     asm("fabs %0, %1" : "=f"(ret) : "f"(n));
     return ret;
-#else
-    extern float fabsf(float);
-    return fabsf(n);
-#endif
 }
+#else
+extern float fabsf(float);
+#define __fabs(n) fabsf(n)
+#endif
 
 static inline float __frsqrte(float n)
 {
@@ -84,8 +84,14 @@ static inline float __frsqrte(float n)
     return ret;
 #else
     extern float sqrtf(float);
-    return sqrtf(n);
+    return 1.0f / sqrtf(n);
 #endif
+}
+
+static inline int __abs(int n)
+{
+    int mask = n >> 31;
+    return (n + mask) ^ mask;
 }
 #endif
 
