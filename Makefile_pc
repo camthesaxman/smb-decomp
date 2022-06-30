@@ -1,11 +1,13 @@
 CC := gcc -m32
 CPPFLAGS := -I include -DNONMATCHING -DC_ONLY
-CFLAGS := -O0 -g -fsanitize=address
+CFLAGS := -O0 -g
+LDFLAGS := -lm
 
 EXE :=
 TARGET := supermonkeyball$(EXE)
 
 SOURCES := \
+	stubs.c \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \
@@ -99,7 +101,6 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	src/preview.c \
-	libraries/os/__start.c \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
 	libraries/os/OSAudioSystem.c \
@@ -107,7 +108,6 @@ SOURCES := \
 	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/OSSync.c \
-	libraries/db/db.c \
 	libraries/dvd/dvdqueue.c \
 	libraries/dvd/fstload.c \
 	libraries/demo/DEMOFont.c \
@@ -128,7 +128,7 @@ O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES := $(O_FILES)
 
 $(TARGET): $(ALL_O_FILES)
-	$(CC) $^ -o $@
+	$(CC) $^ $(LDFLAGS) -o $@
 
 %.c.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
