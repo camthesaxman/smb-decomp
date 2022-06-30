@@ -13,8 +13,6 @@ static inline int __abs(int n)
 #define HUGE_VALF (1.0f / 0.0f)
 #define INFINITY  (1.0f / 0.0f)
 
-#define FLT_EPSILON 1.1920928955078125e-07f
-
 double fabs(double x);
 double sin(double x);
 double cos(double x);
