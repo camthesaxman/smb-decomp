@@ -24,7 +24,7 @@ static void init_preview(struct Preview *preview, char *filename, int index, u32
     preview->isLoading = 0;
 
     if (preview->imagePtr == NULL)
-        OSPanic("preview.c", 0x37, "cannot OSAlloc");
+        OSPanic("preview.c", 55, "cannot OSAlloc");
 
     GXInitTexObj(
         &preview->texObj,  // obj

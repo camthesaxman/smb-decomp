@@ -196,7 +196,7 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
-	asm/code_1.s \
+	src/code_1.c \
 	src/preview.c \
 	asm/name_entry.s \
 	asm/credits.s \
