@@ -47,8 +47,8 @@ MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -
 # GNU compiler flags
 GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-switch -Wno-main -Wno-unknown-pragmas \
                     -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare \
-                    -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables \
-                    -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+                    -Wno-missing-field-initializers -Wno-char-subscripts -Wno-empty-body \
+                    -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
 GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
 
 ifeq ($(COMPILER),mwcc)
@@ -124,7 +124,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/window.s \
-	asm/code_4.s \
+	src/code_4.c \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \

@@ -33,9 +33,9 @@ extern Vec lbl_80206CF0;
 #define WORLD_FOREACH(code) \
     { \
         struct World *world = worldInfo; \
-        s8 *unk_ = g_poolInfo.unkC; \
+        s8 *unk_ = g_poolInfo.unk0.unkC; \
         int i_; \
-        for (i_ = 0; i_ < g_poolInfo.unk8; i_++, world++, unk_++) \
+        for (i_ = 0; i_ < g_poolInfo.unk0.unk8; i_++, world++, unk_++) \
         { \
             if (*unk_ == 2) \
                 { code } \

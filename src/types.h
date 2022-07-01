@@ -330,21 +330,26 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
+struct PoolInfo_sub
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;  // count
+    s8 *unkC;  // status
+};
+
 struct PoolInfo
 {
-             u8 filler0[8];
-             s32 unk8;
-             s8 *unkC;
-             u8 unk10[0x18-0x10];
-             s32 itemPoolUpperBound; // Max index (+1) of items in item pool
-             s8 *itemStatusList;
-             u8 unk20[8];
-             s32 unk28;
-             s8 *unk2C;
-             u8 unk30[4];
-             u32 unk34;
-             s32 unk38;
-    /*0x3C*/ s8 *spriteStatusList;
+    struct PoolInfo_sub unk0;  // ball/world
+    struct PoolInfo_sub unk10;  // item
+    struct PoolInfo_sub unk20;  // stobj
+    struct PoolInfo_sub unk30;  // sprite
+    struct PoolInfo_sub unk40;  // effect
+    s8 unk50[4];
+    s8 unk54[0x100];
+    s8 unk154[0x80];
+    s8 unk1D4[0x40];
+    s8 unk214[0x200];
 };
 
 struct Struct80176434

@@ -157,8 +157,8 @@ void chkstatus_main(void);
 // ? func_800308AC();
 // ? func_80030914();
 // ? func_8003099C();
-int pool_alloc();
-void func_80030A50(void *);
+int pool_alloc(struct PoolInfo_sub *, u8);
+void func_80030A50(struct PoolInfo_sub *);
 
 void func_800341BC(struct JointBoneThing *a, struct MotSkeletonEntry1 *b, u16 c);
 void func_80034360(struct JointBoneThing *a, u16 b);

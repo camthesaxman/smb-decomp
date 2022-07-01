@@ -156,7 +156,7 @@ void ev_item_init(void)
         item->unk2 = -1;
     }
 
-    func_80030A50(g_poolInfo.unk10);
+    func_80030A50(&g_poolInfo.unk10);
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MINI_FIGHT:
@@ -184,9 +184,9 @@ void ev_item_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    status = g_poolInfo.itemStatusList;
+    status = g_poolInfo.unk10.unkC;
     item = itemPool;
-    for (r31 = g_poolInfo.itemPoolUpperBound; r31 > 0; r31--, status++, item++)
+    for (r31 = g_poolInfo.unk10.unk8; r31 > 0; r31--, status++, item++)
     {
         if (*status != 0)
         {
@@ -210,9 +210,9 @@ void ev_item_dest(void)
     struct Item *item;
     s8 *r27;
 
-    r27 = g_poolInfo.itemStatusList;
+    r27 = g_poolInfo.unk10.unkC;
     item = itemPool;
-    for (r29 = g_poolInfo.itemPoolUpperBound; r29 > 0; r29--, r27++, item++)
+    for (r29 = g_poolInfo.unk10.unk8; r29 > 0; r29--, r27++, item++)
     {
         if (*r27 != 0)
         {
@@ -231,9 +231,9 @@ void item_draw(void)
     int animGrpId = -1;
 
     mathutil_mtx_copy(mathutilData->mtxB, viewFromWorld);
-    status = g_poolInfo.itemStatusList;
+    status = g_poolInfo.unk10.unkC;
     item = itemPool;
-    for (itemCtr = g_poolInfo.itemPoolUpperBound; itemCtr > 0; itemCtr--, status++, item++)
+    for (itemCtr = g_poolInfo.unk10.unk8; itemCtr > 0; itemCtr--, status++, item++)
     {
         if (*status != 0 && !(item->flags & ITEM_FLAG_INVISIBLE))
         {
@@ -253,7 +253,7 @@ void item_draw(void)
 int func_80068474(struct Item *a)
 {
     struct Item *r31;
-    int r30 = pool_alloc(g_poolInfo.unk10, 1);
+    int r30 = pool_alloc(&g_poolInfo.unk10, 1);
 
     if (r30 < 0)
         return -1;
@@ -293,9 +293,9 @@ void item_draw_shadows(void)
     Vec pos;
     struct Struct8009492C sp8;
 
-    r26 = g_poolInfo.itemStatusList;
+    r26 = g_poolInfo.unk10.unkC;
     item = itemPool;
-    for (r28 = g_poolInfo.itemPoolUpperBound; r28 > 0; r28--, r26++, item++)
+    for (r28 = g_poolInfo.unk10.unk8; r28 > 0; r28--, r26++, item++)
     {
         if (*r26 == 0
          || !(item->flags & (1 << 5))
@@ -389,9 +389,9 @@ void func_800689B4(int a)
     if (gamePauseStatus & 0xA)
         return;
 
-    r26 = g_poolInfo.itemStatusList;
+    r26 = g_poolInfo.unk10.unkC;
     item = itemPool;
-    for (r29 = g_poolInfo.itemPoolUpperBound; r29 > 0; r29--, r26++, item++)
+    for (r29 = g_poolInfo.unk10.unk8; r29 > 0; r29--, r26++, item++)
     {
         if (*r26 != 0 && item->unk5E >= 0 && item->unk5E <= a)
         {

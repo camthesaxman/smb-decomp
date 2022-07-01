@@ -1083,10 +1083,10 @@ void submode_game_over_dest_func(void)
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MAIN_COMPETITION:
-        g_poolInfo.unkC[0] = 0;
-        g_poolInfo.unkC[1] = 0;
-        g_poolInfo.unkC[2] = 0;
-        g_poolInfo.unkC[3] = 0;
+        g_poolInfo.unk0.unkC[0] = 0;
+        g_poolInfo.unk0.unkC[1] = 0;
+        g_poolInfo.unk0.unkC[2] = 0;
+        g_poolInfo.unk0.unkC[3] = 0;
         modeCtrl.currPlayer = 0;
         currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
         func_80029788();
@@ -1940,7 +1940,7 @@ int get_next_player(void)
     for (i = 0; i < 4; i++)
     {
         nextPlayer = (modeCtrl.currPlayer + i + 1) & 3;
-        if (g_poolInfo.unkC[nextPlayer] == 4)
+        if (g_poolInfo.unk0.unkC[nextPlayer] == 4)
             break;
     }
     return nextPlayer;
@@ -1952,14 +1952,14 @@ void u_init_player_data_1(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (g_poolInfo.unkC[i] != 0)
+        if (g_poolInfo.unk0.unkC[i] != 0)
             break;
     }
     modeCtrl.currPlayer = i;
     for (i = i + 1; i < 4; i++)
     {
-        if (g_poolInfo.unkC[i] == 2)
-            g_poolInfo.unkC[i] = 4;
+        if (g_poolInfo.unk0.unkC[i] == 2)
+            g_poolInfo.unk0.unkC[i] = 4;
     }
     modeCtrl.courseFlags |= (1 << 8);
     for (i = 0; i < 4; i++)
@@ -1973,12 +1973,12 @@ void u_init_player_data_2(void)
 {
     u32 r0;
 
-    if (g_poolInfo.unkC[modeCtrl.currPlayer] == 2)
-        g_poolInfo.unkC[modeCtrl.currPlayer] = 4;
+    if (g_poolInfo.unk0.unkC[modeCtrl.currPlayer] == 2)
+        g_poolInfo.unk0.unkC[modeCtrl.currPlayer] = 4;
     playerInfos[modeCtrl.currPlayer] = infoWork;
     lbl_801F3A8C[modeCtrl.currPlayer] = modeCtrl.courseFlags;
     r0 = get_next_player();
-    g_poolInfo.unkC[r0] = 2;
+    g_poolInfo.unk0.unkC[r0] = 2;
     if (modeCtrl.currPlayer != r0)
     {
         modeCtrl.currPlayer = r0;
@@ -1991,7 +1991,7 @@ void u_init_player_data_2(void)
 // Marks a player as having reached Game Over
 void mark_player_finished(int playerId)
 {
-    g_poolInfo.unkC[playerId] = 0;
+    g_poolInfo.unk0.unkC[playerId] = 0;
 }
 
 // Returns true if all players have reached Game Over
@@ -2002,7 +2002,7 @@ BOOL are_all_players_finished(void)
 
     for (i = 0; i < 4; i++)
     {
-        if (g_poolInfo.unkC[i] != 0)
+        if (g_poolInfo.unk0.unkC[i] != 0)
         {
             ret = FALSE;
             break;
