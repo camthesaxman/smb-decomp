@@ -368,7 +368,7 @@ void init_loading_gct(void)
         C_MTXOrtho(mtx, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
         GXSetProjection(mtx, GX_ORTHOGRAPHIC);
         bitmap_init_tev();
-        func_800AD180(&preview, -1, 0, 0.0f, 0.0f, 0.5f, 640.0f, 480.0f);
+        preview_draw(&preview, -1, 0, 0.0f, 0.0f, 0.5f, 640.0f, 480.0f);
         gpwait_main();
         syncwait_main();
     }

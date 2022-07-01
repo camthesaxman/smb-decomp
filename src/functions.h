@@ -718,7 +718,6 @@ void func_800ACA40(void);
 int u_read_dvd_file(DVDFileInfo *file, void *arg1, u32 arg2, int arg3);
 void init_loading_gct(void);
 
-void func_800AD180(struct Preview *, int, int, float, float, float, float, float);
 void func_800AD38C(void);
 void ev_name_entry_init(void);
 void ev_name_entry_main(void);

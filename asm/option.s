@@ -7205,7 +7205,7 @@ lbl_000067D8:
 /* 00006A68 C09F0138 */ lfs f4, 0x138(r31)
 /* 00006A6C C0BF013C */ lfs f5, 0x13c(r31)
 /* 00006A70 38A00000 */ li r5, 0
-/* 00006A74 4BFF9739 */ bl func_800AD180
+/* 00006A74 4BFF9739 */ bl preview_draw
 lbl_00006A78:
 /* 00006A78 4BFF9735 */ bl mathutil_mtxA_from_identity
 /* 00006A7C 3C600000 */ lis r3, mathutilData@ha
