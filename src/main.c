@@ -15,6 +15,7 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "perf.h"
+#include "pool.h"
 #include "stage.h"
 #include "world.h"
 

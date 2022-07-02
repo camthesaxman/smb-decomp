@@ -8,6 +8,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "obj_collision.h"
+#include "pool.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -33,8 +34,8 @@ static void do_object_collision(void)
     s8 *phi_r19;
 
     ball = ballInfo;
-    phi_r19 = g_poolInfo.unk0.unkC;
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, phi_r19++)
+    phi_r19 = g_poolInfo.playerPool.statusList;
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, phi_r19++)
     {
         currentBallStructPtr = ball;
         if (*phi_r19 != 0 && *phi_r19 != 4)
@@ -45,10 +46,10 @@ static void do_object_collision(void)
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
             {
                 int j;
-                s8 *phi_r30 = g_poolInfo.unk20.unkC;
+                s8 *phi_r30 = g_poolInfo.stobjPool.statusList;
                 struct Stobj *stobj = stobjInfo;
 
-                for (j = g_poolInfo.unk20.unk8; j > 0; j--, stobj++, phi_r30++)
+                for (j = g_poolInfo.stobjPool.count; j > 0; j--, stobj++, phi_r30++)
                 {
                     if (*phi_r30 && (stobj->unk8 & 2))
                     {
@@ -62,11 +63,11 @@ static void do_object_collision(void)
             }
             if (!(ball->flags & 0x100000) && eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
             {
-                s8 *phi_r29_2 = g_poolInfo.unk10.unkC;
+                s8 *phi_r29_2 = g_poolInfo.itemPool.statusList;
                 int j;
                 struct Item *item = itemPool;
 
-                for (j = g_poolInfo.unk10.unk8; j > 0; j--, item++, phi_r29_2++)
+                for (j = g_poolInfo.itemPool.count; j > 0; j--, item++, phi_r29_2++)
                 {
                     if (*phi_r29_2 != 0
                      && (item->flags & 2)

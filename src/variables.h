@@ -331,7 +331,7 @@ extern s32 lbl_801C63C0[];
 // extern ? lbl_801C692C;
 extern struct ApeGfxFileInfo apeGfxFileInfo[8];
 // extern ? lbl_801C7948;
-// extern ? lbl_801C79B8;
+// extern ? s_rankingBallBmpIds;
 // extern ? lbl_801C79C8;
 // extern ? lbl_801C7A1C;
 // extern ? lbl_801C7A40;
@@ -564,7 +564,6 @@ extern struct
 // extern ? lbl_802037D8;
 // extern ? lbl_80203F84;
 // extern ? lbl_80205688;
-extern struct PoolInfo g_poolInfo;
 
 // extern ? lbl_80206D00;
 // extern ? stagePreview;

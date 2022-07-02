@@ -14,15 +14,16 @@
 #include "gxutil.h"
 #include "hud.h"
 #include "info.h"
+#include "light.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "pool.h"
 #include "stage.h"
-#include "world.h"
 #include "stcoli.h"
-#include "light.h"
+#include "world.h"
 
 #include "../data/common.gma.h"
 #include "../data/common.nlobj.h"
@@ -37,7 +38,7 @@ float lbl_80205E20[4];
 Mtx lbl_80205E30;
 struct Ball ballInfo[8];
 s32 lbl_80206B80[16];
-s32 playerCharacterSelection[4];
+s32 playerCharacterSelection[MAX_PLAYERS];
 s32 lbl_80206BD0[4];
 s32 lbl_80206BE0[4];
 
@@ -271,7 +272,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     if (!(ball->flags & BALL_FLAG_GOAL))
         return 2;
 
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++)
     {
         if (ball->rank - 1 == ballInfo[i].rank
          && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
@@ -504,10 +505,10 @@ void func_80037B20(void)
 {
     struct Ball *ball = &ballInfo[0];
     struct Ball *ballBackup = currentBallStructPtr;
-    s8 *r7 = g_poolInfo.unk0.unkC;
+    s8 *r7 = g_poolInfo.playerPool.statusList;
     int i;
 
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r7++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r7++)
     {
         if (*r7 == 2)
         {
@@ -531,7 +532,7 @@ void ev_ball_init(void)
         lbl_80206B80[j] = -1;
 
     ball = &ballInfo[0];
-    r21 = g_poolInfo.unk0.unkC;
+    r21 = g_poolInfo.playerPool.statusList;
 
     lbl_802F1F0C = 0;
     func_8008C4A0(1.0f);
@@ -870,9 +871,9 @@ void ev_ball_main(void)
 
     if (gamePauseStatus & 0xA)
         return;
-    r28 = g_poolInfo.unk0.unkC;
+    r28 = g_poolInfo.playerPool.statusList;
     ball = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r28++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r28++)
     {
         if (*r28 == 0 || *r28 == 4)
             continue;
@@ -888,9 +889,9 @@ void ev_ball_main(void)
             func_80038528(ball);
     }
 
-    r3 = g_poolInfo.unk0.unkC;
+    r3 = g_poolInfo.playerPool.statusList;
     ball = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++)
     {
         if (r3[i] == 0 || r3[i] == 4)
             continue;
@@ -899,9 +900,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
     {
-        r28 = g_poolInfo.unk0.unkC;
+        r28 = g_poolInfo.playerPool.statusList;
         ball = &ballInfo[0];
-        for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++)
+        for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++)
         {
             struct Ball *nextBall;
             int j;
@@ -909,7 +910,7 @@ void ev_ball_main(void)
             if (r28[i] == 0 || r28[i] == 4)
                 continue;
             nextBall = ball + 1;
-            for (j = i + 1; j < g_poolInfo.unk0.unk8; j++, nextBall++)
+            for (j = i + 1; j < g_poolInfo.playerPool.count; j++, nextBall++)
             {
                 float f29;
                 float f2;
@@ -933,7 +934,7 @@ void ev_ball_main(void)
                     else
                         f1 = (f1 - (f29 * 0.25)) / (f29 * 0.25);
 
-                    for (k = 0; k < g_poolInfo.unk0.unk8; k++)
+                    for (k = 0; k < g_poolInfo.playerPool.count; k++)
                     {
                         if (j != k)
                         {
@@ -956,9 +957,9 @@ void ev_ball_main(void)
 
     if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
-        r28 = g_poolInfo.unk0.unkC;
+        r28 = g_poolInfo.playerPool.statusList;
         ball = &ballInfo[0];
-        for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r28++)
+        for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r28++)
         {
             if (*r28 == 0 || *r28 == 4)
                 continue;
@@ -1094,9 +1095,9 @@ void ball_draw(void)
             func = NULL;
     }
 
-    r27 = g_poolInfo.unk0.unkC;
+    r27 = g_poolInfo.playerPool.statusList;
     ball = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r27++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r27++)
     {
         if (*r27 == 0 || *r27 == 4)
             continue;
@@ -1257,9 +1258,9 @@ void u_ball_shadow_something_1(void)
 
     sp18.unk3C = &lbl_801B7EC0;
 
-    r26 = g_poolInfo.unk0.unkC;
+    r26 = g_poolInfo.playerPool.statusList;
     ball = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r26++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r26++)
     {
         if (*r26 == 0 || *r26 == 4)
             continue;
@@ -1305,8 +1306,8 @@ void u_ball_shadow_something_2(void)
     sp30.unk28 = commonGma->modelEntries[polyshadow01].model;
 
     ball = &ballInfo[0];
-    r25 = g_poolInfo.unk0.unkC;
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, ball++, r25++)
+    r25 = g_poolInfo.playerPool.statusList;
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r25++)
     {
         float f2;
 
@@ -1376,7 +1377,7 @@ void func_800390C8(int a, Vec *sphereCenter, float c)
 
     ball = &ballInfo[0];
     r28 = currentBallStructPtr->playerId;
-    r29 = g_poolInfo.unk0.unkC;
+    r29 = g_poolInfo.playerPool.statusList;
     lbl_802F1F0C = 0;
 
     for (i = 0; i < 4; i++, ball++, r29++)

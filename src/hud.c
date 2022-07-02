@@ -13,9 +13,10 @@
 #include "hud.h"
 #include "info.h"
 #include "input.h"
-#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
+#include "ranking_screen.h"
 #include "sprite.h"
 #include "textbox.h"
 
@@ -2150,8 +2151,8 @@ void hud_show_competition_mode_info(void)
         }
     }
 
-    phi_r28 = g_poolInfo.unk0.unkC;
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, phi_r28++)
+    phi_r28 = g_poolInfo.playerPool.statusList;
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, phi_r28++)
     {
         if (*phi_r28 != 0)
             show_competition_player_hud(i);

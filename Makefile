@@ -124,7 +124,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/window.s \
-	src/code_4.c \
+	src/pool.c \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
@@ -175,7 +175,7 @@ SOURCES := \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	src/code_3.c \
-	src/code_3_2.c \
+	src/ranking_screen.c \
 	src/mot_ape.c \
 	src/code_2.c \
 	src/lzs_decompress.c \
@@ -196,7 +196,7 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
-	src/code_1.c \
+	src/dvd.c \
 	src/preview.c \
 	asm/name_entry.s \
 	asm/credits.s \

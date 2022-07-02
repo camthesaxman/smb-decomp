@@ -576,7 +576,7 @@ lbl_800ADBA4:
 /* 800ADBC8 000A9AE8  4B FC 2B 89 */	bl destroy_sprite_with_tag
 /* 800ADBCC 000A9AEC  4B FD AA 21 */	bl func_800885EC
 /* 800ADBD0 000A9AF0  80 7F 00 04 */	lwz r3, 4(r31)
-/* 800ADBD4 000A9AF4  4B FD AB 0D */	bl func_800886E0
+/* 800ADBD4 000A9AF4  4B FD AB 0D */	bl init_ranking_screen
 /* 800ADBD8 000A9AF8  80 7E 05 84 */	lwz r3, 0x584(r30)
 /* 800ADBDC 000A9AFC  3C 00 43 30 */	lis r0, 0x4330
 /* 800ADBE0 000A9B00  C8 22 B7 28 */	lfd f1, lbl_802F5F28@sda21(r2)
@@ -1281,7 +1281,7 @@ func_800AE408:
 /* 800AE610 000AA530  1C 00 00 50 */	mulli r0, r0, 0x50
 /* 800AE614 000AA534  7C DA 02 14 */	add r6, r26, r0
 /* 800AE618 000AA538  38 C6 05 B4 */	addi r6, r6, 0x5b4
-/* 800AE61C 000AA53C  4B FD 9C 15 */	bl func_80088230
+/* 800AE61C 000AA53C  4B FD 9C 15 */	bl draw_ranking_floor_num
 /* 800AE620 000AA540  38 60 00 1B */	li r3, 0x1b
 /* 800AE624 000AA544  4B FC 34 B1 */	bl set_text_font
 /* 800AE628 000AA548  C0 1F 00 00 */	lfs f0, 0(r31)

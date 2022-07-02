@@ -11,7 +11,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
-#include "functions.h"
+#include "pool.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -545,7 +545,7 @@ void stobj_goaltape_draw(struct Stobj *stobj)
     apply_curr_light_group_ambient();
     nl2ngc_set_material_color(1.0f, 1.0f, 1.0f);
     temp_r5 = lbl_80250A68.unk14;
-    if (g_poolInfo.unk0.unkC[temp_r5] == 2 && (ballInfo[temp_r5].flags & 0x01000000))
+    if (g_poolInfo.playerPool.statusList[temp_r5] == 2 && (ballInfo[temp_r5].flags & 0x01000000))
         time = (100.0 * func_80049E7C(lbl_80250A68.unk0[temp_r5], lbl_80250A68.unk10)) / 60.0;
     else
     {

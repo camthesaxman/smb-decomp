@@ -10,6 +10,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "obj_collision.h"
+#include "pool.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -19,7 +20,7 @@
 #include "../data/bg_stm.gma.h"
 #include "../data/common.gma.h"
 
-struct Stobj stobjInfo[128];
+struct Stobj stobjInfo[MAX_STOBJS];
 
 static s16 spawnedObjCount;
 struct GMAModel *jamabarModel;
@@ -66,7 +67,7 @@ void ev_stobj_init(void)
         stobj->id = i;
         stobj->unk2 = -1;
     }
-    func_80030A50(&g_poolInfo.unk20);
+    pool_reset(&g_poolInfo.stobjPool);
     find_jamabar_and_bumper_models();
     spawn_bumpers(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
     spawn_jamabars(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
@@ -225,9 +226,9 @@ void ev_stobj_main(void)
     if (gamePauseStatus & 0xA)
         return;
 
-    phi_r27 = g_poolInfo.unk20.unkC;
+    phi_r27 = g_poolInfo.stobjPool.statusList;
     stobj = stobjInfo;
-    for (i = g_poolInfo.unk20.unk8; i > 0; i--, phi_r27++, stobj++)
+    for (i = g_poolInfo.stobjPool.count; i > 0; i--, phi_r27++, stobj++)
     {
         if (*phi_r27 != 0)
         {
@@ -282,9 +283,9 @@ void ev_stobj_dest(void)
     struct Stobj *stobj;
     s8 *phi_r27;
 
-    phi_r27 = g_poolInfo.unk20.unkC;
+    phi_r27 = g_poolInfo.stobjPool.statusList;
     stobj = stobjInfo;
-    for (i = g_poolInfo.unk20.unk8; i > 0; i--, phi_r27++, stobj++)
+    for (i = g_poolInfo.stobjPool.count; i > 0; i--, phi_r27++, stobj++)
     {
         if (*phi_r27 != 0)
         {
@@ -308,10 +309,10 @@ void stobj_draw(void)
         u_avdisp_set_some_func_1(func);
     mathutil_mtx_copy(mathutilData->mtxB, mtx);
 
-    phi_r29 = g_poolInfo.unk20.unkC;
+    phi_r29 = g_poolInfo.stobjPool.statusList;
     phi_r25 = 0;
     stobj = stobjInfo;
-    for (i = g_poolInfo.unk20.unk8; i > 0; i--, phi_r29++, stobj++)
+    for (i = g_poolInfo.stobjPool.count; i > 0; i--, phi_r29++, stobj++)
     {
         if (*phi_r29 != 0)
         {
@@ -335,7 +336,7 @@ s16 spawn_stobj(struct Stobj *arg0)
     int temp_r3;
     struct Stobj *temp_r31;
 
-    temp_r3 = pool_alloc(&g_poolInfo.unk20, 1);
+    temp_r3 = pool_alloc(&g_poolInfo.stobjPool, 1);
     if (temp_r3 < 0)
         return -1;
 

@@ -152,13 +152,6 @@ void func_8003026C(int, char *, ...);
 // ? func_80030310();
 // ? func_800304E0();
 void debug_main(void);
-void chkstatus_init(void);
-void chkstatus_main(void);
-// ? func_800308AC();
-// ? func_80030914();
-// ? func_8003099C();
-int pool_alloc(struct PoolInfo_sub *, u8);
-void func_80030A50(struct PoolInfo_sub *);
 
 void func_800341BC(struct JointBoneThing *a, struct MotSkeletonEntry1 *b, u16 c);
 void func_80034360(struct JointBoneThing *a, u16 b);
@@ -445,23 +438,6 @@ void func_80085DB0(struct Ape *);
 // ? func_8008669C();
 // ? draw_head();
 // ? draw_ear();
-// ? func_800870EC();
-// ? func_800874B0();
-// ? func_80087B10();
-void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_child *arg3);
-void func_800885EC(void);
-void func_800886E0(int);
-void func_8008897C(int);
-void func_80088A10(void);
-// ? func_80088AF4();
-int func_80088C18(void);
-void func_80088C28(void);
-// ? func_80088D44();
-void func_80088E90(void);
-void func_80088F18(void);
-void func_80088FD4(int);
-// ? func_800890D4();
-// ? func_8008923C();
 
 // code_2.c
 float func_8008CDC0(float, struct Struct80176434 *);

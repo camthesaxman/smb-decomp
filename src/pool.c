@@ -3,10 +3,11 @@
 #include "global.h"
 #include "event.h"
 #include "input.h"
+#include "pool.h"
 
-void func_800308AC(void);
-void func_80030914(struct PoolInfo_sub *, int);
-void func_8003099C(void);
+static void func_800308AC(void);
+static void func_80030914(struct PoolInfo_sub *, int);
+static void dummy_func(void);
 
 #pragma force_active on
 char *dipSwitchNames[] =
@@ -124,74 +125,70 @@ struct PoolInfo g_poolInfo;
 
 void chkstatus_init(void)
 {
-    g_poolInfo.unk0.unk0 = 4;
-    g_poolInfo.unk0.unkC = g_poolInfo.unk50;
+    g_poolInfo.playerPool.capacity = ARRAY_COUNT(g_poolInfo.playerBuf);
+    g_poolInfo.playerPool.statusList = g_poolInfo.playerBuf;
 
-    g_poolInfo.unk10.unk0 = 0x100;
-    g_poolInfo.unk10.unkC = g_poolInfo.unk54;
+    g_poolInfo.itemPool.capacity = ARRAY_COUNT(g_poolInfo.itemBuf);
+    g_poolInfo.itemPool.statusList = g_poolInfo.itemBuf;
 
-    g_poolInfo.unk20.unk0 = 0x80;
-    g_poolInfo.unk20.unkC = g_poolInfo.unk154;
+    g_poolInfo.stobjPool.capacity = ARRAY_COUNT(g_poolInfo.stobjBuf);
+    g_poolInfo.stobjPool.statusList = g_poolInfo.stobjBuf;
 
-    g_poolInfo.unk30.unk0 = 0x40;
-    g_poolInfo.unk30.unkC = g_poolInfo.unk1D4;
+    g_poolInfo.spritePool.capacity = ARRAY_COUNT(g_poolInfo.spriteBuf);
+    g_poolInfo.spritePool.statusList = g_poolInfo.spriteBuf;
 
-    g_poolInfo.unk40.unk0 = 0x200;
-    g_poolInfo.unk40.unkC = g_poolInfo.unk214;
+    g_poolInfo.effectPool.capacity = ARRAY_COUNT(g_poolInfo.effectBuf);
+    g_poolInfo.effectPool.statusList = g_poolInfo.effectBuf;
 
-    func_80030A50(&g_poolInfo.unk0);
-    func_80030A50(&g_poolInfo.unk10);
-    func_80030A50(&g_poolInfo.unk20);
-    func_80030A50(&g_poolInfo.unk30);
-    func_80030A50(&g_poolInfo.unk40);
+    pool_reset(&g_poolInfo.playerPool);
+    pool_reset(&g_poolInfo.itemPool);
+    pool_reset(&g_poolInfo.stobjPool);
+    pool_reset(&g_poolInfo.spritePool);
+    pool_reset(&g_poolInfo.effectPool);
 }
 
 void chkstatus_main(void)
 {
     func_800308AC();
-    func_8003099C();
+    dummy_func();
 }
 
-void func_800308AC(void)
+static void func_800308AC(void)
 {
-    func_80030914(&g_poolInfo.unk0, -1);
-    func_80030914(&g_poolInfo.unk10, EVENT_ITEM);
-    func_80030914(&g_poolInfo.unk20, EVENT_STOBJ);
-    func_80030914(&g_poolInfo.unk30, EVENT_SPRITE);
-    func_80030914(&g_poolInfo.unk40, EVENT_EFFECT);
+    func_80030914(&g_poolInfo.playerPool, -1);
+    func_80030914(&g_poolInfo.itemPool, EVENT_ITEM);
+    func_80030914(&g_poolInfo.stobjPool, EVENT_STOBJ);
+    func_80030914(&g_poolInfo.spritePool, EVENT_SPRITE);
+    func_80030914(&g_poolInfo.effectPool, EVENT_EFFECT);
 }
 
-void func_80030914(struct PoolInfo_sub *arg0, int eventId)
+static void func_80030914(struct PoolInfo_sub *pool, int eventId)
 {
     int i;
-    int var_r4;
-    int var_r6;
-    int var_r7;
-    s8 *var_r8;
+    int firstFree;
+    int end;
+    s8 *status;
 
-    var_r8 = arg0->unkC;
-    var_r6 = -1;
-    var_r7 = 0;
+    status = pool->statusList;
+    firstFree = -1;
+    end = 0;
     if (eventId == -1 || eventInfo[eventId].state != EV_STATE_INACTIVE)
     {
-        var_r4 = 0;
-        for (i = arg0->unk0; i > 0; i--)
+        for (i = 0; i < pool->capacity; i++, status++)
         {
-            if (*var_r8 != 0)
-                var_r7 = var_r4 + 1;
-            else if (var_r6 == -1)
-                var_r6 = var_r4;
-            var_r4++;
-            var_r8++;
+            if (*status != 0)
+                end = i + 1;
+            else if (firstFree == -1)
+                firstFree = i;
         }
     }
-    if (var_r6 == -1)
-        var_r6 = 0;
-    arg0->unk4 = var_r6;
-    arg0->unk8 = var_r7;
+    if (firstFree == -1)
+        firstFree = 0;
+    pool->nextFree = firstFree;
+    pool->count = end;
 }
 
-void func_8003099C(void)
+static void dummy_func(void)
 {
     if (gamePauseStatus & 0xA)
         return;
@@ -199,30 +196,30 @@ void func_8003099C(void)
         return;
 }
 
-int pool_alloc(struct PoolInfo_sub *arg0, u8 arg1)
+int pool_alloc(struct PoolInfo_sub *pool, u8 arg1)
 {
     int i;
     s8 *ptr;
 
-    ptr = arg0->unkC + arg0->unk4;
-    for (i = arg0->unk4; i < arg0->unk0; i++, ptr++)
+    ptr = pool->statusList + pool->nextFree;
+    for (i = pool->nextFree; i < pool->capacity; i++, ptr++)
     {
         if (*ptr == 0)
         {
-            if (i + 1 > arg0->unk8)
-                arg0->unk8 = i + 1;
-            arg0->unk4 = i + 1;
+            if (i + 1 > pool->count)
+                pool->count = i + 1;
+            pool->nextFree = i + 1;
             *ptr = arg1;
             return i;
         }
     }
 
-    ptr = arg0->unkC;
-    for (i = 0; i < arg0->unk4; i++, ptr++)
+    ptr = pool->statusList;
+    for (i = 0; i < pool->nextFree; i++, ptr++)
     {
         if (*ptr == 0)
         {
-            arg0->unk4 = i + 1;
+            pool->nextFree = i + 1;
             *ptr = arg1;
             return i;
         }
@@ -231,14 +228,14 @@ int pool_alloc(struct PoolInfo_sub *arg0, u8 arg1)
     return -1;
 }
 
-void func_80030A50(struct PoolInfo_sub *arg0)
+void pool_reset(struct PoolInfo_sub *pool)
 {
     int i;
     s8 *ptr;
 
-    ptr = arg0->unkC;
-    for (i = arg0->unk0; i > 0; i--, ptr++)
+    ptr = pool->statusList;
+    for (i = pool->capacity; i > 0; i--, ptr++)
         *ptr = 0;
-    arg0->unk4 = 0;
-    arg0->unk8 = 0;
+    pool->nextFree = 0;
+    pool->count = 0;
 }

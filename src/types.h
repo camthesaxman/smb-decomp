@@ -330,28 +330,6 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct PoolInfo_sub
-{
-    s32 unk0;
-    s32 unk4;
-    s32 unk8;  // count
-    s8 *unkC;  // status
-};
-
-struct PoolInfo
-{
-    struct PoolInfo_sub unk0;  // ball/world
-    struct PoolInfo_sub unk10;  // item
-    struct PoolInfo_sub unk20;  // stobj
-    struct PoolInfo_sub unk30;  // sprite
-    struct PoolInfo_sub unk40;  // effect
-    s8 unk50[4];
-    s8 unk54[0x100];
-    s8 unk154[0x80];
-    s8 unk1D4[0x40];
-    s8 unk214[0x200];
-};
-
 struct Struct80176434
 {
     s32 unk0;
@@ -1044,13 +1022,13 @@ struct Struct80089A04
     s32 unk30[4];
 };
 
-struct Struct802B37F0_sub2_child
+struct ScoreRecord
 {
-    char unk0[4];
-    u32 unk4;
+    char initials[4];
+    u32 score;
     u8 filler8[4];
-    u8 unkC;
-    s8 unkD;
+    u8 floorNum;
+    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
 };
 
 #endif

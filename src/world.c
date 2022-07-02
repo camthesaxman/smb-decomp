@@ -12,10 +12,11 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
 #include "world.h"
 
 struct World *currentWorldStructPtr;
-struct World worldInfo[4];
+struct World worldInfo[MAX_PLAYERS];
 Vec lbl_80206CF0;
 
 struct Struct80176434 tutorialStickInputs[] =
@@ -195,11 +196,11 @@ void ev_world_init(void)
 void ev_world_main(void)
 {
     struct World *world = worldInfo;
-    s8 *unk = g_poolInfo.unk0.unkC;
+    s8 *unk = g_poolInfo.playerPool.statusList;
     int i;
     Vec sp8;
 
-    for (i = 0; i < g_poolInfo.unk0.unk8; i++, world++, unk++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, world++, unk++)
     {
         if (*unk == 0 || *unk == 4)
             continue;
@@ -243,9 +244,9 @@ void ev_world_main(void)
         sp8.x = 0.0f;
         sp8.y = 0.0f;
         sp8.z = 0.0f;
-        unk = g_poolInfo.unk0.unkC;
+        unk = g_poolInfo.playerPool.statusList;
         world = worldInfo;
-        for (i = g_poolInfo.unk0.unk8; i > 0; i--, world++, unk++)
+        for (i = g_poolInfo.playerPool.count; i > 0; i--, world++, unk++)
         {
             if (*unk == 0 || *unk == 4)
                 continue;

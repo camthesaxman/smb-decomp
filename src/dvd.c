@@ -358,7 +358,7 @@ void init_loading_gct(void)
     Mtx44 mtx;
     int i;
 
-    preview_create(&preview, "loading.gct", 0, 0x280, 0x1E0, 0xE);
+    preview_create(&preview, "loading.gct", 0, 640, 480, GX_TF_CMPR);
     u_preview_wait_then_do_something(&preview);
     for (i = 0; i < 5; i++)
     {

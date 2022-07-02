@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MATHUTIL_SIN_INT_PARAM
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
