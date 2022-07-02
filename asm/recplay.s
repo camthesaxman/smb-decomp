@@ -1797,7 +1797,7 @@ lbl_8004A0B8:
 /* 8004A0BC 00045FDC  38 21 00 08 */	addi r1, r1, 8
 /* 8004A0C0 00045FE0  7C 08 03 A6 */	mtlr r0
 /* 8004A0C4 00045FE4  4E 80 00 20 */	blr
-.endif
+
 glabel func_8004A0C8
 /* 8004A0C8 00045FE8  7C 08 02 A6 */	mflr r0
 /* 8004A0CC 00045FEC  3C 80 80 1C */	lis r4, lbl_801B8858@ha
@@ -2311,7 +2311,7 @@ lbl_8004A7EC:
 /* 8004A7F4 00046714  38 21 00 50 */	addi r1, r1, 0x50
 /* 8004A7F8 00046718  7C 08 03 A6 */	mtlr r0
 /* 8004A7FC 0004671C  4E 80 00 20 */	blr
-
+.endif
 glabel func_8004A800
 /* 8004A800 00046720  7C 08 02 A6 */	mflr r0
 /* 8004A804 00046724  90 01 00 04 */	stw r0, 4(r1)
@@ -4853,12 +4853,13 @@ glabel string______
 lbl_802F09FC:
 	# ROM: 0x1EB13C
 	.4byte 0
-.endif
 
 .global lbl_802F0A00
 lbl_802F0A00:
 	# ROM: 0x1EB140
 	.4byte 0x0A000000
+.endif
+
 glabel lbl_802F0A04
 	.4byte 0
 
@@ -4892,11 +4893,13 @@ lbl_802F3820:
 	# ROM: 0x1ED240
 	.4byte 0x3FF00000
 	.4byte 0
-.endif
+
 .global lbl_802F3828
 lbl_802F3828:
 	# ROM: 0x1ED248
 	.4byte 0
+.endif
+asdf:
 	.4byte 0
 
 .global lbl_802F3830
@@ -5969,7 +5972,7 @@ lbl_801B8858:
 	# ROM: 0x1B5858
 glabel string_recdata_bin
 	.asciz "recdata.bin"
-.endif
+
 glabel string__REPLAY_TEST_n_n
 	.asciz " REPLAY TEST\n\n"
 	.balign 4
@@ -6011,6 +6014,7 @@ glabel string_Please_Type__save_recplay__in_DDD_n
 glabel string__to_Make_File_recplay_data_h__n
 	.asciz " to Make File recplay_data.h.\n"
 	.balign 4
+.endif
 glabel lbl_801B89A0
 	.4byte 0x0002136E
 	.4byte 0x00076675
@@ -6453,10 +6457,10 @@ lbl_8020AE20:
 .global lbl_8020AE40
 lbl_8020AE40:
 	.skip 0x45C28
-.endif
 .global lbl_80250A68
 lbl_80250A68:
 	.skip 0x18
+.endif
 .global lbl_80250A80
 lbl_80250A80:
 	.skip 0x20

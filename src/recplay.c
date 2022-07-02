@@ -4,11 +4,14 @@
 
 #include "global.h"
 #include "ball.h"
+#include "camera.h"
 #include "course.h"
 #include "event.h"
 #include "info.h"
+#include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
 #include "stage.h"
 #include "world.h"
 
@@ -47,8 +50,20 @@ extern s32 lbl_802F1F6C;
 extern char **lbl_802F1F70;
 extern s32 lbl_802F1F74;
 
+extern struct
+{
+    s32 unk0;
+    u32 unk4;
+} lbl_802F1F78;
+
 void func_8004AA18(void);
+float func_8004ABD8(void);
+float func_8004ADC0(struct Struct8020AE40 *);
 void func_8004AFD8(void);
+float func_8004B81C(void);
+void func_8004B850(float, struct Struct800496BC *);
+float func_8004C1D8(void);
+float func_8004C254(float);
 
 void func_800487B4(void)
 {
@@ -293,8 +308,6 @@ void ev_recplay_dest(void)
     func_8004B334();
 }
 
-float func_8004ADC0(struct Struct8020AE40 *);
-
 int func_80048E78(void)
 {
     float var_f29;
@@ -403,8 +416,6 @@ void func_80048F74(void)
      || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         func_8004B354();
 }
-
-float func_8004ABD8(void);
 
 void func_80049158(void)
 {
@@ -577,8 +588,6 @@ void func_80049514(int arg0)
         modeCtrl.courseFlags |= 0x10;
 }
 
-float func_8004B81C(void);
-
 float func_8004964C(int arg0)
 {
     struct Struct8020AE40 *temp_r4;
@@ -588,8 +597,6 @@ float func_8004964C(int arg0)
     temp_r4 = &lbl_8020AE40[arg0];
     return ((int)temp_r4->unk36 != 0) ? temp_r4->unk36 - 1 : 0;
 }
-
-void func_8004B850(float, struct Struct800496BC *);
 
 void func_800496BC(int arg0, struct Struct800496BC *arg1, float arg2)
 {
@@ -750,8 +757,6 @@ void func_80049C1C(int arg0, struct Struct8020AE40_sub2 *arg1, float arg2)
     *arg1 = sp18;
 }
 
-float func_8004C1D8(void);
-
 float func_80049E7C(int arg0, float arg1)
 {
     float var_f1;
@@ -782,23 +787,15 @@ void u_get_replay_info(int arg0, struct ReplayInfo *arg1)
     *arg1 = temp_r5->unk0;
 }
 
-float func_8004C254(void);
-
 float func_80049F90(float arg0, int arg1)
 {
     struct Struct8020AE40 *temp_r5;
 
     if (arg1 == 11)
-        return func_8004C254();
+        return func_8004C254(arg0);
     temp_r5 = &lbl_8020AE40[arg1];
     return temp_r5->unk30 - arg0;
 }
-
-extern struct
-{
-    u32 unk0;
-    u32 unk4;
-} lbl_802F1F78;
 
 #pragma force_active on
 void func_80049FF0(void)
@@ -827,5 +824,180 @@ void func_80049FF0(void)
     lbl_80250A68.unk14 = 0;
     lbl_802F1F78.unk0 = lbl_80250A68.unk0[lbl_80250A68.unk14];
     lbl_802F1F78.unk4 = 0;
+}
+#pragma force_active reset
+
+struct Struct80250A68 lbl_80250A68;
+
+static float func_8004A0C8_sub(int a)
+{
+    if (a == 11)
+        return func_8004B81C();
+    else
+    {
+        struct Struct8020AE40 *temp_r31 = &lbl_8020AE40[a];
+        return ((s16)temp_r31->unk36 != 0) ? temp_r31->unk36 - 1 : 0;
+    }
+}
+
+#pragma force_active on
+void func_8004A0C8(void)
+{
+    struct Ball *currBall = currentBallStructPtr;
+    struct Struct8020AE40 *var_r27;
+    int temp_r0_2;
+    struct ReplayInfo sp14;
+    u8 unused[0xC];
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_8002FFEC();
+    if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_LEFT)
+     || ((controllerInfo[0].unk0[0].button & PAD_BUTTON_LEFT) && (controllerInfo[0].unk0[0].button & PAD_TRIGGER_R)))
+    {
+        if (lbl_802F1F78.unk0 > 0)
+            lbl_802F1F78.unk0--;
+    }
+    if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_RIGHT)
+     || ((controllerInfo[0].unk0[0].button & PAD_BUTTON_RIGHT) && (controllerInfo[0].unk0[0].button & PAD_TRIGGER_R)))
+    {
+        if (lbl_802F1F78.unk0 < 11)
+            lbl_802F1F78.unk0++;
+    }
+
+    if (lbl_802F1F78.unk0 < 11)
+        var_r27 = &lbl_8020AE40[lbl_802F1F78.unk0];
+    else
+        var_r27 = NULL;
+
+    temp_r0_2 = lbl_802F1F78.unk0;
+    if (temp_r0_2 == 11)
+        func_8004C28C(&sp14);
+    else
+        sp14 = lbl_8020AE40[temp_r0_2].unk0;
+
+    u_debug_set_cursor_pos(8, 8);
+    u_debug_printf(" REPLAY TEST\n\n");
+    if (lbl_802F1F78.unk0 != 11)
+        u_debug_printf("     ID: %03d\n", lbl_802F1F78.unk0);
+    else
+    {
+        u_debug_set_text_color(1);
+        u_debug_printf("     Record for Save\n");
+        u_debug_set_text_color(0);
+    }
+
+    if (func_8004A0C8_sub(lbl_802F1F78.unk0) == 0.0f)
+    {
+        u_debug_set_text_color(1);
+        u_debug_printf("       :NO DATA\n");
+        u_debug_set_text_color(0);
+    }
+    else
+    {
+        u_debug_printf("  STAGE: %03d(Lib No.%03d)\n", sp14.floorNum, sp14.stageId);
+        u_debug_printf(" COURSE: %3d\n", sp14.difficulty);
+        if (controllerInfo[0].unk0[0].button & PAD_BUTTON_Y)
+        {
+            u_debug_printf("  MONKY: %3d\n", sp14.unk5);
+            u_debug_printf("   NAME: %s\n", sp14.unk6);
+            u_debug_printf("  GRADE: %f\n", sp14.unkC);
+            if (var_r27 != NULL)
+            {
+                u_debug_printf("\n");
+                u_debug_printf("Same Kind Data Count : %d\n", func_8004AD78(var_r27));
+                u_debug_printf("Adjust Coeff : %f\n", func_8004ADC0(var_r27));
+            }
+        }
+    }
+    if (currBall->state == 4)
+        infoWork.flags &= ~0x810;
+
+    switch (lbl_802F1F78.unk4)
+    {
+    case 0:
+        if (func_8004A0C8_sub(lbl_802F1F78.unk0) > 0.0)
+        {
+            if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
+             && !(controllerInfo[0].unk0[2].button & PAD_BUTTON_B))
+            {
+                float var_f1_4;
+                int temp_r0_7;
+
+                lbl_80250A68.unk0[lbl_80250A68.unk14] = lbl_802F1F78.unk0;
+                currStageId = sp14.stageId;
+                modeCtrl.difficulty = sp14.difficulty;
+                event_finish(EVENT_EFFECT);
+                func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+                infoWork.flags |= 0x10;
+                load_stage(currStageId);
+                event_finish(EVENT_STAGE);
+                event_finish(EVENT_STOBJ);
+                event_finish(EVENT_ITEM);
+                event_finish(EVENT_EFFECT);
+                event_finish(EVENT_REND_EFC);
+                event_finish(EVENT_BACKGROUND);
+                event_finish(EVENT_BALL);
+                event_start(EVENT_STAGE);
+                event_start(EVENT_STOBJ);
+                event_start(EVENT_ITEM);
+                event_start(EVENT_EFFECT);
+                event_start(EVENT_REND_EFC);
+                event_start(EVENT_BACKGROUND);
+                event_start(EVENT_BALL);
+                BALL_FOREACH( ball->state = 9; )
+                WORLD_FOREACH( world->state = 6; )
+                camera_set_state(0x2C);
+                lbl_80250A68.unk10 = func_8004A0C8_sub(lbl_80250A68.unk0[lbl_80250A68.unk14]);
+                var_f1_4 = lbl_80250A68.unk10;
+                temp_r0_7 = lbl_80250A68.unk0[lbl_80250A68.unk14];
+                if (temp_r0_7 == 11)
+                    var_f1_4 = func_8004C254(lbl_80250A68.unk10);
+                else
+                    var_f1_4 = lbl_8020AE40[temp_r0_7].unk30 - var_f1_4;
+                animate_anim_groups(var_f1_4);
+            }
+        }
+        if (var_r27 != NULL)
+        {
+            if ((controllerInfo[0].unk0[0].button & PAD_BUTTON_A)
+             && (controllerInfo[0].unk0[0].button & PAD_TRIGGER_L))
+            {
+                BALL_FOREACH( ball->state = 0; )
+                WORLD_FOREACH( world->state = 4; )
+                if (sp14.floorNum != 0)
+                    func_8004ACF0(var_r27);
+                memset(var_r27, 0, sizeof(*var_r27));
+            }
+        }
+        if ((controllerInfo[0].unk0[0].button & PAD_BUTTON_B)
+         && (controllerInfo[0].unk0[0].button & PAD_TRIGGER_L))
+        {
+            lbl_802F1F78.unk4 = 1;
+            modeCtrl.submodeTimer = 0;
+            return;
+        }
+        break;
+    case 1:
+        u_debug_set_cursor_pos(32, 30);
+        switch (modeCtrl.submodeTimer)
+        {
+        case 0:
+        case 1:
+            u_debug_printf("Converting to C Source format.");
+            break;
+        case 3:
+        case 4:
+            u_debug_printf("Please Type [save_recplay] in DDD\n");
+            u_debug_printf(" to Make File recplay_data.h.\n");
+            break;
+        case 5:
+            lbl_802F1F78.unk4 = 0;
+            break;
+        }
+        modeCtrl.submodeTimer++;
+        break;
+    }
 }
 #pragma force_active reset

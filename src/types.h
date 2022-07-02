@@ -1038,4 +1038,11 @@ struct Struct8020AE40_sub2
     s16 unk2;
 };
 
+struct Struct80250A68
+{
+    s32 unk0[4];
+    float unk10;
+    s32 unk14;
+};
+
 #endif

@@ -577,12 +577,9 @@ extern struct GMAModel *goalModels[3];
 extern struct Sphere stageBoundSphere;
 // extern ? lbl_8020AE20;
 // extern ? lbl_8020AE40;
-extern struct
-{
-    s32 unk0[4];
-    float unk10;
-    s32 unk14;
-} lbl_80250A68;
+
+extern struct Struct80250A68 lbl_80250A68;
+
 // extern ? lbl_80250A80;
 // extern ? lbl_80250AA0;
 // extern ? lbl_80250B58;
