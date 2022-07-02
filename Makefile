@@ -137,6 +137,7 @@ SOURCES := \
 	src/interpolate_keyframes.c \
 	src/stage.c \
 	src/code_8.c \
+	src/recplay.c \
 	asm/recplay.s \
 	asm/effect.s \
 	src/background.c \
