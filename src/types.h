@@ -326,23 +326,6 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct PoolInfo
-{
-             u8 filler0[8];
-             s32 unk8;
-             s8 *unkC;
-             u8 unk10[0x18-0x10];
-             s32 itemPoolUpperBound; // Max index (+1) of items in item pool
-             s8 *itemStatusList;
-             u8 unk20[8];
-             s32 unk28;
-             s8 *unk2C;
-             u8 unk30[4];
-             u32 unk34;
-             s32 unk38;
-    /*0x3C*/ s8 *spriteStatusList;
-};
-
 struct Struct80176434
 {
     s32 unk0;
@@ -353,12 +336,12 @@ struct Struct80176434
 
 struct AnimGroupInfo
 {
-    Point3d pos;
-    Point3d prevPos;
-    S16Vec rot;
-    S16Vec prevRot;
-    Mtx transform;     // Transform from anim group space to world space
-    Mtx prevTransform; // Previous frame transform from animGroup space to world space
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ Point3d prevPos;
+    /*0x18*/ S16Vec rot;
+    /*0x1E*/ S16Vec prevRot;
+    /*0x24*/ Mtx transform;     // Transform from anim group space to world space
+    /*0x54*/ Mtx prevTransform; // Previous frame transform from animGroup space to world space
 };
 
 struct ReplayInfo
@@ -368,7 +351,7 @@ struct ReplayInfo
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;
-    u8 filler6[0x10-6];
+    char unk6[10];
     u32 unk10;
     u8 filler14[4];
 };
@@ -775,13 +758,6 @@ struct Sphere
 struct Preview;
 struct NlDispList;
 
-struct Struct8009544C
-{
-    u8 filler0[0x6];
-    u16 unk6;
-    u8 filler8[0x18-0x8];
-};  // size = 0x18
-
 struct Struct801EED88
 {
     u8 unk0;
@@ -1033,5 +1009,23 @@ struct Struct8008CF00
 };
 
 struct Stobj;
+
+struct Struct80089A04
+{
+    char *unk0;
+    char *names[4];
+    u32 unk14;
+    u32 filler18[6];
+    s32 unk30[4];
+};
+
+struct ScoreRecord
+{
+    char initials[4];
+    u32 score;
+    u8 filler8[4];
+    u8 floorNum;
+    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
+};
 
 #endif

@@ -21,6 +21,10 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "mot_ape.h"
+#include "pool.h"
+#include "ranking_screen.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "textbox.h"
@@ -287,7 +291,7 @@ void submode_adv_demo_init_func(void)
     event_finish_all();
     free_all_bitmap_groups_except_com();
     for (i = 0; i < 4; i++)
-        g_poolInfo.unkC[i] = 2;
+        g_poolInfo.playerPool.statusList[i] = 2;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
@@ -314,7 +318,7 @@ void submode_adv_demo_init_func(void)
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_SOUND);
     light_init(currStageId);
-    func_800972CC();
+    rend_efc_mirror_enable();
     for (i = 0; i < 4; i++)
     {
         ballInfo[i].state = 21;
@@ -605,7 +609,7 @@ void run_cutscene_script(void)
             event_start(EVENT_EFFECT);
             event_start(EVENT_REND_EFC);
             event_start(EVENT_BACKGROUND);
-            func_800972CC();
+            rend_efc_mirror_enable();
             break;
         case 12:
             light_init(0);
@@ -1708,7 +1712,7 @@ void submode_adv_game_ready_init_func(void)
     event_start(EVENT_EFFECT);
     event_start(EVENT_REND_EFC);
     event_start(EVENT_BACKGROUND);
-    func_800972CC();
+    rend_efc_mirror_enable();
     event_suspend(EVENT_WORLD);
     light_init(currStageId);
     func_800846B0(4);
@@ -1723,7 +1727,7 @@ void submode_adv_game_ready_init_func(void)
     func_80088E90();
     hud_show_press_start_textbox(0);
     hud_show_adv_copyright_info(0);
-    func_80088C28();
+    show_rank_title_logo();
     advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
     r4 = backgroundSongs[backgroundInfo.bgId];
@@ -1826,7 +1830,7 @@ void submode_adv_ranking_main_func(void)
 {
     struct Ball *r31;
     struct Ball *r29;
-    struct Ball *r30;
+    struct Ball *ballBackup;
     s8 *r28;
     int i;
 
@@ -1840,7 +1844,7 @@ void submode_adv_ranking_main_func(void)
         destroy_sprite_with_tag(37);
         destroy_sprite_with_tag(39);
         hud_show_adv_copyright_info(1);
-        func_800886E0(0);
+        init_ranking_screen(0);
         if (find_sprite_with_tag(17) != NULL)
             find_sprite_with_tag(17)->userVar = 1;
         advTutorialInfo.state = 1;
@@ -1858,7 +1862,7 @@ void submode_adv_ranking_main_func(void)
     case 1620:
         if (lbl_802F1BA8 == 0)
         {
-            func_800886E0(1);
+            init_ranking_screen(1);
             modeCtrl.unk18 = 0xB4;
         }
         break;
@@ -1871,7 +1875,7 @@ void submode_adv_ranking_main_func(void)
     case 720:
         if (lbl_802F1BA8 == 0)
         {
-            func_800886E0(2);
+            init_ranking_screen(2);
             modeCtrl.unk18 = 0xB4;
         }
         break;
@@ -1908,7 +1912,7 @@ void submode_adv_ranking_main_func(void)
         if (modeCtrl.submodeTimer > 180.0)
         {
             struct ReplayInfo sp38;
-            struct Struct8009544C sp20;
+            struct RenderEffect focusEffect;
             float f1;
             struct ReplayInfo sp8;
 
@@ -1935,10 +1939,10 @@ void submode_adv_ranking_main_func(void)
             event_start(EVENT_BACKGROUND);
             event_start(EVENT_BALL);
             event_start(EVENT_SOUND);
-            func_800972CC();
-            memset(&sp20, 0, sizeof(sp20));
-            sp20.unk6 = 0xFFFF;
-            func_8009544C(2, 3, &sp20);
+            rend_efc_mirror_enable();
+            memset(&focusEffect, 0, sizeof(focusEffect));
+            focusEffect.cameraMask = 0xFFFF;
+            rend_efc_enable(2, REND_EFC_FOCUS, &focusEffect);
             light_init(currStageId);
             ballInfo[0].state = 9;
             ballInfo[0].bananas = 0;
@@ -1992,10 +1996,10 @@ void submode_adv_ranking_main_func(void)
         u_play_music(modeCtrl.submodeTimer, 2);
     }
 
-    r30 = currentBallStructPtr;
-    r28 = g_poolInfo.unkC;
+    ballBackup = currentBallStructPtr;
+    r28 = g_poolInfo.playerPool.statusList;
     r29 = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk8; i++, r29++, r28++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, r29++, r28++)
     {
         if (*r28 == 2)
         {
@@ -2008,7 +2012,7 @@ void submode_adv_ranking_main_func(void)
             }
         }
     }
-    currentBallStructPtr = r30;
+    currentBallStructPtr = ballBackup;
 
     if (--modeCtrl.submodeTimer <= 0)
     {
@@ -2155,10 +2159,10 @@ void submode_adv_start_main_func(void)
 
 void func_80011D90(void)
 {
-    g_poolInfo.unkC[0] = 2;
-    g_poolInfo.unkC[1] = 0;
-    g_poolInfo.unkC[2] = 0;
-    g_poolInfo.unkC[3] = 0;
+    g_poolInfo.playerPool.statusList[0] = 2;
+    g_poolInfo.playerPool.statusList[1] = 0;
+    g_poolInfo.playerPool.statusList[2] = 0;
+    g_poolInfo.playerPool.statusList[3] = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;

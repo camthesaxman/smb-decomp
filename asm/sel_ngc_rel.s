@@ -11621,7 +11621,7 @@ lbl_0000A444:
 /* 0000A480 C066004C */ lfs f3, 0x4c(r6)
 /* 0000A484 C0860040 */ lfs f4, 0x40(r6)
 /* 0000A488 C0A60044 */ lfs f5, 0x44(r6)
-/* 0000A48C 4BFF5CFD */ bl func_800AD180
+/* 0000A48C 4BFF5CFD */ bl preview_draw
 lbl_0000A490:
 /* 0000A490 8001000C */ lwz r0, 0xc(r1)
 /* 0000A494 38210008 */ addi r1, r1, 8
@@ -11665,7 +11665,7 @@ lbl_0000A4E8:
 /* 0000A524 C067004C */ lfs f3, 0x4c(r7)
 /* 0000A528 C0870040 */ lfs f4, 0x40(r7)
 /* 0000A52C C0A70044 */ lfs f5, 0x44(r7)
-/* 0000A530 4BFF5C59 */ bl func_800AD180
+/* 0000A530 4BFF5C59 */ bl preview_draw
 lbl_0000A534:
 /* 0000A534 8001000C */ lwz r0, 0xc(r1)
 /* 0000A538 38210008 */ addi r1, r1, 8
@@ -11729,7 +11729,7 @@ lbl_0000A5D8:
 /* 0000A614 C066004C */ lfs f3, 0x4c(r6)
 /* 0000A618 C0860040 */ lfs f4, 0x40(r6)
 /* 0000A61C C0A60044 */ lfs f5, 0x44(r6)
-/* 0000A620 4BFF5B69 */ bl func_800AD180
+/* 0000A620 4BFF5B69 */ bl preview_draw
 lbl_0000A624:
 /* 0000A624 8001000C */ lwz r0, 0xc(r1)
 /* 0000A628 38210008 */ addi r1, r1, 8
@@ -11871,7 +11871,7 @@ lbl_0000A7D4:
 /* 0000A820 C067004C */ lfs f3, 0x4c(r7)
 /* 0000A824 C0870040 */ lfs f4, 0x40(r7)
 /* 0000A828 C0A70044 */ lfs f5, 0x44(r7)
-/* 0000A82C 4BFF595D */ bl func_800AD180
+/* 0000A82C 4BFF595D */ bl preview_draw
 /* 0000A830 8001000C */ lwz r0, 0xc(r1)
 /* 0000A834 38210008 */ addi r1, r1, 8
 /* 0000A838 7C0803A6 */ mtlr r0
@@ -19605,7 +19605,7 @@ lbl_00011A68:
 /* 00011A78 2C000002 */ cmpwi r0, 2
 /* 00011A7C 4082000C */ bne lbl_00011A88
 /* 00011A80 38600010 */ li r3, 0x10
-/* 00011A84 4BFEE705 */ bl func_80095398
+/* 00011A84 4BFEE705 */ bl rend_efc_draw
 lbl_00011A88:
 /* 00011A88 3C600000 */ lis r3, eventInfo@ha
 /* 00011A8C 38630000 */ addi r3, r3, eventInfo@l
@@ -19648,7 +19648,7 @@ lbl_00011B08:
 /* 00011B0C 2C000002 */ cmpwi r0, 2
 /* 00011B10 4082000C */ bne lbl_00011B1C
 /* 00011B14 38600008 */ li r3, 8
-/* 00011B18 4BFEE671 */ bl func_80095398
+/* 00011B18 4BFEE671 */ bl rend_efc_draw
 lbl_00011B1C:
 /* 00011B1C C03F0008 */ lfs f1, 8(r31)
 /* 00011B20 38600000 */ li r3, 0

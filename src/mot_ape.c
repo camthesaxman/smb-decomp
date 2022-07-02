@@ -13,16 +13,10 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "light.h"
-
-struct Struct80089A04
-{
-    u8 filler0[4];
-    char *names[11];
-    s32 unk30[4];
-};
 
 struct Ape_child lbl_801C7A70 =
 {

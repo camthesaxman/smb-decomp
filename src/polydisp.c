@@ -22,6 +22,8 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "pool.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stobj.h"
@@ -85,10 +87,10 @@ void polydisp_main(void)
     if (eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
     {
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-            func_80095398(1);
+            rend_efc_draw(1);
         draw_3d_scene();
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-            func_80095398(2);
+            rend_efc_draw(2);
     }
     else
         view_draw();
@@ -200,7 +202,7 @@ void draw_3d_scene(void)
             func_80094028();
             break;
         default:
-            func_80093B54();
+            u_minigame_draw();
             break;
         case SMD_MINI_SELECT_INIT:
         case SMD_MINI_SELECT_MAIN:
@@ -274,7 +276,7 @@ void draw_adv_demo_scene(void)
     u_draw_ball_shadow();
     func_80054FF0();
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(4);
+        rend_efc_draw(4);
     if (!(advDemoInfo.flags & (1 << 4))
      && !(advDemoInfo.flags & ADV_FLAG_SHOW_BALLS))
     {
@@ -340,7 +342,7 @@ void draw_adv_demo_scene(void)
         ord_tbl_set_depth_offset(0.0f);
 
         if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-            func_80095398(16);
+            rend_efc_draw(16);
 
         if ((advDemoInfo.flags & (1 << 5))
          && !(advDemoInfo.flags & (1 << 12))
@@ -365,7 +367,7 @@ void draw_adv_demo_scene(void)
     if (backgroundInfo.bgId == BG_TYPE_JUN || backgroundInfo.bgId == BG_TYPE_SPA)
         u_something_with_lens_flare_2(0);
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(8);
+        rend_efc_draw(8);
     func_80017FCC();
 }
 
@@ -564,8 +566,8 @@ void draw_normal_game_scene(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            if (g_poolInfo.unkC[i] == 0
-             || g_poolInfo.unkC[i] == 4
+            if (g_poolInfo.playerPool.statusList[i] == 0
+             || g_poolInfo.playerPool.statusList[i] == 4
              || (cameraInfo[i].flags & (1 << 6)))
             {
                 if (!(cameraInfo[i].flags & (1 << 7)))
@@ -577,7 +579,7 @@ void draw_normal_game_scene(void)
             func_80054FF0();
             u_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(4);
+                rend_efc_draw(4);
             draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
@@ -593,7 +595,7 @@ void draw_normal_game_scene(void)
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
                 draw_stage_preview();
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(16);
+                rend_efc_draw(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
                 item_draw();  // draws bananas, but not the ones being picked up
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
@@ -609,7 +611,7 @@ void draw_normal_game_scene(void)
             if (backgroundInfo.unk8 & 1)
                 u_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(8);
+                rend_efc_draw(8);
         }
     }
     func_8000C7A4();
@@ -658,13 +660,13 @@ u16 lbl_802F02E0[4] = { ARROW_1P, ARROW_2P, ARROW_3P, ARROW_4P };
 void func_8000C8D4(void)
 {
     struct Ball *ball;
-    s8 *r25 = g_poolInfo.unkC;
+    s8 *r25 = g_poolInfo.playerPool.statusList;
     int i;
     Vec sp8;
     float f27;
 
     ball = ballInfo;
-    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r25++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r25++)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
@@ -772,7 +774,7 @@ void draw_continue_scene(void)
         Vec sp20;
         Vec sp14;
         Vec sp8;
-        s16 r30;
+        int r30;
         int i;
         float f28 = r4 / 60.0f;
 
@@ -849,7 +851,7 @@ void draw_results_scene(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            if ((g_poolInfo.unkC[i] == 0 || g_poolInfo.unkC[i] == 4)
+            if ((g_poolInfo.playerPool.statusList[i] == 0 || g_poolInfo.playerPool.statusList[i] == 4)
              && !(cameraInfo[i].flags & (1 << 6)))
                 continue;
 
@@ -861,7 +863,7 @@ void draw_results_scene(void)
             func_80054FF0();
             u_reset_light_group_stack(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(4);
+                rend_efc_draw(4);
             draw_monkey();
             if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING
              || eventInfo[EVENT_STAGE].state == EV_STATE_SUSPENDED)
@@ -874,7 +876,7 @@ void draw_results_scene(void)
                 ord_tbl_set_depth_offset(0.0f);
             }
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(16);
+                rend_efc_draw(16);
             if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
                 item_draw();
             if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)
@@ -890,7 +892,7 @@ void draw_results_scene(void)
             if (backgroundInfo.unk8 & 1)
                 u_something_with_lens_flare_2(i);
             if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-                func_80095398(8);
+                rend_efc_draw(8);
             if (cameraInfo[i].flags & (1 << 6))
                 lbl_801EEC90.unk0 &= ~(1 << 3);
         }

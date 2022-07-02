@@ -1,5 +1,7 @@
+#include <float.h>
 #include <math.h>
 #include <stddef.h>
+#include <dolphin.h>
 
 #include "global.h"
 #include "ball.h"

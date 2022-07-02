@@ -1,3 +1,4 @@
+#include <float.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -15,8 +16,8 @@
 #include "stage.h"
 #include "light.h"
 
-#include "bg_nig.gma.h"
-#include "bg_stm.gma.h"
+#include "../data/bg_nig.gma.h"
+#include "../data/bg_stm.gma.h"
 
 #pragma force_active on
 

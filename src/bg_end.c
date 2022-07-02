@@ -8,7 +8,6 @@
 #include "global.h"
 #include "background.h"
 #include "gxcache.h"
-#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "stage.h"
 

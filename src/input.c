@@ -1,3 +1,4 @@
+#include <float.h>
 #include <math.h>
 #include <string.h>
 
@@ -7,6 +8,7 @@
 #include "ball.h"
 #include "input.h"
 #include "mode.h"
+#include "pool.h"
 
 struct ControllerInfo controllerInfo[4];
 struct ControllerInfo lbl_801F3C60[4];
@@ -494,7 +496,7 @@ void func_80025640(void)
         }
         break;
     default:
-        r27 = g_poolInfo.unkC;
+        r27 = g_poolInfo.playerPool.statusList;
         if (r27 == NULL)
             break;
         for (i = 0; i < 4; i++, r27++)

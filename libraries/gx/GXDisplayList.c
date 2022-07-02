@@ -3,20 +3,8 @@
 
 #include "__gx.h"
 
-static struct
-{
-    u8 *unk0;
-    u8 *unk4;
-    u32 unk8;
-    u8 fillerC[0x14-0xC];
-    void *unk14;
-    void *unk18;
-    u32 unk1C;
-    u8 filler20[4];
-} DisplayListFifo;
-
+static __GXFifoObj DisplayListFifo;
 struct GX __savedGXdata;
-
 static void *OldCPUFifo;
 
 void GXBeginDisplayList(void *list, u32 size)
@@ -27,16 +15,16 @@ void GXBeginDisplayList(void *list, u32 size)
         __GXSetDirtyState();
     if (gx->unk4ED != 0)
         memcpy(&__savedGXdata, gx, sizeof(__savedGXdata));
-    DisplayListFifo.unk0 = list;
-    DisplayListFifo.unk4 = (u8 *)list + size - 4;
-    DisplayListFifo.unk8 = size;
+    DisplayListFifo.base = list;
+    DisplayListFifo.end = (u8 *)list + size - 4;
+    DisplayListFifo.size = size;
     DisplayListFifo.unk1C = 0;
-    DisplayListFifo.unk14 = list;
-    DisplayListFifo.unk18 = list;
+    DisplayListFifo.readPtr = list;
+    DisplayListFifo.writePtr = list;
     gx->unk4EC = 1;
     GXSaveCPUFifo(fifo);
     OldCPUFifo = fifo;
-    GXSetCPUFifo((void *)&DisplayListFifo);
+    GXSetCPUFifo((GXFifoObj *)&DisplayListFifo);
 }
 
 u32 GXEndDisplayList(void)

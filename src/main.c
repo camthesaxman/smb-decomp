@@ -11,9 +11,11 @@
 #include "input.h"
 #include "load.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "perf.h"
+#include "pool.h"
 #include "stage.h"
 #include "world.h"
 

@@ -47,8 +47,8 @@ MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -
 # GNU compiler flags
 GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-switch -Wno-main -Wno-unknown-pragmas \
                     -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare \
-                    -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables \
-                    -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+                    -Wno-missing-field-initializers -Wno-char-subscripts -Wno-empty-body \
+                    -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
 GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
 
 ifeq ($(COMPILER),mwcc)
@@ -124,6 +124,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/window.s \
+	src/pool.c \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/mot_joint.c \
@@ -173,7 +174,8 @@ SOURCES := \
 	asm/code_5.s \
 	asm/minimap.s \
 	src/ord_tbl.c \
-	asm/code_3.s \
+	src/code_3.c \
+	src/ranking_screen.c \
 	src/mot_ape.c \
 	src/code_2.c \
 	src/lzs_decompress.c \
@@ -182,7 +184,9 @@ SOURCES := \
 	asm/shadow.s \
 	asm/mini.s \
 	src/mouse.c \
-	asm/rend_efc.s \
+	src/rend_efc.c \
+	src/rend_efc_mirror.c \
+	src/rend_efc_3.c \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
@@ -192,6 +196,7 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
+	src/dvd.c \
 	src/preview.c \
 	asm/name_entry.s \
 	asm/credits.s \
@@ -258,18 +263,18 @@ SOURCES := \
 	libraries/card/asm/CARDRename.s \
 	libraries/hio/hio.c \
 	libraries/gx/asm/GXInit.s \
-	libraries/gx/asm/GXFifo.s \
+	libraries/gx/GXFifo.c \
 	libraries/gx/asm/GXAttr.s \
 	libraries/gx/asm/GXMisc.s \
 	libraries/gx/GXGeometry.c \
 	libraries/gx/asm/GXFrameBuf.s \
-	libraries/gx/asm/GXLight.s \
+	libraries/gx/GXLight.c \
 	libraries/gx/asm/GXTexture.s \
 	libraries/gx/asm/GXBump.s \
-	libraries/gx/asm/GXTev.s \
+	libraries/gx/GXTev.c \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
-	libraries/gx/asm/GXStubs.s \
+	libraries/gx/GXStubs.c \
 	libraries/gx/GXDisplayList.c \
 	libraries/gx/GXTransform.c \
 	libraries/gx/GXPerf.c \

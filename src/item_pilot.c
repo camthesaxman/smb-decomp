@@ -65,7 +65,7 @@ s16 lbl_802F1FE4[4];
 s16 lbl_802F1FE0;
 float lbl_802F1FDC;
 float lbl_802F1FD8;
-s32 lbl_802F1FD4;
+void (*lbl_802F1FD4)(void);
 u32 lbl_802F1FD0;
 
 static u32 lbl_80285A58[4];

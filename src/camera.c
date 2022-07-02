@@ -1,6 +1,7 @@
+#include <float.h>
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include <dolphin.h>
 
@@ -13,7 +14,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
-#include "variables.h"
+#include "pool.h"
 #include "stage.h"
 #include "world.h"
 
@@ -188,7 +189,7 @@ void ev_camera_main(void)
         }
     }
 
-    r22 = g_poolInfo.unkC;
+    r22 = g_poolInfo.playerPool.statusList;
     for (i = 0, camera = &cameraInfo[0], ball = &ballInfo[0]; i < 4; i++, camera++, ball++, r22++)
     {
         if ((*r22 != 0 && *r22 != 4)
@@ -3621,9 +3622,9 @@ void camera_func_71(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_tf_point_xyz(&camera->lookAt, 0.0f, 0.0f, -1.0f);
     camera->timerCurr++;
 
-    r8 = g_poolInfo.unkC;
+    r8 = g_poolInfo.playerPool.statusList;
     r9 = 0;
-    for (r3 = 0; r3 < g_poolInfo.unk8; r3++, r8++)
+    for (r3 = 0; r3 < g_poolInfo.playerPool.count; r3++, r8++)
     {
         if (*r8 == 2 || *r8 == 4)
             r9 |= (controllerInfo[r3].unk0[2].button & PAD_BUTTON_A) != 0;

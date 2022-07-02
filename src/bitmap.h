@@ -157,6 +157,52 @@ enum
     BMP_ADV_adv_title_tm,
 };
 
+// RNK group (3)
+enum
+{
+    BMP_RNK_asc_ball26x31 = (BMP_RNK << 8),  // 0x300
+    BMP_RNK_asc_ball30x31,
+    BMP_RNK_rnk_ball_a,
+    BMP_RNK_rnk_ball_g,
+    BMP_RNK_rnk_ball_i,
+    BMP_RNK_rnk_ball_k,
+    BMP_RNK_rnk_ball_n,
+    BMP_RNK_rnk_ball_r,
+    BMP_RNK_rnk_catgword,
+    BMP_RNK_rnk_ex2_icon,
+    BMP_RNK_rnk_ex_icon,
+    BMP_RNK_rnk_lines,
+    BMP_RNK_rnk_monkeyball_logo,
+    BMP_RNK_rnk_obibar_blue,
+    BMP_RNK_rnk_obibar_grn,
+    BMP_RNK_rnk_obibar_red,
+    BMP_RNK_rnk_obibar_yer,  // 0x310
+    BMP_RNK_rnk_obiword,
+    BMP_RNK_rnk_rank,
+    BMP_RNK_rnk_mini_asc32x32,
+    BMP_RNK_rnk_mini_bar_bg,
+    BMP_RNK_rnk_mini_bg,
+    BMP_RNK_rnk_mini_cursor,
+    BMP_RNK_rnk_mini_icon_best,
+    BMP_RNK_rnk_mini_icon_star,
+    BMP_RNK_rnk_mini_kiwaku,
+    BMP_RNK_rnk_mini_kiwaku_l,
+    BMP_RNK_rnk_mini_line,
+    BMP_RNK_rnk_mini_mark_r,
+    BMP_RNK_rnk_mini_mark_t,
+    BMP_RNK_rnk_mini_num,
+    BMP_RNK_rnk_mini_ptn,
+    BMP_RNK_rnk_mini_pts,  // 0x320
+    BMP_RNK_rnk_mini_puramai,
+    BMP_RNK_rnk_mini_rank,
+    BMP_RNK_rnk_mini_score_num,
+    BMP_RNK_rnk_mini_sort,
+    BMP_RNK_rnk_mini_player,
+    BMP_RNK_rnk_mini_bar_w,
+    BMP_RNK_rnk_mini_mark_tgt1,
+    BMP_RNK_rnk_mini_mark_tgt2,
+};
+
 // NML group (5)
 enum
 {

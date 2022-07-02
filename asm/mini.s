@@ -38,16 +38,16 @@ lbl_80093A74:
 
 glabel func_80093A84
 /* 80093A84 0008F9A4  38 00 00 00 */	li r0, 0
-/* 80093A88 0008F9A8  90 6D 9F 78 */	stw r3, lbl_802F2158@sda21(r13)
-/* 80093A8C 0008F9AC  90 8D 9F 7C */	stw r4, lbl_802F215C@sda21(r13)
+/* 80093A88 0008F9A8  90 6D 9F 78 */	stw r3, u_minigameMainCallback@sda21(r13)
+/* 80093A8C 0008F9AC  90 8D 9F 7C */	stw r4, u_minigameDrawCallback@sda21(r13)
 /* 80093A90 0008F9B0  90 0D 9F 80 */	stw r0, lbl_802F2160@sda21(r13)
 /* 80093A94 0008F9B4  90 AD 9D 34 */	stw r5, minigameRelBallCallback@sda21(r13)
 /* 80093A98 0008F9B8  90 CD 9A 58 */	stw r6, minigameRelCameraCallback@sda21(r13)
 /* 80093A9C 0008F9BC  4E 80 00 20 */	blr
 
 glabel func_80093AA0
-/* 80093AA0 0008F9C0  90 6D 9F 78 */	stw r3, lbl_802F2158@sda21(r13)
-/* 80093AA4 0008F9C4  90 8D 9F 7C */	stw r4, lbl_802F215C@sda21(r13)
+/* 80093AA0 0008F9C0  90 6D 9F 78 */	stw r3, u_minigameMainCallback@sda21(r13)
+/* 80093AA4 0008F9C4  90 8D 9F 7C */	stw r4, u_minigameDrawCallback@sda21(r13)
 /* 80093AA8 0008F9C8  90 AD 9F 80 */	stw r5, lbl_802F2160@sda21(r13)
 /* 80093AAC 0008F9CC  90 CD 9D 34 */	stw r6, minigameRelBallCallback@sda21(r13)
 /* 80093AB0 0008F9D0  90 ED 9A 58 */	stw r7, minigameRelCameraCallback@sda21(r13)
@@ -88,7 +88,7 @@ submode_mini_game_main_func:
 /* 80093B24 0008FA44  7C 08 02 A6 */	mflr r0
 /* 80093B28 0008FA48  90 01 00 04 */	stw r0, 4(r1)
 /* 80093B2C 0008FA4C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80093B30 0008FA50  81 8D 9F 78 */	lwz r12, lbl_802F2158@sda21(r13)
+/* 80093B30 0008FA50  81 8D 9F 78 */	lwz r12, u_minigameMainCallback@sda21(r13)
 /* 80093B34 0008FA54  28 0C 00 00 */	cmplwi r12, 0
 /* 80093B38 0008FA58  41 82 00 0C */	beq lbl_80093B44
 /* 80093B3C 0008FA5C  7D 88 03 A6 */	mtlr r12
@@ -99,12 +99,12 @@ lbl_80093B44:
 /* 80093B4C 0008FA6C  7C 08 03 A6 */	mtlr r0
 /* 80093B50 0008FA70  4E 80 00 20 */	blr
 
-.global func_80093B54
-func_80093B54:
+.global u_minigame_draw
+u_minigame_draw:
 /* 80093B54 0008FA74  7C 08 02 A6 */	mflr r0
 /* 80093B58 0008FA78  90 01 00 04 */	stw r0, 4(r1)
 /* 80093B5C 0008FA7C  94 21 FF F8 */	stwu r1, -8(r1)
-/* 80093B60 0008FA80  81 8D 9F 7C */	lwz r12, lbl_802F215C@sda21(r13)
+/* 80093B60 0008FA80  81 8D 9F 7C */	lwz r12, u_minigameDrawCallback@sda21(r13)
 /* 80093B64 0008FA84  28 0C 00 00 */	cmplwi r12, 0
 /* 80093B68 0008FA88  41 82 00 0C */	beq lbl_80093B74
 /* 80093B6C 0008FA8C  7D 88 03 A6 */	mtlr r12
@@ -139,8 +139,8 @@ func_80093BB4:
 /* 80093BC0 0008FAE0  94 21 FF F0 */	stwu r1, -0x10(r1)
 /* 80093BC4 0008FAE4  93 E1 00 0C */	stw r31, 0xc(r1)
 /* 80093BC8 0008FAE8  3B E0 00 00 */	li r31, 0
-/* 80093BCC 0008FAEC  93 ED 9F 78 */	stw r31, lbl_802F2158@sda21(r13)
-/* 80093BD0 0008FAF0  93 ED 9F 7C */	stw r31, lbl_802F215C@sda21(r13)
+/* 80093BCC 0008FAEC  93 ED 9F 78 */	stw r31, u_minigameMainCallback@sda21(r13)
+/* 80093BD0 0008FAF0  93 ED 9F 7C */	stw r31, u_minigameDrawCallback@sda21(r13)
 /* 80093BD4 0008FAF4  93 ED 9F 80 */	stw r31, lbl_802F2160@sda21(r13)
 /* 80093BD8 0008FAF8  93 ED 9D 34 */	stw r31, minigameRelBallCallback@sda21(r13)
 /* 80093BDC 0008FAFC  93 ED 9A 58 */	stw r31, minigameRelCameraCallback@sda21(r13)
@@ -1475,11 +1475,11 @@ lbl_802F5840:
 
 .section .sbss
 
-.global lbl_802F2158
-lbl_802F2158:
+.global u_minigameMainCallback
+u_minigameMainCallback:
 	.skip 0x4
-.global lbl_802F215C
-lbl_802F215C:
+.global u_minigameDrawCallback
+u_minigameDrawCallback:
 	.skip 0x4
 .global lbl_802F2160
 lbl_802F2160:

@@ -60,7 +60,7 @@ lbl_8004CB24:
 /* 8004CBAC 00048ACC  3C 60 80 20 */	lis r3, g_poolInfo@ha
 /* 8004CBB0 00048AD0  38 63 59 88 */	addi r3, r3, g_poolInfo@l
 /* 8004CBB4 00048AD4  38 63 00 40 */	addi r3, r3, 0x40
-/* 8004CBB8 00048AD8  4B FE 3E 99 */	bl func_80030A50
+/* 8004CBB8 00048AD8  4B FE 3E 99 */	bl pool_reset
 /* 8004CBBC 00048ADC  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 8004CBC0 00048AE0  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 8004CBC4 00048AE4  38 21 00 10 */	addi r1, r1, 0x10

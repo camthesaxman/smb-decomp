@@ -31,7 +31,7 @@ void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, 
 // // 0x800E2944
 void GXSetZTexture(GXZTexOp op,GXTexFmt fmt, u32 bias);
 // 0x800E29C8
-void GXSetTevOrder(GXTevStageID stage,  GXTexCoordID coord, GXTexMapID map, GXChannelID color);
+void GXSetTevOrder(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color);
 // 0x800E2B68
 void GXSetNumTevStages(u8 nStages);
 

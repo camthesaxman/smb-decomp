@@ -2387,7 +2387,7 @@ lbl_00002318:
 /* 00002374 4BFFDE39 */ bl OSSetCurrentHeap
 /* 00002378 4BFFDE35 */ bl func_800885EC
 /* 0000237C 38600000 */ li r3, 0
-/* 00002380 4BFFDE2D */ bl func_800886E0
+/* 00002380 4BFFDE2D */ bl init_ranking_screen
 /* 00002384 4BFFDE29 */ bl func_800AB68C
 /* 00002388 4BFFDE25 */ bl func_800AB5F8
 /* 0000238C 48000258 */ b lbl_000025E4
@@ -2439,7 +2439,7 @@ lbl_00002420:
 /* 00002430 38600000 */ li r3, 0
 /* 00002434 4BFFDD79 */ bl func_8008897C
 /* 00002438 7FA3EB78 */ mr r3, r29
-/* 0000243C 4BFFDD71 */ bl func_800886E0
+/* 0000243C 4BFFDD71 */ bl init_ranking_screen
 /* 00002440 2C1D0001 */ cmpwi r29, 1
 /* 00002444 41820020 */ beq lbl_00002464
 /* 00002448 40800008 */ bge lbl_00002450
@@ -3318,7 +3318,7 @@ lbl_00002FA8:
 /* 0000309C 801E0000 */ lwz r0, 0(r30)
 /* 000030A0 60000008 */ ori r0, r0, 8
 /* 000030A4 901E0000 */ stw r0, 0(r30)
-/* 000030A8 4BFFD105 */ bl func_800972CC
+/* 000030A8 4BFFD105 */ bl rend_efc_mirror_enable
 /* 000030AC 38610008 */ addi r3, r1, 8
 /* 000030B0 38800000 */ li r4, 0
 /* 000030B4 38A00018 */ li r5, 0x18
@@ -3329,7 +3329,7 @@ lbl_00002FA8:
 /* 000030C8 38A10008 */ addi r5, r1, 8
 /* 000030CC 38600002 */ li r3, 2
 /* 000030D0 38800003 */ li r4, 3
-/* 000030D4 4BFFD0D9 */ bl func_8009544C
+/* 000030D4 4BFFD0D9 */ bl rend_efc_enable
 /* 000030D8 3C600000 */ lis r3, backgroundInfo@ha
 /* 000030DC A8830000 */ lha r4, backgroundInfo@l(r3)
 /* 000030E0 3C600000 */ lis r3, backgroundSongs@ha
@@ -3790,7 +3790,7 @@ lbl_000036A4:
 /* 00003794 80180000 */ lwz r0, 0(r24)
 /* 00003798 60000008 */ ori r0, r0, 8
 /* 0000379C 90180000 */ stw r0, 0(r24)
-/* 000037A0 4BFFCA0D */ bl func_800972CC
+/* 000037A0 4BFFCA0D */ bl rend_efc_mirror_enable
 /* 000037A4 38610008 */ addi r3, r1, 8
 /* 000037A8 38800000 */ li r4, 0
 /* 000037AC 38A00018 */ li r5, 0x18
@@ -3801,7 +3801,7 @@ lbl_000036A4:
 /* 000037C0 38A10008 */ addi r5, r1, 8
 /* 000037C4 38600002 */ li r3, 2
 /* 000037C8 38800003 */ li r4, 3
-/* 000037CC 4BFFC9E1 */ bl func_8009544C
+/* 000037CC 4BFFC9E1 */ bl rend_efc_enable
 /* 000037D0 A8790000 */ lha r3, 0(r25)
 /* 000037D4 4BFFC9D9 */ bl light_init
 /* 000037D8 38000009 */ li r0, 9
@@ -7205,7 +7205,7 @@ lbl_000067D8:
 /* 00006A68 C09F0138 */ lfs f4, 0x138(r31)
 /* 00006A6C C0BF013C */ lfs f5, 0x13c(r31)
 /* 00006A70 38A00000 */ li r5, 0
-/* 00006A74 4BFF9739 */ bl func_800AD180
+/* 00006A74 4BFF9739 */ bl preview_draw
 lbl_00006A78:
 /* 00006A78 4BFF9735 */ bl mathutil_mtxA_from_identity
 /* 00006A7C 3C600000 */ lis r3, mathutilData@ha

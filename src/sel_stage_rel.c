@@ -6,17 +6,19 @@
 
 #include "global.h"
 #include "background.h"
-#include "bitmap.h"
 #include "ball.h"
+#include "bitmap.h"
 #include "camera.h"
 #include "course.h"
 #include "event.h"
 #include "game.h"
 #include "info.h"
 #include "input.h"
-#include "mathutil.h"
 #include "load.h"
+#include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
+#include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
 
@@ -62,10 +64,10 @@ static void sel_stage_init(void)
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
     modeCtrl.unk40 = 0;
-    g_poolInfo.unkC[0] = 2;
-    g_poolInfo.unkC[1] = 0;
-    g_poolInfo.unkC[2] = 0;
-    g_poolInfo.unkC[3] = 0;
+    g_poolInfo.playerPool.statusList[0] = 2;
+    g_poolInfo.playerPool.statusList[1] = 0;
+    g_poolInfo.playerPool.statusList[2] = 0;
+    g_poolInfo.playerPool.statusList[3] = 0;
     modeCtrl.currPlayer = 0;
 
     func_8002FFEC();
@@ -87,7 +89,7 @@ static void sel_stage_init(void)
     event_start(EVENT_BACKGROUND);
     event_start(EVENT_REND_EFC);
 
-    func_800972CC();
+    rend_efc_mirror_enable();
     camera_set_state(12);
     u_isCompetitionModeCourse = 0;
     func_800123DC();
@@ -217,7 +219,7 @@ static void sel_stage_handle_input(void)
         event_start(EVENT_BACKGROUND);
         event_start(EVENT_REND_EFC);
         camera_set_state(12);
-        func_800972CC();
+        rend_efc_mirror_enable();
     }
 
     if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)

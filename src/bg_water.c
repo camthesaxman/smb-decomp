@@ -12,7 +12,6 @@
 #include "event.h"
 #include "gxcache.h"
 #include "gxutil.h"
-#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
 #include "stage.h"

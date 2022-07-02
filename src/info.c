@@ -15,6 +15,7 @@
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
@@ -81,9 +82,9 @@ void ev_info_main(void)
     // handle goal
     ballBackup = currentBallStructPtr;
     ball = ballInfo;
-    r23 = g_poolInfo.unkC;
+    r23 = g_poolInfo.playerPool.statusList;
     r20 = 0;
-    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r23++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r23++)
     {
         u32 goalId;
         s32 sp64;
@@ -197,9 +198,9 @@ void ev_info_main(void)
 
     {
         struct Item *item = itemPool;
-        s8 *r7 = g_poolInfo.itemStatusList;
+        s8 *r7 = g_poolInfo.itemPool.statusList;
 
-        for (i = 0; i < g_poolInfo.itemPoolUpperBound; item++, i++, r7++)
+        for (i = 0; i < g_poolInfo.itemPool.count; item++, i++, r7++)
         {
             if (*r7 != 0 && *r7 != 3 && item->type == 0 && (item->flags & (1 << 1)))
                 infoWork.bananasLeft++;
@@ -301,9 +302,9 @@ void ev_info_main(void)
 
     if (!(infoWork.flags & INFO_FLAG_05) && !(advDemoInfo.flags & (1 << 8)))
     {
-        r23 = g_poolInfo.unkC;
+        r23 = g_poolInfo.playerPool.statusList;
         ball = ballInfo;
-        for (i = 0; i < g_poolInfo.unk8; i++, ball++, r23++)
+        for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r23++)
         {
             if (*r23 == 0 || *r23 == 4)
                 continue;

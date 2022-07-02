@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MATHUTIL_SIN_INT_PARAM
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
@@ -1805,8 +1804,8 @@ void load_stagedef(int stageId)
             OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->animGroupModels);
     if (decodedStageLzPtr->unk64 != NULL)
         decodedStageLzPtr->unk64 = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->unk64);
-    if (decodedStageLzPtr->reflObjs != NULL)
-        decodedStageLzPtr->reflObjs = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->reflObjs);
+    if (decodedStageLzPtr->mirrors != NULL)
+        decodedStageLzPtr->mirrors = OFFSET_TO_PTR(decodedStageLzPtr, decodedStageLzPtr->mirrors);
 
     if (decodedStageLzPtr->bgObjects != NULL)
     {
@@ -2354,7 +2353,7 @@ void draw_stage_preview(void)
         mathutil_mtxA_scale_s(lbl_802F1EC4 + 15.0);
         GXLoadPosMtxImm(mathutilData->mtxA, 0);
         bitmap_init_tev();
-        func_800AD180(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
+        preview_draw(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
     }
 }
 

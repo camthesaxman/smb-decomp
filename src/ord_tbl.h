@@ -12,6 +12,8 @@ struct OrdTblNode
     OrdTblDrawFunc drawFunc;
 };
 
+extern u8 lbl_80292E70[0x20000];
+
 void ord_tbl_init(float depthOffset, float minDepth, float maxDepth, void *buffer, int maxEntries);
 void ord_tbl_reset(void);
 void ord_tbl_set_depth_offset(float offset);

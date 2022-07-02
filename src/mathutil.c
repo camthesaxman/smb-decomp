@@ -1,3 +1,4 @@
+#include <float.h>
 #include <math.h>
 #include <string.h>
 #include <dolphin.h>
@@ -246,7 +247,7 @@ lbl_800071D0:
 #endif
 
 #ifdef C_ONLY
-float mathutil_sin(register s16 angle)
+float mathutil_sin(int angle)
 {
     int index = angle & 0x3FFF;
     float result;
@@ -257,7 +258,7 @@ float mathutil_sin(register s16 angle)
     return (angle & 0x8000) ? -result : result;
 }
 #else
-asm float mathutil_sin(register s16 angle)
+asm float mathutil_sin(register int angle)
 {
     nofralloc
 
