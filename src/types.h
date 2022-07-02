@@ -355,7 +355,8 @@ struct ReplayInfo
     u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
     u8 floorNum;
     u8 unk5;
-    char unk6[10];
+    char unk6[4];
+    float unkC;
     u32 unk10;
     u8 filler14[4];
 };
@@ -1029,6 +1030,12 @@ struct ScoreRecord
     u8 filler8[4];
     u8 floorNum;
     s8 unkD;  // 0 = normal, 1 = extra, 2 = master
+};
+
+struct Struct8020AE40_sub2
+{
+    s16 unk0;
+    s16 unk2;
 };
 
 #endif

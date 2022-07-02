@@ -343,7 +343,7 @@ ev_recplay_init:
 /* 80048C64 00044B84  7C 08 03 A6 */	mtlr r0
 /* 80048C68 00044B88  4E 80 00 20 */	blr
 .endif
-.if 1
+.if 0
 .global ev_recplay_main
 ev_recplay_main:
 /* 80048C6C 00044B8C  7C 08 02 A6 */	mflr r0
@@ -470,7 +470,7 @@ lbl_80048E28:
 /* 80048E34 00044D54  38 21 00 40 */	addi r1, r1, 0x40
 /* 80048E38 00044D58  7C 08 03 A6 */	mtlr r0
 /* 80048E3C 00044D5C  4E 80 00 20 */	blr
-.endif
+
 .global ev_recplay_dest
 ev_recplay_dest:
 /* 80048E40 00044D60  7C 08 02 A6 */	mflr r0
@@ -1797,7 +1797,7 @@ lbl_8004A0B8:
 /* 8004A0BC 00045FDC  38 21 00 08 */	addi r1, r1, 8
 /* 8004A0C0 00045FE0  7C 08 03 A6 */	mtlr r0
 /* 8004A0C4 00045FE4  4E 80 00 20 */	blr
-
+.endif
 glabel func_8004A0C8
 /* 8004A0C8 00045FE8  7C 08 02 A6 */	mflr r0
 /* 8004A0CC 00045FEC  3C 80 80 1C */	lis r4, lbl_801B8858@ha
@@ -4841,7 +4841,6 @@ lbl_802F09EC:
 glabel string__test_4
 	.asciz "/test"
 	.balign 4
-.endif
 
 .global lbl_802F09F4
 lbl_802F09F4:
@@ -4854,6 +4853,7 @@ glabel string______
 lbl_802F09FC:
 	# ROM: 0x1EB13C
 	.4byte 0
+.endif
 
 .global lbl_802F0A00
 lbl_802F0A00:
@@ -4875,7 +4875,7 @@ lbl_802F3808:
 lbl_802F3810:
 	# ROM: 0x1ED230
 	.4byte 0x3F6B851F
-.endif
+
 .global lbl_802F3814
 lbl_802F3814:
 	# ROM: 0x1ED234
@@ -4892,7 +4892,7 @@ lbl_802F3820:
 	# ROM: 0x1ED240
 	.4byte 0x3FF00000
 	.4byte 0
-
+.endif
 .global lbl_802F3828
 lbl_802F3828:
 	# ROM: 0x1ED248

@@ -4,41 +4,27 @@
 
 #include "global.h"
 #include "ball.h"
+#include "course.h"
+#include "event.h"
+#include "info.h"
+#include "mathutil.h"
 #include "mode.h"
+#include "stage.h"
 #include "world.h"
-
-struct Struct8020AE40_sub
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    u32 unk18;
-    float unk1C;
-};
-
-struct Struct8020AE40_sub2
-{
-    s16 unk0;
-    s16 unk2;
-};
 
 struct Struct8020AE40
 {
-    u16 unk0;
-    u8 unk2;
-    u8 filler3[0xC-0x3];
-    float unkC;
-    u8 filler10[0x1A-0x10];
+    struct ReplayInfo unk0;
+    s16 unk18;
     s16 unk1A;
-    u8 filler1C[0x30-0x1C];
+    s16 unk1C;
+    s16 unk1E;
+    s16 unk20;
+    Vec unk24;
     s32 unk30;
     s16 unk34;
     s16 unk36;
-    struct Struct8020AE40_sub unk38[1];
+    struct Struct800496BC unk38[1];
     u8 filler58[0x5A38-0x58];
     struct Struct8020AE40_sub2 unk5A38[1];
     u8 filler5A3C[0x6578-0x5A3C];
@@ -60,6 +46,9 @@ extern u32 lbl_802F1F68;
 extern s32 lbl_802F1F6C;
 extern char **lbl_802F1F70;
 extern s32 lbl_802F1F74;
+
+void func_8004AA18(void);
+void func_8004AFD8(void);
 
 void func_800487B4(void)
 {
@@ -175,7 +164,7 @@ void func_800489F8(void)
 
             for (; var_r29 > 0; var_r29--, var_r28++)
             {
-                if (var_r28->unkC != 0.0 && var_r28->unk2 != 0)
+                if (var_r28->unk0.unkC != 0.0 && var_r28->unk0.stageId != 0)
                 {
                     temp_r30 = &lbl_8020AE40[func_80048E78()];
                     func_8004ACF0(temp_r30);
@@ -200,7 +189,7 @@ void func_800489F8(void)
     DVDChangeDir("/test");
     temp_r30 = lbl_8020AE40;
     for (i = 11; i > 0; i--, temp_r30++)
-        temp_r30->unkC *= 0.92f;
+        temp_r30->unk0.unkC *= 0.92f;
 
 }
 
@@ -212,10 +201,10 @@ void func_80048BD4(void)
     var_r5 = lbl_8020AE40;
     for (i = 11; i > 0; i--, var_r5++)
     {
-        if (var_r5->unk0 & 0x8000)
-            var_r5->unk0 &= 0xFFFF7FFF;
+        if (var_r5->unk0.flags & 0x8000)
+            var_r5->unk0.flags &= 0xFFFF7FFF;
         if (!(dipSwitches & DIP_DEBUG))
-            var_r5->unkC *= 0.92f;
+            var_r5->unk0.unkC *= 0.92f;
     }
     func_8004AFD0();
 }
@@ -226,7 +215,7 @@ void ev_recplay_init(void)
     func_8004AFD4();
 }
 
-/*
+#ifdef NONMATCHING
 void ev_recplay_main(void)
 {
     struct Ball *var_r30;
@@ -251,7 +240,7 @@ void ev_recplay_main(void)
         {
             struct Struct8020AE40 *temp_r3_2;
             int var_r6;
-            struct Struct8020AE40_sub *temp_r5;
+            struct Struct800496BC *temp_r5;
             struct Struct8020AE40_sub2 *temp_r7;
 
             temp_r3_2 = &lbl_8020AE40[var_r28->unk0];
@@ -285,4 +274,558 @@ void ev_recplay_main(void)
     if (modeCtrl.gameType == 0 || modeCtrl.gameType == 2)
         func_8004AFD8();
 }
-*/
+#else
+asm void ev_recplay_main(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/ev_recplay_main.s"
+}
+#pragma peephole on
+#endif
+
+void ev_recplay_dest(void)
+{
+    if (lbl_802F1F74 > 0)
+    {
+        func_80049158();
+        lbl_802F1F74 = 0;
+    }
+    func_8004B334();
+}
+
+float func_8004ADC0(struct Struct8020AE40 *);
+
+int func_80048E78(void)
+{
+    float var_f29;
+    int var_r31;
+    struct Struct8020AE40 *var_r30;
+    int var_r29;
+
+    var_r30 = lbl_8020AE40;
+    var_r29 = 0;
+    var_f29 = lbl_8020AE40[0].unk0.unkC;
+    for (var_r31 = 6; var_r31 > 0; var_r31--, var_r30++)
+    {
+        float temp_f30 = var_r30->unk0.unkC;
+
+        if (temp_f30 == 0.0)
+        {
+            var_r29 = 6 - var_r31;
+            break;
+        }
+        else
+        {
+            float temp_f0 = temp_f30 * func_8004ADC0(var_r30);
+
+            if (temp_f0 < var_f29)
+            {
+                var_r29 = 6 - var_r31;
+                var_f29 = temp_f0;
+            }
+        }
+    }
+    return var_r29;
+}
+
+void func_80048F20(void)
+{
+    struct Struct8020AE20 *ptr;
+    int i;
+
+    func_80049158();
+    ptr = lbl_8020AE20;
+    for (i = 0; i < 4; i++, ptr++)
+        ptr->unk0 = -1;
+}
+
+void func_80048F58(int arg0, int arg1)
+{
+    lbl_8020AE20[arg0].unk0 = arg1;
+}
+
+void func_80048F74(void)
+{
+    int i;
+    struct Struct8020AE40 *temp_r3_2;
+    struct Struct8020AE20 *var_r19;
+    int isPractice = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE);
+
+    var_r19 = lbl_8020AE20;
+    for (i = 4; i > 0; i--, var_r19++)
+    {
+        if (var_r19->unk0 >= 0)
+        {
+            temp_r3_2 = &lbl_8020AE40[var_r19->unk0];
+            if (temp_r3_2->unk0.floorNum != 0)
+                func_8004ACF0(temp_r3_2);
+            temp_r3_2->unk34 = 0;
+            temp_r3_2->unk36 = 0;
+            temp_r3_2->unk18 = infoWork.timerCurr;
+            temp_r3_2->unk1A = 0;
+            temp_r3_2->unk0.flags = 0x8000;
+            temp_r3_2->unk0.stageId = currStageId;
+            if (!isPractice)
+            {
+                temp_r3_2->unk0.difficulty = modeCtrl.difficulty;
+                temp_r3_2->unk0.floorNum = infoWork.currFloor;
+            }
+            else
+            {
+                temp_r3_2->unk0.difficulty = lbl_8027CE24[0].unk2;
+                temp_r3_2->unk0.floorNum = lbl_8027CE24[0].unk0;
+            }
+            temp_r3_2->unk0.unk5 = playerCharacterSelection[4 - i];
+            temp_r3_2->unk0.unk6[0] = 0;
+            temp_r3_2->unk30 = lbl_80206DEC.unk0;
+            if (infoWork.flags & 0x40)
+                temp_r3_2->unk0.flags |= 8;
+            if (!isPractice)
+            {
+                if (modeCtrl.courseFlags & 8)
+                    temp_r3_2->unk0.flags |= 0x20;
+                if (modeCtrl.courseFlags & 0x10)
+                    temp_r3_2->unk0.flags |= 0x40;
+            }
+            else
+            {
+                if (lbl_8027CE24[0].unk4 & 8)
+                    temp_r3_2->unk0.flags |= 0x20;
+                if (lbl_8027CE24[0].unk4 & 0x10)
+                    temp_r3_2->unk0.flags |= 0x40;
+            }
+            func_8004AC68(temp_r3_2);
+            var_r19->unk2 = 1;
+            func_8004A820();
+        }
+    }
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
+     || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        func_8004B354();
+}
+
+float func_8004ABD8(void);
+
+void func_80049158(void)
+{
+    int var_r29;
+    struct Struct8020AE20 *var_r28;
+    struct Struct8020AE40 *temp_r30;
+
+    lbl_802F1F74 = 0;
+    var_r28 = lbl_8020AE20;
+    for (var_r29 = 4; var_r29 > 0; var_r29--, var_r28++)
+    {
+        if (var_r28->unk0 >= 0)
+        {
+            if (var_r28->unk2 == 1)
+            {
+                temp_r30 = &lbl_8020AE40[var_r28->unk0];
+                if (temp_r30->unk1A < 0x2D0)
+                    temp_r30->unk0.flags |= 0x10;
+                else
+                    temp_r30->unk0.flags &= ~0x10;
+                func_8004A874();
+                temp_r30->unk0.unkC = func_8004ABD8();
+            }
+            var_r28->unk2 = 0;
+        }
+    }
+
+    if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
+     || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
+        func_8004B540();
+}
+
+void func_8004923C(int arg0)
+{
+    lbl_802F1F74 = arg0;
+    if (arg0 == 0)
+        func_80049158();
+}
+
+void func_80049268(int arg0)
+{
+    struct Struct8020AE20 *temp_r3;
+    struct Struct8020AE40 *temp_r5;
+
+    temp_r3 = &lbl_8020AE20[arg0];
+    if (temp_r3->unk2 == 1)
+    {
+        temp_r5 = &lbl_8020AE40[temp_r3->unk0];
+        temp_r5->unk0.flags |= 1;
+        temp_r5->unk1C = infoWork.unk1C;
+        temp_r5->unk24 = infoWork.unk10;
+        temp_r5->unk1E = infoWork.goalEntered;
+        temp_r5->unk20 = infoWork.unkE;
+        func_8004B550();
+    }
+}
+
+void func_800492FC(int arg0)
+{
+    struct Struct8020AE20 *temp_r3;
+    struct Struct8020AE40 *temp_r5;
+
+    temp_r3 = &lbl_8020AE20[arg0];
+    if (temp_r3->unk2 == 1)
+    {
+        temp_r5 = &lbl_8020AE40[temp_r3->unk0];
+        temp_r5->unk0.flags |= 2;
+        temp_r5->unk1C = infoWork.timerCurr;
+        func_8004B5AC();
+    }
+}
+
+void func_80049368(int arg0)
+{
+    struct Struct8020AE20 *temp_r3;
+    struct Struct8020AE40 *temp_r5;
+
+    temp_r3 = &lbl_8020AE20[arg0];
+    if (temp_r3->unk2 == 1)
+    {
+        temp_r5 = &lbl_8020AE40[temp_r3->unk0];
+        temp_r5->unk0.flags |= 4;
+        func_8004B60C();
+    }
+}
+
+void func_800493C4(int arg0)
+{
+    struct Struct8020AE20 *temp_r3;
+    struct Struct8020AE40 *temp_r5;
+
+    temp_r3 = &lbl_8020AE20[arg0];
+    if (temp_r3->unk2 == 1)
+    {
+        temp_r5 = &lbl_8020AE40[temp_r3->unk0];
+        temp_r5->unk0.flags |= 0x80;
+        temp_r5->unk1C = infoWork.timerCurr;
+        func_8004B694();
+    }
+}
+
+void func_80049430(char *arg0)
+{
+    int var_r4;
+    volatile char *var_r5;
+    char *var_r6;
+    int i;
+    struct Struct8020AE40 *var_r29;
+
+    var_r4 = 0;
+    for (var_r6 = arg0; *var_r6 != 0; var_r6++)
+    {
+        for (var_r5 = "#$%@^"; *var_r5 != 0; var_r5++)
+        {
+            if (*var_r5 == *var_r6)
+            {
+                var_r4 = 1;
+                arg0 = "";
+                break;
+            }
+        }
+
+        if (var_r4)
+            break;
+    }
+
+    var_r29 = lbl_8020AE40;
+    for (i = 11; i > 0; i--, var_r29++)
+    {
+        if (var_r29->unk0.flags & 0x8000)
+        {
+            strncpy(var_r29->unk0.unk6, arg0, 4);
+            var_r29->unk0.unk6[3] = 0;
+        }
+    }
+    func_8004B6C8(arg0);
+}
+
+void func_80049514(int arg0)
+{
+    struct Struct8020AE40 *temp_r3;
+
+    if (arg0 == 11)
+    {
+        func_8004B70C();
+        return;
+    }
+    temp_r3 = &lbl_8020AE40[arg0];
+    infoWork.timerMax = temp_r3->unk18;
+    infoWork.timerCurr = temp_r3->unk18;
+    infoWork.flags &= ~0x667;
+    infoWork.currFloor = temp_r3->unk0.floorNum;
+    if (temp_r3->unk0.flags & 1)
+    {
+        infoWork.flags |= 0x28;
+        infoWork.timerCurr = temp_r3->unk1C;
+        infoWork.unk1C = temp_r3->unk1C;
+        infoWork.unk10 = temp_r3->unk24;
+        infoWork.goalEntered = temp_r3->unk1E;
+        infoWork.unkE = temp_r3->unk20;
+    }
+    if (temp_r3->unk0.flags & 8)
+        infoWork.flags |= 0x40;
+    playerCharacterSelection[0] = temp_r3->unk0.unk5;
+    modeCtrl.difficulty = temp_r3->unk0.difficulty;
+    modeCtrl.courseFlags &= ~0x18;
+    if (temp_r3->unk0.flags & 0x20)
+        modeCtrl.courseFlags |= 8;
+    if (temp_r3->unk0.flags & 0x40)
+        modeCtrl.courseFlags |= 0x10;
+}
+
+float func_8004B81C(void);
+
+float func_8004964C(int arg0)
+{
+    struct Struct8020AE40 *temp_r4;
+
+    if (arg0 == 11)
+        return func_8004B81C();
+    temp_r4 = &lbl_8020AE40[arg0];
+    return ((int)temp_r4->unk36 != 0) ? temp_r4->unk36 - 1 : 0;
+}
+
+void func_8004B850(float, struct Struct800496BC *);
+
+void func_800496BC(int arg0, struct Struct800496BC *arg1, float arg2)
+{
+    float temp_f30;
+    float temp_f31;
+    float var_f1;
+    int temp_r3;
+    int temp_r5;
+    s32 var_r3;
+    s32 var_r3_2;
+    s32 var_r6;
+    struct Ball *temp_r6;
+    struct Struct8020AE40 *temp_r31;
+    struct Struct800496BC sp64;
+    struct Struct800496BC sp44;
+    struct Struct800496BC sp24;
+    Point3d sp18;
+    u8 unused[4];
+
+    temp_r6 = currentBallStructPtr;
+    if (arg0 == 11)
+    {
+        func_8004B850(arg2, arg1);
+        return;
+    }
+    temp_r31 = &lbl_8020AE40[arg0];
+    if ((s16)(int)temp_r31->unk36 == 0)
+    {
+        arg1->unk0 = temp_r6->pos;
+        arg1->unkC = temp_r6->unk28;
+        arg1->unkE = temp_r6->unk2A;
+        arg1->unk10 = temp_r6->unk2C;
+        return;
+    }
+    if (arg2 < 0.0)
+    {
+        var_r3 = temp_r31->unk34 - 1;
+        if (var_r3 < 0)
+            var_r3 += 720;
+        *arg1 = temp_r31->unk38[var_r3];
+        return;
+    }
+    if (arg0 == 11)
+        var_f1 = func_8004B81C();
+    else
+        var_f1 = ((s16)temp_r31->unk36 != 0) ? temp_r31->unk36 - 1 : 0;
+    if (var_f1 <= arg2)
+    {
+        int var_r4 = temp_r31->unk34 - temp_r31->unk36;
+        while (var_r4 < 0)
+            var_r4 += 720;
+        *arg1 = temp_r31->unk38[var_r4];
+        return;
+    }
+
+    temp_r5 = arg2;
+
+    temp_f31 = arg2 - temp_r5;
+    temp_f30 = 1.0 - temp_f31;
+
+    var_r3_2 = temp_r31->unk34 - 1 - temp_r5;
+    if (var_r3_2 < 0)
+        var_r3_2 += 720;
+    var_r6 = var_r3_2 - 1;
+    if (var_r6 < 0)
+        var_r6 += 720;
+
+    sp64 = temp_r31->unk38[var_r3_2];
+    sp44 = temp_r31->unk38[var_r6];
+
+    sp24.unk0.x = (sp64.unk0.x * temp_f30) + (sp44.unk0.x * temp_f31);
+    sp24.unk0.y = (sp64.unk0.y * temp_f30) + (sp44.unk0.y * temp_f31);
+    sp24.unk0.z = (sp64.unk0.z * temp_f30) + (sp44.unk0.z * temp_f31);
+
+    sp24.unkC = sp64.unkC * temp_f30 + sp44.unkC * temp_f31;
+    sp24.unkE = sp64.unkE * temp_f30 + sp44.unkE * temp_f31;
+    sp24.unk10 = sp64.unk10 * temp_f30 + sp44.unk10 * temp_f31;
+
+    sp18.x = sp64.unk12 * temp_f30 + sp44.unk12 * temp_f31;
+    sp18.y = sp64.unk14 * temp_f30 + sp44.unk14 * temp_f31;
+    sp18.z = sp64.unk16 * temp_f30 + sp44.unk16 * temp_f31;
+    mathutil_vec_set_len(&sp18, &sp18, 32767.0f);
+
+    sp24.unk12 = sp18.x;
+    sp24.unk14 = sp18.y;
+    sp24.unk16 = sp18.z;
+    sp24.unk18 = sp64.unk18;
+    sp24.unk1C = sp64.unk1C * temp_f30 + sp44.unk1C * temp_f31;
+    *arg1 = sp24;
+}
+
+void func_80049C1C(int arg0, struct Struct8020AE40_sub2 *arg1, float arg2)
+{
+    struct Struct8020AE40_sub2 sp20;
+    struct Struct8020AE40_sub2 sp1C;
+    struct Struct8020AE40_sub2 sp18;
+    float temp_f5;
+    float temp_f6;
+    float var_f1;
+    int temp_r5;
+    s32 var_r3;
+    s32 var_r3_2;
+    s32 var_r5;
+    struct Struct8020AE40 *temp_r31;
+    struct World *temp_r6;
+    u8 unused[4];
+
+    temp_r6 = currentWorldStructPtr;
+    if (arg0 == 11)
+    {
+        func_8004BFCC(arg2, arg1);
+        return;
+    }
+    temp_r31 = &lbl_8020AE40[arg0];
+    if ((s16)(int)temp_r31->unk36 == 0)
+    {
+        arg1->unk0 = (s16) temp_r6->xrot;
+        arg1->unk2 = (s16) temp_r6->zrot;
+        return;
+    }
+    if (arg2 < 0.0)
+    {
+        var_r3 = temp_r31->unk34 - 1;
+        if (var_r3 < 0)
+            var_r3 += 720;
+        *arg1 = temp_r31->unk5A38[var_r3];
+        return;
+    }
+    if (arg0 == 11)
+        var_f1 = func_8004B81C();
+    else
+        var_f1 = ((s16)temp_r31->unk36 != 0) ? temp_r31->unk36 - 1 : 0;
+    if (var_f1 <= arg2)
+    {
+        int var_r4 = temp_r31->unk34 - temp_r31->unk36;
+        while (var_r4 < 0)
+            var_r4 += 720;
+        *arg1 = temp_r31->unk5A38[var_r4];
+        return;
+    }
+    temp_r5 = arg2;
+
+    temp_f5 = arg2 - temp_r5;
+    temp_f6 = 1.0 - temp_f5;
+
+    var_r3_2 = temp_r31->unk34 - 1 - temp_r5;
+    if (var_r3_2 < 0)
+        var_r3_2 += 720;
+    var_r5 = var_r3_2 - 1;
+    if (var_r5 < 0)
+        var_r5 += 720;
+
+    sp20 = temp_r31->unk5A38[var_r3_2];
+    sp1C = temp_r31->unk5A38[var_r5];
+
+    sp18.unk0 = sp20.unk0 * temp_f6 + sp1C.unk0 * temp_f5;
+    sp18.unk2 = sp20.unk2 * temp_f6 + sp1C.unk2 * temp_f5;
+    *arg1 = sp18;
+}
+
+float func_8004C1D8(void);
+
+float func_80049E7C(int arg0, float arg1)
+{
+    float var_f1;
+    struct Struct8020AE40 *temp_r6;
+
+    if (arg0 == 11)
+        return func_8004C1D8();
+    temp_r6 = &lbl_8020AE40[arg0];
+    var_f1 = arg1 + (float)(temp_r6->unk18 - temp_r6->unk1A);
+    if (temp_r6->unk0.flags & 1)
+    {
+        if (var_f1 < (f32) temp_r6->unk1C)
+            var_f1 = (f32) temp_r6->unk1C;
+    }
+    return var_f1;
+}
+
+void u_get_replay_info(int arg0, struct ReplayInfo *arg1)
+{
+    struct Struct8020AE40 *temp_r5;
+
+    if (arg0 == 11)
+    {
+        func_8004C28C(arg1);
+        return;
+    }
+    temp_r5 = &lbl_8020AE40[arg0];
+    *arg1 = temp_r5->unk0;
+}
+
+float func_8004C254(void);
+
+float func_80049F90(float arg0, int arg1)
+{
+    struct Struct8020AE40 *temp_r5;
+
+    if (arg1 == 11)
+        return func_8004C254();
+    temp_r5 = &lbl_8020AE40[arg1];
+    return temp_r5->unk30 - arg0;
+}
+
+extern struct
+{
+    u32 unk0;
+    u32 unk4;
+} lbl_802F1F78;
+
+#pragma force_active on
+void func_80049FF0(void)
+{
+    if (gamePauseStatus & 0xA)
+        return;
+
+    func_8002FFEC();
+    gameSubmodeRequest = SMD_TEST_REPLAY_MAIN;
+    event_finish_all();
+    func_80044920();
+    load_stage(loadingStageIdRequest);
+    event_start(EVENT_STAGE);
+    event_start(EVENT_WORLD);
+    event_start(EVENT_BALL);
+    event_start(EVENT_STOBJ);
+    event_start(EVENT_INFO);
+    event_start(EVENT_ITEM);
+    event_start(EVENT_OBJ_COLLISION);
+    event_start(EVENT_CAMERA);
+    event_start(EVENT_SPRITE);
+    event_start(EVENT_SOUND);
+    event_start(EVENT_EFFECT);
+    event_start(EVENT_REND_EFC);
+    event_start(EVENT_BACKGROUND);
+    lbl_80250A68.unk14 = 0;
+    lbl_802F1F78.unk0 = lbl_80250A68.unk0[lbl_80250A68.unk14];
+    lbl_802F1F78.unk4 = 0;
+}
+#pragma force_active reset
