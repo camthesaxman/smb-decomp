@@ -126,7 +126,7 @@ SOURCES := \
 	asm/window.s \
 	src/nl2ngc.c \
 	src/motload.c \
-	src/motload_2.c \
+	src/mot_joint.c \
 	src/motload_3.c \
 	src/motload_4.c \
 	src/ball.c \
