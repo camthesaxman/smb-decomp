@@ -3479,7 +3479,7 @@ func_8004B81C:
 /* 8004B844 00047764  38 21 00 10 */	addi r1, r1, 0x10
 /* 8004B848 00047768  EC 20 08 28 */	fsubs f1, f0, f1
 /* 8004B84C 0004776C  4E 80 00 20 */	blr
-.endif
+
 .global func_8004B850
 func_8004B850:
 /* 8004B850 00047770  7C 08 02 A6 */	mflr r0
@@ -4191,7 +4191,7 @@ glabel func_8004C2C8
 /* 8004C2CC 000481EC  38 63 0B 80 */	addi r3, r3, lbl_80250B80@l
 /* 8004C2D0 000481F0  A8 63 00 1C */	lha r3, 0x1c(r3)
 /* 8004C2D4 000481F4  4E 80 00 20 */	blr
-
+.endif
 .global func_8004C2D8
 func_8004C2D8:
 /* 8004C2D8 000481F8  7C 08 02 A6 */	mflr r0
@@ -4992,7 +4992,7 @@ lbl_802F3898:
 	# ROM: 0x1ED2B8
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
+
 .global lbl_802F38A0
 lbl_802F38A0:
 	# ROM: 0x1ED2C0
@@ -5014,7 +5014,7 @@ lbl_802F38B0:
 lbl_802F38B4:
 	# ROM: 0x1ED2D4
 	.4byte 0x3C010204
-
+.endif
 .global lbl_802F38B8
 lbl_802F38B8:
 	# ROM: 0x1ED2D8

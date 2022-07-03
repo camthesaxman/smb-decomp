@@ -27,10 +27,8 @@ struct Struct8020AE40
     s32 unk30;
     s16 unk34;
     s16 unk36;
-    struct Struct800496BC unk38[1];
-    u8 filler58[0x5A38-0x58];
-    struct Struct8020AE40_sub2 unk5A38[1];
-    u8 filler5A3C[0x6578-0x5A3C];
+    struct Struct800496BC unk38[720];
+    struct Struct8020AE40_sub2 unk5A38[720];
 };  // size = 0x6578
 
 struct Struct8020AE20
@@ -65,14 +63,7 @@ void func_8004AC68(struct Struct8020AE40 *);
 void func_8004ACF0(struct Struct8020AE40 *);
 int func_8004AD78(struct Struct8020AE40 *);
 float func_8004ADC0(struct Struct8020AE40 *);
-void func_8004AFC0(void);
-void func_8004AFD0(void);
-void func_8004AFD4(void);
-void func_8004AFD8(void);
-float func_8004B81C(void);
-void func_8004B850(float, struct Struct800496BC *);
-float func_8004C1D8(void);
-float func_8004C254(float);
+int func_8004AFB8(struct Struct8020AE40 *);
 
 void func_800487B4(void)
 {
@@ -772,13 +763,13 @@ float func_80049E7C(int arg0, float arg1)
     struct Struct8020AE40 *temp_r6;
 
     if (arg0 == 11)
-        return func_8004C1D8();
+        return func_8004C1D8(arg1);
     temp_r6 = &lbl_8020AE40[arg0];
     var_f1 = arg1 + (float)(temp_r6->unk18 - temp_r6->unk1A);
     if (temp_r6->unk0.flags & 1)
     {
-        if (var_f1 < (f32) temp_r6->unk1C)
-            var_f1 = (f32) temp_r6->unk1C;
+        if (var_f1 < temp_r6->unk1C)
+            var_f1 = temp_r6->unk1C;
     }
     return var_f1;
 }
@@ -1205,7 +1196,7 @@ int func_8004AEA0(void)
     return var_r3;
 }
 
-int func_8004AFB8(void)
+int func_8004AFB8(struct Struct8020AE40 *unused)
 {
     return 1;
 }
