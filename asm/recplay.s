@@ -2311,7 +2311,7 @@ lbl_8004A7EC:
 /* 8004A7F4 00046714  38 21 00 50 */	addi r1, r1, 0x50
 /* 8004A7F8 00046718  7C 08 03 A6 */	mtlr r0
 /* 8004A7FC 0004671C  4E 80 00 20 */	blr
-.endif
+
 glabel func_8004A800
 /* 8004A800 00046720  7C 08 02 A6 */	mflr r0
 /* 8004A804 00046724  90 01 00 04 */	stw r0, 4(r1)
@@ -2880,7 +2880,8 @@ func_8004AFD0:
 .global func_8004AFD4
 func_8004AFD4:
 /* 8004AFD4 00046EF4  4E 80 00 20 */	blr
-
+.endif
+.if 0
 .global func_8004AFD8
 func_8004AFD8:
 /* 8004AFD8 00046EF8  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -3478,7 +3479,7 @@ func_8004B81C:
 /* 8004B844 00047764  38 21 00 10 */	addi r1, r1, 0x10
 /* 8004B848 00047768  EC 20 08 28 */	fsubs f1, f0, f1
 /* 8004B84C 0004776C  4E 80 00 20 */	blr
-
+.endif
 .global func_8004B850
 func_8004B850:
 /* 8004B850 00047770  7C 08 02 A6 */	mflr r0
@@ -4898,8 +4899,6 @@ lbl_802F3820:
 lbl_802F3828:
 	# ROM: 0x1ED248
 	.4byte 0
-.endif
-asdf:
 	.4byte 0
 
 .global lbl_802F3830
@@ -4993,7 +4992,7 @@ lbl_802F3898:
 	# ROM: 0x1ED2B8
 	.4byte 0x43300000
 	.4byte 0x80000000
-
+.endif
 .global lbl_802F38A0
 lbl_802F38A0:
 	# ROM: 0x1ED2C0
@@ -6460,7 +6459,6 @@ lbl_8020AE40:
 .global lbl_80250A68
 lbl_80250A68:
 	.skip 0x18
-.endif
 .global lbl_80250A80
 lbl_80250A80:
 	.skip 0x20
@@ -6473,9 +6471,12 @@ lbl_80250B58:
 .global lbl_80250B70
 lbl_80250B70:
 	.skip 0x10
+
 .global lbl_80250B80
 lbl_80250B80:
 	.skip 0x16848
+.endif
+	.balign 8
 .global lbl_802673C8
 lbl_802673C8:
 	.skip 0x15800

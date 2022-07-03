@@ -56,9 +56,18 @@ extern struct
     u32 unk4;
 } lbl_802F1F78;
 
+void func_8004A820(void);
+void func_8004A874(void);
 void func_8004AA18(void);
 float func_8004ABD8(void);
+void func_8004ABE4(void);
+void func_8004AC68(struct Struct8020AE40 *);
+void func_8004ACF0(struct Struct8020AE40 *);
+int func_8004AD78(struct Struct8020AE40 *);
 float func_8004ADC0(struct Struct8020AE40 *);
+void func_8004AFC0(void);
+void func_8004AFD0(void);
+void func_8004AFD4(void);
 void func_8004AFD8(void);
 float func_8004B81C(void);
 void func_8004B850(float, struct Struct800496BC *);
@@ -1000,4 +1009,203 @@ void func_8004A0C8(void)
         break;
     }
 }
+
+void func_8004A800(void)
+{
+    draw_normal_game_scene();
+}
 #pragma force_active reset
+
+struct
+{
+    float unk0;
+    Vec unk4;
+    Vec unk10;
+    s32 unk1C;
+} lbl_80250A80;  // 0x45C60
+
+void func_8004A820(void)
+{
+    lbl_80250A80.unk0 = 0.0f;
+    lbl_80250A80.unk4 = currentBallStructPtr->pos;
+    lbl_80250A80.unk10 = currentBallStructPtr->vel;
+    lbl_80250A80.unk1C = 0;
+}
+
+void func_8004A874(void)
+{
+    float temp_f7;
+    float f1;
+    float var_f0;
+    struct Struct8020AE40 *temp_r9_2;
+
+    temp_r9_2 = &lbl_8020AE40[lbl_8020AE20[0].unk0];
+    temp_f7 = (float)lbl_80250A80.unk1C / (float)temp_r9_2->unk1A;
+    f1 = temp_r9_2->unk1A + 1;
+    var_f0 = lbl_80250A80.unk0;
+    var_f0 *= 1.0 / f1;
+    if (temp_r9_2->unk0.flags & 1)
+    {
+        var_f0 *= 2.0;
+        var_f0 *= 1.0 + (float)(temp_r9_2->unk18 - temp_r9_2->unk1C) / (float)temp_r9_2->unk18;
+        if (temp_r9_2->unk0.flags & 0x10)
+            var_f0 *= 1.0 + (temp_r9_2->unk1A - 360.0) / 720.0;
+        var_f0 *= 1.0 + 0.5 * (1.0 - temp_f7);
+        var_f0 *= 1.0 + 0.25 * (0.02 * temp_r9_2->unk0.floorNum);
+    }
+    if (temp_r9_2->unk0.flags & 2)
+    {
+        var_f0 *= 0.25;
+        var_f0 *= temp_f7;
+    }
+    if (temp_r9_2->unk0.flags & 4)
+        var_f0 *= 0.1;
+    lbl_80250A80.unk0 = var_f0;
+}
+
+#ifdef NONMATCHING
+void func_8004AA18(void)
+{
+    Vec sp2C;
+    Vec sp20;
+    Vec sp14;
+    Vec sp8;
+    float f1;
+    float var_f31 = 0.0f;
+    float temp_f30;
+    float temp_f1_3;
+    struct Ball *ball;
+
+    ball = currentBallStructPtr;
+    sp2C = ball->pos;
+    sp20.x = ball->pos.x - lbl_80250A80.unk4.x;
+    sp20.y = ball->pos.y - lbl_80250A80.unk4.y;
+    sp20.z = ball->pos.z - lbl_80250A80.unk4.z;
+    sp14 = sp20;
+    temp_f30 = mathutil_vec_len(&sp14);
+    sp8 = lbl_80250A80.unk10;
+    f1 = mathutil_vec_len(&sp8);
+    var_f31 += 2.0 * (temp_f30 - f1);
+    temp_f1_3 = sp14.x * sp8.x + sp14.y * sp8.y + sp14.z * sp8.z;
+    !temp_f1_3;
+    if (temp_f1_3 > 1.1920929e-7f)
+        var_f31 += mathutil_sqrt(temp_f1_3) * 1.0;
+    if (ball->flags & 1)
+        lbl_80250A80.unk1C++;
+    lbl_80250A80.unk0 += var_f31;
+    lbl_80250A80.unk4 = sp2C;
+    lbl_80250A80.unk10 = sp20;
+}
+#else
+asm void func_8004AA18(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/func_8004AA18.s"
+}
+#pragma peephole on
+#endif
+
+float func_8004ABD8(void)
+{
+    return lbl_80250A80.unk0;
+}
+
+s8 lbl_80250AA0[3][61];
+s8 lbl_80250B58[3][7];
+
+void func_8004ABE4(void)
+{
+    s32 var_r31;
+    struct Struct8020AE40 *var_r30;
+
+    memset(lbl_80250AA0, 0, sizeof(lbl_80250AA0));
+    memset(&lbl_80250B58, 0, sizeof(lbl_80250B58));
+
+    var_r30 = lbl_8020AE40;
+    for (var_r31 = 11; var_r31 > 0; var_r31--, var_r30++)
+    {
+        if (var_r30->unk0.floorNum != 0)
+            func_8004AC68(var_r30);
+    }
+}
+
+void func_8004AC68(struct Struct8020AE40 *arg0)
+{
+    s8 *temp_r6 = lbl_80250AA0[arg0->unk0.difficulty];
+    int var_r8 = arg0->unk0.floorNum - 1;
+
+    if (arg0->unk0.flags & 0x40)
+        var_r8 += 60;
+    else if (arg0->unk0.flags & 0x20)
+        var_r8 += 50;
+    temp_r6[var_r8]++;
+    lbl_80250B58[arg0->unk0.difficulty][var_r8 / 10]++;
+}
+
+void func_8004ACF0(struct Struct8020AE40 *arg0)
+{
+    s8 *temp_r6 = lbl_80250AA0[arg0->unk0.difficulty];
+    int var_r8 = arg0->unk0.floorNum - 1;
+
+    if (arg0->unk0.flags & 0x40)
+        var_r8 += 60;
+    else if (arg0->unk0.flags & 0x20)
+        var_r8 += 50;
+    temp_r6[var_r8]--;
+    lbl_80250B58[arg0->unk0.difficulty][var_r8 / 10]--;
+}
+
+int func_8004AD78(struct Struct8020AE40 *arg0)
+{
+    s8 *temp_r6 = lbl_80250AA0[arg0->unk0.difficulty];
+    int var_r8 = arg0->unk0.floorNum - 1;
+
+    if (arg0->unk0.flags & 0x40)
+        var_r8 += 60;
+    else if (arg0->unk0.flags & 0x20)
+        var_r8 += 50;
+    return temp_r6[var_r8];
+}
+
+float func_8004ADC0(struct Struct8020AE40 *arg0)
+{
+    s8 *temp_r6 = lbl_80250AA0[arg0->unk0.difficulty];
+    s8 *ptr = lbl_80250B58[arg0->unk0.difficulty];
+    int var_r8 = arg0->unk0.floorNum - 1;
+    float f1;
+
+    if (arg0->unk0.flags & 0x40)
+        var_r8 += 60;
+    else if (arg0->unk0.flags & 0x20)
+        var_r8 += 50;
+    f1 = temp_r6[var_r8] + 0.2 * ptr[var_r8 / 10];
+    if (f1 > 0.0)
+        return 1.0 / f1;
+    else
+        return 1.0f;
+}
+
+int func_8004AEA0(void)
+{
+    struct Struct8020AE40 *temp_r4;
+    int i;
+    int var_r3 = -1;
+    float var_f1 = -1.0f;
+
+    temp_r4 = lbl_8020AE40;
+    for (i = 6; i > 0; i--, temp_r4++)
+    {
+        if ((temp_r4->unk0.flags & 1) && (temp_r4->unk0.flags & 0x10)
+         && temp_r4->unk0.unkC > var_f1)
+        {
+            var_r3 = 6 - i;
+            var_f1 = temp_r4->unk0.unkC;
+        }
+    }
+    return var_r3;
+}
+
+int func_8004AFB8(void)
+{
+    return 1;
+}
