@@ -16,6 +16,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "pool.h"
+#include "recplay.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
@@ -73,7 +74,7 @@ void ev_info_main(void)
     struct Ball *ballBackup;
     int r20;
     struct Ball *ball;
-    struct ReplayInfo spC8;
+    struct ReplayHeader spC8;
     struct PhysicsBall sp6C;
 
     if (gamePauseStatus & 0xA)
@@ -101,7 +102,7 @@ void ev_info_main(void)
         case GAMETYPE_MAIN_COMPETITION:
             if (ball->flags & BALL_FLAG_24)
             {
-                u_get_replay_info(lbl_80250A68.unk0[ball->playerId], &spC8);
+                get_replay_header(lbl_80250A68.unk0[ball->playerId], &spC8);
                 if (!(spC8.flags & 1))
                     continue;
             }
@@ -162,7 +163,7 @@ void ev_info_main(void)
                 break;
             if (ball->flags & BALL_FLAG_24)
             {
-                u_get_replay_info(lbl_80250A68.unk0[ball->playerId], &spC8);
+                get_replay_header(lbl_80250A68.unk0[ball->playerId], &spC8);
                 if (!(spC8.flags & 1))
                     break;
             }

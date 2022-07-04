@@ -17,6 +17,7 @@
 #include "mode.h"
 #include "pool.h"
 #include "ranking_screen.h"
+#include "recplay.h"
 #include "sprite.h"
 #include "textbox.h"
 

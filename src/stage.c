@@ -17,6 +17,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "preview.h"
+#include "recplay.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "light.h"

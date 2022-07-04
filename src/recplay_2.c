@@ -8,29 +8,32 @@
 #include "info.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "recplay.h"
 #include "world.h"
+
+#define MAX_REPLAY_FRAMES 3840
 
 static struct Struct80250B70
 {
     s16 unk0;
-    Vec unk4;
+    Vec ballPos;
 } lbl_80250B70;
 
 static struct
 {
-    struct ReplayInfo unk0;
+    struct ReplayHeader header;
     s16 unk18;
-    s16 unk1A;
+    s16 unk1A;  // framesCount
     s16 unk1C;
-    s16 unk1E;
+    s16 goalEntered;
     s16 unk20;
     s16 unk22;
     Vec unk24;
     u32 unk30;
-    u32 unk34;
+    u32 currFrameNum;
     Vec unk38;
-    u8 unk44[24][0xF00];
-} lbl_80250B80;
+    u8 data[24][MAX_REPLAY_FRAMES];
+} s_replayData;
 
 struct
 {
@@ -41,29 +44,27 @@ struct
 
 int lbl_802F1F80;
 
-void func_8004BC1C(int arg0, struct Struct800496BC *arg1);
-void func_8004C180(int arg0, struct Struct8020AE40_sub2 *arg1);
+void u_deserialize_some_replay_data(int arg0, struct ReplayBallFrame *arg1);
+void func_8004C180(int arg0, struct ReplayWorldFrame *arg1);
 
 void func_8004AFC0(void)
 {
     lbl_80250B70.unk0 = 0;
 }
 
-void func_8004AFD0(void) {}
+void dummy_8004AFD0(void) {}
 
-void func_8004AFD4(void) {}
+void dummy_8004AFD4(void) {}
 
-void func_8004AFD8(void)
+void u_serialize_some_replay_data(void)
 {
-    struct Ball *temp_r29 = &ballInfo[modeCtrl.currPlayer];
-    struct World *temp_r28 = &worldInfo[modeCtrl.currPlayer];
-    s32 x;
-    s32 y;
-    s32 z;
+    struct Ball *ball = &ballInfo[modeCtrl.currPlayer];
+    struct World *world = &worldInfo[modeCtrl.currPlayer];
+    s32 x, y, z;
     int var_r24_2;
     u32 temp;
     u32 temp_2;
-    int temp_r4;
+    u32 frameNum;
     int var;
 
     switch (lbl_80250B70.unk0)
@@ -74,93 +75,93 @@ void func_8004AFD8(void)
         return;
     }
 
-    temp_r4 = lbl_80250B80.unk34;
-    if (temp_r4 <= (u32)0xF00)
+    frameNum = s_replayData.currFrameNum;
+    if (frameNum <= MAX_REPLAY_FRAMES)
     {
-        x = 16383.5f * (temp_r29->pos.x - lbl_80250B70.unk4.x);
-        y = 16383.5f * (temp_r29->pos.y - lbl_80250B70.unk4.y);
-        z = 16383.5f * (temp_r29->pos.z - lbl_80250B70.unk4.z);
-        if (x < -0x7FFF)
-            x = -0x7FFF;
-        else if (x > 0x7FFF)
-            x = 0x7FFF;
-        if (y < -0x7FFF)
-            y = -0x7FFF;
-        else if (y > 0x7FFF)
-            y = 0x7FFF;
-        if (z < -0x7FFF)
-            z = -0x7FFF;
-        else if (z > 0x7FFF)
-            z = 0x7FFF;
+        x = 16383.5f * (ball->pos.x - lbl_80250B70.ballPos.x);
+        y = 16383.5f * (ball->pos.y - lbl_80250B70.ballPos.y);
+        z = 16383.5f * (ball->pos.z - lbl_80250B70.ballPos.z);
+        if (x < -32767)
+            x = -32767;
+        else if (x > 32767)
+            x = 32767;
+        if (y < -32767)
+            y = -32767;
+        else if (y > 32767)
+            y = 32767;
+        if (z < -32767)
+            z = -32767;
+        else if (z > 32767)
+            z = 32767;
 
-        lbl_80250B80.unk44[0][temp_r4] = x & 0xFF;
+        s_replayData.data[0][frameNum] = x & 0xFF;
         x >>= 8;
-        lbl_80250B80.unk44[1][temp_r4] = x & 0xFF;
+        s_replayData.data[1][frameNum] = x & 0xFF;
 
-        lbl_80250B80.unk44[2][temp_r4] = y & 0xFF;
+        s_replayData.data[2][frameNum] = y & 0xFF;
         y >>= 8;
-        lbl_80250B80.unk44[3][temp_r4] = y & 0xFF;
+        s_replayData.data[3][frameNum] = y & 0xFF;
 
-        lbl_80250B80.unk44[4][temp_r4] = z & 0xFF;
+        s_replayData.data[4][frameNum] = z & 0xFF;
         z >>= 8;
-        lbl_80250B80.unk44[5][temp_r4] = z & 0xFF;
+        s_replayData.data[5][frameNum] = z & 0xFF;
 
-        temp = (u16)temp_r29->unk28;
-        lbl_80250B80.unk44[6][temp_r4] = temp & 0xFF;
+        temp = (u16)ball->rotX;
+        s_replayData.data[6][frameNum] = temp & 0xFF;
         temp >>= 8;
-        lbl_80250B80.unk44[7][temp_r4] = (temp) & 0xFF;
+        s_replayData.data[7][frameNum] = temp & 0xFF;
 
-        temp = (u16)temp_r29->unk2A;
-        lbl_80250B80.unk44[8][temp_r4] = temp & 0xFF;
+        temp = (u16)ball->rotY;
+        s_replayData.data[8][frameNum] = temp & 0xFF;
         temp >>= 8;
-        lbl_80250B80.unk44[9][temp_r4] = (temp) & 0xFF;
+        s_replayData.data[9][frameNum] = temp & 0xFF;
 
-        temp = (u16)temp_r29->unk2C;
-        lbl_80250B80.unk44[10][temp_r4] = temp & 0xFF;
+        temp = (u16)ball->rotZ;
+        s_replayData.data[10][frameNum] = temp & 0xFF;
         temp >>= 8;
-        lbl_80250B80.unk44[11][temp_r4] = (temp) & 0xFF;
+        s_replayData.data[11][frameNum] = temp & 0xFF;
 
-        lbl_80250B80.unk44[12][temp_r4] = 127.0f * temp_r29->unk114.x;
-        lbl_80250B80.unk44[13][temp_r4] = 127.0f * temp_r29->unk114.y;
-        lbl_80250B80.unk44[14][temp_r4] = 127.0f * temp_r29->unk114.z;
+        s_replayData.data[12][frameNum] = 127.0f * ball->unk114.x;
+        s_replayData.data[13][frameNum] = 127.0f * ball->unk114.y;
+        s_replayData.data[14][frameNum] = 127.0f * ball->unk114.z;
 
-        var_r24_2 = (127.0f * temp_r29->unk130);
+        var_r24_2 = ball->unk130 * 127.0f;
         !var_r24_2;
-        if (var_r24_2 < -0x7F)
-            var_r24_2 = -0x7F;
-        else if (var_r24_2 > 0x7F)
-            var_r24_2 = 0x7F;
-        lbl_80250B80.unk44[15][temp_r4] = (s8)var_r24_2;
+        if (var_r24_2 < -127)
+            var_r24_2 = -127;
+        else if (var_r24_2 > 127)
+            var_r24_2 = 127;
+        s_replayData.data[15][frameNum] = (s8)var_r24_2;
 
-        temp_2 = temp_r29->flags;
-        lbl_80250B80.unk44[16][temp_r4] = temp_2;
+        temp_2 = ball->flags;
+        s_replayData.data[16][frameNum] = temp_2;
         temp_2 >>= 8;
-        lbl_80250B80.unk44[17][temp_r4] = temp_2;
+        s_replayData.data[17][frameNum] = temp_2;
         temp_2 >>= 8;
-        lbl_80250B80.unk44[18][temp_r4] = temp_2;
+        s_replayData.data[18][frameNum] = temp_2;
         temp_2 >>= 8;
-        lbl_80250B80.unk44[19][temp_r4] = temp_2;
+        s_replayData.data[19][frameNum] = temp_2;
 
-        temp_2 = (u16)temp_r28->xrot;
-        lbl_80250B80.unk44[20][temp_r4] = temp_2;
+        temp_2 = (u16)world->xrot;
+        s_replayData.data[20][frameNum] = temp_2;
         temp_2 >>= 8;
-        lbl_80250B80.unk44[21][temp_r4] = temp_2;
+        s_replayData.data[21][frameNum] = temp_2;
 
-        temp_2 = (u16)temp_r28->zrot;
-        lbl_80250B80.unk44[22][temp_r4] = temp_2;
+        temp_2 = (u16)world->zrot;
+        s_replayData.data[22][frameNum] = temp_2;
         temp_2 >>= 8;
-        lbl_80250B80.unk44[23][temp_r4] = temp_2;
+        s_replayData.data[23][frameNum] = temp_2;
 
-        var = ((lbl_80250B80.unk44[1][temp_r4] & 0xFF) << 8) | (lbl_80250B80.unk44[0][temp_r4] & 0xFF);
-        lbl_80250B70.unk4.x += (0.00006103702f * (s16)var);
-        var = ((lbl_80250B80.unk44[3][temp_r4] & 0xFF) << 8) | (lbl_80250B80.unk44[2][temp_r4] & 0xFF);
-        lbl_80250B70.unk4.y += (0.00006103702f * (s16)var);
-        var = ((lbl_80250B80.unk44[5][temp_r4] & 0xFF) << 8) | (lbl_80250B80.unk44[4][temp_r4] & 0xFF);
-        lbl_80250B70.unk4.z += (0.00006103702f * (s16)var);
+        var = (s_replayData.data[1][frameNum] << 8) | s_replayData.data[0][frameNum];
+        lbl_80250B70.ballPos.x += (0.00006103702f * (s16)var);
+        var = (s_replayData.data[3][frameNum] << 8) | s_replayData.data[2][frameNum];
+        lbl_80250B70.ballPos.y += (0.00006103702f * (s16)var);
+        var = (s_replayData.data[5][frameNum] << 8) | s_replayData.data[4][frameNum];
+        lbl_80250B70.ballPos.z += (0.00006103702f * (s16)var);
 
-        lbl_80250B80.unk1A++;
-        lbl_80250B80.unk22 = lbl_80206DEC.unk0;
-        lbl_80250B80.unk34 = temp_r4 + 1;
+        s_replayData.unk1A++;
+        s_replayData.unk22 = lbl_80206DEC.unk0;
+        s_replayData.currFrameNum = frameNum + 1;
     }
 }
 
@@ -171,51 +172,51 @@ void func_8004B334(void)
 
 void func_8004B354(void)
 {
-    struct Ball *temp_r29;
+    struct Ball *ball;
     int practice;
 
     practice = modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE;
-    temp_r29 = &ballInfo[modeCtrl.currPlayer];
+    ball = &ballInfo[modeCtrl.currPlayer];
 
-    lbl_80250B70.unk4 = temp_r29->pos;
-    memset(&lbl_80250B80, 0, sizeof(lbl_80250B80));
-    lbl_80250B80.unk38 = temp_r29->pos;
-    lbl_80250B80.unk30 = 0;
-    lbl_80250B80.unk34 = 0;
-    lbl_80250B80.unk18 = infoWork.timerCurr;
-    lbl_80250B80.unk1A = 0;
-    lbl_80250B80.unk0.flags = 0;
-    lbl_80250B80.unk0.stageId = currStageId;
+    lbl_80250B70.ballPos = ball->pos;
+    memset(&s_replayData, 0, sizeof(s_replayData));
+    s_replayData.unk38 = ball->pos;
+    s_replayData.unk30 = 0;
+    s_replayData.currFrameNum = 0;
+    s_replayData.unk18 = infoWork.timerCurr;
+    s_replayData.unk1A = 0;
+    s_replayData.header.flags = 0;
+    s_replayData.header.stageId = currStageId;
     if (!practice)
     {
-        lbl_80250B80.unk0.difficulty = modeCtrl.difficulty;
-        lbl_80250B80.unk0.floorNum = infoWork.currFloor;
+        s_replayData.header.difficulty = modeCtrl.difficulty;
+        s_replayData.header.floorNum = infoWork.currFloor;
     }
     else
     {
-        lbl_80250B80.unk0.difficulty = lbl_8027CE24[0].unk2;
-        lbl_80250B80.unk0.floorNum = lbl_8027CE24[0].unk0;
+        s_replayData.header.difficulty = lbl_8027CE24[0].unk2;
+        s_replayData.header.floorNum = lbl_8027CE24[0].unk0;
     }
-    lbl_80250B80.unk0.unk5 = playerCharacterSelection[temp_r29->playerId];
-    lbl_80250B80.unk0.unk6[0] = 0;
-    lbl_80250B80.unk22 = lbl_80206DEC.unk0;
-    if (infoWork.flags & 0x40)
-        lbl_80250B80.unk0.flags |= 8;
+    s_replayData.header.character = playerCharacterSelection[ball->playerId];
+    s_replayData.header.playerName[0] = 0;
+    s_replayData.unk22 = lbl_80206DEC.unk0;
+    if (infoWork.flags & INFO_FLAG_BONUS_STAGE)
+        s_replayData.header.flags |= REPLAY_FLAG_BONUS_STAGE;
     if (!practice)
     {
-        if (modeCtrl.courseFlags & 8)
-            lbl_80250B80.unk0.flags |= 0x20;
-        if (modeCtrl.courseFlags & 0x10)
-            lbl_80250B80.unk0.flags |= 0x40;
+        if (modeCtrl.courseFlags & COURSE_FLAG_EXTRA)
+            s_replayData.header.flags |= REPLAY_FLAG_EXTRA;
+        if (modeCtrl.courseFlags & COURSE_FLAG_MASTER)
+            s_replayData.header.flags |= REPLAY_FLAG_MASTER;
     }
     else
     {
-        if (lbl_8027CE24[0].unk4 & 8)
-            lbl_80250B80.unk0.flags |= 0x20;
-        if (lbl_8027CE24[0].unk4 & 0x10)
-            lbl_80250B80.unk0.flags |= 0x40;
+        if (lbl_8027CE24[0].unk4 & COURSE_FLAG_EXTRA)
+            s_replayData.header.flags |= REPLAY_FLAG_EXTRA;
+        if (lbl_8027CE24[0].unk4 & COURSE_FLAG_MASTER)
+            s_replayData.header.flags |= REPLAY_FLAG_MASTER;
     }
-    lbl_80250B80.unk0.unk10 = -1;
+    s_replayData.header.unk10 = -1;
     lbl_80250B70.unk0 = 1;
 }
 
@@ -228,11 +229,11 @@ void func_8004B550(void)
 {
     if (lbl_80250B70.unk0 == 1)
     {
-        lbl_80250B80.unk0.flags |= 1;
-        lbl_80250B80.unk1C = infoWork.unk1C;
-        lbl_80250B80.unk24 = infoWork.unk10;
-        lbl_80250B80.unk1E = infoWork.goalEntered;
-        lbl_80250B80.unk20 = infoWork.unkE;
+        s_replayData.header.flags |= REPLAY_FLAG_WIN;
+        s_replayData.unk1C = infoWork.unk1C;
+        s_replayData.unk24 = infoWork.unk10;
+        s_replayData.goalEntered = infoWork.goalEntered;
+        s_replayData.unk20 = infoWork.unkE;
     }
 }
 
@@ -240,9 +241,9 @@ void func_8004B5AC(void)
 {
     if (lbl_80250B70.unk0 == 1)
     {
-        lbl_80250B80.unk0.flags |= 2;
-        lbl_80250B80.unk0.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
-        lbl_80250B80.unk1C = infoWork.timerCurr;
+        s_replayData.header.flags |= REPLAY_FLAG_FALLOUT;
+        s_replayData.header.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
+        s_replayData.unk1C = infoWork.timerCurr;
     }
 }
 
@@ -250,102 +251,102 @@ void func_8004B60C(void)
 {
     if (lbl_80250B70.unk0 == 1)
     {
-        lbl_80250B80.unk0.flags |= 4;
-        lbl_80250B80.unk0.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
+        s_replayData.header.flags |= REPLAY_FLAG_TIME_OVER;
+        s_replayData.header.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
     }
 }
 
 void func_8004B65C(void)
 {
-    lbl_80250B80.unk0.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
+    s_replayData.header.unk10 = ballInfo[modeCtrl.currPlayer].unk7C - lbl_802F1F80;
 }
 
 void func_8004B694(void)
 {
     if (lbl_80250B70.unk0 == 1)
     {
-        lbl_80250B80.unk0.flags |= 0x80;
-        lbl_80250B80.unk1C = infoWork.timerCurr;
+        s_replayData.header.flags |= 0x80;
+        s_replayData.unk1C = infoWork.timerCurr;
     }
 }
 
-void func_8004B6C8(char *arg0)
+void set_replay_player_name(char *name)
 {
-    strncpy(lbl_80250B80.unk0.unk6, arg0, sizeof(lbl_80250B80.unk0.unk6));
-    lbl_80250B80.unk0.unk6[3] = 0;
+    strncpy(s_replayData.header.playerName, name, sizeof(s_replayData.header.playerName));
+    s_replayData.header.playerName[3] = 0;
 }
 
 void func_8004B70C(void)
 {
-    infoWork.timerMax = lbl_80250B80.unk18;
-    infoWork.timerCurr = lbl_80250B80.unk18;
+    infoWork.timerMax = s_replayData.unk18;
+    infoWork.timerCurr = s_replayData.unk18;
     infoWork.flags &= ~0x667;
-    infoWork.currFloor = lbl_80250B80.unk0.floorNum;
-    if (lbl_80250B80.unk0.flags & 1)
+    infoWork.currFloor = s_replayData.header.floorNum;
+    if (s_replayData.header.flags & REPLAY_FLAG_WIN)
     {
-        infoWork.flags |= 0x28;
-        infoWork.timerCurr = lbl_80250B80.unk1C;
-        infoWork.unk1C = lbl_80250B80.unk1C;
-        infoWork.unk10 = lbl_80250B80.unk24;
-        infoWork.goalEntered = lbl_80250B80.unk1E;
-        infoWork.unkE = lbl_80250B80.unk20;
+        infoWork.flags |= INFO_FLAG_TIMER_PAUSED|INFO_FLAG_05;
+        infoWork.timerCurr = s_replayData.unk1C;
+        infoWork.unk1C = s_replayData.unk1C;
+        infoWork.unk10 = s_replayData.unk24;
+        infoWork.goalEntered = s_replayData.goalEntered;
+        infoWork.unkE = s_replayData.unk20;
     }
-    if (lbl_80250B80.unk0.flags & 8)
-        infoWork.flags |= 0x40;
-    playerCharacterSelection[lbl_80250A68.unk14] = lbl_80250B80.unk0.unk5;
-    modeCtrl.difficulty = lbl_80250B80.unk0.difficulty;
-    modeCtrl.courseFlags &= 0xFFFFFFE7;
-    if (lbl_80250B80.unk0.flags & 0x20)
-        modeCtrl.courseFlags |= 8;
-    if (lbl_80250B80.unk0.flags & 0x40)
-        modeCtrl.courseFlags |= 0x10;
+    if (s_replayData.header.flags & REPLAY_FLAG_BONUS_STAGE)
+        infoWork.flags |= INFO_FLAG_BONUS_STAGE;
+    playerCharacterSelection[lbl_80250A68.unk14] = s_replayData.header.character;
+    modeCtrl.difficulty = s_replayData.header.difficulty;
+    modeCtrl.courseFlags &= ~(COURSE_FLAG_EXTRA|COURSE_FLAG_MASTER);
+    if (s_replayData.header.flags & REPLAY_FLAG_EXTRA)
+        modeCtrl.courseFlags |= COURSE_FLAG_EXTRA;
+    if (s_replayData.header.flags & REPLAY_FLAG_MASTER)
+        modeCtrl.courseFlags |= COURSE_FLAG_MASTER;
 }
 
 float func_8004B81C(void)
 {
-    return lbl_80250B80.unk1A;
+    return s_replayData.unk1A;
 }
 
-void func_8004B850(float arg0, struct Struct800496BC *arg1)
+void func_8004B850(float arg0, struct ReplayBallFrame *arg1)
 {
-    struct Struct800496BC sp64;
-    struct Struct800496BC sp44;
-    struct Struct800496BC sp24;
+    struct ReplayBallFrame sp64;
+    struct ReplayBallFrame sp44;
+    struct ReplayBallFrame sp24;
     Vec sp18;
     float temp_f2;
     float temp_f31;
     float temp_f30;
     int temp_r29;
-    struct Ball *temp_r5;
+    struct Ball *ball;
     u8 unused[4];
 
-    temp_r5 = currentBallStructPtr;
-    if (lbl_80250B80.unk1A == 0)
+    ball = currentBallStructPtr;
+    if (s_replayData.unk1A == 0)
     {
-        arg1->unk0 = temp_r5->pos;
-        arg1->unkC = temp_r5->unk28;
-        arg1->unkE = temp_r5->unk2A;
-        arg1->unk10 = temp_r5->unk2C;
+        arg1->pos = ball->pos;
+        arg1->rotX = ball->rotX;
+        arg1->rotY = ball->rotY;
+        arg1->rotZ = ball->rotZ;
         return;
     }
     if (arg0 < 0.0f)
         arg0 = 0.0f;
-    else if (lbl_80250B80.unk1A <= arg0)
-        arg0 = lbl_80250B80.unk1A;
+    else if (s_replayData.unk1A <= arg0)
+        arg0 = s_replayData.unk1A;
 
     temp_r29 = arg0;
     temp_f2 = temp_r29;
     temp_f31 = arg0 - temp_f2;
     temp_f30 = 1.0 - temp_f31;
-    func_8004BC1C(temp_r29, &sp64);
-    func_8004BC1C(temp_r29 + 1, &sp44);
+    u_deserialize_some_replay_data(temp_r29, &sp64);
+    u_deserialize_some_replay_data(temp_r29 + 1, &sp44);
 
-    sp24.unk0.x = (sp64.unk0.x * temp_f30) + (sp44.unk0.x * temp_f31);
-    sp24.unk0.y = (sp64.unk0.y * temp_f30) + (sp44.unk0.y * temp_f31);
-    sp24.unk0.z = (sp64.unk0.z * temp_f30) + (sp44.unk0.z * temp_f31);
-    sp24.unkC  = (sp64.unkC * temp_f30) + (sp44.unkC * temp_f31);
-    sp24.unkE  = (sp64.unkE * temp_f30) + (sp44.unkE * temp_f31);
-    sp24.unk10 = (sp64.unk10 * temp_f30) + (sp44.unk10 * temp_f31);
+    sp24.pos.x = (sp64.pos.x * temp_f30) + (sp44.pos.x * temp_f31);
+    sp24.pos.y = (sp64.pos.y * temp_f30) + (sp44.pos.y * temp_f31);
+    sp24.pos.z = (sp64.pos.z * temp_f30) + (sp44.pos.z * temp_f31);
+    sp24.rotX = (sp64.rotX * temp_f30) + (sp44.rotX * temp_f31);
+    sp24.rotY = (sp64.rotY * temp_f30) + (sp44.rotY * temp_f31);
+    sp24.rotZ = (sp64.rotZ * temp_f30) + (sp44.rotZ * temp_f31);
     sp18.x = (sp64.unk12 * temp_f30) + (sp44.unk12 * temp_f31);
     sp18.y = (sp64.unk14 * temp_f30) + (sp44.unk14 * temp_f31);
     sp18.z = (sp64.unk16 * temp_f30) + (sp44.unk16 * temp_f31);
@@ -358,9 +359,9 @@ void func_8004B850(float arg0, struct Struct800496BC *arg1)
     *arg1 = sp24;
 }
 
-void func_8004BC1C(int arg0, struct Struct800496BC *arg1)
+void u_deserialize_some_replay_data(int arg0, struct ReplayBallFrame *arg1)
 {
-    struct Struct800496BC sp10;
+    struct ReplayBallFrame sp10;
     u8 *var_r9;
     u8 *var_r10;
     u8 *var_r11;
@@ -369,69 +370,69 @@ void func_8004BC1C(int arg0, struct Struct800496BC *arg1)
     u8 *var_r30;
     int i;
 
-    arg0 = lbl_80250B80.unk1A - 1 - arg0;
+    arg0 = s_replayData.unk1A - 1 - arg0;
     if (arg0 < 0)
         arg0 = 0;
-    sp10.unk0 = lbl_80250B80.unk38;
-    var_r9 = lbl_80250B80.unk44[0];
-    var_r10 = lbl_80250B80.unk44[2];
-    var_r11 = lbl_80250B80.unk44[4];
-    var_r12 = lbl_80250B80.unk44[1];
-    var_r31 = lbl_80250B80.unk44[3];
-    var_r30 = lbl_80250B80.unk44[5];
+    sp10.pos = s_replayData.unk38;
+    var_r9 = s_replayData.data[0];
+    var_r10 = s_replayData.data[2];
+    var_r11 = s_replayData.data[4];
+    var_r12 = s_replayData.data[1];
+    var_r31 = s_replayData.data[3];
+    var_r30 = s_replayData.data[5];
     for (i = arg0 + 1; i > 0 ; i--)
     {
-        sp10.unk0.x += 0.00006103702f * (s16)((*var_r12 << 8) | *var_r9);
+        sp10.pos.x += 0.00006103702f * (s16)((*var_r12 << 8) | *var_r9);
         var_r12++;
         var_r9++;
 
-        sp10.unk0.y += 0.00006103702f * (s16)((*var_r31 << 8) | *var_r10);
+        sp10.pos.y += 0.00006103702f * (s16)((*var_r31 << 8) | *var_r10);
         var_r31++;
         var_r10++;
 
-        sp10.unk0.z += 0.00006103702f * (s16)((*var_r30 << 8) | *var_r11);
+        sp10.pos.z += 0.00006103702f * (s16)((*var_r30 << 8) | *var_r11);
         var_r30++;
         var_r11++;
     }
 
-    sp10.unkC = lbl_80250B80.unk44[6][arg0] | (lbl_80250B80.unk44[7][arg0] << 8);
-    sp10.unkE = lbl_80250B80.unk44[8][arg0] | (lbl_80250B80.unk44[9][arg0] << 8);
-    sp10.unk10 = lbl_80250B80.unk44[10][arg0] | (lbl_80250B80.unk44[11][arg0] << 8);
-    sp10.unk12 = (s8)lbl_80250B80.unk44[12][arg0] << 8;
-    sp10.unk14 = (s8)lbl_80250B80.unk44[13][arg0] << 8;
-    sp10.unk16 = (s8)lbl_80250B80.unk44[14][arg0] << 8;
-    sp10.unk18 = (lbl_80250B80.unk44[19][arg0] << 24)
-               | (lbl_80250B80.unk44[18][arg0] << 16)
-               | (lbl_80250B80.unk44[17][arg0] << 8)
-               | lbl_80250B80.unk44[16][arg0];
-    sp10.unk1C = 0.007874016f * (f32) (s8) lbl_80250B80.unk44[15][arg0];
+    sp10.rotX = s_replayData.data[6][arg0] | (s_replayData.data[7][arg0] << 8);
+    sp10.rotY = s_replayData.data[8][arg0] | (s_replayData.data[9][arg0] << 8);
+    sp10.rotZ = s_replayData.data[10][arg0] | (s_replayData.data[11][arg0] << 8);
+    sp10.unk12 = (s8)s_replayData.data[12][arg0] << 8;
+    sp10.unk14 = (s8)s_replayData.data[13][arg0] << 8;
+    sp10.unk16 = (s8)s_replayData.data[14][arg0] << 8;
+    sp10.unk18 = (s_replayData.data[19][arg0] << 24)
+               | (s_replayData.data[18][arg0] << 16)
+               | (s_replayData.data[17][arg0] << 8)
+               | s_replayData.data[16][arg0];
+    sp10.unk1C = 0.007874016f * (f32) (s8) s_replayData.data[15][arg0];
 
     *arg1 = sp10;
 }
 
-void func_8004BFCC(float arg8, struct Struct8020AE40_sub2 *arg0)
+void func_8004BFCC(float arg8, struct ReplayWorldFrame *arg0)
 {
-    struct Struct8020AE40_sub2 sp20;
-    struct Struct8020AE40_sub2 sp1C;
-    struct Struct8020AE40_sub2 sp18;
+    struct ReplayWorldFrame sp20;
+    struct ReplayWorldFrame sp1C;
+    struct ReplayWorldFrame sp18;
     float temp_f2;
     float temp_f31;
     float temp_f30;
     s32 temp_r29;
-    struct World *temp_r5;
+    struct World *world;
     u8 unused[4];
 
-    temp_r5 = currentWorldStructPtr;
-    if (lbl_80250B80.unk1A == 0)
+    world = currentWorldStructPtr;
+    if (s_replayData.unk1A == 0)
     {
-        arg0->unk0 = temp_r5->xrot;
-        arg0->unk2 = temp_r5->zrot;
+        arg0->rotX = world->xrot;
+        arg0->rotZ = world->zrot;
         return;
     }
     if (arg8 < 0.0f)
         arg8 = 0.0f;
-    else if (lbl_80250B80.unk1A <= arg8)
-        arg8 = lbl_80250B80.unk1A;
+    else if (s_replayData.unk1A <= arg8)
+        arg8 = s_replayData.unk1A;
 
     temp_r29 = arg8;
     temp_f2 = temp_r29;
@@ -439,20 +440,20 @@ void func_8004BFCC(float arg8, struct Struct8020AE40_sub2 *arg0)
     temp_f30 = 1.0 - temp_f31;
     func_8004C180(temp_r29, &sp20);
     func_8004C180(temp_r29 + 1, &sp1C);
-    sp18.unk0 = (sp20.unk0 * temp_f30) + (sp1C.unk0 * temp_f31);
-    sp18.unk2 = (sp20.unk2 * temp_f30) + (sp1C.unk2 * temp_f31);
+    sp18.rotX = (sp20.rotX * temp_f30) + (sp1C.rotX * temp_f31);
+    sp18.rotZ = (sp20.rotZ * temp_f30) + (sp1C.rotZ * temp_f31);
     *arg0 = sp18;
 }
 
-void func_8004C180(int arg0, struct Struct8020AE40_sub2 *arg1)
+void func_8004C180(int arg0, struct ReplayWorldFrame *arg1)
 {
-    struct Struct8020AE40_sub2 sp10;
+    struct ReplayWorldFrame sp10;
 
-    arg0 = lbl_80250B80.unk1A - 1 - arg0;
+    arg0 = s_replayData.unk1A - 1 - arg0;
     if (arg0 < 0)
         arg0 = 0;
-    sp10.unk0 = lbl_80250B80.unk44[20][arg0] | (lbl_80250B80.unk44[21][arg0] << 8);
-    sp10.unk2 = lbl_80250B80.unk44[22][arg0] | (lbl_80250B80.unk44[23][arg0] << 8);
+    sp10.rotX = s_replayData.data[20][arg0] | (s_replayData.data[21][arg0] << 8);
+    sp10.rotZ = s_replayData.data[22][arg0] | (s_replayData.data[23][arg0] << 8);
     *arg1 = sp10;
 }
 
@@ -461,253 +462,259 @@ float func_8004C1D8(float arg0)
     float var_f1;
     s16 temp_r0;
 
-    var_f1 = arg0 + (lbl_80250B80.unk18 - lbl_80250B80.unk1A);
-    if (lbl_80250B80.unk0.flags & 1)
+    var_f1 = arg0 + (s_replayData.unk18 - s_replayData.unk1A);
+    if (s_replayData.header.flags & REPLAY_FLAG_WIN)
     {
-        if (var_f1 < lbl_80250B80.unk1C)
-            var_f1 = lbl_80250B80.unk1C;
+        if (var_f1 < s_replayData.unk1C)
+            var_f1 = s_replayData.unk1C;
     }
     return var_f1;
 }
 
 float func_8004C254(float arg0)
 {
-    return lbl_80250B80.unk22 - arg0;
+    return s_replayData.unk22 - arg0;
 }
 
-void func_8004C28C(struct ReplayInfo *arg0)
+void func_8004C28C(struct ReplayHeader *header)
 {
-    *arg0 = lbl_80250B80.unk0;
+    *header = s_replayData.header;
 }
 
 #pragma force_active on
 int func_8004C2C8(void)
 {
-    return lbl_80250B80.unk1C;
+    return s_replayData.unk1C;
 }
 #pragma force_active reset
 
-struct Struct8004C2D8
+struct RLEHeader
 {
     u16 unk0;
-    u16 unk2;
-    u32 unk4;
+    u16 flags;
+    u32 size;
 };
 
-u32 func_8004C2D8(u8 *arg0, u8 *arg1, u32 arg2)
+#define NO_COMPRESSION 1
+
+static u32 compress_rle(u8 *src, u8 *dest, u32 srcSize)
 {
     u32 r5;
     u8 r6;
-    u8 *r7;
-    u8 *r8;
+    u8 *destp;
+    u8 *srcp;
     int r9;
-    int r10;
+    int tooLarge;  // true if the compressed size is larger than the uncompressed size
     int i;
-    u32 r31;
+    u32 destPos;
 
-    r31 = 8;
-    r6 = arg0[0];
-    r7 = arg1 + 8;
-    if (arg1 != NULL)
-        r7[1] = r6;
+    // skip over header
+    destPos = sizeof(struct RLEHeader);
+    destp = dest + sizeof(struct RLEHeader);
+
+    r6 = src[0];
+    if (dest != NULL)
+        destp[1] = r6;
     r5 = 1;
-    if (r6 == arg0[1])
+    if (r6 == src[1])
         r9 = 1;
     else
         r9 = 0;
-    r10 = 0;
-    r8 = arg0 + 1;
-    for (i = arg2 - 1; i > 0; i--, r8++)
+    tooLarge = FALSE;
+    srcp = src + 1;
+    for (i = srcSize - 1; i > 0; i--, srcp++)
     {
         if (r9)
         {
-            if (*r8 == r6 && r5 < 0x7F)
+            if (*srcp == r6 && r5 < 0x7F)
             {
                 r5++;
                 continue;
             }
-            if (arg1 != NULL)
-                *r7 = r5 | 0x80;
-            r31 += 2;
-            r7 += 2;
-            if (r31 >= arg2)
+            if (dest != NULL)
+                *destp = r5 | 0x80;
+            destPos += 2;
+            destp += 2;
+            if (destPos >= srcSize)
             {
-                r10 = 1;
+                tooLarge = TRUE;
                 break;
             }
-            r6 = *r8;
-            if (arg1 != 0)
-                r7[1] = r6;
+            r6 = *srcp;
+            if (dest != 0)
+                destp[1] = r6;
             r5 = 1;
-            if (r6 != r8[1])
+            if (r6 != srcp[1])
                 r9 = 0;
         }
-        else if (*r8 == r6 || r5 == 0x7F)
+        else if (*srcp == r6 || r5 == 0x7F)
         {
-            if (arg1 != NULL)
-                *r7 = r5;
-            r31 = r5 + r31;
-            r31++;
+            if (dest != NULL)
+                *destp = r5;
+            destPos = r5 + destPos;
+            destPos++;
 #ifdef NONMATCHING
-            r7 += r5;
+            destp += r5;
 #else
-            r7 = (u8 *)r5 + (uintptr_t)r7;
+            destp = (u8 *)r5 + (uintptr_t)destp;
 #endif
-            r7++;
-            if (r31 >= arg2)
+            destp++;
+            if (destPos >= srcSize)
             {
-                r10 = 1;
+                tooLarge = TRUE;
                 break;
             }
-            r6 = *r8;
-            if (arg1 != NULL)
-                r7[1] = r6;
+            r6 = *srcp;
+            if (dest != NULL)
+                destp[1] = r6;
             r5 = 1;
-            if (r6 == r8[1])
+            if (r6 == srcp[1])
                 r9 = 1;
         }
         else
         {
             r5++;
-            if (r31 + (r5 + 1) >= arg2)
+            if (destPos + (r5 + 1) >= srcSize)
             {
-                r10 = 1;
+                tooLarge = TRUE;
                 break;
             }
-            r6 = *r8;
-            if (arg1 != NULL)
-                r7[r5] = *r8;
+            r6 = *srcp;
+            if (dest != NULL)
+                destp[r5] = *srcp;
         }
     }
 
-    if (r10 == 0)
+    if (!tooLarge)
     {
         if (r9 != 0)
         {
-            if (arg1 != NULL)
-                *r7 = r5 | 0x80;
-            r31 += 2;
-            if (r31 >= arg2)
-                r10 = 1;
+            if (dest != NULL)
+                *destp = r5 | 0x80;
+            destPos += 2;
+            if (destPos >= srcSize)
+                tooLarge = 1;
         }
         else
         {
-            if (arg1 != NULL)
-                *r7 = r5;
-            r31 = r5 + r31;
-            r31++;
-            if (r31 >= arg2)
-                r10 = 1;
+            if (dest != NULL)
+                *destp = r5;
+            destPos = r5 + destPos;
+            destPos++;
+            if (destPos >= srcSize)
+                tooLarge = 1;
         }
     }
 
-    if (r10 == 0)
+    if (!tooLarge)
     {
-        struct Struct8004C2D8 sp1C;
+        struct RLEHeader header;
 
-        sp1C.unk0 = 0;
-        sp1C.unk2 = 0;
-        sp1C.unk4 = arg2;
-        if (arg1 != NULL)
-            memcpy(arg1, &sp1C, sizeof(sp1C));
+        header.unk0 = 0;
+        header.flags = 0;
+        header.size = srcSize;
+        if (dest != NULL)
+            memcpy(dest, &header, sizeof(header));
     }
     else
     {
-        struct Struct8004C2D8 sp14;
+        struct RLEHeader header;
 
-        sp14.unk0 = 0;
-        sp14.unk2 = 1;
-        r31 = arg2 + 8;
-        sp14.unk4 = arg2;
-        if (arg1 != NULL)
+        header.unk0 = 0;
+        header.flags = NO_COMPRESSION;
+        destPos = srcSize + sizeof(struct RLEHeader);
+        header.size = srcSize;
+        if (dest != NULL)
         {
-            memcpy(arg1, &sp14, sizeof(sp14));
-            memcpy(arg1 + sizeof(sp14), arg0, arg2);
+            memcpy(dest, &header, sizeof(header));
+            memcpy(dest + sizeof(header), src, srcSize);
         }
     }
-    return r31;
+    return destPos;
 }
 
-int func_8004C548(u8 *arg0, u8 *arg1, u32 arg2)
+static int decompress_rle(u8 *src, u8 *dest, u32 destSize)
 {
-    struct Struct8004C2D8 sp14;
+    struct RLEHeader header;
     u32 var_r3;
     int var_r5;
-    u8 *var_r4;
-    u8 *var_r6;
+    u8 *destp;
+    u8 *srcp;
     u8 temp_r0;
 
-    memcpy(&sp14, arg0, 8);
-    if (sp14.unk0 != 0)
-        return 0;
-    if (sp14.unk4 > arg2)
-        return 0;
-    if (sp14.unk2 & 1)
+    memcpy(&header, src, sizeof(header));
+    if (header.unk0 != 0)
+        return FALSE;
+    if (header.size > destSize)
+        return FALSE;
+    if (header.flags & NO_COMPRESSION)
     {
-        memcpy(arg1, arg0 + 8, sp14.unk4);
-        return 1;
+        memcpy(dest, src + sizeof(struct RLEHeader), header.size);
+        return TRUE;
     }
 
-    var_r4 = arg1;
-    var_r6 = arg0 + 8;
-    var_r5 = sp14.unk4;
+    destp = dest;
+    srcp = src + sizeof(struct RLEHeader);
+    var_r5 = header.size;
     while (var_r5 != 0)
     {
-        temp_r0 = *var_r6 & 0x80;
-        var_r3 = *var_r6 & 0x7F;
-        var_r6++;
+        temp_r0 = *srcp & 0x80;
+        var_r3 = *srcp & 0x7F;
+        srcp++;
         if (temp_r0)
         {
-            temp_r0 = *var_r6;
+            // fill
+            temp_r0 = *srcp;
             while (var_r3 != 0 && var_r5 > 0)
             {
-                *var_r4 = temp_r0;
+                *destp = temp_r0;
                 var_r3--;
-                var_r4++;
+                destp++;
                 var_r5--;
             }
-            var_r6++;
+            srcp++;
         }
         else
         {
+            // copy
             while (var_r3 != 0 && var_r5 > 0)
             {
-                *var_r4 = *var_r6;
+                *destp = *srcp;
                 var_r3--;
-                var_r4++;
+                destp++;
                 var_r5--;
-                var_r6++;
+                srcp++;
             }
         }
     }
-    return 1;
+    return TRUE;
 }
 
-u32 func_8004C668(void)
+u32 u_calc_compressed_replay_size(void)
 {
-    return func_8004C2D8((void *)&lbl_80250B80, NULL, sizeof(lbl_80250B80));
+    return compress_rle((void *)&s_replayData, NULL, sizeof(s_replayData));
 }
 
-u32 func_8004C69C(void *arg0)
+u32 compress_replay(void *dest)
 {
-    if (arg0 == NULL)
+    if (dest == NULL)
         return 0;
-    return func_8004C2D8((void *)&lbl_80250B80, arg0, sizeof(lbl_80250B80));
+    return compress_rle((void *)&s_replayData, dest, sizeof(s_replayData));
 }
 
-int func_8004C6DC(void *arg0)
+int decompress_replay(void *arg0)
 {
-    return func_8004C548(arg0, (void *)&lbl_80250B80, sizeof(lbl_80250B80));
+    return decompress_rle(arg0, (void *)&s_replayData, sizeof(s_replayData));
 }
 
 int func_8004C70C_sub(void)
 {
-    return (lbl_80250B70.unk0 == 0 && lbl_80250B80.unk1A != 0);
+    return (lbl_80250B70.unk0 == 0 && s_replayData.unk1A != 0);
 }
 
 int func_8004C70C(void)
 {
-    return (func_8004C70C_sub() && lbl_80250B80.unk0.unk10 >= 0);
+    return (func_8004C70C_sub() && s_replayData.header.unk10 >= 0);
 }
 
 void func_8004C754(void)

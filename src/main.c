@@ -16,6 +16,7 @@
 #include "ord_tbl.h"
 #include "perf.h"
 #include "pool.h"
+#include "recplay.h"
 #include "stage.h"
 #include "world.h"
 
@@ -73,7 +74,7 @@ void main(void)
     currentWorldStructPtr = &worldInfo[0];
     chkstatus_init();
     func_8008CF00(lbl_801ED920, 0x80);
-    func_800487B4();
+    recplay_init();
     camera_init();
     polydisp_init();
     ord_tbl_init_buffer(lbl_802F1B44, 0x10000);

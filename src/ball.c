@@ -21,6 +21,7 @@
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "pool.h"
+#include "recplay.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "world.h"
@@ -1331,7 +1332,7 @@ void u_ball_shadow_something_2(void)
         sp30.unk14.z = sp30.unk14.x;
 
         mathutil_vec_to_euler(&hit.normal, &sp30.unkC);
-        sp30.unkC.z = ball->unk2C;
+        sp30.unkC.z = ball->rotZ;
         sp30.unk0 = hit.pos;
         func_8009492C(&sp30);
     }
@@ -1637,14 +1638,14 @@ void ball_func_3(struct Ball *ball)
     ball->vel.y = (ball->accel * f4) * 0.5 + f2;
     ball->vel.z = zero;
 
-    ball->unk28 = 0x2000;
-    ball->unk2A = decodedStageLzPtr->startPos->yrot - 16384;
-    ball->unk2C = 0;
+    ball->rotX = 0x2000;
+    ball->rotY = decodedStageLzPtr->startPos->yrot - 16384;
+    ball->rotZ = 0;
 
     mathutil_mtxA_from_translate(&ball->pos);
-    mathutil_mtxA_rotate_y(ball->unk2A);
-    mathutil_mtxA_rotate_x(ball->unk28);
-    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_rotate_y(ball->rotY);
+    mathutil_mtxA_rotate_x(ball->rotX);
+    mathutil_mtxA_rotate_z(ball->rotZ);
     mathutil_mtxA_to_mtx(ball->unk30);
     mathutil_mtxA_to_mtx(ball->unkC8);
 
@@ -1706,7 +1707,7 @@ void ball_func_goal_main(struct Ball *ball)
 
 void ball_func_7(struct Ball *ball)
 {
-    struct Struct800496BC sp3C;
+    struct ReplayBallFrame sp3C;
     Vec sp30;
 
     ball->unk80 = 0;
@@ -1716,9 +1717,9 @@ void ball_func_7(struct Ball *ball)
     if (ball->ape != NULL)
         ball->ape->flags &= ~(1 << 5);
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp3C, lbl_80250A68.unk10);
-    ball->pos.x = sp3C.unk0.x;
-    ball->pos.y = sp3C.unk0.y;
-    ball->pos.z = sp3C.unk0.z;
+    ball->pos.x = sp3C.pos.x;
+    ball->pos.y = sp3C.pos.y;
+    ball->pos.z = sp3C.pos.z;
     ball->ape->unk30 = ball->pos;
     ball->unkC4 = 0.0f;
     ball->unkF8 = 0.0f;
@@ -1746,7 +1747,7 @@ void ball_func_7(struct Ball *ball)
 
 void ball_func_replay_main(struct Ball *ball)
 {
-    struct Struct800496BC spC;
+    struct ReplayBallFrame spC;
 
     ball->prevPos.x = ball->pos.x;
     ball->prevPos.y = ball->pos.y;
@@ -1757,21 +1758,21 @@ void ball_func_replay_main(struct Ball *ball)
 
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &spC, lbl_80250A68.unk10);
 
-    ball->pos.x = spC.unk0.x;
-    ball->pos.y = spC.unk0.y;
-    ball->pos.z = spC.unk0.z;
+    ball->pos.x = spC.pos.x;
+    ball->pos.y = spC.pos.y;
+    ball->pos.z = spC.pos.z;
 
     ball->vel.x = ball->pos.x - ball->prevPos.x;
     ball->vel.y = ball->pos.y - ball->prevPos.y;
     ball->vel.z = ball->pos.z - ball->prevPos.z;
 
-    ball->unk60 = spC.unkC - ball->unk28;
-    ball->unk62 = spC.unkE - ball->unk2A;
-    ball->unk64 = spC.unk10 - ball->unk2C;
+    ball->unk60 = spC.rotX - ball->rotX;
+    ball->unk62 = spC.rotY - ball->rotY;
+    ball->unk64 = spC.rotZ - ball->rotZ;
 
-    ball->unk28 = spC.unkC;
-    ball->unk2A = spC.unkE;
-    ball->unk2C = spC.unk10;
+    ball->rotX = spC.rotX;
+    ball->rotY = spC.rotY;
+    ball->rotZ = spC.rotZ;
 
     ball->unk114.x = spC.unk12 * 3.0518509475997192e-05;
     ball->unk114.y = spC.unk14 * 3.0518509475997192e-05;
@@ -1784,9 +1785,9 @@ void ball_func_replay_main(struct Ball *ball)
         ball->state = 4;
 
     mathutil_mtxA_from_translate(&ball->pos);
-    mathutil_mtxA_rotate_y(ball->unk2A);
-    mathutil_mtxA_rotate_x(ball->unk28);
-    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_rotate_y(ball->rotY);
+    mathutil_mtxA_rotate_x(ball->rotX);
+    mathutil_mtxA_rotate_z(ball->rotZ);
     mathutil_mtxA_to_mtx(ball->unk30);
     ball->unk80++;
 }
@@ -1817,10 +1818,10 @@ void ball_func_11(struct Ball *ball)
     ball->unkA8 = (Quaternion){0.0f, 0.0f, 0.0f, 1.0f};
     ball->unk98 = ball->unkA8;
     ball->ape->unk60 = ball->unk98;
-    ball->unk2A = s_bgLightInfo.infLightRotY + 0x2000;
+    ball->rotY = s_bgLightInfo.infLightRotY + 0x2000;
 
     mathutil_mtxA_from_identity();
-    mathutil_mtxA_rotate_y(ball->unk2A - 16384);
+    mathutil_mtxA_rotate_y(ball->rotY - 16384);
     mathutil_mtxA_to_quat(&ball->ape->unk60);
     ball->state = 12;
 }
@@ -1990,14 +1991,14 @@ void ball_func_18(struct Ball *ball)
     mathutil_mtxA_translate(&ball->pos);
     mathutil_mtxA_to_mtx(ball->unk30);
 
-    ball->unk28 = 0x2000;
-    ball->unk2A = 0;
-    ball->unk2C = 0;
+    ball->rotX = 0x2000;
+    ball->rotY = 0;
+    ball->rotZ = 0;
 
     mathutil_mtxA_from_translate(&ball->pos);
-    mathutil_mtxA_rotate_y(ball->unk2A);
-    mathutil_mtxA_rotate_x(ball->unk28);
-    mathutil_mtxA_rotate_z(ball->unk2C);
+    mathutil_mtxA_rotate_y(ball->rotY);
+    mathutil_mtxA_rotate_x(ball->rotX);
+    mathutil_mtxA_rotate_z(ball->rotZ);
     mathutil_mtxA_to_mtx(ball->unk30);
     mathutil_mtxA_to_mtx(ball->unkC8);
 
@@ -2387,7 +2388,7 @@ void update_ball_ape_transform(struct Ball *ball, struct PhysicsBall *physBall, 
     mathutil_mtxA_mult_left(ball->unk30);
     mathutil_mtxA_set_translate(&ball->pos);
     mathutil_mtxA_to_mtx(ball->unk30);
-    mathutil_mtxA_to_euler_yxz(&ball->unk2A, &ball->unk28, &ball->unk2C);
+    mathutil_mtxA_to_euler_yxz(&ball->rotY, &ball->rotX, &ball->rotZ);
 
     if (c == 0)
         func_8003C38C(ball);
@@ -2544,9 +2545,9 @@ void handle_ball_rotational_kinematics(struct Ball *ball, struct PhysicsBall *ph
         sp38.y = -sp14.y * ball->currRadius;
         sp38.z = -sp14.z * ball->currRadius;
 
-        mathutil_mtxA_from_rotate_y(ball->unk2A);
-        mathutil_mtxA_rotate_x(ball->unk28);
-        mathutil_mtxA_rotate_z(ball->unk2C);
+        mathutil_mtxA_from_rotate_y(ball->rotY);
+        mathutil_mtxA_rotate_x(ball->rotX);
+        mathutil_mtxA_rotate_z(ball->rotZ);
         mathutil_mtxA_rigid_inv_tf_vec(&sp38, &sp38);
 
         sp44.x = -sp20.x;

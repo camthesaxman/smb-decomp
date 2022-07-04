@@ -23,6 +23,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "pool.h"
+#include "recplay.h"
 #include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"

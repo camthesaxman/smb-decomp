@@ -63,9 +63,9 @@ struct Ball
     /*0x04*/ Vec pos;
     /*0x10*/ Vec prevPos;
     /*0x1C*/ Vec vel;
-    s16 unk28;
-    s16 unk2A;
-    s16 unk2C;
+    /*0x28*/ s16 rotX;
+    /*0x2A*/ s16 rotY;
+    /*0x2C*/ s16 rotZ;
     /*0x2E*/ s8 playerId;
     /*0x2F*/ s8 rank;  // rank in competition mode
     Mtx unk30;

@@ -24,6 +24,7 @@
 #include "mot_ape.h"
 #include "pool.h"
 #include "ranking_screen.h"
+#include "recplay.h"
 #include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
@@ -1668,12 +1669,12 @@ static void func_80011BD4(void);
 
 void submode_adv_game_ready_init_func(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int r4;
 
     if (gamePauseStatus & 0xA)
         return;
-    func_800489F8();
+    u_load_random_builtin_replay();
     func_80011BD4();
     lbl_80250A68.unk14 = 0;
     lbl_80250A68.unk0[lbl_80250A68.unk14] = func_800119C0();
@@ -1685,7 +1686,7 @@ void submode_adv_game_ready_init_func(void)
         return;
     }
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
+    get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.stageId;
     event_finish_all();
     call_bitmap_load_group(BMP_RNK);
@@ -1759,9 +1760,9 @@ void submode_adv_game_ready_main_func(void)
         func_8000FEC8(30);
     if (--modeCtrl.submodeTimer <= 0)
     {
-        struct ReplayInfo sp8;
+        struct ReplayHeader sp8;
 
-        u_get_replay_info(func_80011A84(), &sp8);
+        get_replay_header(func_80011A84(), &sp8);
         if (gamePauseStatus & (1 << 2))
             printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
         preload_stage_files(sp8.stageId);
@@ -1892,9 +1893,9 @@ void submode_adv_ranking_main_func(void)
 
     if (r31->state == 4)
     {
-        struct ReplayInfo sp50;
+        struct ReplayHeader sp50;
 
-        u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
+        get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
         if (sp50.flags & (1 << 7))
         {
             r31->state = 5;
@@ -1911,10 +1912,10 @@ void submode_adv_ranking_main_func(void)
     {
         if (modeCtrl.submodeTimer > 180.0)
         {
-            struct ReplayInfo sp38;
+            struct ReplayHeader sp38;
             struct RenderEffect focusEffect;
             float f1;
-            struct ReplayInfo sp8;
+            struct ReplayHeader sp8;
 
             modeCtrl.unk18 = 0x96;
             event_finish(EVENT_STAGE);
@@ -1926,7 +1927,7 @@ void submode_adv_ranking_main_func(void)
             event_finish(EVENT_BALL);
             event_finish(EVENT_SOUND);
             lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
-            u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
+            get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             infoWork.flags |= INFO_FLAG_REPLAY;
@@ -1967,7 +1968,7 @@ void submode_adv_ranking_main_func(void)
                 f1 = (int)((float)modeCtrl.submodeTimer * 0.5);
             lbl_80250A68.unk10 = f1;
             animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
-            u_get_replay_info(func_80011A84(), &sp8);
+            get_replay_header(func_80011A84(), &sp8);
             if (gamePauseStatus & (1 << 2))
                 printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
             preload_stage_files(sp8.stageId);
@@ -2028,12 +2029,12 @@ void submode_adv_ranking_main_func(void)
 
 static int func_800119C0(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int i;
 
     for (i = lbl_802F02EC + 1; i < 7; i++)
     {
-        u_get_replay_info(i, &sp8);
+        get_replay_header(i, &sp8);
         if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
             break;
     }
@@ -2041,13 +2042,13 @@ static int func_800119C0(void)
     {
         for (i = 0; i < lbl_802F02EC; i++)
         {
-            u_get_replay_info(i, &sp8);
+            get_replay_header(i, &sp8);
             if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
                 break;
         }
     }
     lbl_802F02EC = i;
-    u_get_replay_info(lbl_802F02EC, &sp8);
+    get_replay_header(lbl_802F02EC, &sp8);
     if (sp8.stageId == 0)
         sp8.stageId = 1;  // pointless
     return lbl_802F02EC;
@@ -2055,14 +2056,14 @@ static int func_800119C0(void)
 
 static int func_80011A84(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int i;
 
     for (i = lbl_802F02F0 + 1; i < 7; i++)
     {
         if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
             continue;
-        u_get_replay_info(i, &sp8);
+        get_replay_header(i, &sp8);
         if (sp8.flags & 0x83)
             break;
     }
@@ -2072,7 +2073,7 @@ static int func_80011A84(void)
         {
             if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
                 continue;
-            u_get_replay_info(i, &sp8);
+            get_replay_header(i, &sp8);
             if (sp8.flags & 0x83)
                 break;
         }
@@ -2080,7 +2081,7 @@ static int func_80011A84(void)
             i = lbl_802F02EC;
     }
     lbl_802F02F0 = i;
-    u_get_replay_info(lbl_802F02F0, &sp8);
+    get_replay_header(lbl_802F02F0, &sp8);
     if (sp8.stageId == ST_000_DUMMY)
         sp8.stageId = ST_001_PLAIN;  // pointless
     lbl_802F1BC4 = 1;

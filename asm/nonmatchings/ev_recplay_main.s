@@ -21,11 +21,11 @@ lbl_80048CB0:
 /* 80048CB8 00044BD8  38 A4 AE 20 */	addi r5, r4, lbl_8020AE20@l
 /* 80048CBC 00044BDC  3C 60 80 20 */	lis r3, ballInfo@ha
 /* 80048CC0 00044BE0  38 03 5E 60 */	addi r0, r3, ballInfo@l
-/* 80048CC4 00044BE4  3C 80 80 21 */	lis r4, lbl_8020AE40@ha
+/* 80048CC4 00044BE4  3C 80 80 21 */	lis r4, s_builtinReplays@ha
 /* 80048CC8 00044BE8  3C 60 80 20 */	lis r3, lbl_80206DEC@ha
 /* 80048CCC 00044BEC  3B 85 00 00 */	addi r28, r5, 0
 /* 80048CD0 00044BF0  7C 1E 03 78 */	mr r30, r0
-/* 80048CD4 00044BF4  3B E4 AE 40 */	addi r31, r4, lbl_8020AE40@l
+/* 80048CD4 00044BF4  3B E4 AE 40 */	addi r31, r4, s_builtinReplays@l
 /* 80048CD8 00044BF8  3B 63 6D EC */	addi r27, r3, lbl_80206DEC@l
 /* 80048CDC 00044BFC  3B A0 00 04 */	li r29, 4
 lbl_80048CE0:
@@ -114,7 +114,7 @@ lbl_80048DF8:
 /* 80048E1C 00044D3C  2C 00 00 02 */	cmpwi r0, 2
 /* 80048E20 00044D40  40 82 00 08 */	bne lbl_80048E28
 lbl_80048E24:
-/* 80048E24 00044D44  48 00 21 B5 */	bl func_8004AFD8
+/* 80048E24 00044D44  48 00 21 B5 */	bl u_serialize_some_replay_data
 lbl_80048E28:
 /* 80048E28 00044D48  BB 61 00 24 */	lmw r27, 0x24(r1)
 /* 80048E2C 00044D4C  80 01 00 44 */	lwz r0, 0x44(r1)
