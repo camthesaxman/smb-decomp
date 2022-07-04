@@ -12,6 +12,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "pool.h"
+#include "recplay.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"

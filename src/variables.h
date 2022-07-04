@@ -576,18 +576,15 @@ extern struct Struct8020A348 lbl_8020AB88[0x48];
 extern struct GMAModel *goalModels[3];
 extern struct Sphere stageBoundSphere;
 // extern ? lbl_8020AE20;
-// extern ? lbl_8020AE40;
-extern struct
-{
-    s32 unk0[4];
-    float unk10;
-    s32 unk14;
-} lbl_80250A68;
+// extern ? s_builtinReplays;
+
+extern struct Struct80250A68 lbl_80250A68;
+
 // extern ? lbl_80250A80;
 // extern ? lbl_80250AA0;
 // extern ? lbl_80250B58;
 // extern ? lbl_80250B70;
-// extern ? lbl_80250B80;
+// extern ? s_replayData;
 // extern ? lbl_802673C8;
 // extern ? lbl_8027CBC8;
 // extern ? lbl_8027CBF8;
@@ -801,7 +798,7 @@ extern int loadedStageId;
 // extern ? lbl_802F09C8;
 // extern ? lbl_802F09D0;
 // extern ? lbl_802F09D4;
-// extern ? lbl_802F09E0;
+// extern ? s_totalSize;
 // extern ? lbl_802F09E4;
 // extern ? lbl_802F09EC;
 // extern ? lbl_802F09F4;
@@ -1275,13 +1272,15 @@ extern s16 loadingStageIdRequest;
 extern s16 loadingStageId;
 extern s16 currStageId;
 // extern ? lbl_802F1F60;
-// extern ? lbl_802F1F68;
-// extern ? lbl_802F1F6C;
-// extern ? lbl_802F1F70;
+// extern ? s_dummyVar;
+// extern ? s_builtinReplayFilesCount;
+// extern ? s_builtinReplayFileNames;
 // extern ? lbl_802F1F74;
 // extern ? lbl_802F1F78;
+
 extern int lbl_802F1F80;
 // extern ? lbl_802F1F88;
+
 // extern ? lbl_802F1F90;
 
 extern s16 lbl_802F1FC8;

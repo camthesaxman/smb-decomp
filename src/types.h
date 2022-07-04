@@ -348,18 +348,6 @@ struct AnimGroupInfo
     /*0x54*/ Mtx prevTransform; // Previous frame transform from animGroup space to world space
 };
 
-struct ReplayInfo
-{
-    u16 flags;  // (1 << 5) = expert, (1 << 6) = master
-    u8 stageId;
-    u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
-    u8 floorNum;
-    u8 unk5;
-    char unk6[10];
-    u32 unk10;
-    u8 filler14[4];
-};
-
 struct RaycastHit
 {
     u32 flags;
@@ -467,19 +455,6 @@ struct ColiEdge
     // Coplanar with triangle, points inside triangle
     Vec2d normal;
 };
-
-struct Struct800496BC
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    u32 unk18;
-    float unk1C;
-};  // size = 0x20
 
 typedef void (*Struct80206DEC_Func)(void);
 
@@ -1029,6 +1004,13 @@ struct ScoreRecord
     u8 filler8[4];
     u8 floorNum;
     s8 unkD;  // 0 = normal, 1 = extra, 2 = master
+};
+
+struct Struct80250A68
+{
+    s32 unk0[4];
+    float unk10;
+    s32 unk14;
 };
 
 #endif

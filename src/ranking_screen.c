@@ -9,6 +9,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "ranking_screen.h"
+#include "recplay.h"
 #include "sprite.h"
 
 static void ranking_screen_sprite_main(s8 *, struct Sprite *);
@@ -869,7 +870,7 @@ static struct
     float unk14;
     s16 unk18;
     u8 filler1A[2];
-    struct ReplayInfo unk1C;
+    struct ReplayHeader unk1C;
     u32 unk34;
     u32 unk38;
     char floorName[0x64-0x3C];
@@ -915,7 +916,7 @@ void func_80088E90(void)
     lbl_802B395C.unk0 = 0;
     lbl_802B395C.unk4 = 1;
     lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-    u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+    get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
     func_80088D44();
     lbl_802B395C.unk8 = -lbl_802B395C.unk14;
     lbl_802B395C.unkC = 0.0f;
@@ -943,7 +944,7 @@ void func_80088F18(void)
     if (temp_r31 != 0)
     {
         lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-        u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+        get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
         func_80088D44();
     }
 }
@@ -990,7 +991,7 @@ static void func_800890D4(void)
         {
             lbl_802B395C.unk4 = 1;
             lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-            u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+            get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
             func_80088D44();
         }
         break;
@@ -1042,11 +1043,11 @@ static void func_8008923C(void)
     reset_text_draw_settings();
     set_text_font(FONT_ASC_8x16);
     set_text_pos(40.0f + var_f31, y);
-    if (lbl_802B395C.unk1C.unk6[0] != 0)
+    if (lbl_802B395C.unk1C.playerName[0] != 0)
     {
         set_text_mul_color(RGBA(255, 128, 0, 0));
         set_text_add_color(RGBA(64, 48, 48, 0));
-        func_80072AC0("%s", lbl_802B395C.unk1C.unk6);
+        func_80072AC0("%s", lbl_802B395C.unk1C.playerName);
         set_text_mul_color(RGBA(255, 255, 255, 0));
         set_text_add_color(RGBA(0, 0, 0, 0));
         u_draw_text("'S ");

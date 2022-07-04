@@ -3259,7 +3259,7 @@ lbl_00002FA8:
 /* 00002FB0 5400103A */ slwi r0, r0, 2
 /* 00002FB4 7C7F0214 */ add r3, r31, r0
 /* 00002FB8 80630000 */ lwz r3, 0(r3)
-/* 00002FBC 4BFFD1F1 */ bl u_get_replay_info
+/* 00002FBC 4BFFD1F1 */ bl get_replay_header
 /* 00002FC0 3C600000 */ lis r3, currStageId@ha
 /* 00002FC4 881D6E9E */ lbz r0, 0x6e9e(r29)
 /* 00002FC8 3B230000 */ addi r25, r3, currStageId@l
@@ -3756,7 +3756,7 @@ lbl_000036A4:
 /* 0000370C 7C7F0214 */ add r3, r31, r0
 /* 00003710 80630000 */ lwz r3, 0(r3)
 /* 00003714 38810020 */ addi r4, r1, 0x20
-/* 00003718 4BFFCA95 */ bl u_get_replay_info
+/* 00003718 4BFFCA95 */ bl get_replay_header
 /* 0000371C 801C0000 */ lwz r0, 0(r28)
 /* 00003720 5400103A */ slwi r0, r0, 2
 /* 00003724 7C7F0214 */ add r3, r31, r0

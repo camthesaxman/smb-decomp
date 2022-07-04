@@ -17,6 +17,7 @@
 #include "mode.h"
 #include "pool.h"
 #include "ranking_screen.h"
+#include "recplay.h"
 #include "sprite.h"
 #include "textbox.h"
 
@@ -1321,14 +1322,6 @@ static void eieipu_sprite_draw(struct Sprite *sprite)
     }
 }
 
-extern struct
-{
-    s16 unk0;
-    s16 unk2;
-    u32 unk4;
-    u8 filler8[1];
-} lbl_8027CE24;
-
 static void floor_intro_sprite_main(s8 *, struct Sprite *);
 static void floor_intro_sprite_draw(struct Sprite *);
 static void bonus_floor_sprite_main(s8 *, struct Sprite *);
@@ -1347,7 +1340,7 @@ void hud_show_stage_name_banner(void)
         sprite->x = 320.0f;
         sprite->y = 240.0f;
         sprite->unk4C = 0.15f;
-        if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
+        if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24[0].unk4 & 8))
          || (modeCtrl.courseFlags & COURSE_FLAG_EXTRA))
         {
             sprite->mulR = 255;
@@ -1371,13 +1364,13 @@ void hud_show_stage_name_banner(void)
         sprite->mainFunc = floor_intro_sprite_main;
         sprite->drawFunc = floor_intro_sprite_draw;
 
-        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.currFloor;
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24[0].unk0 : infoWork.currFloor;
         if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
             sprintf(sprite->text, "ROUND %d", floorNum);
-        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 0x10))
+        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24[0].unk4 & 0x10))
          || (modeCtrl.courseFlags & COURSE_FLAG_MASTER))
             sprintf(sprite->text, "MASTER %d", floorNum);
-        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24.unk4 & 8))
+        else if ((modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE && (lbl_8027CE24[0].unk4 & 8))
          || (modeCtrl.courseFlags & COURSE_FLAG_EXTRA))
             sprintf(sprite->text, "EXTRA %d", floorNum);
         else
@@ -1634,7 +1627,7 @@ void hud_show_normal_mode_info(void)
 
     ball = currentBallStructPtr;
     if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-        flags = lbl_8027CE24.unk4;
+        flags = lbl_8027CE24[0].unk4;
     else
         flags = modeCtrl.courseFlags;
 
@@ -1658,7 +1651,7 @@ void hud_show_normal_mode_info(void)
         sprite->textAlign = ALIGN_LB;
         sprite->mainFunc = lbl_8007A774;
 
-        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24.unk0 : infoWork.currFloor;
+        floorNum = (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE) ? lbl_8027CE24[0].unk0 : infoWork.currFloor;
         if (flags & 0x10)
             sprintf(sprite->text, "MASTER %d", floorNum);
         else if (flags & 8)
@@ -1691,7 +1684,7 @@ void hud_show_normal_mode_info(void)
             sprite->scaleX = 0.5f;
             sprite->scaleY = 0.5f;
             if (modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
-                sprintf(sprite->text, "%d", lbl_8027CE24.unk2 + 4);
+                sprintf(sprite->text, "%d", lbl_8027CE24[0].unk2 + 4);
             else
                 sprintf(sprite->text, "%d", modeCtrl.difficulty + 4);
         }

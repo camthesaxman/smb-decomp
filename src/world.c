@@ -13,6 +13,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "pool.h"
+#include "recplay.h"
 #include "world.h"
 
 struct World *currentWorldStructPtr;
@@ -427,12 +428,12 @@ void world_sub_7(struct World *world)
     s16 var1;
     s16 var2;
     Vec sp10;
-    s16 spC[2];
+    struct ReplayWorldFrame spC;
 
     if (gamePauseStatus & 0xA)
         return;
 
-    func_80049C1C(lbl_80250A68.unk0[world->playerId], spC, lbl_80250A68.unk10);
+    func_80049C1C(lbl_80250A68.unk0[world->playerId], &spC, lbl_80250A68.unk10);
     var1 = -world->xrot;
     var2 = -world->zrot;
     world->xrot += var1 >> 2;
@@ -443,8 +444,8 @@ void world_sub_7(struct World *world)
     if (infoWork.flags & INFO_FLAG_REPLAY)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_x(spC[0]);
-        mathutil_mtxA_rotate_z(spC[1]);
+        mathutil_mtxA_rotate_x(spC.rotX);
+        mathutil_mtxA_rotate_z(spC.rotZ);
         mathutil_mtxA_rigid_inv_tf_vec(&sp10, &world->unk10);
     }
     else
@@ -460,15 +461,15 @@ void world_sub_9(struct World *world)
 {
     s16 var1;
     s16 var2;
-    s16 spC[2];
+    struct ReplayWorldFrame spC;
     Vec sp10;
 
     if (gamePauseStatus & 0xA)
         return;
 
-    func_80049C1C(lbl_80250A68.unk0[world->playerId], spC, lbl_80250A68.unk10);
-    var1 = spC[0] - world->xrot;
-    var2 = spC[1] - world->zrot;
+    func_80049C1C(lbl_80250A68.unk0[world->playerId], &spC, lbl_80250A68.unk10);
+    var1 = spC.rotX - world->xrot;
+    var2 = spC.rotZ - world->zrot;
     world->xrot += var1 >> 2;
     world->zrot += var2 >> 2;
     sp10.x = 0.0f;

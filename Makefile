@@ -137,7 +137,8 @@ SOURCES := \
 	src/interpolate_keyframes.c \
 	src/stage.c \
 	src/code_8.c \
-	asm/recplay.s \
+	src/recplay.c \
+	src/recplay_2.c \
 	asm/effect.s \
 	src/background.c \
 	asm/bg_old_bluesky.s \

@@ -42,6 +42,20 @@ struct DVDFileInfo
     /*0x38*/ DVDCallback callback;
 };
 
+typedef struct
+{
+    u32 entryNum;
+    u32 location;
+    u32 next;
+} DVDDir;
+
+typedef struct 
+{
+    u32 entryNum;
+    BOOL isDir;
+    char *name;
+} DVDDirEntry;
+
 void DVDInit(void);
 BOOL DVDOpen(char *, DVDFileInfo *);
 BOOL DVDClose(DVDFileInfo *);
@@ -52,6 +66,9 @@ BOOL DVDReadAsyncPrio(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset,
 s32 DVDConvertPathToEntrynum(char *pathPtr);
 s32 DVDCancel(DVDCommandBlock *block);
 s32 DVDGetDriveStatus(void);
+BOOL DVDOpenDir(char *dirName, DVDDir *dir);
+BOOL DVDCloseDir(DVDDir *dir);
+BOOL DVDReadDir(DVDDir *dir, DVDDirEntry *dirent);
 
 #define DVDReadAsync(fileInfo, addr, length, offset, callback) \
     DVDReadAsyncPrio((fileInfo), (addr), (length), (offset), (callback), 2)
