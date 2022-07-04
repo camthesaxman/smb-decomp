@@ -29,7 +29,7 @@ struct Struct8020AE40
     s16 unk36;
     struct Struct800496BC unk38[720];
     struct Struct8020AE40_sub2 unk5A38[720];
-};  // size = 0x6578
+};
 
 struct Struct8020AE20
 {
@@ -37,18 +37,15 @@ struct Struct8020AE20
     s16 unk2;
 };
 
-u32 lbl_802F09E0 = 0x00045C28;
+static struct Struct8020AE20 lbl_8020AE20[8];
+static struct Struct8020AE40 lbl_8020AE40[11];
+static u32 lbl_802F1F68;
+static s32 lbl_802F1F6C;
+static char **lbl_802F1F70;
+static s32 lbl_802F1F74;
+static u32 lbl_802F09E0 = sizeof(lbl_8020AE40);
 
-struct Struct8020AE20 lbl_8020AE20[8];
-FORCE_BSS_ORDER(lbl_8020AE20)
-struct Struct8020AE40 lbl_8020AE40[11];
-
-extern u32 lbl_802F1F68;
-extern s32 lbl_802F1F6C;
-extern char **lbl_802F1F70;
-extern s32 lbl_802F1F74;
-
-extern struct
+static struct
 {
     s32 unk0;
     u32 unk4;
@@ -63,6 +60,7 @@ void func_8004AC68(struct Struct8020AE40 *);
 void func_8004ACF0(struct Struct8020AE40 *);
 int func_8004AD78(struct Struct8020AE40 *);
 float func_8004ADC0(struct Struct8020AE40 *);
+int func_8004AEA0(void);
 int func_8004AFB8(struct Struct8020AE40 *);
 
 void func_800487B4(void)
@@ -88,7 +86,7 @@ void func_800487B4(void)
             DVDClose(&file);
         }
         DVDChangeDir("/test");
-        lbl_802F1F68 = 0x6578;
+        lbl_802F1F68 = sizeof(struct Struct8020AE40);
         if (!(dipSwitches & 1))
         {
             var_r29 = lbl_8020AE40;

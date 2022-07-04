@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <string.h>
 #include <dolphin.h>
 
@@ -9,13 +10,13 @@
 #include "mode.h"
 #include "world.h"
 
-struct Struct80250B70
+static struct Struct80250B70
 {
     s16 unk0;
     Vec unk4;
 } lbl_80250B70;
 
-struct
+static struct
 {
     struct ReplayInfo unk0;
     s16 unk18;
@@ -29,9 +30,17 @@ struct
     u32 unk34;
     Vec unk38;
     u8 unk44[24][0xF00];
-} lbl_80250B80;  // size = 0x16844
+} lbl_80250B80;
 
-void func_8004B540(void);
+struct
+{
+    s16 unk0;
+    u16 unk2;
+    u8 filler4[4];
+} lbl_802F1F88 ATTRIBUTE_ALIGN(8);
+
+int lbl_802F1F80;
+
 void func_8004BC1C(int arg0, struct Struct800496BC *arg1);
 void func_8004C180(int arg0, struct Struct8020AE40_sub2 *arg1);
 
@@ -400,7 +409,7 @@ void func_8004BC1C(int arg0, struct Struct800496BC *arg1)
     *arg1 = sp10;
 }
 
-void func_8004BFCC(struct Struct8020AE40_sub2 *arg0, float arg8)
+void func_8004BFCC(float arg8, struct Struct8020AE40_sub2 *arg0)
 {
     struct Struct8020AE40_sub2 sp20;
     struct Struct8020AE40_sub2 sp1C;
@@ -477,3 +486,243 @@ int func_8004C2C8(void)
     return lbl_80250B80.unk1C;
 }
 #pragma force_active reset
+
+struct Struct8004C2D8
+{
+    u16 unk0;
+    u16 unk2;
+    u32 unk4;
+};
+
+u32 func_8004C2D8(u8 *arg0, u8 *arg1, u32 arg2)
+{
+    u32 r5;
+    u8 r6;
+    u8 *r7;
+    u8 *r8;
+    int r9;
+    int r10;
+    int i;
+    u32 r31;
+
+    r31 = 8;
+    r6 = arg0[0];
+    r7 = arg1 + 8;
+    if (arg1 != NULL)
+        r7[1] = r6;
+    r5 = 1;
+    if (r6 == arg0[1])
+        r9 = 1;
+    else
+        r9 = 0;
+    r10 = 0;
+    r8 = arg0 + 1;
+    for (i = arg2 - 1; i > 0; i--, r8++)
+    {
+        if (r9)
+        {
+            if (*r8 == r6 && r5 < 0x7F)
+            {
+                r5++;
+                continue;
+            }
+            if (arg1 != NULL)
+                *r7 = r5 | 0x80;
+            r31 += 2;
+            r7 += 2;
+            if (r31 >= arg2)
+            {
+                r10 = 1;
+                break;
+            }
+            r6 = *r8;
+            if (arg1 != 0)
+                r7[1] = r6;
+            r5 = 1;
+            if (r6 != r8[1])
+                r9 = 0;
+        }
+        else if (*r8 == r6 || r5 == 0x7F)
+        {
+            if (arg1 != NULL)
+                *r7 = r5;
+            r31 = r5 + r31;
+            r31++;
+#ifdef NONMATCHING
+            r7 += r5;
+#else
+            r7 = (u8 *)r5 + (uintptr_t)r7;
+#endif
+            r7++;
+            if (r31 >= arg2)
+            {
+                r10 = 1;
+                break;
+            }
+            r6 = *r8;
+            if (arg1 != NULL)
+                r7[1] = r6;
+            r5 = 1;
+            if (r6 == r8[1])
+                r9 = 1;
+        }
+        else
+        {
+            r5++;
+            if (r31 + (r5 + 1) >= arg2)
+            {
+                r10 = 1;
+                break;
+            }
+            r6 = *r8;
+            if (arg1 != NULL)
+                r7[r5] = *r8;
+        }
+    }
+
+    if (r10 == 0)
+    {
+        if (r9 != 0)
+        {
+            if (arg1 != NULL)
+                *r7 = r5 | 0x80;
+            r31 += 2;
+            if (r31 >= arg2)
+                r10 = 1;
+        }
+        else
+        {
+            if (arg1 != NULL)
+                *r7 = r5;
+            r31 = r5 + r31;
+            r31++;
+            if (r31 >= arg2)
+                r10 = 1;
+        }
+    }
+
+    if (r10 == 0)
+    {
+        struct Struct8004C2D8 sp1C;
+
+        sp1C.unk0 = 0;
+        sp1C.unk2 = 0;
+        sp1C.unk4 = arg2;
+        if (arg1 != NULL)
+            memcpy(arg1, &sp1C, sizeof(sp1C));
+    }
+    else
+    {
+        struct Struct8004C2D8 sp14;
+
+        sp14.unk0 = 0;
+        sp14.unk2 = 1;
+        r31 = arg2 + 8;
+        sp14.unk4 = arg2;
+        if (arg1 != NULL)
+        {
+            memcpy(arg1, &sp14, sizeof(sp14));
+            memcpy(arg1 + sizeof(sp14), arg0, arg2);
+        }
+    }
+    return r31;
+}
+
+int func_8004C548(u8 *arg0, u8 *arg1, u32 arg2)
+{
+    struct Struct8004C2D8 sp14;
+    u32 var_r3;
+    int var_r5;
+    u8 *var_r4;
+    u8 *var_r6;
+    u8 temp_r0;
+
+    memcpy(&sp14, arg0, 8);
+    if (sp14.unk0 != 0)
+        return 0;
+    if (sp14.unk4 > arg2)
+        return 0;
+    if (sp14.unk2 & 1)
+    {
+        memcpy(arg1, arg0 + 8, sp14.unk4);
+        return 1;
+    }
+
+    var_r4 = arg1;
+    var_r6 = arg0 + 8;
+    var_r5 = sp14.unk4;
+    while (var_r5 != 0)
+    {
+        temp_r0 = *var_r6 & 0x80;
+        var_r3 = *var_r6 & 0x7F;
+        var_r6++;
+        if (temp_r0)
+        {
+            temp_r0 = *var_r6;
+            while (var_r3 != 0 && var_r5 > 0)
+            {
+                *var_r4 = temp_r0;
+                var_r3--;
+                var_r4++;
+                var_r5--;
+            }
+            var_r6++;
+        }
+        else
+        {
+            while (var_r3 != 0 && var_r5 > 0)
+            {
+                *var_r4 = *var_r6;
+                var_r3--;
+                var_r4++;
+                var_r5--;
+                var_r6++;
+            }
+        }
+    }
+    return 1;
+}
+
+u32 func_8004C668(void)
+{
+    return func_8004C2D8((void *)&lbl_80250B80, NULL, sizeof(lbl_80250B80));
+}
+
+u32 func_8004C69C(void *arg0)
+{
+    if (arg0 == NULL)
+        return 0;
+    return func_8004C2D8((void *)&lbl_80250B80, arg0, sizeof(lbl_80250B80));
+}
+
+int func_8004C6DC(void *arg0)
+{
+    return func_8004C548(arg0, (void *)&lbl_80250B80, sizeof(lbl_80250B80));
+}
+
+int func_8004C70C_sub(void)
+{
+    return (lbl_80250B70.unk0 == 0 && lbl_80250B80.unk1A != 0);
+}
+
+int func_8004C70C(void)
+{
+    return (func_8004C70C_sub() && lbl_80250B80.unk0.unk10 >= 0);
+}
+
+void func_8004C754(void)
+{
+    memset(&lbl_802F1F88, 0, sizeof(lbl_802F1F88));
+}
+
+void func_8004C780(void)
+{
+    lbl_802F1F88.unk0--;
+    if (lbl_802F1F88.unk0 <= 0)
+        lbl_802F1F88.unk2 = 0;
+}
+
+void func_8004C7A8(void)
+{
+    memset(&lbl_802F1F88, 0, sizeof(lbl_802F1F88));
+}

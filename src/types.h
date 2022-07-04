@@ -357,7 +357,7 @@ struct ReplayInfo
     u8 unk5;
     char unk6[4];
     float unkC;
-    u32 unk10;
+    s32 unk10;
     u8 filler14[4];
 };
 

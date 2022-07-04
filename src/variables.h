@@ -1277,8 +1277,10 @@ extern s16 currStageId;
 // extern ? lbl_802F1F70;
 // extern ? lbl_802F1F74;
 // extern ? lbl_802F1F78;
+
 extern int lbl_802F1F80;
 // extern ? lbl_802F1F88;
+
 // extern ? lbl_802F1F90;
 
 extern s16 lbl_802F1FC8;
