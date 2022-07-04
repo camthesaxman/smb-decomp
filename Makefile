@@ -229,7 +229,7 @@ SOURCES := \
 	libraries/os/__ppc_eabi_init.c \
 	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
-	libraries/mtx/asm/mtx44.s \
+	libraries/mtx/mtx44.c \
 	libraries/mtx/asm/vec.s \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \
