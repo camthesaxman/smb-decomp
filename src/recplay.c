@@ -9,6 +9,7 @@
 #include "event.h"
 #include "info.h"
 #include "input.h"
+#include "light.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "pool.h"

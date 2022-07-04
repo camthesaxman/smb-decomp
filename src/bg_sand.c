@@ -5,8 +5,10 @@
 #include "global.h"
 #include "background.h"
 #include "event.h"
+#include "light.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "ord_tbl.h"
 #include "rend_efc.h"
 #include "stage.h"
 
@@ -75,6 +77,33 @@ struct BGSandWork_sub
     struct BGSandWork_sub_sub unk34[6];
 };  // size = 0x94
 
+struct BGSandWork_child_child
+{
+    u8 filler0[8];
+    Vec unk8;
+};
+
+struct BGSandWork_child
+{
+    u32 unk0;
+    u8 filler4[4];
+    struct BGSandWork_child_child *unk8;
+    Vec unkC;
+    s16 unk18;
+    s16 unk1A;
+    s16 unk1C;
+    Vec unk20;
+};
+
+struct Struct8005C3B8
+{
+    GXTexObj unk0;
+    void *unk20;
+    GXTexObj unk24;
+    void *unk44;
+    s32 unk48;
+};  // size = 0x4C
+
 struct BGSandWork
 {
     s32 unk0;
@@ -86,16 +115,18 @@ struct BGSandWork
     float unk18;
     Vec unk1C;
     Vec unk28;
-    u8 filler34[0x40-0x34];
+    s32 unk34;
+    struct Struct8005C3B8 *unk38;
+    u8 filler3C[4];
     u32 unk40;
-    u8 filler44[0x64-0x44];
+    struct BGSandWork_child *unk44[8];
     float unk64;
     float unk68;
     float unk6C;
     Vec unk70;
     u32 unk7C;
     struct BGSandWork_sub unk80[8];
-    u8 filler520[0x558-0x520];
+    struct BGSandWork_child *unk520[14];
     s32 unk558;
     u8 filler55C[4];
     s32 unk560;
@@ -243,4 +274,151 @@ void bg_sand_main(void)
             }
         }
     }
+}
+
+void bg_sand_finish(void) {}
+
+struct MyDrawNode
+{
+    struct OrdTblNode node;
+    s32 unk8;
+    void *unkC;
+    Mtx unk10;
+};
+
+struct MyDrawNode2
+{
+    struct OrdTblNode node;
+    s32 unk8;
+    s32 unkC;
+};
+
+void lbl_8005CB90(struct OrdTblNode *);
+void lbl_8005CC4C(struct OrdTblNode *);
+
+void bg_sand_draw(void)
+{
+    struct BGSandWork *work = backgroundInfo.work;
+    struct BGSandWork_child *temp_r28;
+    struct OrdTblNode *temp_r25;
+    u32 var_r30;
+    struct BGSandWork_child **var_r27;
+    struct MyDrawNode *temp_r24;
+    struct MyDrawNode2 *temp_r24_2;
+    int i;
+
+    if (lbl_801EEC90.unk0 & 0x11)
+        var_r30 = 0x10;
+    else if (gameMode == 2 || gameMode == 4)
+        var_r30 = 1 << (modeCtrl.unk30 - 1);
+    else
+        var_r30 = 1;
+
+    var_r27 = work->unk44;
+    for (i = work->unk40; i > 0; i--, var_r27++)
+        (*var_r27)->unk0 &= 0xFFFEFFFF;
+
+    var_r27 = work->unk520;
+    for (i = work->unk7C; i > 0; i--, var_r27++)
+        (*var_r27)->unk0 &= 0xFFFEFFFF;
+
+    bg_default_draw();
+    if (work->unk40 != 0)
+    {
+        var_r27 = work->unk44;
+        for (i = work->unk40; i > 0; i--, var_r27++)
+        {
+            temp_r28 = *var_r27;
+            if (temp_r28->unk0 & var_r30)
+            {
+                mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
+                mathutil_mtxA_translate(&temp_r28->unkC);
+                mathutil_mtxA_rotate_z(temp_r28->unk1C);
+                mathutil_mtxA_rotate_y(temp_r28->unk1A);
+                mathutil_mtxA_rotate_x(temp_r28->unk18);
+                mathutil_mtxA_scale(&temp_r28->unk20);
+                temp_r25 = ord_tbl_get_entry_for_pos(&temp_r28->unk8->unk8);
+                temp_r24 = ord_tbl_alloc_node(sizeof(*temp_r24));
+                temp_r24->node.drawFunc = lbl_8005CB90;
+                temp_r24->unk8 = peek_light_group();
+                temp_r24->unkC = temp_r28;
+                mathutil_mtxA_to_mtx(temp_r24->unk10);
+                ord_tbl_insert_node(temp_r25, (void *)temp_r24);
+            }
+
+        }
+    }
+
+    if (work->unk7C != 0)
+    {
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
+
+        var_r27 = work->unk520;
+        for (i = 0; i < work->unk7C; i++, var_r27++)
+        {
+            temp_r28 = *var_r27;
+            if (temp_r28->unk0 & var_r30)
+            {
+                temp_r25 = ord_tbl_get_entry_for_pos(&temp_r28->unkC);
+                temp_r24_2 = ord_tbl_alloc_node(sizeof(*temp_r24_2));
+                temp_r24_2->node.drawFunc = &lbl_8005CC4C;
+                temp_r24_2->unk8 = peek_light_group();
+                temp_r24_2->unkC = i;
+                ord_tbl_insert_node(temp_r25, (void *)temp_r24_2);
+            }
+        }
+    }
+}
+
+void bg_sand_interact(int arg0) {}
+
+extern void *lbl_802F1B40;
+
+void func_8005C3B8(struct RenderEffect *rendEfc)
+{
+    struct Struct8005C3B8 *temp_r3;
+    size_t texSize;
+
+    rendEfc->enableFlags = 8;
+    temp_r3 = OSAllocFromHeap(stageHeap, 0x4CU);
+    if (temp_r3 == NULL)
+    {
+        rendEfc->state = 0;
+        return;
+    }
+    rendEfc->work = temp_r3;
+    temp_r3->unk20 = lbl_802F1B40;
+    GXInitTexObj(&temp_r3->unk0, temp_r3->unk20, 640, 448, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, 0U);
+    texSize = GXGetTexBufferSize(640, 448, 1U, 0U, 0U);
+    temp_r3->unk44 = OSAllocFromHeap(stageHeap, texSize);
+    if (temp_r3->unk44 == NULL)
+    {
+        OSFreeToHeap(stageHeap, temp_r3);
+        rendEfc->state = 0;
+        return;
+    }
+    GXInitTexObj(&temp_r3->unk24, temp_r3->unk44, 640, 448, GX_TF_I8, GX_CLAMP, GX_CLAMP, 0U);
+    temp_r3->unk48 = ((struct BGSandWork *)backgroundInfo.work)->unk34;
+    ((struct BGSandWork *)backgroundInfo.work)->unk38 = temp_r3;
+}
+
+void func_8005C4D0(struct RenderEffect *arg0)
+{
+    struct Struct8005C3B8 *temp_r3;
+
+    temp_r3 = arg0->work;
+    if (temp_r3 != NULL)
+    {
+        if (temp_r3->unk44 != NULL)
+            OSFreeToHeap(stageHeap, temp_r3->unk44);
+        OSFreeToHeap(stageHeap, arg0->work);
+    }
+    if (backgroundInfo.bgId == BG_TYPE_SND)
+        ((struct BGSandWork *)backgroundInfo.work)->unk38 = NULL;
+}
+
+void func_8005C540(struct RenderEffect *arg0)
+{
+    if (backgroundInfo.bgId != BG_TYPE_SND)
+        arg0->state = 3;
 }
