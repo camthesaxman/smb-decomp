@@ -81,7 +81,7 @@ void light_main();
 BOOL add_light_to_pool(struct Light *a);
 void load_light_group_uncached(int);
 int peek_light_group(void);
-void load_light_group_cached();
+void load_light_group_cached(int lightGrpId);
 void push_light_group(void);
 void pop_light_group(void);
 void u_reset_light_group_stack(int a);

@@ -455,7 +455,7 @@ u32 bgWorkSizes[] =
     0,
     sizeof(struct BGSunsetWork),
     sizeof(struct BGSpaceWork),
-    0x56C,
+    sizeof(struct BGSandWork),
     0,
     sizeof(struct BGStormWork),
     sizeof(struct BGBonusWork),
