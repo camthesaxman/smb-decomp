@@ -10507,6 +10507,8 @@ lbl_801B9168:
 .global lbl_802673C8
 lbl_802673C8:
 	.skip 0x15800
+.if 0
 .global lbl_8027CBC8
 lbl_8027CBC8:
 	.skip 0x30
+.endif

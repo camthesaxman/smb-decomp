@@ -250,6 +250,62 @@ struct BGSpaceWork
     float unk94[2][3];
 };
 
+struct BGSandWork_sub_sub
+{
+    struct GMAModel *unk0;
+    float unk4;
+    float unk8;
+    s16 unkC;
+    s16 unkE;
+};
+
+struct BGSandWork_sub
+{
+    Vec unk0;
+    float unkC;
+    float unk10;
+    float unk14;
+    Vec unk18;
+    float unk24;
+    float unk28;
+    float unk2C;
+    float unk30;
+    struct BGSandWork_sub_sub unk34[6];
+};
+
+struct BGSandWork
+{
+    s32 unk0;
+    Vec unk4;
+    float unk10;
+    float unk14;
+    float unk18;
+    Vec unk1C;
+    Vec unk28;
+    GXTexObj *shadowMapTex;
+    GXTexObj *unk38;
+    GXTexObj *sandTex;
+    u32 unk40;
+    struct StageBgObject *pyramidClouds[8];
+    Vec unk64;
+    Vec unk70;
+    u32 unk7C;
+    struct BGSandWork_sub unk80[8];
+    struct StageBgObject *fountainWater[6];
+    struct GMAModel *unk538[2];
+    struct GMAModel *waterAUraModel;
+    struct GMAModel *waterBModel;
+    struct GMAModel *waterBUraModel;
+    GXTexObj *fountainIndirectTex;
+    GXTexObj *fountainGradientTex;
+    struct GMAModel *unk554;
+    struct GMAModel *unk558;
+    struct GMAModel *unk55C;
+    struct GMAModel *unk560;
+    struct BGSandWork_sub *unk564;
+    u8 filler568[4];
+};
+
 typedef int (*BgModelFindProc)(int, struct GMAModelEntry *);
 typedef int (*BgObjFindProc)(int, struct StageBgObject *);
 

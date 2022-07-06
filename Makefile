@@ -153,7 +153,7 @@ SOURCES := \
 	src/bg_old_storm.c \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
-	asm/bg_sand.s \
+	src/bg_sand.c \
 	src/bg_water.c \
 	src/bg_space.c \
 	src/bg_sunset.c \
