@@ -1,6 +1,6 @@
 CC := gcc -m32
 CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC
-CFLAGS := -O0 -g -fsanitize=address
+CFLAGS := -O0 -g -fsanitize=address -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
 LDFLAGS := -lm -fsanitize=address
 
 EXE :=
@@ -44,6 +44,7 @@ SOURCES := \
 	src/bmp_list_cmd.c \
 	src/trig_tables.c \
 	src/perf.c \
+	src/pool.c \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
@@ -56,6 +57,8 @@ SOURCES := \
 	src/interpolate_keyframes.c \
 	src/stage.c \
 	src/code_8.c \
+	src/recplay.c \
+	src/recplay_2.c \
 	src/background.c \
 	src/bg_old_cave.c \
 	src/bg_old_night.c \
@@ -65,6 +68,7 @@ SOURCES := \
 	src/bg_old_sand.c \
 	src/bg_old_storm.c \
 	src/bg_jungle.c \
+	src/bg_sand.c \
 	src/bg_water.c \
 	src/bg_space.c \
 	src/bg_sunset.c \
@@ -83,7 +87,7 @@ SOURCES := \
 	src/hud.c \
 	src/ord_tbl.c \
 	src/code_3.c \
-	src/code_3_2.c \
+	src/ranking_screen.c \
 	src/mot_ape.c \
 	src/code_2.c \
 	src/lzs_decompress.c \
@@ -100,6 +104,7 @@ SOURCES := \
 	src/DEMOPuts.c \
 	src/view.c \
 	src/code_6.c \
+	src/dvd.c \
 	src/preview.c \
 	libraries/dolphin_pc/GX.c \
 	libraries/dolphin_pc/dvd.c \
@@ -109,6 +114,7 @@ SOURCES := \
 	libraries/os/OSError.c \
 	libraries/os/OSMutex.c \
 	libraries/os/OSSync.c \
+	libraries/mtx/mtx44.c \
 	libraries/dvd/dvdqueue.c \
 	libraries/dvd/fstload.c \
 	libraries/demo/DEMOFont.c \
@@ -116,8 +122,6 @@ SOURCES := \
 	libraries/dsp/dsp_debug.c \
 	libraries/dsp/dsp_task.c \
 	libraries/hio/hio.c \
-	libraries/gx/GXFifo.c \
-	libraries/gx/GXLight.c \
 	libraries/gx/GXStubs.c \
 	libraries/gx/GXPerf.c \
 	libraries/amcnotstub/amcnotstub.c

@@ -32,8 +32,6 @@ void CARDSetStatusAsync(){puts("CARDSetStatusAsync is a stub");}
 void CARDUnmount(){puts("CARDUnmount is a stub");}
 void CARDWriteAsync(){puts("CARDWriteAsync is a stub");}
 void C_MTXLookAt(){puts("C_MTXLookAt is a stub");}
-void C_MTXOrtho(){puts("C_MTXOrtho is a stub");}
-void C_MTXPerspective(){puts("C_MTXPerspective is a stub");}
 void C_MTXScale(){puts("C_MTXScale is a stub");}
 void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
@@ -42,7 +40,6 @@ void DVDCancel(){puts("DVDCancel is a stub");}
 void DVDFastOpen(){puts("DVDFastOpen is a stub");}
 void DVDGetDriveStatus(){puts("DVDGetDriveStatus is a stub");}
 void DVDReadAbsAsyncForBS(){puts("DVDReadAbsAsyncForBS is a stub");}
-void DVDReadAsyncPrio(){puts("DVDReadAsyncPrio is a stub");}
 void DVDReadDiskID(){puts("DVDReadDiskID is a stub");}
 void DVDReset(){puts("DVDReset is a stub");}
 void EXIDeselect(){puts("EXIDeselect is a stub");}
@@ -211,17 +208,9 @@ void bg_pilot_finish(){puts("bg_pilot_finish is a stub");}
 void bg_pilot_init(){puts("bg_pilot_init is a stub");}
 void bg_pilot_interact(){puts("bg_pilot_interact is a stub");}
 void bg_pilot_main(){puts("bg_pilot_main is a stub");}
-void bg_sand_draw(){puts("bg_sand_draw is a stub");}
-void bg_sand_finish(){puts("bg_sand_finish is a stub");}
-void bg_sand_init(){puts("bg_sand_init is a stub");}
-void bg_sand_interact(){puts("bg_sand_interact is a stub");}
-void bg_sand_main(){puts("bg_sand_main is a stub");}
-void chkstatus_init(){puts("chkstatus_init is a stub");}
-void chkstatus_main(){puts("chkstatus_main is a stub");}
 void credits_finish(){puts("credits_finish is a stub");}
 void credits_init(){puts("credits_init is a stub");}
 void credits_main(){puts("credits_main is a stub");}
-void debug_main(){puts("debug_main is a stub");}
 void dipSwitches(){puts("dipSwitches is a stub");}
 void effect_draw(){puts("effect_draw is a stub");}
 void ev_effect_dest(){puts("ev_effect_dest is a stub");}
@@ -233,9 +222,6 @@ void ev_minimap_main(){puts("ev_minimap_main is a stub");}
 void ev_name_entry_dest(){puts("ev_name_entry_dest is a stub");}
 void ev_name_entry_init(){puts("ev_name_entry_init is a stub");}
 void ev_name_entry_main(){puts("ev_name_entry_main is a stub");}
-void ev_recplay_dest(){puts("ev_recplay_dest is a stub");}
-void ev_recplay_init(){puts("ev_recplay_init is a stub");}
-void ev_recplay_main(){puts("ev_recplay_main is a stub");}
 void ev_sound_dest(){puts("ev_sound_dest is a stub");}
 void ev_sound_init(){puts("ev_sound_init is a stub");}
 void ev_sound_main(){puts("ev_sound_main is a stub");}
@@ -249,6 +235,8 @@ void func_8002BFCC(){puts("func_8002BFCC is a stub");}
 void func_8002CA5C(){puts("func_8002CA5C is a stub");}
 void func_8002DB10(){puts("func_8002DB10 is a stub");}
 void func_8002DB24(){puts("func_8002DB24 is a stub");}
+void func_8002DB38(){puts("func_8002DB38 is a stub");}
+void func_8002DBC4(){puts("func_8002DBC4 is a stub");}
 void func_8002F0E4(){puts("func_8002F0E4 is a stub");}
 void func_8002FCC0(){puts("func_8002FCC0 is a stub");}
 void func_8002FD68(){puts("func_8002FD68 is a stub");}
@@ -257,31 +245,9 @@ void func_8003026C(){puts("func_8003026C is a stub");}
 void func_80030A50(){puts("func_80030A50 is a stub");}
 void func_800487B4(){puts("func_800487B4 is a stub");}
 void func_800489F8(){puts("func_800489F8 is a stub");}
-void func_80048BD4(){puts("func_80048BD4 is a stub");}
-void func_80048E78(){puts("func_80048E78 is a stub");}
-void func_80048F20(){puts("func_80048F20 is a stub");}
-void func_80048F58(){puts("func_80048F58 is a stub");}
-void func_80048F74(){puts("func_80048F74 is a stub");}
-void func_80049158(){puts("func_80049158 is a stub");}
-void func_8004923C(){puts("func_8004923C is a stub");}
-void func_80049268(){puts("func_80049268 is a stub");}
-void func_800492FC(){puts("func_800492FC is a stub");}
-void func_80049368(){puts("func_80049368 is a stub");}
-void func_800493C4(){puts("func_800493C4 is a stub");}
-void func_80049514(){puts("func_80049514 is a stub");}
-void func_8004964C(){puts("func_8004964C is a stub");}
-void func_800496BC(){puts("func_800496BC is a stub");}
-void func_80049C1C(){puts("func_80049C1C is a stub");}
-void func_80049E7C(){puts("func_80049E7C is a stub");}
-void func_80049F90(){puts("func_80049F90 is a stub");}
-void func_8004B65C(){puts("func_8004B65C is a stub");}
 void func_8004C668(){puts("func_8004C668 is a stub");}
 void func_8004C69C(){puts("func_8004C69C is a stub");}
 void func_8004C6DC(){puts("func_8004C6DC is a stub");}
-void func_8004C70C(){puts("func_8004C70C is a stub");}
-void func_8004C754(){puts("func_8004C754 is a stub");}
-void func_8004C780(){puts("func_8004C780 is a stub");}
-void func_8004C7A8(){puts("func_8004C7A8 is a stub");}
 void func_8004CFF0(){puts("func_8004CFF0 is a stub");}
 void func_8005AD80(){puts("func_8005AD80 is a stub");}
 void func_8005AE1C(){puts("func_8005AE1C is a stub");}
@@ -317,7 +283,6 @@ void func_8009D7E8(){puts("func_8009D7E8 is a stub");}
 void func_8009D7FC(){puts("func_8009D7FC is a stub");}
 void func_8009D98C(){puts("func_8009D98C is a stub");}
 void func_8009DB6C(){puts("func_8009DB6C is a stub");}
-void func_800ACA40(){puts("func_800ACA40 is a stub");}
 void func_800AD180(){puts("func_800AD180 is a stub");}
 void func_800AD38C(){puts("func_800AD38C is a stub");}
 void func_800AE408(){puts("func_800AE408 is a stub");}
@@ -336,11 +301,9 @@ void func_800B6234(){puts("func_800B6234 is a stub");}
 void func_800B62FC(){puts("func_800B62FC is a stub");}
 void func_800B6430(){puts("func_800B6430 is a stub");}
 void func_800B64B0(){puts("func_800B64B0 is a stub");}
-void g_poolInfo(){puts("g_poolInfo is a stub");}
 void gamePauseStatus(){puts("gamePauseStatus is a stub");}
 void gx(){puts("gx is a stub");}
 void *gxCache;
-void init_loading_gct(){puts("init_loading_gct is a stub");}
 void lbl_801147D8(){puts("lbl_801147D8 is a stub");}
 void lbl_801147F4(){puts("lbl_801147F4 is a stub");}
 void lbl_80118AC8(){puts("lbl_80118AC8 is a stub");}
@@ -376,7 +339,6 @@ void lbl_8016F454(){puts("lbl_8016F454 is a stub");}
 void lbl_8016FCDC(){puts("lbl_8016FCDC is a stub");}
 void lbl_801D5A20(){puts("lbl_801D5A20 is a stub");}
 void lbl_802014E0(){puts("lbl_802014E0 is a stub");}
-void lbl_80250A68(){puts("lbl_80250A68 is a stub");}
 void lbl_80292C00_alias(){puts("lbl_80292C00_alias is a stub");}
 void lbl_80292D18(){puts("lbl_80292D18 is a stub");}
 void lbl_802C67D4(){puts("lbl_802C67D4 is a stub");}
@@ -392,7 +354,6 @@ void lbl_802F1ECC(){puts("lbl_802F1ECC is a stub");}
 void lbl_802F1ED0(){puts("lbl_802F1ED0 is a stub");}
 void lbl_802F1ED2(){puts("lbl_802F1ED2 is a stub");}
 void lbl_802F1ED8(){puts("lbl_802F1ED8 is a stub");}
-void lbl_802F1F80(){puts("lbl_802F1F80 is a stub");}
 void lbl_802F2060(){puts("lbl_802F2060 is a stub");}
 u32 lbl_802F2150;
 void *lbl_802F2154;
@@ -412,7 +373,6 @@ void minimap_change_size(){puts("minimap_change_size is a stub");}
 void minimap_draw(){puts("minimap_draw is a stub");}
 void mode_mini_func(){puts("mode_mini_func is a stub");}
 void monkey_sprite_draw(){puts("monkey_sprite_draw is a stub");}
-void pool_alloc(){puts("pool_alloc is a stub");}
 void shadowerase_main(){puts("shadowerase_main is a stub");}
 void sound_init(){puts("sound_init is a stub");}
 void sound_main(){puts("sound_main is a stub");}
@@ -448,7 +408,6 @@ void u_is_name_entry_finished(){puts("u_is_name_entry_finished is a stub");}
 void u_minigame_draw(){puts("u_minigame_draw is a stub");}
 void u_play_music(){puts("u_play_music is a stub");}
 void u_play_sound(){puts("u_play_sound is a stub");}
-void u_read_dvd_file(){puts("u_read_dvd_file is a stub");}
 void u_something_with_lens_flare_1(){puts("u_something_with_lens_flare_1 is a stub");}
 void u_something_with_lens_flare_2(){puts("u_something_with_lens_flare_2 is a stub");}
 void window_init(){puts("window_init is a stub");}
