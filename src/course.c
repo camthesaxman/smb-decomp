@@ -1278,13 +1278,6 @@ static void course_sub_give_play_points_dupe(struct CourseCommand *cmd)
     infoWork.u_currStageId = -1;
 }
 
-struct Struct8027CE24
-{
-    s16 unk0;
-    s16 unk2;
-    u32 unk4;
-};  // size = 8
-
 struct Struct8027CE24 lbl_8027CE24[6];
 
 int u_get_stage_time_limit(void)

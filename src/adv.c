@@ -22,6 +22,9 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "mot_ape.h"
+#include "pool.h"
+#include "ranking_screen.h"
+#include "recplay.h"
 #include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
@@ -289,7 +292,7 @@ void submode_adv_demo_init_func(void)
     event_finish_all();
     free_all_bitmap_groups_except_com();
     for (i = 0; i < 4; i++)
-        g_poolInfo.unkC[i] = 2;
+        g_poolInfo.playerPool.statusList[i] = 2;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;
@@ -1666,12 +1669,12 @@ static void func_80011BD4(void);
 
 void submode_adv_game_ready_init_func(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int r4;
 
     if (gamePauseStatus & 0xA)
         return;
-    func_800489F8();
+    u_load_random_builtin_replay();
     func_80011BD4();
     lbl_80250A68.unk14 = 0;
     lbl_80250A68.unk0[lbl_80250A68.unk14] = func_800119C0();
@@ -1683,7 +1686,7 @@ void submode_adv_game_ready_init_func(void)
         return;
     }
     lbl_80250A68.unk10 = func_8004964C(lbl_80250A68.unk0[lbl_80250A68.unk14]);
-    u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
+    get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp8);
     currStageId = sp8.stageId;
     event_finish_all();
     call_bitmap_load_group(BMP_RNK);
@@ -1725,7 +1728,7 @@ void submode_adv_game_ready_init_func(void)
     func_80088E90();
     hud_show_press_start_textbox(0);
     hud_show_adv_copyright_info(0);
-    func_80088C28();
+    show_rank_title_logo();
     advTutorialInfo.state = 0;
     lbl_802F1BAC = 0;
     r4 = backgroundSongs[backgroundInfo.bgId];
@@ -1757,9 +1760,9 @@ void submode_adv_game_ready_main_func(void)
         func_8000FEC8(30);
     if (--modeCtrl.submodeTimer <= 0)
     {
-        struct ReplayInfo sp8;
+        struct ReplayHeader sp8;
 
-        u_get_replay_info(func_80011A84(), &sp8);
+        get_replay_header(func_80011A84(), &sp8);
         if (gamePauseStatus & (1 << 2))
             printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
         preload_stage_files(sp8.stageId);
@@ -1828,7 +1831,7 @@ void submode_adv_ranking_main_func(void)
 {
     struct Ball *r31;
     struct Ball *r29;
-    struct Ball *r30;
+    struct Ball *ballBackup;
     s8 *r28;
     int i;
 
@@ -1842,7 +1845,7 @@ void submode_adv_ranking_main_func(void)
         destroy_sprite_with_tag(37);
         destroy_sprite_with_tag(39);
         hud_show_adv_copyright_info(1);
-        func_800886E0(0);
+        init_ranking_screen(0);
         if (find_sprite_with_tag(17) != NULL)
             find_sprite_with_tag(17)->userVar = 1;
         advTutorialInfo.state = 1;
@@ -1860,7 +1863,7 @@ void submode_adv_ranking_main_func(void)
     case 1620:
         if (lbl_802F1BA8 == 0)
         {
-            func_800886E0(1);
+            init_ranking_screen(1);
             modeCtrl.unk18 = 0xB4;
         }
         break;
@@ -1873,7 +1876,7 @@ void submode_adv_ranking_main_func(void)
     case 720:
         if (lbl_802F1BA8 == 0)
         {
-            func_800886E0(2);
+            init_ranking_screen(2);
             modeCtrl.unk18 = 0xB4;
         }
         break;
@@ -1890,9 +1893,9 @@ void submode_adv_ranking_main_func(void)
 
     if (r31->state == 4)
     {
-        struct ReplayInfo sp50;
+        struct ReplayHeader sp50;
 
-        u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
+        get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp50);
         if (sp50.flags & (1 << 7))
         {
             r31->state = 5;
@@ -1909,10 +1912,10 @@ void submode_adv_ranking_main_func(void)
     {
         if (modeCtrl.submodeTimer > 180.0)
         {
-            struct ReplayInfo sp38;
+            struct ReplayHeader sp38;
             struct RenderEffect focusEffect;
             float f1;
-            struct ReplayInfo sp8;
+            struct ReplayHeader sp8;
 
             modeCtrl.unk18 = 0x96;
             event_finish(EVENT_STAGE);
@@ -1924,7 +1927,7 @@ void submode_adv_ranking_main_func(void)
             event_finish(EVENT_BALL);
             event_finish(EVENT_SOUND);
             lbl_80250A68.unk0[lbl_80250A68.unk14] = func_80011B98();
-            u_get_replay_info(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
+            get_replay_header(lbl_80250A68.unk0[lbl_80250A68.unk14], &sp38);
             currStageId = sp38.stageId;
             func_80049514(lbl_80250A68.unk0[lbl_80250A68.unk14]);
             infoWork.flags |= INFO_FLAG_REPLAY;
@@ -1965,7 +1968,7 @@ void submode_adv_ranking_main_func(void)
                 f1 = (int)((float)modeCtrl.submodeTimer * 0.5);
             lbl_80250A68.unk10 = f1;
             animate_anim_groups(func_80049F90(lbl_80250A68.unk10, lbl_80250A68.unk0[lbl_80250A68.unk14]));
-            u_get_replay_info(func_80011A84(), &sp8);
+            get_replay_header(func_80011A84(), &sp8);
             if (gamePauseStatus & (1 << 2))
                 printf("/*-- pre_load_stage(%d) --*/\n", sp8.stageId);
             preload_stage_files(sp8.stageId);
@@ -1994,10 +1997,10 @@ void submode_adv_ranking_main_func(void)
         u_play_music(modeCtrl.submodeTimer, 2);
     }
 
-    r30 = currentBallStructPtr;
-    r28 = g_poolInfo.unkC;
+    ballBackup = currentBallStructPtr;
+    r28 = g_poolInfo.playerPool.statusList;
     r29 = &ballInfo[0];
-    for (i = 0; i < g_poolInfo.unk8; i++, r29++, r28++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, r29++, r28++)
     {
         if (*r28 == 2)
         {
@@ -2010,7 +2013,7 @@ void submode_adv_ranking_main_func(void)
             }
         }
     }
-    currentBallStructPtr = r30;
+    currentBallStructPtr = ballBackup;
 
     if (--modeCtrl.submodeTimer <= 0)
     {
@@ -2026,12 +2029,12 @@ void submode_adv_ranking_main_func(void)
 
 static int func_800119C0(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int i;
 
     for (i = lbl_802F02EC + 1; i < 7; i++)
     {
-        u_get_replay_info(i, &sp8);
+        get_replay_header(i, &sp8);
         if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
             break;
     }
@@ -2039,13 +2042,13 @@ static int func_800119C0(void)
     {
         for (i = 0; i < lbl_802F02EC; i++)
         {
-            u_get_replay_info(i, &sp8);
+            get_replay_header(i, &sp8);
             if ((sp8.flags & (1 << 4)) && (sp8.flags & 1))
                 break;
         }
     }
     lbl_802F02EC = i;
-    u_get_replay_info(lbl_802F02EC, &sp8);
+    get_replay_header(lbl_802F02EC, &sp8);
     if (sp8.stageId == 0)
         sp8.stageId = 1;  // pointless
     return lbl_802F02EC;
@@ -2053,14 +2056,14 @@ static int func_800119C0(void)
 
 static int func_80011A84(void)
 {
-    struct ReplayInfo sp8;
+    struct ReplayHeader sp8;
     int i;
 
     for (i = lbl_802F02F0 + 1; i < 7; i++)
     {
         if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
             continue;
-        u_get_replay_info(i, &sp8);
+        get_replay_header(i, &sp8);
         if (sp8.flags & 0x83)
             break;
     }
@@ -2070,7 +2073,7 @@ static int func_80011A84(void)
         {
             if (i == lbl_802F02EC || func_8004964C(i) < 300.0)
                 continue;
-            u_get_replay_info(i, &sp8);
+            get_replay_header(i, &sp8);
             if (sp8.flags & 0x83)
                 break;
         }
@@ -2078,7 +2081,7 @@ static int func_80011A84(void)
             i = lbl_802F02EC;
     }
     lbl_802F02F0 = i;
-    u_get_replay_info(lbl_802F02F0, &sp8);
+    get_replay_header(lbl_802F02F0, &sp8);
     if (sp8.stageId == ST_000_DUMMY)
         sp8.stageId = ST_001_PLAIN;  // pointless
     lbl_802F1BC4 = 1;
@@ -2157,10 +2160,10 @@ void submode_adv_start_main_func(void)
 
 void func_80011D90(void)
 {
-    g_poolInfo.unkC[0] = 2;
-    g_poolInfo.unkC[1] = 0;
-    g_poolInfo.unkC[2] = 0;
-    g_poolInfo.unkC[3] = 0;
+    g_poolInfo.playerPool.statusList[0] = 2;
+    g_poolInfo.playerPool.statusList[1] = 0;
+    g_poolInfo.playerPool.statusList[2] = 0;
+    g_poolInfo.playerPool.statusList[3] = 0;
     modeCtrl.playerCount = 1;
     modeCtrl.unk30 = 1;
     modeCtrl.gameType = GAMETYPE_MAIN_NORMAL;

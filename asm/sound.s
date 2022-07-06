@@ -8067,11 +8067,6 @@ lbl_80203F84:
 .global lbl_80205688
 lbl_80205688:
 	.skip 0x300
-.global g_poolInfo
-g_poolInfo:
-	.skip 0x1D4
-glabel lbl_80205B5C
-	.skip 0x244
 
 .section .sdata2
 

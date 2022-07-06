@@ -330,23 +330,6 @@ struct Ape
     s16 unkC2;
 };  // size = 0xC4
 
-struct PoolInfo
-{
-             u8 filler0[8];
-             s32 unk8;
-             s8 *unkC;
-             u8 unk10[0x18-0x10];
-             s32 itemPoolUpperBound; // Max index (+1) of items in item pool
-             s8 *itemStatusList;
-             u8 unk20[8];
-             s32 unk28;
-             s8 *unk2C;
-             u8 unk30[4];
-             u32 unk34;
-             s32 unk38;
-    /*0x3C*/ s8 *spriteStatusList;
-};
-
 struct Struct80176434
 {
     s32 unk0;
@@ -363,18 +346,6 @@ struct AnimGroupInfo
     /*0x1E*/ S16Vec prevRot;
     /*0x24*/ Mtx transform;     // Transform from anim group space to world space
     /*0x54*/ Mtx prevTransform; // Previous frame transform from animGroup space to world space
-};
-
-struct ReplayInfo
-{
-    u16 flags;  // (1 << 5) = expert, (1 << 6) = master
-    u8 stageId;
-    u8 difficulty;  // 0 = beginner, 1 = advanced, 2 = expert
-    u8 floorNum;
-    u8 unk5;
-    char unk6[10];
-    u32 unk10;
-    u8 filler14[4];
 };
 
 struct RaycastHit
@@ -484,19 +455,6 @@ struct ColiEdge
     // Coplanar with triangle, points inside triangle
     Vec2d normal;
 };
-
-struct Struct800496BC
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s16 unk12;
-    s16 unk14;
-    s16 unk16;
-    u32 unk18;
-    float unk1C;
-};  // size = 0x20
 
 typedef void (*Struct80206DEC_Func)(void);
 
@@ -1039,13 +997,20 @@ struct Struct80089A04
     s32 unk30[4];
 };
 
-struct Struct802B37F0_sub2_child
+struct ScoreRecord
 {
-    char unk0[4];
-    u32 unk4;
+    char initials[4];
+    u32 score;
     u8 filler8[4];
-    u8 unkC;
-    s8 unkD;
+    u8 floorNum;
+    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
+};
+
+struct Struct80250A68
+{
+    s32 unk0[4];
+    float unk10;
+    s32 unk14;
 };
 
 #endif

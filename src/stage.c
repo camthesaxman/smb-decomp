@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MATHUTIL_SIN_INT_PARAM
 #include "background.h"
 #include "bitmap.h"
 #include "camera.h"
@@ -18,6 +17,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "preview.h"
+#include "recplay.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "light.h"
@@ -2354,7 +2354,7 @@ void draw_stage_preview(void)
         mathutil_mtxA_scale_s(lbl_802F1EC4 + 15.0);
         GXLoadPosMtxImm(mathutilData->mtxA, 0);
         bitmap_init_tev();
-        func_800AD180(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
+        preview_draw(&stagePreview, -1, 0, -1.0f, lbl_802F3768, 0.0f, 2.0f, -2.0f);
     }
 }
 

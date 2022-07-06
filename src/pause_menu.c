@@ -9,6 +9,8 @@
 #include "info.h"
 #include "input.h"
 #include "mode.h"
+#include "pool.h"
+#include "recplay.h"
 #include "sprite.h"
 
 struct PauseMenuState pauseMenuState;

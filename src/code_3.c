@@ -6,7 +6,6 @@
 #include "gma.h"
 #include "gxutil.h"
 #include "light.h"
-#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mot_ape.h"
 #include "nl2ngc.h"

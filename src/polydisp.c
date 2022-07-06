@@ -22,6 +22,7 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "pool.h"
 #include "rend_efc.h"
 #include "sprite.h"
 #include "stage.h"
@@ -565,8 +566,8 @@ void draw_normal_game_scene(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            if (g_poolInfo.unkC[i] == 0
-             || g_poolInfo.unkC[i] == 4
+            if (g_poolInfo.playerPool.statusList[i] == 0
+             || g_poolInfo.playerPool.statusList[i] == 4
              || (cameraInfo[i].flags & (1 << 6)))
             {
                 if (!(cameraInfo[i].flags & (1 << 7)))
@@ -659,13 +660,13 @@ u16 lbl_802F02E0[4] = { ARROW_1P, ARROW_2P, ARROW_3P, ARROW_4P };
 void func_8000C8D4(void)
 {
     struct Ball *ball;
-    s8 *r25 = g_poolInfo.unkC;
+    s8 *r25 = g_poolInfo.playerPool.statusList;
     int i;
     Vec sp8;
     float f27;
 
     ball = ballInfo;
-    for (i = 0; i < g_poolInfo.unk8; i++, ball++, r25++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, ball++, r25++)
     {
         if (*r25 == 0 || *r25 == 4)
             continue;
@@ -773,7 +774,7 @@ void draw_continue_scene(void)
         Vec sp20;
         Vec sp14;
         Vec sp8;
-        s16 r30;
+        int r30;
         int i;
         float f28 = r4 / 60.0f;
 
@@ -850,7 +851,7 @@ void draw_results_scene(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            if ((g_poolInfo.unkC[i] == 0 || g_poolInfo.unkC[i] == 4)
+            if ((g_poolInfo.playerPool.statusList[i] == 0 || g_poolInfo.playerPool.statusList[i] == 4)
              && !(cameraInfo[i].flags & (1 << 6)))
                 continue;
 

@@ -13,6 +13,15 @@ struct Struct8027CE18
 
 extern struct Struct8027CE18 lbl_8027CE18;
 
+struct Struct8027CE24
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
+};  // size = 8
+
+extern struct Struct8027CE24 lbl_8027CE24[6];
+
 extern u32 g_playPointsEarned;
 extern s8 g_currFloorStreak;
 extern u32 g_totalPlayPoints;

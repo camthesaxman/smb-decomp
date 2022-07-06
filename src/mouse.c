@@ -2,10 +2,11 @@
 #include <dolphin.h>
 
 #include "global.h"
-#include "mouse.h"
 #include "bitmap.h"
-#include "sprite.h"
 #include "input.h"
+#include "mouse.h"
+#include "pool.h"
+#include "sprite.h"
 
 struct Mouse {
     s16 posHorizontal;
@@ -107,10 +108,10 @@ void ev_mouse_main(void)
             } else {
                 mouse.spriteIdx = INVALID_SPRITE_INDEX;
                 _spriteInfo = &spriteInfo[0];
-                _statusList = g_poolInfo.spriteStatusList;
+                _statusList = g_poolInfo.spritePool.statusList;
                 for (
                     i = 0;
-                    i < g_poolInfo.unk38;
+                    i < g_poolInfo.spritePool.count;
                     i++, _spriteInfo++, _statusList++
                     ) {
                     if (

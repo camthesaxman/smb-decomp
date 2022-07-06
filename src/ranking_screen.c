@@ -6,39 +6,28 @@
 #include "bitmap.h"
 #include "gxcache.h"
 #include "gxutil.h"
-#define MATHUTIL_SIN_INT_PARAM
 #include "mathutil.h"
 #include "mode.h"
+#include "ranking_screen.h"
+#include "recplay.h"
 #include "sprite.h"
 
-static void lbl_800889AC(s8 *, struct Sprite *);
-static void lbl_800889F0(struct Sprite *);
+static void ranking_screen_sprite_main(s8 *, struct Sprite *);
+static void ranking_screen_sprite_draw(struct Sprite *);
 static int func_80088AF4(void);
-static void lbl_80088CB0(s8 *, struct Sprite *);
+static void rnk_title_sprite_main(s8 *, struct Sprite *);
 static void lbl_80089070(s8 *, struct Sprite *);
 static void lbl_800890B4(struct Sprite *);
 static void func_800890D4(void);
 static void func_8008923C(void);
 
-struct Struct802B37F0_sub
+struct RankingEntry
 {
-    s16 unk0;
-    s16 unk2;
-    s16 unk4;
-    u8 filler6[2];
-    float unk8;
-    float unkC;
-    float unk10;
-    float unk14;
-};
-
-struct Struct802B37F0_sub2
-{
-    float unk0;
+    float x;
     float unk4;
     s32 unk8;
-    struct Struct802B37F0_sub2_child *unkC;
-    struct Struct802B37F0_sub2_child *unk10;
+    struct ScoreRecord *unkC;
+    struct ScoreRecord *unk10;
 };
 
 static struct Color3f lbl_801C7948[] =
@@ -71,12 +60,15 @@ static struct Struct802B37F0_sub3 lbl_801C7948_3[] =
     { 0x33, 0x00D1 },
 };
 
-static s16 lbl_801C79B8[] =
+static s16 s_rankingBallBmpIds[] =
 {
-    0x0307, 0x0302,
-    0x0306, 0x0305,
-    0x0304, 0x0306,
-    0x0303, 0x0000,
+    BMP_RNK_rnk_ball_r,
+    BMP_RNK_rnk_ball_a,
+    BMP_RNK_rnk_ball_n,
+    BMP_RNK_rnk_ball_k,
+    BMP_RNK_rnk_ball_i,
+    BMP_RNK_rnk_ball_n,
+    BMP_RNK_rnk_ball_g,
 };
 
 struct Struct801C79C8
@@ -97,6 +89,18 @@ static struct Struct801C79C8 lbl_801C79C8[] =
     { 490, 64, 0 },
 };
 
+struct RankingLetterBall
+{
+    s16 bmpId;
+    s16 rotation;
+    s16 unk4;
+    u8 filler6[2];
+    float x;
+    float unkC;
+    float unk10;
+    float unk14;
+};
+
 static struct
 {
     s32 unk0;
@@ -107,8 +111,8 @@ static struct
     float unk14;
     u32 unk18;
     s32 unk1C;
-    struct Struct802B37F0_sub unk20[7];
-    struct Struct802B37F0_sub2 unkC8[5];
+    struct RankingLetterBall letterBalls[7];
+    struct RankingEntry rankingEntries[5];
     s32 unk12C;
     s32 unk130;
     struct Color3f unk134;
@@ -119,7 +123,8 @@ static struct
     void *unk168;
 } lbl_802B37F0;
 
-static void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unused, float arg8)
+// Draws the horizontal bars that appear at the top and bottom of the ranking screen
+static void draw_title_bar(int x1, int y1, int x2, int y2, struct Color3f *arg4, int unused, float arg8)
 {
     float r1, g1, b1;
     float r2, g2, b2;
@@ -198,12 +203,11 @@ static void func_800870EC(int x1, int y1, int x2, int y2, struct Color3f *arg4, 
     GXEnd();
 }
 
-static void func_800874B0(void)
+static void update_ranking_screen(void)
 {
     int i;
-    struct Struct802B37F0_sub2 *temp_r3;
-    struct Struct802B37F0_sub *var_r28;
-    struct Struct802B37F0_sub *var_r29;
+    struct RankingEntry *entry;
+    struct RankingLetterBall *letterBall;
 
     if (!(gamePauseStatus & 0xA))
     {
@@ -240,13 +244,13 @@ static void func_800874B0(void)
                 lbl_802B37F0.unk4 = 4;
                 lbl_802B37F0.unk8 = 0;
                 lbl_802B37F0.unk1C = 1;
-                var_r28 = lbl_802B37F0.unk20;
-                for (i = 7; i > 0; i--, var_r28++)
+                letterBall = lbl_802B37F0.letterBalls;
+                for (i = 7; i > 0; i--, letterBall++)
                 {
-                    var_r28->unk2 = rand() & 0x7FFF;
-                    var_r28->unk4 = ((rand() & 0x3FFF) - 0x1FFF);
-                    var_r28->unkC = -32.0 + -128.0 * (rand() / 32767.0f);
-                    var_r28->unk14 = 16.0 * (rand() / 32767.0f);
+                    letterBall->rotation = rand() & 0x7FFF;
+                    letterBall->unk4 = ((rand() & 0x3FFF) - 0x1FFF);
+                    letterBall->unkC = -32.0 + -128.0 * (rand() / 32767.0f);
+                    letterBall->unk14 = 16.0 * (rand() / 32767.0f);
                 }
             }
             lbl_802B37F0.unk10 = 1.0f;
@@ -258,13 +262,13 @@ static void func_800874B0(void)
             break;
         case 5:
             lbl_802B37F0.unk4 = 7;
-            temp_r3 = lbl_802B37F0.unkC8;
-            for (i = 0; i < 5; i++, temp_r3++)
+            entry = lbl_802B37F0.rankingEntries;
+            for (i = 0; i < 5; i++, entry++)
             {
-                if (temp_r3->unk0 == 640.0f)
+                if (entry->x == 640.0f)
                 {
-                    temp_r3->unk8 = i * 12;
-                    temp_r3->unk4 = 0.0f;
+                    entry->unk8 = i * 12;
+                    entry->unk4 = 0.0f;
                 }
             }
             break;
@@ -277,29 +281,31 @@ static void func_800874B0(void)
         }
         if (lbl_802B37F0.unk1C != 0)
         {
-            var_r29 = lbl_802B37F0.unk20;
-            for (i = 7; i > 0; i--, var_r29++)
+            struct RankingLetterBall *letterBall;
+
+            letterBall = lbl_802B37F0.letterBalls;
+            for (i = 7; i > 0; i--, letterBall++)
             {
-                var_r29->unk14 += 0.512;
-                var_r29->unkC += var_r29->unk14;
-                var_r29->unk4 -= var_r29->unk4 >> 5;
-                var_r29->unk2 += var_r29->unk4;
-                if (var_r29->unkC > var_r29->unk10)
+                letterBall->unk14 += 0.512;
+                letterBall->unkC += letterBall->unk14;
+                letterBall->unk4 -= letterBall->unk4 >> 5;
+                letterBall->rotation += letterBall->unk4;
+                if (letterBall->unkC > letterBall->unk10)
                 {
-                    var_r29->unkC = var_r29->unk10;
-                    if (var_r29->unk14 > 0.0)
-                        var_r29->unk14 *= -0.15 * (3.0 - mathutil_sin(var_r29->unk2 + 0x4000));
-                    if (var_r29->unk2 > -16 && var_r29->unk2 < 16)
+                    letterBall->unkC = letterBall->unk10;
+                    if (letterBall->unk14 > 0.0)
+                        letterBall->unk14 *= -0.15 * (3.0 - mathutil_sin(letterBall->rotation + 0x4000));
+                    if (letterBall->rotation > -16 && letterBall->rotation < 16)
                     {
-                        if (var_r29->unk2 < 0)
-                            var_r29->unk2++;
-                        else if (var_r29->unk2 > 0)
-                            var_r29->unk2--;
+                        if (letterBall->rotation < 0)
+                            letterBall->rotation++;
+                        else if (letterBall->rotation > 0)
+                            letterBall->rotation--;
                     }
                     else
-                        var_r29->unk2 -= var_r29->unk2 >> 4;
-                    var_r29->unk4 >>= 2;
-                    var_r29->unk4 -= var_r29->unk2 >> 4;
+                        letterBall->rotation -= letterBall->rotation >> 4;
+                    letterBall->unk4 >>= 2;
+                    letterBall->unk4 -= letterBall->rotation >> 4;
                 }
             }
         }
@@ -317,36 +323,36 @@ static void func_800874B0(void)
                 lbl_802B37F0.unkC = lbl_802B37F0.unk10;
         }
 
-        temp_r3 = lbl_802B37F0.unkC8;
-        for (i = 0; i < 5; i++, temp_r3++)
+        entry = lbl_802B37F0.rankingEntries;
+        for (i = 0; i < 5; i++, entry++)
         {
-            if (temp_r3->unkC != 0)
+            if (entry->unkC != NULL)
             {
-                if (temp_r3->unk8 > 0)
-                    temp_r3->unk8--;
+                if (entry->unk8 > 0)
+                    entry->unk8--;
                 else
                 {
-                    if (temp_r3->unk10 != 0)
-                        temp_r3->unk4 = -562.0f;
-                    if (temp_r3->unk0 > temp_r3->unk4)
+                    if (entry->unk10 != NULL)
+                        entry->unk4 = -562.0f;
+                    if (entry->x > entry->unk4)
                     {
-                        temp_r3->unk0 -= 21.333333333333332;
-                        if (temp_r3->unk0 < temp_r3->unk4)
-                            temp_r3->unk0 = temp_r3->unk4;
+                        entry->x -= 21.333333333333332;
+                        if (entry->x < entry->unk4)
+                            entry->x = entry->unk4;
                     }
-                    else if (temp_r3->unk0 < temp_r3->unk4)
+                    else if (entry->x < entry->unk4)
                     {
-                        temp_r3->unk0 += 21.333333333333332;
-                        if (temp_r3->unk0 > temp_r3->unk4)
-                            temp_r3->unk0 = temp_r3->unk4;
+                        entry->x += 21.333333333333332;
+                        if (entry->x > entry->unk4)
+                            entry->x = entry->unk4;
                     }
-                    if (temp_r3->unk0 == -562.0f)
+                    if (entry->x == -562.0f)
                     {
-                        temp_r3->unk0 = 640.0f;
-                        temp_r3->unk4 = 0.0f;
-                        temp_r3->unkC = temp_r3->unk10;
-                        temp_r3->unk10 = 0;
-                        temp_r3->unk8 = 0;
+                        entry->x = 640.0f;
+                        entry->unk4 = 0.0f;
+                        entry->unkC = entry->unk10;
+                        entry->unk10 = 0;
+                        entry->unk8 = 0;
                     }
                 }
             }
@@ -374,7 +380,7 @@ static void func_800874B0(void)
     }
 }
 
-static void func_80087B10(void)
+static void draw_ranking_screen(void)
 {
     struct NaomiSpriteParams params;
     u8 unused[0x88];
@@ -383,9 +389,9 @@ static void func_80087B10(void)
     int y;
     int x;
     int var_r29;
-    struct Struct802B37F0_sub2 *var_r28;
-    struct Struct802B37F0_sub2_child *temp_r23;
-    struct Struct802B37F0_sub *var_r24;
+    struct RankingEntry *entry;
+    struct ScoreRecord *record;
+    struct RankingLetterBall *letterBall;
 
     if (lbl_802B37F0.unk1C != 0)
     {
@@ -402,13 +408,14 @@ static void func_80087B10(void)
         params.u2 = 1.0f;
         params.v2 = 1.0f;
 
-        var_r24 = lbl_802B37F0.unk20;
-        for (var_r22 = 7; var_r22 > 0; var_r22--, var_r24++)
+        // draw the balls that spell out "RANKING"
+        letterBall = lbl_802B37F0.letterBalls;
+        for (var_r22 = 7; var_r22 > 0; var_r22--, letterBall++)
         {
-            params.bmpId = var_r24->unk0;
-            params.rotation = var_r24->unk2;
-            params.x = (int)var_r24->unk8;
-            params.y = (int)(var_r24->unkC + lbl_802B37F0.unk14);
+            params.bmpId = letterBall->bmpId;
+            params.rotation = letterBall->rotation;
+            params.x = (int)letterBall->x;
+            params.y = (int)(letterBall->unkC + lbl_802B37F0.unk14);
             draw_naomi_sprite(&params);
         }
     }
@@ -476,27 +483,37 @@ static void func_80087B10(void)
     params.mulColor = RGBA(255, 255, 255, 0);
     params.addColor = 0;
 
+    // Draw score list
     var_r29 = 160.0f + lbl_802B37F0.unk14;
-    var_r28 = lbl_802B37F0.unkC8;
-    for (var_r30 = 0; var_r30 < 5; var_r30++, var_r29 += 46, var_r28++)
+    entry = lbl_802B37F0.rankingEntries;
+    for (var_r30 = 0; var_r30 < 5; var_r30++, var_r29 += 46, entry++)
     {
-        temp_r23 = var_r28->unkC;
-        if (temp_r23 != NULL)
+        record = entry->unkC;
+        if (record != NULL)
         {
-            x = var_r28->unk0;
+            x = entry->x;
+
+            // rank
             set_text_font(FONT_ICON_RNK);
-            set_text_pos(x + 0x41, var_r29);
-            u_draw_char(var_r30 + 0x31);
+            set_text_pos(x + 65, var_r29);
+            u_draw_char('1' + var_r30);
+
+            // initials
             set_text_font(FONT_ASC_30x31);
             set_text_pos(x + 172, var_r29);
-            u_draw_text(temp_r23->unk0);
-            func_80088230(var_r30, x, var_r29, temp_r23);
+            u_draw_text(record->initials);
+
+            // floor
+            draw_ranking_floor_num(var_r30, x, var_r29, record);
+
+            // score number
             set_text_font(FONT_NUM_26x31);
             set_text_pos(x + 396, var_r29);
-            func_80072AC0("%07d", temp_r23->unk4);
+            func_80072AC0("%07d", record->score);
 
+            // line start
             params.x = x + 39;
-            params.y = var_r29 + 0x20;
+            params.y = var_r29 + 32;
             params.scaleX = 1.0f;
             params.scaleY = 0.0234375f;
             params.u1 = 0.0f;
@@ -505,6 +522,7 @@ static void func_80087B10(void)
             params.v2 = 1.0f;
             draw_naomi_sprite(&params);
 
+            // line middle
             params.x += 256.0f;
             params.scaleX = 0.1953125f;
             params.u1 = 0.0f;
@@ -513,6 +531,7 @@ static void func_80087B10(void)
             params.v2 = 0.953125f;
             draw_naomi_sprite(&params);
 
+            // line end
             params.x += 50.0f;
             params.scaleX = 1.0f;
             params.u1 = 0.0f;
@@ -523,10 +542,10 @@ static void func_80087B10(void)
         }
     }
 
-    func_800870EC(0, 448, lbl_802B37F0.unk12C, 480, &lbl_802B37F0.unk134, 0, 1.02f);
-    func_800870EC(640 - lbl_802B37F0.unk12C, 0, 640, 32, &lbl_802B37F0.unk134, 0, 1.02f);
-    func_800870EC(0, 448, lbl_802B37F0.unk12C, 450, &lbl_802B37F0.unk14C, 0, 1.01f);
-    func_800870EC(640 - lbl_802B37F0.unk12C, 30, 640, 32, &lbl_802B37F0.unk14C, 0, 1.01f);
+    draw_title_bar(0, 448, lbl_802B37F0.unk12C, 480, &lbl_802B37F0.unk134, 0, 1.02f);
+    draw_title_bar(640 - lbl_802B37F0.unk12C, 0, 640, 32, &lbl_802B37F0.unk134, 0, 1.02f);
+    draw_title_bar(0, 448, lbl_802B37F0.unk12C, 450, &lbl_802B37F0.unk14C, 0, 1.01f);
+    draw_title_bar(640 - lbl_802B37F0.unk12C, 30, 640, 32, &lbl_802B37F0.unk14C, 0, 1.01f);
 
     bitmap_init_tev();
 
@@ -543,7 +562,7 @@ static void func_80087B10(void)
     params.flags = 5;
     params.mulColor = RGBA(255, 255, 255, 0);
     params.addColor = 0;
-    params.bmpId = 0x311;
+    params.bmpId = BMP_RNK_rnk_obiword;
     params.x = 0x298 - lbl_802B37F0.unk12C;
     params.y = 7.0f;
     draw_naomi_sprite(&params);
@@ -552,12 +571,12 @@ static void func_80087B10(void)
     draw_naomi_sprite(&params);
 }
 
-void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_child *arg3)
+void draw_ranking_floor_num(int rank, int startX, int startY, struct ScoreRecord *record)
 {
     struct NaomiSpriteParams params;
     char text[8];
-    double x = (float)arg1;
-    float  y = (float)arg2;
+    double x = (float)startX;
+    float  y = (float)startY;
     float temp_f29;
     s32 r, g, b;
     u8 unused[4];
@@ -572,24 +591,24 @@ void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_chil
     params.mulColor = RGBA(255, 255, 255, 0);
     params.addColor = 0;
 
-    switch (arg3->unkD)
+    switch (record->unkD)
     {
     case 0:
         set_text_font(FONT_NUM_26x31);
-        if (arg3->unkC == 0xFF)
+        if (record->floorNum == 0xFF)
         {
             set_text_pos(302.0 + x, y);
             u_draw_text("--");
             return;
         }
-        sprintf(text, "%d", arg3->unkC);
+        sprintf(text, "%d", record->floorNum);
         len = strlen(text);
         set_text_pos(328.0 + x - len * 13.0, y);
         u_draw_text(text);
         break;
     case 1:
         set_text_font(FONT_NUM_26x31);
-        sprintf(text, "%d", arg3->unkC);
+        sprintf(text, "%d", record->floorNum);
         set_text_pos(32.0 + (x = 328.0 + x - 29.0), y);
         u_draw_text(text);
         params.bmpId = BMP_RNK_rnk_ex_icon;
@@ -615,7 +634,7 @@ void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_chil
         params.v1 = 0.0f;
         params.u2 = params.u1 + 0.7265625;
         params.v2 = 0.96875f;
-        var = ((unpausedFrameCounter << 10) + arg0);
+        var = ((unpausedFrameCounter << 10) + rank);
         temp_f29 = 384.0 * (mathutil_sin(var) - 0.5);
         if (temp_f29 > 0.0)
         {
@@ -641,7 +660,7 @@ void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_chil
             params.addColor = RGBA(r, g, b, 0);
         }
         draw_naomi_sprite(&params);
-        sprintf(text, "%d", arg3->unkC);
+        sprintf(text, "%d", record->floorNum);
         len = strlen(text);
         set_text_pos(x - len * 13.0, y);
         func_80071B1C(0.09f);
@@ -655,7 +674,7 @@ void func_80088230(int arg0, int arg1, int arg2, struct Struct802B37F0_sub2_chil
 void func_800885EC(void)
 {
     int i;
-    struct Struct802B37F0_sub *var;
+    struct RankingLetterBall *var;
     struct Struct801C79C8 *var2;
     s16 *var3;
 
@@ -664,14 +683,14 @@ void func_800885EC(void)
     lbl_802B37F0.unk1C = 0;
 
     var2 = lbl_801C79C8;
-    var = lbl_802B37F0.unk20;
-    var3 = lbl_801C79B8;
+    var = lbl_802B37F0.letterBalls;
+    var3 = s_rankingBallBmpIds;
 
     for (i = 0; i < 7; i++, var++)
     {
         var2 = &lbl_801C79C8[i];
-        var->unk0 = var3[i];
-        var->unk8 = lbl_801C79C8[i].unk0;
+        var->bmpId = var3[i];
+        var->x = lbl_801C79C8[i].unk0;
         var->unk10 = lbl_801C79C8[i].unk4;
         !var2;
     }
@@ -690,12 +709,12 @@ asm void func_800885EC(void)
 #pragma peephole on
 #endif
 
-void func_800886E0(int arg0)
+void init_ranking_screen(int difficulty)
 {
     int temp_r31;
     struct Sprite *sprite;
-    struct Struct802B37F0_sub2_child *temp_r4;
-    struct Struct802B37F0_sub2 *temp_r5;
+    struct ScoreRecord *record;
+    struct RankingEntry *entry;
     int i;
     int var;
 
@@ -705,16 +724,16 @@ void func_800886E0(int arg0)
         sprite = create_sprite();
         if (sprite != NULL)
         {
-            sprite->mainFunc = lbl_800889AC;
-            sprite->drawFunc = lbl_800889F0;
+            sprite->mainFunc = ranking_screen_sprite_main;
+            sprite->drawFunc = ranking_screen_sprite_draw;
             strcpy(sprite->text, "RANKING");
         }
     }
     lbl_802B37F0.unk0 = 1;
     lbl_802B37F0.unk4 = 1;
-    lbl_802B37F0.unk140 = lbl_801C7948[arg0];
-    lbl_802B37F0.unk158 = lbl_801C7948_2[arg0];
-    lbl_802B37F0.unk164 = lbl_801C7948_3[arg0];
+    lbl_802B37F0.unk140 = lbl_801C7948[difficulty];
+    lbl_802B37F0.unk158 = lbl_801C7948_2[difficulty];
+    lbl_802B37F0.unk164 = lbl_801C7948_3[difficulty];
     switch (gameMode)
     {
     case 5:
@@ -726,25 +745,25 @@ void func_800886E0(int arg0)
         lbl_802B37F0.unk18 = 0;
         break;
     }
-    lbl_802B37F0.unk168 = func_800AEC74(arg0, 0);
+    lbl_802B37F0.unk168 = func_800AEC74(difficulty, 0);
 
     var = 0;
-    temp_r5 = lbl_802B37F0.unkC8;
-    temp_r4 = lbl_802B37F0.unk168;
-    for (i = 0; i < 5; i++, temp_r5++, temp_r4++)
+    entry = lbl_802B37F0.rankingEntries;
+    record = lbl_802B37F0.unk168;
+    for (i = 0; i < 5; i++, entry++, record++)
     {
-        temp_r5->unk8 = var;
+        entry->unk8 = var;
         if (temp_r31 != 0)
         {
-            temp_r5->unkC = temp_r4;
-            temp_r5->unk10 = 0;
-            temp_r5->unk4 = 640.0f;
-            temp_r5->unk0 = temp_r5->unk4;
+            entry->unkC = record;
+            entry->unk10 = 0;
+            entry->unk4 = 640.0f;
+            entry->x = entry->unk4;
         }
-        else if (temp_r5->unkC != 0)
-            temp_r5->unk10 = temp_r4;
+        else if (entry->unkC != NULL)
+            entry->unk10 = record;
         else
-            temp_r5->unkC = temp_r4;
+            entry->unkC = record;
         var += 12;
     }
 }
@@ -760,48 +779,48 @@ void func_8008897C(int arg0)
     }
 }
 
-static void lbl_800889AC(s8 *arg0, struct Sprite *sprite)
+static void ranking_screen_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
-    func_800874B0();
+    update_ranking_screen();
     if (lbl_802B37F0.unk0 == 0)
         *arg0 = 0;
 }
 
-static void lbl_800889F0(struct Sprite *sprite)
+static void ranking_screen_sprite_draw(struct Sprite *sprite)
 {
-    func_80087B10();
+    draw_ranking_screen();
 }
 
 void func_80088A10(void)
 {
-    struct Struct802B37F0_sub2 *temp_r4;
+    struct RankingEntry *entry;
     int i;
     int var;
 
     var = 0;
-    temp_r4 = lbl_802B37F0.unkC8;
-    for (i = 0; i < 5; i++, temp_r4++)
+    entry = lbl_802B37F0.rankingEntries;
+    for (i = 0; i < 5; i++, entry++)
     {
-        temp_r4->unk4 = -562.0f;
-        temp_r4->unk10 = 0;
-        if (temp_r4->unk0 == 0.0f && temp_r4->unk8 == 0)
-            temp_r4->unk8 = var;
+        entry->unk4 = -562.0f;
+        entry->unk10 = 0;
+        if (entry->x == 0.0f && entry->unk8 == 0)
+            entry->unk8 = var;
         var += 12;
     }
 }
 
 static int func_80088AF4(void)
 {
-    struct Struct802B37F0_sub2 *temp_r3;
+    struct RankingEntry *entry;
     int i;
     int var = TRUE;
 
-    temp_r3 = lbl_802B37F0.unkC8;
-    for (i = 0; i < 5; i++, temp_r3++)
+    entry = lbl_802B37F0.rankingEntries;
+    for (i = 0; i < 5; i++, entry++)
     {
-        if (temp_r3->unkC != NULL
-         && temp_r3->unk4 != temp_r3->unk0
-         && temp_r3->unk8 <= 0)
+        if (entry->unkC != NULL
+         && entry->unk4 != entry->x
+         && entry->unk8 <= 0)
         {
             var = FALSE;
             break;
@@ -818,7 +837,8 @@ int func_80088C18(void)
     return lbl_802B37F0.unk12C;
 }
 
-void func_80088C28(void)
+// Shows the Super Monkey Ball logo during the ranking phase of the title screen
+void show_rank_title_logo(void)
 {
     struct Sprite *sprite;
 
@@ -833,9 +853,9 @@ void func_80088C28(void)
         sprite->mulG = 0xFF;
         sprite->mulB = 0xFF;
         sprite->textAlign = 0;
-        sprite->bmpId = 0x30C;
+        sprite->bmpId = BMP_RNK_rnk_monkeyball_logo;
         sprite->unk4C = 0.26f;
-        sprite->mainFunc = lbl_80088CB0;
+        sprite->mainFunc = rnk_title_sprite_main;
         strcpy(sprite->text, "RNK TITILE");
     }
 }
@@ -850,13 +870,13 @@ static struct
     float unk14;
     s16 unk18;
     u8 filler1A[2];
-    struct ReplayInfo unk1C;
+    struct ReplayHeader unk1C;
     u32 unk34;
     u32 unk38;
     char floorName[0x64-0x3C];
 } lbl_802B395C;
 
-static void lbl_80088CB0(s8 *arg0, struct Sprite *sprite)
+static void rnk_title_sprite_main(s8 *arg0, struct Sprite *sprite)
 {
     float temp_f4 = lbl_802B37F0.unk12C;
 
@@ -896,7 +916,7 @@ void func_80088E90(void)
     lbl_802B395C.unk0 = 0;
     lbl_802B395C.unk4 = 1;
     lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-    u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+    get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
     func_80088D44();
     lbl_802B395C.unk8 = -lbl_802B395C.unk14;
     lbl_802B395C.unkC = 0.0f;
@@ -924,7 +944,7 @@ void func_80088F18(void)
     if (temp_r31 != 0)
     {
         lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-        u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+        get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
         func_80088D44();
     }
 }
@@ -971,7 +991,7 @@ static void func_800890D4(void)
         {
             lbl_802B395C.unk4 = 1;
             lbl_802B395C.unk18 = lbl_80250A68.unk0[lbl_80250A68.unk14];
-            u_get_replay_info(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
+            get_replay_header(lbl_802B395C.unk18, &lbl_802B395C.unk1C);
             func_80088D44();
         }
         break;
@@ -1023,11 +1043,11 @@ static void func_8008923C(void)
     reset_text_draw_settings();
     set_text_font(FONT_ASC_8x16);
     set_text_pos(40.0f + var_f31, y);
-    if (lbl_802B395C.unk1C.unk6[0] != 0)
+    if (lbl_802B395C.unk1C.playerName[0] != 0)
     {
         set_text_mul_color(RGBA(255, 128, 0, 0));
         set_text_add_color(RGBA(64, 48, 48, 0));
-        func_80072AC0("%s", lbl_802B395C.unk1C.unk6);
+        func_80072AC0("%s", lbl_802B395C.unk1C.playerName);
         set_text_mul_color(RGBA(255, 255, 255, 0));
         set_text_add_color(RGBA(0, 0, 0, 0));
         u_draw_text("'S ");

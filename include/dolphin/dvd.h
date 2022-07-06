@@ -42,6 +42,20 @@ struct DVDFileInfo
     /*0x38*/ DVDCallback callback;
 };
 
+typedef struct
+{
+    u32 entryNum;
+    u32 location;
+    u32 next;
+} DVDDir;
+
+typedef struct 
+{
+    u32 entryNum;
+    BOOL isDir;
+    char *name;
+} DVDDirEntry;
+
 void DVDInit(void);
 BOOL DVDOpen(char *, DVDFileInfo *);
 BOOL DVDClose(DVDFileInfo *);
@@ -52,6 +66,9 @@ BOOL DVDReadAsyncPrio(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset,
 s32 DVDConvertPathToEntrynum(char *pathPtr);
 s32 DVDCancel(DVDCommandBlock *block);
 s32 DVDGetDriveStatus(void);
+BOOL DVDOpenDir(char *dirName, DVDDir *dir);
+BOOL DVDCloseDir(DVDDir *dir);
+BOOL DVDReadDir(DVDDir *dir, DVDDirEntry *dirent);
 
 #define DVDReadAsync(fileInfo, addr, length, offset, callback) \
     DVDReadAsyncPrio((fileInfo), (addr), (length), (offset), (callback), 2)
@@ -60,5 +77,19 @@ s32 DVDGetDriveStatus(void);
 #define DVD_RESULT_FATAL_ERROR -1
 #define DVD_RESULT_IGNORED     -2
 #define DVD_RESULT_CANCELED    -3
+
+#define DVD_STATE_FATAL_ERROR   -1
+#define DVD_STATE_END            0
+#define DVD_STATE_BUSY           1
+#define DVD_STATE_WAITING        2
+#define DVD_STATE_COVER_CLOSED   3
+#define DVD_STATE_NO_DISK        4
+#define DVD_STATE_COVER_OPEN     5
+#define DVD_STATE_WRONG_DISK     6
+#define DVD_STATE_MOTOR_STOPPED  7
+#define DVD_STATE_PAUSING        8
+#define DVD_STATE_IGNORED        9
+#define DVD_STATE_CANCELED       10
+#define DVD_STATE_RETRY          11
 
 #endif

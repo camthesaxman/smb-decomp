@@ -47,8 +47,8 @@ MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -
 # GNU compiler flags
 GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-switch -Wno-main -Wno-unknown-pragmas \
                     -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare \
-                    -Wno-missing-field-initializers -Wno-char-subscripts -fno-jump-tables \
-                    -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+                    -Wno-missing-field-initializers -Wno-char-subscripts -Wno-empty-body \
+                    -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
 GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
 
 ifeq ($(COMPILER),mwcc)
@@ -124,6 +124,7 @@ SOURCES := \
 	src/perf.c \
 	asm/sound.s \
 	asm/window.s \
+	src/pool.c \
 	src/nl2ngc.c \
 	src/motload.c \
 	src/motload_2.c \
@@ -136,7 +137,8 @@ SOURCES := \
 	src/interpolate_keyframes.c \
 	src/stage.c \
 	src/code_8.c \
-	asm/recplay.s \
+	src/recplay.c \
+	src/recplay_2.c \
 	asm/effect.s \
 	src/background.c \
 	asm/bg_old_bluesky.s \
@@ -151,7 +153,7 @@ SOURCES := \
 	src/bg_old_storm.c \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
-	asm/bg_sand.s \
+	src/bg_sand.c \
 	src/bg_water.c \
 	src/bg_space.c \
 	src/bg_sunset.c \
@@ -174,7 +176,7 @@ SOURCES := \
 	asm/minimap.s \
 	src/ord_tbl.c \
 	src/code_3.c \
-	src/code_3_2.c \
+	src/ranking_screen.c \
 	src/mot_ape.c \
 	src/code_2.c \
 	src/lzs_decompress.c \
@@ -195,6 +197,7 @@ SOURCES := \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
+	src/dvd.c \
 	src/preview.c \
 	asm/name_entry.s \
 	asm/credits.s \
@@ -227,7 +230,7 @@ SOURCES := \
 	libraries/os/__ppc_eabi_init.c \
 	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
-	libraries/mtx/asm/mtx44.s \
+	libraries/mtx/mtx44.c \
 	libraries/mtx/asm/vec.s \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \

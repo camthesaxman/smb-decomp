@@ -6649,6 +6649,269 @@ lbl_800B5EC8:
 /* 800B5ED4 000B1DF4  7C 08 03 A6 */	mtlr r0
 /* 800B5ED8 000B1DF8  4E 80 00 20 */	blr
 
+.section .sdata
+
+	.balign 8
+glabel string_FONT_A
+	.asciz "FONT_A"
+	.balign 4
+glabel string_FONT_B
+	.asciz "FONT_B"
+	.balign 4
+glabel string_FONT_C
+	.asciz "FONT_C"
+	.balign 4
+glabel string_FONT_D
+	.asciz "FONT_D"
+	.balign 4
+glabel string_FONT_E
+	.asciz "FONT_E"
+	.balign 4
+glabel string_FONT_F
+	.asciz "FONT_F"
+	.balign 4
+glabel string_FONT_G
+	.asciz "FONT_G"
+	.balign 4
+glabel string_FONT_H
+	.asciz "FONT_H"
+	.balign 4
+glabel string_FONT_I
+	.asciz "FONT_I"
+	.balign 4
+glabel string_FONT_J
+	.asciz "FONT_J"
+	.balign 4
+glabel string_FONT_K
+	.asciz "FONT_K"
+	.balign 4
+glabel string_FONT_L
+	.asciz "FONT_L"
+	.balign 4
+glabel string_FONT_M
+	.asciz "FONT_M"
+	.balign 4
+glabel string_FONT_N
+	.asciz "FONT_N"
+	.balign 4
+glabel string_FONT_O
+	.asciz "FONT_O"
+	.balign 4
+glabel string_FONT_P
+	.asciz "FONT_P"
+	.balign 4
+glabel string_FONT_Q
+	.asciz "FONT_Q"
+	.balign 4
+glabel string_FONT_R
+	.asciz "FONT_R"
+	.balign 4
+glabel string_FONT_S
+	.asciz "FONT_S"
+	.balign 4
+glabel string_FONT_T
+	.asciz "FONT_T"
+	.balign 4
+glabel string_FONT_U
+	.asciz "FONT_U"
+	.balign 4
+glabel string_FONT_V
+	.asciz "FONT_V"
+	.balign 4
+glabel string_FONT_W
+	.asciz "FONT_W"
+	.balign 4
+glabel string_FONT_X
+	.asciz "FONT_X"
+	.balign 4
+glabel string_FONT_Y
+	.asciz "FONT_Y"
+	.balign 4
+glabel string_FONT_Z
+	.asciz "FONT_Z"
+	.balign 4
+glabel lbl_802F1800
+	.4byte 0x53455800
+glabel lbl_802F1804
+	.4byte 0x58585800
+glabel lbl_802F1808
+	.4byte 0x58582000
+glabel lbl_802F180C
+	.4byte 0x58580000
+glabel lbl_802F1810
+	.4byte 0x20585800
+glabel lbl_802F1814
+	.4byte 0x58205800
+
+.global lbl_802F1818
+lbl_802F1818:
+	# ROM: 0x1EBF58
+glabel string_BUTTON
+	.asciz "BUTTON"
+	.balign 4
+
+.global lbl_802F1820
+lbl_802F1820:
+	# ROM: 0x1EBF60
+	.4byte 0x412E5600
+
+.global lbl_802F1824
+lbl_802F1824:
+	# ROM: 0x1EBF64
+	.4byte 0x2D2D2D00
+
+.global lbl_802F1828
+lbl_802F1828:
+	# ROM: 0x1EBF68
+glabel string__07d_2
+	.asciz "%07d"
+	.balign 4
+glabel lbl_802F1830
+	.4byte 0x4E414700
+glabel lbl_802F1834
+	.4byte 0x40524900
+glabel lbl_802F1838
+	.4byte 0x53484F00
+glabel lbl_802F183C
+	.4byte 0x53414B00
+glabel lbl_802F1840
+	.4byte 0x4A414D00
+glabel lbl_802F1844
+	.4byte 0x4D4B4100
+glabel lbl_802F1848
+	.4byte 0x4F444100
+glabel lbl_802F184C
+	.4byte 0x4D2E5300
+glabel lbl_802F1850
+	.4byte 0x482E4500
+glabel lbl_802F1854
+	.4byte 0x4A554E00
+glabel lbl_802F1858
+	.4byte 0x592E5300
+glabel lbl_802F185C
+	.4byte 0x41474500
+glabel string_Bonobo
+	.asciz "Bonobo"
+	.balign 4
+glabel string_Gorilla
+	.asciz "Gorilla"
+glabel string_Aye_Aye
+	.asciz "Aye-Aye"
+glabel string_Potto
+	.asciz "Potto"
+	.balign 4
+glabel string_Avahi
+	.asciz "Avahi"
+	.balign 4
+glabel string_Indris
+	.asciz "Indris"
+	.balign 4
+
+.global lbl_802F1890
+lbl_802F1890:
+	# ROM: 0x1EBFD0
+glabel string_STAFF
+	.asciz "STAFF"
+	.balign 4
+
+.global lbl_802F1898
+lbl_802F1898:
+	# ROM: 0x1EBFD8
+glabel string_SUPER
+	.asciz "SUPER"
+	.balign 4
+
+.global lbl_802F18A0
+lbl_802F18A0:
+	# ROM: 0x1EBFE0
+glabel string_READY_2
+	.asciz "READY"
+	.balign 4
+
+.global lbl_802F18A8
+lbl_802F18A8:
+	# ROM: 0x1EBFE8
+glabel string_GOAL_2
+	.asciz "GOAL"
+	.balign 4
+
+.global lbl_802F18B0
+lbl_802F18B0:
+	# ROM: 0x1EBFF0
+	.4byte 0x25730000
+
+.global lbl_802F18B4
+lbl_802F18B4:
+	# ROM: 0x1EBFF4
+	.4byte 0x25640000
+
+.global lbl_802F18B8
+lbl_802F18B8:
+	# ROM: 0x1EBFF8
+	.4byte 0x0F000000
+	.4byte 0
+
+.global lbl_802F18C0
+lbl_802F18C0:
+	# ROM: 0x1EC000
+	.4byte 0x00EA0102
+	.4byte 0x01420173
+
+.global lbl_802F18C8
+lbl_802F18C8:
+	# ROM: 0x1EC008
+	.4byte 0x00B70102
+	.4byte 0x0141018B
+
+.global lbl_802F18D0
+lbl_802F18D0:
+	# ROM: 0x1EC010
+	.4byte 0x00EC0115
+	.4byte 0x016D0173
+
+.global lbl_802F18D8
+lbl_802F18D8:
+	# ROM: 0x1EC018
+	.4byte 0x00B500FF
+	.4byte 0x01380192
+
+.global lbl_802F18E0
+lbl_802F18E0:
+	# ROM: 0x1EC020
+	.4byte 0x00EA0102
+	.4byte 0x016D0173
+
+.global lbl_802F18E8
+lbl_802F18E8:
+	# ROM: 0x1EC028
+	.4byte 0x00E40127
+	.4byte 0x014A0000
+
+.global lbl_802F18F0
+lbl_802F18F0:
+	# ROM: 0x1EC030
+	.4byte 0x00E80101
+	.4byte 0x016B0000
+
+.global lbl_802F18F8
+lbl_802F18F8:
+	# ROM: 0x1EC038
+	.4byte 0x00E80102
+	.4byte 0x016D0000
+glabel string_of__b_
+	.asciz "of %b!"
+	.balign 4
+glabel string_Oh_wow_
+	.asciz "Oh wow!"
+glabel string__point
+	.asciz " point"
+	.balign 4
+glabel string__points
+	.asciz " points"
+glabel lbl_802F1920
+	.4byte 0
+	.4byte 0
+
 .section .sdata2
 
 .global lbl_802F60B8
