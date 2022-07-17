@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <dolphin.h>
@@ -162,13 +163,13 @@ lbl_8008D724:
     ps_mul f1, f1, f3              // f1 = shape.ambientColor.ba OR 1.0|1.0) * lbl_802F20D0.ba
     psq_l f2, 17(arg), 1, qr2      // f2 = shape.alpha | 1
     ps_merge10 f2, f2, f2          // f2 = 1 | shape.alpha
-    psq_st f0, 0x98(r10), 0, qr2   // 
-    psq_st f1, 0x9a(r10), 0, qr2   // 
+    psq_st f0, 0x98(r10), 0, qr2   //
+    psq_st f1, 0x9a(r10), 0, qr2   //
     lwz r7, 0x98(r10)              // r7 = f0.rg f1.ba
     li r8, 0x100a                  // XF_AMBIENT0_ID
     stb r6, 0(r9)                  // Write color in r7 to ambient0 register
     stw r8, 0(r9)                  // I don't think alpha matters here because alpha light channel is always disabled
-    stw r7, 0(r9)                  // 
+    stw r7, 0(r9)                  //
     ps_merge01 f4, f4, f3          // f4 = (shape.materialColor.b OR 1.0) | lbl_802F20D0.a
     ps_mul f4, f4, f2              // f4 = (shape.materialColor.b OR 1.0) | shape.alpha * lbl_802F20D0.a
     sth r4, 0x98(r10)              // (shape.materialColor.rg OR 1.0 | 1.0) -> 0x98(gxCache)
@@ -329,6 +330,121 @@ void free_model(struct GMAModel *model)
 }
 #pragma force_active reset
 
+#ifdef TARGET_PC
+static void byteswap_model(u8 *data)
+{
+    u8 *tevLayer;
+    u8 *shape;
+    u32 flags;
+    u32 headerSize;
+    int opaqueCount;
+    int translucentCount;
+    int tevLayerCount;
+    int i;
+
+    bswap32(data + 0x00);  // magic
+    bswap32(data + 0x04);  // flags
+    bswap32(data + 0x08);  // boundSphereCenter.x
+    bswap32(data + 0x0C);  // boundSphereCenter.y
+    bswap32(data + 0x10);  // boundSphereCenter.z
+    bswap32(data + 0x14);  // boundSphereRadius
+    bswap16(data + 0x18);  // tevLayerCount
+    bswap16(data + 0x1A);  // opaqueShapeCount
+    bswap16(data + 0x1C);  // translucentShapeCount
+    bswap32(data + 0x20);  // headerSize
+
+    flags = read_u32_le(data + 0x04);
+    tevLayerCount = read_u16_le(data + 0x18);
+    opaqueCount = read_u16_le(data + 0x1A);
+    translucentCount = read_u16_le(data + 0x1C);
+    headerSize = read_u32_le(data + 0x20);
+
+    tevLayer = data + 0x40;
+    for (i = 0; i < tevLayerCount; i++)
+    {
+        bswap32(tevLayer + 0);  // flags
+        bswap16(tevLayer + 4);  // texIndex
+        tevLayer += 0x20;
+    }
+
+    shape = data + headerSize;
+    if (flags & (GCMF_SKIN|GCMF_EFFECTIVE))
+        shape += 0x20;
+
+    assert(shape >= tevLayer);
+
+    for (i = 0; i < opaqueCount + translucentCount; i++)
+    {
+        u8 *nextShape;
+
+        bswap32(shape + 0x00);  // flags
+        bswap32(shape + 0x0C);  // specularColor
+        bswap16(shape + 0x16);  // tevLayerIdxs[0]
+        bswap16(shape + 0x18);  // tevLayerIdxs[1]
+        bswap16(shape + 0x1A);  // tevLayerIdxs[2]
+        bswap32(shape + 0x1C);  // vtxAttrs
+        bswap32(shape + 0x28);  // dispListSizes[0]
+        bswap32(shape + 0x2C);  // dispListSizes[1]
+        nextShape = shape + 0x60;
+        if (shape[0x13] & 1)
+            nextShape += read_u32_le(shape + 0x28);
+        if (shape[0x13] & 2)
+            nextShape += read_u32_le(shape + 0x2C);
+        if (shape[0x13] & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
+        {
+            bswap32(nextShape + 0x8);
+            bswap32(nextShape + 0xC);
+            nextShape += 0x20 + read_u32_le(nextShape + 0x8) + read_u32_le(nextShape + 0xC);
+        }
+        shape = nextShape;
+    }
+}
+
+static void byteswap_gma(u8 *data)
+{
+    u32 numModels;
+    u32 modelsBase;
+    u32 i;
+    u8 *entry;
+
+    bswap32(data + 0);  // numModels
+    bswap32(data + 4);  // modelsBase
+
+    numModels = read_u32_le(data + 0);
+    modelsBase = read_u32_le(data + 4);
+
+    // model entries
+    entry = data + 8;
+    for (i = 0; i < numModels; i++)
+    {
+        bswap32(entry + 0);  // model
+        bswap32(entry + 4);  // name
+        if (read_u32_le(entry + 0) != 0xFFFFFFFF)
+            byteswap_model(data + modelsBase + read_u32_le(entry + 0));
+        entry += 8;
+    }
+}
+
+static void byteswap_tpl(u8 *data)
+{
+    u32 numTextures;
+    u32 i;
+
+    bswap32(data + 0);  // numTextures
+    bswap32(data + 4);  // texHeaders
+    numTextures = read_u32_le(data + 0);
+    for (i = 0; i < numTextures; i++)
+    {
+        u8 *hdr = data + 4 + i * 0x10;
+
+        bswap32(hdr + 0x0);  // format
+        bswap32(hdr + 0x4);  // imageOffset
+        bswap16(hdr + 0x8);  // width
+        bswap16(hdr + 0xA);  // height
+    }
+}
+#endif
+
 struct GMA *load_gma(char *fileName, struct TPL *tpl)
 {
     int i;
@@ -385,6 +501,10 @@ struct GMA *load_gma(char *fileName, struct TPL *tpl)
         file_close(&file);
     }
 
+#ifdef TARGET_PC
+    byteswap_gma(fileData);
+#endif
+
     // Read GMA header
     gma->numModels = *(u32 *)(fileData + 0);  // 0: number of models
     gma->modelsBase = OFFSET_TO_PTR(fileData, *(u32 *)(fileData + 4));  // 4: offset to model data
@@ -431,6 +551,10 @@ struct GMA *load_gma_from_aram(u32 aramSrc, u32 size, struct TPL *tpl)
     ARStartDMA(ARAM_DIR_ARAM_TO_MRAM, (u32)fileData, aramSrc, size);
     while (ARGetDMAStatus() != 0)
         ;
+
+#ifdef TARGET_PC
+    byteswap_gma(fileData);
+#endif
 
     // Read GMA header
     gma->numModels = *(u32 *)(fileData + 0);  // 0: number of models
@@ -530,6 +654,10 @@ struct TPL *load_tpl(char *fileName)
         file_close(&file);
     }
 
+#ifdef TARGET_PC
+    byteswap_tpl(fileData);
+#endif
+
     tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
     tpl->texHeaders = OFFSET_TO_PTR(fileData, 4);  // 4: texture headers
     tpl->fileData = fileData;
@@ -552,6 +680,10 @@ struct TPL *load_tpl_from_aram(u32 aramSrc, u32 size)
     ARStartDMA(ARAM_DIR_ARAM_TO_MRAM, (u32)fileData, aramSrc, size);
     while (ARGetDMAStatus() != 0)
         ;
+
+#ifdef TARGET_PC
+    byteswap_tpl(fileData);
+#endif
 
     tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
     tpl->texHeaders = OFFSET_TO_PTR(fileData, 4);  // 4: texture headers

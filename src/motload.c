@@ -160,6 +160,62 @@ void u_read_transform_list_from_dat(struct MotDat *dat, struct MotionTransform *
 
 static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 
+#ifdef TARGET_PC
+static void byteswap_motlabel(u8 *data)
+{
+    u32 count;
+    u32 i;
+
+    bswap32(data);
+    count = read_u32_le(data);
+    data += 4;
+    for (i = 0; i < count; i++)
+    {
+        bswap32(data);
+        data += 4;
+    }
+}
+
+static void byteswap_motskl(u8 *data)
+{
+    u8 *ptr, *ptr2;
+    u32 i, j;
+
+    // TODO: child structs
+
+    bswap32(data + 0x0);
+    bswap32(data + 0x4);
+    bswap32(data + 0x8);
+    bswap32(data + 0xC);
+
+    ptr = data + read_u32_le(data + 0x0);
+    for (i = read_u32_le(data + 0x4); i > 0; i--)
+    {
+        bswap32(ptr + 0x00);
+        bswap32(ptr + 0x04);
+        bswap32(ptr + 0x08);
+        bswap32(ptr + 0x0C);
+        bswap32(ptr + 0x10);
+        bswap32(ptr + 0x14);
+        ptr += 0x18;
+    }
+
+    ptr = data + read_u32_le(data + 0x8);
+    for (i = read_u32_le(data + 0xC); i > 0; i--)
+    {
+        bswap32(ptr + 0x00);
+        bswap32(ptr + 0x04);
+        bswap32(ptr + 0x08);
+        bswap32(ptr + 0x0C);
+        bswap32(ptr + 0x10);
+        bswap32(ptr + 0x14);
+        bswap32(ptr + 0x18);
+
+        ptr += 0x1C;
+    }
+}
+#endif
+
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {
     DVDFileInfo file;
@@ -176,6 +232,9 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     motLabel = OSAlloc(size);
     u_read_dvd_file(&file, motLabel, size, 0);
     DVDClose(&file);
+#ifdef TARGET_PC
+    byteswap_motlabel((u8 *)motLabel);
+#endif
     u_motAnimCount = *motLabel;
     motLabel++;
     adjust_motlabel_pointers(motLabel);
@@ -210,6 +269,9 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     motSkeleton = OSAlloc(size);
     u_read_dvd_file(&file, motSkeleton, size, 0);
     DVDClose(&file);
+#ifdef TARGET_PC
+    byteswap_motskl((u8 *)motSkeleton);
+#endif
     adjust_motskl_pointers(motSkeleton);
     totalSize += size;
 

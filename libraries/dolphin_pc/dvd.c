@@ -23,7 +23,8 @@ BOOL DVDChangeDir(char *dir)
     if (dir[0] == '/')
     {
         char path[PATH_MAX];
-        sprintf(path, "%s/%s", s_rootDir, dir);
+        if (snprintf(path, sizeof(path), "%s/%s", s_rootDir, dir) >= PATH_MAX)
+            return FALSE;
         return chdir(path) == 0;
     }
     else
@@ -73,6 +74,14 @@ BOOL DVDOpen(char *fileName, DVDFileInfo *fileInfo)
     fseek(f, 0, SEEK_END);
     fileInfo->length = ftell(f);
     return TRUE;
+}
+
+BOOL DVDFastOpen(s32 entrynum, DVDFileInfo *fileInfo)
+{
+    printf("DVDFastOpen: %li\n", entrynum);
+    if (entrynum < s_pathEntriesCount)
+        return DVDOpen(s_pathEntries[entrynum], fileInfo);
+    return FALSE;
 }
 
 BOOL DVDClose(DVDFileInfo *fileInfo)

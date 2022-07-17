@@ -104,7 +104,6 @@ void bitmap_init(void)
 static void byteswap_tpl(u8 *data)
 {
     u32 numTextures;
-    //u32 texHeaders;
     u32 i;
 
     bswap32(data + 0);  // numTextures

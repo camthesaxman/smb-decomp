@@ -43,11 +43,11 @@ void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
     Mtx44 m;
 
     puts("GXLoadPosMtxImm is a stub");
-    memcpy(m, mtx, sizeof(mtx));
+    memcpy(m, mtx, sizeof(Mtx));
     m[3][0] = m[3][1] = m[3][2] = 0.0f;
     m[3][3] = 1.0f;
     //glMatrixMode(GL_MODELVIEW);
-    //glLoadTransposeMatrixf(m);
+    glLoadTransposeMatrixf(m);
     //pause();
 }
 
@@ -353,9 +353,42 @@ typedef struct
     GXTexFmt format;
     u8 *uncompressed;
     GLuint textureId;
+    void *data;
+    u8 wrapS;
+    u8 wrapT;
 } __GXTexObj;
 
 static_assert(sizeof(__GXTexObj) <= sizeof(GXTexObj));
+
+GXTexFmt GXGetTexObjFmt(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->format;
+}
+
+u16 GXGetTexObjWidth(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->width;
+}
+
+u16 GXGetTexObjHeight(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->height;
+}
+
+void *GXGetTexObjData(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->data;
+}
+
+GXTexWrapMode GXGetTexObjWrapS(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->wrapS;
+}
+
+GXTexWrapMode GXGetTexObjWrapT(GXTexObj *tex_obj)
+{
+    return ((__GXTexObj *)tex_obj)->wrapT;
+}
 
 u32 GXGetTexBufferSize(u16 width, u16 height, u32 format, GXBool mipmap,
     u8 max_lod)
@@ -606,6 +639,9 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
     __obj->width = width;
     __obj->height = height;
     __obj->format = format;
+    __obj->data = image_ptr;
+    __obj->wrapS = wrap_s;
+    __obj->wrapT = wrap_t;
     switch (format)
     {
     case GX_TF_CMPR:
@@ -648,6 +684,8 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
         type = GL_UNSIGNED_BYTE;
         glFmt = GL_RGBA;
         break;
+    default:
+        *(int *)0 = 0;
     }
 
     assert(type != -1);

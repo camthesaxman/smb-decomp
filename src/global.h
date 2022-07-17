@@ -133,6 +133,11 @@ static inline void bswap32(u8 *data)
     data[2] = temp;
 }
 
+static inline u16 read_u16_le(const u8 *data)
+{
+    return data[0] | (data[1] << 8);
+}
+
 static inline u32 read_u32_le(const u8 *data)
 {
     return data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);

@@ -33,7 +33,6 @@ void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
 void DCStoreRange(){puts("DCStoreRange is a stub");}
 void DVDCancel(){puts("DVDCancel is a stub");}
-void DVDFastOpen(){puts("DVDFastOpen is a stub");}
 void DVDReadAbsAsyncForBS(){puts("DVDReadAbsAsyncForBS is a stub");}
 void DVDReadDiskID(){puts("DVDReadDiskID is a stub");}
 void DVDReset(){puts("DVDReset is a stub");}
@@ -49,13 +48,7 @@ void GXCopyDisp(){puts("GXCopyDisp is a stub");}
 void GXCopyTex(){puts("GXCopyTex is a stub");}
 void GXDrawSphere(){puts("GXDrawSphere is a stub");}
 void GXFlush(){puts("GXFlush is a stub");}
-void GXGetTexObjData(){puts("GXGetTexObjData is a stub");}
-void GXGetTexObjFmt(){puts("GXGetTexObjFmt is a stub");}
-void GXGetTexObjHeight(){puts("GXGetTexObjHeight is a stub");}
 void GXGetTexObjMipMap(){puts("GXGetTexObjMipMap is a stub");}
-void GXGetTexObjWidth(){puts("GXGetTexObjWidth is a stub");}
-void GXGetTexObjWrapS(){puts("GXGetTexObjWrapS is a stub");}
-void GXGetTexObjWrapT(){puts("GXGetTexObjWrapT is a stub");}
 void GXInitTexObjLOD(){puts("GXInitTexObjLOD is a stub");}
 void GXInitTexObjWrapMode(){puts("GXInitTexObjWrapMode is a stub");}
 void GXInvalidateTexAll(){puts("GXInvalidateTexAll is a stub");}
@@ -270,7 +263,7 @@ void func_800B6234(){puts("func_800B6234 is a stub");}
 void func_800B62FC(){puts("func_800B62FC is a stub");}
 void func_800B6430(){puts("func_800B6430 is a stub");}
 void func_800B64B0(){puts("func_800B64B0 is a stub");}
-void gamePauseStatus(){puts("gamePauseStatus is a stub");}
+u32 gamePauseStatus;
 void gx(){puts("gx is a stub");}
 void *gxCache;
 void lbl_801147D8(){puts("lbl_801147D8 is a stub");}
@@ -312,17 +305,17 @@ void lbl_80292C00_alias(){puts("lbl_80292C00_alias is a stub");}
 void lbl_80292D18(){puts("lbl_80292D18 is a stub");}
 void lbl_802C67D4(){puts("lbl_802C67D4 is a stub");}
 void lbl_802F16B8(){puts("lbl_802F16B8 is a stub");}
-void lbl_802F1DF8(){puts("lbl_802F1DF8 is a stub");}
-void lbl_802F1DFC(){puts("lbl_802F1DFC is a stub");}
-void lbl_802F1EA8(){puts("lbl_802F1EA8 is a stub");}
-void lbl_802F1EB0(){puts("lbl_802F1EB0 is a stub");}
-void lbl_802F1EB4(){puts("lbl_802F1EB4 is a stub");}
-void lbl_802F1EC4(){puts("lbl_802F1EC4 is a stub");}
-void lbl_802F1EC8(){puts("lbl_802F1EC8 is a stub");}
-void lbl_802F1ECC(){puts("lbl_802F1ECC is a stub");}
-void lbl_802F1ED0(){puts("lbl_802F1ED0 is a stub");}
-void lbl_802F1ED2(){puts("lbl_802F1ED2 is a stub");}
-void lbl_802F1ED8(){puts("lbl_802F1ED8 is a stub");}
+u32 lbl_802F1DF8;
+s32 lbl_802F1DFC;
+s32 lbl_802F1EA8;
+s32 lbl_802F1EB0;
+s32 lbl_802F1EB4;
+float lbl_802F1EC4;
+float lbl_802F1EC8;
+float lbl_802F1ECC;
+u16 lbl_802F1ED0;
+u16 lbl_802F1ED2;
+u32 lbl_802F1ED8;
 void lbl_802F2060(){puts("lbl_802F2060 is a stub");}
 u32 lbl_802F2150;
 void *lbl_802F2154;
