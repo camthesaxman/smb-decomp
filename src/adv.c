@@ -74,7 +74,9 @@ void submode_adv_warning_init_func(void)
     func_8002FFEC();
     func_8009F49C(2);
     event_start(EVENT_SPRITE);
+#ifndef TARGET_PC
     event_start(EVENT_MEMCARD);
+#endif
     gameSubmodeRequest = SMD_ADV_WARNING_MAIN;
 }
 

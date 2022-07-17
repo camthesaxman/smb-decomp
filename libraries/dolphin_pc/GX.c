@@ -7,8 +7,16 @@
 
 #include <dolphin.h>
 
+#ifdef __WIN32
+#define GLEW_STATIC
+#include <GL/glew.h>
+#else
 #include <GL/gl.h>
+#include <GL/glext.h>
+extern void glClearDepthf(float);
+#endif
 
+/*
 static void pause(void)
 {
     char *line = NULL;
@@ -16,6 +24,7 @@ static void pause(void)
     getline(&line, &len, stdin);
     free(line);
 }
+*/
 
 /* Transform */
 
@@ -1009,8 +1018,6 @@ GXRenderModeObj GXNtsc480IntDf =
     0,
 };
 
-extern void glClearDepthf(GLclampf depth);
-
 void GXSetCopyClear(GXColor clear_clr, u32 clear_z)
 {
     puts("GXSetCopyClear");
@@ -1034,6 +1041,13 @@ void GXAdjustForOverscan(GXRenderModeObj *rmin, GXRenderModeObj *rmout,
 GXFifoObj *GXInit(void *base, u32 size)
 {
     puts("GXInit is a stub");
+#ifdef _WIN32
+    if (glewInit() != GLEW_OK)
+    {
+        fputs("failed to initialize glew\n", stderr);
+        exit(1);
+    }
+#endif
     glDisable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <dolphin.h>
 
 #ifndef PATH_MAX
@@ -41,8 +44,13 @@ s32 DVDConvertPathToEntrynum(char *pathPtr)
     char absolute[PATH_MAX];
 
     printf("DVDConvertPathToEntrynum: %s\n", pathPtr);
+#ifdef _WIN32
+    if (GetFullPathNameA(pathPtr, sizeof(absolute), absolute, NULL) == 0)
+        return -1;
+#else
     if (realpath(pathPtr, absolute) == NULL)
         return -1;
+#endif
     for (i = 0; i < s_pathEntriesCount; i++)
     {
         if (strcmp(absolute, s_pathEntries[i]) == 0)
