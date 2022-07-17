@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <dolphin/types.h>
 
-#define MEM_SIZE (32 * 1024 * 1024)
-
-u8 LC_CACHE_BASE[4096];
-
 void ARGetDMAStatus(){puts("ARGetDMAStatus is a stub");}
 void ARQPostRequest(){puts("ARQPostRequest is a stub");}
 void ARStartDMA(){puts("ARStartDMA is a stub");}
@@ -38,7 +34,6 @@ void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
 void DCStoreRange(){puts("DCStoreRange is a stub");}
 void DVDCancel(){puts("DVDCancel is a stub");}
 void DVDFastOpen(){puts("DVDFastOpen is a stub");}
-void DVDGetDriveStatus(){puts("DVDGetDriveStatus is a stub");}
 void DVDReadAbsAsyncForBS(){puts("DVDReadAbsAsyncForBS is a stub");}
 void DVDReadDiskID(){puts("DVDReadDiskID is a stub");}
 void DVDReset(){puts("DVDReset is a stub");}
@@ -49,14 +44,11 @@ void EXILock(){puts("EXILock is a stub");}
 void EXISelect(){puts("EXISelect is a stub");}
 void EXISync(){puts("EXISync is a stub");}
 void EXIUnlock(){puts("EXIUnlock is a stub");}
-void GXAdjustForOverscan(){puts("GXAdjustForOverscan is a stub");}
 void GXClearVtxDesc(){puts("GXClearVtxDesc is a stub");}
 void GXCopyDisp(){puts("GXCopyDisp is a stub");}
 void GXCopyTex(){puts("GXCopyTex is a stub");}
-void GXDrawDone(){puts("GXDrawDone is a stub");}
 void GXDrawSphere(){puts("GXDrawSphere is a stub");}
 void GXFlush(){puts("GXFlush is a stub");}
-void GXGetTexBufferSize(){puts("GXGetTexBufferSize is a stub");}
 void GXGetTexObjData(){puts("GXGetTexObjData is a stub");}
 void GXGetTexObjFmt(){puts("GXGetTexObjFmt is a stub");}
 void GXGetTexObjHeight(){puts("GXGetTexObjHeight is a stub");}
@@ -64,27 +56,20 @@ void GXGetTexObjMipMap(){puts("GXGetTexObjMipMap is a stub");}
 void GXGetTexObjWidth(){puts("GXGetTexObjWidth is a stub");}
 void GXGetTexObjWrapS(){puts("GXGetTexObjWrapS is a stub");}
 void GXGetTexObjWrapT(){puts("GXGetTexObjWrapT is a stub");}
-void GXInit(){puts("GXInit is a stub");}
-void GXInitTexObj(){puts("GXInitTexObj is a stub");}
 void GXInitTexObjLOD(){puts("GXInitTexObjLOD is a stub");}
 void GXInitTexObjWrapMode(){puts("GXInitTexObjWrapMode is a stub");}
 void GXInvalidateTexAll(){puts("GXInvalidateTexAll is a stub");}
-void GXLoadTexObj(){puts("GXLoadTexObj is a stub");}
 void GXMpal480IntDf(){puts("GXMpal480IntDf is a stub");}
-void GXNtsc480IntDf(){puts("GXNtsc480IntDf is a stub");}
 void GXPal528IntDf(){puts("GXPal528IntDf is a stub");}
 void GXSetAlphaUpdate(){puts("GXSetAlphaUpdate is a stub");}
 void GXSetBlendMode(){puts("GXSetBlendMode is a stub");}
 void GXSetColorUpdate(){puts("GXSetColorUpdate is a stub");}
-void GXSetCopyClear(){puts("GXSetCopyClear is a stub");}
 void GXSetCopyFilter(){puts("GXSetCopyFilter is a stub");}
 void GXSetDispCopyDst(){puts("GXSetDispCopyDst is a stub");}
 void GXSetDispCopyGamma(){puts("GXSetDispCopyGamma is a stub");}
 void GXSetDispCopySrc(){puts("GXSetDispCopySrc is a stub");}
 void GXSetDispCopyYScale(){puts("GXSetDispCopyYScale is a stub");}
 void GXSetDither(){puts("GXSetDither is a stub");}
-void GXSetDrawDone(){puts("GXSetDrawDone is a stub");}
-void GXSetDrawDoneCallback(){puts("GXSetDrawDoneCallback is a stub");}
 void GXSetFog(){puts("GXSetFog is a stub");}
 void GXSetIndTexMtx(){puts("GXSetIndTexMtx is a stub");}
 void GXSetIndTexOrder(){puts("GXSetIndTexOrder is a stub");}
@@ -111,15 +96,6 @@ void OSGetFontWidth(){puts("OSGetFontWidth is a stub");}
 void OSGetResetButtonState(){puts("OSGetResetButtonState is a stub");}
 void OSGetStackPointer(){puts("OSGetStackPointer is a stub");}
 void OSGetTick(){puts("OSGetTick is a stub");}
-void OSGetTime(){puts("OSGetTime is a stub");}
-void OSInit()
-{
-    puts("OSInit is a stub");
-    u8 *arena = malloc(MEM_SIZE);
-    
-    OSSetArenaLo(arena);
-    OSSetArenaHi(arena + MEM_SIZE);
-}
 void OSInitFont(){puts("OSInitFont is a stub");}
 void OSLink(){puts("OSLink is a stub");}
 void OSLoadContext(){puts("OSLoadContext is a stub");}
@@ -156,14 +132,7 @@ void SoundPan(){puts("SoundPan is a stub");}
 void SoundPitch(){puts("SoundPitch is a stub");}
 void SoundRevID(){puts("SoundRevID is a stub");}
 void VIConfigure(){puts("VIConfigure is a stub");}
-void VIFlush(){puts("VIFlush is a stub");}
 void VIGetNextField(){puts("VIGetNextField is a stub");}
-u32 VIGetTvFormat(void)
-{
-    puts("VIGetTvFormat is a stub");
-    return 0;
-}
-void VIInit(){puts("VIInit is a stub");}
 void VISetBlack(){puts("VISetBlack is a stub");}
 void VISetNextFrameBuffer(){puts("VISetNextFrameBuffer is a stub");}
 void VIWaitForRetrace(){puts("VIWaitForRetrace is a stub");}
@@ -211,7 +180,7 @@ void bg_pilot_main(){puts("bg_pilot_main is a stub");}
 void credits_finish(){puts("credits_finish is a stub");}
 void credits_init(){puts("credits_init is a stub");}
 void credits_main(){puts("credits_main is a stub");}
-void dipSwitches(){puts("dipSwitches is a stub");}
+u32 dipSwitches;
 void effect_draw(){puts("effect_draw is a stub");}
 void ev_effect_dest(){puts("ev_effect_dest is a stub");}
 void ev_effect_init(){puts("ev_effect_init is a stub");}
@@ -412,9 +381,3 @@ void u_something_with_lens_flare_1(){puts("u_something_with_lens_flare_1 is a st
 void u_something_with_lens_flare_2(){puts("u_something_with_lens_flare_2 is a stub");}
 void window_init(){puts("window_init is a stub");}
 void window_main(){puts("window_main is a stub");}
-
-u32 OSGetPhysicalMemSize(void)
-{
-    puts("OSGetPhysicalMemSize is a stub");
-    return MEM_SIZE;
-}

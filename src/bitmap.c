@@ -100,6 +100,28 @@ void bitmap_init(void)
     lbl_802F1D04 = 0;
 }
 
+#ifdef TARGET_PC
+static void byteswap_tpl(u8 *data)
+{
+    u32 numTextures;
+    //u32 texHeaders;
+    u32 i;
+
+    bswap32(data + 0);  // numTextures
+    bswap32(data + 4);  // texHeaders
+    numTextures = read_u32_le(data + 0);
+    for (i = 0; i < numTextures; i++)
+    {
+        u8 *hdr = data + 4 + i * 0x10;
+
+        bswap32(hdr + 0x0);  // format
+        bswap32(hdr + 0x4);  // imageOffset
+        bswap16(hdr + 0x8);  // width
+        bswap16(hdr + 0xA);  // height
+    }
+}
+#endif
+
 struct TPL *bitmap_load_tpl(char *filename)
 {
     struct TPL *tpl;
@@ -152,6 +174,10 @@ struct TPL *bitmap_load_tpl(char *filename)
         file_read(&file, fileData, size, 0);
         file_close(&file);
     }
+
+#ifdef TARGET_PC
+    byteswap_tpl(fileData);
+#endif
 
     tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
     tpl->texHeaders = OFFSET_TO_PTR(fileData, 4);  // 4: texture headers

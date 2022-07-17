@@ -27,6 +27,7 @@ void OSPanic(char *file, int line, char *msg, ...)
     va_end(args);
     OSReport(" in \"%s\" on line %d.\n", file, line);
 
+#ifndef TARGET_PC
     // Print stack trace
     OSReport("\nAddress:      Back Chain    LR Save\n");
     i = 0;
@@ -36,6 +37,7 @@ void OSPanic(char *file, int line, char *msg, ...)
         OSReport("0x%08x:   0x%08x    0x%08x\n", (u32)sp, sp[0], sp[1]);
         sp = (u32 *)sp[0];
     }
+#endif
     PPCHalt();
 }
 

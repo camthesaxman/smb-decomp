@@ -112,6 +112,61 @@ void nl2ngc_set_material_color(float r, float g, float b)
     s_renderParams.materialColor.b = b;
 }
 
+#ifdef TARGET_PC
+static void byteswap_nlmodel(u8 *data)
+{
+    // header stuff
+    bswap32(data - 8);
+    bswap32(data - 4);
+
+    bswap32(data + 0x0);  // u_valid
+    bswap32(data + 0x4);  // flags
+
+    // boundSphereCenter
+    bswap32(data + 0x8);
+    bswap32(data + 0xC);
+    bswap32(data + 0x10);
+
+    bswap32(data + 0x14);  // boundSphereRadius
+
+    // meshes
+    data += 0x18;
+    while (read_u32_le(data + 0x00) != 0)
+    {
+        bswap32(data + 0x00);  // flags
+        bswap32(data + 0x04);  // unk4
+        bswap32(data + 0x08);  // texFlags
+        bswap32(data + 0x0C);  // texObj
+        bswap32(data + 0x10);  // unk10
+        bswap32(data + 0x20);  // tplTexIdx
+        bswap32(data + 0x24);  // type
+        bswap32(data + 0x28);  // ambientColorScale
+        bswap32(data + 0x2C);  // materialColorA
+        bswap32(data + 0x30);  // materialColorR
+        bswap32(data + 0x34);  // materialColorG
+        bswap32(data + 0x38);  // materialColorB
+        bswap32(data + 0x4C);  // dispListSize
+
+        // TODO: handle display lists
+
+        data += 0x50 + read_u32_le(data + 0x4C);
+    }
+}
+
+static void byteswap_nlobj(u8 *data)
+{
+    u8 *pmodel = data + 4;
+
+    bswap32(data + 0);
+    while (read_u32_le(pmodel) != 0)
+    {
+        bswap32(pmodel);
+        byteswap_nlmodel(data + read_u32_le(pmodel));
+        pmodel += 4;
+    }
+}
+#endif
+
 BOOL load_nlobj(struct NlObj **nlObj, struct TPL **tpl, char *nlobjPath,
                         char *tplPath)
 {
@@ -173,6 +228,10 @@ BOOL load_nlobj(struct NlObj **nlObj, struct TPL **tpl, char *nlobjPath,
         file_read(&file, *nlObj, size, 0);
         file_close(&file);
     }
+
+#ifdef TARGET_PC
+    byteswap_nlobj((void *)*nlObj);
+#endif
 
     convert_nlobj_offsets_to_pointers(*nlObj);
     if (*tpl != NULL)

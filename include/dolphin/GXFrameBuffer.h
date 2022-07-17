@@ -4,6 +4,8 @@
 #include <dolphin/GXStruct.h>
 #include <dolphin/GXEnum.h>
 
+#define GX_MAX_Z24 0x00FFFFFF
+
 void GXSetCopyClear(GXColor clear_clr, u32 clear_z);
 void GXAdjustForOverscan(GXRenderModeObj *rmin, GXRenderModeObj *rmout,
     u16 hor, u16 ver);

@@ -1,7 +1,7 @@
 CC := gcc -m32
 CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC
 CFLAGS := -O0 -g -fsanitize=address -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
-LDFLAGS := -lm -fsanitize=address
+LDFLAGS := -lm -lGL -lglfw -fsanitize=address
 
 EXE :=
 TARGET := supermonkeyball$(EXE)
@@ -106,8 +106,10 @@ SOURCES := \
 	src/code_6.c \
 	src/dvd.c \
 	src/preview.c \
+	libraries/dolphin_pc/OS.c \
 	libraries/dolphin_pc/GX.c \
 	libraries/dolphin_pc/dvd.c \
+	libraries/dolphin_pc/vi.c \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
 	libraries/os/OSAudioSystem.c \

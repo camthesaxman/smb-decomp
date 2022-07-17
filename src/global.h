@@ -33,10 +33,14 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
+#ifdef TARGET_PC
+#define OS_BUS_CLOCK_SPEED 162000000
+#else
 #ifdef __MWERKS__
 u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
 #else
 #define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
+#endif
 #endif
 
 // intrinsics
@@ -66,7 +70,8 @@ static inline u32 __lwbrx(void *ptr, u32 offset)
     return ret;
 #else
     u32 val = *(u32 *)((u8 *)ptr + offset);
-    return ((val & 0xFF) << 24) | (((val >> 8) & 0xFF) << 16) | (((val >> 16) & 0xFF) << 8) | ((val >> 24) & 0xFF);
+    //return ((val & 0xFF) << 24) | (((val >> 8) & 0xFF) << 16) | (((val >> 16) & 0xFF) << 8) | ((val >> 24) & 0xFF);
+    return val;
 #endif
 }
 
@@ -94,14 +99,43 @@ static inline float __frsqrte(float n)
 #endif
 }
 
+#ifdef TARGET_PC
 static inline int __abs(int n)
 {
     int mask = n >> 31;
     return (n + mask) ^ mask;
 }
 #endif
+#endif
 
 #define qr0 0
 #define qr2 2
+
+static inline void bswap16(u8 *data)
+{
+    u8 temp;
+
+    temp = data[0];
+    data[0] = data[1];
+    data[1] = temp;
+}
+
+static inline void bswap32(u8 *data)
+{
+    u8 temp;
+
+    temp = data[0];
+    data[0] = data[3];
+    data[3] = temp;
+
+    temp = data[1];
+    data[1] = data[2];
+    data[2] = temp;
+}
+
+static inline u32 read_u32_le(const u8 *data)
+{
+    return data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
+}
 
 #endif

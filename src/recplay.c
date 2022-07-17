@@ -84,7 +84,11 @@ void recplay_init(void)
         if (DVDOpen("recdata.bin", &file))
         {
             size_t size = MIN(file.length, sizeof(s_builtinReplays));
+#ifdef TARGET_PC
+            u_read_dvd_file(&file, s_builtinReplays, size, 0);
+#else
             u_read_dvd_file(&file, s_builtinReplays, OSRoundUp32B(size), 0);
+#endif
             DVDClose(&file);
         }
         DVDChangeDir("/test");
