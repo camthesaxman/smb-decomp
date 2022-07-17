@@ -21,6 +21,7 @@ void VIInit(void)
         exit(1);
     }
     glfwMakeContextCurrent(g_window);
+    glfwSwapInterval(1);
 }
 
 u32 VIGetTvFormat(void)
@@ -33,4 +34,5 @@ void VIFlush(void)
 {
     puts("VIFlush");
     glfwSwapBuffers(g_window);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 }

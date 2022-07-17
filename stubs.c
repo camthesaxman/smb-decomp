@@ -55,7 +55,6 @@ void GXInvalidateTexAll(){puts("GXInvalidateTexAll is a stub");}
 void GXMpal480IntDf(){puts("GXMpal480IntDf is a stub");}
 void GXPal528IntDf(){puts("GXPal528IntDf is a stub");}
 void GXSetAlphaUpdate(){puts("GXSetAlphaUpdate is a stub");}
-void GXSetBlendMode(){puts("GXSetBlendMode is a stub");}
 void GXSetColorUpdate(){puts("GXSetColorUpdate is a stub");}
 void GXSetCopyFilter(){puts("GXSetCopyFilter is a stub");}
 void GXSetDispCopyDst(){puts("GXSetDispCopyDst is a stub");}
@@ -88,7 +87,6 @@ void OSGetFontTexture(){puts("OSGetFontTexture is a stub");}
 void OSGetFontWidth(){puts("OSGetFontWidth is a stub");}
 void OSGetResetButtonState(){puts("OSGetResetButtonState is a stub");}
 void OSGetStackPointer(){puts("OSGetStackPointer is a stub");}
-void OSGetTick(){puts("OSGetTick is a stub");}
 void OSInitFont(){puts("OSInitFont is a stub");}
 void OSLink(){puts("OSLink is a stub");}
 void OSLoadContext(){puts("OSLoadContext is a stub");}

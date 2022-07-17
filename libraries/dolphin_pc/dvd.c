@@ -1,10 +1,13 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <dolphin.h>
 
+#ifndef PATH_MAX
 #define PATH_MAX 256
+#endif
 
 static char (*s_pathEntries)[PATH_MAX] = NULL;
 static int s_pathEntriesCount = 0;
@@ -35,19 +38,22 @@ s32 DVDConvertPathToEntrynum(char *pathPtr)
 {
     int i;
     FILE *f;
+    char absolute[PATH_MAX];
 
     printf("DVDConvertPathToEntrynum: %s\n", pathPtr);
+    if (realpath(pathPtr, absolute) == NULL)
+        return -1;
     for (i = 0; i < s_pathEntriesCount; i++)
     {
-        if (strcmp(pathPtr, s_pathEntries[i]) == 0)
+        if (strcmp(absolute, s_pathEntries[i]) == 0)
             return i;
     }
 
-    if (strlen(pathPtr) + 1 > PATH_MAX)
+    if (strlen(absolute) + 1 > PATH_MAX)
         return -1;
 
     // check if file exists
-    f = fopen(pathPtr, "rb");
+    f = fopen(absolute, "rb");
     if (f == NULL)
         return -1;
     fclose(f);
@@ -55,7 +61,7 @@ s32 DVDConvertPathToEntrynum(char *pathPtr)
     // add new entry
     printf("size = %i\n", sizeof(*s_pathEntries));
     s_pathEntries = realloc(s_pathEntries, (s_pathEntriesCount + 1) * sizeof(*s_pathEntries));
-    strcpy(s_pathEntries[s_pathEntriesCount], pathPtr);
+    strcpy(s_pathEntries[s_pathEntriesCount], absolute);
     return s_pathEntriesCount++;
 }
 

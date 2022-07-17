@@ -20,11 +20,8 @@ static void pause(void)
 
 void GXSetProjection(f32 mtx[4][4], GXProjectionType type)
 {
-    //assert(type == GX_ORTHOGRAPHIC);  // TODO: handle perspective
-    puts("GXSetProjection is a stub");
     glMatrixMode(GL_PROJECTION);
-    if (type == GX_ORTHOGRAPHIC)
-        glLoadTransposeMatrixf(mtx);
+    glLoadTransposeMatrixf(mtx);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -161,7 +158,7 @@ void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
 {
     GLenum mode;
 
-    puts("GXBegin");
+    //puts("GXBegin");
     switch (type)
     {
     case GX_POINTS:        mode = GL_POINTS;         break;
@@ -178,7 +175,7 @@ void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
 
 void GXEnd(void)
 {
-    puts("GXEnd");
+    //puts("GXEnd");
     glEnd();
 
     /*
@@ -685,7 +682,7 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
         glFmt = GL_RGBA;
         break;
     default:
-        *(int *)0 = 0;
+        assert(0);
     }
 
     assert(type != -1);
@@ -772,6 +769,54 @@ void GXTexCoord2f32(const f32 u, const f32 v)
     glVertex3f(savedX, savedY, savedZ);
 }
 
+/* Pixel */
+
+static GLenum gx_blend_to_gl_blend(GXBlendFactor in, BOOL isDest)
+{
+    static const GLenum blendFactors[] =
+    {
+        GL_ZERO,
+        GL_ONE,
+        GL_SRC_COLOR,
+        GL_ONE_MINUS_SRC_COLOR,
+        GL_SRC_ALPHA,
+        GL_ONE_MINUS_SRC_ALPHA,
+        GL_DST_ALPHA,
+        GL_ONE_MINUS_DST_ALPHA,
+    };
+
+    assert(in >= 0 && in <= 7);
+    // GX_BL_DSTCLR and GX_BL_SRCCLR are the same value, as well as GX_BL_INVDSTCLR and GX_BL_INVSRCCLR,
+    // so we must correctly convert these based on whether this is the source or destination.
+    if (isDest)
+    {
+        if (in == GX_BL_DSTCLR)
+            return GL_DST_COLOR;
+        if (in == GX_BL_INVDSTCLR)
+            return GL_ONE_MINUS_DST_COLOR;
+    }
+    return blendFactors[in];
+}
+
+void GXSetBlendMode(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
+{
+    puts("GXSetBlendMode");
+    switch (type)
+    {
+    case GX_BM_NONE:
+        glDisable(GL_BLEND);
+        break;
+    case GX_BM_BLEND:
+        glEnable(GL_BLEND);
+        glBlendFunc(
+            gx_blend_to_gl_blend(src_factor, FALSE),
+            gx_blend_to_gl_blend(dst_factor, TRUE));
+        break;
+    default:
+        assert(0);
+    }
+}
+
 /* FrameBuf */
 
 GXRenderModeObj GXNtsc480IntDf =
@@ -816,7 +861,7 @@ GXFifoObj *GXInit(void *base, u32 size)
     puts("GXInit is a stub");
     glDisable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     return NULL;
 }
 

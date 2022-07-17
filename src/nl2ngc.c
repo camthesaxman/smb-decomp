@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <dolphin.h>
+#include <stdio.h>
 #include <string.h>
 #include <dolphin/GXEnum.h>
 
@@ -113,6 +114,61 @@ void nl2ngc_set_material_color(float r, float g, float b)
 }
 
 #ifdef TARGET_PC
+static void byteswap_dlist(u8 *data, u32 size, int meshType)
+{
+    u8 *end = data + size;
+    u32 flags;
+    u32 vtxCount;
+    int vertsPerFace;
+    u8 *vtxData;
+
+    while (data < end)
+    {
+        bswap32(data + 0);  // flags
+        bswap32(data + 4);  // faceCount
+
+        flags = read_u32_le(data + 0);
+        if (flags & NL_DLIST_FLAG_TRIANGLESTRIP)
+            vertsPerFace = 1;
+        else if (flags & NL_DLIST_FLAG_TRIANGLES)
+            vertsPerFace = 3;
+        else if (flags & NL_DLIST_FLAG_QUADS)
+            vertsPerFace = 4;
+        else
+            assert(0);
+
+        if (meshType == NL_MODEL_TYPE_LIT_CONST_MAT_COLOR)
+            assert(0);
+
+        vtxData = data + 8;
+        for (vtxCount = read_u32_le(data + 4) * vertsPerFace; vtxCount > 0; vtxCount--)
+        {
+            int j;
+
+            bswap32(vtxData + 0);
+            if (read_u32_le(vtxData + 0) & 1)
+            {
+                for (j = 1; j < 8; j++)
+                    bswap32(vtxData + j * 4);
+                vtxData += 0x20;
+            }
+            else
+            {
+                u8 *vtx;
+                bswap32(vtxData + 4);
+
+                vtx = vtxData + read_u32_le(vtxData + 4) + 8;
+                // TODO: why does this mess things up?
+                //for (j = 0; j < 8; j++)
+                //    bswap32(vtx + j * 4);
+
+                vtxData += 8;
+            }
+        }
+        data = vtxData;
+    }
+}
+
 static void byteswap_nlmodel(u8 *data)
 {
     // header stuff
@@ -147,8 +203,7 @@ static void byteswap_nlmodel(u8 *data)
         bswap32(data + 0x38);  // materialColorB
         bswap32(data + 0x4C);  // dispListSize
 
-        // TODO: handle display lists
-
+        byteswap_dlist(data + 0x50, read_u32_le(data + 0x4C), read_u32_le(data + 0x24));
         data += 0x50 + read_u32_le(data + 0x4C);
     }
 }

@@ -21,6 +21,11 @@ OSTime OSGetTime(void)
     return 0;
 }
 
+OSTick OSGetTick(void)
+{
+    return 0;
+}
+
 u32 OSGetPhysicalMemSize(void)
 {
     puts("OSGetPhysicalMemSize is a stub");

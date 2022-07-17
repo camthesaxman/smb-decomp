@@ -431,7 +431,6 @@ static void byteswap_tpl(u8 *data)
     u32 i;
 
     bswap32(data + 0);  // numTextures
-    bswap32(data + 4);  // texHeaders
     numTextures = read_u32_le(data + 0);
     for (i = 0; i < numTextures; i++)
     {
