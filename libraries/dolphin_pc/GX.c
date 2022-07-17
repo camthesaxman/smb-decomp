@@ -963,6 +963,35 @@ void GXSetBlendMode(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor ds
     }
 }
 
+static GLenum gx_compare_to_gl_compare(GXCompare in)
+{
+    static const GLenum compares[] =
+    {
+        GL_NEVER,
+        GL_LESS,
+        GL_EQUAL,
+        GL_LEQUAL,
+        GL_GREATER,
+        GL_NOTEQUAL,
+        GL_GEQUAL,
+        GL_ALWAYS,
+    };
+
+    assert(in >= 0 && in <= 7);
+    return compares[in];
+}
+
+void GXSetZMode(GXBool compare_enable, GXCompare func, GXBool update_enable)
+{
+    glDepthFunc(gx_compare_to_gl_compare(func));
+
+    if (compare_enable)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+    glDepthMask(update_enable);
+}
+
 /* FrameBuf */
 
 GXRenderModeObj GXNtsc480IntDf =

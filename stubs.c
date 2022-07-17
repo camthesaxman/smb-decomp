@@ -77,7 +77,6 @@ void GXSetTexCopySrc(){puts("GXSetTexCopySrc is a stub");}
 void GXSetVtxAttrFmt(){puts("GXSetVtxAttrFmt is a stub");}
 void GXSetVtxDesc(){puts("GXSetVtxDesc is a stub");}
 void GXSetZCompLoc(){puts("GXSetZCompLoc is a stub");}
-void GXSetZMode(){puts("GXSetZMode is a stub");}
 void LCEnable(){puts("LCEnable is a stub");}
 void OSClearContext(){puts("OSClearContext is a stub");}
 void OSDisableInterrupts(){puts("OSDisableInterrupts is a stub");}
