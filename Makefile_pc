@@ -110,6 +110,7 @@ SOURCES := \
 	libraries/dolphin_pc/GX.c \
 	libraries/dolphin_pc/dvd.c \
 	libraries/dolphin_pc/vi.c \
+	libraries/dolphin_pc/pad.c \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
 	libraries/os/OSAudioSystem.c \

@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <dolphin.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dolphin/GXEnum.h>
 
@@ -114,6 +115,35 @@ void nl2ngc_set_material_color(float r, float g, float b)
 }
 
 #ifdef TARGET_PC
+
+static u8 **s_visitedVerts;
+static int s_visitedVertsCount = 0;
+
+static void mark_vert_as_visited(u8 *ptr)
+{
+    int i;
+
+    for (i = 0; i < s_visitedVertsCount; i++)
+    {
+        if (s_visitedVerts[i] == ptr)
+            return;
+    }
+    s_visitedVerts = realloc(s_visitedVerts, (s_visitedVertsCount + 1) * sizeof(*s_visitedVerts));
+    s_visitedVerts[s_visitedVertsCount++] = ptr;
+}
+
+int is_vert_visited(u8 *ptr)
+{
+    int i;
+
+    for (i = 0; i < s_visitedVertsCount; i++)
+    {
+        if (s_visitedVerts[i] == ptr)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 static void byteswap_dlist(u8 *data, u32 size, int meshType)
 {
     u8 *end = data + size;
@@ -121,6 +151,9 @@ static void byteswap_dlist(u8 *data, u32 size, int meshType)
     u32 vtxCount;
     int vertsPerFace;
     u8 *vtxData;
+
+    s_visitedVerts = NULL;
+    s_visitedVertsCount = 0;
 
     while (data < end)
     {
@@ -143,30 +176,54 @@ static void byteswap_dlist(u8 *data, u32 size, int meshType)
         vtxData = data + 8;
         for (vtxCount = read_u32_le(data + 4) * vertsPerFace; vtxCount > 0; vtxCount--)
         {
-            int j;
+            int i;
 
-            bswap32(vtxData + 0);
-            if (read_u32_le(vtxData + 0) & 1)
+            if (is_vert_visited(vtxData))
             {
-                for (j = 1; j < 8; j++)
-                    bswap32(vtxData + j * 4);
-                vtxData += 0x20;
+                if (read_u32_le(vtxData + 0) & 1)
+                    vtxData += 0x20;
+                else
+                {
+                    u8 *vtx = vtxData + read_u32_le(vtxData + 4) + 8;
+                    if (!is_vert_visited(vtx))
+                    {
+                        for (i = 0; i < 8; i++)
+                            bswap32(vtx + i * 4);
+                        mark_vert_as_visited(vtx);
+                    }
+                    vtxData += 8;
+                }
             }
             else
             {
-                u8 *vtx;
-                bswap32(vtxData + 4);
-
-                vtx = vtxData + read_u32_le(vtxData + 4) + 8;
-                // TODO: why does this mess things up?
-                //for (j = 0; j < 8; j++)
-                //    bswap32(vtx + j * 4);
-
-                vtxData += 8;
+                bswap32(vtxData + 0);
+                if (read_u32_le(vtxData + 0) & 1)
+                {
+                    for (i = 1; i < 8; i++)
+                        bswap32(vtxData + i * 4);
+                    mark_vert_as_visited(vtxData);
+                    vtxData += 0x20;
+                }
+                else
+                {
+                    u8 *vtx;
+                    bswap32(vtxData + 4);
+                    vtx = vtxData + read_u32_le(vtxData + 4) + 8;
+                    if (!is_vert_visited(vtx))
+                    {
+                        for (i = 0; i < 8; i++)
+                            bswap32(vtx + i * 4);
+                        mark_vert_as_visited(vtx);
+                    }
+                    mark_vert_as_visited(vtxData);
+                    vtxData += 8;
+                }
             }
         }
         data = vtxData;
     }
+
+    free(s_visitedVerts);
 }
 
 static void byteswap_nlmodel(u8 *data)

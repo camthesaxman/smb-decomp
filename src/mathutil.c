@@ -317,6 +317,7 @@ lbl_80007264:
     stfs f2, 0(r5)
     blr
 }
+#endif
 
 #ifdef C_ONLY
 float mathutil_tan(register u32 angle)
@@ -349,6 +350,7 @@ asm float mathutil_tan(register u32 angle)
 }
 #endif
 
+#ifdef __MWERKS__
 asm s16 mathutil_atan2(double a, float b)
 {
     nofralloc

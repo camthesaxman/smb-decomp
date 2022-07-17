@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <dolphin/types.h>
@@ -27,8 +28,8 @@ void CARDRenameAsync(){puts("CARDRenameAsync is a stub");}
 void CARDSetStatusAsync(){puts("CARDSetStatusAsync is a stub");}
 void CARDUnmount(){puts("CARDUnmount is a stub");}
 void CARDWriteAsync(){puts("CARDWriteAsync is a stub");}
-void C_MTXLookAt(){puts("C_MTXLookAt is a stub");}
-void C_MTXScale(){puts("C_MTXScale is a stub");}
+void C_MTXLookAt(){*(int*)0 = 0;puts("C_MTXLookAt is a stub");}
+void C_MTXScale(){*(int*)0 = 0;puts("C_MTXScale is a stub");}
 void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
 void DCStoreRange(){puts("DCStoreRange is a stub");}
@@ -100,7 +101,6 @@ void OSTicksToCalendarTime(){puts("OSTicksToCalendarTime is a stub");}
 void OSUnlink(){puts("OSUnlink is a stub");}
 void OSWakeupThread(){puts("OSWakeupThread is a stub");}
 void PADInit(){puts("PADInit is a stub");}
-void PADRead(){puts("PADRead is a stub");}
 void PADRecalibrate(){puts("PADRecalibrate is a stub");}
 void PADReset(){puts("PADReset is a stub");}
 void PADSetAnalogMode(){puts("PADSetAnalogMode is a stub");}
@@ -328,7 +328,6 @@ void mathutil_mtxA_invert(){puts("mathutil_mtxA_invert is a stub");}
 void mathutil_mtxA_rigid_invert(){puts("mathutil_mtxA_rigid_invert is a stub");}
 void mathutil_mtxA_sq_from_identity(){puts("mathutil_mtxA_sq_from_identity is a stub");}
 void mathutil_sin_cos_v(){puts("mathutil_sin_cos_v is a stub");}
-void mathutil_tan(){puts("mathutil_tan is a stub");}
 void minimap_change_size(){puts("minimap_change_size is a stub");}
 void minimap_draw(){puts("minimap_draw is a stub");}
 void mode_mini_func(){puts("mode_mini_func is a stub");}
