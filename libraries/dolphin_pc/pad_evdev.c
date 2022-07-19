@@ -68,7 +68,7 @@ u32 PADRead(PADStatus *status)
 {
     int i;
 
-    puts("PADRead");
+    //puts("PADRead");
     for (i = 0; i < s_gamepadsCount; i++)
     {
         struct Gamepad *gamepad = &s_gamepads[i];

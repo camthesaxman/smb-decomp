@@ -16,6 +16,8 @@
 extern void glClearDepthf(float);
 #endif
 
+//#define puts(...)
+
 /*
 static void pause(void)
 {
@@ -46,6 +48,26 @@ static f32 read_f32(const u8 *src)
     return *(f32 *)&data;
 }
 
+static u16 read_u16_le(const u8 *src)
+{
+    return (src[1] << 8) | src[0];
+}
+
+static u32 read_u32_le(const u8 *src)
+{
+    return (src[3] << 24) | (src[2] << 16) | (src[1] << 8) | src[0];
+}
+
+static f32 read_f32_le(const u8 *src)
+{
+    f32 result;
+    u32 data = read_u32_le(src);
+
+    /*memcpy(result, data, sizeof(result));
+    return result;*/
+    return *(f32 *)&data;
+}
+
 /* Attr */
 
 struct VtxFmt
@@ -57,6 +79,13 @@ struct VtxFmt
 
 static struct VtxFmt s_vtxFmts[GX_MAX_VTXFMT][GX_VA_MAX_ATTR] = {0};
 static GXAttrType s_attrTypes[GX_VA_MAX_ATTR];
+
+void GXGetVtxAttrFmt(GXVtxFmt idx, GXAttr attr, GXCompCnt *compCnt, GXCompType *compType, u8 *shift)
+{
+    *compCnt = s_vtxFmts[idx][attr].cnt;
+    *compType = s_vtxFmts[idx][attr].type;
+    *shift = s_vtxFmts[idx][attr].frac;
+}
 
 void GXSetVtxAttrFmt(GXVtxFmt vtxfmt, GXAttr attr, GXCompCnt cnt,
     GXCompType type, u8 frac)
@@ -126,7 +155,7 @@ void GXLoadTexMtxImm(f32 mtx[][4], u32 id, GXTexMtxType type)
 
 void GXSetViewport(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz)
 {
-    printf("GXSetViewport: %.2f, %.2f, %.2f, %.2f\n", left, top, wd, ht);
+    //printf("GXSetViewport: %.2f, %.2f, %.2f, %.2f\n", left, top, wd, ht);
     glViewport(left, top, wd, ht);
 }
 
@@ -151,6 +180,9 @@ void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, 
 void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
 {
     puts("GXSetTevColorIn is a stub");
+
+    glActiveTexture(GL_TEXTURE0 + stage);
+    glActiveTexture(GL_TEXTURE0);
 }
 
 void GXSetTevAlphaIn(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
@@ -210,42 +242,163 @@ void GXSetNumTevStages(u8 nStages)
 
 /* Geometry */
 
+static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *ptr)
+{
+    struct
+    {
+        GLint size;
+        GLenum type;
+        const void *ptr;
+    } attrArrays[GX_VA_MAX_ATTR] = {0};
+    u32 vtxSize = 0;
+    int attr;
+    int i;
+
+    // Calculate attribute offsets and vertex size
+    for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
+    {
+        GXCompCnt compCnt = s_vtxFmts[vtxfmt][attr].cnt;
+        GXCompType compType = s_vtxFmts[vtxfmt][attr].type;
+        switch (s_attrTypes[attr])
+        {
+        case GX_NONE:
+            break;
+        case GX_DIRECT:
+            attrArrays[attr].ptr = ptr + vtxSize;
+            #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
+            switch (COMBINE(attr, compCnt, compType))
+            {
+            case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
+            case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
+                attrArrays[attr].size = 3;
+                attrArrays[attr].type = GL_FLOAT;
+                vtxSize += 12;
+                break;
+            case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
+            case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
+                attrArrays[attr].size = 3;
+                attrArrays[attr].type = GL_SHORT;
+                vtxSize += 6;
+                break;
+            case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
+            case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
+            case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
+                attrArrays[attr].size = 2;
+                attrArrays[attr].type = GL_FLOAT;
+                vtxSize += 8;
+                break;
+            case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
+            case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
+            case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
+                attrArrays[attr].size = 2;
+                attrArrays[attr].type = GL_SHORT;
+                vtxSize += 4;
+                break;
+            case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
+                attrArrays[attr].size = 4;
+                attrArrays[attr].type = GL_UNSIGNED_BYTE;
+                vtxSize += 4;
+                break;
+            default:
+                printf("not handled: attr %i, cnt %i, type %i\n", attr, compCnt, compType);
+                assert(0);
+                break;
+            }
+            #undef COMBINE
+            break;
+        default:
+            assert(0);  // TODO
+        }
+    }
+
+    if (attrArrays[GX_VA_POS].ptr != NULL)
+    {
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(
+            attrArrays[GX_VA_POS].size,
+            attrArrays[GX_VA_POS].type,
+            vtxSize,
+            attrArrays[GX_VA_POS].ptr);
+    }
+    if (attrArrays[GX_VA_NRM].ptr != NULL)
+    {
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glNormalPointer(
+            attrArrays[GX_VA_NRM].type,
+            vtxSize,
+            attrArrays[GX_VA_NRM].ptr);
+    }
+    for (i = 0; i <= 2; i++)
+    {
+        if (attrArrays[GX_VA_TEX0 + i].ptr != NULL)
+        {
+            glActiveTexture(GL_TEXTURE0 + i);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glTexCoordPointer(
+                attrArrays[GX_VA_TEX0 + i].size,
+                attrArrays[GX_VA_TEX0 + i].type,
+                vtxSize,
+                attrArrays[GX_VA_TEX0 + i].ptr);
+        }
+    }
+    glActiveTexture(GL_TEXTURE0);
+    if (attrArrays[GX_VA_CLR0].ptr != NULL)
+    {
+        glEnableClientState(GL_COLOR_ARRAY);
+        glColorPointer(
+            attrArrays[GX_VA_CLR0].size,
+            attrArrays[GX_VA_CLR0].type,
+            vtxSize,
+            attrArrays[GX_VA_CLR0].ptr);
+    }
+
+    return vtxSize;
+}
+
 void __GXSetDirtyState(void)
 {
     puts("__GXSetDirtyState is a stub");
 }
 
-void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
+static GLenum gx_prim_to_gl_prim(GXPrimitive in)
 {
-    GLenum mode;
-
-    //puts("GXBegin");
-    switch (type)
+    switch (in)
     {
-    case GX_POINTS:        mode = GL_POINTS;         break;
-    case GX_LINES:         mode = GL_LINES;          break;
-    case GX_LINESTRIP:     mode = GL_LINE_STRIP;     break;
-    case GX_TRIANGLES:     mode = GL_TRIANGLES;      break;
-    case GX_TRIANGLESTRIP: mode = GL_TRIANGLE_STRIP; break;
-    case GX_TRIANGLEFAN:   mode = GL_TRIANGLE_FAN;   break;
-    case GX_QUADS:         mode = GL_QUADS;          break;
+    case GX_POINTS:        return GL_POINTS;
+    case GX_LINES:         return GL_LINES;
+    case GX_LINESTRIP:     return GL_LINE_STRIP;
+    case GX_TRIANGLES:     return GL_TRIANGLES;
+    case GX_TRIANGLESTRIP: return GL_TRIANGLE_STRIP;
+    case GX_TRIANGLEFAN:   return GL_TRIANGLE_FAN;
+    case GX_QUADS:         return GL_QUADS;
     default: assert(0);
     }
-    glBegin(mode);
+    return 0;
+}
+
+static u8 s_vertexBuffer[4096];
+static int s_vertexBufferPos;
+static int s_currPrim;
+static int s_vertexCount;
+
+void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
+{
+    u32 vtxSize = prepare_vertex_arrays(type, vtxfmt, s_vertexBuffer);
+    s_currPrim = type;
+    s_vertexBufferPos = 0;
+    s_vertexCount = nverts;
+    assert(nverts * vtxSize <= sizeof(s_vertexBuffer));
 }
 
 void GXEnd(void)
 {
-    //puts("GXEnd");
-    glEnd();
+    glDrawArrays(gx_prim_to_gl_prim(s_currPrim), 0, s_vertexCount);
 
-    /*
-    glBegin(GL_TRIANGLES);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 1, 0);
-    glVertex3f(1, 1, 0);
-    glEnd();
-    */
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
     glFlush();  // TODO: remove
 }
 
@@ -254,9 +407,41 @@ void GXSetLineWidth(u8 width, GXTexOffset texOffsets)
     puts("GXSetLineWidth is a stub");
 }
 
+/*
+typedef enum
+{
+    GX_CULL_NONE,
+    GX_CULL_FRONT,
+    GX_CULL_BACK,
+    GX_CULL_ALL
+
+} GXCullMode;
+*/
+static GLenum gx_cull_mode_to_gl_cull_mode(GXCullMode in)
+{
+    static const GLenum cullModes[] =
+    {
+        0,
+        GL_FRONT,
+        GL_BACK,
+        GL_FRONT_AND_BACK,
+    };
+
+    assert(in >= 0 && in <= 3);
+    return cullModes[in];
+}
+
 void GXSetCullMode(GXCullMode mode)
 {
     puts("GXSetCullMode is a stub");
+
+    if (mode == GX_CULL_NONE)
+    {
+        glDisable(GL_CULL_FACE);
+        return;
+    }
+    glEnable(GL_CULL_FACE);
+    glCullFace(gx_cull_mode_to_gl_cull_mode(mode));
 }
 
 /* DisplayList */
@@ -279,21 +464,17 @@ void GXCallDisplayList(void *list, u32 nbytes)
     GXPrimitive prim;
     GXVtxFmt fmt;
     int vtxCount;
+    u32 vtxSize;
+    u8 *ptr;
 
     while (pos < nbytes)
     {
-        u8 opcode = data[pos];
+        u8 opcode = data[pos++];
 
         if (opcode == GX_NOP)  // NOP
-        {
-            pos++;
             continue;
-        }
         if (opcode == GX_LOAD_BP_REG)  // GX_LOAD_BP_REG
-        {
-            pos++;
             pos += 4;
-        }
 
         switch (opcode & ~3)
         {
@@ -304,80 +485,21 @@ void GXCallDisplayList(void *list, u32 nbytes)
         case GX_DRAW_LINES:
         case GX_DRAW_LINE_STRIP:
         case GX_DRAW_POINTS:
-            pos++;
             prim = opcode & ~3;
             fmt = opcode & 3;
-            vtxCount = read_u16(data + pos);
+            vtxCount = read_u16_le(data + pos);
             pos += 2;
-            //printf("draw prim 0x%X, vat %i, cnt %i\n", prim, fmt, vtxCount); fflush(stdout);
-            GXBegin(prim, fmt, vtxCount);
-            while (vtxCount-- > 0)
-            {
-                int attr;
-                GXCompCnt compCnt;
-                GXCompType compType;
-                for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
-                {
-                    compCnt = s_vtxFmts[fmt][attr].cnt;
-                    compType = s_vtxFmts[fmt][attr].type;
-                    switch (s_attrTypes[attr])
-                    {
-                    case GX_NONE:
-                        break;
-                    case GX_DIRECT:
-                        #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
-                        switch (COMBINE(attr, compCnt, compType))
-                        {
-                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
-                            GXPosition3f32(read_f32(data + pos), read_f32(data + pos + 4), read_f32(data + pos + 8));
-                            pos += 12;
-                            break;
-                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
-                            GXPosition3s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2), (s16)read_u16(data + pos + 4));
-                            pos += 6;
-                            break;
-                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
-                            GXNormal3f32(read_f32(data + pos), read_f32(data + pos + 4), read_f32(data + pos + 8));
-                            pos += 12;
-                            break;
-                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
-                            GXNormal3s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2), (s16)read_u16(data + pos + 4));
-                            pos += 6;
-                            break;
-                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
-                            GXTexCoord2f32(read_f32(data + pos), read_f32(data + pos + 4));
-                            pos += 8;
-                            break;
-                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
-                            GXTexCoord2s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2));
-                            pos += 4;
-                            break;
-                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):  // TODO: multitexture
-                            pos += 8;
-                            break;
-                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):  // TODO: multitexture
-                            pos += 4;
-                            break;
-                        case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
-                            GXColor4u8(data[pos], data[pos + 1], data[pos + 2], data[pos + 3]);
-                            pos += 4;
-                            break;
-                        default:
-                            printf("not handled: attr %i, cnt %i, type %i\n", attr, compCnt, compType);
-                            assert(0);
-                            break;
-                        }
-                        #undef COMBINE
-                        break;
-                    default:
-                        assert(0);  // TODO
-                    }
-                }
-            }
-            GXEnd();
-            continue;
-        default:
-            assert(0);
+
+            vtxSize = prepare_vertex_arrays(prim, fmt, data + pos);
+
+            glDrawArrays(gx_prim_to_gl_prim(prim), 0, vtxCount);
+
+            glDisableClientState(GL_VERTEX_ARRAY);
+            glDisableClientState(GL_NORMAL_ARRAY);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            glDisableClientState(GL_COLOR_ARRAY);
+
+            pos += vtxCount * vtxSize;
         }
     }
 }
@@ -620,7 +742,7 @@ void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
     //float pos[] = { 1000.0f, 100.0f, 100.0f };
 
     puts("GXLoadLightObjImm is a stub");
-    printf("light %i\n", lightId);
+    //printf("light %i\n", lightId);
     glEnable(lightId);
     //glLightfv(lightId, GL_POSITION, pos);
 }
@@ -966,7 +1088,7 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
     int glFmt = -1;
     void *img = image_ptr;
 
-    printf("GXInitTexObj: fmt %i, %i x %i\n", format, width, height);
+    //printf("GXInitTexObj: fmt %i, %i x %i\n", format, width, height);
     memset(__obj, 0, sizeof(*__obj));
     __obj->width = width;
     __obj->height = height;
@@ -1056,60 +1178,89 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
 {
     __GXTexObj *__obj = (__GXTexObj *)obj;
 
-    puts("GXLoadTexObj is a stub");
-    printf("id %i\n", id);
+    //puts("GXLoadTexObj is a stub");
+    //printf("id %i\n", id);
     glActiveTexture(id);
     glBindTexture(GL_TEXTURE_2D, __obj->textureId);
 }
 
 /* Vert */
 
-// TODO: use vertex arrays
-static float savedX, savedY, savedZ;
+
+static void write_1byte(const void *val)
+{
+    u8 *ptr = val;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+}
+
+static void write_2byte(const void *val)
+{
+    u8 *ptr = val;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+}
+
+static void write_4byte(const void *val)
+{
+    u8 *ptr = val;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
+}
 
 void GXPosition2f32(const f32 x, const f32 y)
 {
-    glVertex2f(x, y);
+    write_4byte(&x);
+    write_4byte(&y);
 }
 
 void GXPosition3s16(const s16 x, const s16 y, const s16 z)
 {
-    glVertex3s(x, y, z);
+    write_2byte(&x);
+    write_2byte(&y);
+    write_2byte(&z);
 }
 
 void GXPosition3f32(const f32 x, const f32 y, const f32 z)
 {
-    //glVertex3f(x, y, z);
-    savedX = x;
-    savedY = y;
-    savedZ = z;
+    write_4byte(&x);
+    write_4byte(&y);
+    write_4byte(&z);
 }
 
 void GXNormal3f32(const f32 x, const f32 y, const f32 z)
 {
-    glNormal3f(x, y, z);
+    write_4byte(&x);
+    write_4byte(&y);
+    write_4byte(&z);
 }
 
 void GXNormal3s16(const s16 x, const s16 y, const s16 z)
 {
-    glNormal3s(x, y, z);
+    write_2byte(&x);
+    write_2byte(&y);
+    write_2byte(&z);
 }
 
 void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a)
 {
-    glColor4ub(r, g, b, a);
+    write_1byte(&r);
+    write_1byte(&g);
+    write_1byte(&b);
+    write_1byte(&a);
 }
 
 void GXTexCoord2s16(const s16 u, const s16 v)
 {
-    glTexCoord2s(u, v);
+    write_2byte(&u);
+    write_2byte(&v);
 }
 
 void GXTexCoord2f32(const f32 u, const f32 v)
 {
-    glTexCoord2f(u, v);
-
-    glVertex3f(savedX, savedY, savedZ);
+    write_4byte(&u);
+    write_4byte(&v);
 }
 
 /* Pixel */
@@ -1239,7 +1390,7 @@ GXFifoObj *GXInit(void *base, u32 size)
     glDisable(GL_CULL_FACE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
-
+    glFrontFace(GL_CW);
     // set up interpolation formula?
     /*
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);

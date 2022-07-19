@@ -1668,29 +1668,29 @@ FORCE_BSS_ORDER(lbl_8020AE00)
 
 #ifdef TARGET_PC
 
-static u8 **s_visitedVerts;
-static int s_visitedVertsCount = 0;
+static u8 **s_visitedAddrs;
+static int s_visitedAddrsCount = 0;
 
-static void mark_vert_as_visited(u8 *ptr)
+static void mark_addr_as_visited(u8 *ptr)
 {
     int i;
 
-    for (i = 0; i < s_visitedVertsCount; i++)
+    for (i = 0; i < s_visitedAddrsCount; i++)
     {
-        if (s_visitedVerts[i] == ptr)
+        if (s_visitedAddrs[i] == ptr)
             return;
     }
-    s_visitedVerts = realloc(s_visitedVerts, (s_visitedVertsCount + 1) * sizeof(*s_visitedVerts));
-    s_visitedVerts[s_visitedVertsCount++] = ptr;
+    s_visitedAddrs = realloc(s_visitedAddrs, (s_visitedAddrsCount + 1) * sizeof(*s_visitedAddrs));
+    s_visitedAddrs[s_visitedAddrsCount++] = ptr;
 }
 
-static int is_vert_visited(u8 *ptr)
+static int is_addr_visited(u8 *ptr)
 {
     int i;
 
-    for (i = 0; i < s_visitedVertsCount; i++)
+    for (i = 0; i < s_visitedAddrsCount; i++)
     {
-        if (s_visitedVerts[i] == ptr)
+        if (s_visitedAddrs[i] == ptr)
             return TRUE;
     }
     return FALSE;
@@ -1700,19 +1700,21 @@ static inline void bswap16_(u8 *data)
 {
     u8 temp;
 
-    assert(!is_vert_visited(data));
+    assert((u32)data % 2 == 0);
+    assert(!is_addr_visited(data));
     temp = data[0];
     data[0] = data[1];
     data[1] = temp;
-    mark_vert_as_visited(data);
+    mark_addr_as_visited(data);
 }
 
 static inline void bswap32_(u8 *data)
 {
     u8 temp;
 
-    //assert(!is_vert_visited(data));
-    if (is_vert_visited(data))
+    assert((u32)data % 4 == 0);
+    //assert(!is_addr_visited(data));
+    if (is_addr_visited(data))
         *(int *)0 = 0;
     temp = data[0];
     data[0] = data[3];
@@ -1721,13 +1723,22 @@ static inline void bswap32_(u8 *data)
     temp = data[1];
     data[1] = data[2];
     data[2] = temp;
-    mark_vert_as_visited(data);
+    mark_addr_as_visited(data);
 }
 
 #define bswap32 bswap32_
 #define bswap16 bswap16_
 
-static void byteswap_anim_group(u8 *base, u8 *data)
+static void byteswap_stageanimgroupanim(u8 *base, u8 *data)
+{
+    int i;
+
+    for (i = 0; i < 12; i++)
+        bswap32(data + i * 4);
+    // TODO: keyframes
+}
+
+static void byteswap_stageanimgroup(u8 *base, u8 *data)
 {
     int i;
     u8 *sub;
@@ -1746,6 +1757,9 @@ static void byteswap_anim_group(u8 *base, u8 *data)
     bswap32(data + 0xC0);
     // TODO: child structs
 
+    if (read_u32_le(data + 0x14) != 0)
+        byteswap_stageanimgroupanim(base, base + read_u32_le(data + 0x14));
+
     // modelNames
     sub = base + read_u32_le(data + 0x18);
     while (read_u32_le(sub) != 0)
@@ -1758,6 +1772,9 @@ static void byteswap_anim_group(u8 *base, u8 *data)
 static void byteswap_stagebganim(u8 *base, u8 *data)
 {
     int i;
+
+    if (is_addr_visited(data))
+        return;
 
     for (i = 0; i < 24; i++)
         bswap32(data + i * 4);
@@ -1795,10 +1812,10 @@ static void byteswap_bgobject(u8 *base, u8 *data, int count)
         bswap32(data + 0x30);  // anim
         bswap32(data + 0x34);  // flipbooks
 
-        printf("name: %s\n", (char *)(base + read_u32_le(data + 4)));
-
-        //byteswap_stagebganim(base, data + read_u32_le(data + 0x30));
-        //byteswap_stageflipbookanims(base, data + read_u32_le(data + 0x34));
+        if (read_u32_le(data + 0x30) != 0)
+            byteswap_stagebganim(base, base + read_u32_le(data + 0x30));
+        if (read_u32_le(data + 0x34) != 0)
+            byteswap_stageflipbookanims(base, base + read_u32_le(data + 0x34));
         data += 0x38;
     }
 }
@@ -1808,13 +1825,13 @@ static void byteswap_stagedef(u8 *data)
     int i;
     u8 *sub;
 
-    s_visitedVerts = NULL;
-    s_visitedVertsCount = 0;
+    s_visitedAddrs = NULL;
+    s_visitedAddrsCount = 0;
 
     for (i = 0; i < 37; i++)
         bswap32(data + i * 4);
 
-    byteswap_anim_group(data, data + read_u32_le(data + 0x0C));
+    byteswap_stageanimgroup(data, data + read_u32_le(data + 0x0C));
 
     // startPos
     sub = data + read_u32_le(data + 0x10);
@@ -1829,8 +1846,10 @@ static void byteswap_stagedef(u8 *data)
     sub = data + read_u32_le(data + 0x14);
     bswap32(sub);
 
-    byteswap_bgobject(data, data + read_u32_le(data + 0x6C), read_u32_le(data + 0x68));
-    byteswap_bgobject(data, data + read_u32_le(data + 0x74), read_u32_le(data + 0x70));
+    if (read_u32_le(data + 0x6C) != 0)
+        byteswap_bgobject(data, data + read_u32_le(data + 0x6C), read_u32_le(data + 0x68));
+    if (read_u32_le(data + 0x74) != 0)
+        byteswap_bgobject(data, data + read_u32_le(data + 0x74), read_u32_le(data + 0x70));
 
     // animGroupModels
     sub = data + read_u32_le(data + 0x5C);

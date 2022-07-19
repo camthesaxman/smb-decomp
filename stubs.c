@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <dolphin/types.h>
 
+#include "src/mathutil.h"
+
+#define puts(...)
+
 void CARDCancel(){puts("CARDCancel is a stub");}
 void CARDCheckAsync(){puts("CARDCheckAsync is a stub");}
 void CARDClose(){puts("CARDClose is a stub");}
@@ -25,8 +29,8 @@ void CARDRenameAsync(){puts("CARDRenameAsync is a stub");}
 void CARDSetStatusAsync(){puts("CARDSetStatusAsync is a stub");}
 void CARDUnmount(){puts("CARDUnmount is a stub");}
 void CARDWriteAsync(){puts("CARDWriteAsync is a stub");}
-void C_MTXLookAt(){*(int*)0 = 0;puts("C_MTXLookAt is a stub");}
-void C_MTXScale(){*(int*)0 = 0;puts("C_MTXScale is a stub");}
+void C_MTXLookAt(Mtx m, Point3dPtr camPos, VecPtr camUp, Point3dPtr target){*(int*)0 = 0;puts("C_MTXLookAt is a stub");}
+void C_MTXScale(Mtx m, f32 xS, f32 yS, f32 zS){*(int*)0 = 0;puts("C_MTXScale is a stub");}
 void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}
 void DCStoreRange(){puts("DCStoreRange is a stub");}
@@ -109,7 +113,7 @@ void PERFStartAutoSampling(){puts("PERFStartAutoSampling is a stub");}
 void PERFStartFrame(){puts("PERFStartFrame is a stub");}
 void PERFStopAutoSampling(){puts("PERFStopAutoSampling is a stub");}
 void PPCHalt(){puts("PPCHalt is a stub");}
-void PSMTXIdentity(){puts("PSMTXIdentity is a stub");}
+void PSMTXIdentity(Mtx m){puts("PSMTXIdentity is a stub");}
 void SoundChoID(){puts("SoundChoID is a stub");}
 void SoundPan(){puts("SoundPan is a stub");}
 void SoundPitch(){puts("SoundPitch is a stub");}
@@ -318,13 +322,23 @@ void lbl_802F21E8(){puts("lbl_802F21E8 is a stub");}
 void lbl_802F21EC(){puts("lbl_802F21EC is a stub");}
 void lbl_802F21F0(){puts("lbl_802F21F0 is a stub");}
 void lbl_802F22C8(){puts("lbl_802F22C8 is a stub");}
-void mathutil_atan(){puts("mathutil_atan is a stub");}
-void mathutil_atan2(){puts("mathutil_atan2 is a stub");}
+s16 mathutil_atan(float angle)
+{
+    return atanf(angle) * 65536.0f / (2.0f * M_PI);
+}
+s16 mathutil_atan2(double a, float b)
+{
+    return atan2f(a, b) * 65536.0f / (2.0f * M_PI);
+}
 void mathutil_init(){puts("mathutil_init is a stub");}
 void mathutil_mtxA_invert(){puts("mathutil_mtxA_invert is a stub");}
 void mathutil_mtxA_rigid_invert(){puts("mathutil_mtxA_rigid_invert is a stub");}
 void mathutil_mtxA_sq_from_identity(){puts("mathutil_mtxA_sq_from_identity is a stub");}
-void mathutil_sin_cos_v(){puts("mathutil_sin_cos_v is a stub");}
+void mathutil_sin_cos_v(int a, float b[2])
+{
+    b[0] = mathutil_sin(a);
+    b[1] = mathutil_cos(a);
+}
 void minimap_change_size(){puts("minimap_change_size is a stub");}
 void minimap_draw(){puts("minimap_draw is a stub");}
 void mode_mini_func(){puts("mode_mini_func is a stub");}
