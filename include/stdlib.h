@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <wchar.h>
 
+#define RAND_MAX 32767
+
 void srand(unsigned int seed);
 int rand(void);
 void exit(int status);

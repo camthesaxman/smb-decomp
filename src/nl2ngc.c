@@ -132,7 +132,7 @@ static void mark_vert_as_visited(u8 *ptr)
     s_visitedVerts[s_visitedVertsCount++] = ptr;
 }
 
-int is_vert_visited(u8 *ptr)
+static int is_vert_visited(u8 *ptr)
 {
     int i;
 

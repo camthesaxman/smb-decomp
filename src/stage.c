@@ -1,6 +1,8 @@
+#include <assert.h>
 #include <dolphin.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "background.h"
@@ -324,7 +326,7 @@ void draw_blur_bridge_accordions(void)
 
             mathutil_mtxA_from_mtx(mathutilData->mtxB);
 
-            // Position accordion 
+            // Position accordion
             if (temp < x)
             {
                 accordionPos.x = 0.5 * (temp + x) - 1.0;
@@ -1664,6 +1666,184 @@ FORCE_BSS_ORDER(lbl_8020AE00)
 #undef OFFSET_TO_PTR
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(offset) + (u32)(base))
 
+#ifdef TARGET_PC
+
+static u8 **s_visitedVerts;
+static int s_visitedVertsCount = 0;
+
+static void mark_vert_as_visited(u8 *ptr)
+{
+    int i;
+
+    for (i = 0; i < s_visitedVertsCount; i++)
+    {
+        if (s_visitedVerts[i] == ptr)
+            return;
+    }
+    s_visitedVerts = realloc(s_visitedVerts, (s_visitedVertsCount + 1) * sizeof(*s_visitedVerts));
+    s_visitedVerts[s_visitedVertsCount++] = ptr;
+}
+
+static int is_vert_visited(u8 *ptr)
+{
+    int i;
+
+    for (i = 0; i < s_visitedVertsCount; i++)
+    {
+        if (s_visitedVerts[i] == ptr)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static inline void bswap16_(u8 *data)
+{
+    u8 temp;
+
+    assert(!is_vert_visited(data));
+    temp = data[0];
+    data[0] = data[1];
+    data[1] = temp;
+    mark_vert_as_visited(data);
+}
+
+static inline void bswap32_(u8 *data)
+{
+    u8 temp;
+
+    //assert(!is_vert_visited(data));
+    if (is_vert_visited(data))
+        *(int *)0 = 0;
+    temp = data[0];
+    data[0] = data[3];
+    data[3] = temp;
+
+    temp = data[1];
+    data[1] = data[2];
+    data[2] = temp;
+    mark_vert_as_visited(data);
+}
+
+#define bswap32 bswap32_
+#define bswap16 bswap16_
+
+static void byteswap_anim_group(u8 *base, u8 *data)
+{
+    int i;
+    u8 *sub;
+
+    bswap32(data + 0x00);  // initPos.x
+    bswap32(data + 0x04);  // initPos.y
+    bswap32(data + 0x08);  // initPos.z
+    bswap16(data + 0x0C);  // initRot.x
+    bswap16(data + 0x0E);  // initRot.y
+    bswap16(data + 0x10);  // initRot.z
+    bswap16(data + 0x12);  // unk12
+    for (i = 0; i < 32; i++)
+        bswap32(data + 0x14 + i * 4);
+    bswap32(data + 0xB8);
+    bswap32(data + 0xBC);
+    bswap32(data + 0xC0);
+    // TODO: child structs
+
+    // modelNames
+    sub = base + read_u32_le(data + 0x18);
+    while (read_u32_le(sub) != 0)
+    {
+        bswap32(sub);
+        sub += 4;
+    }
+}
+
+static void byteswap_stagebganim(u8 *base, u8 *data)
+{
+    int i;
+
+    for (i = 0; i < 24; i++)
+        bswap32(data + i * 4);
+    // TODO: keyframes
+}
+
+static void byteswap_stageflipbookanims(u8 *base, u8 *data)
+{
+    int i;
+
+    for (i = 0; i < 4; i++)
+        bswap32(data + i * 4);
+    // TODO: child structs
+}
+
+static void byteswap_bgobject(u8 *base, u8 *data, int count)
+{
+    u8 *sub;
+
+    while (count-- > 0)
+    {
+        bswap32(data + 0x00);  // flags
+        bswap32(data + 0x04);  // name
+        bswap32(data + 0x08);  // model
+        bswap32(data + 0x0C);  // pos.x
+        bswap32(data + 0x10);  // pos.y
+        bswap32(data + 0x14);  // pos.z
+        bswap16(data + 0x18);  // rotX
+        bswap16(data + 0x1A);  // rotY
+        bswap16(data + 0x1C);  // rotZ
+        bswap32(data + 0x20);  // scale.x
+        bswap32(data + 0x24);  // scale.y
+        bswap32(data + 0x28);  // scale.z
+        bswap32(data + 0x2C);  // translucency
+        bswap32(data + 0x30);  // anim
+        bswap32(data + 0x34);  // flipbooks
+
+        printf("name: %s\n", (char *)(base + read_u32_le(data + 4)));
+
+        //byteswap_stagebganim(base, data + read_u32_le(data + 0x30));
+        //byteswap_stageflipbookanims(base, data + read_u32_le(data + 0x34));
+        data += 0x38;
+    }
+}
+
+static void byteswap_stagedef(u8 *data)
+{
+    int i;
+    u8 *sub;
+
+    s_visitedVerts = NULL;
+    s_visitedVertsCount = 0;
+
+    for (i = 0; i < 37; i++)
+        bswap32(data + i * 4);
+
+    byteswap_anim_group(data, data + read_u32_le(data + 0x0C));
+
+    // startPos
+    sub = data + read_u32_le(data + 0x10);
+    bswap32(sub + 0x00);
+    bswap32(sub + 0x04);
+    bswap32(sub + 0x08);
+    bswap16(sub + 0x0C);
+    bswap16(sub + 0x0E);
+    bswap16(sub + 0x10);
+
+    // pFallOutY
+    sub = data + read_u32_le(data + 0x14);
+    bswap32(sub);
+
+    byteswap_bgobject(data, data + read_u32_le(data + 0x6C), read_u32_le(data + 0x68));
+    byteswap_bgobject(data, data + read_u32_le(data + 0x74), read_u32_le(data + 0x70));
+
+    // animGroupModels
+    sub = data + read_u32_le(data + 0x5C);
+    for (i = read_u32_le(data + 0x58); i > 0; i--)
+    {
+        bswap32(sub + 0);
+        bswap32(sub + 4);
+        bswap32(sub + 8);
+        sub += 0xC;
+    }
+}
+#endif
+
 void load_stagedef(int stageId)
 {
     struct File file;
@@ -1704,6 +1884,10 @@ void load_stagedef(int stageId)
     // Decompress data
     lzs_decompress(compData, uncompData);
     OSFree(compData);
+
+#ifdef TARGET_PC
+    byteswap_stagedef(uncompData);
+#endif
 
     decodedStageLzPtr = uncompData;
     if (uncompData == NULL)

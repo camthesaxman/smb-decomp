@@ -2,13 +2,13 @@ ifeq ($(TARGET_WINDOWS),1)
   CC := i686-w64-mingw32-gcc -m32
   CFLAGS := -O0 -g -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
   CPPFLAGS := -idirafter include -idirafter win32/include -DNONMATCHING -DC_ONLY -DTARGET_PC
-  LDFLAGS := -mwindows -Lwin32/lib -lglfw3 -lglew32s -lopengl32
+  LDFLAGS := -mwindows -Lwin32/lib -lglfw3 -lglew32s -lopengl32 -ldinput8 -ldxguid
   EXE := .exe
 else
   CC := gcc -m32
   CFLAGS := -O0 -g -fsanitize=address -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
-  CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC
-  LDFLAGS := -lm -lGL -lglfw -fsanitize=address
+  CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC $(shell pkg-config --cflags libevdev)
+  LDFLAGS := -lm -lGL -lglfw $(shell pkg-config --libs libevdev) -fsanitize=address
   EXE :=
 endif
 
@@ -118,7 +118,10 @@ SOURCES := \
 	libraries/dolphin_pc/GX.c \
 	libraries/dolphin_pc/dvd.c \
 	libraries/dolphin_pc/vi.c \
-	libraries/dolphin_pc/pad.c \
+	libraries/dolphin_pc/pad_evdev.c \
+	libraries/dolphin_pc/pad_dinput.c \
+	libraries/dolphin_pc/ar.c \
+	libraries/dolphin_pc/arq.c \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
 	libraries/os/OSAudioSystem.c \

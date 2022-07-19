@@ -1032,6 +1032,7 @@ void func_8008B0AC(void)
 void u_ape_free(struct Ape *ape)
 {
     func_8008D29C(ape->unk5C);
+#ifndef TARGET_PC
     if (lbl_802F2074 == 2)
     {
         OSFreeToHeap(backgroundHeap, ape->unk0);
@@ -1048,6 +1049,7 @@ void u_ape_free(struct Ape *ape)
         OSFreeToHeap(subHeap, ape->unk4);
     }
     OSFreeToHeap(subHeap, ape->unk98);
+#endif
     apeStructPtrs[--nextApeIndex] = ape;
     u_free_character_graphics(ape->charaId, (ape->unk90 >= 2));
 }
@@ -1133,8 +1135,10 @@ struct Ape *u_make_ape_sub(char *skelName, char *modelName /*unused*/)
 
     find_motskl_entry(skelName, &skel);
 
+#ifndef TARGET_PC
     r24 = u_create_joints_probably(skel);
     r31 = u_create_joints_probably(skel);
+#endif
 
     ape->unk94 = 5;
     ape->unk98 = OSAllocFromHeap(subHeap, ape->unk94 * sizeof(*ape->unk98));
@@ -1183,9 +1187,11 @@ struct Ape *u_make_ape_sub(char *skelName, char *modelName /*unused*/)
 
     u_make_ape_inline(ape);
     r23 = find_motskl_entry_idx(skelName);
+#ifndef TARGET_PC
     func_8008B3B8_inline_3(r23, ape->unk0);
     r23++;r23--;
     func_8008B3B8_inline_3(r23, ape->unk4);
+#endif
 
     ape->unkB8 = lbl_8008A10C;
     ape->unkBC = lbl_8008A108;
@@ -1224,6 +1230,7 @@ struct Ape *u_make_ape(int charaId)
 
     ape->unkB0 = 0;
     u_load_character_graphics(charaId, lbl_802F207C >> 1);
+#ifndef TARGET_PC
     func_80089CF4(ape, ((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180.unk10);
     func_800355FC(ape->unk0);
 
@@ -1235,7 +1242,7 @@ struct Ape *u_make_ape(int charaId)
     ape->unk4->unk81A8[0].transformMtx[0][3] = r5->unk1A4.x;
     ape->unk4->unk81A8[0].transformMtx[1][3] = r5->unk1A4.y;
     ape->unk4->unk81A8[0].transformMtx[2][3] = r5->unk1A4.z;
-
+#endif
     return ape;
 }
 
@@ -1292,6 +1299,7 @@ void func_8008BAA8(int *a, int *b)
 
 void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
 {
+#ifndef TARGET_PC
     struct MotInfo *r30;
     struct Struct8003699C_child *r7;
     struct Ape_child *r8;
@@ -1391,6 +1399,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
             ape->unkB0 = r9;
         func_8008B9DC(ape, r8->unk10);
     }
+#endif
 }
 
 void func_8008BEF8(int a)
@@ -1561,6 +1570,7 @@ void func_8008C4A0(float a)
 
 void u_do_ape_anim(struct Ape *ape)
 {
+#ifndef TARGET_PC
     struct Struct8003699C_child *r31 = ape->unk0;
     struct Struct8003699C_child *r29;
 
@@ -1607,6 +1617,7 @@ void u_do_ape_anim(struct Ape *ape)
         }
     }
     func_80036064(r31);
+#endif
 }
 
 void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
@@ -1692,6 +1703,7 @@ void lbl_8008CA80(struct Struct8008C924 *);
 
 void func_8008C924(struct Ape *ape, int b)
 {
+#ifndef TARGET_PC
     int r3 = (b == 3 || (ape->flags & (1 << 5)));
     u8 dummy[16];
 
@@ -1720,6 +1732,7 @@ void func_8008C924(struct Ape *ape, int b)
     }
     else
         func_8008CAAC(ape, 1.0f);
+#endif
 }
 
 void lbl_8008CA80(struct Struct8008C924 *node)

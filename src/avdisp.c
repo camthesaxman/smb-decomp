@@ -207,10 +207,13 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         ambientColor.b = 0xff * s_ambientBlue;
         ambientColor.a = 0xff * s_materialAlpha;
     }
+
+#ifndef TARGET_PC
     // Equivalent to GXSetChanAmbColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_AMBIENT0_ID;
     GXWGFifo.u32 = ambientColor.r << 24 | ambientColor.g << 16 | ambientColor.b << 8 | ambientColor.a << 0;
+#endif
 
     // Compute material color.
     materialColor.a = shape->alpha * s_materialAlpha;
@@ -226,10 +229,13 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         materialColor.g = 0xff;
         materialColor.b = 0xff;
     }
+
+#ifndef TARGET_PC
     // Equivalent to GXSetChanMatColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_MATERIAL0_ID;
     GXWGFifo.u32 = materialColor.r << 24 | materialColor.g << 16 | materialColor.b << 8 | materialColor.a << 0;
+#endif
 }
 #endif
 

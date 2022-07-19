@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <dolphin/types.h>
 
-void ARGetDMAStatus(){puts("ARGetDMAStatus is a stub");}
-void ARQPostRequest(){puts("ARQPostRequest is a stub");}
-void ARStartDMA(){puts("ARStartDMA is a stub");}
 void CARDCancel(){puts("CARDCancel is a stub");}
 void CARDCheckAsync(){puts("CARDCheckAsync is a stub");}
 void CARDClose(){puts("CARDClose is a stub");}
@@ -99,7 +96,6 @@ void OSSuspendThread(){puts("OSSuspendThread is a stub");}
 void OSTicksToCalendarTime(){puts("OSTicksToCalendarTime is a stub");}
 void OSUnlink(){puts("OSUnlink is a stub");}
 void OSWakeupThread(){puts("OSWakeupThread is a stub");}
-void PADInit(){puts("PADInit is a stub");}
 void PADRecalibrate(){puts("PADRecalibrate is a stub");}
 void PADReset(){puts("PADReset is a stub");}
 void PADSetAnalogMode(){puts("PADSetAnalogMode is a stub");}
@@ -265,7 +261,7 @@ void gx(){puts("gx is a stub");}
 void *gxCache;
 void lbl_801147D8(){puts("lbl_801147D8 is a stub");}
 void lbl_801147F4(){puts("lbl_801147F4 is a stub");}
-void lbl_80118AC8(){puts("lbl_80118AC8 is a stub");}
+u32 lbl_80118AC8[] = {0x45, 0x46, 0x47, 0x48};  // ...
 void lbl_80118D0C(){puts("lbl_80118D0C is a stub");}
 void lbl_8012346C(){puts("lbl_8012346C is a stub");}
 void lbl_8012C234(){puts("lbl_8012C234 is a stub");}
@@ -297,7 +293,12 @@ void lbl_8016EBCC(){puts("lbl_8016EBCC is a stub");}
 void lbl_8016F454(){puts("lbl_8016F454 is a stub");}
 void lbl_8016FCDC(){puts("lbl_8016FCDC is a stub");}
 void lbl_801D5A20(){puts("lbl_801D5A20 is a stub");}
-void lbl_802014E0(){puts("lbl_802014E0 is a stub");}
+struct
+{
+    s32 unk0;
+    u32 unk4;
+    u8 filler8[1];
+} lbl_802014E0;
 void lbl_80292C00_alias(){puts("lbl_80292C00_alias is a stub");}
 void lbl_80292D18(){puts("lbl_80292D18 is a stub");}
 void lbl_802C67D4(){puts("lbl_802C67D4 is a stub");}

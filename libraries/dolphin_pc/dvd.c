@@ -143,6 +143,6 @@ BOOL DVDReadDir(DVDDir *dir, DVDDirEntry *dirent)
 
 s32 DVDGetDriveStatus(void)
 {
-    puts("DVDGetDriveStatus is a stub");
+    //puts("DVDGetDriveStatus is a stub");
     return 0;
 }

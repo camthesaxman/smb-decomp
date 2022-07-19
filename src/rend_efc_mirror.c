@@ -38,6 +38,7 @@ void func_80098EB4(int arg0, struct RenderEffect *rendEfc);
 
 void rend_efc_mirror_enable(void)
 {
+#ifndef TARGET_PC
     struct RenderEffect rendEfc;
 
     switch (modeCtrl.gameType)
@@ -60,6 +61,7 @@ void rend_efc_mirror_enable(void)
         }
         break;
     }
+#endif
 }
 
 void rend_efc_flat_mirror_init(struct RenderEffect *rendEfc)

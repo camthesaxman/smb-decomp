@@ -695,6 +695,9 @@ void submode_adv_demo_main_func(void)
         return;
     if (lbl_802014E0.unk0 == 2 && lbl_802014E0.unk4 == 1)
         lbl_802F1BB0 = 1;
+#ifdef TARGET_PC
+    lbl_802F1BB0 = 1;
+#endif
     if (lbl_802F1BB0 == 0)
         return;
     if (advDemoInfo.unk8 == 0)

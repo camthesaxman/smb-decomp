@@ -460,13 +460,12 @@ void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 {
     __GXLightObj *__lt_obj = (__GXLightObj *)lt_obj;
     GLenum lightId = light - GX_LIGHT0 + GL_LIGHT0;
+    //float pos[] = { 1000.0f, 100.0f, 100.0f };
 
     puts("GXLoadLightObjImm is a stub");
-    /*
     printf("light %i\n", lightId);
     glEnable(lightId);
-    glLightfv(lightId, GL_POSITION, (void *)&__lt_obj->posX);
-    */
+    //glLightfv(lightId, GL_POSITION, pos);
 }
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
@@ -490,10 +489,13 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
     puts("GXSetChanCtrl is a stub");
 
     // ¯\_(ツ)_/¯
-    if (enable)
-        glEnable(GL_LIGHTING);
-    else
-        glDisable(GL_LIGHTING);
+    if (chan == GX_COLOR0A0)
+    {
+        if (enable)
+            glEnable(GL_LIGHTING);
+        else
+            glDisable(GL_LIGHTING);
+    }
 }
 
 /* Texture */
@@ -552,7 +554,9 @@ u32 GXGetTexBufferSize(u16 width, u16 height, u32 format, GXBool mipmap,
         return width * height * 4;
         break;
     default:
-        assert(0);  // TODO
+        printf("fmt %lu\n", format);
+        //assert(0);  // TODO
+        return width * height * 4;
         break;
     }
 }
