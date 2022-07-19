@@ -26,13 +26,65 @@ static void pause(void)
 }
 */
 
+static u16 read_u16(const u8 *src)
+{
+    return (src[0] << 8) | src[1];
+}
+
+static u32 read_u32(const u8 *src)
+{
+    return (src[0] << 24) | (src[1] << 16) | (src[2] << 8) | src[3];
+}
+
+static f32 read_f32(const u8 *src)
+{
+    f32 result;
+    u32 data = read_u32(src);
+
+    /*memcpy(result, data, sizeof(result));
+    return result;*/
+    return *(f32 *)&data;
+}
+
+/* Attr */
+
+struct VtxFmt
+{
+    GXCompCnt cnt;
+    GXCompType type;
+    u8 frac;
+};
+
+static struct VtxFmt s_vtxFmts[GX_MAX_VTXFMT][GX_VA_MAX_ATTR] = {0};
+static GXAttrType s_attrTypes[GX_VA_MAX_ATTR];
+
+void GXSetVtxAttrFmt(GXVtxFmt vtxfmt, GXAttr attr, GXCompCnt cnt,
+    GXCompType type, u8 frac)
+{
+    assert(vtxfmt >= 0 && vtxfmt < GX_MAX_VTXFMT);
+    assert(attr >= 0 && attr < GX_VA_MAX_ATTR);
+    s_vtxFmts[vtxfmt][attr].cnt = cnt;
+    s_vtxFmts[vtxfmt][attr].type = type;
+    s_vtxFmts[vtxfmt][attr].frac = frac;
+}
+
+void GXSetVtxDesc(GXAttr attr, GXAttrType type)
+{
+    assert(attr >= 0 && attr < GX_VA_MAX_ATTR);
+    s_attrTypes[attr] = type;
+}
+
+void GXClearVtxDesc(void)
+{
+    memset(s_attrTypes, 0, sizeof(s_attrTypes));
+}
+
 /* Transform */
 
 void GXSetProjection(f32 mtx[4][4], GXProjectionType type)
 {
-    //puts("GXSetProjection");
     glMatrixMode(GL_PROJECTION);
-    glLoadTransposeMatrixf(mtx);
+    glLoadTransposeMatrixf((GLfloat *)mtx);
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -54,7 +106,7 @@ void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
     memcpy(m, mtx, sizeof(Mtx));
     m[3][0] = m[3][1] = m[3][2] = 0.0f;
     m[3][3] = 1.0f;
-    glLoadTransposeMatrixf(m);
+    glLoadTransposeMatrixf((GLfloat *)m);
 }
 
 void GXLoadNrmMtxImm(f32 mtx[3][4], u32 id)
@@ -222,7 +274,112 @@ u32 GXEndDisplayList(void)
 
 void GXCallDisplayList(void *list, u32 nbytes)
 {
-    puts("GXCallDisplayList is a stub");
+    u8 *data = list;
+    u32 pos = 0;
+    GXPrimitive prim;
+    GXVtxFmt fmt;
+    int vtxCount;
+
+    while (pos < nbytes)
+    {
+        u8 opcode = data[pos];
+
+        if (opcode == GX_NOP)  // NOP
+        {
+            pos++;
+            continue;
+        }
+        if (opcode == GX_LOAD_BP_REG)  // GX_LOAD_BP_REG
+        {
+            pos++;
+            pos += 4;
+        }
+
+        switch (opcode & ~3)
+        {
+        case GX_DRAW_QUADS:
+        case GX_DRAW_TRIANGLES:
+        case GX_DRAW_TRIANGLE_STRIP:
+        case GX_DRAW_TRIANGLE_FAN:
+        case GX_DRAW_LINES:
+        case GX_DRAW_LINE_STRIP:
+        case GX_DRAW_POINTS:
+            pos++;
+            prim = opcode & ~3;
+            fmt = opcode & 3;
+            vtxCount = read_u16(data + pos);
+            pos += 2;
+            //printf("draw prim 0x%X, vat %i, cnt %i\n", prim, fmt, vtxCount); fflush(stdout);
+            GXBegin(prim, fmt, vtxCount);
+            while (vtxCount-- > 0)
+            {
+                int attr;
+                GXCompCnt compCnt;
+                GXCompType compType;
+                for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
+                {
+                    compCnt = s_vtxFmts[fmt][attr].cnt;
+                    compType = s_vtxFmts[fmt][attr].type;
+                    switch (s_attrTypes[attr])
+                    {
+                    case GX_NONE:
+                        break;
+                    case GX_DIRECT:
+                        #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
+                        switch (COMBINE(attr, compCnt, compType))
+                        {
+                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
+                            GXPosition3f32(read_f32(data + pos), read_f32(data + pos + 4), read_f32(data + pos + 8));
+                            pos += 12;
+                            break;
+                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
+                            GXPosition3s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2), (s16)read_u16(data + pos + 4));
+                            pos += 6;
+                            break;
+                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
+                            GXNormal3f32(read_f32(data + pos), read_f32(data + pos + 4), read_f32(data + pos + 8));
+                            pos += 12;
+                            break;
+                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
+                            GXNormal3s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2), (s16)read_u16(data + pos + 4));
+                            pos += 6;
+                            break;
+                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
+                            GXTexCoord2f32(read_f32(data + pos), read_f32(data + pos + 4));
+                            pos += 8;
+                            break;
+                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
+                            GXTexCoord2s16((s16)read_u16(data + pos), (s16)read_u16(data + pos + 2));
+                            pos += 4;
+                            break;
+                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):  // TODO: multitexture
+                            pos += 8;
+                            break;
+                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):  // TODO: multitexture
+                            pos += 4;
+                            break;
+                        case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
+                            GXColor4u8(data[pos], data[pos + 1], data[pos + 2], data[pos + 3]);
+                            pos += 4;
+                            break;
+                        default:
+                            printf("not handled: attr %i, cnt %i, type %i\n", attr, compCnt, compType);
+                            assert(0);
+                            break;
+                        }
+                        #undef COMBINE
+                        break;
+                    default:
+                        assert(0);  // TODO
+                    }
+                }
+            }
+            GXEnd();
+            continue;
+        default:
+            assert(0);
+        }
+    }
 }
 
 /* Fifo */
@@ -470,12 +627,14 @@ void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
 {
-    puts("GXSetChanAmbColor is a stub");
+    GLfloat color[] = {amb_color.r / 255.0f, amb_color.g / 255.0f, amb_color.b / 255.0f, amb_color.a / 255.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
 }
 
 void GXSetChanMatColor(GXChannelID chan, GXColor mat_color)
 {
-    puts("GXSetChanMatColor is a stub");
+    GLfloat color[] = {mat_color.r / 255.0f, mat_color.g / 255.0f, mat_color.b / 255.0f, mat_color.a / 255.0f};
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
 }
 
 void GXSetNumChans(u8 nChans)
@@ -559,16 +718,6 @@ u32 GXGetTexBufferSize(u16 width, u16 height, u32 format, GXBool mipmap,
         return width * height * 4;
         break;
     }
-}
-
-static u16 read_u16(const u8 *src)
-{
-    return (src[0] << 8) | src[1];
-}
-
-static u32 read_u32(const u8 *src)
-{
-    return (src[0] << 24) | (src[1] << 16) | (src[2] << 8) | src[3];
 }
 
 static GXColor rgb565_to_color(u16 color)
@@ -769,6 +918,33 @@ static void decompress_rgb5a3_texture(const u8 *restrict src, u8 *restrict dest,
     }
 }
 
+static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+{
+    int x, y;
+
+    for (y = 0; y < height / 4; y++)
+    {
+        for (x = 0; x < width / 4; x++)
+        {
+            int tx, ty;
+
+            for (ty = 0; ty < 4; ty++)
+            {
+                for (tx = 0; tx < 4; tx++)
+                {
+                    int index = (y*4 + ty) * width + (x*4 + tx);
+                    int srcIdx = ty*4 + tx;
+                    dest[index*4 + 3] = src[0  + srcIdx*2 + 0];  // a
+                    dest[index*4 + 0] = src[0  + srcIdx*2 + 1];  // r
+                    dest[index*4 + 1] = src[32 + srcIdx*2 + 0];  // g
+                    dest[index*4 + 2] = src[32 + srcIdx*2 + 1];  // b
+                }
+            }
+            src += 64;
+        }
+    }
+}
+
 static GLenum gx_wrap_to_gl_wrap(GXTexWrapMode wrap)
 {
     static const GLenum wrapModes[] =
@@ -837,8 +1013,11 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
         glFmt = GL_RGB;
         break;
     case GX_TF_RGBA8:
+        __obj->uncompressed = malloc(width * height * 4);
+        decompress_rgba8_texture(image_ptr, __obj->uncompressed, width, height);
         type = GL_UNSIGNED_BYTE;
         glFmt = GL_RGBA;
+        img = __obj->uncompressed;
         break;
     default:
         assert(0);
@@ -909,6 +1088,11 @@ void GXPosition3f32(const f32 x, const f32 y, const f32 z)
 void GXNormal3f32(const f32 x, const f32 y, const f32 z)
 {
     glNormal3f(x, y, z);
+}
+
+void GXNormal3s16(const s16 x, const s16 y, const s16 z)
+{
+    glNormal3s(x, y, z);
 }
 
 void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a)

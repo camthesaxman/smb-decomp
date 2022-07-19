@@ -337,6 +337,10 @@ void free_model(struct GMAModel *model)
 #pragma force_active reset
 
 #ifdef TARGET_PC
+static void byteswap_displaylist(u8 *data, u32 size)
+{
+}
+
 static void byteswap_model(u8 *data)
 {
     u8 *tevLayer;
@@ -382,6 +386,9 @@ static void byteswap_model(u8 *data)
     for (i = 0; i < opaqueCount + translucentCount; i++)
     {
         u8 *nextShape;
+        u8 *dispList;
+        u32 dispListSize;
+        int j;
 
         bswap32(shape + 0x00);  // flags
         bswap32(shape + 0x0C);  // specularColor
@@ -391,11 +398,17 @@ static void byteswap_model(u8 *data)
         bswap32(shape + 0x1C);  // vtxAttrs
         bswap32(shape + 0x28);  // dispListSizes[0]
         bswap32(shape + 0x2C);  // dispListSizes[1]
-        nextShape = shape + 0x60;
-        if (shape[0x13] & 1)
-            nextShape += read_u32_le(shape + 0x28);
-        if (shape[0x13] & 2)
-            nextShape += read_u32_le(shape + 0x2C);
+        dispList = shape + 0x60;
+        for (j = 0; j < 2; j++)
+        {
+            if (shape[0x13] & (1 << j))
+            {
+                dispListSize = read_u32_le(shape + 0x28 + j * 4);
+                byteswap_displaylist(dispList, dispListSize);
+                dispList += dispListSize;
+            }
+        }
+        nextShape = dispList;
         if (shape[0x13] & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
         {
             bswap32(nextShape + 0x8);

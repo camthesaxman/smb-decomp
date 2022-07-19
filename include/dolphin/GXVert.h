@@ -31,6 +31,7 @@ extern void GXPosition2f32(const f32 x, const f32 y);
 extern void GXPosition3s16(const s16 x, const s16 y, const s16 z);
 extern void GXPosition3f32(const f32 x, const f32 y, const f32 z);
 extern void GXNormal3f32(const f32 x, const f32 y, const f32 z);
+extern void GXNormal3s16(const s16 x, const s16 y, const s16 z);
 extern void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a);
 extern void GXTexCoord2s16(const s16 u, const s16 v);
 extern void GXTexCoord2f32(const f32 u, const f32 v);

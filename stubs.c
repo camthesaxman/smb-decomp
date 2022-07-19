@@ -41,7 +41,6 @@ void EXILock(){puts("EXILock is a stub");}
 void EXISelect(){puts("EXISelect is a stub");}
 void EXISync(){puts("EXISync is a stub");}
 void EXIUnlock(){puts("EXIUnlock is a stub");}
-void GXClearVtxDesc(){puts("GXClearVtxDesc is a stub");}
 void GXCopyDisp(){puts("GXCopyDisp is a stub");}
 void GXCopyTex(){puts("GXCopyTex is a stub");}
 void GXDrawSphere(){puts("GXDrawSphere is a stub");}
@@ -71,8 +70,6 @@ void GXSetTevIndirect(){puts("GXSetTevIndirect is a stub");}
 void GXSetTexCoordGen2(){puts("GXSetTexCoordGen2 is a stub");}
 void GXSetTexCopyDst(){puts("GXSetTexCopyDst is a stub");}
 void GXSetTexCopySrc(){puts("GXSetTexCopySrc is a stub");}
-void GXSetVtxAttrFmt(){puts("GXSetVtxAttrFmt is a stub");}
-void GXSetVtxDesc(){puts("GXSetVtxDesc is a stub");}
 void GXSetZCompLoc(){puts("GXSetZCompLoc is a stub");}
 void LCEnable(){puts("LCEnable is a stub");}
 void OSClearContext(){puts("OSClearContext is a stub");}
