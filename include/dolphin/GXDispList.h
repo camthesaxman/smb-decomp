@@ -1,7 +1,7 @@
 #ifndef _DOLPHIN_GXDISPLIST_H_
 #define _DOLPHIN_GXDISPLIST_H_
 
-#include <dolphin/types.h>
+#include "types.h"
 
 void GXBeginDisplayList(void *list, u32 size);
 u32 GXEndDisplayList(void);

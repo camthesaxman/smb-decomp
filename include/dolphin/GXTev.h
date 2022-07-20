@@ -1,8 +1,8 @@
 #ifndef _DOLPHIN_GXTEV_H_
 #define _DOLPHIN_GXTEV_H_
 
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXStruct.h>
+#include "GXEnum.h"
+#include "GXStruct.h"
 
 // 0x800E2214
 void GXSetTevOp(GXTevStageID id, GXTevMode mode);

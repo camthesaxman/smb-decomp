@@ -1,7 +1,7 @@
 #ifndef _DOLPHIN_GXMANAGE_H_
 #define _DOLPHIN_GXMANAGE_H_
 
-#include <dolphin/GXFifo.h>
+#include "GXFifo.h"
 
 typedef void (*GXDrawDoneCallback)(void);
 

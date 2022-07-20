@@ -1,9 +1,15 @@
 #ifndef _DOLPHIN_GXENUM_H_
 #define _DOLPHIN_GXENUM_H_
 
-#include <dolphin/types.h>
+#include "types.h"
 
+#ifdef TARGET_PC
+#include <stdbool.h>
+
+typedef bool GXBool;
+#else
 typedef u8 GXBool;
+#endif
 
 #define GX_FALSE ((GXBool)0)
 #define GX_TRUE ((GXBool)1)
@@ -165,6 +171,13 @@ typedef enum
 
     GX_TF_A8 = GX_CTF_A8,
 } GXTexFmt;
+
+typedef enum
+{
+    GX_TF_C4 = 0x8,
+    GX_TF_C8 = 0x9,
+    GX_TF_C14X2 = 0xa,
+} GXCITexFmt;
 
 typedef enum
 {
@@ -338,6 +351,7 @@ typedef enum
     GX_TG_TEXCOORD6,
     GX_TG_COLOR0,
     GX_TG_COLOR1,
+    GX_MAX_TEXGENSRC,
 } GXTexGenSrc;
 
 typedef enum
@@ -385,10 +399,10 @@ typedef enum
 
 typedef enum
 {
-    GX_POS_XY   = 0,
-    GX_POS_XYZ  = 1,
-    GX_NRM_XYZ  = 0,
-    GX_NRM_NBT  = 1,
+    GX_POS_XY = 0,
+    GX_POS_XYZ = 1,
+    GX_NRM_XYZ = 0,
+    GX_NRM_NBT = 1,
     GX_NRM_NBT3 = 2,
     GX_CLR_RGB = 0,
     GX_CLR_RGBA = 1,
@@ -538,11 +552,21 @@ typedef enum
 typedef enum _GXFogType
 {
     GX_FOG_NONE = 0,
-    GX_FOG_LIN = 2,
-    GX_FOG_EXP = 4,
-    GX_FOG_EXP2 = 5,
-    GX_FOG_REVEXP = 6,
-    GX_FOG_REVEXP2 = 7
+    GX_FOG_PERSP_LIN = 2,
+    GX_FOG_PERSP_EXP = 4,
+    GX_FOG_PERSP_EXP2 = 5,
+    GX_FOG_PERSP_REVEXP = 6,
+    GX_FOG_PERSP_REVEXP2 = 7,
+    GX_FOG_ORTHO_LIN = 10,
+    GX_FOG_ORTHO_EXP = 12,
+    GX_FOG_ORTHO_EXP2 = 13,
+    GX_FOG_ORTHO_REVEXP = 14,
+    GX_FOG_ORTHO_REVEXP2 = 15,
+    GX_FOG_LIN = GX_FOG_PERSP_LIN,
+    GX_FOG_EXP = GX_FOG_PERSP_EXP,
+    GX_FOG_EXP2 = GX_FOG_PERSP_EXP2,
+    GX_FOG_REVEXP = GX_FOG_PERSP_REVEXP,
+    GX_FOG_REVEXP2 = GX_FOG_PERSP_REVEXP2,
 } GXFogType;
 
 typedef enum
@@ -612,14 +636,18 @@ typedef enum
 
 typedef enum
 {
-    GX_TEV_KCSEL_1 = 0x00,
+    GX_TEV_KCSEL_8_8 = 0x00,
     GX_TEV_KCSEL_7_8 = 0x01,
-    GX_TEV_KCSEL_3_4 = 0x02,
+    GX_TEV_KCSEL_6_8 = 0x02,
     GX_TEV_KCSEL_5_8 = 0x03,
-    GX_TEV_KCSEL_1_2 = 0x04,
+    GX_TEV_KCSEL_4_8 = 0x04,
     GX_TEV_KCSEL_3_8 = 0x05,
-    GX_TEV_KCSEL_1_4 = 0x06,
+    GX_TEV_KCSEL_2_8 = 0x06,
     GX_TEV_KCSEL_1_8 = 0x07,
+    GX_TEV_KCSEL_1 = GX_TEV_KCSEL_8_8,
+    GX_TEV_KCSEL_3_4 = GX_TEV_KCSEL_6_8,
+    GX_TEV_KCSEL_1_2 = GX_TEV_KCSEL_4_8,
+    GX_TEV_KCSEL_1_4 = GX_TEV_KCSEL_2_8,
     GX_TEV_KCSEL_K0 = 0x0C,
     GX_TEV_KCSEL_K1 = 0x0D,
     GX_TEV_KCSEL_K2 = 0x0E,
@@ -644,14 +672,18 @@ typedef enum
 
 typedef enum
 {
-    GX_TEV_KASEL_1 = 0x00,
+    GX_TEV_KASEL_8_8 = 0x00,
     GX_TEV_KASEL_7_8 = 0x01,
-    GX_TEV_KASEL_3_4 = 0x02,
+    GX_TEV_KASEL_6_8 = 0x02,
     GX_TEV_KASEL_5_8 = 0x03,
-    GX_TEV_KASEL_1_2 = 0x04,
+    GX_TEV_KASEL_4_8 = 0x04,
     GX_TEV_KASEL_3_8 = 0x05,
-    GX_TEV_KASEL_1_4 = 0x06,
+    GX_TEV_KASEL_2_8 = 0x06,
     GX_TEV_KASEL_1_8 = 0x07,
+    GX_TEV_KASEL_1 = GX_TEV_KASEL_8_8,
+    GX_TEV_KASEL_3_4 = GX_TEV_KASEL_6_8,
+    GX_TEV_KASEL_1_2 = GX_TEV_KASEL_4_8,
+    GX_TEV_KASEL_1_4 = GX_TEV_KASEL_2_8,
     GX_TEV_KASEL_K0_R = 0x10,
     GX_TEV_KASEL_K1_R = 0x11,
     GX_TEV_KASEL_K2_R = 0x12,
@@ -755,8 +787,54 @@ typedef enum
 
 typedef enum
 {
+    GX_ITS_1,
+    GX_ITS_2,
+    GX_ITS_4,
+    GX_ITS_8,
+    GX_ITS_16,
+    GX_ITS_32,
+    GX_ITS_64,
+    GX_ITS_128,
+    GX_ITS_256,
+    GX_MAX_ITSCALE,
+} GXIndTexScale;
+
+typedef enum
+{
     GX_CLIP_ENABLE = 0,
     GX_CLIP_DISABLE = 1,
 } GXClipMode;
+
+typedef enum
+{
+    GX_TLUT0 = 0,
+    GX_TLUT1 = 1,
+    GX_TLUT2 = 2,
+    GX_TLUT3 = 3,
+    GX_TLUT4 = 4,
+    GX_TLUT5 = 5,
+    GX_TLUT6 = 6,
+    GX_TLUT7 = 7,
+    GX_TLUT8 = 8,
+    GX_TLUT9 = 9,
+    GX_TLUT10 = 10,
+    GX_TLUT11 = 11,
+    GX_TLUT12 = 12,
+    GX_TLUT13 = 13,
+    GX_TLUT14 = 14,
+    GX_TLUT15 = 15,
+    GX_BIGTLUT0 = 16,
+    GX_BIGTLUT1 = 17,
+    GX_BIGTLUT2 = 18,
+    GX_BIGTLUT3 = 19,
+} GXTlut;
+
+typedef enum
+{
+    GX_TL_IA8,
+    GX_TL_RGB565,
+    GX_TL_RGB5A3,
+    GX_MAX_TLUTFMT,
+} GXTlutFmt;
 
 #endif

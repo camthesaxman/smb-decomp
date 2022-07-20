@@ -1,7 +1,7 @@
 #ifndef _DOLPHIN_GXFIFO_H_
 #define _DOLPHIN_GXFIFO_H_
 
-#include <dolphin/GXEnum.h>
+#include "GXEnum.h"
 
 typedef struct
 {

@@ -308,34 +308,34 @@ void func_80025158(PADStatus *pads)
             lbl_802F1CD4 |= 0x80000000 >> i;
     }
 
-    if (lbl_802F1CD8 != 0)
-    {
-        u32 r5 = lbl_802F1CD8;
-
-        while (r5 != 0)
-        {
-            if (pads[i].err != 0 && pads[i].err != -3)
-                lbl_802F1CD8 &= ~(0x80000000 >> i);
-            r5 &= ~(0x80000000 >> i);
-            i = __cntlzw(r5);  // huh?
-        }
-
-        if (lbl_802F1CD8 != 0)
-        {
-            if (PADRecalibrate(lbl_802F1CD8))
-                lbl_802F1CD4 = 0;
-            else
-                lbl_802F1CD4 |= lbl_802F1CD8;
-            lbl_802F1CD8 = 0;
-        }
-    }
-
-    if (lbl_802F1CD4 != 0)
-    {
-        if (PADReset(lbl_802F1CD4))
-            lbl_802F1CD8 = lbl_802F1CD4;
-        lbl_802F1CD4 = 0;
-    }
+//    if (lbl_802F1CD8 != 0)
+//    {
+//        u32 r5 = lbl_802F1CD8;
+//
+//        while (r5 != 0)
+//        {
+//            if (pads[i].err != 0 && pads[i].err != -3)
+//                lbl_802F1CD8 &= ~(0x80000000 >> i);
+//            r5 &= ~(0x80000000 >> i);
+//            i = __cntlzw(r5);  // huh?
+//        }
+//
+//        if (lbl_802F1CD8 != 0)
+//        {
+//            if (PADRecalibrate(lbl_802F1CD8))
+//                lbl_802F1CD4 = 0;
+//            else
+//                lbl_802F1CD4 |= lbl_802F1CD8;
+//            lbl_802F1CD8 = 0;
+//        }
+//    }
+//
+//    if (lbl_802F1CD4 != 0)
+//    {
+//        if (PADReset(lbl_802F1CD4))
+//            lbl_802F1CD8 = lbl_802F1CD4;
+//        lbl_802F1CD4 = 0;
+//    }
 }
 
 void get_analog_presses(void)

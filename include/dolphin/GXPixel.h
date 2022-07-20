@@ -1,7 +1,7 @@
 #ifndef _DOLPHIN_GXPIXEL_H_
 #define _DOLPHIN_GXPIXEL_H_
 
-#include <dolphin/GXEnum.h>
+#include "GXEnum.h"
 
 // 0x800E2B9C
 void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor color);

@@ -1,8 +1,8 @@
 #ifndef _DOLPHIN_GXGET_H_
 #define _DOLPHIN_GXGET_H_
 
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXStruct.h>
+#include "GXEnum.h"
+#include "GXStruct.h"
 
 GXBool GXGetTexObjMipMap(GXTexObj *tex_obj);
 GXTexFmt GXGetTexObjFmt(GXTexObj *tex_obj);

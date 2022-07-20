@@ -55,11 +55,22 @@ struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *g_minigameNlTpl;
 
+#ifdef TARGET_PC
+#include <stdio.h>
+void logwrapper_report(int severity, const char* message) {
+    printf("[%d: %s]\n", severity, message);
+}
+#endif
+
 #ifdef __GNUC__
 void __eabi(void) {}
 __attribute__((section(".text")))
 #endif
+#ifdef TARGET_PC
+void gc_main()
+#else
 void main(void)
+#endif
 {
     globalFrameCounter = 0;
     initialize();
@@ -93,8 +104,12 @@ void main(void)
     globalFrameCounter++;
     srand(OSGetTime());
 
-    while (1)
-    {
+//    while (1)
+//    {
+//    }
+}
+
+void gc_mainloop() {
         if (perfEnabled)
             PERFEventStart(0);
 
@@ -175,7 +190,6 @@ void main(void)
         globalFrameCounter++;
         if ((gamePauseStatus & 0xA) == 0)
             unpausedFrameCounter++;
-    }
 }
 
 #pragma force_active on
