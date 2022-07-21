@@ -823,7 +823,7 @@ void stobj_goalbag_main(struct Stobj *stobj)
             stobj->counter = -1;
             break;
         }
-        bag->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        bag->unk8 = 0.05 + 0.1 * RAND_FLOAT();
         // fall through
     case 4:
         if (stobj->counter > 0)
@@ -852,7 +852,7 @@ void stobj_goalbag_main(struct Stobj *stobj)
     case 6:
         stobj->state = 7;
         stobj->counter = 60;
-        bag->unk8 = 0.05 + 0.1 * (rand() / 32767.0f);
+        bag->unk8 = 0.05 + 0.1 * RAND_FLOAT();
         // fall through
     case 7:
         stobj->counter--;
@@ -1184,7 +1184,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
                 sp34.unk34.x = sp10.x + (temp_f25 * sp1C.x);
                 sp34.unk34.y = sp10.y + (temp_f25 * sp1C.y);
                 sp34.unk34.z = sp10.z + (temp_f25 * sp1C.z);
-                temp_f6 = var_f24 + 0.02f * (rand() / 32767.0f);
+                temp_f6 = var_f24 + 0.02f * RAND_FLOAT();
                 sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
                 sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
                 sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
@@ -1203,7 +1203,7 @@ void stobj_goalbag_coli(struct Stobj *stobj, struct PhysicsBall *ball)
                 sp34.unk34.x = sp10.x + (temp_f25 * sp1C.x);
                 sp34.unk34.y = sp10.y + (temp_f25 * sp1C.y);
                 sp34.unk34.z = sp10.z + (temp_f25 * sp1C.z);
-                temp_f6 = var_f24 + 0.02f * (rand() / 32767.0f);
+                temp_f6 = var_f24 + 0.02f * RAND_FLOAT();
                 sp34.unk40.x = spF8.x + (temp_f6 * sp1C.x);
                 sp34.unk40.y = spF8.y + (temp_f6 * sp1C.y);
                 sp34.unk40.z = spF8.z + (temp_f6 * sp1C.z);
@@ -1413,7 +1413,7 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
             // Release confetti
             while (confettiCount > 0)
             {
-                sp28.z = 0.5 * (temp_f27 * (1.0 + (rand() / 32767.0f)));
+                sp28.z = 0.5 * (temp_f27 * (1.0 + RAND_FLOAT()));
                 mathutil_mtxA_rotate_y(rand() & 0x7FFF);
                 mathutil_mtxA_rotate_x(rand() & 0x7FFF);
                 mathutil_mtxA_tf_point(&sp28, &sp34.unk34);

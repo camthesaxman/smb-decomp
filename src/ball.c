@@ -1887,9 +1887,9 @@ void ball_func_15(struct Ball *ball)
     ball->vel.y = 0.0f;
     ball->vel.z = 0.0f;
 
-    sp28.x = ((rand() / 32767.0f) - 0.5) * 0.5;
-    sp28.y = ((rand() / 32767.0f) - 0.5) * 0.5;
-    sp28.z = ((rand() / 32767.0f) - 0.5) * 0.5;
+    sp28.x = (RAND_FLOAT() - 0.5) * 0.5;
+    sp28.y = (RAND_FLOAT() - 0.5) * 0.5;
+    sp28.z = (RAND_FLOAT() - 0.5) * 0.5;
 
     if (ball->currRadius > FLT_EPSILON && mathutil_vec_len(&sp28) != 0.0f)
     {
@@ -2702,11 +2702,11 @@ void func_8003C550(struct Ball *ball)
 
     for (r31 = r30 >> 1; r31 > 0; r31--)
     {
-        sp30.unk40.x = sp18.x + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
-        sp30.unk40.y = sp18.y + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
-        sp30.unk40.z = sp18.z + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        sp30.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        sp30.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
-        f0 = f25 * ((rand() / 32767.0f) * 0.055f + 0.015f);
+        f0 = f25 * (RAND_FLOAT() * 0.055f + 0.015f);
         sp30.unk40.x += f0 * sp24.x;
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
@@ -2726,11 +2726,11 @@ void func_8003C550(struct Ball *ball)
 
     for (r31 = r30; r31 > 0; r31--)
     {
-        sp30.unk40.x = sp18.x + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
-        sp30.unk40.y = sp18.y + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
-        sp30.unk40.z = sp18.z + f25 * ((rand() / 32767.0f) * 0.05 - 0.025);
+        sp30.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        sp30.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        sp30.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
-        f0 = f25 * ((rand() / 32767.0f) * 0.05f + 0.06f);
+        f0 = f25 * (RAND_FLOAT() * 0.05f + 0.06f);
         sp30.unk40.x += f0 * sp24.x;
         sp30.unk40.y += f0 * sp24.y;
         sp30.unk40.z += f0 * sp24.z;
@@ -3005,11 +3005,11 @@ void func_8003D3C4(struct Ball *ball)
 
         for (r29 = f26; r29 > 0; r29--)
         {
-            float f25 = (rand() / 32767.0f) * f26 * 0.1;
+            float f25 = RAND_FLOAT() * f26 * 0.1;
 
-            sp18.unk40.x = (spC.x + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.x;
-            sp18.unk40.y = (spC.y + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.y;
-            sp18.unk40.z = (spC.z + ((rand() / 32767.0f) * 1.5 - 0.75)) * f25 + spC4.z;
+            sp18.unk40.x = (spC.x + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.x;
+            sp18.unk40.y = (spC.y + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.y;
+            sp18.unk40.z = (spC.z + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.z;
 
             spawn_effect(&sp18);
         }

@@ -33,6 +33,9 @@
 
 #define OFFSET_TO_PTR(base, offset) (void *)((u32)(base) + (u32)(offset))
 
+// returns a random float between 0.0 and 1.0, inclusive
+#define RAND_FLOAT() (rand() / (float)RAND_MAX)
+
 #ifdef __MWERKS__
 u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
 #else

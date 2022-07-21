@@ -527,7 +527,7 @@ static void win_streak_sprite_main(s8 *dummy, struct Sprite *sprite)
         sprite->counter--;
     if (sprite->counter == 0)
     {
-        if ((rand() / 32767.0f) < 0.01)
+        if (RAND_FLOAT() < 0.01)
             sprite->counter = 45;
     }
     sprite->opacity += (1.0f - sprite->opacity) * 0.1;

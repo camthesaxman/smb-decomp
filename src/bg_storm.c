@@ -29,19 +29,19 @@ void bg_storm_init(void)
     bg_default_init();
     if (work->unk0 == 0)
         find_background_gma_models(stormBgModelFind, model_find_proc);
-    work->unk10.x = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-    work->unk10.y = ((rand() / 32767.0f) - 0.5f) * 9.0f;
-    work->unk10.z = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-    work->unk1C.x = ((rand() / 32767.0f) - 0.5f) * 0.1f;
+    work->unk10.x = (RAND_FLOAT() - 0.5f) * 6.0f;
+    work->unk10.y = (RAND_FLOAT() - 0.5f) * 9.0f;
+    work->unk10.z = (RAND_FLOAT() - 0.5f) * 6.0f;
+    work->unk1C.x = (RAND_FLOAT() - 0.5f) * 0.1f;
     work->unk1C.y = -0.25f;
-    work->unk1C.z = ((rand() / 32767.0f) - 0.5f) * 0.1f;
+    work->unk1C.z = (RAND_FLOAT() - 0.5f) * 0.1f;
     r28 = work->unk28;
     for (i = ARRAY_COUNT(work->unk28); i > 0; i--, r28++)
     {
-        r28->unk0 = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-        r28->unk4 = ((rand() / 32767.0f) - 0.5f) * 9.0f;
-        r28->unk8 = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-        r28->unkC = (((rand() / 32767.0f) * 0.5f) + 1.0f) * 0.01f;
+        r28->unk0 = (RAND_FLOAT() - 0.5f) * 6.0f;
+        r28->unk4 = (RAND_FLOAT() - 0.5f) * 9.0f;
+        r28->unk8 = (RAND_FLOAT() - 0.5f) * 6.0f;
+        r28->unkC = ((RAND_FLOAT() * 0.5f) + 1.0f) * 0.01f;
     }
 }
 
@@ -88,10 +88,10 @@ void bg_storm_main(void)
     sp8.unk8 = 35;
     if (lbl_801EEC90.unk0 & 1)
     {
-        spD0.x = (rand() / 32767.0f) - 0.5f;
+        spD0.x = RAND_FLOAT() - 0.5f;
         spD0.y = 0.0f;
-        spD0.z = (rand() / 32767.0f) - 0.5f;
-        mathutil_vec_set_len(&spD0, &sp8.unk34, ((rand() / 32767.0f) + 0.1f) * 3.6000001430511475f);
+        spD0.z = RAND_FLOAT() - 0.5f;
+        mathutil_vec_set_len(&spD0, &sp8.unk34, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
         sp8.unk70.y = 1.0f;
         mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
         sp8.unk50 = rand() & 0x7FFF;
@@ -104,10 +104,10 @@ void bg_storm_main(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            spD0.x = (rand() / 32767.0f) - 0.5f;
+            spD0.x = RAND_FLOAT() - 0.5f;
             spD0.y = 0.0f;
-            spD0.z = (rand() / 32767.0f) - 0.5f;
-            mathutil_vec_set_len(&spD0, &spD0, ((rand() / 32767.0f) + 0.1f) * 3.6000001430511475f);
+            spD0.z = RAND_FLOAT() - 0.5f;
+            mathutil_vec_set_len(&spD0, &spD0, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
             spD0.x += camera->lookAt.x;
             spD0.y += camera->lookAt.y + 10.0f;
             spD0.z += camera->lookAt.z;

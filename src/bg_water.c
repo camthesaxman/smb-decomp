@@ -78,20 +78,20 @@ void bg_water_init(void)
         decodedStageLzPtr->fgObjectCount,
         waterBgObjFind,
         obj_find_proc);
-    backgroundInfo.unk14.x = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk14.y = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk14.z = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk20.x = (rand() / 32767.0f) - 0.5f;
+    backgroundInfo.unk14.x = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk14.y = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk14.z = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk20.x = RAND_FLOAT() - 0.5f;
     backgroundInfo.unk20.y = 0.0f;
-    backgroundInfo.unk20.z = (rand() / 32767.0f) - 0.5f;
-    mathutil_vec_set_len(&backgroundInfo.unk20, &backgroundInfo.unk20, (0.9f + (0.2f * (rand() / 32767.0f))) / 30.0f);
-    backgroundInfo.unk2C.x = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk2C.y = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk2C.z = (rand() / 32767.0f) - 0.5f;
-    backgroundInfo.unk38.x = (rand() / 32767.0f) - 0.5f;
+    backgroundInfo.unk20.z = RAND_FLOAT() - 0.5f;
+    mathutil_vec_set_len(&backgroundInfo.unk20, &backgroundInfo.unk20, (0.9f + (0.2f * RAND_FLOAT())) / 30.0f);
+    backgroundInfo.unk2C.x = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk2C.y = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk2C.z = RAND_FLOAT() - 0.5f;
+    backgroundInfo.unk38.x = RAND_FLOAT() - 0.5f;
     backgroundInfo.unk38.y = 0.0f;
-    backgroundInfo.unk38.z = (rand() / 32767.0f) - 0.5f;
-    mathutil_vec_set_len(&backgroundInfo.unk38, &backgroundInfo.unk38, (0.9f + (0.2f * (rand() / 32767.0f))) / 30.0f);
+    backgroundInfo.unk38.z = RAND_FLOAT() - 0.5f;
+    mathutil_vec_set_len(&backgroundInfo.unk38, &backgroundInfo.unk38, (0.9f + (0.2f * RAND_FLOAT())) / 30.0f);
     work->unk10 = rand() & 0x7FFF;
     work->unk12 = rand() & 0x7FFF;
     work->unk14 = rand() & 0x7FFF;

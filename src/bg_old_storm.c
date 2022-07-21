@@ -87,10 +87,10 @@ void bg_old_storm_main(void)
     spD0.x += spDC.x;
     spD0.y += spDC.y;
     spD0.z += spDC.z;
-    spDC.x = (rand() / 32767.0f) - 0.5;
-    spDC.y = (rand() / 32767.0f) - 0.5;
-    spDC.z = (rand() / 32767.0f) - 0.5;
-    mathutil_vec_set_len(&spDC, &sp24.unk34, 3.5 * (rand() / 32767.0f));
+    spDC.x = RAND_FLOAT() - 0.5;
+    spDC.y = RAND_FLOAT() - 0.5;
+    spDC.z = RAND_FLOAT() - 0.5;
+    mathutil_vec_set_len(&spDC, &sp24.unk34, 3.5 * RAND_FLOAT());
     sp24.unk34.x += spD0.x;
     sp24.unk34.y += spD0.y;
     sp24.unk34.z += spD0.z;
@@ -110,7 +110,7 @@ void bg_old_storm_main(void)
     spD0.y += 2.0;
     spD0.z += 30.0 * temp_r30->vel.z;
     spDC.y = 0.0f;
-    mathutil_vec_set_len(&spDC, &spDC, 4.0 * (rand() / 32767.0f));
+    mathutil_vec_set_len(&spDC, &spDC, 4.0 * RAND_FLOAT());
     spD0.x += spDC.x;
     spD0.z += spDC.z;
     if (gameSubmode == SMD_GAME_CONTINUE_MAIN)
