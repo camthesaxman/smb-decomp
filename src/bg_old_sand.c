@@ -14,9 +14,9 @@ void bg_old_sand_init(void)
 {
     backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNlObj, 2);
     backgroundInfo.unk84 = 1.0f;
-    backgroundInfo.unk38.x = (rand() / 32767.0f) * 65536.0f / 3840.0 + 34.133333333333333;
-    backgroundInfo.unk38.y = (rand() / 32767.0f) * 0.00034722222222222224 + 0.00069444444444444447;
-    backgroundInfo.unk38.z = (rand() / 32767.0f) * 0.00050000000000000001 + 0.0033;
+    backgroundInfo.unk38.x = RAND_FLOAT() * 65536.0f / 3840.0 + 34.133333333333333;
+    backgroundInfo.unk38.y = RAND_FLOAT() * 0.00034722222222222224 + 0.00069444444444444447;
+    backgroundInfo.unk38.z = RAND_FLOAT() * 0.00050000000000000001 + 0.0033;
 }
 
 void bg_old_sand_main(void)

@@ -183,7 +183,7 @@ void func_80099518(struct RenderEffect *rendEfc)
             var_r30 = &temp_r31->unk90[temp_r31->unk8C--];
             if (temp_r31->unk8C < 0)
                 temp_r31->unk8C = 0xFF;
-            var_r30->unk0 = 60.0f * (0.5f + (rand() / 32767.0f) * var_f31 * 2.0f);
+            var_r30->unk0 = 60.0f * (0.5f + RAND_FLOAT() * var_f31 * 2.0f);
             var_r30->unk4.x = sp18.x;
             var_r30->unk4.y = 0.0f;
             var_r30->unk4.z = sp18.z;
@@ -192,9 +192,9 @@ void func_80099518(struct RenderEffect *rendEfc)
             var_r30->unk10.z = 0.5f * spC.z;
             var_r30->unk1C = temp_r29->unk30[(rand() & 0x7FFF) % temp_r29->unk2C];
             var_r30->unk20 = 1.0f / var_r30->unk1C->boundSphereRadius;
-            var_r30->unk24 = var_r30->unk20 * ((1.0f + (rand() / 32767.0f)) * var_f31 * 0.55f);
+            var_r30->unk24 = var_r30->unk20 * ((1.0f + RAND_FLOAT()) * var_f31 * 0.55f);
             var_r30->unk28 = rand() & 0x7FFF;
-            var_r30->unk2A = 16384.0f * ((rand() / 32767.0f) - 0.5f);
+            var_r30->unk2A = 16384.0f * (RAND_FLOAT() - 0.5f);
             var_r30->unk2C = 0.2f;
         }
     }

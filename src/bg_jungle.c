@@ -50,12 +50,12 @@ void bg_jungle_init(void)
     work->mode = 0;
     for (i = work->cloudCount, cloud = work->clouds; i > 0; i--, cloud++)
     {
-        cloud->unk4.x = rand() / 32767.0f;
-        cloud->unk4.y = rand() / 32767.0f;
-        cloud->unk4.z = rand() / 32767.0f;
+        cloud->unk4.x = RAND_FLOAT();
+        cloud->unk4.y = RAND_FLOAT();
+        cloud->unk4.z = RAND_FLOAT();
         mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
         sp8.x = 0.0f;
-        sp8.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0018518518190830946f;
+        sp8.y = (RAND_FLOAT() * 0.2f + 0.9f) * 0.0018518518190830946f;
         sp8.z = 0.0f;
         mathutil_mtxA_tf_vec(&sp8, &cloud->unk1C);
         cloud->unk10 = cloud->unk1C;
@@ -101,7 +101,7 @@ void bg_jungle_main(void)
         {
             mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
             sp8.x = 0.0f;
-            sp8.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0037037036381661892f;
+            sp8.y = (RAND_FLOAT() * 0.2f + 0.9f) * 0.0037037036381661892f;
             sp8.z = 0.0f;
             mathutil_mtxA_tf_vec(&sp8, &cloud->unk1C);
         }

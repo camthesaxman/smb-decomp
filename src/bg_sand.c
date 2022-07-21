@@ -120,25 +120,25 @@ void bg_sand_init(void)
         rendEfc.funcs = &heatEffectFuncs;
         rend_efc_enable(0, 0, &rendEfc);
     }
-    work->unk4.x = 6.0f + ((rand() / 32767.0f) - 0.5f);
-    work->unk4.y = 4.0f + ((rand() / 32767.0f) - 0.5f);
+    work->unk4.x = 6.0f + (RAND_FLOAT() - 0.5f);
+    work->unk4.y = 4.0f + (RAND_FLOAT() - 0.5f);
     work->unk4.z = 1.0f;
     work->unk10 = 0.0f;
     work->unk14 = 0.0f;
     work->unk18 = 0.0f;
-    work->unk1C.x = (rand() / 32767.0f) - 0.5f;
+    work->unk1C.x = RAND_FLOAT() - 0.5f;
     work->unk1C.y = 1.0f;
-    work->unk1C.z = (rand() / 32767.0f) - 0.5f;
-    mathutil_vec_set_len(&work->unk1C, &work->unk1C, 0.02f + (0.01f * ((rand() / 32767.0f) - 0.5f)));
+    work->unk1C.z = RAND_FLOAT() - 0.5f;
+    mathutil_vec_set_len(&work->unk1C, &work->unk1C, 0.02f + (0.01f * (RAND_FLOAT() - 0.5f)));
     mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
-    mathutil_mtxA_tf_vec_xyz(&work->unk28, 0.0f, 0.45f + (0.1f * (rand() / 32767.0f)), 0.0f);
+    mathutil_mtxA_tf_vec_xyz(&work->unk28, 0.0f, 0.45f + (0.1f * RAND_FLOAT()), 0.0f);
     temp_f0 = work->unk4.x / 6.0f;
     work->unk28.x *= temp_f0 * temp_f0;
     temp_f0_2 = work->unk4.y / 4.0f;
     work->unk28.y *= temp_f0_2 * temp_f0_2;
-    work->unk64.x = (rand() / 32767.0f);
-    work->unk64.y = (rand() / 32767.0f);
-    work->unk64.z = (rand() / 32767.0f);
+    work->unk64.x = RAND_FLOAT();
+    work->unk64.y = RAND_FLOAT();
+    work->unk64.z = RAND_FLOAT();
     sp20.x = 0.0016666667f;
     sp20.y = 0.0f;
     sp20.z = 0.0f;
@@ -148,13 +148,13 @@ void bg_sand_init(void)
     var_r27 = work->unk80;
     for (var_r29 = work->unk7C; var_r29 > 0; var_r29--, var_r27++)
     {
-        var_r27->unkC =  0.008333334f * (0.5f - (rand() / 32767.0f));
-        var_r27->unk10 = 0.008333334f * (1.0f + (0.1f * (rand() / 32767.0f)));
+        var_r27->unkC =  0.008333334f * (0.5f - RAND_FLOAT());
+        var_r27->unk10 = 0.008333334f * (1.0f + (0.1f * RAND_FLOAT()));
         var_r27->unk14 = 0.0f;
-        var_r27->unk24 = 0.010000001f * (0.5f - (rand() / 32767.0f));
-        var_r27->unk28 = 0.010000001f * (1.0f + (0.1f * (rand() / 32767.0f)));
+        var_r27->unk24 = 0.010000001f * (0.5f - RAND_FLOAT());
+        var_r27->unk28 = 0.010000001f * (1.0f + (0.1f * RAND_FLOAT()));
         var_r27->unk2C = 0.0f;
-        var_r27->unk30 = 0.7f + (0.2f * (rand() / 32767.0f));
+        var_r27->unk30 = 0.7f + (0.2f * RAND_FLOAT());
         var_r26 = var_r27->unk34;
         for (var_r28 = 6; var_r28 > 0; var_r28--, var_r26++)
         {
@@ -162,8 +162,8 @@ void bg_sand_init(void)
                 var_r26->unk0 = work->unk558;
             else
                 var_r26->unk0 = work->unk560;
-            var_r26->unk4 = (rand() / 32767.0f);
-            var_r26->unk8 = var_r27->unk28 * (rand() / 32767.0f);
+            var_r26->unk4 = RAND_FLOAT();
+            var_r26->unk8 = var_r27->unk28 * RAND_FLOAT();
             var_r26->unkC = (rand() & 0x7FFF);
             var_r26->unkE = (rand() & 0x7F) - 0x40;
         }
@@ -215,7 +215,7 @@ void bg_sand_main(void)
             {
                 while (var_r27->unk4 > 1.0f)
                     var_r27->unk4 -= 1.0f;
-                var_r27->unk8 = temp_f29 * (rand() / 32767.0f);
+                var_r27->unk8 = temp_f29 * RAND_FLOAT();
                 var_r27->unkC = rand() & 0x7FFF;
                 var_r27->unkE = (rand() & 0x3FF) - 0x200;
             }

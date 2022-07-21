@@ -1605,7 +1605,7 @@ void camera_func_5(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_tf_vec(&sp30, &sp30);
 
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10,
-        (0.75 + 0.25 * (rand() / 32767.0f)) * lbl_80250A68.unk10);
+        (0.75 + 0.25 * RAND_FLOAT()) * lbl_80250A68.unk10);
 
     camera->eye.x = sp10.pos.x + sp30.x;
     camera->eye.y = sp10.pos.y + sp30.y;
@@ -1681,7 +1681,7 @@ void camera_func_7(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_rotate_y(rand() & 0x7FFF);
     mathutil_mtxA_tf_vec(&sp50, &sp50);
 
-    f31 = (0.25 * (rand() / 32767.0f)) * lbl_80250A68.unk10;
+    f31 = (0.25 * RAND_FLOAT()) * lbl_80250A68.unk10;
 
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp30, f31);
 
@@ -1910,7 +1910,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                     mathutil_vec_set_len(r3, r3, 2.0f);
             }
             else
-                mathutil_vec_set_len(&sp60, &sp60, 1.0 + rand() / 32767.0f);
+                mathutil_vec_set_len(&sp60, &sp60, 1.0 + RAND_FLOAT());
 
             camera->eye.x = sp34.pos.x + sp60.x;
             camera->eye.y = sp34.pos.y + sp60.y;
@@ -1923,12 +1923,12 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 struct StageGoal *goalp;
                 
                 camera->state = 20;
-                camera->unk54.x = 2.0 + (rand() / 32767.0f);
-                camera->unk54.y = 1.0 + 5.0 * (rand() / 32767.0f);
-                camera->unk54.z = 4.0 * ((rand() / 32767.0f) - 0.5);
+                camera->unk54.x = 2.0 + RAND_FLOAT();
+                camera->unk54.y = 1.0 + 5.0 * RAND_FLOAT();
+                camera->unk54.z = 4.0 * (RAND_FLOAT() - 0.5);
                 if (rand() & 1)
                     camera->unk54.x = -camera->unk54.x;
-                camera->unk60 = camera->unk54.y + 0.5 * (0.5 + (rand() / 32767.0f));
+                camera->unk60 = camera->unk54.y + 0.5 * (0.5 + RAND_FLOAT());
                 goalp = &decodedStageLzPtr->goals[infoWork.goalEntered];
                 mathutil_mtxA_from_mtx(animGroups[infoWork.unkE].transform);
                 mathutil_mtxA_translate(&goalp->pos);
@@ -1949,7 +1949,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
                 camera->eyeVel.x *= 0.02;
                 camera->eyeVel.y = 0.0f;
                 camera->eyeVel.z *= 0.02;
-                sp60.x = 9.0 * (f31 * ((rand() / 32767.0f) - 0.5));
+                sp60.x = 9.0 * (f31 * (RAND_FLOAT() - 0.5));
                 sp60.y = 2.5f;
                 sp60.z = 5.0f;
                 mathutil_mtxA_rigid_inv_tf_vec(&infoWork.unk10, &sp54);
@@ -2865,11 +2865,11 @@ void camera_func_46(struct Camera *camera, struct Ball *ball)
     camera->unk26 = 0;
     camera->flags |= 4;
     if (lbl_80250A68.unk10 > 180.0)
-        camera->unk60 = lbl_80250A68.unk10 - ((rand() / 32767.0f) * 1.5 + 0.5) * 60.0;
+        camera->unk60 = lbl_80250A68.unk10 - (RAND_FLOAT() * 1.5 + 0.5) * 60.0;
     else
-        camera->unk60 = lbl_80250A68.unk10 * ((rand() / 32767.0f) * 0.5 + 0.5);
-    camera->unk64 = (rand() / 32767.0f) * 2.0 + 0.3;
-    camera->unk80 = camera->unk60 * ((rand() / 32767.0f) * 0.5 + 0.2);
+        camera->unk60 = lbl_80250A68.unk10 * (RAND_FLOAT() * 0.5 + 0.5);
+    camera->unk64 = RAND_FLOAT() * 2.0 + 0.3;
+    camera->unk80 = camera->unk60 * (RAND_FLOAT() * 0.5 + 0.2);
     camera->unk80 = (camera->unk80 - camera->unk60) / lbl_80250A68.unk10;
     func_800496BC(lbl_80250A68.unk0[ball->playerId], &sp10, camera->unk60);
     camera->unk54 = sp10.pos;
@@ -2981,10 +2981,10 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
         camera->unk10E = 0;
         camera->unk110 = -1;
 
-        sp58.x = (rand() / 32767.0f) - 0.5;
+        sp58.x = RAND_FLOAT() - 0.5;
         sp58.y = 0.25f;
-        sp58.z = (rand() / 32767.0f) - 0.5;
-        mathutil_vec_set_len(&sp58, &sp58, (rand() / 32767.0f) * 20.0 + 20.0);
+        sp58.z = RAND_FLOAT() - 0.5;
+        mathutil_vec_set_len(&sp58, &sp58, RAND_FLOAT() * 20.0 + 20.0);
     }
     else
     {
@@ -3001,12 +3001,12 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
         else if (f31 < 20.0)
             f31 = 20.0f;
 
-        sp4C.x = (rand() / 32767.0f) - 0.5;
+        sp4C.x = RAND_FLOAT() - 0.5;
         sp4C.y = 0.0001f;
-        sp4C.z = (rand() / 32767.0f) - 0.5;
+        sp4C.z = RAND_FLOAT() - 0.5;
         mathutil_vec_set_len(&sp4C, &sp4C, f31);
 
-        sp4C.y = f31 * ((rand() / 32767.0f) * 0.5 + 0.5);
+        sp4C.y = f31 * (RAND_FLOAT() * 0.5 + 0.5);
         if (camera->unk10E != 0)
         {
             sp58.x = sp4C.x;
@@ -3028,9 +3028,9 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
         mathutil_mtxA_translate(&decodedStageLzPtr->goals[camera->unk110].pos);
         mathutil_mtxA_sq_from_identity();
     }
-    f31 = (float)camera->sub28.unk32 * ((rand() / 32767.0f) + 0.1f);
-    mathutil_mtxA_rotate_y((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
-    mathutil_mtxA_rotate_x((s16)(f31 * ((rand() / 32767.0f) - 0.5f)));
+    f31 = (float)camera->sub28.unk32 * (RAND_FLOAT() + 0.1f);
+    mathutil_mtxA_rotate_y((s16)(f31 * (RAND_FLOAT() - 0.5f)));
+    mathutil_mtxA_rotate_x((s16)(f31 * (RAND_FLOAT() - 0.5f)));
     mathutil_mtxA_rigid_inv_tf_point(&ball->pos, &camera->unk12C);
     mathutil_mtxA_rigid_inv_tf_vec(&ball->vel, &camera->unk138);
 
@@ -3043,7 +3043,7 @@ void camera_func_48(struct Camera *camera, struct Ball *ball)
     mathutil_mtxA_tf_point(&camera->unk114, &camera->eye);
     mathutil_mtxA_tf_point(&camera->unk12C, &camera->lookAt);
 
-    camera->unk6C = ((rand() / 32767.0f) + 0.5f) * 15.0f;
+    camera->unk6C = (RAND_FLOAT() + 0.5f) * 15.0f;
     sp4C = camera->unk114;
 
     mathutil_mtxA_from_mtx(animGroups[camera->unk10E].transform);
@@ -3233,9 +3233,9 @@ void camera_func_56(struct Camera *camera, struct Ball *ball)
 
     camera_clear(camera);
 
-    camera->eye.x = ball->pos.x + ((rand() / 32767.0f) - 0.5f) * 15.0f;
-    camera->eye.y = ball->pos.y + (rand() / 32767.0f) * 5.0f + 1.0f;
-    camera->eye.z = ball->pos.z + ((rand() / 32767.0f) - 0.5f) * 15.0f;
+    camera->eye.x = ball->pos.x + (RAND_FLOAT() - 0.5f) * 15.0f;
+    camera->eye.y = ball->pos.y + RAND_FLOAT() * 5.0f + 1.0f;
+    camera->eye.z = ball->pos.z + (RAND_FLOAT() - 0.5f) * 15.0f;
 
     var1 = (rand() << 1) & 0xFFFF;
     camera->unk6C = camera->rotY = var1;

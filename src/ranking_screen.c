@@ -249,8 +249,8 @@ static void update_ranking_screen(void)
                 {
                     letterBall->rotation = rand() & 0x7FFF;
                     letterBall->unk4 = ((rand() & 0x3FFF) - 0x1FFF);
-                    letterBall->unkC = -32.0 + -128.0 * (rand() / 32767.0f);
-                    letterBall->unk14 = 16.0 * (rand() / 32767.0f);
+                    letterBall->unkC = -32.0 + -128.0 * RAND_FLOAT();
+                    letterBall->unk14 = 16.0 * RAND_FLOAT();
                 }
             }
             lbl_802B37F0.unk10 = 1.0f;

@@ -49,12 +49,12 @@ void bg_sunset_init(void)
     layer = work->layers;
     for (i = work->layersCount; i > 0; i--, layer++)
     {
-        layer->texTranslation.x = rand() / 32767.0f;
-        layer->texTranslation.y = rand() / 32767.0f;
-        layer->texTranslation.z = rand() / 32767.0f;
+        layer->texTranslation.x = RAND_FLOAT();
+        layer->texTranslation.y = RAND_FLOAT();
+        layer->texTranslation.z = RAND_FLOAT();
         mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
         sp8.x = 0.0f;
-        sp8.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0015151514671742916f;
+        sp8.y = (RAND_FLOAT() * 0.2f + 0.9f) * 0.0015151514671742916f;
         sp8.z = 0.0f;
         mathutil_mtxA_tf_vec(&sp8, &layer->desiredTexVel);
         layer->currTexVel = layer->desiredTexVel;
@@ -91,7 +91,7 @@ void bg_sunset_main(void)
         {
             mathutil_mtxA_from_rotate_z(rand() & 0x7FFF);
             newTexVel.x = 0.0f;
-            newTexVel.y = ((rand() / 32767.0f) * 0.2f + 0.9f) * 0.0030303029343485832f;
+            newTexVel.y = (RAND_FLOAT() * 0.2f + 0.9f) * 0.0030303029343485832f;
             newTexVel.z = 0.0f;
             mathutil_mtxA_tf_vec(&newTexVel, &layer->desiredTexVel);
         }
