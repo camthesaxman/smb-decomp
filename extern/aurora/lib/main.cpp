@@ -2,6 +2,8 @@
 #include <aurora/imgui.hpp>
 #include <aurora/log.hpp>
 
+#include <atomic>
+
 using namespace std::string_view_literals;
 
 extern "C" {

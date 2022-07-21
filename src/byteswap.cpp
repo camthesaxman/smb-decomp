@@ -4,6 +4,7 @@ extern "C"
 }
 
 #include <cstdlib>
+#include <cstdint>
 
 template <typename T> constexpr T bswap16(T val) noexcept
 {
