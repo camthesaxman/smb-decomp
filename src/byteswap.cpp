@@ -3,8 +3,9 @@ extern "C"
 #include "byteswap.h"
 }
 
-#include <cstdlib>
 #include <cstdint>
+#include <cstdlib>
+#include <unordered_set>
 
 template <typename T> constexpr T bswap16(T val) noexcept
 {
@@ -40,6 +41,8 @@ template <typename T> constexpr T bswap32(T val) noexcept
     return v.t;
 }
 
+static std::unordered_set<void *> sVisitedPtrs;
+
 template <typename B, typename T> static inline void bswap(B &base, T &data);
 template <typename B, typename P> void bswap(B &base, P *&ptr)
 {
@@ -48,14 +51,41 @@ template <typename B, typename P> void bswap(B &base, P *&ptr)
 template <typename B, typename T> void bswap(B &base, T *&ptr, s32 count)
 {
     ptr = bswap32(ptr);
-    if (ptr == nullptr) {
+    if (ptr == nullptr)
+    {
         return;
     }
     T *objBase = reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
                                        reinterpret_cast<uintptr_t>(ptr));
     for (s32 i = 0; i < count; ++i)
     {
-        bswap(base, objBase[i]);
+        if (sVisitedPtrs.contains(objBase))
+        {
+            continue;
+        }
+        sVisitedPtrs.insert(objBase);
+        bswap(base, *objBase);
+        ++objBase;
+    }
+}
+template <typename B, typename T> void bswap(B &base, T **&ptr)
+{
+    ptr = bswap32(ptr);
+    if (ptr == nullptr)
+    {
+        return;
+    }
+    T **objBase = reinterpret_cast<T **>(reinterpret_cast<uintptr_t>(&base) +
+                                         reinterpret_cast<uintptr_t>(ptr));
+    while (*objBase != nullptr)
+    {
+        if (sVisitedPtrs.contains(*objBase))
+        {
+            continue;
+        }
+        sVisitedPtrs.insert(*objBase);
+        bswap(base, *objBase);
+        ++objBase;
     }
 }
 template <typename B, typename T> void bswap_flat(B &base, T *start, s32 count)
@@ -234,6 +264,7 @@ template <typename B> void bswap(B &base, StageCollHdr_child2 &obj)
 template <typename B> void bswap(B &base, AnimGroupModel &model)
 {
     bswap(base, model.unk0);
+    bswap(base, model.name);
     bswap(base, model.unk8);
 }
 template <typename B> void bswap(B &base, DecodedStageLzPtr_child5 &obj)
@@ -399,4 +430,5 @@ template <typename B> void bswap(B &base, Stage &stage)
 void byteswap_stage(Stage *stage)
 {
     bswap(*stage, *stage);
+    sVisitedPtrs.clear();
 }
