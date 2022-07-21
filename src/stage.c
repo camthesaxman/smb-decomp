@@ -1906,7 +1906,7 @@ void load_stagedef(int stageId)
     OSFree(compData);
 
 #ifdef TARGET_PC
-    byteswap_stagedef(uncompData);
+    byteswap_stage(uncompData);
 #endif
 
     decodedStageLzPtr = uncompData;

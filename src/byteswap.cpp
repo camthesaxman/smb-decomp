@@ -40,13 +40,16 @@ template <typename T> constexpr T bswap32(T val) noexcept
 }
 
 template <typename B, typename T> static inline void bswap(B &base, T &data);
-template <typename B> void bswap(B &base, void *&ptr)
+template <typename B, typename P> void bswap(B &base, P *&ptr)
 {
     ptr = bswap32(ptr);
 }
 template <typename B, typename T> void bswap(B &base, T *&ptr, s32 count)
 {
     ptr = bswap32(ptr);
+    if (ptr == nullptr) {
+        return;
+    }
     T *objBase = reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
                                        reinterpret_cast<uintptr_t>(ptr));
     for (s32 i = 0; i < count; ++i)
@@ -95,9 +98,48 @@ template <typename B> void bswap(B &base, S16Vec &vec)
     bswap(base, vec.y);
     bswap(base, vec.z);
 }
+template <typename B> void bswap(B &base, Vec2d &vec)
+{
+    bswap(base, vec.x);
+    bswap(base, vec.y);
+}
 template <typename B> void bswap(B &base, StageAnimGroup &group)
 {
-    // TODO
+    bswap(base, group.initPos);
+    bswap(base, group.initRot);
+    bswap(base, group.unk12);
+    bswap(base, group.anim, 1);
+    bswap(base, group.modelNames);
+    bswap(base, group.triangles, 1);
+    bswap(base, group.gridCellTris);
+    bswap(base, group.gridOriginX);
+    bswap(base, group.gridOriginZ);
+    bswap(base, group.gridStepX);
+    bswap(base, group.gridStepZ);
+    bswap(base, group.gridCellCountX);
+    bswap(base, group.gridCellCountZ);
+    bswap(base, group.goalCount);
+    bswap(base, group.goals, group.goalCount);
+    bswap(base, group.unk48);
+    bswap(base, group.bumperCount);
+    bswap(base, group.bumpers, group.bumperCount);
+    bswap(base, group.jamabarCount);
+    bswap(base, group.jamabars, group.jamabarCount);
+    bswap(base, group.bananaCount);
+    bswap(base, group.bananas, group.bananaCount);
+    bswap(base, group.coliConeCount);
+    bswap(base, group.coliCones, group.coliConeCount);
+    bswap(base, group.coliSphereCount);
+    bswap(base, group.coliSpheres, group.coliSphereCount);
+    bswap(base, group.coliCylinderCount);
+    bswap(base, group.coliCylinders, group.coliCylinderCount);
+    bswap(base, group.animGroupModelCount);
+    bswap(base, group.animGroupModels, group.animGroupModelCount);
+    bswap(base, group.unk84);
+    bswap(base, group.unk88, group.unk84);
+    bswap(base, group.unk8C);
+    bswap(base, group.unk90, group.unk8C);
+    bswap(base, group.unkB8);
 }
 template <typename B> void bswap(B &base, StageStartPos &pos)
 {
@@ -137,6 +179,7 @@ template <typename B> void bswap(B &base, StageBanana &banana)
 template <typename B> void bswap(B &base, StageBgObject &bgObject)
 {
     bswap(base, bgObject.flags);
+    bswap(base, bgObject.name);
     bswap(base, bgObject.model, 1);
     bswap(base, bgObject.pos);
     bswap(base, bgObject.rotX);
@@ -168,6 +211,25 @@ template <typename B> void bswap(B &base, StageColiCylinder &coliCylinder)
     bswap(base, coliCylinder.rot);
     bswap(base, coliCylinder.flags);
 }
+template <typename B> void bswap(B &base, StageColiTri &coliTri)
+{
+    bswap(base, coliTri.pos);
+    bswap(base, coliTri.normal);
+    bswap(base, coliTri.rot);
+    bswap(base, coliTri.flags);
+    bswap(base, coliTri.vert2);
+    bswap(base, coliTri.vert3);
+    bswap(base, coliTri.edge2Normal);
+    bswap(base, coliTri.edge3Normal);
+}
+template <typename B> void bswap(B &base, StageCollHdr_child2 &obj)
+{
+    bswap(base, obj.unk0);
+    bswap(base, obj.unkC);
+    bswap(base, obj.unk18);
+    bswap(base, obj.unk1A);
+    bswap(base, obj.unk1C);
+}
 template <typename B> void bswap(B &base, AnimGroupModel &model)
 {
     bswap(base, model.unk0);
@@ -177,10 +239,83 @@ template <typename B> void bswap(B &base, DecodedStageLzPtr_child5 &obj)
 {
     // TODO
 }
+template <typename B> void bswap(B &base, DecodedStageLzPtr_child_child4 &obj)
+{
+    bswap(base, obj.unk0);
+    bswap(base, obj.unk4);
+}
 template <typename B> void bswap(B &base, DecodedStageLzPtr_child6 &obj)
 {
     bswap(base, obj.unkC, 1);
     bswap(base, obj.unk10, 1);
+}
+template <typename B> void bswap(B &base, StageBgAnim &anim)
+{
+    bswap(base, anim.loopStartSeconds);
+    bswap(base, anim.loopEndSeconds);
+    bswap(base, anim.scaleXKeyframeCount);
+    bswap(base, anim.scaleXKeyframes, anim.scaleXKeyframeCount);
+    bswap(base, anim.scaleYKeyframeCount);
+    bswap(base, anim.scaleYKeyframes, anim.scaleYKeyframeCount);
+    bswap(base, anim.scaleZKeyframeCount);
+    bswap(base, anim.scaleZKeyframes, anim.scaleZKeyframeCount);
+    bswap(base, anim.rotXKeyframeCount);
+    bswap(base, anim.rotXKeyframes, anim.rotXKeyframeCount);
+    bswap(base, anim.rotYKeyframeCount);
+    bswap(base, anim.rotYKeyframes, anim.rotYKeyframeCount);
+    bswap(base, anim.rotZKeyframeCount);
+    bswap(base, anim.rotZKeyframes, anim.rotZKeyframeCount);
+    bswap(base, anim.posXKeyframeCount);
+    bswap(base, anim.posXKeyframes, anim.posXKeyframeCount);
+    bswap(base, anim.posYKeyframeCount);
+    bswap(base, anim.posYKeyframes, anim.posYKeyframeCount);
+    bswap(base, anim.posZKeyframeCount);
+    bswap(base, anim.posZKeyframes, anim.posZKeyframeCount);
+    bswap(base, anim.visibleKeyframeCount);
+    bswap(base, anim.visibleKeyframes, anim.visibleKeyframeCount);
+    bswap(base, anim.translucencyKeyframeCount);
+    bswap(base, anim.translucencyKeyframes, anim.translucencyKeyframeCount);
+}
+template <typename B> void bswap(B &base, StageFlipbookAnims &anims)
+{
+    bswap(base, anims.nightWindowAnimCount);
+    bswap(base, anims.nightWindowAnims, anims.nightWindowAnimCount);
+    bswap(base, anims.stormFireAnimCount);
+    bswap(base, anims.stormFireAnims, anims.stormFireAnimCount);
+}
+template <typename B> void bswap(B &base, StageAnimGroupAnim &anim)
+{
+    bswap(base, anim.rotXKeyframeCount);
+    bswap(base, anim.rotXKeyframes, anim.rotXKeyframeCount);
+    bswap(base, anim.rotYKeyframeCount);
+    bswap(base, anim.rotYKeyframes, anim.rotYKeyframeCount);
+    bswap(base, anim.rotZKeyframeCount);
+    bswap(base, anim.rotZKeyframes, anim.rotZKeyframeCount);
+    bswap(base, anim.posXKeyframeCount);
+    bswap(base, anim.posXKeyframes, anim.posXKeyframeCount);
+    bswap(base, anim.posYKeyframeCount);
+    bswap(base, anim.posYKeyframes, anim.posYKeyframeCount);
+    bswap(base, anim.posZKeyframeCount);
+    bswap(base, anim.posZKeyframes, anim.posZKeyframeCount);
+}
+template <typename B> void bswap(B &base, Keyframe &keyframe)
+{
+    bswap(base, keyframe.easeType);
+    bswap(base, keyframe.timeSeconds);
+    bswap(base, keyframe.value);
+    bswap(base, keyframe.tangentIn);
+    bswap(base, keyframe.tangentOut);
+}
+template <typename B> void bswap(B &base, NightWindowAnim &anim)
+{
+    bswap(base, anim.pos);
+    bswap(base, anim.rotX);
+    bswap(base, anim.rotY);
+    bswap(base, anim.rotZ);
+}
+template <typename B> void bswap(B &base, StormFireAnim &anim)
+{
+    bswap(base, anim.pos);
 }
 GMAShape *bswap_shape(GMAShape &shape)
 {
@@ -262,5 +397,5 @@ template <typename B> void bswap(B &base, Stage &stage)
 
 void byteswap_stage(Stage *stage)
 {
-//    bswap(*stage, *stage);
+    bswap(*stage, *stage);
 }
