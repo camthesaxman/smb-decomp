@@ -1,14 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
 project(supermonkeyball LANGUAGES C CXX)
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -Wall -fsanitize=address -fsanitize-address-use-after-scope -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter")
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -Wall -fsanitize=address -fsanitize-address-use-after-scope")
-set(CMAKE_PREFIX_PATH /usr)
-set(CMAKE_LIBRARY_ARCHITECTURE i386-linux-gnu)
-set(CMAKE_LIBRARY_PATH "/usr/lib32" CACHE PATH "")
-set(CMAKE_FIND_LIBRARY_CUSTOM_LIB_SUFFIX 32)
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -Wall -fsanitize=address -fsanitize-address-use-after-scope -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32 -Wall -fsanitize=address -fsanitize-address-use-after-scope")
+  set(CMAKE_PREFIX_PATH /usr)
+  set(CMAKE_LIBRARY_ARCHITECTURE i386-linux-gnu)
+  set(CMAKE_LIBRARY_PATH "/usr/lib32" CACHE PATH "")
+  set(CMAKE_FIND_LIBRARY_CUSTOM_LIB_SUFFIX 32)
+endif ()
 
+if (CMAKE_SYSTEM_NAME STREQUAL Windows)
+  set(DAWN_ENABLE_DESKTOP_GL ON CACHE BOOL "Enable compilation of the OpenGL backend" FORCE)
+endif ()
 add_subdirectory(extern/dawn EXCLUDE_FROM_ALL)
 if (DAWN_ENABLE_VULKAN)
   target_compile_definitions(dawn_native PRIVATE
@@ -17,7 +22,7 @@ if (DAWN_ENABLE_VULKAN)
 endif ()
 if (MSVC)
   target_compile_options(dawn_native PRIVATE /bigobj)
-else()
+else ()
   target_compile_options(SPIRV-Tools-static PRIVATE -Wno-implicit-fallthrough)
   target_compile_options(SPIRV-Tools-opt PRIVATE -Wno-implicit-fallthrough)
 endif ()
@@ -91,7 +96,7 @@ add_executable(supermonkeyball
     src/motload_3.c
     src/motload_4.c
     src/ball.c
-    src/mathutil_vec_cross_prod.c
+#    src/mathutil_vec_cross_prod.c
     src/stcoli.c
     src/world.c
     src/interpolate_keyframes.c
@@ -147,11 +152,11 @@ add_executable(supermonkeyball
     src/dvd.c
     src/preview.c
     libraries/dolphin_pc/OS.c
-#    libraries/dolphin_pc/GX.c
+    #    libraries/dolphin_pc/GX.c
     libraries/dolphin_pc/dvd.c
-#    libraries/dolphin_pc/vi.c
-#    libraries/dolphin_pc/pad_evdev.c
-#    libraries/dolphin_pc/pad_dinput.c
+    #    libraries/dolphin_pc/vi.c
+    #    libraries/dolphin_pc/pad_evdev.c
+    #    libraries/dolphin_pc/pad_dinput.c
     libraries/dolphin_pc/ar.c
     libraries/dolphin_pc/arq.c
     libraries/os/OSAlloc.c
@@ -171,8 +176,13 @@ add_executable(supermonkeyball
     libraries/gx/GXStubs.c
     libraries/gx/GXPerf.c
     libraries/amcnotstub/amcnotstub.c
+    src/byteswap.cpp
     )
 target_compile_definitions(supermonkeyball PRIVATE NONMATCHING C_ONLY TARGET_PC)
-target_compile_options(supermonkeyball PRIVATE -idirafter "${CMAKE_CURRENT_SOURCE_DIR}/include")
+if (MSVC)
+  target_include_directories(supermonkeyball PRIVATE include)
+else ()
+  target_compile_options(supermonkeyball PRIVATE -idirafter "${CMAKE_CURRENT_SOURCE_DIR}/include")
+endif ()
 target_link_libraries(supermonkeyball PRIVATE aurora)
 

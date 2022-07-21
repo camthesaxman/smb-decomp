@@ -95,7 +95,7 @@ static Mtx s_identityTexMtx;
 static struct TevMaterialCache s_materialCache;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
-static u8 lzssHeader[32] __attribute__((aligned(32)));
+static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 static u8 unknownTexImg[64];
 
 FORCE_BSS_ORDER(lbl_802B4E60)
@@ -339,102 +339,102 @@ void free_model(struct GMAModel *model)
 #ifdef TARGET_PC
 static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
 {
-    u32 pos = 0;
-    GXPrimitive prim;
-    GXVtxFmt fmt;
-    int vtxCount;
-
-    while (pos < size)
-    {
-        u8 opcode = data[pos++];
-
-        if (opcode == GX_NOP)
-            continue;
-        if (opcode == GX_LOAD_BP_REG)
-        {
-            bswap32(data + pos);
-            pos += 4;
-        }
-
-        switch (opcode & ~3)
-        {
-        case GX_DRAW_QUADS:
-        case GX_DRAW_TRIANGLES:
-        case GX_DRAW_TRIANGLE_STRIP:
-        case GX_DRAW_TRIANGLE_FAN:
-        case GX_DRAW_LINES:
-        case GX_DRAW_LINE_STRIP:
-        case GX_DRAW_POINTS:
-            prim = opcode & ~3;
-            fmt = opcode & 3;
-            bswap16(data + pos);
-            vtxCount = read_u16_le(data + pos);
-            pos += 2;
-            //printf("draw prim 0x%X, vat %i, cnt %i\n", prim, fmt, vtxCount); fflush(stdout);
-            while (vtxCount-- > 0)
-            {
-                int attr;
-                GXCompCnt compCnt;
-                GXCompType compType;
-                u8 frac;
-                for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
-                {
-                    GXGetVtxAttrFmt(fmt, attr, &compCnt, &compType, &frac);
-                    if (vtxAttrs & (1 << attr))
-                    {
-                        if (attr >= GX_VA_PNMTXIDX && attr <= GX_VA_TEX7MTXIDX)
-                        {
-                            pos++;
-                            continue;
-                        }
-                        #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
-                        switch (COMBINE(attr, compCnt, compType))
-                        {
-                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
-                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
-                            bswap32(data + pos + 0);
-                            bswap32(data + pos + 4);
-                            bswap32(data + pos + 8);
-                            pos += 12;
-                            break;
-                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
-                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
-                            bswap16(data + pos + 0);
-                            bswap16(data + pos + 2);
-                            bswap16(data + pos + 4);
-                            pos += 6;
-                            break;
-                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
-                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
-                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
-                            bswap32(data + pos + 0);
-                            bswap32(data + pos + 4);
-                            pos += 8;
-                            break;
-                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
-                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
-                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
-                            bswap16(data + pos + 0);
-                            bswap16(data + pos + 2);
-                            pos += 4;
-                            break;
-                        case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
-                            pos += 4;
-                            break;
-                        default:
-                            printf("not handled: attr %i, cnt %i, type %i\n", attr, compCnt, compType);
-                            assert(0);
-                            break;
-                        }
-                        #undef COMBINE
-                    }
-                }
-            }
-            continue;
-        default:
-            assert(0);
-        }
-    }
+//    u32 pos = 0;
+//    GXPrimitive prim;
+//    GXVtxFmt fmt;
+//    int vtxCount;
+//
+//    while (pos < size)
+//    {
+//        u8 opcode = data[pos++];
+//
+//        if (opcode == GX_NOP)
+//            continue;
+//        if (opcode == GX_LOAD_BP_REG)
+//        {
+//            bswap32(data + pos);
+//            pos += 4;
+//        }
+//
+//        switch (opcode & ~3)
+//        {
+//        case GX_DRAW_QUADS:
+//        case GX_DRAW_TRIANGLES:
+//        case GX_DRAW_TRIANGLE_STRIP:
+//        case GX_DRAW_TRIANGLE_FAN:
+//        case GX_DRAW_LINES:
+//        case GX_DRAW_LINE_STRIP:
+//        case GX_DRAW_POINTS:
+//            prim = opcode & ~3;
+//            fmt = opcode & 3;
+//            bswap16(data + pos);
+//            vtxCount = read_u16_le(data + pos);
+//            pos += 2;
+//            //printf("draw prim 0x%X, vat %i, cnt %i\n", prim, fmt, vtxCount); fflush(stdout);
+//            while (vtxCount-- > 0)
+//            {
+//                int attr;
+//                GXCompCnt compCnt;
+//                GXCompType compType;
+//                u8 frac;
+//                for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
+//                {
+//                    GXGetVtxAttrFmt(fmt, attr, &compCnt, &compType, &frac);
+//                    if (vtxAttrs & (1 << attr))
+//                    {
+//                        if (attr >= GX_VA_PNMTXIDX && attr <= GX_VA_TEX7MTXIDX)
+//                        {
+//                            pos++;
+//                            continue;
+//                        }
+//                        #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
+//                        switch (COMBINE(attr, compCnt, compType))
+//                        {
+//                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
+//                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
+//                            bswap32(data + pos + 0);
+//                            bswap32(data + pos + 4);
+//                            bswap32(data + pos + 8);
+//                            pos += 12;
+//                            break;
+//                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
+//                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
+//                            bswap16(data + pos + 0);
+//                            bswap16(data + pos + 2);
+//                            bswap16(data + pos + 4);
+//                            pos += 6;
+//                            break;
+//                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
+//                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
+//                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
+//                            bswap32(data + pos + 0);
+//                            bswap32(data + pos + 4);
+//                            pos += 8;
+//                            break;
+//                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
+//                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
+//                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
+//                            bswap16(data + pos + 0);
+//                            bswap16(data + pos + 2);
+//                            pos += 4;
+//                            break;
+//                        case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
+//                            pos += 4;
+//                            break;
+//                        default:
+//                            printf("not handled: attr %i, cnt %i, type %i\n", attr, compCnt, compType);
+//                            assert(0);
+//                            break;
+//                        }
+//                        #undef COMBINE
+//                    }
+//                }
+//            }
+//            continue;
+//        default:
+//            assert(0);
+//        }
+//    }
 }
 
 static void byteswap_model(u8 *data)
@@ -495,6 +495,10 @@ static void byteswap_model(u8 *data)
         bswap32(shape + 0x1C);  // vtxAttrs
         bswap32(shape + 0x28);  // dispListSizes[0]
         bswap32(shape + 0x2C);  // dispListSizes[1]
+        bswap32(shape + 0x30);  // origin.x
+        bswap32(shape + 0x34);  // origin.y
+        bswap32(shape + 0x38);  // origin.z
+        bswap32(shape + 0x40);  // blendFactors
         vtxAttrs = read_u32_le(shape + 0x1C);
         dispList = shape + 0x60;
         for (j = 0; j < 2; j++)

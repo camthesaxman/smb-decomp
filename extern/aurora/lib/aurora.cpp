@@ -233,11 +233,11 @@ static SDL_Window* create_window(wgpu::BackendType type, bool fullscreen) {
   default:
     break;
   }
-  return SDL_CreateWindow("Metaforce", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640,
+  return SDL_CreateWindow("Super Monkey Ball", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280,
 #ifdef __SWITCH__
                           720,
 #else
-                          480,
+                          960,
 #endif
                           flags);
 }
@@ -281,7 +281,7 @@ void app_run(std::unique_ptr<AppDelegate> app, Icon icon, int argc, char** argv,
   SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0");
 #endif
 #if SDL_VERSION_ATLEAST(2, 0, 18)
-  SDL_SetHint(SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME, "Metaforce");
+  SDL_SetHint(SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME, "Super Monkey Ball");
 #endif
 #ifdef SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE
   SDL_SetHint(SDL_HINT_JOYSTICK_GAMECUBE_RUMBLE_BRAKE, "1");

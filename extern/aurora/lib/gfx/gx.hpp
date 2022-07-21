@@ -68,7 +68,7 @@ constexpr float GX_LARGE_NUMBER = -1048576.0f;
 namespace aurora::gfx::gx {
 constexpr u32 MaxTextures = GX_MAX_TEXMAP;
 constexpr u32 MaxTevStages = GX_MAX_TEVSTAGE;
-constexpr u32 MaxColorChannels = 2; // COLOR0A0, COLOR1A1
+constexpr u32 MaxColorChannels = 4;
 constexpr u32 MaxTevRegs = 4;       // TEVPREV, TEVREG0-2
 constexpr u32 MaxKColors = GX_MAX_KCOLOR;
 constexpr u32 MaxTexMtx = 10;
@@ -384,7 +384,7 @@ struct ShaderInfo {
   std::bitset<MaxTexCoord> sampledTexCoords;
   std::bitset<MaxTextures> sampledTextures;
   std::bitset<MaxKColors> sampledKColors;
-  std::bitset<MaxColorChannels> sampledColorChannels;
+  std::bitset<MaxColorChannels / 2> sampledColorChannels;
   std::bitset<MaxTevRegs> loadsTevReg;
   std::bitset<MaxTevRegs> writesTevReg;
   std::bitset<MaxTexMtx> usesTexMtx;

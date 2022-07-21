@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #ifdef _WIN32
-#include <windows.h>
+#include <Windows.h>
+#include <direct.h>
+#else
+#include <unistd.h>
 #endif
 #include <dolphin.h>
 

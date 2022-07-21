@@ -10,14 +10,47 @@
 namespace aurora::gfx::model {
 static logwrapper::Module Log("aurora::gfx::model");
 
-static const std::vector<Vec4<float>>* vtxData;
-static const std::vector<Vec4<float>>* nrmData;
-static const std::vector<Vec2<float>>* tex0TcData;
-static const std::vector<Vec2<float>>* tcData;
+static const std::vector<Vec4<f32>>* vtxData;
+static const std::vector<Vec4<f32>>* nrmData;
+static const std::vector<Vec2<f32>>* tc0Data;
+static const std::vector<Vec2<f32>>* tc1Data;
 static std::optional<Range> cachedVtxRange;
 static std::optional<Range> cachedNrmRange;
-static std::optional<Range> cachedPackedTcRange;
-static std::optional<Range> cachedTcRange;
+static std::optional<Range> cachedTc1Range;
+static std::optional<Range> cachedTc0Range;
+
+template <typename T>
+constexpr T bswap16(T val) noexcept {
+  static_assert(sizeof(T) == sizeof(u16));
+  union {
+    u16 u;
+    T t;
+  } v{.t = val};
+#if __GNUC__
+  v.u = __builtin_bswap16(v.u);
+#elif _WIN32
+  v.u = _byteswap_ushort(v.u);
+#else
+  v.u = (v.u << 8) | ((v.u >> 8) & 0xFF);
+#endif
+  return v.t;
+}
+template <typename T>
+constexpr T bswap32(T val) noexcept {
+  static_assert(sizeof(T) == sizeof(u32));
+  union {
+    u32 u;
+    T t;
+  } v{.t = val};
+#if __GNUC__
+  v.u = __builtin_bswap32(v.u);
+#elif _WIN32
+  v.u = _byteswap_ulong(v.u);
+#else
+  v.u = ((v.u & 0x0000FFFF) << 16) | ((v.u & 0xFFFF0000) >> 16) | ((v.u & 0x00FF00FF) << 8) | ((v.u & 0xFF00FF00) >> 8);
+#endif
+  return v.t;
+}
 
 static inline void read_vert(ByteBuffer& out, const u8* data) noexcept {
   size_t offset = 0;
@@ -27,7 +60,7 @@ static inline void read_vert(ByteBuffer& out, const u8* data) noexcept {
       out.append(&v, 2);
       ++offset;
     } else if (type == GX_INDEX16) {
-      const s16 v = bswap_16(*reinterpret_cast<const s16*>(data + offset));
+      const s16 v = bswap16(*reinterpret_cast<const s16*>(data + offset));
       out.append(&v, 2);
       offset += 2;
     }
@@ -38,17 +71,197 @@ static inline void read_vert(ByteBuffer& out, const u8* data) noexcept {
   }
 }
 
-static absl::flat_hash_map<XXH64_hash_t, std::pair<ByteBuffer, ByteBuffer>> sCachedDisplayLists;
+static absl::flat_hash_map<HashType, std::pair<ByteBuffer, ByteBuffer>> sCachedDisplayLists;
 
-void queue_surface(const u8* dlStart, u32 dlSize) noexcept {
-  // TODO CElementGen needs fixing
-  for (const auto& type : gx::g_gxState.vtxDesc) {
-    if (type == GX_DIRECT) {
-      Log.report(logwrapper::Warning, FMT_STRING("Direct attributes in surface config!"));
-      return;
+static u32 prepare_vtx_buffer(ByteBuffer& buf, GXVtxFmt vtxfmt, const u8* ptr, u16 vtxCount) {
+  using aurora::gfx::gx::g_gxState;
+  struct {
+    u8 count;
+    GXCompType type;
+  } attrArrays[GX_VA_MAX_ATTR] = {0};
+  u32 vtxSize = 0;
+  u32 outVtxSize = 0;
+
+  // Calculate attribute offsets and vertex size
+  for (int attr = 0; attr < GX_VA_MAX_ATTR; attr++) {
+    const auto& attrFmt = g_gxState.vtxFmts[vtxfmt].attrs[attr];
+    switch (g_gxState.vtxDesc[attr]) {
+    case GX_NONE:
+      break;
+    case GX_DIRECT:
+#define COMBINE(val1, val2, val3) (((val1) << 16) | ((val2) << 8) | (val3))
+      switch (COMBINE(attr, attrFmt.cnt, attrFmt.type)) {
+      case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
+      case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
+        attrArrays[attr].count = 3;
+        attrArrays[attr].type = GX_F32;
+        vtxSize += 12;
+        outVtxSize += 12;
+        break;
+      case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
+      case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
+        attrArrays[attr].count = 3;
+        attrArrays[attr].type = GX_S16;
+        vtxSize += 6;
+        outVtxSize += 12;
+        break;
+      case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX3, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX4, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX5, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX6, GX_TEX_ST, GX_F32):
+      case COMBINE(GX_VA_TEX7, GX_TEX_ST, GX_F32):
+        attrArrays[attr].count = 2;
+        attrArrays[attr].type = GX_F32;
+        vtxSize += 8;
+        outVtxSize += 8;
+        break;
+      case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX3, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX4, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX5, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX6, GX_TEX_ST, GX_S16):
+      case COMBINE(GX_VA_TEX7, GX_TEX_ST, GX_S16):
+        attrArrays[attr].count = 2;
+        attrArrays[attr].type = GX_S16;
+        vtxSize += 4;
+        outVtxSize += 8;
+        break;
+      case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
+      case COMBINE(GX_VA_CLR1, GX_CLR_RGBA, GX_RGBA8):
+        attrArrays[attr].count = 4;
+        attrArrays[attr].type = GX_RGBA8;
+        vtxSize += 4;
+        outVtxSize += 16;
+        break;
+      default:
+        Log.report(logwrapper::Fatal, FMT_STRING("not handled: attr {}, cnt {}, type {}"), attr, attrFmt.cnt,
+                   attrFmt.type);
+        break;
+      }
+#undef COMBINE
+      break;
+    default:
+      Log.report(logwrapper::Fatal, FMT_STRING("indexed attributes unhandled"));
     }
   }
 
+  // Build vertex buffer
+  buf.reserve_extra(vtxCount * outVtxSize);
+  std::array<f32, 4> out{};
+  for (u32 v = 0; v < vtxCount; ++v) {
+    for (int attr = 0; attr < GX_VA_MAX_ATTR; attr++) {
+      if (g_gxState.vtxDesc[attr] != GX_DIRECT) {
+        continue;
+      }
+      const auto& attrFmt = g_gxState.vtxFmts[vtxfmt].attrs[attr];
+      u8 count = attrArrays[attr].count;
+      switch (attrArrays[attr].type) {
+      case GX_U8:
+        for (int i = 0; i < count; ++i) {
+          const auto value = reinterpret_cast<const u8*>(ptr)[i];
+          out[i] = static_cast<f32>(value) / static_cast<f32>(1 << attrFmt.frac);
+        }
+        buf.append(out.data(), sizeof(f32) * count);
+        ptr += count;
+        break;
+      case GX_S8:
+        for (int i = 0; i < count; ++i) {
+          const auto value = reinterpret_cast<const s8*>(ptr)[i];
+          out[i] = static_cast<f32>(value) / static_cast<f32>(1 << attrFmt.frac);
+        }
+        buf.append(out.data(), sizeof(f32) * count);
+        ptr += count;
+        break;
+      case GX_U16:
+        for (int i = 0; i < count; ++i) {
+          const auto value = bswap16(reinterpret_cast<const u16*>(ptr)[i]);
+          out[i] = static_cast<f32>(value) / static_cast<f32>(1 << attrFmt.frac);
+        }
+        buf.append(out.data(), sizeof(f32) * count);
+        ptr += count * sizeof(u16);
+        break;
+      case GX_S16:
+        for (int i = 0; i < count; ++i) {
+          const auto value = bswap16(reinterpret_cast<const s16*>(ptr)[i]);
+          out[i] = static_cast<f32>(value) / static_cast<f32>(1 << attrFmt.frac);
+        }
+        buf.append(out.data(), sizeof(f32) * count);
+        ptr += count * sizeof(s16);
+        break;
+      case GX_F32:
+        for (int i = 0; i < count; ++i) {
+          out[i] = bswap32(reinterpret_cast<const f32*>(ptr)[i]);
+        }
+        buf.append(out.data(), sizeof(f32) * count);
+        ptr += count * sizeof(f32);
+        break;
+      case GX_RGBA8:
+        out[0] = static_cast<f32>(ptr[0]) / 255.f;
+        out[1] = static_cast<f32>(ptr[1]) / 255.f;
+        out[2] = static_cast<f32>(ptr[2]) / 255.f;
+        out[3] = static_cast<f32>(ptr[3]) / 255.f;
+        buf.append(out.data(), sizeof(f32) * 4);
+        ptr += sizeof(u32);
+        break;
+      }
+    }
+  }
+
+  return vtxSize;
+}
+
+static u16 prepare_idx_buffer(ByteBuffer& buf, GXPrimitive prim, u16 vtxStart, u16 vtxCount) {
+  u16 numIndices = 0;
+  if (prim == GX_TRIANGLES) {
+    buf.reserve_extra(vtxCount * sizeof(u16));
+    for (u16 v = 0; v < vtxCount; ++v) {
+      const u16 idx = vtxStart + v;
+      buf.append(&idx, sizeof(u16));
+      ++numIndices;
+    }
+  } else if (prim == GX_TRIANGLEFAN) {
+    buf.reserve_extra(((u32(vtxCount) - 3) * 3 + 3) * sizeof(u16));
+    for (u16 v = 0; v < vtxCount; ++v) {
+      const u16 idx = vtxStart + v;
+      if (v < 3) {
+        buf.append(&idx, sizeof(u16));
+        ++numIndices;
+        continue;
+      }
+      const std::array<u16, 3> idxs{vtxStart, u16(idx - 1), idx};
+      buf.append(idxs.data(), sizeof(u16) * 3);
+      numIndices += 3;
+    }
+  } else if (prim == GX_TRIANGLESTRIP) {
+    buf.reserve_extra(((u32(vtxCount) - 3) * 3 + 3) * sizeof(u16));
+    for (u16 v = 0; v < vtxCount; ++v) {
+      const u16 idx = vtxStart + v;
+      if (v < 3) {
+        buf.append(&idx, sizeof(u16));
+        ++numIndices;
+        continue;
+      }
+      if ((v & 1) == 0) {
+        const std::array<u16, 3> idxs{u16(idx - 2), u16(idx - 1), idx};
+        buf.append(idxs.data(), sizeof(u16) * 3);
+      } else {
+        const std::array<u16, 3> idxs{u16(idx - 1), u16(idx - 2), idx};
+        buf.append(idxs.data(), sizeof(u16) * 3);
+      }
+      numIndices += 3;
+    }
+  } else {
+    Log.report(logwrapper::Fatal, FMT_STRING("Unsupported primitive type {}"), static_cast<u32>(prim));
+  }
+  return numIndices;
+}
+
+void queue_surface(const u8* dlStart, u32 dlSize) noexcept {
   const auto hash = xxh3_hash_s(dlStart, dlSize, 0);
   Range vertRange, idxRange;
   u32 numIndices = 0;
@@ -59,132 +272,82 @@ void queue_surface(const u8* dlStart, u32 dlSize) noexcept {
     vertRange = push_verts(verts.data(), verts.size());
     idxRange = push_indices(indices.data(), indices.size());
   } else {
+    const u8* data = dlStart;
+    u32 pos = 0;
     ByteBuffer vtxBuf;
     ByteBuffer idxBuf;
-    u8 inVtxSize = 0;
-    u8 outVtxSize = 0;
-    for (const auto& type : gx::g_gxState.vtxDesc) {
-      if (type == GX_DIRECT) {
-        Log.report(logwrapper::Fatal, FMT_STRING("Direct attributes in surface config!"));
-        unreachable();
-      }
-      if (type == GX_NONE) {
-        continue;
-      }
-      if (type == GX_INDEX8) {
-        ++inVtxSize;
-        outVtxSize += 2;
-      } else if (type == GX_INDEX16) {
-        inVtxSize += 2;
-        outVtxSize += 2;
-      } else {
-        Log.report(logwrapper::Fatal, FMT_STRING("unexpected vtx type {}"), type);
-        unreachable();
-      }
-    }
-    outVtxSize = ALIGN(outVtxSize, 4);
-
     u16 vtxStart = 0;
-    size_t offset = 0;
-    while (offset < dlSize - 6) {
-      const auto header = dlStart[offset];
-      const auto primitive = static_cast<GXPrimitive>(header & 0xF8);
-      const auto dlVtxCount = bswap_16(*reinterpret_cast<const u16*>(dlStart + offset + 1));
-      offset += 3;
 
-      if (primitive == 0) {
+    while (pos < dlSize) {
+      u8 opcode = data[pos++];
+
+      if (opcode == GX_NOP)
+        continue;
+      if (opcode == GX_LOAD_BP_REG)
+        pos += 4;
+
+      const auto prim = static_cast<GXPrimitive>(opcode & ~3);
+      switch (opcode & ~3) {
+      case GX_DRAW_QUADS:
+      case GX_DRAW_TRIANGLES:
+      case GX_DRAW_TRIANGLE_STRIP:
+      case GX_DRAW_TRIANGLE_FAN: {
+        const auto fmt = static_cast<GXVtxFmt>(opcode & 3);
+        u16 vtxCount = bswap16(*reinterpret_cast<const u16*>(data + pos));
+        pos += 2;
+        pos += vtxCount * prepare_vtx_buffer(vtxBuf, fmt, data + pos, vtxCount);
+        numIndices += prepare_idx_buffer(idxBuf, prim, vtxStart, vtxCount);
+        vtxStart += vtxCount;
         break;
       }
-      if (primitive != GX_TRIANGLES && primitive != GX_TRIANGLESTRIP && primitive != GX_TRIANGLEFAN) {
-        Log.report(logwrapper::Fatal, FMT_STRING("queue_surface: unsupported primitive type {}"), primitive);
-        unreachable();
+      case GX_DRAW_LINES:
+      case GX_DRAW_LINE_STRIP:
+      case GX_DRAW_POINTS:
+        Log.report(logwrapper::Fatal, FMT_STRING("unimplemented prim type: {}"), u32(prim));
+        break;
       }
-
-      vtxBuf.reserve_extra(dlVtxCount * outVtxSize);
-      if (dlVtxCount > 3 && (primitive == GX_TRIANGLEFAN || primitive == GX_TRIANGLESTRIP)) {
-        idxBuf.reserve_extra(((u32(dlVtxCount) - 3) * 3 + 3) * 2);
-      } else {
-        idxBuf.reserve_extra(dlVtxCount * 2);
-      }
-      u16 curVert = vtxStart;
-      for (u16 v = 0; v < dlVtxCount; ++v) {
-        read_vert(vtxBuf, dlStart + offset);
-        offset += inVtxSize;
-        if (primitive == GX_TRIANGLES || v < 3) {
-          idxBuf.append(&curVert, 2);
-          ++numIndices;
-        } else if (primitive == GX_TRIANGLEFAN) {
-          const std::array<u16, 3> idxs{
-              vtxStart,
-              u16(curVert - 1),
-              curVert,
-          };
-          idxBuf.append(idxs.data(), 6);
-          numIndices += 3;
-        } else if (primitive == GX_TRIANGLESTRIP) {
-          if ((v & 1) == 0) {
-            const std::array<u16, 3> idxs{
-                u16(curVert - 2),
-                u16(curVert - 1),
-                curVert,
-            };
-            idxBuf.append(idxs.data(), 6);
-          } else {
-            const std::array<u16, 3> idxs{
-                u16(curVert - 1),
-                u16(curVert - 2),
-                curVert,
-            };
-            idxBuf.append(idxs.data(), 6);
-          }
-          numIndices += 3;
-        }
-        ++curVert;
-      }
-      vtxStart += dlVtxCount;
     }
-
     vertRange = push_verts(vtxBuf.data(), vtxBuf.size());
     idxRange = push_indices(idxBuf.data(), idxBuf.size());
     sCachedDisplayLists.try_emplace(hash, std::move(vtxBuf), std::move(idxBuf));
   }
 
-  Range sVtxRange, sNrmRange, sTcRange, sPackedTcRange;
-  if (cachedVtxRange) {
-    sVtxRange = *cachedVtxRange;
-  } else {
-    sVtxRange = push_storage(reinterpret_cast<const uint8_t*>(vtxData->data()), vtxData->size() * 16);
-    cachedVtxRange = sVtxRange;
-  }
-  if (cachedNrmRange) {
-    sNrmRange = *cachedNrmRange;
-  } else {
-    sNrmRange = push_storage(reinterpret_cast<const uint8_t*>(nrmData->data()), nrmData->size() * 16);
-    cachedNrmRange = sNrmRange;
-  }
-  if (cachedTcRange) {
-    sTcRange = *cachedTcRange;
-  } else {
-    sTcRange = push_storage(reinterpret_cast<const uint8_t*>(tcData->data()), tcData->size() * 8);
-    cachedTcRange = sTcRange;
-  }
-  if (cachedPackedTcRange) {
-    sPackedTcRange = *cachedPackedTcRange;
-  } else if (tcData == tex0TcData) {
-    sPackedTcRange = sTcRange;
-  } else {
-    sPackedTcRange = push_storage(reinterpret_cast<const uint8_t*>(tex0TcData->data()), tex0TcData->size() * 8);
-    cachedPackedTcRange = sPackedTcRange;
-  }
+  //  Range sVtxRange, sNrmRange, sTcRange, sPackedTcRange;
+  //  if (cachedVtxRange) {
+  //    sVtxRange = *cachedVtxRange;
+  //  } else {
+  //    sVtxRange = push_storage(reinterpret_cast<const uint8_t*>(vtxData->data()), vtxData->size() * 16);
+  //    cachedVtxRange = sVtxRange;
+  //  }
+  //  if (cachedNrmRange) {
+  //    sNrmRange = *cachedNrmRange;
+  //  } else {
+  //    sNrmRange = push_storage(reinterpret_cast<const uint8_t*>(nrmData->data()), nrmData->size() * 16);
+  //    cachedNrmRange = sNrmRange;
+  //  }
+  //  if (cachedTc0Range) {
+  //    sTcRange = *cachedTc0Range;
+  //  } else {
+  //    sTcRange = push_storage(reinterpret_cast<const uint8_t*>(tc1Data->data()), tc1Data->size() * 8);
+  //    cachedTc0Range = sTcRange;
+  //  }
+  //  if (cachedTc1Range) {
+  //    sPackedTcRange = *cachedTc1Range;
+  //  } else if (tc1Data == tc0Data) {
+  //    sPackedTcRange = sTcRange;
+  //  } else {
+  //    sPackedTcRange = push_storage(reinterpret_cast<const uint8_t*>(tc0Data->data()), tc0Data->size() * 8);
+  //    cachedTc1Range = sPackedTcRange;
+  //  }
 
   model::PipelineConfig config{};
   populate_pipeline_config(config, GX_TRIANGLES);
   const auto info = gx::build_shader_info(config.shaderConfig);
   const gx::BindGroupRanges ranges{
-      .vtxDataRange = sVtxRange,
-      .nrmDataRange = sNrmRange,
-      .tcDataRange = sTcRange,
-      .packedTcDataRange = sPackedTcRange,
+      //      .vtxDataRange = sVtxRange,
+      //      .nrmDataRange = sNrmRange,
+      //      .tcDataRange = sTcRange,
+      //      .packedTcDataRange = sPackedTcRange,
   };
   const auto bindGroups = gx::build_bind_groups(info, config.shaderConfig, ranges);
   const auto pipeline = pipeline_ref(config);
@@ -215,28 +378,81 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
   } else if (rem > 0) {
     ++num2xAttr;
   }
+
   u32 offset = 0;
+  u32 shaderLocation = 0;
+
+  // Indexed attributes
   for (u32 i = 0; i < num4xAttr; ++i) {
-    vtxAttrs[i] = {
+    vtxAttrs[shaderLocation] = {
         .format = wgpu::VertexFormat::Sint16x4,
         .offset = offset,
-        .shaderLocation = i,
+        .shaderLocation = shaderLocation,
     };
     offset += 8;
+    ++shaderLocation;
   }
   for (u32 i = 0; i < num2xAttr; ++i) {
-    const u32 idx = num4xAttr + i;
-    vtxAttrs[idx] = {
+    vtxAttrs[shaderLocation] = {
         .format = wgpu::VertexFormat::Sint16x2,
         .offset = offset,
-        .shaderLocation = idx,
+        .shaderLocation = shaderLocation,
     };
     offset += 4;
+    ++shaderLocation;
   }
+
+  // Direct attributes
+  for (int i = 0; i < gx::MaxVtxAttr; ++i) {
+    const auto attrType = config.shaderConfig.vtxAttrs[i];
+    if (attrType != GX_DIRECT) {
+      continue;
+    }
+    const auto attr = static_cast<GXAttr>(i);
+    switch (attr) {
+    case GX_VA_POS:
+    case GX_VA_NRM:
+      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
+          .format = wgpu::VertexFormat::Float32x3,
+          .offset = offset,
+          .shaderLocation = shaderLocation,
+      };
+      offset += 12;
+      break;
+    case GX_VA_CLR0:
+    case GX_VA_CLR1:
+      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
+          .format = wgpu::VertexFormat::Float32x4,
+          .offset = offset,
+          .shaderLocation = shaderLocation,
+      };
+      offset += 16;
+      break;
+    case GX_VA_TEX0:
+    case GX_VA_TEX1:
+    case GX_VA_TEX2:
+    case GX_VA_TEX3:
+    case GX_VA_TEX4:
+    case GX_VA_TEX5:
+    case GX_VA_TEX6:
+    case GX_VA_TEX7:
+      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
+          .format = wgpu::VertexFormat::Float32x2,
+          .offset = offset,
+          .shaderLocation = shaderLocation,
+      };
+      offset += 8;
+      break;
+    default:
+      Log.report(logwrapper::Fatal, FMT_STRING("unhandled direct attr {}"), i);
+    }
+    ++shaderLocation;
+  }
+
   const std::array vtxBuffers{wgpu::VertexBufferLayout{
       .arrayStride = offset,
       .stepMode = wgpu::VertexStepMode::Vertex,
-      .attributeCount = num4xAttr + num2xAttr,
+      .attributeCount = shaderLocation,
       .attributes = vtxAttrs.data(),
   }};
 
@@ -255,7 +471,9 @@ void render(const State& state, const DrawData& data, const wgpu::RenderPassEnco
       storage_offset(data.dataRanges.packedTcDataRange),
       storage_offset(data.dataRanges.tcDataRange),
   };
-  pass.SetBindGroup(0, find_bind_group(data.bindGroups.uniformBindGroup), offsets.size(), offsets.data());
+  pass.SetBindGroup(0, find_bind_group(data.bindGroups.uniformBindGroup),
+                    // TODO match number of indexed attrs
+                    data.dataRanges.vtxDataRange.size ? offsets.size() : 1, offsets.data());
   if (data.bindGroups.samplerBindGroup && data.bindGroups.textureBindGroup) {
     pass.SetBindGroup(1, find_bind_group(data.bindGroups.samplerBindGroup));
     pass.SetBindGroup(2, find_bind_group(data.bindGroups.textureBindGroup));
@@ -270,7 +488,7 @@ void render(const State& state, const DrawData& data, const wgpu::RenderPassEnco
 }
 } // namespace aurora::gfx::model
 
-static absl::flat_hash_map<XXH64_hash_t, aurora::gfx::Range> sCachedRanges;
+static absl::flat_hash_map<aurora::HashType, aurora::gfx::Range> sCachedRanges;
 template <typename Vec>
 static inline void cache_array(const void* data, Vec*& outPtr, std::optional<aurora::gfx::Range>& outRange, u8 stride) {
   Vec* vecPtr = static_cast<Vec*>(data);
@@ -288,10 +506,10 @@ void GXSetArray(GXAttr attr, void* data, u8 stride) {
     cache_array(data, nrmData, cachedNrmRange, stride);
     break;
   case GX_VA_TEX0:
-    cache_array(data, tex0TcData, cachedPackedTcRange, stride);
+    cache_array(data, tc0Data, cachedTc1Range, stride);
     break;
   case GX_VA_TEX1:
-    cache_array(data, tcData, cachedTcRange, stride);
+    cache_array(data, tc1Data, cachedTc0Range, stride);
     break;
   default:
     Log.report(logwrapper::Fatal, FMT_STRING("GXSetArray: invalid attr {}"), attr);

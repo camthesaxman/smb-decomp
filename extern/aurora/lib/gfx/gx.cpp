@@ -3,6 +3,7 @@
 #include "../gpu.hpp"
 #include "common.hpp"
 
+#include <aurora/aurora.hpp>
 #include <aurora/log.hpp>
 #include <absl/container/flat_hash_map.h>
 #include <cfloat>
@@ -25,6 +26,14 @@ static inline aurora::Vec4<float> from_gx_color(GXColor color) {
       static_cast<float>(color.b) / 255.f,
       static_cast<float>(color.a) / 255.f,
   };
+}
+
+void GXAdjustForOverscan(GXRenderModeObj* rmin, GXRenderModeObj* rmout, u16 hor, u16 ver) {
+  *rmout = *rmin;
+  const auto size = aurora::get_window_size();
+  rmout->fbWidth = size.fb_width;
+  rmout->efbHeight = size.fb_height;
+  rmout->xfbHeight = size.fb_height;
 }
 
 void GXSetNumChans(u8 num) { update_gx_state(g_gxState.numChans, num); }
@@ -121,33 +130,59 @@ void GXSetTevOrder(GXTevStageID id, GXTexCoordID tcid, GXTexMapID tmid, GXChanne
 void GXSetTevKColorSel(GXTevStageID id, GXTevKColorSel sel) { update_gx_state(g_gxState.tevStages[id].kcSel, sel); }
 void GXSetTevKAlphaSel(GXTevStageID id, GXTevKAlphaSel sel) { update_gx_state(g_gxState.tevStages[id].kaSel, sel); }
 void GXSetChanAmbColor(GXChannelID id, GXColor color) {
-  if (id < GX_COLOR0A0 || id > GX_COLOR1A1) {
+  if (id == GX_COLOR0A0) {
+    GXSetChanAmbColor(GX_COLOR0, color);
+    GXSetChanAmbColor(GX_ALPHA0, color);
+    return;
+  } else if (id == GX_COLOR1A1) {
+    GXSetChanAmbColor(GX_COLOR1, color);
+    GXSetChanAmbColor(GX_ALPHA1, color);
+    return;
+  }
+  if (id < GX_COLOR0 || id > GX_ALPHA1) {
     Log.report(logwrapper::Fatal, FMT_STRING("bad channel {}"), id);
     unreachable();
   }
-  update_gx_state(g_gxState.colorChannelState[id - GX_COLOR0A0].ambColor, from_gx_color(color));
+  update_gx_state(g_gxState.colorChannelState[id].ambColor, from_gx_color(color));
 }
 void GXSetChanMatColor(GXChannelID id, GXColor color) {
-  if (id < GX_COLOR0A0 || id > GX_COLOR1A1) {
+  if (id == GX_COLOR0A0) {
+    GXSetChanMatColor(GX_COLOR0, color);
+    GXSetChanMatColor(GX_ALPHA0, color);
+    return;
+  } else if (id == GX_COLOR1A1) {
+    GXSetChanMatColor(GX_COLOR1, color);
+    GXSetChanMatColor(GX_ALPHA1, color);
+    return;
+  }
+  if (id < GX_COLOR0 || id > GX_ALPHA1) {
     Log.report(logwrapper::Fatal, FMT_STRING("bad channel {}"), id);
     unreachable();
   }
-  update_gx_state(g_gxState.colorChannelState[id - GX_COLOR0A0].matColor, from_gx_color(color));
+  update_gx_state(g_gxState.colorChannelState[id].matColor, from_gx_color(color));
 }
 void GXSetChanCtrl(GXChannelID id, bool lightingEnabled, GXColorSrc ambSrc, GXColorSrc matSrc, u32 lightState,
                    GXDiffuseFn diffFn, GXAttnFn attnFn) {
-  if (id < GX_COLOR0A0 || id > GX_COLOR1A1) {
+  if (id == GX_COLOR0A0) {
+    GXSetChanCtrl(GX_COLOR0, lightingEnabled, ambSrc, matSrc, lightState, diffFn, attnFn);
+    GXSetChanCtrl(GX_ALPHA0, lightingEnabled, ambSrc, matSrc, lightState, diffFn, attnFn);
+    return;
+  } else if (id == GX_COLOR1A1) {
+    GXSetChanCtrl(GX_COLOR1, lightingEnabled, ambSrc, matSrc, lightState, diffFn, attnFn);
+    GXSetChanCtrl(GX_ALPHA1, lightingEnabled, ambSrc, matSrc, lightState, diffFn, attnFn);
+    return;
+  }
+  if (id < GX_COLOR0 || id > GX_ALPHA1) {
     Log.report(logwrapper::Fatal, FMT_STRING("bad channel {}"), id);
     unreachable();
   }
-  u32 idx = id - GX_COLOR0A0;
-  auto& chan = g_gxState.colorChannelConfig[idx];
+  auto& chan = g_gxState.colorChannelConfig[id];
   update_gx_state(chan.lightingEnabled, lightingEnabled);
   update_gx_state(chan.ambSrc, ambSrc);
   update_gx_state(chan.matSrc, matSrc);
   update_gx_state(chan.diffFn, diffFn);
   update_gx_state(chan.attnFn, attnFn);
-  update_gx_state(g_gxState.colorChannelState[idx].lightState, GX::LightMask{lightState});
+  update_gx_state(g_gxState.colorChannelState[id].lightState, GX::LightMask{lightState});
 }
 void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, u8 ref1) {
   update_gx_state(g_gxState.alphaCompare, {comp0, ref0, op, comp1, ref1});
@@ -183,7 +218,7 @@ void GXLoadTexMtxImm(f32 mtx_[][4], u32 id, GXTexMtxType type) {
     }
     case GX_MTX2x4: {
       const auto& mtx = *reinterpret_cast<const aurora::Mat4x2<float>*>(mtx_);
-      update_gx_state<aurora::gfx::gx::TexMtxVariant>(g_gxState.texMtxs[idx], mtx);
+      update_gx_state<aurora::gfx::gx::TexMtxVariant>(g_gxState.texMtxs[idx], mtx.transpose());
       break;
     }
     }
@@ -217,18 +252,14 @@ void GXSetCurrentMtx(u32 id) {
 constexpr aurora::Mat4x4<float> DepthCorrect{
     {1.f, 0.f, 0.f, 0.f},
     {0.f, 1.f, 0.f, 0.f},
-    {0.f, 0.f, 0.5f, 0.5f},
-    {0.f, 0.f, 0.f, 1.f},
+    {0.f, 0.f, 1.f, 0.f},
+    {0.f, 0.f, 1.f, 1.f},
 };
 void GXSetProjection(f32 mtx_[4][4], GXProjectionType type) {
   const auto& mtx = *reinterpret_cast<const aurora::Mat4x4<float>*>(mtx_);
   g_gxState.origProj = mtx;
   g_gxState.projType = type;
-  if (type == GX_PERSPECTIVE) {
-    update_gx_state(g_gxState.proj, DepthCorrect * mtx.transpose());
-  } else {
-    update_gx_state(g_gxState.proj, mtx.transpose());
-  }
+  update_gx_state(g_gxState.proj, DepthCorrect * mtx.transpose());
 }
 void GXSetViewportJitter(float left, float top, float width, float height, float nearZ, float farZ, u32 field) {
   aurora::gfx::set_viewport(left, top, width, height, nearZ, farZ);
@@ -748,8 +779,8 @@ void GXInitTexObjTlut(GXTexObj* obj_, u32 tlut) {
 void GXLoadTexObj(GXTexObj* obj_, GXTexMapID id) {
   auto* obj = reinterpret_cast<GXTexObj_*>(obj_);
   if (!obj->ref) {
-    obj->ref =
-        aurora::gfx::new_dynamic_texture_2d(obj->width, obj->height, u32(obj->minLod) + 1, obj->fmt, "GXLoadTexObj");
+    obj->ref = aurora::gfx::new_dynamic_texture_2d(obj->width, obj->height, u32(obj->minLod) + 1, obj->fmt,
+                                                   fmt::format(FMT_STRING("GXLoadTexObj_{}"), obj->fmt));
   }
   if (obj->dataInvalidated) {
     aurora::gfx::write_texture(*obj->ref, {static_cast<const u8*>(obj->data), UINT32_MAX /* TODO */});
@@ -828,15 +859,15 @@ static inline wgpu::BlendFactor to_blend_factor(GXBlendFactor fac, bool isDst) {
     return wgpu::BlendFactor::One;
   case GX_BL_SRCCLR: // + GX_BL_DSTCLR
     if (isDst) {
-      return wgpu::BlendFactor::Dst;
-    } else {
       return wgpu::BlendFactor::Src;
+    } else {
+      return wgpu::BlendFactor::Dst;
     }
   case GX_BL_INVSRCCLR: // + GX_BL_INVDSTCLR
     if (isDst) {
-      return wgpu::BlendFactor::OneMinusDst;
-    } else {
       return wgpu::BlendFactor::OneMinusSrc;
+    } else {
+      return wgpu::BlendFactor::OneMinusDst;
     }
   case GX_BL_SRCALPHA:
     return wgpu::BlendFactor::SrcAlpha;
@@ -1057,7 +1088,7 @@ void populate_pipeline_config(PipelineConfig& config, GXPrimitive primitive) noe
     config.shaderConfig.tevStages[i] = g_gxState.tevStages[i];
   }
   config.shaderConfig.tevStageCount = g_gxState.numTevStages;
-  for (u8 i = 0; i < g_gxState.numChans; ++i) {
+  for (u8 i = 0; i < g_gxState.numChans * 2; ++i) {
     const auto& cc = g_gxState.colorChannelConfig[i];
     if (g_gxState.colorChannelState[i].lightState.any() && cc.lightingEnabled) {
       config.shaderConfig.colorChannels[i] = cc;
@@ -1124,27 +1155,30 @@ Range build_uniform(const ShaderInfo& info) noexcept {
     if (!info.sampledColorChannels.test(i)) {
       continue;
     }
-    buf.append(&g_gxState.colorChannelState[i].ambColor, 16);
-    buf.append(&g_gxState.colorChannelState[i].matColor, 16);
+    for (int v = 0; v < 2; ++v) {
+      int idx = i * 2 + v; // 0 == COLOR, 1 == ALPHA
+      buf.append(&g_gxState.colorChannelState[idx].ambColor, 16);
+      buf.append(&g_gxState.colorChannelState[idx].matColor, 16);
 
-    if (g_gxState.colorChannelConfig[i].lightingEnabled) {
-      int addedLights = 0;
-      const auto& lightState = g_gxState.colorChannelState[i].lightState;
-      u32 state = lightState.to_ulong();
-      buf.append(&lightState, sizeof(u32));
-      buf.append_zeroes(12); // alignment
-      for (int li = 0; li < lightState.size(); ++li) {
-        if (!lightState.test(li)) {
-          continue;
+      if (g_gxState.colorChannelConfig[idx].lightingEnabled) {
+        int addedLights = 0;
+        const auto& lightState = g_gxState.colorChannelState[idx].lightState;
+        u32 state = lightState.to_ulong();
+        buf.append(&state, sizeof(u32));
+        buf.append_zeroes(12); // alignment
+        for (int li = 0; li < lightState.size(); ++li) {
+          if (!lightState.test(li)) {
+            continue;
+          }
+          const auto& light = g_gxState.lights[li];
+          static_assert(sizeof(Light) == 80);
+          buf.append(&light, sizeof(Light));
+          ++addedLights;
         }
-        const auto& light = g_gxState.lights[li];
-        static_assert(sizeof(Light) == 80);
-        buf.append(&light, sizeof(Light));
-        ++addedLights;
-      }
-      constexpr Light emptyLight{};
-      for (int li = addedLights; li < GX::MaxLights; ++li) {
-        buf.append(&emptyLight, sizeof(Light));
+        constexpr Light emptyLight{};
+        for (int li = addedLights; li < GX::MaxLights; ++li) {
+          buf.append(&emptyLight, sizeof(Light));
+        }
       }
     }
   }
@@ -1158,10 +1192,19 @@ Range build_uniform(const ShaderInfo& info) noexcept {
     if (!info.usesTexMtx.test(i)) {
       continue;
     }
+    const auto& state = g_gxState;
     switch (info.texMtxTypes[i]) {
     case GX_TG_MTX2x4:
-      if (std::holds_alternative<Mat4x2<float>>(g_gxState.texMtxs[i])) {
-        buf.append(&std::get<Mat4x2<float>>(g_gxState.texMtxs[i]), 32);
+      if (std::holds_alternative<Mat4x2<float>>(state.texMtxs[i])) {
+        buf.append(&std::get<Mat4x2<float>>(state.texMtxs[i]), 32);
+      } else if (std::holds_alternative<Mat4x4<float>>(g_gxState.texMtxs[i])) {
+        Mat4x2<float> mtx{
+            {1.f, 0.f},
+            {0.f, 1.f},
+            {0.f, 0.f},
+            {0.f, 0.f},
+        };
+        buf.append(&mtx, 32);
       } else {
         Log.report(logwrapper::Fatal, FMT_STRING("expected 2x4 mtx in idx {}"), i);
         unreachable();

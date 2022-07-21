@@ -26,7 +26,7 @@ std::vector<std::string> g_debugGroupStack;
 #endif
 
 constexpr uint64_t UniformBufferSize = 3145728;  // 3mb
-constexpr uint64_t VertexBufferSize = 3145728;   // 3mb
+constexpr uint64_t VertexBufferSize = 8388608;   // 8mb
 constexpr uint64_t IndexBufferSize = 1048576;    // 1mb
 constexpr uint64_t StorageBufferSize = 8388608;  // 8mb
 constexpr uint64_t TextureUploadSize = 25165824; // 24mb
@@ -93,14 +93,14 @@ namespace aurora {
 // we create specialized methods to handle them. Note that these are highly dependent on
 // the structure definition, which could easily change with Dawn updates.
 template <>
-inline XXH64_hash_t xxh3_hash(const wgpu::BindGroupDescriptor& input, XXH64_hash_t seed) {
+inline HashType xxh3_hash(const wgpu::BindGroupDescriptor& input, HashType seed) {
   constexpr auto offset = sizeof(void*) * 2; // skip nextInChain, label
   const auto hash = xxh3_hash_s(reinterpret_cast<const u8*>(&input) + offset,
                                 sizeof(wgpu::BindGroupDescriptor) - offset - sizeof(void*) /* skip entries */, seed);
   return xxh3_hash_s(input.entries, sizeof(wgpu::BindGroupEntry) * input.entryCount, hash);
 }
 template <>
-inline XXH64_hash_t xxh3_hash(const wgpu::SamplerDescriptor& input, XXH64_hash_t seed) {
+inline HashType xxh3_hash(const wgpu::SamplerDescriptor& input, HashType seed) {
   constexpr auto offset = sizeof(void*) * 2; // skip nextInChain, label
   return xxh3_hash_s(reinterpret_cast<const u8*>(&input) + offset,
                      sizeof(wgpu::SamplerDescriptor) - offset - 2 /* skip padding */, seed);
@@ -167,7 +167,7 @@ static void serialize_pipeline_config(ShaderType type, const PipelineConfig& con
 template <typename PipelineConfig>
 static PipelineRef find_pipeline(ShaderType type, const PipelineConfig& config, NewPipelineCallback&& cb,
                                  bool serialize = true) {
-  PipelineRef hash = xxh3_hash(config, static_cast<XXH64_hash_t>(type));
+  PipelineRef hash = xxh3_hash(config, static_cast<HashType>(type));
   bool found = false;
   {
     std::scoped_lock guard{g_pipelineMutex};
@@ -504,6 +504,7 @@ void begin_frame() {
   mapBuffer(g_textureUpload, TextureUploadSize);
 
   g_renderPasses.emplace_back();
+  g_renderPasses[0].clearColor = gx::g_gxState.clearColor;
   g_currentRenderPass = 0;
 }
 

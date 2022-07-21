@@ -20,13 +20,16 @@ typedef int BOOL;
 
 #if defined(__MWERKS__)
 #define AT_ADDRESS(addr) : (addr)
+#define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))
 #elif defined(__GNUC__)
 //#define AT_ADDRESS(addr) __attribute__((address((addr))))
 #define AT_ADDRESS(addr)  // was removed in GCC. define in linker script instead.
+#define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))
+#elif defined(_MSC_VER)
+#define AT_ADDRESS(addr)
+#define ATTRIBUTE_ALIGN(num)
 #else
 #error unknown compiler
 #endif
-
-#define ATTRIBUTE_ALIGN(num) __attribute__((aligned(num)))
 
 #endif

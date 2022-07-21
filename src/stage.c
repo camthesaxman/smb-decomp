@@ -1659,14 +1659,15 @@ void u_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of u_some_stage_vtx_
 
 u8 lbl_801B87FC[] = {1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0};
 
-u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));
+u8 lbl_8020AE00[0x20] ATTRIBUTE_ALIGN(32);
 FORCE_BSS_ORDER(lbl_8020AE00)
 
 // parameters swapped?
 #undef OFFSET_TO_PTR
-#define OFFSET_TO_PTR(base, offset) (void *)((u32)(offset) + (u32)(base))
+#define OFFSET_TO_PTR(base, offset) (void *)((uintptr_t)(offset) + (uintptr_t)(base))
 
 #ifdef TARGET_PC
+#include "byteswap.h"
 
 static u8 **s_visitedAddrs;
 static int s_visitedAddrsCount = 0;
@@ -1835,20 +1836,20 @@ static void byteswap_stagedef(u8 *data)
 
     // startPos
     sub = data + read_u32_le(data + 0x10);
-    bswap32(sub + 0x00);
-    bswap32(sub + 0x04);
-    bswap32(sub + 0x08);
-    bswap16(sub + 0x0C);
-    bswap16(sub + 0x0E);
-    bswap16(sub + 0x10);
+    bswap32(sub + 0x00); // pos.x
+    bswap32(sub + 0x04); // pos.y
+    bswap32(sub + 0x08); // pos.z
+    bswap16(sub + 0x0C); // xrot
+    bswap16(sub + 0x0E); // yrot
+    bswap16(sub + 0x10); // zrot
 
     // pFallOutY
     sub = data + read_u32_le(data + 0x14);
     bswap32(sub);
 
-    if (read_u32_le(data + 0x6C) != 0)
+    if (read_u32_le(data + 0x6C) != 0) // bgObjects
         byteswap_bgobject(data, data + read_u32_le(data + 0x6C), read_u32_le(data + 0x68));
-    if (read_u32_le(data + 0x74) != 0)
+    if (read_u32_le(data + 0x74) != 0) // fgObjects
         byteswap_bgobject(data, data + read_u32_le(data + 0x74), read_u32_le(data + 0x70));
 
     // animGroupModels

@@ -489,11 +489,11 @@ struct Stage
     /*0x38*/ s32 bananaCount;
     /*0x3C*/ struct StageBanana *bananas;
     s32 coliConeCount;
-    struct ColiCone *coliCones;
+    struct StageColiCone *coliCones;
     s32 coliSphereCount;
-    struct ColiSphere *coliSpheres;
+    struct StageColiSphere *coliSpheres;
     s32 coliCylinderCount;
-    struct ColiCylinder *coliCylinders;
+    struct StageColiCylinder *coliCylinders;
     /*0x58*/ s32 animGroupModelCount;
     /*0x5C*/ struct AnimGroupModel *animGroupModels;
     u8 filler60[4];

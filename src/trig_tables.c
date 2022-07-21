@@ -1,6 +1,7 @@
 #include <math.h>
+#include <dolphin/types.h>
 
-float sinTable[] __attribute__((aligned(32))) =
+float sinTable[] ATTRIBUTE_ALIGN(32) =
 {
     0,                     // sin(0x0000)
     9.58738019107841e-05,  // sin(0x0001)
@@ -16389,7 +16390,7 @@ float sinTable[] __attribute__((aligned(32))) =
     1,                     // sin(0x4000)
 };
 
-float tanTable[] __attribute__((aligned(32))) =
+float tanTable[] ATTRIBUTE_ALIGN(32) =
 {
     0,                     // tan(0x0000)
     9.58738019107841e-05,  // tan(0x0001)
@@ -32778,7 +32779,7 @@ float tanTable[] __attribute__((aligned(32))) =
     INFINITY,              // tan(0x4000)
 };
 
-float unknownTrigTable[] __attribute__((aligned(32))) =
+float unknownTrigTable[] ATTRIBUTE_ALIGN(32) =
 {
     10430.3779296875,
     0,

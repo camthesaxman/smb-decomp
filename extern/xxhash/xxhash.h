@@ -1161,7 +1161,9 @@ struct XXH64_state_s {
 
 #ifndef XXH_NO_XXH3
 
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) /* >= C11 */
+#if defined(_MSC_VER)
+#  define XXH_ALIGN(n)      __declspec(align(n))
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) /* >= C11 */
 #  include <stdalign.h>
 #  define XXH_ALIGN(n)      alignas(n)
 #elif defined(__cplusplus) && (__cplusplus >= 201103L) /* >= C++11 */
@@ -1169,8 +1171,6 @@ struct XXH64_state_s {
 #  define XXH_ALIGN(n)      alignas(n)
 #elif defined(__GNUC__)
 #  define XXH_ALIGN(n)      __attribute__ ((aligned(n)))
-#elif defined(_MSC_VER)
-#  define XXH_ALIGN(n)      __declspec(align(n))
 #else
 #  define XXH_ALIGN(n)   /* disabled */
 #endif
@@ -2053,7 +2053,7 @@ static int XXH_isLittleEndian(void)
  * @fn xxh_u32 XXH_swap32(xxh_u32 x)
  * @brief A 32-bit byteswap.
  *
- * @param x The 32-bit integer to byteswap.
+ * @param x The 32-bit integer to bswap.
  * @return @p x, byteswapped.
  */
 #if defined(_MSC_VER)     /* Visual Studio */
@@ -3053,7 +3053,7 @@ XXH_PUBLIC_API XXH64_hash_t XXH64_hashFromCanonical(const XXH64_canonical_t* src
  *  - A 32-bit or 64-bit ALU
  *      - If 32-bit, a decent ADC instruction
  *  - A 32 or 64-bit multiply with a 64-bit result
- *  - For the 128-bit variant, a decent byteswap helps short inputs.
+ *  - For the 128-bit variant, a decent bswap helps short inputs.
  *
  * The first two are already required by XXH32, and almost all 32-bit and 64-bit
  * platforms which can run XXH32 can run XXH3 efficiently.

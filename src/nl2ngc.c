@@ -49,7 +49,7 @@ static struct
 } s_nlMaterialCache;
 FORCE_BSS_ORDER(s_nlMaterialCache)
 
-static u8 s_lzssHeader[32] __attribute__((aligned(32)));
+static u8 s_lzssHeader[32] ATTRIBUTE_ALIGN(32);
 
 struct
 {

@@ -33,7 +33,7 @@ struct TextureWithSampler {
 
 constexpr std::array PreferredBackendOrder{
 #ifdef DAWN_ENABLE_BACKEND_D3D12
-    wgpu::BackendType::D3D12,
+//    wgpu::BackendType::D3D12,
 #endif
 #ifdef DAWN_ENABLE_BACKEND_METAL
     wgpu::BackendType::Metal,

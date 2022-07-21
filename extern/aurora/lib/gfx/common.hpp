@@ -13,11 +13,16 @@
 #endif
 
 namespace aurora {
-static inline XXH64_hash_t xxh3_hash_s(const void* input, size_t len, XXH64_hash_t seed = 0) {
-  return XXH3_64bits_withSeed(input, len, seed);
+#if INTPTR_MAX == INT32_MAX
+using HashType = XXH32_hash_t;
+#else
+using HashType = XXH64_hash_t;
+#endif
+static inline HashType xxh3_hash_s(const void* input, size_t len, HashType seed = 0) {
+  return static_cast<HashType>(XXH3_64bits_withSeed(input, len, seed));
 }
 template <typename T>
-static inline XXH64_hash_t xxh3_hash(const T& input, XXH64_hash_t seed = 0) {
+static inline HashType xxh3_hash(const T& input, HashType seed = 0) {
   // Validate that the type has no padding bytes, which can easily cause
   // hash mismatches. This also disallows floats, but that's okay for us.
   static_assert(std::has_unique_object_representations_v<T>);
@@ -157,10 +162,10 @@ struct TextureRef {
   , isRenderTexture(isRenderTexture) {}
 };
 
-using BindGroupRef = u64;
-using PipelineRef = u64;
-using SamplerRef = u64;
-using ShaderRef = u64;
+using BindGroupRef = HashType;
+using PipelineRef = HashType;
+using SamplerRef = HashType;
+using ShaderRef = HashType;
 struct Range {
   u32 offset;
   u32 size;

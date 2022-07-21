@@ -1,6 +1,14 @@
 #ifndef _CTYPE_H_
 #define _CTYPE_H_
 
+#if TARGET_PC
+#if _MSC_VER
+#include <../ucrt/ctype.h>
+#else
+#include_next <ctype.h>
+#endif
+#else
+
 #define CTYPE_CNTRL  (1 << 0)
 #define CTYPE_SPACE  (1 << 1)
 #define CTYPE_BLANK  (1 << 2)
@@ -11,5 +19,7 @@
 #define CTYPE_UPPER  (1 << 7)
 
 int tolower(int c);
+
+#endif
 
 #endif

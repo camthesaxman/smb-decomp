@@ -43,8 +43,6 @@ GXRenderModeObj GXMpal480IntDf = {
     VI_TVMODE_PAL_INT, 640, 480, 480, 40, 0, 640, 480, VI_XFBMODE_DF, 0, 0,
 };
 
-void GXAdjustForOverscan(GXRenderModeObj* rmin, GXRenderModeObj* rmout, u16 hor, u16 ver) { *rmout = *rmin; }
-
 /////
 GXFifoObj *GXInit(void *base, u32 size) { return NULL; }
 void GXSetCopyFilter(GXBool aa, u8 sample_pattern[12][2], GXBool vf, u8 vfilter[7]) {}

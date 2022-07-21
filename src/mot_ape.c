@@ -1157,8 +1157,10 @@ struct Ape *u_make_ape_sub(char *skelName, char *modelName /*unused*/)
         var->unk14[3] = 0;
     }
 
+#ifndef TARGET_PC
     ape->unk0 = r24;
     ape->unk4 = r31;
+#endif
     ape->unk1C = &lbl_801C7A70;
     ape->unk20 = 0;
     ape->unk8 = 0.0f;

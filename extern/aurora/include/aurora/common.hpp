@@ -158,6 +158,15 @@ struct Mat4x2 {
   constexpr Mat4x2(const Vec2<T>& m0, const Vec2<T>& m1, const Vec2<T>& m2, const Vec2<T>& m3)
   : m0(m0), m1(m1), m2(m2), m3(m3) {}
 
+  inline Mat4x2 transpose() const {
+    return {
+        {m0.x, m2.x},
+        {m0.y, m2.y},
+        {m1.x, m3.x},
+        {m1.y, m3.y},
+    };
+  }
+
   bool operator==(const Mat4x2& rhs) const { return m0 == rhs.m0 && m1 == rhs.m1 && m2 == rhs.m2 && m3 == rhs.m3; }
 };
 template <typename T>
@@ -222,10 +231,15 @@ template <typename T>
   }
   return out;
 }
-//template <typename T>
-//[[nodiscard]] inline Mat4x4<T> Mat3x4<T>::to4x4() const {
-//  return {{m0, 0.f}, {m1, 0.f}, {m2, 0.f}, {m3, 1.f}};
-//}
+template <typename T>
+[[nodiscard]] inline Mat4x4<T> Mat3x4<T>::to4x4() const {
+  return {
+      {m0.m[0], m0.m[1], m0.m[2], 0.f},
+      {m1.m[0], m1.m[1], m1.m[2], 0.f},
+      {m2.m[0], m2.m[1], m2.m[2], 0.f},
+      {m0.m[3], m1.m[3], m2.m[3], 1.f},
+  };
+}
 template <typename T>
 [[nodiscard]] inline Mat4x4<T> Mat3x4<T>::toTransposed4x4() const {
   return Mat4x4<T>{

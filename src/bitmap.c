@@ -80,7 +80,7 @@ char **bitmapNames[] =
 
 u32 lbl_802F04A8 = 0xFFFFFFFF;
 
-static u8 lzssHeader[0x20] __attribute__((aligned(32)));
+static u8 lzssHeader[0x20] ATTRIBUTE_ALIGN(32);
 
 void bitmap_draw(struct Bitmap *a);
 

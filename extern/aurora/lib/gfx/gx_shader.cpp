@@ -8,7 +8,7 @@
 
 constexpr bool EnableNormalVisualization = false;
 constexpr bool EnableDebugPrints = true;
-constexpr bool UsePerPixelLighting = true;
+constexpr bool UsePerPixelLighting = false;
 
 namespace aurora::gfx::gx {
 using namespace fmt::literals;
@@ -552,23 +552,23 @@ static inline std::string vtx_attr(const ShaderConfig& config, GXAttr attr) {
 static inline std::string texture_conversion(const TextureConfig& tex, u32 stageIdx, u32 texMapId) {
   std::string out;
   if (tex.renderTex)
-  switch (tex.copyFmt) {
-  default:
-    break;
-  case GX_TF_RGB565:
-    // Set alpha channel to 1.0
-    out += fmt::format(FMT_STRING("\n    sampled{0}.a = 1.0;"), stageIdx);
-    break;
-  case GX_TF_I4:
-  case GX_TF_I8:
-    // FIXME HACK
-    if (!is_palette_format(tex.loadFmt)) {
-      // Perform intensity conversion
-      out += fmt::format(FMT_STRING("\n    sampled{0} = vec4<f32>(intensityF32(sampled{0}.rgb), 0.f, 0.f, 1.f);"),
-                         stageIdx);
+    switch (tex.copyFmt) {
+    default:
+      break;
+    case GX_TF_RGB565:
+      // Set alpha channel to 1.0
+      out += fmt::format(FMT_STRING("\n    sampled{0}.a = 1.0;"), stageIdx);
+      break;
+    case GX_TF_I4:
+    case GX_TF_I8:
+      // FIXME HACK
+      if (!is_palette_format(tex.loadFmt)) {
+        // Perform intensity conversion
+        out += fmt::format(FMT_STRING("\n    sampled{0} = vec4<f32>(intensityF32(sampled{0}.rgb), 0.f, 0.f, 1.f);"),
+                           stageIdx);
+      }
+      break;
     }
-    break;
-  }
   switch (tex.loadFmt) {
   default:
     break;
@@ -630,8 +630,11 @@ ShaderInfo build_shader_info(const ShaderConfig& config) noexcept {
   info.uniformSize += info.loadsTevReg.count() * 16;
   for (int i = 0; i < info.sampledColorChannels.size(); ++i) {
     if (info.sampledColorChannels.test(i)) {
-      info.uniformSize += 32;
-      if (config.colorChannels[i].lightingEnabled) {
+      info.uniformSize += 64;
+      if (config.colorChannels[i * 2].lightingEnabled) {
+        info.uniformSize += 16 + (80 * GX::MaxLights);
+      }
+      if (config.colorChannels[i * 2 + 1].lightingEnabled) {
         info.uniformSize += 16 + (80 * GX::MaxLights);
       }
     }
@@ -721,8 +724,8 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
       }
       for (int i = 0; i < config.colorChannels.size(); ++i) {
         const auto& chan = config.colorChannels[i];
-        Log.report(logwrapper::Info, FMT_STRING("  colorChannels[{}]: enabled {} mat {} amb {}"), i, chan.lightingEnabled,
-                   chan.matSrc, chan.ambSrc);
+        Log.report(logwrapper::Info, FMT_STRING("  colorChannels[{}]: enabled {} mat {} amb {}"), i,
+                   chan.lightingEnabled, chan.matSrc, chan.ambSrc);
       }
       for (int i = 0; i < config.tcgs.size(); ++i) {
         const auto& tcg = config.tcgs[i];
@@ -921,11 +924,23 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
     if (!info.sampledColorChannels.test(i)) {
       continue;
     }
+    const auto& cc = config.colorChannels[i * 2];
+    const auto& cca = config.colorChannels[i * 2 + 1];
 
     uniBufAttrs += fmt::format(FMT_STRING("\n    cc{0}_amb: vec4<f32>,"), i);
     uniBufAttrs += fmt::format(FMT_STRING("\n    cc{0}_mat: vec4<f32>,"), i);
+    if (cc.lightingEnabled) {
+      uniBufAttrs += fmt::format(FMT_STRING("\n    lightState{}: u32,"), i);
+      uniBufAttrs += fmt::format(FMT_STRING("\n    lights{}: array<Light, {}>,"), i, GX::MaxLights);
+    }
+    uniBufAttrs += fmt::format(FMT_STRING("\n    cc{0}a_amb: vec4<f32>,"), i);
+    uniBufAttrs += fmt::format(FMT_STRING("\n    cc{0}a_mat: vec4<f32>,"), i);
+    if (cca.lightingEnabled) {
+      uniBufAttrs += fmt::format(FMT_STRING("\n    lightState{}a: u32,"), i);
+      uniBufAttrs += fmt::format(FMT_STRING("\n    lights{}a: array<Light, {}>,"), i, GX::MaxLights);
+    }
 
-    const auto& cc = config.colorChannels[i];
+    // TODO handle ALPHA
     if (cc.lightingEnabled) {
       if (!addedLightStruct) {
         uniformPre +=
@@ -946,9 +961,6 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         }
         addedLightStruct = true;
       }
-
-      uniBufAttrs += fmt::format(FMT_STRING("\n    lightState{}: u32,"), i);
-      uniBufAttrs += fmt::format(FMT_STRING("\n    lights{}: array<Light, {}>,"), i, GX::MaxLights);
 
       std::string ambSrc, matSrc, lightAttnFn, lightDiffFn;
       if (cc.ambSrc == GX_SRC_VTX) {
@@ -1011,7 +1023,8 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
           var diff = {3};
           lighting = lighting + (attn * diff * light.color);
       }}
-      {6} = {4} * clamp(lighting, vec4<f32>(0.0), vec4<f32>(1.0));
+      // TODO alpha lighting
+      {6} = vec4<f32>(({4} * clamp(lighting, vec4<f32>(0.0), vec4<f32>(1.0))).xyz, {4}.a);
     }})"""),
                                    i, GX::MaxLights, lightAttnFn, lightDiffFn, matSrc, ambSrc, outVar, posVar);
       if (UsePerPixelLighting) {
@@ -1087,12 +1100,12 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         case GX_TF_C4:
           suffix = "I4"sv;
           break;
-//        case GX_TF_C8:
-//          suffix = "I8";
-//          break;
-//        case GX_TF_C14X2:
-//          suffix = "I14X2";
-//          break;
+          //        case GX_TF_C8:
+          //          suffix = "I8";
+          //          break;
+          //        case GX_TF_C14X2:
+          //          suffix = "I14X2";
+          //          break;
         default:
           Log.report(logwrapper::Fatal, FMT_STRING("Unsupported palette format {}"), texConfig.loadFmt);
           unreachable();
