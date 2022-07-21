@@ -14,8 +14,8 @@ void bg_old_space_init(void)
 {
     backgroundInfo.unk80 = NLOBJ_MODEL(g_bgNlObj, 1);
     backgroundInfo.unk84 = 1.0f;
-    backgroundInfo.unk38.x = 0.00069444444444444447 - (rand() / 32767.0f) * 0.0013888888888888889;
-    backgroundInfo.unk38.y = -0.00034722222222222224 - (rand() / 32767.0f) * 0.00017361111111111112;
+    backgroundInfo.unk38.x = 0.00069444444444444447 - RAND_FLOAT() * 0.0013888888888888889;
+    backgroundInfo.unk38.y = -0.00034722222222222224 - RAND_FLOAT() * 0.00017361111111111112;
 }
 
 void bg_old_space_main(void)

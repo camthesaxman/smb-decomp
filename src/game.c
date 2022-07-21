@@ -760,7 +760,7 @@ void submode_game_timeover_init_func(void)
 
         sp8.x = 0.0f;
         sp8.y = 0.75f;
-        sp8.z = (rand() / 32767.0f) - 0.5f;
+        sp8.z = RAND_FLOAT() - 0.5f;
         func_8001898C(i, modeCtrl.submodeTimer, &sp8);
     }
     func_80049158();
@@ -1655,7 +1655,7 @@ void func_800165C0(struct Ball *ball)
     {
         float var = 0.1f;
 
-        sp10.z = ((rand() / 32767.0f) + 1.0) * var * 0.5;
+        sp10.z = (RAND_FLOAT() + 1.0) * var * 0.5;
         mathutil_mtxA_rotate_y(rand() & 0x7FFF);
         mathutil_mtxA_rotate_x(rand() & 0x7FFF);
         mathutil_mtxA_tf_point(&sp10, &sp1C.unk34);

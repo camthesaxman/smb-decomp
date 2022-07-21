@@ -423,8 +423,8 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
             u_play_sound(0x16C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         ball->vel.y += 0.1388888888888889;
-        ball->vel.x += (rand() / 32767.0f) * 0.64814814814814814;
-        ball->vel.z += (rand() / 32767.0f) * 0.64814814814814814;
+        ball->vel.x += RAND_FLOAT() * 0.64814814814814814;
+        ball->vel.z += RAND_FLOAT() * 0.64814814814814814;
         lbl_802F1FD8 = 0.6f;
         lbl_802F1FDC = 1.0f;
         memset(&sp20, 0, sizeof(sp20));
@@ -433,9 +433,9 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         sp20.unk34 = r31->pos;
         for (i = 0; i < 30; i++)
         {
-            sp20.unk40.x = ball->vel.x + ((rand() / 32767.0f) * 0.2 - 0.1);
-            sp20.unk40.y = ball->vel.y + 0.1 + ((rand() / 32767.0f) * 0.2 - 0.1);
-            sp20.unk40.z = ball->vel.z + ((rand() / 32767.0f) * 0.2 - 0.1);
+            sp20.unk40.x = ball->vel.x + (RAND_FLOAT() * 0.2 - 0.1);
+            sp20.unk40.y = ball->vel.y + 0.1 + (RAND_FLOAT() * 0.2 - 0.1);
+            sp20.unk40.z = ball->vel.z + (RAND_FLOAT() * 0.2 - 0.1);
             spawn_effect(&sp20);
         }
     }

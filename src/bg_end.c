@@ -53,13 +53,13 @@ void bg_end_init(void)
         obj_find_proc);
     work->unk14 = lbl_8006582C;
     work->unk18 = lbl_800654F4;
-    work->unk28 = 0.005555555555555556 * (0.8f + 0.4f * (rand() / 32767.0f));
-    work->unk2C = 0.005555555555555556 * (0.8f + 0.4f * (rand() / 32767.0f));
-    work->unk34 = 5.0f * (1.0f + (rand() / 32767.0f));
-    work->unk38 = 5.0f * (1.0f + (rand() / 32767.0f));
+    work->unk28 = 0.005555555555555556 * (0.8f + 0.4f * RAND_FLOAT());
+    work->unk2C = 0.005555555555555556 * (0.8f + 0.4f * RAND_FLOAT());
+    work->unk34 = 5.0f * (1.0f + RAND_FLOAT());
+    work->unk38 = 5.0f * (1.0f + RAND_FLOAT());
     work->unk3C = 1.0f;
-    work->unk58 = 0.002777777777777778 * (0.9f + 0.2f * (rand() / 32767.0f));
-    work->unk5C = 0.002777777777777778 * (0.9f + 0.2f * (rand() / 32767.0f));
+    work->unk58 = 0.002777777777777778 * (0.9f + 0.2f * RAND_FLOAT());
+    work->unk5C = 0.002777777777777778 * (0.9f + 0.2f * RAND_FLOAT());
 }
 
 void bg_end_main(void)

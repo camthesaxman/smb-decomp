@@ -642,7 +642,7 @@ void hud_show_title_banner(int arg0)
         offset = titleSuperOffsets;
         for (i = 0; i < 5; i++, offset++)
         {
-            offset->pos = (arg0 == 1) ? 0.0 : -200.0 + 40.0 * ((rand() / (float)RAND_MAX) - 0.5);
+            offset->pos = (arg0 == 1) ? 0.0 : -200.0 + 40.0 * (RAND_FLOAT() - 0.5);
             offset->vel = 0.0f;
         }
 
@@ -650,7 +650,7 @@ void hud_show_title_banner(int arg0)
         r27_ = lbl_80292D08;
         for (i = 0; i < 10; i++, offset++, r27_++)
         {
-            offset->pos = (arg0 == 1) ? 0.0 : 640.0 + 20.0 * ((rand() / (float)RAND_MAX) - 0.5);
+            offset->pos = (arg0 == 1) ? 0.0 : 640.0 + 20.0 * (RAND_FLOAT() - 0.5);
             offset->vel = (arg0 == 1) ? 0.0 : -10.0;
             *r27_ = 0;
         }
@@ -3703,8 +3703,8 @@ static void hurry_up_sprite_main(s8 *arg0, struct Sprite *sprite)
     sprite->opacity = (sprite->counter & 1) ? 1.0 : 0.0;
     if (sprite->userVar == 0)
     {
-        sprite->x += 4.0 * ((rand() / 32767.0f) - 0.5);
-        sprite->y += 2.0 * ((rand() / 32767.0f) - 0.5);
+        sprite->x += 4.0 * (RAND_FLOAT() - 0.5);
+        sprite->y += 2.0 * (RAND_FLOAT() - 0.5);
         return;
     }
     sprite->x = find_sprite_with_tag(20)->x + sprite->userVar;
@@ -4153,7 +4153,7 @@ static void lbl_8007F060(s8 *arg0, struct Sprite *sprite)
     {
         if (sprite->counter == 0)
         {
-            if (rand() / 32767.0f < 0.03)
+            if (RAND_FLOAT() < 0.03)
                 sprite->counter = 15;
         }
         else

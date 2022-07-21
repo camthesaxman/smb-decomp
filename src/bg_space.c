@@ -120,16 +120,16 @@ void bg_space_init(void)
         float temp_f1;
 
         effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-        effect.unk24.x = 12.0f * (rand() / 32767.0f) + 1.0f;
-        effect.unk34.x = ((rand() / 32767.0f) - 0.5f) * 2000.0f;
-        effect.unk34.y = ((rand() / 32767.0f) - 0.5f) * 500.0f + effect.unk34.x * -0.5f;
-        effect.unk34.z = ((rand() / 32767.0f) - 0.5f) * 6000.0f;
+        effect.unk24.x = 12.0f * RAND_FLOAT() + 1.0f;
+        effect.unk34.x = (RAND_FLOAT() - 0.5f) * 2000.0f;
+        effect.unk34.y = (RAND_FLOAT() - 0.5f) * 500.0f + effect.unk34.x * -0.5f;
+        effect.unk34.z = (RAND_FLOAT() - 0.5f) * 6000.0f;
         temp_f1 = effect.unk34.x;
         if (mathutil_vec_len(&effect.unk34) < 1.7391304f * work->coreScale)
         {
             if (__abs(effect.unk34.y) < 1.1920929e-7f)
                 effect.unk34.y = 0.01f;
-            mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.7391304f * work->coreScale * (1.0f + (rand() / 32767.0f)));
+            mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.7391304f * work->coreScale * (1.0f + RAND_FLOAT()));
         }
         effect.unk4C = rand() & 0x7FFF;
         effect.unk4E = rand() & 0x7FFF;
@@ -149,19 +149,19 @@ void bg_space_init(void)
     while (i > 0)
     {
         effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-        effect.unk24.x = (rand() / 32767.0f) * 8.0f + 1.0f;
-        effect.unk34.x = ((rand() / 32767.0f) - 0.5f);
-        effect.unk34.y = ((rand() / 32767.0f) - 0.5f) * 0.5f + effect.unk34.x * -0.75f;
-        effect.unk34.z = ((rand() / 32767.0f) - 0.5f);
+        effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
+        effect.unk34.x = (RAND_FLOAT() - 0.5f);
+        effect.unk34.y = (RAND_FLOAT() - 0.5f) * 0.5f + effect.unk34.x * -0.75f;
+        effect.unk34.z = (RAND_FLOAT() - 0.5f);
         if (effect.unk34.y == 0.0f)
             effect.unk34.y = 0.1f;
-        mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.3043479f * work->coreScale * (1.0f + (rand() / 32767.0f)));
+        mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.3043479f * work->coreScale * (1.0f + RAND_FLOAT()));
         effect.unk94.x = 0.0f;
         effect.unk94.y = 0.0f;
-        effect.unk94.z = 1.2000000476837158 + 0.20000000298023224 * ((rand() / 32767.0f) - 0.5);
-        effect.unk40.x = effect.unk94.x + 0.2f * ((rand() / 32767.0f) - 0.5f);
-        effect.unk40.y = effect.unk94.y + 0.2f * ((rand() / 32767.0f) - 0.5f);
-        effect.unk40.z = effect.unk94.z + 0.5f * (rand() / 32767.0f);
+        effect.unk94.z = 1.2000000476837158 + 0.20000000298023224 * (RAND_FLOAT() - 0.5);
+        effect.unk40.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
+        effect.unk40.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
+        effect.unk40.z = effect.unk94.z + 0.5f * RAND_FLOAT();
         effect.unk4C = rand() & 0x7FFF;
         effect.unk4E = rand() & 0x7FFF;
         effect.unk50 = rand() & 0x7FFF;
@@ -176,15 +176,15 @@ void bg_space_init(void)
         spawn_effect(&effect);
         i -= 1;
     }
-    work->unk54 = 0.0033333334f * (0.9f + 0.2f * (rand() / 32767.0f));
-    work->unk58 = 0.0018518518f * (0.9f + 0.2f * (rand() / 32767.0f));
+    work->unk54 = 0.0033333334f * (0.9f + 0.2f * RAND_FLOAT());
+    work->unk58 = 0.0018518518f * (0.9f + 0.2f * RAND_FLOAT());
     work->unk5C = 0.0f;
-    work->unk60 = ((0.2f * (rand() / 32767.0f)) + 0.9f) * 3.0f;
-    work->unk94[0][0] = 0.05f * (rand() / 32767.0f) + 0.2f;
+    work->unk60 = ((0.2f * RAND_FLOAT()) + 0.9f) * 3.0f;
+    work->unk94[0][0] = 0.05f * RAND_FLOAT() + 0.2f;
     work->unk94[0][1] = 0.0f;
     work->unk94[0][2] = 0.0f;
     work->unk94[1][0] = 0.0f;
-    work->unk94[1][1] = 0.05f * (rand() / 32767.0f) + 0.2f;
+    work->unk94[1][1] = 0.05f * RAND_FLOAT() + 0.2f;
     work->unk94[1][2] = 0.0f;
 }
 
@@ -203,13 +203,13 @@ void bg_space_main(void)
             float var_f31;
             float temp_f31;
 
-            work->unk38 = (15.0f * (1.0f + (rand() / 32767.0f))) / work->unk3C;
+            work->unk38 = (15.0f * (1.0f + RAND_FLOAT())) / work->unk3C;
             memset(&effect, 0, sizeof(effect));
             effect.unk8 = 0x16;
             effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-            effect.unk24.x = (rand() / 32767.0f) * 8.0f + 1.0f;
-            effect.unk34.x = effect.unk24.x * (175.0f * ((rand() / 32767.0f) - 0.5f));
-            effect.unk34.y = effect.unk24.x * (150.0f * ((rand() / 32767.0f) - 0.5f)) + effect.unk34.x * -0.75f;
+            effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
+            effect.unk34.x = effect.unk24.x * (175.0f * (RAND_FLOAT() - 0.5f));
+            effect.unk34.y = effect.unk24.x * (150.0f * (RAND_FLOAT() - 0.5f)) + effect.unk34.x * -0.75f;
             effect.unk34.z = 1.3043479f * -work->coreScale * effect.unk24.x;
             if (infoWork.timerMax == 0)
                 var_f31 = 1.0f;
@@ -217,10 +217,10 @@ void bg_space_main(void)
                 var_f31 = 2.0f - ((float)infoWork.timerCurr / (float)infoWork.timerMax);
             effect.unk94.x = 0.0f;
             effect.unk94.y = 0.0f;
-            effect.unk94.z = var_f31 * (1.2000000476837158 + 0.20000000298023224 * ((rand() / 32767.0f) - 0.5));
-            effect.unk40.x = effect.unk94.x + 0.2f * ((rand() / 32767.0f) - 0.5f);
-            effect.unk40.y = effect.unk94.y + 0.2f * ((rand() / 32767.0f) - 0.5f);
-            effect.unk40.z = effect.unk94.z + 0.5f * (rand() / 32767.0f);
+            effect.unk94.z = var_f31 * (1.2000000476837158 + 0.20000000298023224 * (RAND_FLOAT() - 0.5));
+            effect.unk40.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
+            effect.unk40.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
+            effect.unk40.z = effect.unk94.z + 0.5f * RAND_FLOAT();
             effect.unk4C = rand() & 0x7FFF;
             effect.unk4E = rand() & 0x7FFF;
             effect.unk50 = rand() & 0x7FFF;
