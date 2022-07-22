@@ -57,6 +57,7 @@ static std::string BytesToString(size_t bytes) {
 struct Application : aurora::AppDelegate {
   bool m_frameRate = true;
   bool m_pipelineInfo = true;
+  bool m_graphicsBackend = true;
   int m_debugOverlayCorner = 0; // top-left
 
   void onAppLaunched() noexcept override { gc_main(); }
@@ -74,7 +75,6 @@ struct Application : aurora::AppDelegate {
     ImGui::SetNextWindowBgAlpha(0.65f);
     if (ImGui::Begin("Debug Overlay", nullptr, windowFlags)) {
       bool hasPrevious = false;
-
       if (m_frameRate) {
         if (hasPrevious) {
           ImGui::Separator();
@@ -82,6 +82,14 @@ struct Application : aurora::AppDelegate {
         hasPrevious = true;
 
         ImGuiStringViewText(fmt::format(FMT_STRING("FPS: {:.1f}\n"), io.Framerate));
+      }
+      if (m_graphicsBackend) {
+        if (hasPrevious) {
+          ImGui::Separator();
+        }
+        hasPrevious = true;
+
+        ImGuiStringViewText(fmt::format(FMT_STRING("Backend: {}\n"), aurora::get_backend_string()));
       }
       if (m_pipelineInfo) {
         if (hasPrevious) {

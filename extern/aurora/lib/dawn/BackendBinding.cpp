@@ -59,6 +59,10 @@ bool DiscoverAdapter(dawn::native::Instance* instance, SDL_Window* window, wgpu:
 #endif
 #if defined(DAWN_ENABLE_BACKEND_OPENGL)
   case wgpu::BackendType::OpenGL: {
+    SDL_GL_ResetAttributes();
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 4);
     SDL_GL_CreateContext(window);
     auto getProc = reinterpret_cast<void* (*)(const char*)>(SDL_GL_GetProcAddress);
     dawn::native::opengl::AdapterDiscoveryOptions adapterOptions;
@@ -68,6 +72,7 @@ bool DiscoverAdapter(dawn::native::Instance* instance, SDL_Window* window, wgpu:
 #endif
 #if defined(DAWN_ENABLE_BACKEND_OPENGLES)
   case wgpu::BackendType::OpenGLES: {
+    SDL_GL_ResetAttributes();
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
