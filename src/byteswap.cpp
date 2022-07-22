@@ -43,6 +43,12 @@ template <typename T> constexpr T bswap32(T val) noexcept
 
 static std::unordered_set<void *> sVisitedPtrs;
 
+template <typename B, typename T> T *offset_ptr(B &base, T *ptr)
+{
+    return reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
+                                 reinterpret_cast<uintptr_t>(ptr));
+}
+
 template <typename B, typename T> static inline void bswap(B &base, T &data);
 template <typename B, typename P> void bswap(B &base, P *&ptr)
 {
@@ -55,8 +61,7 @@ template <typename B, typename T> void bswap(B &base, T *&ptr, s32 count)
     {
         return;
     }
-    T *objBase = reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
-                                       reinterpret_cast<uintptr_t>(ptr));
+    T *objBase = offset_ptr(base, ptr);
     for (s32 i = 0; i < count; ++i)
     {
         if (sVisitedPtrs.contains(objBase))
@@ -68,30 +73,23 @@ template <typename B, typename T> void bswap(B &base, T *&ptr, s32 count)
         ++objBase;
     }
 }
-template <typename B, typename T> void bswap(B &base, T **&ptr)
+template <typename B, typename T> void bswap_list(B &base, T **&ptr)
 {
     ptr = bswap32(ptr);
     if (ptr == nullptr)
     {
         return;
     }
-    T **objBase = reinterpret_cast<T **>(reinterpret_cast<uintptr_t>(&base) +
-                                         reinterpret_cast<uintptr_t>(ptr));
+    T **objBase = offset_ptr(base, ptr);
     while (*objBase != nullptr)
     {
-        if (sVisitedPtrs.contains(*objBase))
-        {
-            continue;
-        }
-        sVisitedPtrs.insert(*objBase);
-        bswap(base, *objBase);
+        bswap(base, *objBase, 1);
         ++objBase;
     }
 }
 template <typename B, typename T> void bswap_flat(B &base, T *start, s32 count)
 {
-    T *objBase = reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
-                                       reinterpret_cast<uintptr_t>(&start));
+    T *objBase = offset_ptr(base, start);
     for (s32 i = 0; i < count; ++i)
     {
         bswap(base, objBase[i]);
@@ -117,6 +115,18 @@ template <typename B> void bswap(B &base, u16 &v)
 {
     v = bswap16(v);
 }
+template <typename B> void bswap(B &base, u8 &v)
+{
+    // no-op
+}
+template <typename B> void bswap(B &base, s8 &v)
+{
+    // no-op
+}
+template <typename B> void bswap(B &base, char &v)
+{
+    // no-op
+}
 template <typename B> void bswap(B &base, Vec &vec)
 {
     bswap(base, vec.x);
@@ -140,15 +150,36 @@ template <typename B> void bswap(B &base, StageAnimGroup &group)
     bswap(base, group.initRot);
     bswap(base, group.unk12);
     bswap(base, group.anim, 1);
-    bswap(base, group.modelNames);
-    bswap(base, group.triangles, 1);
+    bswap_list(base, group.modelNames);
+    bswap(base, group.gridCellCountX);
+    bswap(base, group.gridCellCountZ);
     bswap(base, group.gridCellTris);
+    s16 triMax = -1;
+    s16 **gridCellTris = offset_ptr(base, group.gridCellTris);
+    for (int i = 0; i < group.gridCellCountX * group.gridCellCountZ; ++i)
+    {
+        bswap(base, gridCellTris[i]);
+        if (gridCellTris[i] == nullptr)
+        {
+            continue;
+        }
+        s16 *tris = offset_ptr(base, gridCellTris[i]);
+        while (true)
+        {
+            bswap(base, *tris);
+            if (*tris < 0)
+            {
+                break;
+            }
+            triMax = std::max(triMax, *tris);
+            ++tris;
+        }
+    }
+    bswap(base, group.triangles, triMax + 1);
     bswap(base, group.gridOriginX);
     bswap(base, group.gridOriginZ);
     bswap(base, group.gridStepX);
     bswap(base, group.gridStepZ);
-    bswap(base, group.gridCellCountX);
-    bswap(base, group.gridCellCountZ);
     bswap(base, group.goalCount);
     bswap(base, group.goals, group.goalCount);
     bswap(base, group.unk48);
