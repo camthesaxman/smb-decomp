@@ -227,6 +227,7 @@ static SDL_Window* create_window(wgpu::BackendType type, bool fullscreen) {
 #endif
 #ifdef DAWN_ENABLE_BACKEND_OPENGL
   case wgpu::BackendType::OpenGL:
+  case wgpu::BackendType::OpenGLES:
     flags |= SDL_WINDOW_OPENGL;
     break;
 #endif
@@ -524,7 +525,7 @@ Backend backend_from_string(std::string_view backend) {
     return Backend::Metal;
   }
 #endif
-#if DAWN_ENABLE_BACKEND_DESKTOP_GL || DAWN_ENABLE_BACKEND_OPENGL
+#if DAWN_ENABLE_BACKEND_DESKTOP_GL
   if (tmp == "gl" || tmp == "opengl") {
     return Backend::OpenGL;
   }

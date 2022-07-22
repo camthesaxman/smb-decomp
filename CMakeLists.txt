@@ -14,6 +14,9 @@ endif ()
 if (CMAKE_SYSTEM_NAME STREQUAL Windows)
   set(DAWN_ENABLE_DESKTOP_GL ON CACHE BOOL "Enable compilation of the OpenGL backend" FORCE)
 endif ()
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+  set(DAWN_ENABLE_OPENGLES ON CACHE BOOL "Enable compilation of the OpenGL ES backend" FORCE)
+endif ()
 add_subdirectory(extern/dawn EXCLUDE_FROM_ALL)
 if (DAWN_ENABLE_VULKAN)
   target_compile_definitions(dawn_native PRIVATE
@@ -96,7 +99,7 @@ add_executable(supermonkeyball
     src/motload_3.c
     src/motload_4.c
     src/ball.c
-#    src/mathutil_vec_cross_prod.c
+    src/mathutil_vec_cross_prod.c
     src/stcoli.c
     src/world.c
     src/interpolate_keyframes.c
