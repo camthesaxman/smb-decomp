@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <dolphin.h>
+#include <string.h>
 
 struct HeapCell
 {
@@ -93,6 +94,9 @@ struct HeapCell *DLInsert(struct HeapCell *list, struct HeapCell *cell, void *un
 
 void *OSAllocFromHeap(OSHeapHandle heap, u32 size)
 {
+#ifdef TARGET_PC
+    return malloc(size + 64);
+#else
     struct Heap *hd = &HeapArray[heap];
     s32 sizeAligned = OSRoundUp32B(32 + size);
     struct HeapCell *cell;
@@ -135,10 +139,14 @@ void *OSAllocFromHeap(OSHeapHandle heap, u32 size)
     hd->allocated = DLAddFront(hd->allocated, cell);
 
     return (u8 *)cell + 32;
+#endif
 }
 
 void OSFreeToHeap(OSHeapHandle heap, void *ptr)
 {
+#ifdef TARGET_PC
+    free(ptr);
+#else
     struct HeapCell *cell = (void *)((u8 *)ptr - 32);
     struct Heap *hd = &HeapArray[heap];
     struct HeapCell *list = hd->allocated;
@@ -153,6 +161,7 @@ void OSFreeToHeap(OSHeapHandle heap, void *ptr)
         cell->prev->next = cell->next;
     hd->allocated = list;
     hd->free = DLInsert(hd->free, cell, list);
+#endif
 }
 
 OSHeapHandle OSSetCurrentHeap(OSHeapHandle heap)

@@ -462,6 +462,13 @@ void func_8004482C(void)
     stageAg = decodedStageLzPtr->animGroups;
     for (i = 0; i < 0x48; i++, animGroup++, stageAg++)
     {
+#ifdef TARGET_PC
+        if (i >= decodedStageLzPtr->animGroupCount)
+        {
+            memset(animGroup, 0, sizeof(struct AnimGroupInfo));
+            continue;
+        }
+#endif
         animGroup->pos.x = stageAg->initPos.x;
         animGroup->pos.y = stageAg->initPos.y;
         animGroup->pos.z = stageAg->initPos.z;
@@ -1907,6 +1914,12 @@ void load_stagedef(int stageId)
     OSFree(compData);
 
 #ifdef TARGET_PC
+//    char outfilename[32];
+//    sprintf(outfilename, "STAGE%03d.lz.out", stageId);
+//    FILE* f = fopen(outfilename, "wb");
+//    fwrite(uncompData, 1, uncompSize, f);
+//    fflush(f);
+//    fclose(f);
     byteswap_stage(uncompData);
 #endif
 

@@ -680,6 +680,8 @@ void GXSetIndTexMtx(GXIndTexMtxID id, f32 offset[2][3], s8 scaleExp) {
   update_gx_state(g_gxState.indTexMtxs[id - 1], {*reinterpret_cast<const aurora::Mat3x2<float>*>(offset), scaleExp});
 }
 
+static absl::flat_hash_map<void*, int> g_resolvedTexMap;
+
 void GXInitTexObj(GXTexObj* obj_, void* data, u16 width, u16 height, GXTexFmt format, GXTexWrapMode wrapS,
                   GXTexWrapMode wrapT, GXBool mipmap) {
   memset(obj_, 0, sizeof(GXTexObj));
@@ -701,33 +703,37 @@ void GXInitTexObj(GXTexObj* obj_, void* data, u16 width, u16 height, GXTexFmt fo
   obj->doEdgeLod = false;
   obj->maxAniso = GX_ANISO_4;
   obj->tlut = GX_TLUT0;
-  obj->dataInvalidated = true;
+  if (g_resolvedTexMap.contains(data)) {
+    obj->dataInvalidated = false; // TODO
+  } else {
+    obj->dataInvalidated = true;
+  }
 }
-void GXInitTexObjResolved(GXTexObj* obj_, u32 bindIdx, GXTexFmt format, GXTexWrapMode wrapS, GXTexWrapMode wrapT,
-                          GXTlut tlut) {
-  auto* obj = reinterpret_cast<GXTexObj_*>(obj_);
-  const auto& ref = aurora::gfx::g_resolvedTextures[bindIdx];
-  obj->ref = ref;
-  obj->data = nullptr;
-  obj->dataSize = 0;
-  obj->width = ref->size.width;
-  obj->height = ref->size.height;
-  obj->fmt = format;
-  obj->wrapS = wrapS;
-  obj->wrapT = wrapT;
-  obj->hasMips = false;
-  obj->tlut = tlut;
-  // TODO default values?
-  obj->minFilter = GX_LINEAR;
-  obj->magFilter = GX_LINEAR;
-  obj->minLod = 0.f;
-  obj->maxLod = 0.f;
-  obj->lodBias = 0.f;
-  obj->biasClamp = false;
-  obj->doEdgeLod = false;
-  obj->maxAniso = GX_ANISO_4;
-  obj->dataInvalidated = false;
-}
+//void GXInitTexObjResolved(GXTexObj* obj_, u32 bindIdx, GXTexFmt format, GXTexWrapMode wrapS, GXTexWrapMode wrapT,
+//                          GXTlut tlut) {
+//  auto* obj = reinterpret_cast<GXTexObj_*>(obj_);
+//  const auto& ref = aurora::gfx::g_resolvedTextures[bindIdx];
+//  obj->ref = ref;
+//  obj->data = nullptr;
+//  obj->dataSize = 0;
+//  obj->width = ref->size.width;
+//  obj->height = ref->size.height;
+//  obj->fmt = format;
+//  obj->wrapS = wrapS;
+//  obj->wrapT = wrapT;
+//  obj->hasMips = false;
+//  obj->tlut = tlut;
+//  // TODO default values?
+//  obj->minFilter = GX_LINEAR;
+//  obj->magFilter = GX_LINEAR;
+//  obj->minLod = 0.f;
+//  obj->maxLod = 0.f;
+//  obj->lodBias = 0.f;
+//  obj->biasClamp = false;
+//  obj->doEdgeLod = false;
+//  obj->maxAniso = GX_ANISO_4;
+//  obj->dataInvalidated = false;
+//}
 void GXInitTexObjLOD(GXTexObj* obj_, GXTexFilter minFilt, GXTexFilter magFilt, float minLod, float maxLod,
                      float lodBias, GXBool biasClamp, GXBool doEdgeLod, GXAnisotropy maxAniso) {
   auto* obj = reinterpret_cast<GXTexObj_*>(obj_);
@@ -835,6 +841,7 @@ void GXSetTexCopyDst(u16 wd, u16 ht, GXTexFmt fmt, GXBool mipmap) {
 }
 void GXCopyTex(void* dest, GXBool clear) {
   // TODO
+  g_resolvedTexMap.emplace(dest, 0);
 }
 void GXSetZCompLoc(GXBool before_tex) {
   // TODO

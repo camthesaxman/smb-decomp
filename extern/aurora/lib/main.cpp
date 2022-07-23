@@ -4,6 +4,9 @@
 
 #include <atomic>
 
+#include <SDL_filesystem.h>
+
+using namespace std::string_literals;
 using namespace std::string_view_literals;
 
 extern "C" {
@@ -145,5 +148,7 @@ struct Application : aurora::AppDelegate {
 
 int main(int argc, char** argv) {
   auto app = std::make_unique<Application>();
-  aurora::app_run(std::move(app), {}, argc, argv, "");
+  char* path = SDL_GetPrefPath(nullptr, "Super Monkey Ball");
+  aurora::app_run(std::move(app), {}, argc, argv, path);
+  SDL_free(path);
 }
