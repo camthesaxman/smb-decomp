@@ -1,9 +1,8 @@
 #include "common.hpp"
 
-#include "../gpu.hpp"
+#include "../webgpu/gpu.hpp"
 #include "gx.hpp"
 
-#include <aurora/log.hpp>
 #include <absl/container/flat_hash_map.h>
 
 constexpr bool EnableNormalVisualization = false;
@@ -15,9 +14,9 @@ using namespace fmt::literals;
 using namespace std::string_literals;
 using namespace std::string_view_literals;
 
-static logwrapper::Module Log("aurora::gfx::gx");
+static Module Log("aurora::gfx::gx");
 
-absl::flat_hash_map<ShaderRef, std::pair<wgpu::ShaderModule, gx::ShaderInfo>> g_gxCachedShaders;
+absl::flat_hash_map<ShaderRef, std::pair<WGPUShaderModule, gx::ShaderInfo>> g_gxCachedShaders;
 #ifndef NDEBUG
 static absl::flat_hash_map<ShaderRef, gx::ShaderConfig> g_gxCachedShaderConfigs;
 #endif
@@ -66,10 +65,10 @@ static void color_arg_reg_info(GXTevColorArg arg, const TevStage& stage, ShaderI
   case GX_CC_TEXC:
   case GX_CC_TEXA:
     if (stage.texCoordId == GX_TEXCOORD_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("texCoord not bound"));
+      Log.report(LOG_FATAL, FMT_STRING("texCoord not bound"));
     }
     if (stage.texMapId == GX_TEXMAP_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("texMap not bound"));
+      Log.report(LOG_FATAL, FMT_STRING("texMap not bound"));
     }
     info.sampledTexCoords.set(stage.texCoordId);
     info.sampledTextures.set(stage.texMapId);
@@ -157,10 +156,10 @@ static std::string color_arg_reg(GXTevColorArg arg, size_t stageIdx, const Shade
     return "vec3<f32>(tevreg2.a)";
   case GX_CC_TEXC: {
     if (stage.texMapId == GX_TEXMAP_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped texture for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped texture for stage {}"), stageIdx);
       unreachable();
     } else if (stage.texMapId < GX_TEXMAP0 || stage.texMapId > GX_TEXMAP7) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
       unreachable();
     }
     const auto& swap = config.tevSwapTable[stage.tevSwapTex];
@@ -169,10 +168,10 @@ static std::string color_arg_reg(GXTevColorArg arg, size_t stageIdx, const Shade
   }
   case GX_CC_TEXA: {
     if (stage.texMapId == GX_TEXMAP_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped texture for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped texture for stage {}"), stageIdx);
       unreachable();
     } else if (stage.texMapId < GX_TEXMAP0 || stage.texMapId > GX_TEXMAP7) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
       unreachable();
     }
     const auto& swap = config.tevSwapTable[stage.tevSwapTex];
@@ -180,12 +179,12 @@ static std::string color_arg_reg(GXTevColorArg arg, size_t stageIdx, const Shade
   }
   case GX_CC_RASC: {
     if (stage.channelId == GX_COLOR_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
       unreachable();
     } else if (stage.channelId == GX_COLOR_ZERO) {
       return "vec3<f32>(0.0)";
     } else if (stage.channelId < GX_COLOR0A0 || stage.channelId > GX_COLOR1A1) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
       unreachable();
     }
     u32 idx = stage.channelId - GX_COLOR0A0;
@@ -195,12 +194,12 @@ static std::string color_arg_reg(GXTevColorArg arg, size_t stageIdx, const Shade
   }
   case GX_CC_RASA: {
     if (stage.channelId == GX_COLOR_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
       unreachable();
     } else if (stage.channelId == GX_COLOR_ZERO) {
       return "vec3<f32>(0.0)";
     } else if (stage.channelId < GX_COLOR0A0 || stage.channelId > GX_COLOR1A1) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
       unreachable();
     }
     u32 idx = stage.channelId - GX_COLOR0A0;
@@ -270,14 +269,14 @@ static std::string color_arg_reg(GXTevColorArg arg, size_t stageIdx, const Shade
     case GX_TEV_KCSEL_K3_A:
       return "vec3<f32>(ubuf.kcolor3.a)";
     default:
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid kcSel {}"), stage.kcSel);
+      Log.report(LOG_FATAL, FMT_STRING("invalid kcSel {}"), stage.kcSel);
       unreachable();
     }
   }
   case GX_CC_ZERO:
     return "vec3<f32>(0.0)";
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("invalid color arg {}"), arg);
+    Log.report(LOG_FATAL, FMT_STRING("invalid color arg {}"), arg);
     unreachable();
   }
 }
@@ -306,10 +305,10 @@ static void alpha_arg_reg_info(GXTevAlphaArg arg, const TevStage& stage, ShaderI
     break;
   case GX_CA_TEXA:
     if (stage.texCoordId == GX_TEXCOORD_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("texCoord not bound"));
+      Log.report(LOG_FATAL, FMT_STRING("texCoord not bound"));
     }
     if (stage.texMapId == GX_TEXMAP_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("texMap not bound"));
+      Log.report(LOG_FATAL, FMT_STRING("texMap not bound"));
     }
     info.sampledTexCoords.set(stage.texCoordId);
     info.sampledTextures.set(stage.texMapId);
@@ -367,10 +366,10 @@ static std::string alpha_arg_reg(GXTevAlphaArg arg, size_t stageIdx, const Shade
     return "tevreg2.a";
   case GX_CA_TEXA: {
     if (stage.texMapId == GX_TEXMAP_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped texture for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped texture for stage {}"), stageIdx);
       unreachable();
     } else if (stage.texMapId < GX_TEXMAP0 || stage.texMapId > GX_TEXMAP7) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid texture {} for stage {}"), stage.texMapId, stageIdx);
       unreachable();
     }
     const auto& swap = config.tevSwapTable[stage.tevSwapTex];
@@ -378,12 +377,12 @@ static std::string alpha_arg_reg(GXTevAlphaArg arg, size_t stageIdx, const Shade
   }
   case GX_CA_RASA: {
     if (stage.channelId == GX_COLOR_NULL) {
-      Log.report(logwrapper::Fatal, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("unmapped color channel for stage {}"), stageIdx);
       unreachable();
     } else if (stage.channelId == GX_COLOR_ZERO) {
       return "0.0";
     } else if (stage.channelId < GX_COLOR0A0 || stage.channelId > GX_COLOR1A1) {
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
+      Log.report(LOG_FATAL, FMT_STRING("invalid color channel {} for stage {}"), stage.channelId, stageIdx);
       unreachable();
     }
     u32 idx = stage.channelId - GX_COLOR0A0;
@@ -441,14 +440,14 @@ static std::string alpha_arg_reg(GXTevAlphaArg arg, size_t stageIdx, const Shade
     case GX_TEV_KASEL_K3_A:
       return "ubuf.kcolor3.a";
     default:
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid kaSel {}"), stage.kaSel);
+      Log.report(LOG_FATAL, FMT_STRING("invalid kaSel {}"), stage.kaSel);
       unreachable();
     }
   }
   case GX_CA_ZERO:
     return "0.0";
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("invalid alpha arg {}"), arg);
+    Log.report(LOG_FATAL, FMT_STRING("invalid alpha arg {}"), arg);
     unreachable();
   }
 }
@@ -460,7 +459,7 @@ static std::string_view tev_op(GXTevOp op) {
   case GX_TEV_SUB:
     return "-"sv;
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("TODO {}"), op);
+    Log.report(LOG_FATAL, FMT_STRING("TODO {}"), op);
     unreachable();
   }
 }
@@ -474,7 +473,7 @@ static std::string_view tev_bias(GXTevBias bias) {
   case GX_TB_SUBHALF:
     return " - 0.5"sv;
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("invalid bias {}"), bias);
+    Log.report(LOG_FATAL, FMT_STRING("invalid bias {}"), bias);
     unreachable();
   }
 }
@@ -500,7 +499,7 @@ static std::string alpha_compare(GXCompare comp, u8 ref, bool& valid) {
     valid = false;
     return "true"s;
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("invalid compare {}"), comp);
+    Log.report(LOG_FATAL, FMT_STRING("invalid compare {}"), comp);
     unreachable();
   }
 }
@@ -516,7 +515,7 @@ static std::string_view tev_scale(GXTevScale scale) {
   case GX_CS_DIVIDE_2:
     return " / 2.0"sv;
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("invalid scale {}"), scale);
+    Log.report(LOG_FATAL, FMT_STRING("invalid scale {}"), scale);
     unreachable();
   }
 }
@@ -528,7 +527,7 @@ static inline std::string vtx_attr(const ShaderConfig& config, GXAttr attr) {
       // Default normal
       return "vec3<f32>(1.0, 0.0, 0.0)"s;
     }
-    Log.report(logwrapper::Fatal, FMT_STRING("unmapped attr {}"), attr);
+    Log.report(LOG_FATAL, FMT_STRING("unmapped attr {}"), attr);
     unreachable();
   }
   if (attr == GX_VA_POS) {
@@ -545,7 +544,7 @@ static inline std::string vtx_attr(const ShaderConfig& config, GXAttr attr) {
     const auto idx = attr - GX_VA_TEX0;
     return fmt::format(FMT_STRING("in_tex{}_uv"), idx);
   }
-  Log.report(logwrapper::Fatal, FMT_STRING("unhandled attr {}"), attr);
+  Log.report(LOG_FATAL, FMT_STRING("unhandled attr {}"), attr);
   unreachable();
 }
 
@@ -679,13 +678,13 @@ ShaderInfo build_shader_info(const ShaderConfig& config) noexcept {
   return info;
 }
 
-wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& info) noexcept {
+WGPUShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& info) noexcept {
   const auto hash = xxh3_hash(config);
   const auto it = g_gxCachedShaders.find(hash);
   if (it != g_gxCachedShaders.end()) {
 #ifndef NDEBUG
     if (g_gxCachedShaderConfigs[hash] != config) {
-      Log.report(logwrapper::Fatal, FMT_STRING("Shader collision!"));
+      Log.report(LOG_FATAL, FMT_STRING("Shader collision!"));
       unreachable();
     }
 #endif
@@ -693,52 +692,52 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
   }
 
   if (EnableDebugPrints) {
-    Log.report(logwrapper::Info, FMT_STRING("Shader config (hash {:x}):"), hash);
+    Log.report(LOG_INFO, FMT_STRING("Shader config (hash {:x}):"), hash);
     {
       for (int i = 0; i < config.tevStageCount; ++i) {
         const auto& stage = config.tevStages[i];
-        Log.report(logwrapper::Info, FMT_STRING("  tevStages[{}]:"), i);
-        Log.report(logwrapper::Info, FMT_STRING("    color_a: {}"), TevColorArgNames[stage.colorPass.a]);
-        Log.report(logwrapper::Info, FMT_STRING("    color_b: {}"), TevColorArgNames[stage.colorPass.b]);
-        Log.report(logwrapper::Info, FMT_STRING("    color_c: {}"), TevColorArgNames[stage.colorPass.c]);
-        Log.report(logwrapper::Info, FMT_STRING("    color_d: {}"), TevColorArgNames[stage.colorPass.d]);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_a: {}"), TevAlphaArgNames[stage.alphaPass.a]);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_b: {}"), TevAlphaArgNames[stage.alphaPass.b]);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_c: {}"), TevAlphaArgNames[stage.alphaPass.c]);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_d: {}"), TevAlphaArgNames[stage.alphaPass.d]);
-        Log.report(logwrapper::Info, FMT_STRING("    color_op_clamp: {}"), stage.colorOp.clamp);
-        Log.report(logwrapper::Info, FMT_STRING("    color_op_op: {}"), stage.colorOp.op);
-        Log.report(logwrapper::Info, FMT_STRING("    color_op_bias: {}"), stage.colorOp.bias);
-        Log.report(logwrapper::Info, FMT_STRING("    color_op_scale: {}"), stage.colorOp.scale);
-        Log.report(logwrapper::Info, FMT_STRING("    color_op_reg_id: {}"), stage.colorOp.outReg);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_op_clamp: {}"), stage.alphaOp.clamp);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_op_op: {}"), stage.alphaOp.op);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_op_bias: {}"), stage.alphaOp.bias);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_op_scale: {}"), stage.alphaOp.scale);
-        Log.report(logwrapper::Info, FMT_STRING("    alpha_op_reg_id: {}"), stage.alphaOp.outReg);
-        Log.report(logwrapper::Info, FMT_STRING("    kc_sel: {}"), stage.kcSel);
-        Log.report(logwrapper::Info, FMT_STRING("    ka_sel: {}"), stage.kaSel);
-        Log.report(logwrapper::Info, FMT_STRING("    texCoordId: {}"), stage.texCoordId);
-        Log.report(logwrapper::Info, FMT_STRING("    texMapId: {}"), stage.texMapId);
-        Log.report(logwrapper::Info, FMT_STRING("    channelId: {}"), stage.channelId);
+        Log.report(LOG_INFO, FMT_STRING("  tevStages[{}]:"), i);
+        Log.report(LOG_INFO, FMT_STRING("    color_a: {}"), TevColorArgNames[stage.colorPass.a]);
+        Log.report(LOG_INFO, FMT_STRING("    color_b: {}"), TevColorArgNames[stage.colorPass.b]);
+        Log.report(LOG_INFO, FMT_STRING("    color_c: {}"), TevColorArgNames[stage.colorPass.c]);
+        Log.report(LOG_INFO, FMT_STRING("    color_d: {}"), TevColorArgNames[stage.colorPass.d]);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_a: {}"), TevAlphaArgNames[stage.alphaPass.a]);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_b: {}"), TevAlphaArgNames[stage.alphaPass.b]);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_c: {}"), TevAlphaArgNames[stage.alphaPass.c]);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_d: {}"), TevAlphaArgNames[stage.alphaPass.d]);
+        Log.report(LOG_INFO, FMT_STRING("    color_op_clamp: {}"), stage.colorOp.clamp);
+        Log.report(LOG_INFO, FMT_STRING("    color_op_op: {}"), stage.colorOp.op);
+        Log.report(LOG_INFO, FMT_STRING("    color_op_bias: {}"), stage.colorOp.bias);
+        Log.report(LOG_INFO, FMT_STRING("    color_op_scale: {}"), stage.colorOp.scale);
+        Log.report(LOG_INFO, FMT_STRING("    color_op_reg_id: {}"), stage.colorOp.outReg);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_op_clamp: {}"), stage.alphaOp.clamp);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_op_op: {}"), stage.alphaOp.op);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_op_bias: {}"), stage.alphaOp.bias);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_op_scale: {}"), stage.alphaOp.scale);
+        Log.report(LOG_INFO, FMT_STRING("    alpha_op_reg_id: {}"), stage.alphaOp.outReg);
+        Log.report(LOG_INFO, FMT_STRING("    kc_sel: {}"), stage.kcSel);
+        Log.report(LOG_INFO, FMT_STRING("    ka_sel: {}"), stage.kaSel);
+        Log.report(LOG_INFO, FMT_STRING("    texCoordId: {}"), stage.texCoordId);
+        Log.report(LOG_INFO, FMT_STRING("    texMapId: {}"), stage.texMapId);
+        Log.report(LOG_INFO, FMT_STRING("    channelId: {}"), stage.channelId);
       }
       for (int i = 0; i < config.colorChannels.size(); ++i) {
         const auto& chan = config.colorChannels[i];
-        Log.report(logwrapper::Info, FMT_STRING("  colorChannels[{}]: enabled {} mat {} amb {}"), i,
+        Log.report(LOG_INFO, FMT_STRING("  colorChannels[{}]: enabled {} mat {} amb {}"), i,
                    chan.lightingEnabled, chan.matSrc, chan.ambSrc);
       }
       for (int i = 0; i < config.tcgs.size(); ++i) {
         const auto& tcg = config.tcgs[i];
         if (tcg.src != GX_MAX_TEXGENSRC) {
-          Log.report(logwrapper::Info, FMT_STRING("  tcg[{}]: src {} mtx {} post {} type {} norm {}"), i, tcg.src,
+          Log.report(LOG_INFO, FMT_STRING("  tcg[{}]: src {} mtx {} post {} type {} norm {}"), i, tcg.src,
                      tcg.mtx, tcg.postMtx, tcg.type, tcg.normalize);
         }
       }
-      Log.report(logwrapper::Info, FMT_STRING("  alphaCompare: comp0 {} ref0 {} op {} comp1 {} ref1 {}"),
+      Log.report(LOG_INFO, FMT_STRING("  alphaCompare: comp0 {} ref0 {} op {} comp1 {} ref1 {}"),
                  config.alphaCompare.comp0, config.alphaCompare.ref0, config.alphaCompare.op, config.alphaCompare.comp1,
                  config.alphaCompare.ref1);
-      Log.report(logwrapper::Info, FMT_STRING("  indexedAttributeCount: {}"), config.indexedAttributeCount);
-      Log.report(logwrapper::Info, FMT_STRING("  fogType: {}"), config.fogType);
+      Log.report(LOG_INFO, FMT_STRING("  indexedAttributeCount: {}"), config.indexedAttributeCount);
+      Log.report(LOG_INFO, FMT_STRING("  fogType: {}"), config.fogType);
     }
   }
 
@@ -863,7 +862,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         outReg = "tevreg2";
         break;
       default:
-        Log.report(logwrapper::Fatal, FMT_STRING("invalid colorOp outReg {}"), stage.colorOp.outReg);
+        Log.report(LOG_FATAL, FMT_STRING("invalid colorOp outReg {}"), stage.colorOp.outReg);
       }
       std::string op = fmt::format(
           FMT_STRING("(({4}mix({0}, {1}, {2}) + {3}){5}){6}"), color_arg_reg(stage.colorPass.a, idx, config, stage),
@@ -892,7 +891,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         outReg = "tevreg2.a";
         break;
       default:
-        Log.report(logwrapper::Fatal, FMT_STRING("invalid alphaOp outReg {}"), stage.alphaOp.outReg);
+        Log.report(LOG_FATAL, FMT_STRING("invalid alphaOp outReg {}"), stage.alphaOp.outReg);
       }
       std::string op = fmt::format(
           FMT_STRING("(({4}mix({0}, {1}, {2}) + {3}){5}){6}"), alpha_arg_reg(stage.alphaPass.a, idx, config, stage),
@@ -984,7 +983,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
           attn = max(0.0, cos_attn / dist_attn);)"""));
       } else if (cc.attnFn == GX_AF_SPEC) {
         diffFn = GX_DF_NONE;
-        Log.report(logwrapper::Fatal, FMT_STRING("AF_SPEC unimplemented"));
+        Log.report(LOG_FATAL, FMT_STRING("AF_SPEC unimplemented"));
       }
       if (diffFn == GX_DF_NONE) {
         lightDiffFn = "1.0";
@@ -1062,7 +1061,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
     } else if (tcg.src == GX_TG_NRM) {
       vtxXfrAttrs += fmt::format(FMT_STRING("\n    var tc{} = vec4<f32>(in_nrm, 1.0);"), i);
     } else {
-      Log.report(logwrapper::Fatal, FMT_STRING("unhandled tcg src {} for "), tcg.src);
+      Log.report(LOG_FATAL, FMT_STRING("unhandled tcg src {} for "), tcg.src);
       unreachable();
     }
     if (tcg.mtx == GX_IDENTITY) {
@@ -1107,7 +1106,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
           //          suffix = "I14X2";
           //          break;
         default:
-          Log.report(logwrapper::Fatal, FMT_STRING("Unsupported palette format {}"), texConfig.loadFmt);
+          Log.report(LOG_FATAL, FMT_STRING("Unsupported palette format {}"), texConfig.loadFmt);
           unreachable();
         }
       }
@@ -1131,7 +1130,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         uniBufAttrs += fmt::format(FMT_STRING("\n    texmtx{}: mat4x3<f32>,"), i);
         break;
       default:
-        Log.report(logwrapper::Fatal, FMT_STRING("unhandled tex mtx type {}"), info.texMtxTypes[i]);
+        Log.report(LOG_FATAL, FMT_STRING("unhandled tex mtx type {}"), info.texMtxTypes[i]);
         unreachable();
       }
     }
@@ -1178,7 +1177,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
           "\n    var fogZ = exp2(-8.0 * fogF * fogF);";
       break;
     default:
-      Log.report(logwrapper::Fatal, FMT_STRING("invalid fog type {}"), config.fogType);
+      Log.report(LOG_FATAL, FMT_STRING("invalid fog type {}"), config.fogType);
       unreachable();
     }
     fragmentFn += "\n    prev = vec4<f32>(mix(prev.rgb, ubuf.fog.color.rgb, clamp(fogZ, 0.0, 1.0)), prev.a);";
@@ -1232,7 +1231,7 @@ wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& in
         fragmentFn += fmt::format(FMT_STRING("\n    if (({} ^^ {})) {{ discard; }}"), comp0, comp1);
         break;
       default:
-        Log.report(logwrapper::Fatal, FMT_STRING("invalid alpha compare op {}"), config.alphaCompare.op);
+        Log.report(LOG_FATAL, FMT_STRING("invalid alpha compare op {}"), config.alphaCompare.op);
         unreachable();
       }
     }
@@ -1313,17 +1312,19 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {{{8}{7}
                                         uniBufAttrs, sampBindings, texBindings, uniformBindings, vtxOutAttrs,
                                         vtxInAttrs, vtxXfrAttrs, fragmentFn, fragmentFnPre, vtxXfrAttrsPre, uniformPre);
   if (EnableDebugPrints) {
-    Log.report(logwrapper::Info, FMT_STRING("Generated shader: {}"), shaderSource);
+    Log.report(LOG_INFO, FMT_STRING("Generated shader: {}"), shaderSource);
   }
 
-  wgpu::ShaderModuleWGSLDescriptor wgslDescriptor{};
-  wgslDescriptor.source = shaderSource.c_str();
+  const WGPUShaderModuleWGSLDescriptor wgslDescriptor{
+      .chain = {.sType = WGPUSType_ShaderModuleWGSLDescriptor},
+      .source = shaderSource.c_str(),
+  };
   const auto label = fmt::format(FMT_STRING("GX Shader {:x}"), hash);
-  const auto shaderDescriptor = wgpu::ShaderModuleDescriptor{
-      .nextInChain = &wgslDescriptor,
+  const auto shaderDescriptor = WGPUShaderModuleDescriptor{
+      .nextInChain = &wgslDescriptor.chain,
       .label = label.c_str(),
   };
-  auto shader = gpu::g_device.CreateShaderModule(&shaderDescriptor);
+  auto shader = wgpuDeviceCreateShaderModule(webgpu::g_device, &shaderDescriptor);
 
   auto pair = std::make_pair(std::move(shader), info);
   g_gxCachedShaders.emplace(hash, pair);

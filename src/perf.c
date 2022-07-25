@@ -1,6 +1,6 @@
 #include <dolphin.h>
 
-#include <dolphin/GXEnum.h>
+#include <dolphin/gx/GXEnum.h>
 #include "global.h"
 #include "gxcache.h"
 #include "gxutil.h"

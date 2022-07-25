@@ -3,11 +3,11 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXCommandList.h>
+#include <dolphin/gx/GXEnum.h>
+#include <dolphin/gx/GXCommandList.h>
 #include <dolphin/GDLight.h>
-#include <dolphin/GXLighting.h>
-#include <dolphin/GXVert.h>
+#include <dolphin/gx/GXLighting.h>
+#include <dolphin/gx/GXVert.h>
 
 #include "global.h"
 #include "gma.h"
@@ -1720,7 +1720,9 @@ void *draw_shape_reflection_maybe(struct GMAShape *shape, void *modelSamplers, s
 
     if (bvar)
     {
+#ifndef TARGET_PC
         __GXSetDirtyState();
+#endif
         for (i = 0; i < 2; i++)
         {
             if (shape->dispListFlags & (1 << i))

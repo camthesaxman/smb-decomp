@@ -180,6 +180,7 @@ add_executable(supermonkeyball
     libraries/gx/GXPerf.c
     libraries/amcnotstub/amcnotstub.c
     src/byteswap.cpp
+    src/imgui.cpp
     )
 target_compile_definitions(supermonkeyball PRIVATE NONMATCHING C_ONLY TARGET_PC)
 if (MSVC)
@@ -187,5 +188,5 @@ if (MSVC)
 else ()
   target_compile_options(supermonkeyball PRIVATE -idirafter "${CMAKE_CURRENT_SOURCE_DIR}/include")
 endif ()
-target_link_libraries(supermonkeyball PRIVATE aurora)
+target_link_libraries(supermonkeyball PRIVATE aurora::aurora aurora::main)
 

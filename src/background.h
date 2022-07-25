@@ -3,7 +3,7 @@
 
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
-#include <dolphin/GXStruct.h>
+#include <dolphin/gx/GXStruct.h>
 
 #include "types.h"
 #include "gma.h"

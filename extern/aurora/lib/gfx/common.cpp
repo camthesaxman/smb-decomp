@@ -1,25 +1,24 @@
 #include "common.hpp"
 
 #include "../internal.hpp"
-#include "../gpu.hpp"
+#include "../webgpu/gpu.hpp"
 #include "model/shader.hpp"
-#include "movie_player/shader.hpp"
 #include "stream/shader.hpp"
+#include "texture.hpp"
 
 #include <absl/container/flat_hash_map.h>
 #include <condition_variable>
 #include <deque>
 #include <fstream>
-#include <aurora/log.hpp>
 #include <thread>
 #include <mutex>
 #include <magic_enum.hpp>
 
 namespace aurora::gfx {
-static logwrapper::Module Log("aurora::gfx");
+static Module Log("aurora::gfx");
 
-using gpu::g_device;
-using gpu::g_queue;
+using webgpu::g_device;
+using webgpu::g_queue;
 
 #ifdef AURORA_GFX_DEBUG_GROUPS
 std::vector<std::string> g_debugGroupStack;
@@ -28,21 +27,19 @@ std::vector<std::string> g_debugGroupStack;
 constexpr uint64_t UniformBufferSize = 3145728;  // 3mb
 constexpr uint64_t VertexBufferSize = 8388608;   // 8mb
 constexpr uint64_t IndexBufferSize = 1048576;    // 1mb
-constexpr uint64_t StorageBufferSize = 8388608;  // 8mb
+constexpr uint64_t StorageBufferSize = 0;        // Unused
 constexpr uint64_t TextureUploadSize = 25165824; // 24mb
 
 constexpr uint64_t StagingBufferSize =
     UniformBufferSize + VertexBufferSize + IndexBufferSize + StorageBufferSize + TextureUploadSize;
 
 struct ShaderState {
-  movie_player::State moviePlayer;
   stream::State stream;
   model::State model;
 };
 struct ShaderDrawCommand {
   ShaderType type;
   union {
-    movie_player::DrawData moviePlayer;
     stream::DrawData stream;
     model::DrawData model;
   };
@@ -93,31 +90,31 @@ namespace aurora {
 // we create specialized methods to handle them. Note that these are highly dependent on
 // the structure definition, which could easily change with Dawn updates.
 template <>
-inline HashType xxh3_hash(const wgpu::BindGroupDescriptor& input, HashType seed) {
+inline HashType xxh3_hash(const WGPUBindGroupDescriptor& input, HashType seed) {
   constexpr auto offset = sizeof(void*) * 2; // skip nextInChain, label
   const auto hash = xxh3_hash_s(reinterpret_cast<const u8*>(&input) + offset,
-                                sizeof(wgpu::BindGroupDescriptor) - offset - sizeof(void*) /* skip entries */, seed);
-  return xxh3_hash_s(input.entries, sizeof(wgpu::BindGroupEntry) * input.entryCount, hash);
+                                sizeof(WGPUBindGroupDescriptor) - offset - sizeof(void*) /* skip entries */, seed);
+  return xxh3_hash_s(input.entries, sizeof(WGPUBindGroupEntry) * input.entryCount, hash);
 }
 template <>
-inline HashType xxh3_hash(const wgpu::SamplerDescriptor& input, HashType seed) {
+inline HashType xxh3_hash(const WGPUSamplerDescriptor& input, HashType seed) {
   constexpr auto offset = sizeof(void*) * 2; // skip nextInChain, label
   return xxh3_hash_s(reinterpret_cast<const u8*>(&input) + offset,
-                     sizeof(wgpu::SamplerDescriptor) - offset - 2 /* skip padding */, seed);
+                     sizeof(WGPUSamplerDescriptor) - offset - 2 /* skip padding */, seed);
 }
 } // namespace aurora
 
 namespace aurora::gfx {
-using NewPipelineCallback = std::function<wgpu::RenderPipeline()>;
+using NewPipelineCallback = std::function<WGPURenderPipeline()>;
 std::mutex g_pipelineMutex;
 static bool g_hasPipelineThread = false;
 static std::thread g_pipelineThread;
 static std::atomic_bool g_pipelineThreadEnd;
 static std::condition_variable g_pipelineCv;
-static absl::flat_hash_map<PipelineRef, wgpu::RenderPipeline> g_pipelines;
+static absl::flat_hash_map<PipelineRef, WGPURenderPipeline> g_pipelines;
 static std::deque<std::pair<PipelineRef, NewPipelineCallback>> g_queuedPipelines;
-static absl::flat_hash_map<BindGroupRef, wgpu::BindGroup> g_cachedBindGroups;
-static absl::flat_hash_map<SamplerRef, wgpu::Sampler> g_cachedSamplers;
+static absl::flat_hash_map<BindGroupRef, WGPUBindGroup> g_cachedBindGroups;
+static absl::flat_hash_map<SamplerRef, WGPUSampler> g_cachedSamplers;
 std::atomic_uint32_t queuedPipelines;
 std::atomic_uint32_t createdPipelines;
 
@@ -127,18 +124,24 @@ static ByteBuffer g_indices;
 static ByteBuffer g_storage;
 static ByteBuffer g_staticStorage;
 static ByteBuffer g_textureUpload;
-wgpu::Buffer g_vertexBuffer;
-wgpu::Buffer g_uniformBuffer;
-wgpu::Buffer g_indexBuffer;
-wgpu::Buffer g_storageBuffer;
+WGPUBuffer g_vertexBuffer;
+WGPUBuffer g_uniformBuffer;
+WGPUBuffer g_indexBuffer;
+WGPUBuffer g_storageBuffer;
 size_t g_staticStorageLastSize = 0;
-static std::array<wgpu::Buffer, 3> g_stagingBuffers;
-static wgpu::SupportedLimits g_cachedLimits;
+static std::array<WGPUBuffer, 3> g_stagingBuffers;
+static WGPUSupportedLimits g_cachedLimits;
 
 static ShaderState g_state;
 static PipelineRef g_currentPipeline;
 
 using CommandList = std::vector<Command>;
+struct ClipRect {
+  int32_t x;
+  int32_t y;
+  int32_t width;
+  int32_t height;
+};
 struct RenderPass {
   u32 resolveTarget = UINT32_MAX;
   ClipRect resolveRect;
@@ -203,7 +206,7 @@ static PipelineRef find_pipeline(ShaderType type, const PipelineConfig& config, 
 
 static inline void push_command(CommandType type, const Command::Data& data) {
   if (g_currentRenderPass == UINT32_MAX) {
-    Log.report(logwrapper::Warning, FMT_STRING("Dropping command {}"), magic_enum::enum_name(type));
+    Log.report(LOG_WARNING, FMT_STRING("Dropping command {}"), magic_enum::enum_name(type));
     return;
   }
   g_renderPasses[g_currentRenderPass].commands.push_back({
@@ -234,20 +237,19 @@ void set_scissor(uint32_t x, uint32_t y, uint32_t w, uint32_t h) noexcept {
   }
 }
 
-static inline bool operator==(const wgpu::Extent3D& lhs, const wgpu::Extent3D& rhs) {
+static inline bool operator==(const WGPUExtent3D& lhs, const WGPUExtent3D& rhs) {
   return lhs.width == rhs.width && lhs.height == rhs.height && lhs.depthOrArrayLayers == rhs.depthOrArrayLayers;
 }
-static inline bool operator!=(const wgpu::Extent3D& lhs, const wgpu::Extent3D& rhs) {
-  return !(lhs == rhs);
-}
+static inline bool operator!=(const WGPUExtent3D& lhs, const WGPUExtent3D& rhs) { return !(lhs == rhs); }
 
 void resolve_color(const ClipRect& rect, uint32_t bind, GXTexFmt fmt, bool clear_depth) noexcept {
   if (g_resolvedTextures.size() < bind + 1) {
     g_resolvedTextures.resize(bind + 1);
   }
-  const wgpu::Extent3D size{
+  const WGPUExtent3D size{
       .width = static_cast<uint32_t>(rect.width),
       .height = static_cast<uint32_t>(rect.height),
+      .depthOrArrayLayers = 1,
   };
   if (!g_resolvedTextures[bind] || g_resolvedTextures[bind]->size != size) {
     g_resolvedTextures[bind] = new_render_texture(rect.width, rect.height, fmt, "Resolved Texture");
@@ -259,19 +261,6 @@ void resolve_color(const ClipRect& rect, uint32_t bind, GXTexFmt fmt, bool clear
   newPass.clearColor = gx::g_gxState.clearColor;
   newPass.clear = false; // TODO
   ++g_currentRenderPass;
-}
-void resolve_depth(const ClipRect& rect, uint32_t bind, GXTexFmt fmt) noexcept {
-  // TODO
-}
-
-void queue_movie_player(const TextureHandle& tex_y, const TextureHandle& tex_u, const TextureHandle& tex_v, float h_pad,
-                        float v_pad) noexcept {
-  auto data = movie_player::make_draw_data(g_state.moviePlayer, tex_y, tex_u, tex_v, h_pad, v_pad);
-  push_draw_command({.type = ShaderType::MoviePlayer, .moviePlayer = data});
-}
-template <>
-PipelineRef pipeline_ref(movie_player::PipelineConfig config) {
-  return find_pipeline(ShaderType::MoviePlayer, config, [=]() { return create_pipeline(g_state.moviePlayer, config); });
 }
 
 template <>
@@ -315,7 +304,7 @@ static void pipeline_worker() {
     {
       std::scoped_lock lock{g_pipelineMutex};
       if (!g_pipelines.try_emplace(cb.first, std::move(result)).second) {
-        Log.report(logwrapper::Fatal, FMT_STRING("Duplicate pipeline {}"), cb.first);
+        Log.report(LOG_FATAL, FMT_STRING("Duplicate pipeline {}"), cb.first);
         unreachable();
       }
       g_queuedPipelines.pop_front();
@@ -328,7 +317,7 @@ static void pipeline_worker() {
 
 void initialize() {
   // No async pipelines for OpenGL (ES)
-  if (gpu::g_backendType == wgpu::BackendType::OpenGL || gpu::g_backendType == wgpu::BackendType::OpenGLES) {
+  if (webgpu::g_backendType == WGPUBackendType_OpenGL || webgpu::g_backendType == WGPUBackendType_OpenGLES) {
     g_hasPipelineThread = false;
   } else {
     g_pipelineThreadEnd = false;
@@ -337,38 +326,39 @@ void initialize() {
   }
 
   // For uniform & storage buffer offset alignments
-  g_device.GetLimits(&g_cachedLimits);
+  wgpuDeviceGetLimits(g_device, &g_cachedLimits);
 
-  const auto createBuffer = [](wgpu::Buffer& out, wgpu::BufferUsage usage, uint64_t size, const char* label) {
-    const wgpu::BufferDescriptor descriptor{
+  const auto createBuffer = [](WGPUBuffer& out, WGPUBufferUsageFlags usage, uint64_t size, const char* label) {
+    if (size <= 0) {
+      return;
+    }
+    const WGPUBufferDescriptor descriptor{
         .label = label,
         .usage = usage,
         .size = size,
     };
-    out = g_device.CreateBuffer(&descriptor);
+    out = wgpuDeviceCreateBuffer(g_device, &descriptor);
   };
-  createBuffer(g_uniformBuffer, wgpu::BufferUsage::Uniform | wgpu::BufferUsage::CopyDst, UniformBufferSize,
+  createBuffer(g_uniformBuffer, WGPUBufferUsage_Uniform | WGPUBufferUsage_CopyDst, UniformBufferSize,
                "Shared Uniform Buffer");
-  createBuffer(g_vertexBuffer, wgpu::BufferUsage::Vertex | wgpu::BufferUsage::CopyDst, VertexBufferSize,
+  createBuffer(g_vertexBuffer, WGPUBufferUsage_Vertex | WGPUBufferUsage_CopyDst, VertexBufferSize,
                "Shared Vertex Buffer");
-  createBuffer(g_indexBuffer, wgpu::BufferUsage::Index | wgpu::BufferUsage::CopyDst, IndexBufferSize,
-               "Shared Index Buffer");
-  createBuffer(g_storageBuffer, wgpu::BufferUsage::Storage | wgpu::BufferUsage::CopyDst, StorageBufferSize,
+  createBuffer(g_indexBuffer, WGPUBufferUsage_Index | WGPUBufferUsage_CopyDst, IndexBufferSize, "Shared Index Buffer");
+  createBuffer(g_storageBuffer, WGPUBufferUsage_Storage | WGPUBufferUsage_CopyDst, StorageBufferSize,
                "Shared Storage Buffer");
   for (int i = 0; i < g_stagingBuffers.size(); ++i) {
     const auto label = fmt::format(FMT_STRING("Staging Buffer {}"), i);
-    createBuffer(g_stagingBuffers[i], wgpu::BufferUsage::MapWrite | wgpu::BufferUsage::CopySrc, StagingBufferSize,
+    createBuffer(g_stagingBuffers[i], WGPUBufferUsage_MapWrite | WGPUBufferUsage_CopySrc, StagingBufferSize,
                  label.c_str());
   }
   map_staging_buffer();
 
-  g_state.moviePlayer = movie_player::construct_state();
   g_state.stream = stream::construct_state();
   g_state.model = model::construct_state();
 
   {
     // Load serialized pipeline cache
-    std::string path = g_configPath + "pipeline_cache.bin";
+    std::string path = std::string{g_config.configPath} + "/pipeline_cache.bin";
     std::ifstream file(path, std::ios::in | std::ios::binary | std::ios::ate);
     if (file) {
       const auto size = file.tellg();
@@ -389,15 +379,6 @@ void initialize() {
       u32 size = *reinterpret_cast<const u32*>(g_serializedPipelines.data() + offset);
       offset += sizeof(u32);
       switch (type) {
-      case ShaderType::MoviePlayer: {
-        if (size != sizeof(movie_player::PipelineConfig)) {
-          break;
-        }
-        const auto config =
-            *reinterpret_cast<const movie_player::PipelineConfig*>(g_serializedPipelines.data() + offset);
-        find_pipeline(
-            type, config, [=]() { return movie_player::create_pipeline(g_state.moviePlayer, config); }, false);
-      } break;
       case ShaderType::Stream: {
         if (size != sizeof(stream::PipelineConfig)) {
           break;
@@ -421,7 +402,7 @@ void initialize() {
             type, config, [=]() { return model::create_pipeline(g_state.model, config); }, false);
       } break;
       default:
-        Log.report(logwrapper::Warning, FMT_STRING("Unknown pipeline type {}"), static_cast<int>(type));
+        Log.report(LOG_WARNING, FMT_STRING("Unknown pipeline type {}"), static_cast<int>(type));
         break;
       }
       offset += size;
@@ -438,7 +419,8 @@ void shutdown() {
 
   {
     // Write serialized pipelines to file
-    std::ofstream file(g_configPath + "pipeline_cache.bin", std::ios::out | std::ios::trunc | std::ios::binary);
+    const auto path = std::string{g_config.configPath} + "pipeline_cache.bin";
+    std::ofstream file(path, std::ios::out | std::ios::trunc | std::ios::binary);
     if (file) {
       file.write(reinterpret_cast<const char*>(&g_serializedPipelineCount), sizeof(g_serializedPipelineCount));
       file.write(reinterpret_cast<const char*>(g_serializedPipelines.data()), g_serializedPipelines.size());
@@ -451,15 +433,41 @@ void shutdown() {
 
   g_resolvedTextures.clear();
   g_textureUploads.clear();
+  for (const auto& item : g_cachedBindGroups) {
+    wgpuBindGroupRelease(item.second);
+  }
   g_cachedBindGroups.clear();
+  for (const auto& item : g_cachedSamplers) {
+    wgpuSamplerRelease(item.second);
+  }
   g_cachedSamplers.clear();
+  for (const auto& item : g_pipelines) {
+    wgpuRenderPipelineRelease(item.second);
+  }
   g_pipelines.clear();
   g_queuedPipelines.clear();
-  g_vertexBuffer = {};
-  g_uniformBuffer = {};
-  g_indexBuffer = {};
-  g_storageBuffer = {};
-  g_stagingBuffers.fill({});
+  if (g_vertexBuffer != nullptr) {
+    wgpuBufferDestroy(g_vertexBuffer);
+    g_vertexBuffer = nullptr;
+  }
+  if (g_uniformBuffer != nullptr) {
+    wgpuBufferDestroy(g_uniformBuffer);
+    g_uniformBuffer = nullptr;
+  }
+  if (g_indexBuffer != nullptr) {
+    wgpuBufferDestroy(g_indexBuffer);
+    g_indexBuffer = nullptr;
+  }
+  if (g_storageBuffer != nullptr) {
+    wgpuBufferDestroy(g_storageBuffer);
+    g_storageBuffer = nullptr;
+  }
+  for (auto& item : g_stagingBuffers) {
+    if (item != nullptr) {
+      wgpuBufferDestroy(item);
+    }
+    item = nullptr;
+  }
   g_renderPasses.clear();
   g_currentRenderPass = UINT32_MAX;
 
@@ -473,13 +481,13 @@ static size_t currentStagingBuffer = 0;
 static bool bufferMapped = false;
 void map_staging_buffer() {
   bufferMapped = false;
-  g_stagingBuffers[currentStagingBuffer].MapAsync(
-      wgpu::MapMode::Write, 0, StagingBufferSize,
+  wgpuBufferMapAsync(
+      g_stagingBuffers[currentStagingBuffer], WGPUMapMode_Write, 0, StagingBufferSize,
       [](WGPUBufferMapAsyncStatus status, void* userdata) {
         if (status == WGPUBufferMapAsyncStatus_DestroyedBeforeCallback) {
           return;
         } else if (status != WGPUBufferMapAsyncStatus_Success) {
-          Log.report(logwrapper::Fatal, FMT_STRING("Buffer mapping failed: {}"), status);
+          Log.report(LOG_FATAL, FMT_STRING("Buffer mapping failed: {}"), status);
           unreachable();
         }
         *static_cast<bool*>(userdata) = true;
@@ -489,12 +497,16 @@ void map_staging_buffer() {
 
 void begin_frame() {
   while (!bufferMapped) {
-    g_device.Tick();
+    wgpuDeviceTick(g_device);
   }
   size_t bufferOffset = 0;
   auto& stagingBuf = g_stagingBuffers[currentStagingBuffer];
   const auto mapBuffer = [&](ByteBuffer& buf, uint64_t size) {
-    buf = ByteBuffer{static_cast<u8*>(stagingBuf.GetMappedRange(bufferOffset, size)), static_cast<size_t>(size)};
+    if (size <= 0) {
+      return;
+    }
+    buf = ByteBuffer{static_cast<u8*>(wgpuBufferGetMappedRange(stagingBuf, bufferOffset, size)),
+                     static_cast<size_t>(size)};
     bufferOffset += size;
   };
   mapBuffer(g_verts, VertexBufferSize);
@@ -514,18 +526,19 @@ size_t g_lastUniformSize;
 size_t g_lastIndexSize;
 size_t g_lastStorageSize;
 
-void end_frame(const wgpu::CommandEncoder& cmd) {
+void end_frame(WGPUCommandEncoder cmd) {
   uint64_t bufferOffset = 0;
-  const auto writeBuffer = [&](ByteBuffer& buf, wgpu::Buffer& out, uint64_t size, std::string_view label) {
+  const auto writeBuffer = [&](ByteBuffer& buf, WGPUBuffer& out, uint64_t size, std::string_view label) {
     const auto writeSize = buf.size(); // Only need to copy this many bytes
     if (writeSize > 0) {
-      cmd.CopyBufferToBuffer(g_stagingBuffers[currentStagingBuffer], bufferOffset, out, 0, writeSize);
+      wgpuCommandEncoderCopyBufferToBuffer(cmd, g_stagingBuffers[currentStagingBuffer], bufferOffset, out, 0,
+                                           writeSize);
       buf.clear();
     }
     bufferOffset += size;
     return writeSize;
   };
-  g_stagingBuffers[currentStagingBuffer].Unmap();
+  wgpuBufferUnmap(g_stagingBuffers[currentStagingBuffer]);
   g_lastVertSize = writeBuffer(g_verts, g_vertexBuffer, VertexBufferSize, "Vertex");
   g_lastUniformSize = writeBuffer(g_uniforms, g_uniformBuffer, UniformBufferSize, "Uniform");
   g_lastIndexSize = writeBuffer(g_indices, g_indexBuffer, IndexBufferSize, "Index");
@@ -533,16 +546,16 @@ void end_frame(const wgpu::CommandEncoder& cmd) {
   {
     // Perform texture copies
     for (const auto& item : g_textureUploads) {
-      const wgpu::ImageCopyBuffer buf{
+      const WGPUImageCopyBuffer buf{
           .layout =
-              wgpu::TextureDataLayout{
+              WGPUTextureDataLayout{
                   .offset = item.layout.offset + bufferOffset,
                   .bytesPerRow = ALIGN(item.layout.bytesPerRow, 256),
                   .rowsPerImage = item.layout.rowsPerImage,
               },
           .buffer = g_stagingBuffers[currentStagingBuffer],
       };
-      cmd.CopyBufferToTexture(&buf, &item.tex, &item.size);
+      wgpuCommandEncoderCopyBufferToTexture(cmd, &buf, &item.tex, &item.size);
     }
     g_textureUploads.clear();
     g_textureUpload.clear();
@@ -552,20 +565,20 @@ void end_frame(const wgpu::CommandEncoder& cmd) {
   g_currentRenderPass = UINT32_MAX;
 }
 
-void render(wgpu::CommandEncoder& cmd) {
+void render(WGPUCommandEncoder cmd) {
   for (u32 i = 0; i < g_renderPasses.size(); ++i) {
     const auto& passInfo = g_renderPasses[i];
     bool finalPass = i == g_renderPasses.size() - 1;
     if (finalPass && passInfo.resolveTarget != UINT32_MAX) {
-      Log.report(logwrapper::Fatal, FMT_STRING("Final render pass must not have resolve target"));
+      Log.report(LOG_FATAL, FMT_STRING("Final render pass must not have resolve target"));
       unreachable();
     }
     const std::array attachments{
-        wgpu::RenderPassColorAttachment{
-            .view = gpu::g_frameBuffer.view,
-            .resolveTarget = gpu::g_graphicsConfig.msaaSamples > 1 ? gpu::g_frameBufferResolved.view : nullptr,
-            .loadOp = passInfo.clear ? wgpu::LoadOp::Clear : wgpu::LoadOp::Load,
-            .storeOp = wgpu::StoreOp::Store,
+        WGPURenderPassColorAttachment{
+            .view = webgpu::g_frameBuffer.view,
+            .resolveTarget = webgpu::g_graphicsConfig.msaaSamples > 1 ? webgpu::g_frameBufferResolved.view : nullptr,
+            .loadOp = passInfo.clear ? WGPULoadOp_Clear : WGPULoadOp_Load,
+            .storeOp = WGPUStoreOp_Store,
             .clearValue =
                 {
                     .r = passInfo.clearColor.x(),
@@ -575,52 +588,54 @@ void render(wgpu::CommandEncoder& cmd) {
                 },
         },
     };
-    const wgpu::RenderPassDepthStencilAttachment depthStencilAttachment{
-        .view = gpu::g_depthBuffer.view,
-        .depthLoadOp = passInfo.clear ? wgpu::LoadOp::Clear : wgpu::LoadOp::Load,
-        .depthStoreOp = wgpu::StoreOp::Store,
+    const WGPURenderPassDepthStencilAttachment depthStencilAttachment{
+        .view = webgpu::g_depthBuffer.view,
+        .depthLoadOp = passInfo.clear ? WGPULoadOp_Clear : WGPULoadOp_Load,
+        .depthStoreOp = WGPUStoreOp_Store,
         .depthClearValue = 1.f,
     };
     const auto label = fmt::format(FMT_STRING("Render pass {}"), i);
-    const wgpu::RenderPassDescriptor renderPassDescriptor{
+    const WGPURenderPassDescriptor renderPassDescriptor{
         .label = label.c_str(),
         .colorAttachmentCount = attachments.size(),
         .colorAttachments = attachments.data(),
         .depthStencilAttachment = &depthStencilAttachment,
     };
-    auto pass = cmd.BeginRenderPass(&renderPassDescriptor);
+    auto pass = wgpuCommandEncoderBeginRenderPass(cmd, &renderPassDescriptor);
     render_pass(pass, i);
-    pass.End();
+    wgpuRenderPassEncoderEndPass(pass);
+    wgpuRenderPassEncoderRelease(pass);
 
     if (passInfo.resolveTarget != UINT32_MAX) {
-      wgpu::ImageCopyTexture src{
+      WGPUImageCopyTexture src{
           .origin =
-              wgpu::Origin3D{
+              WGPUOrigin3D{
                   .x = static_cast<uint32_t>(passInfo.resolveRect.x),
                   .y = static_cast<uint32_t>(passInfo.resolveRect.y),
               },
       };
-      if (gpu::g_graphicsConfig.msaaSamples > 1) {
-        src.texture = gpu::g_frameBufferResolved.texture;
+      if (webgpu::g_graphicsConfig.msaaSamples > 1) {
+        src.texture = webgpu::g_frameBufferResolved.texture;
       } else {
-        src.texture = gpu::g_frameBuffer.texture;
+        src.texture = webgpu::g_frameBuffer.texture;
       }
       auto& target = g_resolvedTextures[passInfo.resolveTarget];
-      const wgpu::ImageCopyTexture dst{
+      const WGPUImageCopyTexture dst{
           .texture = target->texture,
       };
-      const wgpu::Extent3D size{
+      const WGPUExtent3D size{
           .width = static_cast<uint32_t>(passInfo.resolveRect.width),
           .height = static_cast<uint32_t>(passInfo.resolveRect.height),
+          .depthOrArrayLayers = 1,
       };
-      cmd.CopyTextureToTexture(&src, &dst, &size);
+      wgpuCommandEncoderCopyTextureToTexture(cmd, &src, &dst, &size);
     }
   }
   g_renderPasses.clear();
 }
 
-void render_pass(const wgpu::RenderPassEncoder& pass, u32 idx) {
-  g_currentPipeline = UINT64_MAX;
+void render_pass(WGPURenderPassEncoder pass, u32 idx) {
+  g_currentPipeline = UINTPTR_MAX;
 #ifdef AURORA_GFX_DEBUG_GROUPS
   std::vector<std::string> lastDebugGroupStack;
 #endif
@@ -636,10 +651,10 @@ void render_pass(const wgpu::RenderPassEncoder& pass, u32 idx) {
         }
       }
       for (size_t i = firstDiff; i < lastDebugGroupStack.size(); ++i) {
-        pass.PopDebugGroup();
+        wgpuRenderPassEncoderPopDebugGroup(pass);
       }
       for (size_t i = firstDiff; i < cmd.debugGroupStack.size(); ++i) {
-        pass.PushDebugGroup(cmd.debugGroupStack[i].c_str());
+        wgpuRenderPassEncoderPushDebugGroup(pass, cmd.debugGroupStack[i].c_str());
       }
       lastDebugGroupStack = cmd.debugGroupStack;
     }
@@ -647,18 +662,15 @@ void render_pass(const wgpu::RenderPassEncoder& pass, u32 idx) {
     switch (cmd.type) {
     case CommandType::SetViewport: {
       const auto& vp = cmd.data.setViewport;
-      pass.SetViewport(vp.left, vp.top, vp.width, vp.height, vp.znear, vp.zfar);
+      wgpuRenderPassEncoderSetViewport(pass, vp.left, vp.top, vp.width, vp.height, vp.znear, vp.zfar);
     } break;
     case CommandType::SetScissor: {
       const auto& sc = cmd.data.setScissor;
-      pass.SetScissorRect(sc.x, sc.y, sc.w, sc.h);
+      wgpuRenderPassEncoderSetScissorRect(pass, sc.x, sc.y, sc.w, sc.h);
     } break;
     case CommandType::Draw: {
       const auto& draw = cmd.data.draw;
       switch (draw.type) {
-      case ShaderType::MoviePlayer:
-        movie_player::render(g_state.moviePlayer, draw.moviePlayer, pass);
-        break;
       case ShaderType::Stream:
         stream::render(g_state.stream, draw.stream, pass);
         break;
@@ -672,12 +684,12 @@ void render_pass(const wgpu::RenderPassEncoder& pass, u32 idx) {
 
 #ifdef AURORA_GFX_DEBUG_GROUPS
   for (size_t i = 0; i < lastDebugGroupStack.size(); ++i) {
-    pass.PopDebugGroup();
+    wgpuRenderPassEncoderPopDebugGroup(pass);
   }
 #endif
 }
 
-bool bind_pipeline(PipelineRef ref, const wgpu::RenderPassEncoder& pass) {
+bool bind_pipeline(PipelineRef ref, WGPURenderPassEncoder pass) {
   if (ref == g_currentPipeline) {
     return true;
   }
@@ -686,7 +698,7 @@ bool bind_pipeline(PipelineRef ref, const wgpu::RenderPassEncoder& pass) {
   if (it == g_pipelines.end()) {
     return false;
   }
-  pass.SetPipeline(it->second);
+  wgpuRenderPassEncoderSetPipeline(pass, it->second);
   g_currentPipeline = ref;
   return true;
 }
@@ -762,34 +774,34 @@ std::pair<ByteBuffer, Range> map_storage(size_t length) {
   return {ByteBuffer{g_storage.data() + range.offset, range.size}, range};
 }
 
-BindGroupRef bind_group_ref(const wgpu::BindGroupDescriptor& descriptor) {
+BindGroupRef bind_group_ref(const WGPUBindGroupDescriptor& descriptor) {
   const auto id = xxh3_hash(descriptor);
   if (!g_cachedBindGroups.contains(id)) {
-    g_cachedBindGroups.try_emplace(id, g_device.CreateBindGroup(&descriptor));
+    g_cachedBindGroups.try_emplace(id, wgpuDeviceCreateBindGroup(g_device, &descriptor));
   }
   return id;
 }
-const wgpu::BindGroup& find_bind_group(BindGroupRef id) {
+WGPUBindGroup find_bind_group(BindGroupRef id) {
   const auto it = g_cachedBindGroups.find(id);
   if (it == g_cachedBindGroups.end()) {
-    Log.report(logwrapper::Fatal, FMT_STRING("get_bind_group: failed to locate {}"), id);
+    Log.report(LOG_FATAL, FMT_STRING("get_bind_group: failed to locate {}"), id);
     unreachable();
   }
   return it->second;
 }
 
-const wgpu::Sampler& sampler_ref(const wgpu::SamplerDescriptor& descriptor) {
+WGPUSampler sampler_ref(const WGPUSamplerDescriptor& descriptor) {
   const auto id = xxh3_hash(descriptor);
   auto it = g_cachedSamplers.find(id);
   if (it == g_cachedSamplers.end()) {
-    it = g_cachedSamplers.try_emplace(id, g_device.CreateSampler(&descriptor)).first;
+    it = g_cachedSamplers.try_emplace(id, wgpuDeviceCreateSampler(g_device, &descriptor)).first;
   }
   return it->second;
 }
 
 uint32_t align_uniform(uint32_t value) { return ALIGN(value, g_cachedLimits.limits.minUniformBufferOffsetAlignment); }
 
-void push_debug_group(zstring_view label) noexcept {
+void push_debug_group(const char* label) noexcept {
 #ifdef AURORA_GFX_DEBUG_GROUPS
   g_debugGroupStack.emplace_back(label);
 #endif

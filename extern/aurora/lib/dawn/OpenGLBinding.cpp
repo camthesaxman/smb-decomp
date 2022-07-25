@@ -3,7 +3,7 @@
 #include <SDL_video.h>
 #include <dawn/native/OpenGLBackend.h>
 
-namespace aurora::gpu::utils {
+namespace aurora::webgpu::utils {
 class OpenGLBinding : public BackendBinding {
 public:
   OpenGLBinding(SDL_Window* window, WGPUDevice device) : BackendBinding(window, device) {}
@@ -32,4 +32,4 @@ private:
 };
 
 BackendBinding* CreateOpenGLBinding(SDL_Window* window, WGPUDevice device) { return new OpenGLBinding(window, device); }
-} // namespace aurora::gpu::utils
+} // namespace aurora::webgpu::utils

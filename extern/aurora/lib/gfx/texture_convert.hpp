@@ -1,29 +1,28 @@
 #pragma once
 
 #include "common.hpp"
-
-#include "../gpu.hpp"
+#include "texture.hpp"
+#include "../webgpu/gpu.hpp"
 
 namespace aurora::gfx {
-static wgpu::TextureFormat to_wgpu(GXTexFmt format) {
+static WGPUTextureFormat to_wgpu(u32 format) {
   switch (format) {
   case GX_TF_I4:
   case GX_TF_I8:
-    return wgpu::TextureFormat::R8Unorm;
+    return WGPUTextureFormat_R8Unorm;
   case GX_TF_C4:
   case GX_TF_C8:
   case GX_TF_C14X2:
-    return wgpu::TextureFormat::R16Sint;
+    return WGPUTextureFormat_R16Sint;
   case GX_TF_CMPR:
-    if (gpu::g_device.HasFeature(wgpu::FeatureName::TextureCompressionBC)) {
-      return wgpu::TextureFormat::BC1RGBAUnorm;
+    if (wgpuDeviceHasFeature(webgpu::g_device, WGPUFeatureName_TextureCompressionBC)) {
+      return WGPUTextureFormat_BC1RGBAUnorm;
     }
     [[fallthrough]];
   default:
-    return wgpu::TextureFormat::RGBA8Unorm;
+    return WGPUTextureFormat_RGBA8Unorm;
   }
 }
 
-ByteBuffer convert_texture(GXTexFmt format, uint32_t width, uint32_t height, uint32_t mips,
-                           ArrayRef<uint8_t> data);
+ByteBuffer convert_texture(u32 format, uint32_t width, uint32_t height, uint32_t mips, ArrayRef<uint8_t> data);
 } // namespace aurora::gfx

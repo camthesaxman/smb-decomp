@@ -2,7 +2,7 @@
 #define _SRC_VARIABLES_H_
 
 #include <dolphin/types.h>
-#include <dolphin/GXStruct.h>
+#include <dolphin/gx/GXStruct.h>
 #include <dolphin/OSAlloc.h>
 #include <dolphin/OSFont.h>
 

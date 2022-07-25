@@ -1,9 +1,8 @@
 #include "BackendBinding.hpp"
 
-#include <SDL_video.h>
 #include <dawn/native/NullBackend.h>
 
-namespace aurora::gpu::utils {
+namespace aurora::webgpu::utils {
 class NullBinding : public BackendBinding {
 public:
   NullBinding(SDL_Window* window, WGPUDevice device) : BackendBinding(window, device) {}
@@ -24,4 +23,4 @@ private:
 };
 
 BackendBinding* CreateNullBinding(SDL_Window* window, WGPUDevice device) { return new NullBinding(window, device); }
-} // namespace aurora::gpu::utils
+} // namespace aurora::webgpu::utils

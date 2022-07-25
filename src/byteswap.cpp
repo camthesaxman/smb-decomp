@@ -458,8 +458,39 @@ template <typename B> void bswap(B &base, Stage &stage)
     bswap(base, stage.unk90);
 }
 
+template <typename B> void bswap(B &base, MotSkeletonEntry1 &obj)
+{
+    // TODO sizes?
+    bswap(base, obj.unk0);
+    bswap(base, obj.unk4);
+    bswap(base, obj.rotations);
+    bswap(base, obj.unkC);
+    bswap(base, obj.unk10);
+    bswap(base, obj.name);
+}
+template <typename B> void bswap(B &base, MotSkeletonEntry2 &obj)
+{
+    bswap(base, obj.unk0);
+    // TODO unk4
+    bswap(base, obj.unk10[0]);
+    bswap(base, obj.unk10[1]);
+    bswap(base, obj.unk10[2]);
+}
+template <typename B> void bswap(B &base, MotSkeleton &stage)
+{
+    bswap(base, stage.unk4);
+    bswap(base, stage.unk0, stage.unk4);
+    bswap(base, stage.unkC);
+    bswap(base, stage.unk8, stage.unkC);
+}
+
 void byteswap_stage(Stage *stage)
 {
     bswap(*stage, *stage);
+    sVisitedPtrs.clear();
+}
+void byteswap_motskeleton(MotSkeleton *skel)
+{
+    bswap(*skel, *skel);
     sVisitedPtrs.clear();
 }

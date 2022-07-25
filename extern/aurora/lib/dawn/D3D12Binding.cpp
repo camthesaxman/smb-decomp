@@ -3,7 +3,7 @@
 #include <SDL_syswm.h>
 #include <dawn/native/D3D12Backend.h>
 
-namespace aurora::gpu::utils {
+namespace aurora::webgpu::utils {
 class D3D12Binding : public BackendBinding {
 public:
   D3D12Binding(SDL_Window* window, WGPUDevice device) : BackendBinding(window, device) {}
@@ -34,4 +34,4 @@ private:
 };
 
 BackendBinding* CreateD3D12Binding(SDL_Window* window, WGPUDevice device) { return new D3D12Binding(window, device); }
-} // namespace aurora::gpu::utils
+} // namespace aurora::webgpu::utils

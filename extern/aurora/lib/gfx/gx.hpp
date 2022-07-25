@@ -1,6 +1,12 @@
 #pragma once
 
+#define TARGET_PC
+#include <dolphin/gx.h>
+
 #include "common.hpp"
+#include "../internal.hpp"
+#include "../math.hpp"
+#include "texture.hpp"
 
 #include <type_traits>
 #include <utility>
@@ -8,6 +14,7 @@
 #include <cstring>
 #include <bitset>
 #include <memory>
+#include <array>
 
 #define M_PIF 3.14159265358979323846f
 
@@ -16,28 +23,6 @@ constexpr u8 MaxLights = 8;
 using LightMask = std::bitset<MaxLights>;
 } // namespace GX
 
-struct GXTexObj_ {
-  std::shared_ptr<aurora::gfx::TextureRef> ref;
-  void* data;
-  u32 dataSize;
-  u16 width;
-  u16 height;
-  GXTexFmt fmt;
-  GXTexWrapMode wrapS;
-  GXTexWrapMode wrapT;
-  GXBool hasMips;
-  GXTexFilter minFilter;
-  GXTexFilter magFilter;
-  float minLod;
-  float maxLod;
-  float lodBias;
-  GXBool biasClamp;
-  GXBool doEdgeLod;
-  GXAnisotropy maxAniso;
-  GXTlut tlut;
-  bool dataInvalidated;
-};
-static_assert(sizeof(GXTexObj_) <= sizeof(GXTexObj), "GXTexObj too small!");
 struct GXLightObj_ {
   GXColor color;
   float a0 = 1.f;
@@ -54,10 +39,6 @@ struct GXLightObj_ {
   float nz = 0.f;
 };
 static_assert(sizeof(GXLightObj_) <= sizeof(GXLightObj), "GXLightObj too small!");
-struct GXTlutObj_ {
-  std::shared_ptr<aurora::gfx::TextureRef> ref;
-};
-static_assert(sizeof(GXTlutObj_) <= sizeof(GXTlutObj), "GXTlutObj too small!");
 
 #if GX_IS_WII
 constexpr float GX_LARGE_NUMBER = -1.0e+18f;
@@ -69,7 +50,7 @@ namespace aurora::gfx::gx {
 constexpr u32 MaxTextures = GX_MAX_TEXMAP;
 constexpr u32 MaxTevStages = GX_MAX_TEVSTAGE;
 constexpr u32 MaxColorChannels = 4;
-constexpr u32 MaxTevRegs = 4;       // TEVPREV, TEVREG0-2
+constexpr u32 MaxTevRegs = 4; // TEVPREV, TEVREG0-2
 constexpr u32 MaxKColors = GX_MAX_KCOLOR;
 constexpr u32 MaxTexMtx = 10;
 constexpr u32 MaxPTTexMtx = 20;
@@ -139,15 +120,6 @@ struct IndStage {
   GXIndTexScale scaleT;
 };
 static_assert(std::has_unique_object_representations_v<IndStage>);
-struct TextureBind {
-  GXTexObj_ texObj;
-
-  TextureBind() noexcept = default;
-  TextureBind(GXTexObj_ obj) noexcept : texObj(std::move(obj)) {}
-  void reset() noexcept { texObj.ref.reset(); };
-  [[nodiscard]] wgpu::SamplerDescriptor get_descriptor() const noexcept;
-  operator bool() const noexcept { return texObj.ref.operator bool(); }
-};
 // For shader generation
 struct ColorChannelConfig {
   GXColorSrc matSrc = GX_SRC_REG;
@@ -236,6 +208,18 @@ struct PnMtx {
   Mat4x4<float> nrm;
 };
 static_assert(sizeof(PnMtx) == sizeof(Mat4x4<float>) * 2);
+struct Light {
+  Vec4<float> pos{0.f, 0.f, 0.f};
+  Vec4<float> dir{0.f, 0.f, -1.f};
+  Vec4<float> color{0.f, 0.f, 0.f, 1.f};
+  Vec4<float> cosAtt{1.f, 0.f, 0.f};
+  Vec4<float> distAtt{1.f, 0.f, 0.f};
+
+  bool operator==(const Light& rhs) const {
+    return pos == rhs.pos && dir == rhs.dir && color == rhs.color && cosAtt == rhs.cosAtt && distAtt == rhs.distAtt;
+  }
+};
+static_assert(sizeof(Light) == 80);
 
 struct GXState {
   std::array<PnMtx, MaxPnMtx> pnMtx;
@@ -286,8 +270,6 @@ struct GXState {
 };
 extern GXState g_gxState;
 
-// static inline Mat4x4<float> get_combined_matrix() noexcept { return g_gxState.proj * g_gxState.mv; }
-
 void shutdown() noexcept;
 const TextureBind& get_texture(GXTexMapID id) noexcept;
 
@@ -325,11 +307,11 @@ static inline bool requires_load_conversion(const GXTexObj_& obj) {
     return false;
   }
 }
-static inline bool is_palette_format(GXTexFmt fmt) { return fmt == GX_TF_C4 || fmt == GX_TF_C8 || fmt == GX_TF_C14X2; }
+static inline bool is_palette_format(u32 fmt) { return fmt == GX_TF_C4 || fmt == GX_TF_C8 || fmt == GX_TF_C14X2; }
 
 struct TextureConfig {
-  GXTexFmt copyFmt = InvalidTextureFormat; // Underlying texture format
-  GXTexFmt loadFmt = InvalidTextureFormat; // Texture format being bound
+  u32 copyFmt = InvalidTextureFormat; // Underlying texture format
+  u32 loadFmt = InvalidTextureFormat; // Texture format being bound
   bool renderTex = false;                  // Perform conversion
   u8 _p1 = 0;
   u8 _p2 = 0;
@@ -370,9 +352,9 @@ struct PipelineConfig {
 static_assert(std::has_unique_object_representations_v<PipelineConfig>);
 
 struct GXBindGroupLayouts {
-  wgpu::BindGroupLayout uniformLayout;
-  wgpu::BindGroupLayout samplerLayout;
-  wgpu::BindGroupLayout textureLayout;
+  WGPUBindGroupLayout uniformLayout;
+  WGPUBindGroupLayout samplerLayout;
+  WGPUBindGroupLayout textureLayout;
 };
 struct GXBindGroups {
   BindGroupRef uniformBindGroup;
@@ -400,11 +382,11 @@ struct BindGroupRanges {
   Range packedTcDataRange;
 };
 void populate_pipeline_config(PipelineConfig& config, GXPrimitive primitive) noexcept;
-wgpu::RenderPipeline build_pipeline(const PipelineConfig& config, const ShaderInfo& info,
-                                    ArrayRef<wgpu::VertexBufferLayout> vtxBuffers, wgpu::ShaderModule shader,
-                                    zstring_view label) noexcept;
+WGPURenderPipeline build_pipeline(const PipelineConfig& config, const ShaderInfo& info,
+                                  ArrayRef<WGPUVertexBufferLayout> vtxBuffers, WGPUShaderModule shader,
+                                  const char* label) noexcept;
 ShaderInfo build_shader_info(const ShaderConfig& config) noexcept;
-wgpu::ShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& info) noexcept;
+WGPUShaderModule build_shader(const ShaderConfig& config, const ShaderInfo& info) noexcept;
 // Range build_vertex_buffer(const GXShaderInfo& info) noexcept;
 Range build_uniform(const ShaderInfo& info) noexcept;
 GXBindGroupLayouts build_bind_group_layouts(const ShaderInfo& info, const ShaderConfig& config) noexcept;

@@ -1,13 +1,12 @@
 #include "BackendBinding.hpp"
 
+#include "../internal.hpp"
+
 #include <SDL_vulkan.h>
-#include <cassert>
 #include <dawn/native/VulkanBackend.h>
 
-#include <aurora/log.hpp>
-
-namespace aurora::gpu::utils {
-static logwrapper::Module Log("aurora::gpu::utils::VulkanBinding");
+namespace aurora::webgpu::utils {
+static Module Log("aurora::webgpu::utils::VulkanBinding");
 
 class VulkanBinding : public BackendBinding {
 public:
@@ -33,11 +32,11 @@ private:
   void CreateSwapChainImpl() {
     VkSurfaceKHR surface = VK_NULL_HANDLE;
     if (SDL_Vulkan_CreateSurface(m_window, dawn::native::vulkan::GetInstance(m_device), &surface) != SDL_TRUE) {
-      Log.report(logwrapper::Fatal, FMT_STRING("Failed to create Vulkan surface: {}"), SDL_GetError());
+      Log.report(LOG_FATAL, FMT_STRING("Failed to create Vulkan surface: {}"), SDL_GetError());
     }
     m_swapChainImpl = dawn::native::vulkan::CreateNativeSwapChainImpl(m_device, surface);
   }
 };
 
 BackendBinding* CreateVulkanBinding(SDL_Window* window, WGPUDevice device) { return new VulkanBinding(window, device); }
-} // namespace aurora::gpu::utils
+} // namespace aurora::webgpu::utils

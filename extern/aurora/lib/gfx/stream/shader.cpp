@@ -1,32 +1,27 @@
 #include "shader.hpp"
 
-#include "../../gpu.hpp"
-#include "../common.hpp"
-
-#include <aurora/log.hpp>
-#include <magic_enum.hpp>
-#include <utility>
+#include "../../webgpu/gpu.hpp"
 
 namespace aurora::gfx::stream {
-static logwrapper::Module Log("aurora::gfx::stream");
+static Module Log("aurora::gfx::stream");
 
-using gpu::g_device;
+using webgpu::g_device;
 
-wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const PipelineConfig& config) {
+WGPURenderPipeline create_pipeline(const State& state, [[maybe_unused]] const PipelineConfig& config) {
   const auto info = build_shader_info(config.shaderConfig); // TODO remove
   const auto shader = build_shader(config.shaderConfig, info);
 
-  std::array<wgpu::VertexAttribute, 4> attributes{};
-  attributes[0] = wgpu::VertexAttribute{
-      .format = wgpu::VertexFormat::Float32x3,
+  std::array<WGPUVertexAttribute, 4> attributes{};
+  attributes[0] = WGPUVertexAttribute{
+      .format = WGPUVertexFormat_Float32x3,
       .offset = 0,
       .shaderLocation = 0,
   };
   uint64_t offset = 12;
   uint32_t shaderLocation = 1;
   if (config.shaderConfig.vtxAttrs[GX_VA_NRM] == GX_DIRECT) {
-    attributes[shaderLocation] = wgpu::VertexAttribute{
-        .format = wgpu::VertexFormat::Float32x3,
+    attributes[shaderLocation] = WGPUVertexAttribute{
+        .format = WGPUVertexFormat_Float32x3,
         .offset = offset,
         .shaderLocation = shaderLocation,
     };
@@ -34,8 +29,8 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
     shaderLocation++;
   }
   if (config.shaderConfig.vtxAttrs[GX_VA_CLR0] == GX_DIRECT) {
-    attributes[shaderLocation] = wgpu::VertexAttribute{
-        .format = wgpu::VertexFormat::Float32x4,
+    attributes[shaderLocation] = WGPUVertexAttribute{
+        .format = WGPUVertexFormat_Float32x4,
         .offset = offset,
         .shaderLocation = shaderLocation,
     };
@@ -46,15 +41,15 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
     if (config.shaderConfig.vtxAttrs[i] != GX_DIRECT) {
       continue;
     }
-    attributes[shaderLocation] = wgpu::VertexAttribute{
-        .format = wgpu::VertexFormat::Float32x2,
+    attributes[shaderLocation] = WGPUVertexAttribute{
+        .format = WGPUVertexFormat_Float32x2,
         .offset = offset,
         .shaderLocation = shaderLocation,
     };
     offset += 8;
     shaderLocation++;
   }
-  const std::array vertexBuffers{wgpu::VertexBufferLayout{
+  const std::array vertexBuffers{WGPUVertexBufferLayout{
       .arrayStride = offset,
       .attributeCount = shaderLocation,
       .attributes = attributes.data(),
@@ -65,23 +60,25 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
 
 State construct_state() { return {}; }
 
-void render(const State& state, const DrawData& data, const wgpu::RenderPassEncoder& pass) {
+void render(const State& state, const DrawData& data, const WGPURenderPassEncoder& pass) {
   if (!bind_pipeline(data.pipeline, pass)) {
     return;
   }
 
   const std::array offsets{data.uniformRange.offset};
-  pass.SetBindGroup(0, find_bind_group(data.bindGroups.uniformBindGroup), offsets.size(), offsets.data());
+  wgpuRenderPassEncoderSetBindGroup(pass, 0, find_bind_group(data.bindGroups.uniformBindGroup), offsets.size(),
+                                    offsets.data());
   if (data.bindGroups.samplerBindGroup && data.bindGroups.textureBindGroup) {
-    pass.SetBindGroup(1, find_bind_group(data.bindGroups.samplerBindGroup));
-    pass.SetBindGroup(2, find_bind_group(data.bindGroups.textureBindGroup));
+    wgpuRenderPassEncoderSetBindGroup(pass, 1, find_bind_group(data.bindGroups.samplerBindGroup), 0, nullptr);
+    wgpuRenderPassEncoderSetBindGroup(pass, 2, find_bind_group(data.bindGroups.textureBindGroup), 0, nullptr);
   }
-  pass.SetVertexBuffer(0, g_vertexBuffer, data.vertRange.offset, data.vertRange.size);
-  pass.SetIndexBuffer(g_indexBuffer, wgpu::IndexFormat::Uint16, data.indexRange.offset, data.indexRange.size);
+  wgpuRenderPassEncoderSetVertexBuffer(pass, 0, g_vertexBuffer, data.vertRange.offset, data.vertRange.size);
+  wgpuRenderPassEncoderSetIndexBuffer(pass, g_indexBuffer, WGPUIndexFormat_Uint16, data.indexRange.offset,
+                                      data.indexRange.size);
   if (data.dstAlpha != UINT32_MAX) {
-    const wgpu::Color color{0.f, 0.f, 0.f, data.dstAlpha / 255.f};
-    pass.SetBlendConstant(&color);
+    const WGPUColor color{0.f, 0.f, 0.f, data.dstAlpha / 255.f};
+    wgpuRenderPassEncoderSetBlendConstant(pass, &color);
   }
-  pass.DrawIndexed(data.indexCount);
+  wgpuRenderPassEncoderDrawIndexed(pass, data.indexCount, 1, 0, 0, 0);
 }
 } // namespace aurora::gfx::stream

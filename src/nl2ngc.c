@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dolphin/GXEnum.h>
+#include <dolphin/gx/GXEnum.h>
 
 #include "bitmap.h"
 #include "global.h"

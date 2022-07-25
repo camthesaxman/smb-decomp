@@ -1,7 +1,6 @@
 #include "input.hpp"
 #include "internal.hpp"
-#include "aurora/pad.hpp"
-#include "aurora/log.hpp"
+#include "pad.hpp"
 
 #include "magic_enum.hpp"
 
@@ -16,7 +15,7 @@
 using namespace std::string_view_literals;
 
 namespace aurora::input {
-static logwrapper::Module Log("aurora::input");
+static Module Log("aurora::input");
 
 struct GameController {
   SDL_GameController* m_controller = nullptr;
@@ -24,8 +23,8 @@ struct GameController {
   Sint32 m_index = -1;
   bool m_hasRumble = false;
   PADDeadZones m_deadZones;
-  u16 m_vid = 0;
-  u16 m_pid = 0;
+  uint16_t m_vid = 0;
+  uint16_t m_pid = 0;
   std::array<PADButtonMapping, 12> m_mapping{};
   bool m_mappingLoaded = false;
   constexpr bool operator==(const GameController& other) const {
@@ -34,7 +33,7 @@ struct GameController {
 };
 absl::flat_hash_map<Uint32, GameController> g_GameControllers;
 
-GameController* get_controller_for_player(u32 player) noexcept {
+GameController* get_controller_for_player(uint32_t player) noexcept {
   for (auto& [which, controller] : g_GameControllers) {
     if (player_index(which) == player) {
       return &controller;
@@ -62,7 +61,7 @@ GameController* get_controller_for_player(u32 player) noexcept {
   return nullptr;
 }
 
-Sint32 get_instance_for_player(u32 player) noexcept {
+Sint32 get_instance_for_player(uint32_t player) noexcept {
   for (const auto& [which, controller] : g_GameControllers) {
     if (player_index(which) == player) {
       return which;
@@ -90,13 +89,13 @@ static std::optional<std::string> remap_controller_layout(std::string_view mappi
     idx++;
   }
   if (entries.contains("rightshoulder"sv) && !entries.contains("leftshoulder"sv)) {
-    Log.report(logwrapper::Info, FMT_STRING("Remapping GameCube controller layout"));
+    Log.report(LOG_INFO, FMT_STRING("Remapping GameCube controller layout"));
     entries.insert_or_assign("back"sv, entries["rightshoulder"sv]);
     // TODO trigger buttons may differ per platform
     entries.insert_or_assign("leftshoulder"sv, "b11"sv);
     entries.insert_or_assign("rightshoulder"sv, "b10"sv);
   } else if (entries.contains("leftshoulder"sv) && entries.contains("rightshoulder"sv) && entries.contains("back"sv)) {
-    Log.report(logwrapper::Info, FMT_STRING("Controller has standard layout"));
+    Log.report(LOG_INFO, FMT_STRING("Controller has standard layout"));
     auto a = entries["a"sv];
     entries.insert_or_assign("a"sv, entries["b"sv]);
     entries.insert_or_assign("b"sv, a);
@@ -104,7 +103,7 @@ static std::optional<std::string> remap_controller_layout(std::string_view mappi
     entries.insert_or_assign("x"sv, entries["y"sv]);
     entries.insert_or_assign("y"sv, x);
   } else {
-    Log.report(logwrapper::Error, FMT_STRING("Controller has unsupported layout: {}"), mapping);
+    Log.report(LOG_ERROR, FMT_STRING("Controller has unsupported layout: {}"), mapping);
     return {};
   }
   for (auto [k, v] : entries) {
@@ -126,11 +125,11 @@ Sint32 add_controller(Sint32 which) noexcept {
         SDL_free(mapping);
         if (newMapping) {
           if (SDL_GameControllerAddMapping(newMapping->c_str()) == -1) {
-            Log.report(logwrapper::Error, FMT_STRING("Failed to update controller mapping: {}"), SDL_GetError());
+            Log.report(LOG_ERROR, FMT_STRING("Failed to update controller mapping: {}"), SDL_GetError());
           }
         }
       } else {
-        Log.report(logwrapper::Error, FMT_STRING("Failed to retrieve mapping for controller"));
+        Log.report(LOG_ERROR, FMT_STRING("Failed to retrieve mapping for controller"));
       }
     }
     GameController controller;
@@ -210,179 +209,6 @@ void controller_rumble(uint32_t instance, uint16_t low_freq_intensity, uint16_t 
                              duration_ms);
   }
 }
-ControllerButton translate_controller_button(SDL_GameControllerButton btn) noexcept {
-  switch (btn) {
-  case SDL_CONTROLLER_BUTTON_A:
-    return ControllerButton::A;
-  case SDL_CONTROLLER_BUTTON_B:
-    return ControllerButton::B;
-  case SDL_CONTROLLER_BUTTON_X:
-    return ControllerButton::X;
-  case SDL_CONTROLLER_BUTTON_Y:
-    return ControllerButton::Y;
-  case SDL_CONTROLLER_BUTTON_BACK:
-    return ControllerButton::Back;
-  case SDL_CONTROLLER_BUTTON_GUIDE:
-    return ControllerButton::Guide;
-  case SDL_CONTROLLER_BUTTON_START:
-    return ControllerButton::Start;
-  case SDL_CONTROLLER_BUTTON_LEFTSTICK:
-    return ControllerButton::LeftStick;
-  case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
-    return ControllerButton::RightStick;
-  case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-    return ControllerButton::LeftShoulder;
-  case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-    return ControllerButton::RightShoulder;
-  case SDL_CONTROLLER_BUTTON_DPAD_UP:
-    return ControllerButton::DPadUp;
-  case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-    return ControllerButton::DPadDown;
-  case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-    return ControllerButton::DPadRight;
-  case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-    return ControllerButton::DPadLeft;
-  default:
-    return ControllerButton::Other;
-  }
-}
-
-ControllerAxis translate_controller_axis(SDL_GameControllerAxis axis) noexcept {
-  switch (axis) {
-  case SDL_CONTROLLER_AXIS_LEFTX:
-    return ControllerAxis::LeftX;
-  case SDL_CONTROLLER_AXIS_LEFTY:
-    return ControllerAxis::LeftY;
-  case SDL_CONTROLLER_AXIS_RIGHTX:
-    return ControllerAxis::RightX;
-  case SDL_CONTROLLER_AXIS_RIGHTY:
-    return ControllerAxis::RightY;
-  case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-    return ControllerAxis::TriggerLeft;
-  case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-    return ControllerAxis::TriggerRight;
-  default:
-    return ControllerAxis::MAX;
-  }
-}
-
-char translate_key(SDL_Keysym sym, SpecialKey& specialSym, ModifierKey& modifierSym) noexcept {
-  specialSym = SpecialKey::None;
-  modifierSym = ModifierKey::None;
-  if (sym.sym >= SDLK_F1 && sym.sym <= SDLK_F12) {
-    specialSym = SpecialKey(int(SpecialKey::F1) + sym.sym - SDLK_F1);
-  } else if (sym.sym == SDLK_ESCAPE) {
-    specialSym = SpecialKey::Esc;
-  } else if (sym.sym == SDLK_RETURN) {
-    specialSym = SpecialKey::Enter;
-  } else if (sym.sym == SDLK_KP_ENTER) {
-    specialSym = SpecialKey::KpEnter;
-  } else if (sym.sym == SDLK_BACKSPACE) {
-    specialSym = SpecialKey::Backspace;
-  } else if (sym.sym == SDLK_INSERT) {
-    specialSym = SpecialKey::Insert;
-  } else if (sym.sym == SDLK_DELETE) {
-    specialSym = SpecialKey::Delete;
-  } else if (sym.sym == SDLK_HOME) {
-    specialSym = SpecialKey::Home;
-  } else if (sym.sym == SDLK_END) {
-    specialSym = SpecialKey::End;
-  } else if (sym.sym == SDLK_PAGEUP) {
-    specialSym = SpecialKey::PgUp;
-  } else if (sym.sym == SDLK_PAGEDOWN) {
-    specialSym = SpecialKey::PgDown;
-  } else if (sym.sym == SDLK_LEFT) {
-    specialSym = SpecialKey::Left;
-  } else if (sym.sym == SDLK_RIGHT) {
-    specialSym = SpecialKey::Right;
-  } else if (sym.sym == SDLK_UP) {
-    specialSym = SpecialKey::Up;
-  } else if (sym.sym == SDLK_DOWN) {
-    specialSym = SpecialKey::Down;
-  } else if (sym.sym == SDLK_TAB) {
-    specialSym = SpecialKey::Tab;
-  } else if (sym.sym == SDLK_LSHIFT) {
-    modifierSym = ModifierKey::LeftShift;
-  } else if (sym.sym == SDLK_RSHIFT) {
-    modifierSym = ModifierKey::RightShift;
-  } else if (sym.sym == SDLK_LCTRL) {
-    modifierSym = ModifierKey::LeftControl;
-  } else if (sym.sym == SDLK_RCTRL) {
-    modifierSym = ModifierKey::RightControl;
-  } else if (sym.sym == SDLK_LALT) {
-    modifierSym = ModifierKey::LeftAlt;
-  } else if (sym.sym == SDLK_RALT) {
-    modifierSym = ModifierKey::RightAlt;
-  } else if (sym.sym >= ' ' && sym.sym <= 'z') {
-    return static_cast<char>(sym.sym);
-  }
-  return 0;
-}
-
-ModifierKey translate_modifiers(Uint16 mods) noexcept {
-  ModifierKey ret = ModifierKey::None;
-  if ((mods & SDLK_LSHIFT) != 0) {
-    ret |= ModifierKey::LeftShift;
-  }
-  if ((mods & SDLK_RSHIFT) != 0) {
-    ret |= ModifierKey::RightShift;
-  }
-  if ((mods & SDLK_LCTRL) != 0) {
-    ret |= ModifierKey::LeftControl;
-  }
-  if ((mods & SDLK_RCTRL) != 0) {
-    ret |= ModifierKey::RightControl;
-  }
-  if ((mods & SDLK_LALT) != 0) {
-    ret |= ModifierKey::LeftAlt;
-  }
-  if ((mods & SDLK_RALT) != 0) {
-    ret |= ModifierKey::RightAlt;
-  }
-
-  return ret;
-}
-
-MouseButton translate_mouse_button(Uint8 button) noexcept {
-  if (button == 1) {
-    return MouseButton::Primary;
-  }
-  if (button == 2) {
-    return MouseButton::Middle;
-  }
-  if (button == 3) {
-    return MouseButton::Secondary;
-  }
-  if (button == 4) {
-    return MouseButton::Aux1;
-  }
-  if (button == 5) {
-    return MouseButton::Aux2;
-  }
-
-  return MouseButton::None;
-}
-
-MouseButton translate_mouse_button_state(Uint8 state) noexcept {
-  auto ret = MouseButton::None;
-  if ((state & 0x01) != 0) {
-    ret |= MouseButton::Primary;
-  }
-  if ((state & 0x02) != 0) {
-    ret |= MouseButton::Middle;
-  }
-  if ((state & 0x04) != 0) {
-    ret |= MouseButton::Secondary;
-  }
-  if ((state & 0x08) != 0) {
-    ret |= MouseButton::Aux1;
-  }
-  if ((state & 0x10) != 0) {
-    ret |= MouseButton::Aux2;
-  }
-
-  return ret;
-}
 
 uint32_t controller_count() noexcept { return g_GameControllers.size(); }
 
@@ -403,18 +229,18 @@ static const std::array<PADButtonMapping, 12> mDefaultButtons{{
     {SDL_CONTROLLER_BUTTON_DPAD_RIGHT, PAD::BUTTON_RIGHT},
 }};
 
-void PADSetSpec(s32 spec) {}
+void PADSetSpec(int32_t spec) {}
 void PADInit() {}
-bool PADRecalibrate(u32 mask) { return true; }
-bool PADReset(u32 mask) { return true; }
-void PADSetAnalogMode(u32 mode) {}
+bool PADRecalibrate(uint32_t mask) { return true; }
+bool PADReset(uint32_t mask) { return true; }
+void PADSetAnalogMode(uint32_t mode) {}
 
-aurora::input::GameController* __PADGetControllerForIndex(u32 idx) {
+aurora::input::GameController* __PADGetControllerForIndex(uint32_t idx) {
   if (idx >= aurora::input::g_GameControllers.size()) {
     return nullptr;
   }
 
-  u32 tmp = 0;
+  uint32_t tmp = 0;
   auto iter = aurora::input::g_GameControllers.begin();
   while (tmp < idx) {
     ++iter;
@@ -427,9 +253,9 @@ aurora::input::GameController* __PADGetControllerForIndex(u32 idx) {
   return &iter->second;
 }
 
-u32 PADCount() { return aurora::input::g_GameControllers.size(); }
+uint32_t PADCount() { return aurora::input::g_GameControllers.size(); }
 
-const char* PADGetNameForControllerIndex(u32 idx) {
+const char* PADGetNameForControllerIndex(uint32_t idx) {
   auto* ctrl = __PADGetControllerForIndex(idx);
   if (ctrl == nullptr) {
     return nullptr;
@@ -438,7 +264,7 @@ const char* PADGetNameForControllerIndex(u32 idx) {
   return SDL_GameControllerName(ctrl->m_controller);
 }
 
-void PADSetPortForIndex(u32 idx, s32 port) {
+void PADSetPortForIndex(uint32_t idx, int32_t port) {
   auto* ctrl = __PADGetControllerForIndex(idx);
   auto* dest = aurora::input::get_controller_for_player(port);
   if (ctrl == nullptr) {
@@ -450,12 +276,12 @@ void PADSetPortForIndex(u32 idx, s32 port) {
   SDL_GameControllerSetPlayerIndex(ctrl->m_controller, port);
 }
 
-s32 PADGetIndexForPort(u32 port) {
+int32_t PADGetIndexForPort(uint32_t port) {
   auto* ctrl = aurora::input::get_controller_for_player(port);
   if (ctrl == nullptr) {
     return -1;
   }
-  s32 index = 0;
+  int32_t index = 0;
   for (auto iter = aurora::input::g_GameControllers.begin(); iter != aurora::input::g_GameControllers.end();
        ++iter, ++index) {
     if (&iter->second == ctrl) {
@@ -466,7 +292,7 @@ s32 PADGetIndexForPort(u32 port) {
   return index;
 }
 
-void PADClearPort(u32 port) {
+void PADClearPort(uint32_t port) {
   auto* ctrl = aurora::input::get_controller_for_player(port);
   if (ctrl == nullptr) {
     return;
@@ -475,12 +301,12 @@ void PADClearPort(u32 port) {
 }
 
 void __PADLoadMapping(aurora::input::GameController* controller) {
-  s32 playerIndex = SDL_GameControllerGetPlayerIndex(controller->m_controller);
+  int32_t playerIndex = SDL_GameControllerGetPlayerIndex(controller->m_controller);
   if (playerIndex == -1) {
     return;
   }
 
-  std::string basePath = std::string(aurora::g_configPath);
+  std::string basePath{aurora::g_config.configPath};
   if (!controller->m_mappingLoaded) {
     controller->m_mapping = mDefaultButtons;
   }
@@ -494,15 +320,15 @@ void __PADLoadMapping(aurora::input::GameController* controller) {
     return;
   }
 
-  u32 magic = 0;
-  fread(&magic, 1, sizeof(u32), file);
+  uint32_t magic = 0;
+  fread(&magic, 1, sizeof(uint32_t), file);
   if (magic != SBIG('CTRL')) {
     fmt::print(FMT_STRING("Invalid controller mapping magic!\n"));
     return;
   }
 
-  u32 version = 0;
-  fread(&version, 1, sizeof(u32), file);
+  uint32_t version = 0;
+  fread(&version, 1, sizeof(uint32_t), file);
   if (version != 1) {
     fmt::print(FMT_STRING("Invalid controller mapping version!\n"));
     return;
@@ -511,7 +337,7 @@ void __PADLoadMapping(aurora::input::GameController* controller) {
   bool isGameCube = false;
   fread(&isGameCube, 1, 1, file);
   fseek(file, (ftell(file) + 31) & ~31, SEEK_SET);
-  u32 dataStart = ftell(file);
+  uint32_t dataStart = ftell(file);
   if (isGameCube) {
     fseek(file, dataStart + ((sizeof(PADDeadZones) + sizeof(PADButtonMapping)) * playerIndex), SEEK_SET);
   }
@@ -522,13 +348,13 @@ void __PADLoadMapping(aurora::input::GameController* controller) {
 }
 
 bool gBlockPAD = false;
-u32 PADRead(PAD::Status* status) {
+uint32_t PADRead(PAD::Status* status) {
   if (gBlockPAD) {
     return 0;
   }
 
-  u32 rumbleSupport = 0;
-  for (u32 i = 0; i < 4; ++i) {
+  uint32_t rumbleSupport = 0;
+  for (uint32_t i = 0; i < 4; ++i) {
     memset(&status[i], 0, sizeof(PAD::Status));
     auto controller = aurora::input::get_controller_for_player(i);
     if (controller == nullptr) {
@@ -566,8 +392,8 @@ u32 PADRead(PAD::Status* status) {
       y = (-(y + 1u)) / 256u;
     }
 
-    status[i].x2_stickX = static_cast<s8>(x);
-    status[i].x3_stickY = static_cast<s8>(y);
+    status[i].x2_stickX = static_cast<int8_t>(x);
+    status[i].x3_stickY = static_cast<int8_t>(y);
 
     x = SDL_GameControllerGetAxis(controller->m_controller, SDL_CONTROLLER_AXIS_RIGHTX);
     y = SDL_GameControllerGetAxis(controller->m_controller, SDL_CONTROLLER_AXIS_RIGHTY);
@@ -588,8 +414,8 @@ u32 PADRead(PAD::Status* status) {
       y = (-(y + 1u)) / 256u;
     }
 
-    status[i].x4_substickX = static_cast<s8>(x);
-    status[i].x5_substickY = static_cast<s8>(y);
+    status[i].x4_substickX = static_cast<int8_t>(x);
+    status[i].x5_substickY = static_cast<int8_t>(y);
 
     x = SDL_GameControllerGetAxis(controller->m_controller, SDL_CONTROLLER_AXIS_TRIGGERLEFT);
     y = SDL_GameControllerGetAxis(controller->m_controller, SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
@@ -604,8 +430,8 @@ u32 PADRead(PAD::Status* status) {
     x /= 128;
     y /= 128;
 
-    status[i].x6_triggerL = static_cast<s8>(x);
-    status[i].x7_triggerR = static_cast<s8>(y);
+    status[i].x6_triggerL = static_cast<int8_t>(x);
+    status[i].x7_triggerR = static_cast<int8_t>(y);
 
     if (controller->m_hasRumble) {
       rumbleSupport |= PAD::CHAN0_BIT >> i;
@@ -614,8 +440,8 @@ u32 PADRead(PAD::Status* status) {
   return rumbleSupport;
 }
 
-void PADControlAllMotors(const u32* commands) {
-  for (u32 i = 0; i < 4; ++i) {
+void PADControlAllMotors(const uint32_t* commands) {
+  for (uint32_t i = 0; i < 4; ++i) {
     auto controller = aurora::input::get_controller_for_player(i);
     auto instance = aurora::input::get_instance_for_player(i);
     if (controller == nullptr) {
@@ -642,7 +468,7 @@ void PADControlAllMotors(const u32* commands) {
   }
 }
 
-u32 SIProbe(s32 chan) {
+uint32_t SIProbe(int32_t chan) {
   auto* const controller = aurora::input::get_controller_for_player(chan);
   if (controller == nullptr) {
     return SI::ERROR_NO_RESPONSE;
@@ -659,16 +485,16 @@ u32 SIProbe(s32 chan) {
 }
 
 struct PADCLampRegion {
-  u8 minTrigger;
-  u8 maxTrigger;
-  s8 minStick;
-  s8 maxStick;
-  s8 xyStick;
-  s8 minSubstick;
-  s8 maxSubstick;
-  s8 xySubstick;
-  s8 radStick;
-  s8 radSubstick;
+  uint8_t minTrigger;
+  uint8_t maxTrigger;
+  int8_t minStick;
+  int8_t maxStick;
+  int8_t xyStick;
+  int8_t minSubstick;
+  int8_t maxSubstick;
+  int8_t xySubstick;
+  int8_t radStick;
+  int8_t radSubstick;
 };
 
 static constexpr PADCLampRegion ClampRegion{
@@ -691,7 +517,7 @@ static constexpr PADCLampRegion ClampRegion{
     44,
 };
 
-void ClampTrigger(u8* trigger, u8 min, u8 max) {
+void ClampTrigger(uint8_t* trigger, uint8_t min, uint8_t max) {
   if (*trigger <= min) {
     *trigger = 0;
   } else {
@@ -702,7 +528,7 @@ void ClampTrigger(u8* trigger, u8 min, u8 max) {
   }
 }
 
-void ClampCircle(s8* px, s8* py, s8 radius, s8 min) {
+void ClampCircle(int8_t* px, int8_t* py, int8_t radius, int8_t min) {
   int x = *px;
   int y = *py;
 
@@ -724,20 +550,20 @@ void ClampCircle(s8* px, s8* py, s8 radius, s8 min) {
 
   int squared = x * x + y * y;
   if (radius * radius < squared) {
-    s32 length = static_cast<s32>(std::sqrt(squared));
+    int32_t length = static_cast<int32_t>(std::sqrt(squared));
     x = (x * radius) / length;
     y = (y * radius) / length;
   }
 
-  *px = static_cast<s8>(x);
-  *py = static_cast<s8>(y);
+  *px = static_cast<int8_t>(x);
+  *py = static_cast<int8_t>(y);
 }
 
-void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
-  s32 x = *px;
-  s32 y = *py;
+void ClampStick(int8_t* px, int8_t* py, int8_t max, int8_t xy, int8_t min) {
+  int32_t x = *px;
+  int32_t y = *py;
 
-  s32 signX = 0;
+  int32_t signX = 0;
   if (0 <= x) {
     signX = 1;
   } else {
@@ -745,7 +571,7 @@ void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
     x = -x;
   }
 
-  s8 signY = 0;
+  int8_t signY = 0;
   if (0 <= y) {
     signY = 1;
   } else {
@@ -770,13 +596,13 @@ void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
   }
 
   if (xy * y <= xy * x) {
-    s32 d = xy * x + (max - xy) * y;
+    int32_t d = xy * x + (max - xy) * y;
     if (xy * max < d) {
       x = (xy * max * x / d);
       y = (xy * max * y / d);
     }
   } else {
-    s32 d = xy * y + (max - xy) * x;
+    int32_t d = xy * y + (max - xy) * x;
     if (xy * max < d) {
       x = (xy * max * x / d);
       y = (xy * max * y / d);
@@ -788,7 +614,7 @@ void ClampStick(s8* px, s8* py, s8 max, s8 xy, s8 min) {
 }
 
 void PADClamp(PAD::Status* status) {
-  for (u32 i = 0; i < 4; ++i) {
+  for (uint32_t i = 0; i < 4; ++i) {
     if (status[i].xa_err != PAD::ERR_NONE) {
       continue;
     }
@@ -803,7 +629,7 @@ void PADClamp(PAD::Status* status) {
 }
 
 void PADClampCircle(PAD::Status* status) {
-  for (u32 i = 0; i < 4; ++i) {
+  for (uint32_t i = 0; i < 4; ++i) {
     if (status[i].xa_err != PAD::ERR_NONE) {
       continue;
     }
@@ -815,7 +641,7 @@ void PADClampCircle(PAD::Status* status) {
   }
 }
 
-void PADGetVidPid(u32 port, u32* vid, u32* pid) {
+void PADGetVidPid(uint32_t port, uint32_t* vid, uint32_t* pid) {
   *vid = 0;
   *pid = 0;
   auto* controller = aurora::input::get_controller_for_player(port);
@@ -827,7 +653,7 @@ void PADGetVidPid(u32 port, u32* vid, u32* pid) {
   *pid = controller->m_pid;
 }
 
-const char* PADGetName(u32 port) {
+const char* PADGetName(uint32_t port) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     return nullptr;
@@ -836,7 +662,7 @@ const char* PADGetName(u32 port) {
   return SDL_GameControllerName(controller->m_controller);
 }
 
-void PADSetButtonMapping(u32 port, PADButtonMapping mapping) {
+void PADSetButtonMapping(uint32_t port, PADButtonMapping mapping) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     return;
@@ -851,13 +677,13 @@ void PADSetButtonMapping(u32 port, PADButtonMapping mapping) {
   *iter = mapping;
 }
 
-void PADSetAllButtonMappings(u32 port, PADButtonMapping buttons[12]) {
-  for (u32 i = 0; i < 12; ++i) {
+void PADSetAllButtonMappings(uint32_t port, PADButtonMapping buttons[12]) {
+  for (uint32_t i = 0; i < 12; ++i) {
     PADSetButtonMapping(port, buttons[i]);
   }
 }
 
-PADButtonMapping* PADGetButtonMappings(u32 port, u32* buttonCount) {
+PADButtonMapping* PADGetButtonMappings(uint32_t port, uint32_t* buttonCount) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     *buttonCount = 0;
@@ -873,7 +699,7 @@ void __PADWriteDeadZones(FILE* file, aurora::input::GameController& controller) 
 }
 
 void PADSerializeMappings() {
-  std::string basePath = std::string(aurora::g_configPath);
+  std::string basePath{aurora::g_config.configPath};
 
   bool wroteGameCubeAlready = false;
   for (auto& controller : aurora::input::g_GameControllers) {
@@ -902,7 +728,7 @@ void PADSerializeMappings() {
              file);
     } else {
       if (!wroteGameCubeAlready) {
-        for (u32 i = 0; i < 4; ++i) {
+        for (uint32_t i = 0; i < 4; ++i) {
           /* Just use the current controller's configs for this */
           __PADWriteDeadZones(file, controller.second);
           fwrite(mDefaultButtons.data(), 1, sizeof(PADButtonMapping) * mDefaultButtons.size(), file);
@@ -920,7 +746,7 @@ void PADSerializeMappings() {
   }
 }
 
-PADDeadZones* PADGetDeadZones(u32 port) {
+PADDeadZones* PADGetDeadZones(uint32_t port) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     return nullptr;
@@ -954,17 +780,17 @@ const char* PADGetButtonName(PAD::BUTTON button) {
   return nullptr;
 }
 
-const char* PADGetNativeButtonName(u32 button) {
+const char* PADGetNativeButtonName(uint32_t button) {
   return SDL_GameControllerGetStringForButton(static_cast<SDL_GameControllerButton>(button));
 }
 
-s32 PADGetNativeButtonPressed(u32 port) {
+int32_t PADGetNativeButtonPressed(uint32_t port) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     return -1;
   }
 
-  for (u32 i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {
+  for (uint32_t i = 0; i < SDL_CONTROLLER_BUTTON_MAX; ++i) {
     if (SDL_GameControllerGetButton(controller->m_controller, static_cast<SDL_GameControllerButton>(i)) != 0u) {
       return i;
     }
@@ -972,7 +798,7 @@ s32 PADGetNativeButtonPressed(u32 port) {
   return -1;
 }
 
-void PADRestoreDefaultMapping(u32 port) {
+void PADRestoreDefaultMapping(uint32_t port) {
   auto* controller = aurora::input::get_controller_for_player(port);
   if (controller == nullptr) {
     return;

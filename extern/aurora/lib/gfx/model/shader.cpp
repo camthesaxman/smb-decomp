@@ -1,23 +1,11 @@
 #include "shader.hpp"
 
-#include "../../gpu.hpp"
-#include "../common.hpp"
+#include "../../webgpu/gpu.hpp"
 
-#include <aurora/log.hpp>
 #include <absl/container/flat_hash_map.h>
-#include <aurora/model.hpp>
 
 namespace aurora::gfx::model {
-static logwrapper::Module Log("aurora::gfx::model");
-
-static const std::vector<Vec4<f32>>* vtxData;
-static const std::vector<Vec4<f32>>* nrmData;
-static const std::vector<Vec2<f32>>* tc0Data;
-static const std::vector<Vec2<f32>>* tc1Data;
-static std::optional<Range> cachedVtxRange;
-static std::optional<Range> cachedNrmRange;
-static std::optional<Range> cachedTc1Range;
-static std::optional<Range> cachedTc0Range;
+static Module Log("aurora::gfx::model");
 
 template <typename T>
 constexpr T bswap16(T val) noexcept {
@@ -139,14 +127,13 @@ static u32 prepare_vtx_buffer(ByteBuffer& buf, GXVtxFmt vtxfmt, const u8* ptr, u
         outVtxSize += 16;
         break;
       default:
-        Log.report(logwrapper::Fatal, FMT_STRING("not handled: attr {}, cnt {}, type {}"), attr, attrFmt.cnt,
-                   attrFmt.type);
+        Log.report(LOG_FATAL, FMT_STRING("not handled: attr {}, cnt {}, type {}"), attr, attrFmt.cnt, attrFmt.type);
         break;
       }
 #undef COMBINE
       break;
     default:
-      Log.report(logwrapper::Fatal, FMT_STRING("indexed attributes unhandled"));
+      Log.report(LOG_FATAL, FMT_STRING("indexed attributes unhandled"));
     }
   }
 
@@ -256,7 +243,7 @@ static u16 prepare_idx_buffer(ByteBuffer& buf, GXPrimitive prim, u16 vtxStart, u
       numIndices += 3;
     }
   } else {
-    Log.report(logwrapper::Fatal, FMT_STRING("Unsupported primitive type {}"), static_cast<u32>(prim));
+    Log.report(LOG_FATAL, FMT_STRING("Unsupported primitive type {}"), static_cast<u32>(prim));
   }
   return numIndices;
 }
@@ -303,7 +290,7 @@ void queue_surface(const u8* dlStart, u32 dlSize) noexcept {
       case GX_DRAW_LINES:
       case GX_DRAW_LINE_STRIP:
       case GX_DRAW_POINTS:
-        Log.report(logwrapper::Fatal, FMT_STRING("unimplemented prim type: {}"), u32(prim));
+        Log.report(LOG_FATAL, FMT_STRING("unimplemented prim type: {}"), u32(prim));
         break;
       }
     }
@@ -366,11 +353,11 @@ void queue_surface(const u8* dlStart, u32 dlSize) noexcept {
 
 State construct_state() { return {}; }
 
-wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const PipelineConfig& config) {
+WGPURenderPipeline create_pipeline(const State& state, [[maybe_unused]] const PipelineConfig& config) {
   const auto info = build_shader_info(config.shaderConfig); // TODO remove
   const auto shader = build_shader(config.shaderConfig, info);
 
-  std::array<wgpu::VertexAttribute, gx::MaxVtxAttr> vtxAttrs{};
+  std::array<WGPUVertexAttribute, gx::MaxVtxAttr> vtxAttrs{};
   auto [num4xAttr, rem] = std::div(config.shaderConfig.indexedAttributeCount, 4);
   u32 num2xAttr = 0;
   if (rem > 2) {
@@ -385,7 +372,7 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
   // Indexed attributes
   for (u32 i = 0; i < num4xAttr; ++i) {
     vtxAttrs[shaderLocation] = {
-        .format = wgpu::VertexFormat::Sint16x4,
+        .format = WGPUVertexFormat_Sint16x4,
         .offset = offset,
         .shaderLocation = shaderLocation,
     };
@@ -394,7 +381,7 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
   }
   for (u32 i = 0; i < num2xAttr; ++i) {
     vtxAttrs[shaderLocation] = {
-        .format = wgpu::VertexFormat::Sint16x2,
+        .format = WGPUVertexFormat_Sint16x2,
         .offset = offset,
         .shaderLocation = shaderLocation,
     };
@@ -412,8 +399,8 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
     switch (attr) {
     case GX_VA_POS:
     case GX_VA_NRM:
-      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
-          .format = wgpu::VertexFormat::Float32x3,
+      vtxAttrs[shaderLocation] = WGPUVertexAttribute{
+          .format = WGPUVertexFormat_Float32x3,
           .offset = offset,
           .shaderLocation = shaderLocation,
       };
@@ -421,8 +408,8 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
       break;
     case GX_VA_CLR0:
     case GX_VA_CLR1:
-      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
-          .format = wgpu::VertexFormat::Float32x4,
+      vtxAttrs[shaderLocation] = WGPUVertexAttribute{
+          .format = WGPUVertexFormat_Float32x4,
           .offset = offset,
           .shaderLocation = shaderLocation,
       };
@@ -436,30 +423,30 @@ wgpu::RenderPipeline create_pipeline(const State& state, [[maybe_unused]] const 
     case GX_VA_TEX5:
     case GX_VA_TEX6:
     case GX_VA_TEX7:
-      vtxAttrs[shaderLocation] = wgpu::VertexAttribute{
-          .format = wgpu::VertexFormat::Float32x2,
+      vtxAttrs[shaderLocation] = WGPUVertexAttribute{
+          .format = WGPUVertexFormat_Float32x2,
           .offset = offset,
           .shaderLocation = shaderLocation,
       };
       offset += 8;
       break;
     default:
-      Log.report(logwrapper::Fatal, FMT_STRING("unhandled direct attr {}"), i);
+      Log.report(LOG_FATAL, FMT_STRING("unhandled direct attr {}"), i);
     }
     ++shaderLocation;
   }
 
-  const std::array vtxBuffers{wgpu::VertexBufferLayout{
+  const std::array vtxBuffers{WGPUVertexBufferLayout{
       .arrayStride = offset,
-      .stepMode = wgpu::VertexStepMode::Vertex,
+      .stepMode = WGPUVertexStepMode_Vertex,
       .attributeCount = shaderLocation,
       .attributes = vtxAttrs.data(),
   }};
 
-  return build_pipeline(config, info, vtxBuffers, shader, "Model Pipeline");
+  return build_pipeline(config, info, vtxBuffers, shader, "GX Pipeline");
 }
 
-void render(const State& state, const DrawData& data, const wgpu::RenderPassEncoder& pass) {
+void render(const State& state, const DrawData& data, const WGPURenderPassEncoder& pass) {
   if (!bind_pipeline(data.pipeline, pass)) {
     return;
   }
@@ -471,52 +458,22 @@ void render(const State& state, const DrawData& data, const wgpu::RenderPassEnco
       storage_offset(data.dataRanges.packedTcDataRange),
       storage_offset(data.dataRanges.tcDataRange),
   };
-  pass.SetBindGroup(0, find_bind_group(data.bindGroups.uniformBindGroup),
-                    // TODO match number of indexed attrs
-                    data.dataRanges.vtxDataRange.size ? offsets.size() : 1, offsets.data());
+  wgpuRenderPassEncoderSetBindGroup(pass, 0, find_bind_group(data.bindGroups.uniformBindGroup),
+                                    // TODO match number of indexed attrs
+                                    data.dataRanges.vtxDataRange.size ? offsets.size() : 1, offsets.data());
   if (data.bindGroups.samplerBindGroup && data.bindGroups.textureBindGroup) {
-    pass.SetBindGroup(1, find_bind_group(data.bindGroups.samplerBindGroup));
-    pass.SetBindGroup(2, find_bind_group(data.bindGroups.textureBindGroup));
+    wgpuRenderPassEncoderSetBindGroup(pass, 1, find_bind_group(data.bindGroups.samplerBindGroup), 0, nullptr);
+    wgpuRenderPassEncoderSetBindGroup(pass, 2, find_bind_group(data.bindGroups.textureBindGroup), 0, nullptr);
   }
-  pass.SetVertexBuffer(0, g_vertexBuffer, data.vertRange.offset, data.vertRange.size);
-  pass.SetIndexBuffer(g_indexBuffer, wgpu::IndexFormat::Uint16, data.idxRange.offset, data.idxRange.size);
+  wgpuRenderPassEncoderSetVertexBuffer(pass, 0, g_vertexBuffer, data.vertRange.offset, data.vertRange.size);
+  wgpuRenderPassEncoderSetIndexBuffer(pass, g_indexBuffer, WGPUIndexFormat_Uint16, data.idxRange.offset,
+                                      data.idxRange.size);
   if (data.dstAlpha != UINT32_MAX) {
-    const wgpu::Color color{0.f, 0.f, 0.f, data.dstAlpha / 255.f};
-    pass.SetBlendConstant(&color);
+    const WGPUColor color{0.f, 0.f, 0.f, data.dstAlpha / 255.f};
+    wgpuRenderPassEncoderSetBlendConstant(pass, &color);
   }
-  pass.DrawIndexed(data.indexCount);
+  wgpuRenderPassEncoderDrawIndexed(pass, data.indexCount, 1, 0, 0, 0);
 }
 } // namespace aurora::gfx::model
 
 static absl::flat_hash_map<aurora::HashType, aurora::gfx::Range> sCachedRanges;
-template <typename Vec>
-static inline void cache_array(const void* data, Vec*& outPtr, std::optional<aurora::gfx::Range>& outRange, u8 stride) {
-  Vec* vecPtr = static_cast<Vec*>(data);
-  outPtr = vecPtr;
-  outRange.reset();
-}
-
-void GXSetArray(GXAttr attr, void* data, u8 stride) {
-  using namespace aurora::gfx::model;
-  switch (attr) {
-  case GX_VA_POS:
-    cache_array(data, vtxData, cachedVtxRange, stride);
-    break;
-  case GX_VA_NRM:
-    cache_array(data, nrmData, cachedNrmRange, stride);
-    break;
-  case GX_VA_TEX0:
-    cache_array(data, tc0Data, cachedTc1Range, stride);
-    break;
-  case GX_VA_TEX1:
-    cache_array(data, tc1Data, cachedTc0Range, stride);
-    break;
-  default:
-    Log.report(logwrapper::Fatal, FMT_STRING("GXSetArray: invalid attr {}"), attr);
-    unreachable();
-  }
-}
-
-void GXCallDisplayList(void* data, u32 nbytes) {
-  aurora::gfx::model::queue_surface(static_cast<const u8*>(data), nbytes);
-}

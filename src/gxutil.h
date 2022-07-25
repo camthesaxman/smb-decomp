@@ -2,8 +2,8 @@
 #define _SRC_GXUTIL_H_
 
 #include <dolphin/mtx.h>
-#include <dolphin/GXStruct.h>
-#include <dolphin/GXEnum.h>
+#include <dolphin/gx/GXStruct.h>
+#include <dolphin/gx/GXEnum.h>
 
 struct PointWithColor
 {

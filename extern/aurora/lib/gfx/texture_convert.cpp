@@ -1,25 +1,25 @@
 #include "texture_convert.hpp"
 
-#include <aurora/log.hpp>
+#include "../internal.hpp"
 
 namespace aurora::gfx {
-static logwrapper::Module Log("aurora::gfx");
+static Module Log("aurora::gfx");
 
 struct RGBA8 {
-  u8 r;
-  u8 g;
-  u8 b;
-  u8 a;
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+  uint8_t a;
 };
 struct DXT1Block {
-  u16 color1;
-  u16 color2;
-  std::array<u8, 4> lines;
+  uint16_t color1;
+  uint16_t color2;
+  std::array<uint8_t, 4> lines;
 };
 
 // http://www.mindcontrol.org/~hplus/graphics/expand-bits.html
-template <u8 v>
-constexpr u8 ExpandTo8(u8 n) {
+template <uint8_t v>
+constexpr uint8_t ExpandTo8(uint8_t n) {
   if constexpr (v == 3) {
     return (n << (8 - 3)) | (n << (8 - 6)) | (n >> (9 - 8));
   } else {
@@ -27,15 +27,17 @@ constexpr u8 ExpandTo8(u8 n) {
   }
 }
 
-constexpr u8 S3TCBlend(u32 a, u32 b) {
-  return static_cast<u8>((((a << 1) + a) + ((b << 2) + b)) >> 3);
+constexpr uint8_t S3TCBlend(uint32_t a, uint32_t b) {
+  return static_cast<uint8_t>((((a << 1) + a) + ((b << 2) + b)) >> 3);
 }
 
-constexpr u8 HalfBlend(u8 a, u8 b) { return static_cast<u8>((static_cast<u32>(a) + static_cast<u32>(b)) >> 1); }
+constexpr uint8_t HalfBlend(uint8_t a, uint8_t b) {
+  return static_cast<uint8_t>((static_cast<uint32_t>(a) + static_cast<uint32_t>(b)) >> 1);
+}
 
-static size_t ComputeMippedTexelCount(u32 w, u32 h, u32 mips) {
+static size_t ComputeMippedTexelCount(uint32_t w, uint32_t h, uint32_t mips) {
   size_t ret = w * h;
-  for (u32 i = mips; i > 1; --i) {
+  for (uint32_t i = mips; i > 1; --i) {
     if (w > 1) {
       w /= 2;
     }
@@ -47,11 +49,11 @@ static size_t ComputeMippedTexelCount(u32 w, u32 h, u32 mips) {
   return ret;
 }
 
-static size_t ComputeMippedBlockCountDXT1(u32 w, u32 h, u32 mips) {
+static size_t ComputeMippedBlockCountDXT1(uint32_t w, uint32_t h, uint32_t mips) {
   w /= 4;
   h /= 4;
   size_t ret = w * h;
-  for (u32 i = mips; i > 1; --i) {
+  for (uint32_t i = mips; i > 1; --i) {
     if (w > 1) {
       w /= 2;
     }
@@ -80,7 +82,7 @@ static ByteBuffer BuildI4FromGCN(uint32_t width, uint32_t height, uint32_t mips,
 
   uint32_t w = width;
   uint32_t h = height;
-  u8* targetMip = buf.data();
+  uint8_t* targetMip = buf.data();
   const uint8_t* in = data.data();
   for (uint32_t mip = 0; mip < mips; ++mip) {
     const uint32_t bwidth = (w + 7) / 8;
@@ -90,7 +92,7 @@ static ByteBuffer BuildI4FromGCN(uint32_t width, uint32_t height, uint32_t mips,
       for (uint32_t bx = 0; bx < bwidth; ++bx) {
         const uint32_t baseX = bx * 8;
         for (uint32_t y = 0; y < std::min(h, 8u); ++y) {
-          u8* target = targetMip + (baseY + y) * w + baseX;
+          uint8_t* target = targetMip + (baseY + y) * w + baseX;
           for (uint32_t x = 0; x < std::min(w, 8u); ++x) {
             target[x] = ExpandTo8<4>(in[x / 2] >> ((x & 1) ? 0 : 4) & 0xf);
           }
@@ -126,7 +128,7 @@ static ByteBuffer BuildI8FromGCN(uint32_t width, uint32_t height, uint32_t mips,
       for (uint32_t bx = 0; bx < bwidth; ++bx) {
         const uint32_t baseX = bx * 8;
         for (uint32_t y = 0; y < 4; ++y) {
-          u8* target = targetMip + (baseY + y) * w + baseX;
+          uint8_t* target = targetMip + (baseY + y) * w + baseX;
           const auto n = std::min(w, 8u);
           for (size_t x = 0; x < n; ++x) {
             target[x] = in[x];
@@ -166,7 +168,7 @@ ByteBuffer BuildIA4FromGCN(uint32_t width, uint32_t height, uint32_t mips, Array
           RGBA8* target = targetMip + (baseY + y) * w + baseX;
           const auto n = std::min(w, 8u);
           for (size_t x = 0; x < n; ++x) {
-            const u8 intensity = ExpandTo8<4>(in[x] & 0xf);
+            const uint8_t intensity = ExpandTo8<4>(in[x] & 0xf);
             target[x].r = intensity;
             target[x].g = intensity;
             target[x].b = intensity;
@@ -207,7 +209,7 @@ ByteBuffer BuildIA8FromGCN(uint32_t width, uint32_t height, uint32_t mips, Array
           RGBA8* target = targetMip + (baseY + y) * w + baseX;
           for (size_t x = 0; x < 4; ++x) {
             const auto texel = bswap16(in[x]);
-            const u8 intensity = texel >> 8;
+            const uint8_t intensity = texel >> 8;
             target[x].r = intensity;
             target[x].g = intensity;
             target[x].b = intensity;
@@ -235,7 +237,7 @@ ByteBuffer BuildC4FromGCN(uint32_t width, uint32_t height, uint32_t mips, ArrayR
 
   uint32_t w = width;
   uint32_t h = height;
-  u16* targetMip = reinterpret_cast<u16*>(buf.data());
+  uint16_t* targetMip = reinterpret_cast<uint16_t*>(buf.data());
   const uint8_t* in = data.data();
   for (uint32_t mip = 0; mip < mips; ++mip) {
     const uint32_t bwidth = (w + 7) / 8;
@@ -245,7 +247,7 @@ ByteBuffer BuildC4FromGCN(uint32_t width, uint32_t height, uint32_t mips, ArrayR
       for (uint32_t bx = 0; bx < bwidth; ++bx) {
         const uint32_t baseX = bx * 8;
         for (uint32_t y = 0; y < std::min(8u, h); ++y) {
-          u16* target = targetMip + (baseY + y) * w + baseX;
+          uint16_t* target = targetMip + (baseY + y) * w + baseX;
           const auto n = std::min(w, 8u);
           for (size_t x = 0; x < n; ++x) {
             target[x] = in[x / 2] >> ((x & 1) ? 0 : 4) & 0xf;
@@ -272,7 +274,7 @@ ByteBuffer BuildC8FromGCN(uint32_t width, uint32_t height, uint32_t mips, ArrayR
 
   uint32_t w = width;
   uint32_t h = height;
-  u16* targetMip = reinterpret_cast<u16*>(buf.data());
+  uint16_t* targetMip = reinterpret_cast<uint16_t*>(buf.data());
   const uint8_t* in = data.data();
   for (uint32_t mip = 0; mip < mips; ++mip) {
     const uint32_t bwidth = (w + 7) / 8;
@@ -282,7 +284,7 @@ ByteBuffer BuildC8FromGCN(uint32_t width, uint32_t height, uint32_t mips, ArrayR
       for (uint32_t bx = 0; bx < bwidth; ++bx) {
         const uint32_t baseX = bx * 8;
         for (uint32_t y = 0; y < 4; ++y) {
-          u16* target = targetMip + (baseY + y) * w + baseX;
+          uint16_t* target = targetMip + (baseY + y) * w + baseX;
           const auto n = std::min(w, 8u);
           for (size_t x = 0; x < n; ++x) {
             target[x] = in[x];
@@ -481,36 +483,36 @@ ByteBuffer BuildDXT1FromGCN(uint32_t width, uint32_t height, uint32_t mips, Arra
   return buf;
 }
 
-ByteBuffer BuildRGBA8FromCMPR(u32 width, u32 height, u32 mips, ArrayRef<u8> data) {
+ByteBuffer BuildRGBA8FromCMPR(uint32_t width, uint32_t height, uint32_t mips, ArrayRef<uint8_t> data) {
   const size_t texelCount = ComputeMippedTexelCount(width, height, mips);
   const size_t blockCount = ComputeMippedBlockCountDXT1(width, height, mips);
   ByteBuffer buf{sizeof(RGBA8) * texelCount};
 
-  u32 h = height;
-  u32 w = width;
-  u8* dst = buf.data();
-  const u8* src = data.data();
-  for (u32 mip = 0; mip < mips; ++mip) {
-    for (u32 yy = 0; yy < h; yy += 8) {
-      for (u32 xx = 0; xx < w; xx += 8) {
-        for (u32 yb = 0; yb < 8; yb += 4) {
-          for (u32 xb = 0; xb < 8; xb += 4) {
+  uint32_t h = height;
+  uint32_t w = width;
+  uint8_t* dst = buf.data();
+  const uint8_t* src = data.data();
+  for (uint32_t mip = 0; mip < mips; ++mip) {
+    for (uint32_t yy = 0; yy < h; yy += 8) {
+      for (uint32_t xx = 0; xx < w; xx += 8) {
+        for (uint32_t yb = 0; yb < 8; yb += 4) {
+          for (uint32_t xb = 0; xb < 8; xb += 4) {
             // CMPR difference: Big-endian color1/2
-            const u16 color1 = bswap16(*reinterpret_cast<const u16*>(src));
-            const u16 color2 = bswap16(*reinterpret_cast<const u16*>(src + 2));
+            const uint16_t color1 = bswap16(*reinterpret_cast<const uint16_t*>(src));
+            const uint16_t color2 = bswap16(*reinterpret_cast<const uint16_t*>(src + 2));
             src += 4;
 
             // Fill in first two colors in color table.
-            std::array<u8, 16> color_table{};
+            std::array<uint8_t, 16> color_table{};
 
-            color_table[0] = ExpandTo8<5>(static_cast<u8>((color1 >> 11) & 0x1F));
-            color_table[1] = ExpandTo8<6>(static_cast<u8>((color1 >> 5) & 0x3F));
-            color_table[2] = ExpandTo8<5>(static_cast<u8>(color1 & 0x1F));
+            color_table[0] = ExpandTo8<5>(static_cast<uint8_t>((color1 >> 11) & 0x1F));
+            color_table[1] = ExpandTo8<6>(static_cast<uint8_t>((color1 >> 5) & 0x3F));
+            color_table[2] = ExpandTo8<5>(static_cast<uint8_t>(color1 & 0x1F));
             color_table[3] = 0xFF;
 
-            color_table[4] = ExpandTo8<5>(static_cast<u8>((color2 >> 11) & 0x1F));
-            color_table[5] = ExpandTo8<6>(static_cast<u8>((color2 >> 5) & 0x3F));
-            color_table[6] = ExpandTo8<5>(static_cast<u8>(color2 & 0x1F));
+            color_table[4] = ExpandTo8<5>(static_cast<uint8_t>((color2 >> 11) & 0x1F));
+            color_table[5] = ExpandTo8<6>(static_cast<uint8_t>((color2 >> 5) & 0x3F));
+            color_table[6] = ExpandTo8<5>(static_cast<uint8_t>(color2 & 0x1F));
             color_table[7] = 0xFF;
             if (color1 > color2) {
               // Predict gradients.
@@ -536,14 +538,14 @@ ByteBuffer BuildRGBA8FromCMPR(u32 width, u32 height, u32 mips, ArrayRef<u8> data
               color_table[15] = 0;
             }
 
-            for (u32 y = 0; y < 4; ++y) {
-              u8 bits = src[y];
-              for (u32 x = 0; x < 4; ++x) {
+            for (uint32_t y = 0; y < 4; ++y) {
+              uint8_t bits = src[y];
+              for (uint32_t x = 0; x < 4; ++x) {
                 if (xx + xb + x >= w || yy + yb + y >= h) {
                   continue;
                 }
-                u8* dstOffs = dst + ((yy + yb + y) * w + (xx + xb + x)) * 4;
-                const u8* colorTableOffs = &color_table[static_cast<size_t>((bits >> 6) & 3) * 4];
+                uint8_t* dstOffs = dst + ((yy + yb + y) * w + (xx + xb + x)) * 4;
+                const uint8_t* colorTableOffs = &color_table[static_cast<size_t>((bits >> 6) & 3) * 4];
                 memcpy(dstOffs, colorTableOffs, 4);
                 bits <<= 2;
               }
@@ -565,11 +567,10 @@ ByteBuffer BuildRGBA8FromCMPR(u32 width, u32 height, u32 mips, ArrayRef<u8> data
   return buf;
 }
 
-ByteBuffer convert_texture(GXTexFmt format, uint32_t width, uint32_t height, uint32_t mips,
-                           ArrayRef<uint8_t> data) {
+ByteBuffer convert_texture(u32 format, uint32_t width, uint32_t height, uint32_t mips, ArrayRef<uint8_t> data) {
   switch (format) {
   default:
-    Log.report(logwrapper::Fatal, FMT_STRING("convert_texture: unknown format supplied {}"), format);
+    Log.report(LOG_FATAL, FMT_STRING("convert_texture: unknown format supplied {}"), format);
     unreachable();
   case GX_TF_I4:
     return BuildI4FromGCN(width, height, mips, data);
@@ -584,7 +585,7 @@ ByteBuffer convert_texture(GXTexFmt format, uint32_t width, uint32_t height, uin
   case GX_TF_C8:
     return BuildC8FromGCN(width, height, mips, data);
   case GX_TF_C14X2:
-    Log.report(logwrapper::Fatal, FMT_STRING("convert_texture: C14X2 unimplemented"));
+    Log.report(LOG_FATAL, FMT_STRING("convert_texture: C14X2 unimplemented"));
     unreachable();
   case GX_TF_RGB565:
     return BuildRGB565FromGCN(width, height, mips, data);
@@ -593,7 +594,7 @@ ByteBuffer convert_texture(GXTexFmt format, uint32_t width, uint32_t height, uin
   case GX_TF_RGBA8:
     return BuildRGBA8FromGCN(width, height, mips, data);
   case GX_TF_CMPR:
-    if (gpu::g_device.HasFeature(wgpu::FeatureName::TextureCompressionBC)) {
+    if (wgpuDeviceHasFeature(webgpu::g_device, WGPUFeatureName_TextureCompressionBC)) {
       return BuildDXT1FromGCN(width, height, mips, data);
     } else {
       return BuildRGBA8FromCMPR(width, height, mips, data);

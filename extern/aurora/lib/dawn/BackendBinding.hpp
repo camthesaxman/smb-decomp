@@ -1,11 +1,11 @@
 #pragma once
 
 #include <dawn/native/DawnNative.h>
-#include <dawn/webgpu_cpp.h>
+#include <webgpu/webgpu.h>
 
 struct SDL_Window;
 
-namespace aurora::gpu::utils {
+namespace aurora::webgpu::utils {
 
 class BackendBinding {
 public:
@@ -21,7 +21,7 @@ protected:
   WGPUDevice m_device = nullptr;
 };
 
-bool DiscoverAdapter(dawn::native::Instance* instance, SDL_Window* window, wgpu::BackendType type);
-BackendBinding* CreateBinding(wgpu::BackendType type, SDL_Window* window, WGPUDevice device);
+bool DiscoverAdapter(dawn::native::Instance* instance, SDL_Window* window, WGPUBackendType type);
+BackendBinding* CreateBinding(WGPUBackendType type, SDL_Window* window, WGPUDevice device);
 
-} // namespace aurora::gpu::utils
+} // namespace aurora::webgpu::utils

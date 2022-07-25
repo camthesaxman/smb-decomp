@@ -1,8 +1,8 @@
 #ifndef _SRC_GMA_H_
 #define _SRC_GMA_H_
 
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXStruct.h>
+#include <dolphin/gx/GXEnum.h>
+#include <dolphin/gx/GXStruct.h>
 #include <dolphin/mtx.h>
 #include <dolphin/types.h>
 
