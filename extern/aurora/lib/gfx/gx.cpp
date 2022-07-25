@@ -19,7 +19,7 @@ namespace gx {
 using webgpu::g_device;
 using webgpu::g_graphicsConfig;
 
-GXState g_gxState;
+GXState g_gxState{};
 
 const TextureBind& get_texture(GXTexMapID id) noexcept { return g_gxState.textures[static_cast<size_t>(id)]; }
 
@@ -154,7 +154,7 @@ static inline WGPUBlendState to_blend_state(GXBlendMode mode, GXBlendFactor srcF
   };
 }
 
-static inline WGPUColorWriteMask to_write_mask(bool colorUpdate, bool alphaUpdate) {
+static inline WGPUColorWriteMaskFlags to_write_mask(bool colorUpdate, bool alphaUpdate) {
   WGPUColorWriteMaskFlags writeMask = WGPUColorWriteMask_None;
   if (colorUpdate) {
     writeMask |= WGPUColorWriteMask_Red | WGPUColorWriteMask_Green | WGPUColorWriteMask_Blue;
@@ -162,7 +162,7 @@ static inline WGPUColorWriteMask to_write_mask(bool colorUpdate, bool alphaUpdat
   if (alphaUpdate) {
     writeMask |= WGPUColorWriteMask_Alpha;
   }
-  return static_cast<WGPUColorWriteMask>(writeMask);
+  return writeMask;
 }
 
 static inline WGPUPrimitiveState to_primitive_state(GXPrimitive gx_prim, GXCullMode gx_cullMode) {
@@ -254,6 +254,7 @@ WGPURenderPipeline build_pipeline(const PipelineConfig& config, const ShaderInfo
       .multisample =
           WGPUMultisampleState{
               .count = g_graphicsConfig.msaaSamples,
+              .mask = UINT32_MAX,
           },
       .fragment = &fragmentState,
   };
@@ -771,6 +772,8 @@ WGPUSamplerDescriptor TextureBind::get_descriptor() const noexcept {
         .magFilter = WGPUFilterMode_Nearest,
         .minFilter = WGPUFilterMode_Nearest,
         .mipmapFilter = WGPUFilterMode_Nearest,
+        .lodMinClamp = 0.f,
+        .lodMaxClamp = 1000.f,
         .maxAnisotropy = 1,
     };
   }
@@ -784,6 +787,8 @@ WGPUSamplerDescriptor TextureBind::get_descriptor() const noexcept {
       .magFilter = magFilter,
       .minFilter = minFilter,
       .mipmapFilter = mipFilter,
+      .lodMinClamp = 0.f,
+      .lodMaxClamp = 1000.f,
       .maxAnisotropy = wgpu_aniso(texObj.maxAniso),
   };
 }

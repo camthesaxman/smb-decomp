@@ -28,10 +28,12 @@ typedef volatile f32 vf32;
 typedef volatile f64 vf64;
 
 #ifdef TARGET_PC
+#ifndef FALSE
 #include <stdbool.h>
 typedef bool BOOL;
 #define FALSE false
 #define TRUE true
+#endif
 #else
 typedef int BOOL;
 #define FALSE 0

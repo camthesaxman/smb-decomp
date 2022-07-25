@@ -142,8 +142,8 @@ ImTextureID add_texture(uint32_t width, uint32_t height, uint8_t* data) noexcept
       .label = "imgui texture view",
       .format = WGPUTextureFormat_RGBA8Unorm,
       .dimension = WGPUTextureViewDimension_2D,
-      .mipLevelCount = 1,
-      .arrayLayerCount = 1,
+      .mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED,
+      .arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED,
   };
   auto texture = wgpuDeviceCreateTexture(webgpu::g_device, &textureDescriptor);
   auto textureView = wgpuTextureCreateView(texture, &textureViewDescriptor);

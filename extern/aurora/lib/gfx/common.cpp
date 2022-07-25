@@ -518,6 +518,11 @@ void begin_frame() {
   g_renderPasses.emplace_back();
   g_renderPasses[0].clearColor = gx::g_gxState.clearColor;
   g_currentRenderPass = 0;
+  push_command(CommandType::SetViewport,
+               Command::Data{.setViewport = {g_cachedViewport.left, g_cachedViewport.top, g_cachedViewport.width,
+                                             g_cachedViewport.height, g_cachedViewport.znear, g_cachedViewport.zfar}});
+  push_command(CommandType::SetScissor, Command::Data{.setScissor = {g_cachedScissor.x, g_cachedScissor.y,
+                                                                     g_cachedScissor.w, g_cachedScissor.h}});
 }
 
 // for imgui debug
@@ -579,6 +584,7 @@ void render(WGPUCommandEncoder cmd) {
             .resolveTarget = webgpu::g_graphicsConfig.msaaSamples > 1 ? webgpu::g_frameBufferResolved.view : nullptr,
             .loadOp = passInfo.clear ? WGPULoadOp_Clear : WGPULoadOp_Load,
             .storeOp = WGPUStoreOp_Store,
+            .clearColor = {NAN, NAN, NAN, NAN},
             .clearValue =
                 {
                     .r = passInfo.clearColor.x(),
@@ -592,6 +598,7 @@ void render(WGPUCommandEncoder cmd) {
         .view = webgpu::g_depthBuffer.view,
         .depthLoadOp = passInfo.clear ? WGPULoadOp_Clear : WGPULoadOp_Load,
         .depthStoreOp = WGPUStoreOp_Store,
+        .clearDepth = NAN,
         .depthClearValue = 1.f,
     };
     const auto label = fmt::format(FMT_STRING("Render pass {}"), i);
@@ -603,7 +610,7 @@ void render(WGPUCommandEncoder cmd) {
     };
     auto pass = wgpuCommandEncoderBeginRenderPass(cmd, &renderPassDescriptor);
     render_pass(pass, i);
-    wgpuRenderPassEncoderEndPass(pass);
+    wgpuRenderPassEncoderEnd(pass);
     wgpuRenderPassEncoderRelease(pass);
 
     if (passInfo.resolveTarget != UINT32_MAX) {

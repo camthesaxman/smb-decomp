@@ -60,16 +60,21 @@ TextureWithSampler create_render_texture(bool multisampled) {
 
   const WGPUTextureViewDescriptor viewDescriptor{
       .dimension = WGPUTextureViewDimension_2D,
-      .mipLevelCount = 1,
-      .arrayLayerCount = 1,
+      .mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED,
+      .arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED,
   };
   auto view = wgpuTextureCreateView(texture, &viewDescriptor);
 
   const WGPUSamplerDescriptor samplerDescriptor{
       .label = "Render sampler",
+      .addressModeU = WGPUAddressMode_ClampToEdge,
+      .addressModeV = WGPUAddressMode_ClampToEdge,
+      .addressModeW = WGPUAddressMode_ClampToEdge,
       .magFilter = WGPUFilterMode_Linear,
       .minFilter = WGPUFilterMode_Linear,
       .mipmapFilter = WGPUFilterMode_Linear,
+      .lodMinClamp = 0.f,
+      .lodMaxClamp = 1000.f,
       .maxAnisotropy = 1,
   };
   auto sampler = wgpuDeviceCreateSampler(g_device, &samplerDescriptor);
@@ -103,16 +108,21 @@ static TextureWithSampler create_depth_texture() {
 
   const WGPUTextureViewDescriptor viewDescriptor{
       .dimension = WGPUTextureViewDimension_2D,
-      .mipLevelCount = 1,
-      .arrayLayerCount = 1,
+      .mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED,
+      .arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED,
   };
   auto view = wgpuTextureCreateView(texture, &viewDescriptor);
 
   const WGPUSamplerDescriptor samplerDescriptor{
       .label = "Depth sampler",
+      .addressModeU = WGPUAddressMode_ClampToEdge,
+      .addressModeV = WGPUAddressMode_ClampToEdge,
+      .addressModeW = WGPUAddressMode_ClampToEdge,
       .magFilter = WGPUFilterMode_Linear,
       .minFilter = WGPUFilterMode_Linear,
       .mipmapFilter = WGPUFilterMode_Linear,
+      .lodMinClamp = 0.f,
+      .lodMaxClamp = 1000.f,
       .maxAnisotropy = 1,
   };
   auto sampler = wgpuDeviceCreateSampler(g_device, &samplerDescriptor);
@@ -172,6 +182,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   auto module = wgpuDeviceCreateShaderModule(g_device, &moduleDescriptor);
   const std::array colorTargets{WGPUColorTargetState{
       .format = g_graphicsConfig.colorFormat,
+      .writeMask = WGPUColorWriteMask_All,
   }};
   const WGPUFragmentState fragmentState{
       .module = module,
@@ -215,9 +226,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
               .module = module,
               .entryPoint = "vs_main",
           },
+      .primitive =
+          WGPUPrimitiveState{
+              .topology = WGPUPrimitiveTopology_TriangleList,
+          },
       .multisample =
           WGPUMultisampleState{
               .count = 1,
+              .mask = UINT32_MAX,
           },
       .fragment = &fragmentState,
   };

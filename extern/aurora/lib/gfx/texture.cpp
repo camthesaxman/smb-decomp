@@ -117,7 +117,7 @@ TextureHandle new_dynamic_texture_2d(uint32_t width, uint32_t height, uint32_t m
       .format = wgpuFormat,
       .dimension = WGPUTextureViewDimension_2D,
       .mipLevelCount = mips,
-      .arrayLayerCount = 1,
+      .arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED,
   };
   auto texture = wgpuDeviceCreateTexture(g_device, &textureDescriptor);
   auto textureView = wgpuTextureCreateView(texture, &textureViewDescriptor);
@@ -145,8 +145,8 @@ TextureHandle new_render_texture(uint32_t width, uint32_t height, u32 fmt, const
       .label = viewLabel.c_str(),
       .format = wgpuFormat,
       .dimension = WGPUTextureViewDimension_2D,
-      .mipLevelCount = 1,
-      .arrayLayerCount = 1,
+      .mipLevelCount = WGPU_MIP_LEVEL_COUNT_UNDEFINED,
+      .arrayLayerCount = WGPU_ARRAY_LAYER_COUNT_UNDEFINED,
   };
   auto texture = wgpuDeviceCreateTexture(g_device, &textureDescriptor);
   auto textureView = wgpuTextureCreateView(texture, &textureViewDescriptor);

@@ -2,6 +2,7 @@
 
 #include "../window.hpp"
 
+extern "C" {
 GXRenderModeObj GXNtsc480IntDf = {
     VI_TVMODE_NTSC_INT, 640, 480, 480, 40, 0, 640, 480, VI_XFBMODE_DF, 0, 0,
 };
@@ -11,6 +12,7 @@ GXRenderModeObj GXPal528IntDf = {
 GXRenderModeObj GXMpal480IntDf = {
     VI_TVMODE_PAL_INT, 640, 480, 480, 40, 0, 640, 480, VI_XFBMODE_DF, 0, 0,
 };
+}
 
 void GXAdjustForOverscan(GXRenderModeObj* rmin, GXRenderModeObj* rmout, u16 hor, u16 ver) {
   *rmout = *rmin;

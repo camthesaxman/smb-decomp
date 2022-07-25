@@ -208,7 +208,9 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         ambientColor.a = 0xff * s_materialAlpha;
     }
 
-#ifndef TARGET_PC
+#ifdef TARGET_PC
+    GXSetChanAmbColor(GX_COLOR0, ambientColor);
+#else
     // Equivalent to GXSetChanAmbColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_AMBIENT0_ID;
@@ -230,7 +232,9 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         materialColor.b = 0xff;
     }
 
-#ifndef TARGET_PC
+#ifdef TARGET_PC
+    GXSetChanMatColor(GX_COLOR0, materialColor);
+#else
     // Equivalent to GXSetChanMatColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_MATERIAL0_ID;
@@ -2661,7 +2665,6 @@ void view_specular_layer_next(struct TevStageInfo *a)
 
 void build_world_specular_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, u32 d)
 {
-#ifndef TARGET_PC
     u32 tevStage;
 
     if (s_materialCache.unk44 == 0)
@@ -2701,7 +2704,6 @@ void build_world_specular_layer_uncached(struct TevStageInfo *info, GXTevColorAr
     GXSetTevColorOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
     GXSetTevAlphaOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-#endif
 }
 
 void build_world_specular_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)

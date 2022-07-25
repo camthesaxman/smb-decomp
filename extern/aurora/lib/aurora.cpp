@@ -45,6 +45,8 @@ constexpr std::array PreferredBackendOrder{
 #endif
 };
 
+static bool g_initialFrame = false;
+
 static AuroraInfo initialize(int argc, char* argv[], const AuroraConfig& config) noexcept {
   g_config = config;
   if (g_config.appName == nullptr) {
@@ -111,6 +113,9 @@ static AuroraInfo initialize(int argc, char* argv[], const AuroraConfig& config)
   }
   imgui::initialize();
 
+  if (aurora_begin_frame()) {
+    g_initialFrame = true;
+  }
   return {
       .backend = selectedBackend,
       .configPath = g_config.configPath,
@@ -132,6 +137,10 @@ static void shutdown() noexcept {
 }
 
 static const AuroraEvent* update() noexcept {
+  if (g_initialFrame) {
+    aurora_end_frame();
+    g_initialFrame = false;
+  }
   const auto* events = window::poll_events();
   imgui::new_frame(window::get_window_size());
   return events;
@@ -175,8 +184,10 @@ static void end_frame() noexcept {
     wgpuRenderPassEncoderSetPipeline(pass, webgpu::g_CopyPipeline);
     wgpuRenderPassEncoderSetBindGroup(pass, 0, webgpu::g_CopyBindGroup, 0, nullptr);
     wgpuRenderPassEncoderDraw(pass, 3, 1, 0, 0);
-    // Render ImGui
-    imgui::render(pass);
+    if (!g_initialFrame) {
+      // Render ImGui
+      imgui::render(pass);
+    }
     wgpuRenderPassEncoderEnd(pass);
     wgpuRenderPassEncoderRelease(pass);
   }
@@ -188,7 +199,9 @@ static void end_frame() noexcept {
   wgpuSwapChainPresent(g_swapChain);
   wgpuTextureViewRelease(g_currentView);
   g_currentView = nullptr;
-  ImGui::EndFrame();
+  if (!g_initialFrame) {
+    ImGui::EndFrame();
+  }
 }
 } // namespace aurora
 
