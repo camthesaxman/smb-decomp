@@ -1748,7 +1748,7 @@ static void draw_left_hand(struct Ape *ape, struct ApeFacePart *arg1, struct Str
     u8 unused[8];
     struct GMAModel *model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     struct Struct8003699C_child_sub *temp_r29 = &ape->unk0->unk4114;
-    struct JointBoneThing *joints = temp_r29->unk38;
+    struct AnimJoint *joints = temp_r29->unk38;
     s16 *var_r4;
     Mtx **var_r5;
 
@@ -1778,7 +1778,7 @@ static void draw_right_hand(struct Ape *ape, struct ApeFacePart *arg1, struct St
     u8 unused[8];
     struct GMAModel *model = charaGMAs[(ape->unk90 >> 1) + (ape->charaId << 1)]->modelEntries[arg1->modelId].model;
     struct Struct8003699C_child_sub *temp_r29 = &ape->unk0->unk84;
-    struct JointBoneThing *joints = temp_r29->unk38;
+    struct AnimJoint *joints = temp_r29->unk38;
     s16 *var_r4;
     Mtx **var_r5;
 

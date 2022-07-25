@@ -30,7 +30,7 @@ struct Ape_child lbl_801C7A70 =
     0,
 };
 
-u32 lbl_801C7A90[] = { 1, 5, 7, 8, 12, 13, 16, 18, 19, 21, 22, 23, 24, 26, 27 };
+u32 u_animMatrixIdxToJointIdx[] = { 1, 5, 7, 8, 12, 13, 16, 18, 19, 21, 22, 23, 24, 26, 27 };
 
 // yaw angles for something?
 float lbl_801C7ACC[] = { 23.0f, 21.1f, 22.0f, 21.5f };
@@ -294,13 +294,13 @@ void func_80089A04(struct ApeGfxFileInfo *a, int b, struct Struct80089A04 *c)
     {
         struct ApeFacePart *faceParts = dunno->facePartInfo[b & 1];
 
-        if (strcmp(faceParts[i].name, c->unk4[b]) == 0)
+        if (strcmp(faceParts[i].name, c->names[b]) == 0)
         {
             c->unk30[b] = i;
             return;
         }
     }
-    printf("obj: %s is nothing.\n", c->unk4[b]);
+    printf("obj: %s is nothing.\n", c->names[b]);
     c->unk30[b] = -1;
 }
 
@@ -331,47 +331,48 @@ struct Struct8003699C_child *u_create_joints_probably(struct MotSkeletonEntry1 *
     r30->unk2E = 0x4000;
     r30->unk2A = 0;
     r30->unk28 = 0;
-    func_800341BC(r30->unk81A8, skel, r30->unk36);
+    u_create_joints_from_skeleton(r30->joints, skel, r30->unk36);
     func_80035FDC(r30);
     func_800355B8(r30);
     func_800355FC(r30);
     return r30;
 }
 
-void func_80089BD4(struct JointBoneThing *a)
+void u_iter_joints_80089BD4(struct AnimJoint *joint)
 {
     int i;
-    struct JointBoneThing *r4;
     Vec spC;
-    struct JointBoneThing *var = a;
+    struct AnimJoint *var = joint;
 
-    for (i = 0; i < 0x1D; i++)
+    for (i = 0; i < 29; i++)
     {
-        if (!(a->flags & 1))
+        if (!(joint->flags & 1))
         {
-            a++;
+            joint++;
             continue;
         }
-        mathutil_mtxA_from_mtx(a->transformMtx);
-        mathutil_mtxA_to_quat(&a->unk1B0);
-        if (a->unk1A0 != 0xFFFFFFFF)
+        mathutil_mtxA_from_mtx(joint->transformMtx);
+        mathutil_mtxA_to_quat(&joint->unk1B0);
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            r4 = var + a->unk1A0;
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            struct AnimJoint *parent = &var[joint->parentIdx];
+
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = var + r4->unk1A0;
+                parent = &var[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
         }
         else
             mathutil_mtxA_from_identity();
-        spC.x = a->transformMtx[0][3];
-        spC.y = a->transformMtx[1][3];
-        spC.z = a->transformMtx[2][3];
-        mathutil_mtxA_rigid_inv_tf_point(&spC, &a->unk1A4);
-        a++;
+        spC.x = joint->transformMtx[0][3];
+        spC.y = joint->transformMtx[1][3];
+        spC.z = joint->transformMtx[2][3];
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &joint->unk1A4);
+        joint++;
     }
 }
 
@@ -434,7 +435,7 @@ void func_80089CF4(struct Ape *ape, int r29)
     }
     else
     {
-        func_80089BD4(ape->unk0->unk81A8);
+        u_iter_joints_80089BD4(ape->unk0->joints);
     }
     r27 = ape->unk0;
     r28 = ape->unk4;
@@ -518,98 +519,100 @@ void ape_dummy_3(struct Ape *ape) {}
 
 void ape_dummy_4(struct Ape *ape) {}
 
-void func_8008A124(struct JointBoneThing *r29, float b)
+void u_iter_joints_8008A124(struct AnimJoint *joint, float b)
 {
     int i;
-    struct JointBoneThing *a = r29;
+    struct AnimJoint *a = joint;
 
     for (i = 0; i < 29; i++)
     {
         Vec sp20;
         Quaternion sp10;
 
-        if (!(r29->flags & 1))
+        if (!(joint->flags & 1))
         {
-            r29++;
+            joint++;
             continue;
         }
-        mathutil_mtxA_from_mtx(r29->transformMtx);
+        mathutil_mtxA_from_mtx(joint->transformMtx);
         mathutil_mtxA_to_quat(&sp10);
-        mathutil_quat_slerp(&sp10, &r29->unk1B0, &sp10, b);
+        mathutil_quat_slerp(&sp10, &joint->unk1B0, &sp10, b);
         mathutil_quat_normalize(&sp10);
-        if (r29->unk1A0 != 0xFFFFFFFF)
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            struct JointBoneThing *r4 = &a[r29->unk1A0];
+            struct AnimJoint *parent = &a[joint->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
-            mathutil_mtxA_translate(&r29->unk1A4);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
+            mathutil_mtxA_translate(&joint->unk1A4);
         }
         else
         {
             mathutil_mtxA_from_identity();
-            sp20.x = r29->unk1A4.x + (r29->transformMtx[0][3] - r29->unk1A4.x) * b;
-            sp20.y = r29->unk1A4.y + (r29->transformMtx[1][3] - r29->unk1A4.y) * b;
-            sp20.z = r29->unk1A4.z + (r29->transformMtx[2][3] - r29->unk1A4.z) * b;
+            sp20.x = joint->unk1A4.x + (joint->transformMtx[0][3] - joint->unk1A4.x) * b;
+            sp20.y = joint->unk1A4.y + (joint->transformMtx[1][3] - joint->unk1A4.y) * b;
+            sp20.z = joint->unk1A4.z + (joint->transformMtx[2][3] - joint->unk1A4.z) * b;
             mathutil_mtxA_set_translate(&sp20);
         }
         mathutil_mtxA_get_translate_alt(&sp20);
         mathutil_mtxA_from_quat(&sp10);
         mathutil_mtxA_normalize_basis();
         mathutil_mtxA_set_translate(&sp20);
-        mathutil_mtxA_to_mtx(r29->transformMtx);
-        r29++;
+        mathutil_mtxA_to_mtx(joint->transformMtx);
+        joint++;
     }
 }
 
-void func_8008A2C4(struct JointBoneThing *r29)
+void u_iter_joints_8008A2C4(struct AnimJoint *joint)
 {
     int i;
-    struct JointBoneThing *a = r29;
+    struct AnimJoint *a = joint;
 
     for (i = 0; i < 29; i++)
     {
         Vec spC;
 
-        if (!(r29->flags & 1))
+        if (!(joint->flags & 1))
         {
-            r29++;
+            joint++;
             continue;
         }
-        mathutil_mtxA_from_mtx(r29->transformMtx);
-        if (r29->unk1A0 != 0xFFFFFFFF)
+        mathutil_mtxA_from_mtx(joint->transformMtx);
+        if (joint->parentIdx != 0xFFFFFFFF)
         {
-            struct JointBoneThing *r4 = &a[r29->unk1A0];
+            struct AnimJoint *parent = &a[joint->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
         }
         else
         {
             mathutil_mtxA_from_identity();
         }
-        spC.x = r29->transformMtx[0][3];
-        spC.y = r29->transformMtx[1][3];
-        spC.z = r29->transformMtx[2][3];
-        mathutil_mtxA_rigid_inv_tf_point(&spC, &r29->unk1A4);
-        r29++;
+        spC.x = joint->transformMtx[0][3];
+        spC.y = joint->transformMtx[1][3];
+        spC.z = joint->transformMtx[2][3];
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &joint->unk1A4);
+        joint++;
     }
 }
 
-void func_8008A3A4(struct JointBoneThing *r28, struct JointBoneThing *r29, float c)
+void u_iter_joints_8008A3A4(struct AnimJoint *r28, struct AnimJoint *r29, float c)
 {
     int i;
-    struct JointBoneThing *a = r28;
+    struct AnimJoint *a = r28;
 
     for (i = 0; i < 29; i++)
     {
@@ -629,17 +632,18 @@ void func_8008A3A4(struct JointBoneThing *r28, struct JointBoneThing *r29, float
         mathutil_mtxA_to_quat(&sp20);
         mathutil_quat_slerp(&sp20, &r29->unk1B0, &sp20, c);
         mathutil_quat_normalize(&sp20);
-        if (r28->unk1A0 != 0xFFFFFFFF)
+        if (r28->parentIdx != 0xFFFFFFFF)
         {
-            struct JointBoneThing *r4 = &a[r28->unk1A0];
+            struct AnimJoint *parent = &a[r28->parentIdx];
 
-            while (r4->unk1A0 != 0xFFFFFFFF)
+            // find root joint
+            while (parent->parentIdx != 0xFFFFFFFF)
             {
-                if (r4->flags & 1)
+                if (parent->flags & 1)
                     break;
-                r4 = a + r4->unk1A0;
+                parent = &a[parent->parentIdx];
             }
-            mathutil_mtxA_from_mtx(r4->transformMtx);
+            mathutil_mtxA_from_mtx(parent->transformMtx);
             mathutil_mtxA_translate(&r28->unk1A4);
         }
         else
@@ -1084,9 +1088,9 @@ void func_8008B3B8_inline_3(u8 a, struct Struct8003699C_child *r24_)
     void *r3;
 
     r3 = &r24_->unk4114;
-    func_80035F18(r3, r24_, 1, lbl_802F12D8[a]);
+    u_init_something_joints_from_something(r3, r24_, 1, lbl_802F12D8[a]);
     r3 = &r24_->unk84;
-    func_80035F18(r3, r24_, 2, lbl_802F12E0[a]);
+    u_init_something_joints_from_something(r3, r24_, 2, lbl_802F12E0[a]);
 }
 
 static u8 find_motskl_entry_idx(char *skelName)
@@ -1221,7 +1225,7 @@ const double lbl_802F56D8 = 0.0000000099999999392252903;
 struct Ape *u_make_ape(int charaId)
 {
     struct Ape *ape;
-    struct JointBoneThing *r5;
+    struct AnimJoint *r5;
 
     ape = u_make_ape_sub(motInfo[charaId].skelName, motInfo[charaId].modelName);
     ape->charaId = charaId & 3;
@@ -1236,14 +1240,14 @@ struct Ape *u_make_ape(int charaId)
     func_80089CF4(ape, ((struct MotInfo2 *)&motInfo[charaId])->unk38->unk180.unk10);
     func_800355FC(ape->unk0);
 
-    r5 = &ape->unk0->unk81A8[0];
+    r5 = &ape->unk0->joints[0];
     r5->unk1A4.x = r5->transformMtx[0][3];
     r5->unk1A4.y = r5->transformMtx[1][3];
     r5->unk1A4.z = r5->transformMtx[2][3];
 
-    ape->unk4->unk81A8[0].transformMtx[0][3] = r5->unk1A4.x;
-    ape->unk4->unk81A8[0].transformMtx[1][3] = r5->unk1A4.y;
-    ape->unk4->unk81A8[0].transformMtx[2][3] = r5->unk1A4.z;
+    ape->unk4->joints[0].transformMtx[0][3] = r5->unk1A4.x;
+    ape->unk4->joints[0].transformMtx[1][3] = r5->unk1A4.y;
+    ape->unk4->joints[0].transformMtx[2][3] = r5->unk1A4.z;
 #endif
     return ape;
 }
@@ -1299,7 +1303,7 @@ void func_8008BAA8(int *a, int *b)
 }
 #pragma force_active reset
 
-void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
+void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float speed)
 {
 #ifndef TARGET_PC
     struct MotInfo *r30;
@@ -1330,7 +1334,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
             r9++; r9--;  // needed to match
             for (i = 0; i < 2; i++, r9++)
             {
-                if (r8[r9].unk0 > e * 216.0f)
+                if (r8[r9].unk0 > speed * 216.0f)
                     break;
             }
         }
@@ -1344,7 +1348,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
         {
             for (i = 0; r8[i].unk4 == 0; i++, r9++)
             {
-                if (r8[i].unk0 > e / 60.0f)
+                if (r8[i].unk0 > speed / 60.0f)
                     break;
             }
             r5 = &r8[r9];
@@ -1358,7 +1362,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
     case 4:
         for (i = 2; i > 0; i--)
         {
-            if (r8[i].unk0 < e * 216.0f)
+            if (r8[i].unk0 < speed * 216.0f)
                 break;
         }
         r9 = i;
@@ -1370,7 +1374,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
         {
             for (i = 0; r8[i].unk4 == 0; i++, r9++)
             {
-                if (r8[i].unk0 > e * 216.0f)
+                if (r8[i].unk0 > speed * 216.0f)
                     break;
             }
         }
@@ -1378,7 +1382,7 @@ void u_set_ape_anim(struct Ape *ape, int b, int c, int d, float e)
     case 0:
         for (i = 0; r8[i].unk4 == 0; i++, r9++)
         {
-            if (r8[i].unk0 > e * 216.0f)
+            if (r8[i].unk0 > speed * 216.0f)
                 break;
         }
         break;
@@ -1443,8 +1447,8 @@ void func_8008BFD8(void) {}
 
 void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 {
-    struct JointBoneThing *r31;
-    struct JointBoneThing *r30 = ape->unk0->unk81A8;
+    struct AnimJoint *r31;
+    struct AnimJoint *r30 = ape->unk0->joints;
     Mtx sp10;
 
     if ((gamePauseStatus & 0xA) || (ape->flags & (1 << 3)))
@@ -1464,11 +1468,11 @@ void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 // something related to animation of the head
 void func_8008C090(struct Ape *ape, Vec *b)
 {
-    struct JointBoneThing *r27 = ape->unk0->unk81A8;
+    struct AnimJoint *r27 = ape->unk0->joints;
     Vec sp2C;
     int r3;
     int r27_;
-    struct JointBoneThing *r30;
+    struct AnimJoint *r30;
     float f1;
     Vec sp20;
     Quaternion sp10;
@@ -1605,12 +1609,12 @@ void u_do_ape_anim(struct Ape *ape)
                 func_800355B8(r29);
             }
             func_800355FC(r29);
-            func_8008A2C4(r31->unk81A8);
-            func_8008A2C4(r29->unk81A8);
-            func_8008A3A4(r31->unk81A8, r29->unk81A8, ape->unk8 / ape->unkC);
+            u_iter_joints_8008A2C4(r31->joints);
+            u_iter_joints_8008A2C4(r29->joints);
+            u_iter_joints_8008A3A4(r31->joints, r29->joints, ape->unk8 / ape->unkC);
         }
         else
-            func_8008A124(r31->unk81A8, ape->unk8 / ape->unkC);
+            u_iter_joints_8008A124(r31->joints, ape->unk8 / ape->unkC);
         ape->unk8 += 1.0f;
         if (ape->unk8 > ape->unkC)
         {
@@ -1622,7 +1626,7 @@ void u_do_ape_anim(struct Ape *ape)
 #endif
 }
 
-void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
+void u_draw_ape_transformed(struct Ape *ape, struct AnimJoint *joints)
 {
     int i;
     u32 index = (ape->unk90 >> 1) + (ape->charaId * 2);
@@ -1649,19 +1653,21 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
     ptr = sp18;
     for (i = 0; i < r27->partCounts[ape->unk90 & 1]; r29++, ptr++, i++)
     {
-        struct JointBoneThing *r22 = &b[r29->unk2];
+        struct AnimJoint *joint = &joints[r29->jointIdx];
         struct GMAModel *model = charaGMAs[index]->modelEntries[r29->modelId].model;
 
         if (model != NULL)
         {
             mathutil_mtxA_push();
-            mathutil_mtxA_mult_right(r22->transformMtx);
-            mathutil_mtxA_translate(&r29->unk4);
+            mathutil_mtxA_mult_right(joint->transformMtx);
+            mathutil_mtxA_translate(&r29->unk4);  // positions ears
             u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
-            if (r29->unk10 != NULL)
-                r29->unk10(ape, r29, *ptr);
+
+            if (r29->draw != NULL)
+                r29->draw(ape, r29, *ptr);
             else
-                avdisp_draw_model_unculled_sort_none(model);
+                avdisp_draw_model_unculled_sort_none(model);  // fallback code (not called)?
+
             mathutil_mtxA_pop();
         }
     }
@@ -1669,11 +1675,11 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
     // Compute anim transform matrices
     for (i = 0; (u32)i < 15; i++)
     {
-        struct JointBoneThing *r4 = &b[lbl_801C7A90[i]];
+        struct AnimJoint *joint = &joints[u_animMatrixIdxToJointIdx[i]];
 
         if (i == 9 || i == 10 || i == 13 || i == 14)
         {
-            mathutil_mtx_mult(r4->transformMtx, lbl_802B4820, lbl_802B4850[i]);
+            mathutil_mtx_mult(joint->transformMtx, lbl_802B4820, lbl_802B4850[i]);
             if (i == 10 || i == 14)
             {
                 mathutil_mtxA_push();
@@ -1685,12 +1691,12 @@ void u_draw_ape_transformed(struct Ape *ape, struct JointBoneThing *b)
             u_animTransformMatrices[i] = &lbl_802B4850[i];
         }
         else
-            u_animTransformMatrices[i] = &r4->transformMtx;
+            u_animTransformMatrices[i] = &joint->transformMtx;
     }
 
     model = charaGMAs[index]->modelEntries[r27->unk1C[ape->unk90 & 1]].model;
     func_8008CCB8(ape, model);
-    avdisp_draw_model_unculled_sort_none(model);  // Draws torso and limbs?
+    avdisp_draw_model_unculled_sort_none(model);  // Draw body, limbs, and hair
 }
 
 struct Struct8008C924
@@ -1747,7 +1753,7 @@ void lbl_8008CA80(struct Struct8008C924 *node)
 void func_8008CAAC(struct Ape *ape, float b)
 {
     int r30 = ape->charaId;
-    struct JointBoneThing *r29 = ape->unk0->unk81A8;
+    struct AnimJoint *r29 = ape->unk0->joints;
     u8 dummy[8];
     Vec sp10;
 
@@ -1764,9 +1770,9 @@ void func_8008CAAC(struct Ape *ape, float b)
     nl2ngc_set_scale(ape->modelScale);
     mathutil_mtxA_translate(&ape->unk3C);
     mathutil_mtxA_mult_right(lbl_802B39C0);
-    sp10.x = ape->unk0->unk81A8[0].transformMtx[0][3];
-    sp10.y = ape->unk0->unk81A8[0].transformMtx[1][3];
-    sp10.z = ape->unk0->unk81A8[0].transformMtx[2][3];
+    sp10.x = ape->unk0->joints[0].transformMtx[0][3];
+    sp10.y = ape->unk0->joints[0].transformMtx[1][3];
+    sp10.z = ape->unk0->joints[0].transformMtx[2][3];
     if (test_scaled_sphere_in_frustum(&sp10, ape->modelScale * 0.5f, ape->modelScale) != 0)
     {
         apeDummyFuncs[r30](ape);
