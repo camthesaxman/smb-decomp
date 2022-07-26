@@ -7,6 +7,12 @@
 
 static GLFWwindow *g_window;
 
+static void error_callback(int error, const char *description)
+{
+    fprintf(stderr, "GLFW error: %s\n", description);
+    exit(1);
+}
+
 void VIInit(void)
 {
     if (!glfwInit())
@@ -14,14 +20,20 @@ void VIInit(void)
         fputs("failed to initialize GLFW\n", stderr);
         exit(1);
     }
+    glfwSetErrorCallback(error_callback);
+#ifdef _WIN32
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+#else
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#endif
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     g_window = glfwCreateWindow(640, 480, "Super Monkey Ball", NULL, NULL);
-    if (g_window == NULL)
-    {
-        fputs("failed to create window\n", stderr);
-        exit(1);
-    }
     glfwMakeContextCurrent(g_window);
     glfwSwapInterval(1);
+
+    printf("GL version: %s\n", glGetString(GL_VERSION));
+    printf("GL extensions: %s\n", glGetString(GL_EXTENSIONS));
 }
 
 u32 VIGetTvFormat(void)

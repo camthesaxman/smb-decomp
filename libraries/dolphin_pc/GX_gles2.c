@@ -10,10 +10,16 @@
 #ifdef __WIN32
 #define GLEW_STATIC
 #include <GL/glew.h>
+#include <windows.h>
+#ifndef GL_APIENTRY
+#define GL_APIENTRY APIENTRY
+#endif
 #else
-#include <GL/gl.h>
-#include <GL/glext.h>
-extern void glClearDepthf(float);
+#define GL_GLEXT_PROTOTYPES
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#define glDebugMessageCallback glDebugMessageCallbackKHR
+#define GL_DEBUG_OUTPUT GL_DEBUG_OUTPUT_KHR
 #endif
 
 //#define puts(...)
@@ -27,6 +33,46 @@ static void pause(void)
     free(line);
 }
 */
+
+static GLuint s_vtxShader;
+static const char s_vtxShaderSrc[] =
+"#version 100\n"
+"precision mediump float;\n"
+"uniform   mat4 u_modelViewMatrix;\n"
+"uniform   mat4 u_projectionMatrix;\n"
+"attribute vec4 a_position;\n"
+"attribute vec3 a_normal;\n"
+"attribute vec2 a_texCoord;\n"
+"attribute vec4 a_color;\n"
+"varying   vec3 v_normal;\n"
+"varying   vec2 v_texCoord;\n"
+"varying   vec4 v_color;\n"
+"void main()\n"
+"{\n"
+"    v_normal   = a_normal;\n"
+"    v_texCoord = a_texCoord;\n"
+//"    v_color    = a_color;\n"  // TODO: why is this always black?
+"    v_color    = vec4(1, 1, 1, 1);\n"
+"    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
+"}\n";
+static GLuint s_fragShader;
+static const char s_fragShaderSrc[] =
+"#version 100\n"
+"precision mediump float;\n"
+"uniform sampler2D u_texture0;\n"
+"varying      vec3 v_normal;\n"
+"varying      vec2 v_texCoord;\n"
+"varying      vec4 v_color;\n"
+"void main()\n"
+"{\n"
+"    gl_FragColor = v_color * texture2D(u_texture0, v_texCoord);\n"
+"}\n";
+static GLuint s_program;
+
+static GLint s_shaderPositionIndex;
+static GLint s_shaderNormalIndex;
+static GLint s_shaderTexCoordIndex;
+static GLint s_shaderColorIndex;
 
 static u16 read_u16(const u8 *src)
 {
@@ -112,9 +158,8 @@ void GXClearVtxDesc(void)
 
 void GXSetProjection(f32 mtx[4][4], GXProjectionType type)
 {
-    glMatrixMode(GL_PROJECTION);
-    glLoadTransposeMatrixf((GLfloat *)mtx);
-    glMatrixMode(GL_MODELVIEW);
+    GLint location = glGetUniformLocation(s_program, "u_projectionMatrix");
+    glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)mtx);
 }
 
 void GXGetProjectionv(f32 *p)
@@ -131,11 +176,12 @@ void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
 {
     Mtx44 m;
 
-    puts("GXLoadPosMtxImm is a stub");
     memcpy(m, mtx, sizeof(Mtx));
     m[3][0] = m[3][1] = m[3][2] = 0.0f;
     m[3][3] = 1.0f;
-    glLoadTransposeMatrixf((GLfloat *)m);
+
+    GLint location = glGetUniformLocation(s_program, "u_modelViewMatrix");
+    glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)m);
 }
 
 void GXLoadNrmMtxImm(f32 mtx[3][4], u32 id)
@@ -311,23 +357,31 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
         }
     }
 
-    if (attrArrays[GX_VA_POS].ptr != NULL)
+    if (attrArrays[GX_VA_POS].ptr != NULL
+     && s_shaderPositionIndex >= 0)
     {
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(
+        glEnableVertexAttribArray(s_shaderPositionIndex);
+        glVertexAttribPointer(
+            s_shaderPositionIndex,
             attrArrays[GX_VA_POS].size,
             attrArrays[GX_VA_POS].type,
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_POS].ptr);
     }
-    if (attrArrays[GX_VA_NRM].ptr != NULL)
+    if (attrArrays[GX_VA_NRM].ptr != NULL
+     && s_shaderNormalIndex >= 0)
     {
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glNormalPointer(
+        glEnableVertexAttribArray(s_shaderNormalIndex);
+        glVertexAttribPointer(
+            s_shaderNormalIndex,
+            attrArrays[GX_VA_NRM].size,
             attrArrays[GX_VA_NRM].type,
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_NRM].ptr);
     }
+    /*
     for (i = 0; i <= 2; i++)
     {
         if (attrArrays[GX_VA_TEX0 + i].ptr != NULL)
@@ -341,13 +395,29 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
                 attrArrays[GX_VA_TEX0 + i].ptr);
         }
     }
-    glActiveTexture(GL_TEXTURE0);
-    if (attrArrays[GX_VA_CLR0].ptr != NULL)
+    */
+    if (attrArrays[GX_VA_TEX0].ptr != NULL
+     && s_shaderTexCoordIndex >= 0)
     {
-        glEnableClientState(GL_COLOR_ARRAY);
-        glColorPointer(
+        glEnableVertexAttribArray(s_shaderTexCoordIndex);
+        glVertexAttribPointer(
+            s_shaderTexCoordIndex,
+            attrArrays[GX_VA_TEX0].size,
+            attrArrays[GX_VA_TEX0].type,
+            GL_FALSE,
+            vtxSize,
+            attrArrays[GX_VA_TEX0].ptr);
+    }
+    glActiveTexture(GL_TEXTURE0);
+    if (attrArrays[GX_VA_CLR0].ptr != NULL
+     && s_shaderColorIndex >= 0)
+    {
+        glEnableVertexAttribArray(s_shaderColorIndex);
+        glVertexAttribPointer(
+            s_shaderColorIndex,
             attrArrays[GX_VA_CLR0].size,
             attrArrays[GX_VA_CLR0].type,
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_CLR0].ptr);
     }
@@ -370,7 +440,7 @@ static GLenum gx_prim_to_gl_prim(GXPrimitive in)
     case GX_TRIANGLES:     return GL_TRIANGLES;
     case GX_TRIANGLESTRIP: return GL_TRIANGLE_STRIP;
     case GX_TRIANGLEFAN:   return GL_TRIANGLE_FAN;
-    case GX_QUADS:         return GL_QUADS;
+    case GX_QUADS:         return GL_TRIANGLES;  // OpenGL ES lacks quads, so we emulate them with triangles
     default: assert(0);
     }
     return 0;
@@ -380,26 +450,34 @@ static u8 s_vertexBuffer[4096];
 static int s_vertexBufferPos;
 static int s_currPrim;
 static int s_vertexCount;
+static u32 s_vtxSize;
+static int s_quadVtx0Pos;
 
 void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
 {
-    u32 vtxSize = prepare_vertex_arrays(type, vtxfmt, s_vertexBuffer);
+    s_vtxSize = prepare_vertex_arrays(type, vtxfmt, s_vertexBuffer);
     s_currPrim = type;
     s_vertexBufferPos = 0;
     s_vertexCount = nverts;
-    assert(nverts * vtxSize <= sizeof(s_vertexBuffer));
+    s_quadVtx0Pos = 0;
+    assert(nverts * s_vtxSize <= sizeof(s_vertexBuffer));
 }
 
 void GXEnd(void)
 {
-    glDrawArrays(gx_prim_to_gl_prim(s_currPrim), 0, s_vertexCount);
+    int count = s_vertexCount;
 
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
-
-    glFlush();  // TODO: remove
+    if (s_currPrim == GX_QUADS)
+        count *= 2;
+    glDrawArrays(gx_prim_to_gl_prim(s_currPrim), 0, count);
+    if (s_shaderPositionIndex >= 0)
+        glDisableVertexAttribArray(s_shaderPositionIndex);
+    if (s_shaderNormalIndex >= 0)
+        glDisableVertexAttribArray(s_shaderNormalIndex);
+    if (s_shaderTexCoordIndex >= 0)
+        glDisableVertexAttribArray(s_shaderTexCoordIndex);
+    if (s_shaderColorIndex >= 0)
+        glDisableVertexAttribArray(s_shaderColorIndex);
 }
 
 void GXSetLineWidth(u8 width, GXTexOffset texOffsets)
@@ -407,16 +485,6 @@ void GXSetLineWidth(u8 width, GXTexOffset texOffsets)
     puts("GXSetLineWidth is a stub");
 }
 
-/*
-typedef enum
-{
-    GX_CULL_NONE,
-    GX_CULL_FRONT,
-    GX_CULL_BACK,
-    GX_CULL_ALL
-
-} GXCullMode;
-*/
 static GLenum gx_cull_mode_to_gl_cull_mode(GXCullMode in)
 {
     static const GLenum cullModes[] =
@@ -467,16 +535,18 @@ void GXCallDisplayList(void *list, u32 nbytes)
     u32 vtxSize;
     u8 *ptr;
 
+    puts("GXCallDisplayList");
     while (pos < nbytes)
     {
         u8 opcode = data[pos++];
 
-        if (opcode == GX_NOP)  // NOP
+        if (opcode == GX_NOP)
             continue;
-        if (opcode == GX_LOAD_BP_REG)  // GX_LOAD_BP_REG
+        if (opcode == GX_LOAD_BP_REG)
             pos += 4;
 
-        switch (opcode & ~3)
+        prim = opcode & ~3;
+        switch (prim)
         {
         case GX_DRAW_QUADS:
         case GX_DRAW_TRIANGLES:
@@ -485,7 +555,7 @@ void GXCallDisplayList(void *list, u32 nbytes)
         case GX_DRAW_LINES:
         case GX_DRAW_LINE_STRIP:
         case GX_DRAW_POINTS:
-            prim = opcode & ~3;
+            assert(prim != GX_DRAW_QUADS);  // Quads not implemented yet
             fmt = opcode & 3;
             vtxCount = read_u16_le(data + pos);
             pos += 2;
@@ -494,10 +564,14 @@ void GXCallDisplayList(void *list, u32 nbytes)
 
             glDrawArrays(gx_prim_to_gl_prim(prim), 0, vtxCount);
 
-            glDisableClientState(GL_VERTEX_ARRAY);
-            glDisableClientState(GL_NORMAL_ARRAY);
-            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-            glDisableClientState(GL_COLOR_ARRAY);
+            if (s_shaderPositionIndex >= 0)
+                glDisableVertexAttribArray(s_shaderPositionIndex);
+            if (s_shaderNormalIndex >= 0)
+                glDisableVertexAttribArray(s_shaderNormalIndex);
+            if (s_shaderTexCoordIndex >= 0)
+                glDisableVertexAttribArray(s_shaderTexCoordIndex);
+            if (s_shaderColorIndex >= 0)
+                glDisableVertexAttribArray(s_shaderColorIndex);
 
             pos += vtxCount * vtxSize;
         }
@@ -737,26 +811,19 @@ void GXGetLightColor(GXLightObj *lt_obj, GXColor *color)
 
 void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 {
-    __GXLightObj *__lt_obj = (__GXLightObj *)lt_obj;
-    GLenum lightId = light - GX_LIGHT0 + GL_LIGHT0;
-    //float pos[] = { 1000.0f, 100.0f, 100.0f };
-
     puts("GXLoadLightObjImm is a stub");
-    //printf("light %i\n", lightId);
-    glEnable(lightId);
-    //glLightfv(lightId, GL_POSITION, pos);
 }
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
 {
     GLfloat color[] = {amb_color.r / 255.0f, amb_color.g / 255.0f, amb_color.b / 255.0f, amb_color.a / 255.0f};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
 }
 
 void GXSetChanMatColor(GXChannelID chan, GXColor mat_color)
 {
     GLfloat color[] = {mat_color.r / 255.0f, mat_color.g / 255.0f, mat_color.b / 255.0f, mat_color.a / 255.0f};
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
+    //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
 }
 
 void GXSetNumChans(u8 nChans)
@@ -768,15 +835,6 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
     GXColorSrc mat_src, u32 light_mask, GXDiffuseFn diff_fn, GXAttnFn attn_fn)
 {
     puts("GXSetChanCtrl is a stub");
-
-    // ¯\_(ツ)_/¯
-    if (chan == GX_COLOR0A0)
-    {
-        if (enable)
-            glEnable(GL_LIGHTING);
-        else
-            glDisable(GL_LIGHTING);
-    }
 }
 
 /* Texture */
@@ -1040,6 +1098,28 @@ static void decompress_rgb5a3_texture(const u8 *restrict src, u8 *restrict dest,
     }
 }
 
+static void decompress_i8_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+{
+    int x, y;
+
+    for (y = 0; y < height / 4; y++)
+    {
+        for (x = 0; x < width / 8; x++)
+        {
+            int tx, ty;
+
+            for (ty = 0; ty < 4; ty++)
+            {
+                for (tx = 0; tx < 8; tx++)
+                {
+                    int index = (y*4 + ty) * width + (x*4 + tx);
+                    dest[index] = *src++;
+                }
+            }
+        }
+    }
+}
+
 static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
 {
     int x, y;
@@ -1054,7 +1134,7 @@ static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, 
             {
                 for (tx = 0; tx < 4; tx++)
                 {
-                    int index = (y*4 + ty) * width + (x*4 + tx);
+                    int index = (height - 1 - (y*4 + ty)) * width + (x*4 + tx);
                     int srcIdx = ty*4 + tx;
                     dest[index*4 + 3] = src[0  + srcIdx*2 + 0];  // a
                     dest[index*4 + 0] = src[0  + srcIdx*2 + 1];  // r
@@ -1127,8 +1207,11 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
         img = __obj->uncompressed;
         break;
     case GX_TF_I8:
+        __obj->uncompressed = malloc(width * height);
+        decompress_i8_texture(image_ptr, __obj->uncompressed, width, height);
         type = GL_UNSIGNED_BYTE;
         glFmt = GL_LUMINANCE;
+        img = __obj->uncompressed;
         break;
     case GX_TF_RGB565:
         type = GL_UNSIGNED_SHORT_5_6_5;
@@ -1180,8 +1263,9 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
 
     //puts("GXLoadTexObj is a stub");
     //printf("id %i\n", id);
-    glActiveTexture(GL_TEXTURE0 + id);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, __obj->textureId);
+    glUniform1i(glGetUniformLocation(s_program, "u_texture0"), 0);
 }
 
 /* Vert */
@@ -1209,14 +1293,33 @@ static void write_4byte(const void *val)
     s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
 }
 
+static void handle_quad_emulation(void)
+{
+    if (s_currPrim != GX_QUADS)
+        return;
+    // Reset first quad vertex pos
+    if (s_vertexBufferPos == s_quadVtx0Pos + 6 * s_vtxSize)
+        s_quadVtx0Pos = s_vertexBufferPos;
+    // If we're on the last vertex, insert vtx 0 and 2 before it
+    else if (s_vertexBufferPos >= s_quadVtx0Pos + 3 * s_vtxSize)
+    {
+        memcpy(s_vertexBuffer + s_vertexBufferPos, s_vertexBuffer + s_quadVtx0Pos, s_vtxSize);
+        s_vertexBufferPos += s_vtxSize;
+        memcpy(s_vertexBuffer + s_vertexBufferPos, s_vertexBuffer + s_quadVtx0Pos + 2 * s_vtxSize, s_vtxSize);
+        s_vertexBufferPos += s_vtxSize;
+    }
+}
+
 void GXPosition2f32(const f32 x, const f32 y)
 {
+    handle_quad_emulation();
     write_4byte(&x);
     write_4byte(&y);
 }
 
 void GXPosition3s16(const s16 x, const s16 y, const s16 z)
 {
+    handle_quad_emulation();
     write_2byte(&x);
     write_2byte(&y);
     write_2byte(&z);
@@ -1224,6 +1327,7 @@ void GXPosition3s16(const s16 x, const s16 y, const s16 z)
 
 void GXPosition3f32(const f32 x, const f32 y, const f32 z)
 {
+    handle_quad_emulation();
     write_4byte(&x);
     write_4byte(&y);
     write_4byte(&z);
@@ -1377,8 +1481,24 @@ void GXAdjustForOverscan(GXRenderModeObj *rmin, GXRenderModeObj *rmout,
 
 /* Init */
 
+static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
+{
+    fprintf(stderr, "GL error: %i, %s\n", severity, message);
+    fflush(stdout);
+    if (severity != 33387)
+    {
+        *(int *)0 = 0;
+        exit(1);
+    }
+}
+
 GXFifoObj *GXInit(void *base, u32 size)
 {
+    const GLchar *src;
+    GLint srcLen;
+    GLint status;
+    GLchar log[500];
+
     puts("GXInit is a stub");
 #ifdef _WIN32
     if (glewInit() != GLEW_OK)
@@ -1387,10 +1507,63 @@ GXFifoObj *GXInit(void *base, u32 size)
         exit(1);
     }
 #endif
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(debug_proc, NULL);
     glDisable(GL_CULL_FACE);
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
+
+    s_vtxShader = glCreateShader(GL_VERTEX_SHADER);
+    src = s_vtxShaderSrc;
+    srcLen = strlen(s_vtxShaderSrc);
+    glShaderSource(s_vtxShader, 1, &src, &srcLen);
+    glCompileShader(s_vtxShader);
+
+    s_fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+    src = s_fragShaderSrc;
+    srcLen = strlen(s_fragShaderSrc);
+    glShaderSource(s_fragShader, 1, &src, &srcLen);
+    glCompileShader(s_fragShader);
+
+    s_program = glCreateProgram();
+    glAttachShader(s_program, s_vtxShader);
+    glAttachShader(s_program, s_fragShader);
+    glLinkProgram(s_program);
+    glGetProgramiv(s_program, GL_LINK_STATUS, &status);
+    if (!status)
+    {
+        glGetProgramInfoLog(s_program, sizeof(log), NULL, log);
+        fprintf(stderr, "failed to link shader program: %s\n", log);
+        exit(1);
+    }
+
+    s_shaderPositionIndex = glGetAttribLocation(s_program, "a_position");
+    s_shaderNormalIndex   = glGetAttribLocation(s_program, "a_normal");
+    s_shaderTexCoordIndex = glGetAttribLocation(s_program, "a_texCoord");
+    s_shaderColorIndex    = glGetAttribLocation(s_program, "a_color");
+    /*
+    s_shaderPositionIndex = 0;
+    s_shaderNormalIndex = 1;
+    s_shaderTexCoordIndex = 2;
+    s_shaderColorIndex = 3;
+    glBindAttribLocation(s_program, s_shaderPositionIndex, "a_position");
+    glBindAttribLocation(s_program, s_shaderNormalIndex,   "a_normal");
+    glBindAttribLocation(s_program, s_shaderTexCoordIndex, "a_texCoord");
+    glBindAttribLocation(s_program, s_shaderColorIndex,    "a_color");
+    */
+
+    printf("a_position: %i\n"
+           "a_normal: %i\n"
+           "a_texCoord: %i\n"
+           "a_color:%i\n",
+           s_shaderPositionIndex,
+           s_shaderNormalIndex,
+           s_shaderTexCoordIndex,
+           s_shaderColorIndex);
+
+    glUseProgram(s_program);
+
     // set up interpolation formula?
     /*
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);

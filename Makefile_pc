@@ -115,7 +115,7 @@ SOURCES := \
 	src/dvd.c \
 	src/preview.c \
 	libraries/dolphin_pc/OS.c \
-	libraries/dolphin_pc/GX.c \
+	libraries/dolphin_pc/GX_gles2.c \
 	libraries/dolphin_pc/dvd.c \
 	libraries/dolphin_pc/vi.c \
 	libraries/dolphin_pc/pad_evdev.c \
