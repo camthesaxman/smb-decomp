@@ -94,8 +94,8 @@ add_executable(supermonkeyball
     src/perf.c
     src/pool.c
     src/nl2ngc.c
+    src/mot_joint.c
     src/motload.c
-    src/motload_2.c
     src/motload_3.c
     src/motload_4.c
     src/ball.c
@@ -185,7 +185,7 @@ target_compile_definitions(supermonkeyball PRIVATE NONMATCHING C_ONLY TARGET_PC)
 if (MSVC)
   target_include_directories(supermonkeyball PRIVATE include)
 else ()
-  target_sources(supermonkeyball src/mathutil_vec_cross_prod.c)
+  target_sources(supermonkeyball PRIVATE src/mathutil_vec_cross_prod.c)
   target_compile_options(supermonkeyball PRIVATE -idirafter "${CMAKE_CURRENT_SOURCE_DIR}/include")
 endif ()
 target_link_libraries(supermonkeyball PRIVATE aurora::aurora aurora::main)

@@ -1,6 +1,7 @@
 extern "C"
 {
 #include "byteswap.h"
+#include "variables.h"
 }
 
 #include <cstdint>
@@ -458,20 +459,51 @@ template <typename B> void bswap(B &base, Stage &stage)
     bswap(base, stage.unk90);
 }
 
+template <typename B> void bswap(B &base, ChildJointList &obj)
+{
+    bswap(base, obj.count);
+    bswap(base, obj.children);
+}
+template <typename B> void bswap(B &base, MotRotation &obj)
+{
+    bswap(base, obj.rotX);
+    bswap(base, obj.rotY);
+    bswap(base, obj.rotZ);
+}
 template <typename B> void bswap(B &base, MotSkeletonEntry1 &obj)
 {
-    // TODO sizes?
     bswap(base, obj.unk0);
-    bswap(base, obj.unk4);
-    bswap(base, obj.rotations);
-    bswap(base, obj.unkC);
-    bswap(base, obj.unk10);
+    bswap(base, obj.childLists, 4 * 7);
+    int rotCount = 0;
+    int vecCount = 0;
+    const u32 *flags = u_jointFlagLists[0];
+    while (*flags != 0)
+    {
+        if (*flags & (1 << 6))
+        {
+            ++rotCount;
+        }
+        if (*flags & (1 << 1))
+        {
+            ++vecCount;
+        }
+        ++flags;
+    }
+    bswap(base, obj.rotations, rotCount);
+    bswap(base, obj.unkC, vecCount);
+    bswap(base, obj.unk10, vecCount);
     bswap(base, obj.name);
+}
+template <typename B> void bswap(B &base, Struct80034B50_child2_child &obj)
+{
+    bswap(base, obj.unk0);
 }
 template <typename B> void bswap(B &base, MotSkeletonEntry2 &obj)
 {
     bswap(base, obj.unk0);
-    // TODO unk4
+    bswap(base, obj.unk4[0], 1);
+    bswap(base, obj.unk4[1], 1);
+    bswap(base, obj.unk4[2], 1);
     bswap(base, obj.unk10[0]);
     bswap(base, obj.unk10[1]);
     bswap(base, obj.unk10[2]);

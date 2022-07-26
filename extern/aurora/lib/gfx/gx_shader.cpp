@@ -1326,7 +1326,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {{{8}{7}
   };
   auto shader = wgpuDeviceCreateShaderModule(webgpu::g_device, &shaderDescriptor);
 
-  auto pair = std::make_pair(std::move(shader), info);
+  auto pair = std::make_pair(shader, info);
   g_gxCachedShaders.emplace(hash, pair);
 #ifndef NDEBUG
   g_gxCachedShaderConfigs.emplace(hash, config);

@@ -4,6 +4,10 @@
 #include "global.h"
 #include "mathutil.h"
 
+#ifdef TARGET_PC
+#include "byteswap.h"
+#endif
+
 struct MotDat *motDat;
 
 struct Struct800341BC_4
@@ -275,7 +279,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     u_read_dvd_file(&file, motSkeleton, size, 0);
     DVDClose(&file);
 #ifdef TARGET_PC
-    byteswap_motskl((u8 *)motSkeleton);
+    byteswap_motskeleton(motSkeleton);
 #endif
     adjust_motskl_pointers(motSkeleton);
     totalSize += size;
