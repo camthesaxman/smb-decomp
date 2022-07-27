@@ -104,4 +104,9 @@ u32 PADRead(PADStatus *status)
     return 0;
 }
 
+void PADSetAnalogMode(u32 mode)
+{
+    puts("PADSetAnalogMode is a stub");
+}
+
 #endif  // __linux__

@@ -2009,3 +2009,36 @@ void GXSetDrawDone(void)
     puts("GXSetDrawDone is a stub");
     DrawDoneCB();
 }
+
+/* Stubs */
+
+void GXCopyDisp(void* dest, GXBool clear){puts("GXCopyDisp is a stub");}
+void GXCopyTex(void* dest, GXBool clear){puts("GXCopyTex is a stub");}
+void GXDrawSphere(u8 numMajor, u8 numMinor){puts("GXDrawSphere is a stub");}
+void GXFlush(void){puts("GXFlush is a stub");}
+GXBool GXGetTexObjMipMap(GXTexObj* tex_obj){puts("GXGetTexObjMipMap is a stub");}
+void GXInitTexObjLOD(GXTexObj* obj, GXTexFilter min_filt, GXTexFilter mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, GXBool bias_clamp, GXBool do_edge_lod, GXAnisotropy max_aniso){puts("GXInitTexObjLOD is a stub");}
+void GXInitTexObjWrapMode(GXTexObj* obj, GXTexWrapMode s, GXTexWrapMode t){puts("GXInitTexObjWrapMode is a stub");}
+void GXInvalidateTexAll(void){puts("GXInvalidateTexAll is a stub");}
+GXRenderModeObj GXMpal480IntDf;
+GXRenderModeObj GXPal528IntDf;
+void GXSetAlphaUpdate(GXBool update_enable){puts("GXSetAlphaUpdate is a stub");}
+void GXSetColorUpdate(GXBool update_enable){puts("GXSetColorUpdate is a stub");}
+void GXSetCopyFilter(GXBool aa, u8 sample_pattern[12][2], GXBool vf, u8 vfilter[7]){puts("GXSetCopyFilter is a stub");}
+void GXSetDispCopyDst(u16 wd, u16 ht){puts("GXSetDispCopyDst is a stub");}
+void GXSetDispCopyGamma(GXGamma gamma){puts("GXSetDispCopyGamma is a stub");}
+void GXSetDispCopySrc(u16 left, u16 top, u16 wd, u16 ht){puts("GXSetDispCopySrc is a stub");}
+u32 GXSetDispCopyYScale(f32 vscale){puts("GXSetDispCopyYScale is a stub");}
+void GXSetDither(GXBool dither){puts("GXSetDither is a stub");}
+void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor color){puts("GXSetFog is a stub");}
+void GXSetIndTexMtx(GXIndTexMtxID mtx_sel, f32 offset[2][3], s8 scale_exp){puts("GXSetIndTexMtx is a stub");}
+void GXSetIndTexOrder(GXIndTexStageID ind_stage, GXTexCoordID tex_coord, GXTexMapID tex_map){puts("GXSetIndTexOrder is a stub");}
+void GXSetNumIndStages(u8 nIndStages){puts("GXSetNumIndStages is a stub");}
+void GXSetNumTexGens(u8 nTexGens){puts("GXSetNumTexGens is a stub");}
+void GXSetPixelFmt(GXPixelFmt pix_fmt, GXZFmt16 z_fmt){puts("GXSetPixelFmt is a stub");}
+void GXSetTevDirect(GXTevStageID tev_stage){puts("GXSetTevDirect is a stub");}
+void GXSetTevIndirect(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXIndTexFormat format, GXIndTexBiasSel bias_sel, GXIndTexMtxID matrix_sel, GXIndTexWrap wrap_s, GXIndTexWrap wrap_t, GXBool add_prev, GXBool ind_lod, GXIndTexAlphaSel alpha_sel){puts("GXSetTevIndirect is a stub");}
+void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func, GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx){puts("GXSetTexCoordGen2 is a stub");}
+void GXSetTexCopyDst(u16 wd, u16 ht, GXTexFmt fmt, GXBool mipmap){puts("GXSetTexCopyDst is a stub");}
+void GXSetTexCopySrc(u16 left, u16 top, u16 wd, u16 ht){puts("GXSetTexCopySrc is a stub");}
+void GXSetZCompLoc(GXBool before_tex){puts("GXSetZCompLoc is a stub");}
