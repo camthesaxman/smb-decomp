@@ -1522,7 +1522,7 @@ static void decompress_i8_texture(const u8 *restrict src, u8 *restrict dest, int
                 for (tx = 0; tx < 8; tx++)
                 {
                     int index = (y*4 + ty) * width + (x*4 + tx);
-                    dest[index] = *src++;
+                    dest[index*2 + 0] = dest[index*2 + 1] = *src++;
                 }
             }
         }
@@ -1616,10 +1616,10 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
         img = __obj->uncompressed;
         break;
     case GX_TF_I8:
-        __obj->uncompressed = malloc(width * height);
+        __obj->uncompressed = malloc(width * height * 2);
         decompress_i8_texture(image_ptr, __obj->uncompressed, width, height);
         type = GL_UNSIGNED_BYTE;
-        glFmt = GL_LUMINANCE;
+        glFmt = GL_LUMINANCE_ALPHA;
         img = __obj->uncompressed;
         break;
     case GX_TF_RGB565:
