@@ -181,6 +181,9 @@ struct TevConfig
 };
 
 static struct TevConfig s_currTevConfig = {0};
+static GXColor s_konstColors[GX_MAX_KCOLOR];
+static GXTevKColorSel s_konstColorSel[GX_MAX_TEVSTAGE];
+static GXTevKAlphaSel s_konstAlphaSel[GX_MAX_TEVSTAGE];
 static GXColor s_konstColor;
 static GXColor s_tevRegs[4];
 static GLint s_currTextureId;
@@ -204,6 +207,84 @@ static void gxcolor_to_float_arr(GXColor color, GLfloat *out)
     out[1] = color.g / 255.0f;
     out[2] = color.b / 255.0f;
     out[3] = color.a / 255.0f;
+}
+
+static void calc_konst_color(GXTevStageID stage, float *out)
+{
+    switch (s_konstColorSel[stage])
+    {
+    case GX_TEV_KCSEL_1:   out[0] = out[1] = out[2] = 1.0f;      break;
+    case GX_TEV_KCSEL_7_8: out[0] = out[1] = out[2] = 7.0f/8.0f; break;
+    case GX_TEV_KCSEL_3_4: out[0] = out[1] = out[2] = 3.0f/4.0f; break;
+    case GX_TEV_KCSEL_5_8: out[0] = out[1] = out[2] = 5.0f/8.0f; break;
+    case GX_TEV_KCSEL_1_2: out[0] = out[1] = out[2] = 1.0f/2.0f; break;
+    case GX_TEV_KCSEL_3_8: out[0] = out[1] = out[2] = 3.0f/8.0f; break;
+    case GX_TEV_KCSEL_1_4: out[0] = out[1] = out[2] = 1.0f/4.0f; break;
+    case GX_TEV_KCSEL_1_8: out[0] = out[1] = out[2] = 1.0f/8.0f; break;
+
+    case GX_TEV_KCSEL_K0: gxcolor_to_float_arr(s_konstColors[0], out); break;
+    case GX_TEV_KCSEL_K1: gxcolor_to_float_arr(s_konstColors[1], out); break;
+    case GX_TEV_KCSEL_K2: gxcolor_to_float_arr(s_konstColors[2], out); break;
+    case GX_TEV_KCSEL_K3: gxcolor_to_float_arr(s_konstColors[3], out); break;
+
+    case GX_TEV_KCSEL_K0_R: out[0] = out[1] = out[2] = s_konstColors[0].r / 255.0f; break;
+    case GX_TEV_KCSEL_K1_R: out[0] = out[1] = out[2] = s_konstColors[1].r / 255.0f; break;
+    case GX_TEV_KCSEL_K2_R: out[0] = out[1] = out[2] = s_konstColors[2].r / 255.0f; break;
+    case GX_TEV_KCSEL_K3_R: out[0] = out[1] = out[2] = s_konstColors[3].r / 255.0f; break;
+
+    case GX_TEV_KCSEL_K0_G: out[0] = out[1] = out[2] = s_konstColors[0].g / 255.0f; break;
+    case GX_TEV_KCSEL_K1_G: out[0] = out[1] = out[2] = s_konstColors[1].g / 255.0f; break;
+    case GX_TEV_KCSEL_K2_G: out[0] = out[1] = out[2] = s_konstColors[2].g / 255.0f; break;
+    case GX_TEV_KCSEL_K3_G: out[0] = out[1] = out[2] = s_konstColors[3].g / 255.0f; break;
+
+    case GX_TEV_KCSEL_K0_B: out[0] = out[1] = out[2] = s_konstColors[0].b / 255.0f; break;
+    case GX_TEV_KCSEL_K1_B: out[0] = out[1] = out[2] = s_konstColors[1].b / 255.0f; break;
+    case GX_TEV_KCSEL_K2_B: out[0] = out[1] = out[2] = s_konstColors[2].b / 255.0f; break;
+    case GX_TEV_KCSEL_K3_B: out[0] = out[1] = out[2] = s_konstColors[3].b / 255.0f; break;
+
+    case GX_TEV_KCSEL_K0_A: out[0] = out[1] = out[2] = s_konstColors[0].a / 255.0f; break;
+    case GX_TEV_KCSEL_K1_A: out[0] = out[1] = out[2] = s_konstColors[1].a / 255.0f; break;
+    case GX_TEV_KCSEL_K2_A: out[0] = out[1] = out[2] = s_konstColors[2].a / 255.0f; break;
+    case GX_TEV_KCSEL_K3_A: out[0] = out[1] = out[2] = s_konstColors[3].a / 255.0f; break;
+
+    default:
+        assert(0);
+    }
+
+    switch (s_konstAlphaSel[stage])
+    {
+    case GX_TEV_KASEL_1:   out[3] = 1.0f;      break;
+    case GX_TEV_KASEL_7_8: out[3] = 7.0f/8.0f; break;
+    case GX_TEV_KASEL_3_4: out[3] = 3.0f/4.0f; break;
+    case GX_TEV_KASEL_5_8: out[3] = 5.0f/8.0f; break;
+    case GX_TEV_KASEL_1_2: out[3] = 1.0f/2.0f; break;
+    case GX_TEV_KASEL_3_8: out[3] = 3.0f/8.0f; break;
+    case GX_TEV_KASEL_1_4: out[3] = 1.0f/4.0f; break;
+    case GX_TEV_KASEL_1_8: out[3] = 1.0f/8.0f; break;
+
+    case GX_TEV_KASEL_K0_R: out[3] = s_konstColors[0].r / 255.0f; break;
+    case GX_TEV_KASEL_K1_R: out[3] = s_konstColors[1].r / 255.0f; break;
+    case GX_TEV_KASEL_K2_R: out[3] = s_konstColors[2].r / 255.0f; break;
+    case GX_TEV_KASEL_K3_R: out[3] = s_konstColors[3].r / 255.0f; break;
+
+    case GX_TEV_KASEL_K0_G: out[3] = s_konstColors[0].g / 255.0f; break;
+    case GX_TEV_KASEL_K1_G: out[3] = s_konstColors[1].g / 255.0f; break;
+    case GX_TEV_KASEL_K2_G: out[3] = s_konstColors[2].g / 255.0f; break;
+    case GX_TEV_KASEL_K3_G: out[3] = s_konstColors[3].g / 255.0f; break;
+
+    case GX_TEV_KASEL_K0_B: out[3] = s_konstColors[0].b / 255.0f; break;
+    case GX_TEV_KASEL_K1_B: out[3] = s_konstColors[1].b / 255.0f; break;
+    case GX_TEV_KASEL_K2_B: out[3] = s_konstColors[2].b / 255.0f; break;
+    case GX_TEV_KASEL_K3_B: out[3] = s_konstColors[3].b / 255.0f; break;
+
+    case GX_TEV_KASEL_K0_A: out[3] = s_konstColors[0].a / 255.0f; break;
+    case GX_TEV_KASEL_K1_A: out[3] = s_konstColors[1].a / 255.0f; break;
+    case GX_TEV_KASEL_K2_A: out[3] = s_konstColors[2].a / 255.0f; break;
+    case GX_TEV_KASEL_K3_A: out[3] = s_konstColors[3].a / 255.0f; break;
+
+    default:
+        assert(0);
+    }
 }
 
 static const char *shader_tev_reg(GXTevRegID reg)
@@ -237,7 +318,7 @@ static const char *shader_tev_color_arg(GXTevColorArg arg)
         [GX_CC_RASA]  = "v_color.www",
         [GX_CC_ONE]   = "vec3(1.0,1.0,1.0)",
         [GX_CC_HALF]  = "vec3(0.5,0.5,0.5)",
-        [GX_CC_KONST] = "u_konst.xyz",
+        [GX_CC_KONST] = "konst.xyz",
         [GX_CC_ZERO]  = "vec3(0.0,0.0,0.0)",
     };
     assert(arg >= 0 && arg < 16);
@@ -254,11 +335,24 @@ static const char *shader_tev_alpha_arg(GXTevAlphaArg arg)
         [GX_CA_A2]    = "tevReg2.w",
         [GX_CA_TEXA]  = "texture2D(u_texture0,v_texCoord).w",
         [GX_CA_RASA]  = "v_color.w",
-        [GX_CA_KONST] = "u_konst.w",
+        [GX_CA_KONST] = "konst.w",
         [GX_CA_ZERO]  = "0.0",
     };
     assert(arg >= 0 && arg < 8);
     return shaderAlphaArgs[arg];
+}
+
+static const char *shader_tev_op(GXTevOp op)
+{
+    switch (op)
+    {
+    case GX_TEV_ADD: return "+";
+    case GX_TEV_SUB: return "-";
+    default:
+        printf("op %i\n", op);
+        assert(0);
+        return NULL;
+    }
 }
 
 static void prepare_shaders(void)
@@ -271,7 +365,7 @@ static void prepare_shaders(void)
         "uniform vec4 u_tevReg0;\n"
         "uniform vec4 u_tevReg1;\n"
         "uniform vec4 u_tevReg2;\n"
-        "uniform vec4 u_konst;\n"
+        "uniform vec4 u_konstColors[16];\n"  // one for each stage
         "varying vec3 v_normal;\n"
         "varying vec2 v_texCoord;\n"
         "varying vec4 v_color;\n"
@@ -280,7 +374,8 @@ static void prepare_shaders(void)
         "    vec4 tevRegPrev = u_tevRegPrev;\n"
         "    vec4 tevReg0    = u_tevReg0;\n"
         "    vec4 tevReg1    = u_tevReg1;\n"
-        "    vec4 tevReg2    = u_tevReg2;\n";
+        "    vec4 tevReg2    = u_tevReg2;\n"
+        "    vec4 konst;\n";
     static const char fragShaderFooter[] =
         "    gl_FragColor = tevRegPrev;\n"
         "}\n";
@@ -325,20 +420,27 @@ static void prepare_shaders(void)
     for (i = 0; i < shader->tevConfig.numTevStages; i++, stage++)
     {
         fragSrcLen[1 + i] = sprintf(tevSrc[i],
-            "    %s.xyz = %s * (1.0 - %s) + %s * %s;\n"  // color
-            "    %s.w = %s * (1.0 - %s) + %s * %s;\n",  // alpha
+            "    konst = u_konstColors[%i];\n"
+            "    %s.xyz = %s * (1.0 - %s) + %s * %s %s %s;\n"  // color
+            "    %s.w = %s * (1.0 - %s) + %s * %s %s %s;\n",  // alpha
+            i,
             // color
             shader_tev_reg(stage->colorOut),
             shader_tev_color_arg(stage->colorArgs[0]),
             shader_tev_color_arg(stage->colorArgs[2]),
             shader_tev_color_arg(stage->colorArgs[1]),
             shader_tev_color_arg(stage->colorArgs[2]),
+            shader_tev_op(stage->colorOp),
+            shader_tev_color_arg(stage->colorArgs[3]),
             // alpha
             shader_tev_reg(stage->alphaOut),
             shader_tev_alpha_arg(stage->alphaArgs[0]),
             shader_tev_alpha_arg(stage->alphaArgs[2]),
             shader_tev_alpha_arg(stage->alphaArgs[1]),
-            shader_tev_alpha_arg(stage->alphaArgs[2]));
+            shader_tev_alpha_arg(stage->alphaArgs[2]),
+            shader_tev_op(stage->alphaOp),
+            shader_tev_alpha_arg(stage->alphaArgs[3]));
+        assert(fragSrcLen[1 + i] < sizeof(tevSrc[i]));
         fragSrcPtrs[1 + i] = tevSrc[i];
     }
     fragSrcPtrs[1 + i] = fragShaderFooter;
@@ -348,13 +450,13 @@ static void prepare_shaders(void)
 
     puts("Compiling shader:");
     printf("%i stages\n", shader->tevConfig.numTevStages);
-    //for (i = 0; i < 2 + shader->tevConfig.numTevStages; i++)
-    //    fputs(fragSrcPtrs[i], stdout);
     shader->fragShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, fragSrcLen);
+    /*
     GLchar src[5000];
     glGetShaderSource(shader->fragShader, sizeof(src), NULL, src);
     puts(src);
+    */
     glCompileShader(shader->fragShader);
 
     //pause();
@@ -382,10 +484,12 @@ got_shader:
     float color[4];
     GLint location;
 
-    if ((location = glGetUniformLocation(shader->program, "u_konst")) >= 0)
+    if ((location = glGetUniformLocation(shader->program, "u_konstColors")) >= 0)
     {
-        gxcolor_to_float_arr(s_konstColor, color);
-        glUniform4fv(location, 1, color);
+        float kcolors[16][4];
+        for (i = 0; i < shader->tevConfig.numTevStages; i++)
+            calc_konst_color(i, kcolors[i]);
+        glUniform4fv(location, shader->tevConfig.numTevStages, kcolors);
     }
     if ((location = glGetUniformLocation(shader->program, "u_tevRegPrev")) >= 0)
     {
@@ -422,7 +526,39 @@ got_shader:
 
 void GXSetTevOp(GXTevStageID id, GXTevMode mode)
 {
-    puts("GXSetTevOp is a stub");
+    GXTevColorArg inputColor = GX_CC_RASC;
+    GXTevAlphaArg inputAlpha = GX_CA_RASA;
+
+    if (id != GX_TEVSTAGE0)
+    {
+        inputColor = GX_CC_CPREV;
+        inputAlpha = GX_CA_APREV;
+    }
+    switch (mode)
+    {
+    case GX_MODULATE:
+        GXSetTevColorIn(id, GX_CC_ZERO, GX_CC_TEXC, inputColor, GX_CC_ZERO);
+        GXSetTevAlphaIn(id, GX_CA_ZERO, GX_CA_TEXA, inputAlpha, GX_CA_ZERO);
+        break;
+    case GX_DECAL:
+        GXSetTevColorIn(id, inputColor, GX_CC_TEXC, GX_CC_TEXA, GX_CC_ZERO);
+        GXSetTevAlphaIn(id, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, inputAlpha);
+        break;
+    case GX_BLEND:
+        GXSetTevColorIn(id, inputColor, GX_CC_ONE, GX_CC_TEXC, GX_CC_ZERO);
+        GXSetTevAlphaIn(id, GX_CA_ZERO, GX_CA_TEXA, inputAlpha, GX_CA_ZERO);
+        break;
+    case GX_REPLACE:
+        GXSetTevColorIn(id, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_TEXC);
+        GXSetTevAlphaIn(id, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_TEXA);
+        break;
+    case GX_PASSCLR:
+        GXSetTevColorIn(id, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, inputColor);
+        GXSetTevAlphaIn(id, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, inputAlpha);
+        break;
+    }
+    GXSetTevColorOp(id, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(id, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
 }
 
 void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, u8 ref1)
@@ -432,7 +568,7 @@ void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, 
 
 void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
 {
-    puts("GXSetTevColorIn is a stub");
+    //puts("GXSetTevColorIn is a stub");
     s_currTevConfig.stages[stage].colorArgs[0] = a;
     s_currTevConfig.stages[stage].colorArgs[1] = b;
     s_currTevConfig.stages[stage].colorArgs[2] = c;
@@ -441,7 +577,7 @@ void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTev
 
 void GXSetTevAlphaIn(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
 {
-    puts("GXSetTevAlphaIn is a stub");
+    //puts("GXSetTevAlphaIn is a stub");
     s_currTevConfig.stages[stage].alphaArgs[0] = a;
     s_currTevConfig.stages[stage].alphaArgs[1] = b;
     s_currTevConfig.stages[stage].alphaArgs[2] = c;
@@ -475,18 +611,21 @@ void GXSetTevColor(GXTevRegID id, GXColor color)
 
 void GXSetTevKColor(GXTevKColorID id, GXColor color)
 {
-    puts("GXSetTevKColor is a stub");
-    s_konstColor = color;
+    //puts("GXSetTevKColor is a stub");
+    assert(id >= 0 && id < GX_MAX_KCOLOR);
+    s_konstColors[id] = color;
 }
 
 void GXSetTevKColorSel(GXTevStageID stage, GXTevKColorSel sel)
 {
-    puts("GXSetTevKColorSel is a stub");
+    //puts("GXSetTevKColorSel is a stub");
+    s_konstColorSel[stage] = sel;
 }
 
 void GXSetTevKAlphaSel(GXTevStageID stage, GXTevKAlphaSel sel)
 {
-    puts("GXSetTevKAlphaSel is a stub");
+    //puts("GXSetTevKAlphaSel is a stub");
+    s_konstAlphaSel[stage] = sel;
 }
 
 void GXSetTevSwapMode(GXTevStageID stage, GXTevSwapSel ras_sel, GXTevSwapSel tex_sel)

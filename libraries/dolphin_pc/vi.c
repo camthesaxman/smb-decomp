@@ -47,4 +47,9 @@ void VIFlush(void)
     //puts("VIFlush");
     glfwSwapBuffers(g_window);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glfwPollEvents();
+    if (glfwWindowShouldClose(g_window))
+    {
+        exit(0);
+    }
 }
