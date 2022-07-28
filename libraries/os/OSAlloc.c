@@ -1,7 +1,7 @@
+#include <dolphin.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <dolphin.h>
-#include <string.h>
+#include <stdlib.h>
 
 struct HeapCell
 {
