@@ -494,7 +494,9 @@ void lbl_8003781C(struct Ape *ape, int b)
     u_do_ape_anim(ape);
     if (!(ape->flags & (1 << 3)))
         func_8003765C(ape);
+#ifndef TARGET_PC
     func_8008C090(ape, &r29->unk104);
+#endif
     r29->unk100 = 0;
     r29->unk110 = 0.0f;
 }

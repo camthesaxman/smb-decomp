@@ -116,7 +116,7 @@ void main(void)
                                                         .logCallback = &aurora_log_callback,
                                                     });
 #endif
-    //dipSwitches |= 1;
+    // dipSwitches |= 1;
     globalFrameCounter = 0;
     initialize();
     gm_init();
@@ -256,6 +256,10 @@ void main(void)
         globalFrameCounter++;
         if ((gamePauseStatus & 0xA) == 0)
             unpausedFrameCounter++;
+
+#ifdef AURORA
+        frame_limiter();
+#endif
     }
 
 #ifdef AURORA

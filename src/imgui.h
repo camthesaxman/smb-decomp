@@ -9,6 +9,7 @@ extern "C"
 #endif
 
     void imgui_main(const AuroraInfo* info);
+    void frame_limiter();
 
 #ifdef __cplusplus
 }
