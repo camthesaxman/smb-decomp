@@ -81,41 +81,6 @@ static u16 read_u16(const u8 *src)
     return (src[0] << 8) | src[1];
 }
 
-static u32 read_u32(const u8 *src)
-{
-    return (src[0] << 24) | (src[1] << 16) | (src[2] << 8) | src[3];
-}
-
-static f32 read_f32(const u8 *src)
-{
-    f32 result;
-    u32 data = read_u32(src);
-
-    /*memcpy(result, data, sizeof(result));
-    return result;*/
-    return *(f32 *)&data;
-}
-
-static u16 read_u16_le(const u8 *src)
-{
-    return (src[1] << 8) | src[0];
-}
-
-static u32 read_u32_le(const u8 *src)
-{
-    return (src[3] << 24) | (src[2] << 16) | (src[1] << 8) | src[0];
-}
-
-static f32 read_f32_le(const u8 *src)
-{
-    f32 result;
-    u32 data = read_u32_le(src);
-
-    /*memcpy(result, data, sizeof(result));
-    return result;*/
-    return *(f32 *)&data;
-}
-
 /* Attr */
 
 struct VtxFmt
@@ -170,6 +135,7 @@ struct TevStageConfig
     u8 alphaBias;
     u8 alphaScale;
     u8 alphaOut;
+    u8 channelId;
 };
 
 // All of the information that goes into generating shader code
@@ -180,7 +146,24 @@ struct TevConfig
     int numTevStages;
 };
 
+struct ChannelConfig
+{
+    u8 ambSrc;
+    u8 matSrc;
+    u8 lightEnabled;
+};
+
+struct LightConfig
+{
+    u8 spotFn[GX_MAX_LIGHT];
+    u8 distAttnFn[GX_MAX_LIGHT];
+    struct ChannelConfig channels[2];
+    u8 numChans;
+};
+
 static struct TevConfig s_currTevConfig = {0};
+static struct LightConfig s_currLightConfig = {0};
+
 static GXColor s_konstColors[GX_MAX_KCOLOR];
 static GXTevKColorSel s_konstColorSel[GX_MAX_TEVSTAGE];
 static GXTevKAlphaSel s_konstAlphaSel[GX_MAX_TEVSTAGE];
@@ -190,10 +173,15 @@ static GLint s_currTextureId;
 static Mtx44 s_projectionMtx;
 static Mtx44 s_modelViewMtx;
 
+static GXColor s_chanMatColors[2];
+static GXColor s_chanAmbColors[2];
+
 struct ShaderInfo
 {
-    struct TevConfig tevConfig;
+    struct TevConfig tevConfig;  // fragment shader info
+    struct LightConfig lightConfig;  // vertex shader info
     GLuint program;
+    GLuint vtxShader;
     GLuint fragShader;
     int lastUsed;
 };
@@ -314,8 +302,8 @@ static const char *shader_tev_color_arg(GXTevColorArg arg)
         [GX_CC_A2]    = "tevReg2.www",
         [GX_CC_TEXC]  = "texture2D(u_texture0,v_texCoord).xyz",
         [GX_CC_TEXA]  = "texture2D(u_texture0,v_texCoord).www",
-        [GX_CC_RASC]  = "v_color.xyz",
-        [GX_CC_RASA]  = "v_color.www",
+        [GX_CC_RASC]  = "rasColor.xyz",
+        [GX_CC_RASA]  = "rasColor.www",
         [GX_CC_ONE]   = "vec3(1.0,1.0,1.0)",
         [GX_CC_HALF]  = "vec3(0.5,0.5,0.5)",
         [GX_CC_KONST] = "konst.xyz",
@@ -334,7 +322,7 @@ static const char *shader_tev_alpha_arg(GXTevAlphaArg arg)
         [GX_CA_A1]    = "tevReg1.w",
         [GX_CA_A2]    = "tevReg2.w",
         [GX_CA_TEXA]  = "texture2D(u_texture0,v_texCoord).w",
-        [GX_CA_RASA]  = "v_color.w",
+        [GX_CA_RASA]  = "rasColor.w",
         [GX_CA_KONST] = "konst.w",
         [GX_CA_ZERO]  = "0.0",
     };
@@ -355,6 +343,20 @@ static const char *shader_tev_op(GXTevOp op)
     }
 }
 
+static const char *shader_channel(GXChannelID chan)
+{
+    switch (chan)
+    {
+    case GX_COLOR0A0:   return "v_channel0";
+    case GX_COLOR1A1:   return "v_channel1";
+    case GX_COLOR_NULL: return "vec4(1.0,0.0,1.0,1.0)";
+    default:
+        printf("chan %i\n", chan);
+        assert(0);
+        return NULL;
+    }
+}
+
 static void prepare_shaders(void)
 {
     static const char fragShaderHeader[] =
@@ -366,28 +368,56 @@ static void prepare_shaders(void)
         "uniform vec4 u_tevReg1;\n"
         "uniform vec4 u_tevReg2;\n"
         "uniform vec4 u_konstColors[16];\n"  // one for each stage
-        "varying vec3 v_normal;\n"
+        //"varying vec3 v_normal;\n"
         "varying vec2 v_texCoord;\n"
-        "varying vec4 v_color;\n"
+        //"varying vec4 v_color;\n"
+        "varying vec4 v_channel0;\n"
+        "varying vec4 v_channel1;\n"
         "void main()\n"
         "{\n"
         "    vec4 tevRegPrev = u_tevRegPrev;\n"
         "    vec4 tevReg0    = u_tevReg0;\n"
         "    vec4 tevReg1    = u_tevReg1;\n"
         "    vec4 tevReg2    = u_tevReg2;\n"
-        "    vec4 konst;\n";
+        "    vec4 konst;\n"
+        "    vec4 rasColor;\n";
     static const char fragShaderFooter[] =
         "    gl_FragColor = tevRegPrev;\n"
         "}\n";
     char tevSrc[GX_MAX_TEVSTAGE][2000];
-    GLint fragSrcLen[2 + GX_MAX_TEVSTAGE];
-    GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
+    const GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
+
+    static const char vtxShaderHeader[] =
+        "#version 100\n"
+        "precision mediump float;\n"
+        "uniform   mat4 u_modelViewMatrix;\n"
+        "uniform   mat4 u_projectionMatrix;\n"
+        "uniform   vec4 u_chanAmbColors[2];\n"  // ambient colors, per channel
+        "uniform   vec4 u_chanMatColors[2];\n"  // material colors, per channel
+        "attribute vec4 a_position;\n"
+        "attribute vec3 a_normal;\n"
+        "attribute vec2 a_texCoord;\n"
+        "attribute vec4 a_color;\n"
+        "varying   vec3 v_normal;\n"
+        "varying   vec2 v_texCoord;\n"
+        "varying   vec4 v_channel0;\n"
+        "varying   vec4 v_channel1;\n"
+        "void main()\n"
+        "{\n"
+        "    v_normal   = a_normal;\n"
+        "    v_texCoord = a_texCoord;\n";
+    static const char vtxShaderFooter[] =
+        "    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
+        "}\n";
+    char vtxSrc[2][1000];
+    const GLchar *vtxSrcPtrs[2 + 2];
 
     int i;
     int shaderToEvict = 0;
     int lastUsed = INT_MAX;
     struct ShaderInfo *shader;
     struct TevStageConfig *stage;
+    struct ChannelConfig *channel;
 
     // check to see if a suitable shader exists
     shader = s_shaderCache;
@@ -395,7 +425,8 @@ static void prepare_shaders(void)
     {
         if (shader->lastUsed > 0)  // shader is in use
         {
-            if (memcmp(&shader->tevConfig, &s_currTevConfig, sizeof(struct TevConfig)) == 0)
+            if (memcmp(&shader->tevConfig, &s_currTevConfig, sizeof(shader->tevConfig)) == 0
+             && memcmp(&shader->lightConfig, &s_currLightConfig, sizeof(shader->lightConfig)) == 0)
                 goto got_shader;
         }
         // shader with the earliest use time will be evicted
@@ -409,21 +440,44 @@ static void prepare_shaders(void)
     printf("evicting %i, last used at %i\n", shaderToEvict, s_shaderCache[shaderToEvict].lastUsed);
     shader = &s_shaderCache[shaderToEvict];
     if (shader->lastUsed > 0)
+    {
         glDeleteShader(shader->fragShader);
+        glDeleteShader(shader->vtxShader);
+    }
 
     shader->tevConfig = s_currTevConfig;
+    shader->lightConfig = s_currLightConfig;
 
-    // Generate shader code
+    // Generate vtx shader code
+    channel = shader->lightConfig.channels;
+    vtxSrcPtrs[0] = vtxShaderHeader;
+    for (i = 0; i < shader->lightConfig.numChans; i++, channel++)
+    {
+        if (channel->matSrc == GX_SRC_REG)
+            sprintf(vtxSrc[i], "    v_channel%i = u_chanMatColors[%i];\n", i, i);
+        else
+            sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
+        
+        //sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
+        
+        vtxSrcPtrs[1 + i] = vtxSrc[i];
+    }
+    vtxSrcPtrs[1 + i] = vtxShaderFooter;
+
+    // Generate frag shader code
     stage = shader->tevConfig.stages;
     fragSrcPtrs[0] = fragShaderHeader;
-    fragSrcLen[0] = strlen(fragShaderHeader);
     for (i = 0; i < shader->tevConfig.numTevStages; i++, stage++)
     {
-        fragSrcLen[1 + i] = sprintf(tevSrc[i],
+        size_t len = sprintf(tevSrc[i],
             "    konst = u_konstColors[%i];\n"
+            "    rasColor = %s;\n"
             "    %s.xyz = %s * (1.0 - %s) + %s * %s %s %s;\n"  // color
             "    %s.w = %s * (1.0 - %s) + %s * %s %s %s;\n",  // alpha
+            // konst
             i,
+            // rasterized color
+            shader_channel(stage->channelId),
             // color
             shader_tev_reg(stage->colorOut),
             shader_tev_color_arg(stage->colorArgs[0]),
@@ -440,31 +494,40 @@ static void prepare_shaders(void)
             shader_tev_alpha_arg(stage->alphaArgs[2]),
             shader_tev_op(stage->alphaOp),
             shader_tev_alpha_arg(stage->alphaArgs[3]));
-        assert(fragSrcLen[1 + i] < sizeof(tevSrc[i]));
+        assert(len < sizeof(tevSrc[i]));
         fragSrcPtrs[1 + i] = tevSrc[i];
     }
     fragSrcPtrs[1 + i] = fragShaderFooter;
-    fragSrcLen[1 + i] = strlen(fragShaderFooter);
 
-    // Compile shader
+    GLchar src[5000];
 
-    puts("Compiling shader:");
+    // Compile vertex shader
+    puts("Compiling vtx shader:");
+    printf("%i chans\n", shader->lightConfig.numChans);
+    shader->vtxShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, &vtxSrcPtrs, NULL);
+    glCompileShader(shader->vtxShader);
+
+    glGetShaderSource(shader->vtxShader, sizeof(src), NULL, src);
+    puts(src);
+
+    // Compile fragment shader
+
+    puts("Compiling frag shader:");
     printf("%i stages\n", shader->tevConfig.numTevStages);
     shader->fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, fragSrcLen);
-    /*
-    GLchar src[5000];
+    glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, NULL);
+
     glGetShaderSource(shader->fragShader, sizeof(src), NULL, src);
     puts(src);
-    */
+
     glCompileShader(shader->fragShader);
 
     //pause();
 
     shader->program = glCreateProgram();
     glAttachShader(shader->program, shader->fragShader);
-    //glAttachShader(shader->program, s_fragShader);
-    glAttachShader(shader->program, s_vtxShader);
+    glAttachShader(shader->program, shader->vtxShader);
     glLinkProgram(shader->program);
     GLint status;
     GLchar log[500];
@@ -476,6 +539,15 @@ static void prepare_shaders(void)
         exit(1);
     }
 
+    s_shaderPositionIndex = 0;
+    s_shaderNormalIndex = 1;
+    s_shaderTexCoordIndex = 2;
+    s_shaderColorIndex = 3;
+    glBindAttribLocation(s_program, s_shaderPositionIndex, "a_position");
+    glBindAttribLocation(s_program, s_shaderNormalIndex,   "a_normal");
+    glBindAttribLocation(s_program, s_shaderTexCoordIndex, "a_texCoord");
+    glBindAttribLocation(s_program, s_shaderColorIndex,    "a_color");
+
 got_shader:
     shader->lastUsed = s_lastUsed++;
     s_program = shader->program;
@@ -484,11 +556,30 @@ got_shader:
     float color[4];
     GLint location;
 
+    // vertex shader uniforms
+
+    if ((location = glGetUniformLocation(shader->program, "u_chanAmbColors")) >= 0)
+    {
+        float ambColors[2 * 4];
+        for (i = 0; i < 2; i++)
+            gxcolor_to_float_arr(s_chanAmbColors[i], ambColors + i * 4);
+        glUniform4fv(location, shader->tevConfig.numTevStages, ambColors);
+    }
+    if ((location = glGetUniformLocation(shader->program, "u_chanMatColors")) >= 0)
+    {
+        float matColors[2 * 4];
+        for (i = 0; i < 2; i++)
+            gxcolor_to_float_arr(s_chanMatColors[i], matColors + i * 4);
+        glUniform4fv(location, shader->tevConfig.numTevStages, matColors);
+    }
+
+    // fragment shader uniforms
+
     if ((location = glGetUniformLocation(shader->program, "u_konstColors")) >= 0)
     {
-        float kcolors[16][4];
+        float kcolors[16 * 4];
         for (i = 0; i < shader->tevConfig.numTevStages; i++)
-            calc_konst_color(i, kcolors[i]);
+            calc_konst_color(i, kcolors + i * 4);
         glUniform4fv(location, shader->tevConfig.numTevStages, kcolors);
     }
     if ((location = glGetUniformLocation(shader->program, "u_tevRegPrev")) >= 0)
@@ -641,6 +732,7 @@ void GXSetTevSwapModeTable(GXTevSwapSel table, GXTevColorChan red, GXTevColorCha
 void GXSetTevOrder(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
 {
     puts("GXSetTevOrder is a stub");
+    s_currTevConfig.stages[stage].channelId = color;
 }
 
 void GXSetNumTevStages(u8 nStages)
@@ -869,10 +961,10 @@ static GLenum gx_prim_to_gl_prim(GXPrimitive in)
 }
 
 static u8 s_vertexBuffer[4096];
-static int s_vertexBufferPos;
+size_t s_vertexBufferPos;
 static int s_currPrim;
 static int s_vertexCount;
-static u32 s_vtxSize;
+size_t s_vtxSize;
 static int s_quadVtx0Pos;
 
 void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts)
@@ -924,8 +1016,7 @@ static GLenum gx_cull_mode_to_gl_cull_mode(GXCullMode in)
 
 void GXSetCullMode(GXCullMode mode)
 {
-    puts("GXSetCullMode is a stub");
-
+    //puts("GXSetCullMode is a stub");
     if (mode == GX_CULL_NONE)
     {
         glDisable(GL_CULL_FACE);
@@ -980,7 +1071,7 @@ void GXCallDisplayList(void *list, u32 nbytes)
         case GX_DRAW_POINTS:
             assert(prim != GX_DRAW_QUADS);  // Quads not implemented yet
             fmt = opcode & 3;
-            vtxCount = read_u16_le(data + pos);
+            vtxCount = (data[pos + 1] << 8) | data[pos];
             pos += 2;
 
             prepare_shaders();
@@ -1240,19 +1331,71 @@ void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
 {
-    GLfloat color[] = {amb_color.r / 255.0f, amb_color.g / 255.0f, amb_color.b / 255.0f, amb_color.a / 255.0f};
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, color);
+    switch (chan)
+    {
+    case GX_COLOR0:
+        s_chanAmbColors[0].r = amb_color.r;
+        s_chanAmbColors[0].g = amb_color.g;
+        s_chanAmbColors[0].b = amb_color.b;
+        break;
+    case GX_COLOR1:
+        s_chanAmbColors[1].r = amb_color.r;
+        s_chanAmbColors[1].g = amb_color.g;
+        s_chanAmbColors[1].b = amb_color.b;
+        break;
+    case GX_ALPHA0:
+        s_chanAmbColors[0].a = amb_color.a;
+        break;
+    case GX_ALPHA1:
+        s_chanAmbColors[1].a = amb_color.a;
+        break;
+    case GX_COLOR0A0:
+        s_chanAmbColors[0] = amb_color;
+        break;
+    case GX_COLOR1A1:
+        s_chanAmbColors[1] = amb_color;
+        break;
+    default:
+        printf("chan %i\n", chan);
+        assert(0);
+    }
 }
 
 void GXSetChanMatColor(GXChannelID chan, GXColor mat_color)
 {
-    GLfloat color[] = {mat_color.r / 255.0f, mat_color.g / 255.0f, mat_color.b / 255.0f, mat_color.a / 255.0f};
-    //glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, color);
+    switch (chan)
+    {
+    case GX_COLOR0:
+        s_chanMatColors[0].r = mat_color.r;
+        s_chanMatColors[0].g = mat_color.g;
+        s_chanMatColors[0].b = mat_color.b;
+        break;
+    case GX_COLOR1:
+        s_chanMatColors[1].r = mat_color.r;
+        s_chanMatColors[1].g = mat_color.g;
+        s_chanMatColors[1].b = mat_color.b;
+        break;
+    case GX_ALPHA0:
+        s_chanMatColors[0].a = mat_color.a;
+        break;
+    case GX_ALPHA1:
+        s_chanMatColors[1].a = mat_color.a;
+        break;
+    case GX_COLOR0A0:
+        s_chanMatColors[0] = mat_color;
+        break;
+    case GX_COLOR1A1:
+        s_chanMatColors[1] = mat_color;
+        break;
+    default:
+        printf("chan %i\n", chan);
+        assert(0);
+    }
 }
 
 void GXSetNumChans(u8 nChans)
 {
-    puts("GXSetNumChans is a stub");
+    s_currLightConfig.numChans = nChans;
 }
 
 void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
@@ -1682,29 +1825,6 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
 
 /* Vert */
 
-
-static void write_1byte(const void *val)
-{
-    u8 *ptr = val;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-}
-
-static void write_2byte(const void *val)
-{
-    u8 *ptr = val;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-}
-
-static void write_4byte(const void *val)
-{
-    u8 *ptr = val;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-    s_vertexBuffer[s_vertexBufferPos++] = *ptr++;
-}
-
 static void handle_quad_emulation(void)
 {
     if (s_currPrim != GX_QUADS)
@@ -1724,59 +1844,69 @@ static void handle_quad_emulation(void)
 
 void GXPosition2f32(const f32 x, const f32 y)
 {
+    f32 buf[2] = {x, y};
+
     handle_quad_emulation();
-    write_4byte(&x);
-    write_4byte(&y);
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXPosition3s16(const s16 x, const s16 y, const s16 z)
 {
+    s16 buf[3] = {x, y, z};
+
     handle_quad_emulation();
-    write_2byte(&x);
-    write_2byte(&y);
-    write_2byte(&z);
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXPosition3f32(const f32 x, const f32 y, const f32 z)
 {
+    f32 buf[3] = {x, y, z};
+
     handle_quad_emulation();
-    write_4byte(&x);
-    write_4byte(&y);
-    write_4byte(&z);
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXNormal3f32(const f32 x, const f32 y, const f32 z)
 {
-    write_4byte(&x);
-    write_4byte(&y);
-    write_4byte(&z);
+    f32 buf[3] = {x, y, z};
+
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXNormal3s16(const s16 x, const s16 y, const s16 z)
 {
-    write_2byte(&x);
-    write_2byte(&y);
-    write_2byte(&z);
+    s16 buf[3] = {x, y, z};
+
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXColor4u8(const u8 r, const u8 g, const u8 b, const u8 a)
 {
-    write_1byte(&r);
-    write_1byte(&g);
-    write_1byte(&b);
-    write_1byte(&a);
+    u8 buf[4] = {r, g, b, a};
+
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXTexCoord2s16(const s16 u, const s16 v)
 {
-    write_2byte(&u);
-    write_2byte(&v);
+    s16 buf[2] = {u, v};
+
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 void GXTexCoord2f32(const f32 u, const f32 v)
 {
-    write_4byte(&u);
-    write_4byte(&v);
+    f32 buf[2] = {u, v};
+
+    memcpy(s_vertexBuffer + s_vertexBufferPos, buf, sizeof(buf));
+    s_vertexBufferPos += sizeof(buf);
 }
 
 /* Pixel */
