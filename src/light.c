@@ -3,7 +3,7 @@
 // Most stage lighting is really simple: an ambient color and a single directional ("infinite")
 // light, both defined by the background type. A "light group" abstraction is used to allow
 // different models to be lit with different sets of lights (up to 8, the maximum supported by the
-// hardware), but it's rarely taken advantage of.   
+// hardware), but it's rarely taken advantage of.
 //
 // During initialization, the BG's infinite light and matching per-stage lights are allocated in the
 // "light pool". Then, light groups are initialized by searching the light pool for light IDs they
@@ -247,6 +247,10 @@ void load_light(struct LightGroup *group, int lightIdxInGroup, struct Light *lig
     float f0;
     GXColor lightColor;
     GXLightObj lightObj;
+#ifdef AURORA
+    // TODO: probably indicates an aurora lighting bug
+    memset(&lightObj, 0, sizeof(GXLightObj));
+#endif
 
     lightColor.r = light->red * 255.0f;
     lightColor.g = light->green * 255.0f;
@@ -404,18 +408,18 @@ struct LightGroupInfo
 // clang-format off
 const struct LightGroupInfo s_u_lightGroupSomethings[] = {
     {LIGHT_GROUP_DEFAULT, 3},
-    {LIGHT_GROUP_SINGLE, 3},        
-    {LIGHT_GROUP_SINGLE, 1},        
-    {LIGHT_GROUP_DEFAULT, 1},        
-    {LIGHT_GROUP_DEFAULT, 1},        
-    {LIGHT_GROUP_DEFAULT, 1},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
-    {LIGHT_GROUP_DEFAULT, 3},        
+    {LIGHT_GROUP_SINGLE, 3},
+    {LIGHT_GROUP_SINGLE, 1},
+    {LIGHT_GROUP_DEFAULT, 1},
+    {LIGHT_GROUP_DEFAULT, 1},
+    {LIGHT_GROUP_DEFAULT, 1},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
+    {LIGHT_GROUP_DEFAULT, 3},
     {LIGHT_GROUP_DEFAULT, 3},
     {LIGHT_GROUP_DEFAULT, 3},
     {LIGHT_GROUP_DEFAULT, 3},

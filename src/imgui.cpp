@@ -25,6 +25,8 @@ namespace aurora::gfx
 extern std::atomic_uint32_t queuedPipelines;
 extern std::atomic_uint32_t createdPipelines;
 
+extern size_t g_drawCallCount;
+extern size_t g_mergedDrawCallCount;
 extern size_t g_lastVertSize;
 extern size_t g_lastUniformSize;
 extern size_t g_lastIndexSize;
@@ -139,19 +141,23 @@ void imgui_main(const AuroraInfo *info)
             hasPrevious = true;
 
             ImGuiStringViewText(
-                fmt::format(FMT_STRING("Queued pipelines: {}\n"), aurora::gfx::queuedPipelines));
+                fmt::format(FMT_STRING("Queued pipelines:  {}\n"), aurora::gfx::queuedPipelines));
             ImGuiStringViewText(
-                fmt::format(FMT_STRING("Done pipelines:   {}\n"), aurora::gfx::createdPipelines));
-            ImGuiStringViewText(fmt::format(FMT_STRING("Vertex size:      {}\n"),
+                fmt::format(FMT_STRING("Done pipelines:    {}\n"), aurora::gfx::createdPipelines));
+            ImGuiStringViewText(
+                fmt::format(FMT_STRING("Draw call count:   {}\n"), aurora::gfx::g_drawCallCount));
+            ImGuiStringViewText(fmt::format(FMT_STRING("Merged draw calls: {}\n"),
+                                            aurora::gfx::g_mergedDrawCallCount));
+            ImGuiStringViewText(fmt::format(FMT_STRING("Vertex size:       {}\n"),
                                             BytesToString(aurora::gfx::g_lastVertSize)));
-            ImGuiStringViewText(fmt::format(FMT_STRING("Uniform size:     {}\n"),
+            ImGuiStringViewText(fmt::format(FMT_STRING("Uniform size:      {}\n"),
                                             BytesToString(aurora::gfx::g_lastUniformSize)));
-            ImGuiStringViewText(fmt::format(FMT_STRING("Index size:       {}\n"),
+            ImGuiStringViewText(fmt::format(FMT_STRING("Index size:        {}\n"),
                                             BytesToString(aurora::gfx::g_lastIndexSize)));
-            ImGuiStringViewText(fmt::format(FMT_STRING("Storage size:     {}\n"),
+            ImGuiStringViewText(fmt::format(FMT_STRING("Storage size:      {}\n"),
                                             BytesToString(aurora::gfx::g_lastStorageSize)));
             ImGuiStringViewText(fmt::format(
-                FMT_STRING("Total:            {}\n"),
+                FMT_STRING("Total:             {}\n"),
                 BytesToString(aurora::gfx::g_lastVertSize + aurora::gfx::g_lastUniformSize +
                               aurora::gfx::g_lastIndexSize + aurora::gfx::g_lastStorageSize)));
         }
