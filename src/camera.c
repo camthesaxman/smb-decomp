@@ -1472,7 +1472,7 @@ void camera_func_test(struct Camera *camera, struct Ball *ball)
     sp10.z = camera->lookAt.z - camera->eye.z;
 
     f0 = 0.1 * mathutil_sqrt(mathutil_sum_of_sq_3(sp10.x, sp10.y, sp10.z)) / 5.0;
-    f0 *= 1.0 + 9.0 * controllerInfo[0].unk0[0].triggerLeft / 170.0;
+    f0 *= 1.0 + 9.0 * controllerInfo[0].unk0[0].triggerL / 170.0;
 
     sp28.x = 0.0f;
     sp1C.x = 0.0f;
@@ -1921,7 +1921,7 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
             if (f31 > 0.25 && (rand() & 3))
             {
                 struct StageGoal *goalp;
-                
+
                 camera->state = 20;
                 camera->unk54.x = 2.0 + RAND_FLOAT();
                 camera->unk54.y = 1.0 + 5.0 * RAND_FLOAT();

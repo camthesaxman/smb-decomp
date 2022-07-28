@@ -659,22 +659,22 @@ void animate_bg_objects(struct StageBgObject *bgObj, int bgObjCount, float timeS
         if (anim->scaleZKeyframes != NULL2)
             bgObj->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount,
                                                       anim->scaleZKeyframes, timeSecondsLooped);
-        if (anim->rotXKeyframeCount != NULL2)
+        if (anim->rotXKeyframes != NULL2)
             bgObj->rotX = DEGREES_TO_S16(interpolate_keyframes(
                 anim->rotXKeyframeCount, anim->rotXKeyframes, timeSecondsLooped));
-        if (anim->rotYKeyframeCount != NULL2)
+        if (anim->rotYKeyframes != NULL2)
             bgObj->rotY = DEGREES_TO_S16(interpolate_keyframes(
                 anim->rotYKeyframeCount, anim->rotYKeyframes, timeSecondsLooped));
-        if (anim->rotZKeyframeCount != NULL2)
+        if (anim->rotZKeyframes != NULL2)
             bgObj->rotZ = DEGREES_TO_S16(interpolate_keyframes(
                 anim->rotZKeyframeCount, anim->rotZKeyframes, timeSecondsLooped));
-        if (anim->posXKeyframeCount != NULL2)
+        if (anim->posXKeyframes != NULL2)
             bgObj->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes,
                                                     timeSecondsLooped);
-        if (anim->posYKeyframeCount != NULL2)
+        if (anim->posYKeyframes != NULL2)
             bgObj->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes,
                                                     timeSecondsLooped);
-        if (anim->posZKeyframeCount != NULL2)
+        if (anim->posZKeyframes != NULL2)
             bgObj->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes,
                                                     timeSecondsLooped);
         if ((bgObj->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)

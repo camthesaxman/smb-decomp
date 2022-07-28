@@ -43,7 +43,9 @@ typedef int BOOL;
 #ifdef TARGET_PC
 #include <stddef.h>
 #else
+#ifndef NULL
 #define NULL 0
+#endif
 #endif
 #ifndef __cplusplus
 #define nullptr NULL

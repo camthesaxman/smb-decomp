@@ -208,8 +208,8 @@ void input_main(void)
     {
         controllerInfo[i].unk0[1].button = controllerInfo[i].unk0[0].button;
 
-        sp10[i].triggerLeft = clamp(sp10[i].triggerLeft - 16, 0, 0xB4) * 0.77777779102325439f;
-        sp10[i].triggerRight = clamp(sp10[i].triggerRight - 16, 0, 0xB4) * 0.77777779102325439f;
+        sp10[i].triggerL = clamp(sp10[i].triggerL - 16, 0, 0xB4) * 0.77777779102325439f;
+        sp10[i].triggerR = clamp(sp10[i].triggerR - 16, 0, 0xB4) * 0.77777779102325439f;
 
         spC.x = sp10[i].stickX;
         spC.y = sp10[i].stickY;
@@ -416,8 +416,8 @@ void get_analog_presses(void)
         if (y > var1)
             r3[0] |= (1 << 7);
 
-        x = r4->unk0[0].triggerLeft;
-        y = r4->unk0[0].triggerRight;
+        x = r4->unk0[0].triggerL;
+        y = r4->unk0[0].triggerR;
 
         if (r3[1] & (1 << 8))
             var1 = 40;

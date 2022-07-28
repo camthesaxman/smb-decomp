@@ -11,47 +11,6 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
   set(CMAKE_FIND_LIBRARY_CUSTOM_LIB_SUFFIX 32)
 endif ()
 
-if (CMAKE_SYSTEM_NAME STREQUAL Windows)
-  set(DAWN_ENABLE_DESKTOP_GL ON CACHE BOOL "Enable compilation of the OpenGL backend" FORCE)
-endif ()
-if (CMAKE_SYSTEM_NAME STREQUAL Linux)
-  set(DAWN_ENABLE_OPENGLES ON CACHE BOOL "Enable compilation of the OpenGL ES backend" FORCE)
-endif ()
-add_subdirectory(extern/dawn EXCLUDE_FROM_ALL)
-if (DAWN_ENABLE_VULKAN)
-  target_compile_definitions(dawn_native PRIVATE
-      DAWN_ENABLE_VULKAN_VALIDATION_LAYERS
-      DAWN_VK_DATA_DIR="vulkandata")
-endif ()
-if (MSVC)
-  target_compile_options(dawn_native PRIVATE /bigobj)
-else ()
-  target_compile_options(SPIRV-Tools-static PRIVATE -Wno-implicit-fallthrough)
-  target_compile_options(SPIRV-Tools-opt PRIVATE -Wno-implicit-fallthrough)
-endif ()
-
-if (WIN32)
-  set(SDL_LIBC ON CACHE BOOL "Use the system C library" FORCE)
-endif ()
-add_subdirectory(extern/SDL EXCLUDE_FROM_ALL)
-if (NOT MSVC)
-  target_compile_options(SDL2-static PRIVATE -Wno-implicit-fallthrough -Wno-shadow)
-endif ()
-
-add_subdirectory(extern/xxhash EXCLUDE_FROM_ALL)
-
-add_subdirectory(extern/fmt EXCLUDE_FROM_ALL)
-
-add_library(imgui
-    extern/imgui/imgui.cpp
-    extern/imgui/imgui_demo.cpp
-    extern/imgui/imgui_draw.cpp
-    extern/imgui/imgui_tables.cpp
-    extern/imgui/imgui_widgets.cpp
-    extern/imgui/misc/cpp/imgui_stdlib.cpp)
-target_include_directories(imgui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui)
-#target_compile_definitions(imgui PUBLIC IMGUI_USER_CONFIG="imconfig_user.h")
-
 add_subdirectory(extern/aurora EXCLUDE_FROM_ALL)
 
 add_executable(supermonkeyball
@@ -181,7 +140,7 @@ add_executable(supermonkeyball
     src/byteswap.cpp
     src/imgui.cpp
     )
-target_compile_definitions(supermonkeyball PRIVATE NONMATCHING C_ONLY TARGET_PC)
+target_compile_definitions(supermonkeyball PRIVATE NONMATCHING C_ONLY)
 if (MSVC)
   target_include_directories(supermonkeyball PRIVATE include)
 else ()

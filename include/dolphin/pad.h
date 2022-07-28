@@ -26,8 +26,8 @@ typedef struct PADStatus
     /*0x03*/ s8 stickY;
     /*0x04*/ s8 substickX;
     /*0x05*/ s8 substickY;
-    /*0x06*/ u8 triggerLeft;
-    /*0x07*/ u8 triggerRight;
+    /*0x06*/ u8 triggerL;
+    /*0x07*/ u8 triggerR;
     /*0x08*/ u8 analogA;
     /*0x09*/ u8 analogB;
     /*0x0A*/ s8 err;
