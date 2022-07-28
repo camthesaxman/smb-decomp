@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef TARGET_PC
+#ifdef AURORA
 #include "imgui.h"
 #include <aurora/aurora.h>
 #include <aurora/event.h>
@@ -62,7 +62,7 @@ struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *g_minigameNlTpl;
 
-#ifdef TARGET_PC
+#ifdef AURORA
 #include <stdio.h>
 void aurora_log_callback(AuroraLogLevel level, const char *message, unsigned int len)
 {
@@ -103,13 +103,13 @@ void __eabi(void)
 }
 __attribute__((section(".text")))
 #endif
-#ifdef TARGET_PC
+#ifdef AURORA
 int main(int argc, char* argv[])
 #else
 void main(void)
 #endif
 {
-#ifdef TARGET_PC
+#ifdef AURORA
     const AuroraInfo auroraInfo = aurora_initialize(argc, argv,
                                                     &(AuroraConfig){
                                                         .appName = "Super Monkey Ball",
@@ -151,7 +151,7 @@ void main(void)
 
     while (1)
     {
-#ifdef TARGET_PC
+#ifdef AURORA
         const AuroraEvent *event = aurora_update();
         bool exiting = false;
         while (event != NULL && event->type != AURORA_NONE)
@@ -173,7 +173,7 @@ void main(void)
 
         perf_start_timer(4);
         u_bitmap_frame_reset();
-#ifdef TARGET_PC
+#ifdef AURORA
         aurora_begin_frame();
 #endif
         beginframe_main();
@@ -233,7 +233,7 @@ void main(void)
         window_main();
         perfInfo.windowTime = perf_stop_timer(4);
 
-#ifdef TARGET_PC
+#ifdef AURORA
         imgui_main(&auroraInfo);
         aurora_end_frame();
 #endif
@@ -258,7 +258,7 @@ void main(void)
             unpausedFrameCounter++;
     }
 
-#ifdef TARGET_PC
+#ifdef AURORA
     aurora_shutdown();
 #endif
 }
