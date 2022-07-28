@@ -27,7 +27,6 @@
 
 //#define puts(...)
 
-/*
 void pause(void)
 {
     char *line = NULL;
@@ -35,7 +34,6 @@ void pause(void)
     getline(&line, &len, stdin);
     free(line);
 }
-*/
 
 static GLuint s_program;
 static GLint s_shaderPositionIndex;
@@ -47,6 +45,24 @@ static u16 read_u16(const u8 *src)
 {
     return (src[0] << 8) | src[1];
 }
+
+typedef struct
+{
+    u8 filler0[0xC];
+    u32 color;
+    f32 unk10;
+    f32 unk14;
+    f32 unk18;
+    f32 k0;
+    f32 k1;
+    f32 k2;
+    f32 posX;
+    f32 posY;
+    f32 posZ;
+    f32 dirX;
+    f32 dirY;
+    f32 dirZ;
+} __GXLightObj;
 
 /* Debug */
 
@@ -205,12 +221,13 @@ struct ChannelConfig
     u8 ambSrc;
     u8 matSrc;
     u8 lightEnabled;
+    u8 lightMask;
 };
 
 struct LightConfig
 {
-    u8 spotFn[GX_MAX_LIGHT];
-    u8 distAttnFn[GX_MAX_LIGHT];
+    u8 spotFn[8];
+    u8 distAttnFn[8];
     struct ChannelConfig channels[2];
     u8 numChans;
 };
@@ -229,6 +246,7 @@ static Mtx44 s_modelViewMtx;
 
 static GXColor s_chanMatColors[2];
 static GXColor s_chanAmbColors[2];
+static __GXLightObj s_lightObjs[8];
 
 struct ShaderInfo
 {
@@ -426,6 +444,8 @@ static void dump_shaders(const struct ShaderInfo *shader)
         "u_projectionMatrix",
         "u_chanAmbColors",
         "u_chanMatColors",
+        "u_lightPos",
+        "u_lightDir",
     };
     static const char *attributeNames[] =
     {
@@ -460,6 +480,8 @@ static void prepare_shaders()
         "uniform   mat4 u_projectionMatrix;\n"
         "uniform   vec4 u_chanAmbColors[2];\n"  // ambient colors, per channel
         "uniform   vec4 u_chanMatColors[2];\n"  // material colors, per channel
+        "uniform   vec3 u_lightPos[8];\n"
+        "uniform   vec3 u_lightDir[8];\n"
         "attribute vec4 a_position;\n"
         "attribute vec3 a_normal;\n"
         "attribute vec2 a_texCoord;\n"
@@ -468,15 +490,33 @@ static void prepare_shaders()
         "varying   vec2 v_texCoord;\n"
         "varying   vec4 v_channel0;\n"
         "varying   vec4 v_channel1;\n"
+
+        // Function to apply light to channel
+        "vec4 dir_light(int light, vec4 channel, vec3 vertex, vec3 normal)\n"
+        "{\n"
+        // Get light vector to vertex
+        "    vec3 lightVec = normalize(u_lightPos[light] - vertex);\n"
+        // Calc dot product
+        "    float diffuse = max(dot(normal, lightVec), 0.5);\n"
+        // apply light to channel
+        "    channel.xyz *= diffuse;\n"
+        "    return channel;\n"
+        "}\n"
+
         "void main()\n"
         "{\n"
         "    v_normal   = a_normal;\n"
-        "    v_texCoord = a_texCoord;\n";
+        "    v_texCoord = a_texCoord;\n"
+        // Transform vertex into eye space
+        "    vec3 mvVertex = vec3(u_modelViewMatrix * a_position);\n"
+        // Transform the into eye space
+        "    vec3 mvNormal = vec3(u_modelViewMatrix * vec4(a_normal, 0.0));\n"
+        ;
     static const char vtxShaderFooter[] =
         "    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
         "}\n";
     char vtxSrc[2][500];
-    const GLchar *vtxSrcPtrs[2 + 2];
+    const GLchar *vtxSrcPtrs[2 + 2 + 8];
 
     static const char fragShaderHeader[] =
         "#version 100\n"
@@ -504,6 +544,7 @@ static void prepare_shaders()
     char tevSrc[GX_MAX_TEVSTAGE][500];
     const GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
 
+    int line;
     int i;
     int shaderToEvict = 0;
     int lastUsed = INT_MAX;
@@ -543,16 +584,31 @@ static void prepare_shaders()
 
     // Generate vtx shader code
     channel = shader->lightConfig.channels;
-    vtxSrcPtrs[0] = vtxShaderHeader;
+    line = 0;
+    vtxSrcPtrs[line++] = vtxShaderHeader;
     for (i = 0; i < shader->lightConfig.numChans; i++, channel++)
     {
         if (channel->matSrc == GX_SRC_REG)
             sprintf(vtxSrc[i], "    v_channel%i = u_chanMatColors[%i];\n", i, i);
         else
             sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
-        vtxSrcPtrs[1 + i] = vtxSrc[i];
+        if (channel->lightEnabled)
+        {
+            int j;
+            for (j = 0; j < 8; j++)
+            {
+                if (channel->lightMask & (1 << j))
+                {
+                    char buf[100];
+                    sprintf(buf, "    v_channel%i = dir_light(%i, v_channel%i, mvVertex, mvNormal);\n",
+                        i, j, i);
+                    strcat(vtxSrc[i], buf);
+                }
+            }
+        }
+        vtxSrcPtrs[line++] = vtxSrc[i];
     }
-    vtxSrcPtrs[1 + i] = vtxShaderFooter;
+    vtxSrcPtrs[line++] = vtxShaderFooter;
 
     // Generate frag shader code
     stage = shader->tevConfig.stages;
@@ -593,7 +649,7 @@ static void prepare_shaders()
     puts("Compiling vtx shader:");
     printf("%i chans\n", shader->lightConfig.numChans);
     shader->vtxShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, &vtxSrcPtrs, NULL);
+    glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, vtxSrcPtrs, NULL);
     glCompileShader(shader->vtxShader);
 
     // Compile fragment shader
@@ -647,6 +703,28 @@ got_shader:
         for (i = 0; i < 2; i++)
             gxcolor_to_float_arr(s_chanMatColors[i], matColors + i * 4);
         glUniform4fv(location, shader->tevConfig.numTevStages, matColors);
+    }
+    if ((location = glGetUniformLocation(shader->program, "u_lightPos")) >= 0)
+    {
+        float buf[8 * 3];
+        for (i = 0; i < 8; i++)
+        {
+            buf[i * 3 + 0] = s_lightObjs[i].posX;
+            buf[i * 3 + 1] = s_lightObjs[i].posY;
+            buf[i * 3 + 2] = s_lightObjs[i].posZ;
+        }
+        glUniform3fv(location, 8, buf);
+    }
+    if ((location = glGetUniformLocation(shader->program, "u_lightDir")) >= 0)
+    {
+        float buf[8 * 3];
+        for (i = 0; i < 8; i++)
+        {
+            buf[i * 3 + 0] = s_lightObjs[i].dirX;
+            buf[i * 3 + 1] = s_lightObjs[i].dirY;
+            buf[i * 3 + 2] = s_lightObjs[i].dirZ;
+        }
+        glUniform3fv(location, 8, buf);
     }
 
     // fragment shader uniforms
@@ -1239,24 +1317,6 @@ GXFifoObj *GXGetGPFifo(void)
 
 /* Light */
 
-typedef struct
-{
-    u8 filler0[0xC];
-    u32 color;
-    f32 unk10;
-    f32 unk14;
-    f32 unk18;
-    f32 k0;
-    f32 k1;
-    f32 k2;
-    f32 posX;
-    f32 posY;
-    f32 posZ;
-    f32 dirX;
-    f32 dirY;
-    f32 dirZ;
-} __GXLightObj;
-
 void GXInitLightAttnK(GXLightObj *lt_obj, f32 k0, f32 k1, f32 k2)
 {
     __GXLightObj *__lt_obj = (__GXLightObj *)lt_obj;
@@ -1414,7 +1474,26 @@ void GXGetLightColor(GXLightObj *lt_obj, GXColor *color)
 
 void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 {
-    puts("GXLoadLightObjImm is a stub");
+    __GXLightObj *__lt_obj = (__GXLightObj *)lt_obj;
+    int index = 0;
+
+    debug_printf("GXLoadLightObjImm(0x%X, %i)\n", (unsigned int)lt_obj, light);
+
+    switch (light)
+    {
+    case GX_LIGHT0: index = 0; break;
+    case GX_LIGHT1: index = 1; break;
+    case GX_LIGHT2: index = 2; break;
+    case GX_LIGHT3: index = 3; break;
+    case GX_LIGHT4: index = 4; break;
+    case GX_LIGHT5: index = 5; break;
+    case GX_LIGHT6: index = 6; break;
+    case GX_LIGHT7: index = 7; break;
+    default:
+        printf("light %i\n", light);
+        assert(0);
+    }
+    s_lightObjs[index] = *__lt_obj;
 }
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
@@ -1520,6 +1599,10 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
 
     s_currLightConfig.channels[channelId].ambSrc = amb_src;
     s_currLightConfig.channels[channelId].matSrc = mat_src;
+
+    // TODO: support alpha lighting
+    s_currLightConfig.channels[channelId].lightEnabled = enable;
+    s_currLightConfig.channels[channelId].lightMask = light_mask;
 }
 
 /* Texture */
