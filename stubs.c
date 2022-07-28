@@ -29,7 +29,51 @@ void CARDRenameAsync(){puts("CARDRenameAsync is a stub");}
 void CARDSetStatusAsync(){puts("CARDSetStatusAsync is a stub");}
 void CARDUnmount(){puts("CARDUnmount is a stub");}
 void CARDWriteAsync(){puts("CARDWriteAsync is a stub");}
-void C_MTXLookAt(Mtx m, Point3dPtr camPos, VecPtr camUp, Point3dPtr target){*(int*)0 = 0;puts("C_MTXLookAt is a stub");}
+
+void C_VECNormalize(const VecPtr src, VecPtr unit)
+{
+    f32 mag = (src->x * src->x) + (src->y * src->y) + (src->z * src->z);
+    mag = 1.0f / sqrtf(mag);
+    unit->x = src->x * mag;
+    unit->y = src->y * mag;
+    unit->z = src->z * mag;
+}
+
+void C_VECCrossProduct(const VecPtr a, const VecPtr b, VecPtr out)
+{
+    Vec tmp;
+    tmp.x = (a->y * b->z) - (a->z * b->y);
+    tmp.y = (a->z * b->x) - (a->x * b->z);
+    tmp.z = (a->x * b->y) - (a->y * b->x);
+    out->x = tmp.x;
+    out->y = tmp.y;
+    out->z = tmp.z;
+}
+
+void C_MTXLookAt(Mtx m, Point3dPtr camPos, VecPtr camUp, Point3dPtr target)
+{
+    Vec vv0, vv1, vv2;
+    vv0.x = camPos->x - target->x;
+    vv0.y = camPos->y - target->y;
+    vv0.z = camPos->z - target->z;
+    C_VECNormalize(&vv0, &vv0);
+    C_VECCrossProduct(camUp, &vv0, &vv1);
+    C_VECNormalize(&vv1, &vv1);
+    C_VECCrossProduct(&vv0, &vv1, &vv2);
+    m[0][0] = vv1.x;
+    m[0][1] = vv1.y;
+    m[0][2] = vv1.z;
+    m[0][3] = -(camPos->x * vv1.x + camPos->y * vv1.y + camPos->z * vv1.z);
+    m[1][0] = vv2.x;
+    m[1][1] = vv2.y;
+    m[1][2] = vv2.z;
+    m[1][3] = -(camPos->x * vv2.x + camPos->y * vv2.y + camPos->z * vv2.z);
+    m[2][0] = vv0.x;
+    m[2][1] = vv0.y;
+    m[2][2] = vv0.z;
+    m[2][3] = -(camPos->x * vv0.x + camPos->y * vv0.y + camPos->z * vv0.z);
+}
+
 void C_MTXScale(Mtx m, f32 xS, f32 yS, f32 zS){*(int*)0 = 0;puts("C_MTXScale is a stub");}
 void DCFlushRange(){puts("DCFlushRange is a stub");}
 void DCInvalidateRange(){puts("DCInvalidateRange is a stub");}

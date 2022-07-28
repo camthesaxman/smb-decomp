@@ -2,6 +2,7 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "byteswap.h"
 #include "mathutil.h"
 
 struct MotDat *motDat;
@@ -180,45 +181,6 @@ static void byteswap_motlabel(u8 *data)
         data += 4;
     }
 }
-
-static void byteswap_motskl(u8 *data)
-{
-    u8 *ptr, *ptr2;
-    u32 i, j;
-
-    // TODO: child structs
-
-    bswap32(data + 0x0);
-    bswap32(data + 0x4);
-    bswap32(data + 0x8);
-    bswap32(data + 0xC);
-
-    ptr = data + read_u32_le(data + 0x0);
-    for (i = read_u32_le(data + 0x4); i > 0; i--)
-    {
-        bswap32(ptr + 0x00);
-        bswap32(ptr + 0x04);
-        bswap32(ptr + 0x08);
-        bswap32(ptr + 0x0C);
-        bswap32(ptr + 0x10);
-        bswap32(ptr + 0x14);
-        ptr += 0x18;
-    }
-
-    ptr = data + read_u32_le(data + 0x8);
-    for (i = read_u32_le(data + 0xC); i > 0; i--)
-    {
-        bswap32(ptr + 0x00);
-        bswap32(ptr + 0x04);
-        bswap32(ptr + 0x08);
-        bswap32(ptr + 0x0C);
-        bswap32(ptr + 0x10);
-        bswap32(ptr + 0x14);
-        bswap32(ptr + 0x18);
-
-        ptr += 0x1C;
-    }
-}
 #endif
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
@@ -275,7 +237,7 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
     u_read_dvd_file(&file, motSkeleton, size, 0);
     DVDClose(&file);
 #ifdef TARGET_PC
-    byteswap_motskl((u8 *)motSkeleton);
+    byteswap_motskeleton(motSkeleton);
 #endif
     adjust_motskl_pointers(motSkeleton);
     totalSize += size;
