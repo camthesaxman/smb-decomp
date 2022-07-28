@@ -2148,7 +2148,11 @@ void submode_adv_start_main_func(void)
         if (modeCtrl.courseFlags & 1)
         {
             gameModeRequest = MD_SEL;
+#ifdef TARGET_PC
+            gameSubmodeRequest = SMD_SEL_STAGE_INIT;
+#else
             gameSubmodeRequest = SMD_SEL_NGC_INIT;
+#endif
         }
         else if (modeCtrl.courseFlags & (1 << 18))
         {

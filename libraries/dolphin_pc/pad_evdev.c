@@ -62,11 +62,14 @@ BOOL PADInit(void)
     //puts("PADInit");
     memset(s_padStatus, 0, sizeof(s_padStatus));
     scan_gamepads();
+    return TRUE;
 }
 
 u32 PADRead(PADStatus *status)
 {
     int i;
+    int j;
+    struct input_absinfo absinfo;
 
     //puts("PADRead");
     for (i = 0; i < s_gamepadsCount; i++)
@@ -99,6 +102,18 @@ u32 PADRead(PADStatus *status)
                     s_padStatus[i].button &= ~mask;
             }
         }
+        if (ioctl(gamepad->fd, EVIOCGABS(0), &absinfo) != -1
+         && absinfo.minimum - absinfo.maximum != 0)
+            s_padStatus[i].stickX = -128 + (absinfo.value * 255 / (absinfo.maximum - absinfo.minimum));
+        if (ioctl(gamepad->fd, EVIOCGABS(1), &absinfo) != -1
+         && absinfo.minimum - absinfo.maximum != 0)
+            s_padStatus[i].stickY = 127 - (absinfo.value * 255 / (absinfo.maximum - absinfo.minimum));
+        if (ioctl(gamepad->fd, EVIOCGABS(2), &absinfo) != -1
+         && absinfo.minimum - absinfo.maximum != 0)
+            s_padStatus[i].substickX = -128 + (absinfo.value * 255 / (absinfo.maximum - absinfo.minimum));
+        if (ioctl(gamepad->fd, EVIOCGABS(3), &absinfo) != -1
+         && absinfo.minimum - absinfo.maximum != 0)
+            s_padStatus[i].substickY = 127 - (absinfo.value * 255 / (absinfo.maximum - absinfo.minimum));
     }
     memcpy(status, s_padStatus, sizeof(s_padStatus));
     return 0;

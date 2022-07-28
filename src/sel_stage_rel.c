@@ -22,6 +22,12 @@
 #include "sprite.h"
 #include "stage.h"
 
+#ifdef TARGET_PC
+#define _prolog    sel_stage_rel_prolog
+#define _epilog    sel_stage_rel_epilog
+#define _undefined sel_stage_rel_undefined
+#endif
+
 static int lbl_0000185D;
 
 static void sel_stage_init(void);

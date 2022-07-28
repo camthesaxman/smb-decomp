@@ -11,6 +11,8 @@ else
   LDFLAGS := -lm -lGL -lglfw $(shell pkg-config --libs libevdev) -fsanitize=address
   EXE :=
 endif
+CXXFLAGS := -std=c++20
+LDFLAGS += -lstdc++
 
 TARGET := supermonkeyball$(EXE)
 
@@ -114,6 +116,10 @@ SOURCES := \
 	src/code_6.c \
 	src/dvd.c \
 	src/preview.c \
+	src/byteswap.cpp \
+	src/sel_stage_rel.c \
+	src/sel_stage_rel_2.c \
+	src/sel_stage_rel_3.c \
 	libraries/dolphin_pc/OS.c \
 	libraries/dolphin_pc/GX_gles2.c \
 	libraries/dolphin_pc/dvd.c \
@@ -147,6 +153,9 @@ $(TARGET): $(ALL_O_FILES)
 
 %.c.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+
+%.cpp.o: %.cpp
+	$(CC) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(TARGET)

@@ -10,7 +10,7 @@
 
 #define ARRAY_COUNT(arr) ((int)(sizeof(arr)/sizeof(arr[0])))
 
-#ifdef __WIN32
+#ifdef _WIN32
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <windows.h>
@@ -258,7 +258,7 @@ struct ShaderInfo
     int lastUsed;
 };
 
-static struct ShaderInfo s_shaderCache[16] = {0};
+static struct ShaderInfo s_shaderCache[64] = {0};
 static int s_lastUsed = 1;
 
 static void gxcolor_to_float_arr(GXColor color, GLfloat *out)
