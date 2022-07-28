@@ -27,50 +27,17 @@
 
 //#define puts(...)
 
-static void pause(void)
+/*
+void pause(void)
 {
     char *line = NULL;
     size_t len = 0;
     getline(&line, &len, stdin);
     free(line);
 }
+*/
 
-static GLuint s_vtxShader;
-static const char s_vtxShaderSrc[] =
-"#version 100\n"
-"precision mediump float;\n"
-"uniform   mat4 u_modelViewMatrix;\n"
-"uniform   mat4 u_projectionMatrix;\n"
-"attribute vec4 a_position;\n"
-"attribute vec3 a_normal;\n"
-"attribute vec2 a_texCoord;\n"
-"attribute vec4 a_color;\n"
-"varying   vec3 v_normal;\n"
-"varying   vec2 v_texCoord;\n"
-"varying   vec4 v_color;\n"
-"void main()\n"
-"{\n"
-"    v_normal   = a_normal;\n"
-"    v_texCoord = a_texCoord;\n"
-//"    v_color    = a_color;\n"  // TODO: why is this always black?
-"    v_color    = vec4(1, 1, 1, 1);\n"
-"    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
-"}\n";
-static GLuint s_fragShader;
-static const char s_fragShaderSrc[] =
-"#version 100\n"
-"precision mediump float;\n"
-"uniform sampler2D u_texture0;\n"
-"varying      vec3 v_normal;\n"
-"varying      vec2 v_texCoord;\n"
-"varying      vec4 v_color;\n"
-"void main()\n"
-"{\n"
-"    gl_FragColor = v_color * texture2D(u_texture0, v_texCoord);\n"
-"}\n";
 static GLuint s_program;
-static GLuint s_currFragShader;
-
 static GLint s_shaderPositionIndex;
 static GLint s_shaderNormalIndex;
 static GLint s_shaderTexCoordIndex;
@@ -80,6 +47,93 @@ static u16 read_u16(const u8 *src)
 {
     return (src[0] << 8) | src[1];
 }
+
+/* Debug */
+
+#ifdef DEBUG
+#define debug_puts   puts
+#define debug_printf printf
+
+#define NAME(x) [x] = #x
+static const char *GXBool_name(GXBool in)
+{
+    static const char *names[] =
+    {
+        NAME(GX_FALSE),
+        NAME(GX_TRUE),
+    };
+    return names[in];
+}
+static const char *GXChannelID_name(GXChannelID in)
+{
+    static const char *names[] =
+    {
+        NAME(GX_COLOR0),
+        NAME(GX_COLOR1),
+        NAME(GX_ALPHA0),
+        NAME(GX_ALPHA1),
+        NAME(GX_COLOR0A0),
+        NAME(GX_COLOR1A1),
+        NAME(GX_COLOR_ZERO),
+        NAME(GX_ALPHA_BUMP),
+        NAME(GX_ALPHA_BUMPN),
+        NAME(GX_COLOR_NULL),
+    };
+    return names[in];
+}
+static const char *GXTevColorArg_name(GXTevColorArg in)
+{
+    static const char *names[] =
+    {
+        NAME(GX_CC_CPREV),
+        NAME(GX_CC_APREV),
+        NAME(GX_CC_C0),
+        NAME(GX_CC_A0),
+        NAME(GX_CC_C1),
+        NAME(GX_CC_A1),
+        NAME(GX_CC_C2),
+        NAME(GX_CC_A2),
+        NAME(GX_CC_TEXC),
+        NAME(GX_CC_TEXA),
+        NAME(GX_CC_RASC),
+        NAME(GX_CC_RASA),
+        NAME(GX_CC_ONE),
+        NAME(GX_CC_HALF),
+        NAME(GX_CC_KONST),
+        NAME(GX_CC_ZERO),
+    };
+    return names[in];
+}
+static const char *GXTevAlphaArg_name(GXTevAlphaArg in)
+{
+    static const char *names[] =
+    {
+        NAME(GX_CA_APREV),
+        NAME(GX_CA_A0),
+        NAME(GX_CA_A1),
+        NAME(GX_CA_A2),
+        NAME(GX_CA_TEXA),
+        NAME(GX_CA_RASA),
+        NAME(GX_CA_KONST),
+        NAME(GX_CA_ZERO),
+    };
+    return names[in];
+}
+static const char *GXColorSrc_name(GXColorSrc in)
+{
+    static const char *names[] =
+    {
+        NAME(GX_SRC_REG),
+        NAME(GX_SRC_VTX),
+    };
+    return names[in];
+}
+#undef NAME
+
+#else
+#define debug_puts(...)   ((void)0)
+#define debug_printf(...) ((void)0)
+#endif  // DEBUG
 
 /* Attr */
 
@@ -357,36 +411,48 @@ static const char *shader_channel(GXChannelID chan)
     }
 }
 
-static void prepare_shaders(void)
+#ifdef DEBUG
+static void dump_shaders(const struct ShaderInfo *shader)
 {
-    static const char fragShaderHeader[] =
-        "#version 100\n"
-        "precision mediump float;\n"
-        "uniform sampler2D u_texture0;\n"
-        "uniform vec4 u_tevRegPrev;\n"
-        "uniform vec4 u_tevReg0;\n"
-        "uniform vec4 u_tevReg1;\n"
-        "uniform vec4 u_tevReg2;\n"
-        "uniform vec4 u_konstColors[16];\n"  // one for each stage
-        //"varying vec3 v_normal;\n"
-        "varying vec2 v_texCoord;\n"
-        //"varying vec4 v_color;\n"
-        "varying vec4 v_channel0;\n"
-        "varying vec4 v_channel1;\n"
-        "void main()\n"
-        "{\n"
-        "    vec4 tevRegPrev = u_tevRegPrev;\n"
-        "    vec4 tevReg0    = u_tevReg0;\n"
-        "    vec4 tevReg1    = u_tevReg1;\n"
-        "    vec4 tevReg2    = u_tevReg2;\n"
-        "    vec4 konst;\n"
-        "    vec4 rasColor;\n";
-    static const char fragShaderFooter[] =
-        "    gl_FragColor = tevRegPrev;\n"
-        "}\n";
-    char tevSrc[GX_MAX_TEVSTAGE][2000];
-    const GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
+    GLchar src[5000];
+    static const char *uniformNames[] =
+    {
+        "u_tevRegPrev",
+        "u_tevReg0",
+        "u_tevReg1",
+        "u_tevReg2",
+        "u_konstColors",
+        "u_modelViewMatrix",
+        "u_projectionMatrix",
+        "u_chanAmbColors",
+        "u_chanMatColors",
+    };
+    static const char *attributeNames[] =
+    {
+        "a_position",
+        "a_normal",
+        "a_texCoord",
+        "a_color",
+    };
+    int i;
 
+    puts("Vertex Shader:");
+    glGetShaderSource(shader->vtxShader, sizeof(src), NULL, src);
+    puts(src);
+    puts("Fragment Shader:");
+    glGetShaderSource(shader->fragShader, sizeof(src), NULL, src);
+    puts(src);
+    puts("Uniforms:");
+    for (i = 0; i < ARRAY_COUNT(uniformNames); i++)
+        printf("\t%-18s %i\n", uniformNames[i], glGetUniformLocation(shader->program, uniformNames[i]));
+    puts("Attributes:");
+    for (i = 0; i < ARRAY_COUNT(attributeNames); i++)
+        printf("\t%-18s %i\n", attributeNames[i], glGetAttribLocation(shader->program, attributeNames[i]));
+}
+#endif
+
+static void prepare_shaders()
+{
     static const char vtxShaderHeader[] =
         "#version 100\n"
         "precision mediump float;\n"
@@ -409,8 +475,34 @@ static void prepare_shaders(void)
     static const char vtxShaderFooter[] =
         "    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
         "}\n";
-    char vtxSrc[2][1000];
+    char vtxSrc[2][500];
     const GLchar *vtxSrcPtrs[2 + 2];
+
+    static const char fragShaderHeader[] =
+        "#version 100\n"
+        "precision mediump float;\n"
+        "uniform sampler2D u_texture0;\n"
+        "uniform vec4 u_tevRegPrev;\n"
+        "uniform vec4 u_tevReg0;\n"
+        "uniform vec4 u_tevReg1;\n"
+        "uniform vec4 u_tevReg2;\n"
+        "uniform vec4 u_konstColors[16];\n"  // one for each stage
+        "varying vec2 v_texCoord;\n"
+        "varying vec4 v_channel0;\n"
+        "varying vec4 v_channel1;\n"
+        "void main()\n"
+        "{\n"
+        "    vec4 tevRegPrev = u_tevRegPrev;\n"
+        "    vec4 tevReg0    = u_tevReg0;\n"
+        "    vec4 tevReg1    = u_tevReg1;\n"
+        "    vec4 tevReg2    = u_tevReg2;\n"
+        "    vec4 konst;\n"
+        "    vec4 rasColor;\n";
+    static const char fragShaderFooter[] =
+        "    gl_FragColor = tevRegPrev;\n"
+        "}\n";
+    char tevSrc[GX_MAX_TEVSTAGE][500];
+    const GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
 
     int i;
     int shaderToEvict = 0;
@@ -443,6 +535,7 @@ static void prepare_shaders(void)
     {
         glDeleteShader(shader->fragShader);
         glDeleteShader(shader->vtxShader);
+        glDeleteProgram(shader->program);
     }
 
     shader->tevConfig = s_currTevConfig;
@@ -457,9 +550,6 @@ static void prepare_shaders(void)
             sprintf(vtxSrc[i], "    v_channel%i = u_chanMatColors[%i];\n", i, i);
         else
             sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
-        
-        //sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
-        
         vtxSrcPtrs[1 + i] = vtxSrc[i];
     }
     vtxSrcPtrs[1 + i] = vtxShaderFooter;
@@ -499,8 +589,6 @@ static void prepare_shaders(void)
     }
     fragSrcPtrs[1 + i] = fragShaderFooter;
 
-    GLchar src[5000];
-
     // Compile vertex shader
     puts("Compiling vtx shader:");
     printf("%i chans\n", shader->lightConfig.numChans);
@@ -508,50 +596,38 @@ static void prepare_shaders(void)
     glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, &vtxSrcPtrs, NULL);
     glCompileShader(shader->vtxShader);
 
-    glGetShaderSource(shader->vtxShader, sizeof(src), NULL, src);
-    puts(src);
-
     // Compile fragment shader
 
     puts("Compiling frag shader:");
     printf("%i stages\n", shader->tevConfig.numTevStages);
     shader->fragShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, NULL);
-
-    glGetShaderSource(shader->fragShader, sizeof(src), NULL, src);
-    puts(src);
-
     glCompileShader(shader->fragShader);
-
-    //pause();
 
     shader->program = glCreateProgram();
     glAttachShader(shader->program, shader->fragShader);
     glAttachShader(shader->program, shader->vtxShader);
+
     glLinkProgram(shader->program);
     GLint status;
-    GLchar log[500];
     glGetProgramiv(shader->program, GL_LINK_STATUS, &status);
     if (!status)
     {
+        GLchar log[500];
         glGetProgramInfoLog(shader->program, sizeof(log), NULL, log);
         fprintf(stderr, "failed to link shader program: %s\n", log);
         exit(1);
     }
 
-    s_shaderPositionIndex = 0;
-    s_shaderNormalIndex = 1;
-    s_shaderTexCoordIndex = 2;
-    s_shaderColorIndex = 3;
-    glBindAttribLocation(s_program, s_shaderPositionIndex, "a_position");
-    glBindAttribLocation(s_program, s_shaderNormalIndex,   "a_normal");
-    glBindAttribLocation(s_program, s_shaderTexCoordIndex, "a_texCoord");
-    glBindAttribLocation(s_program, s_shaderColorIndex,    "a_color");
-
 got_shader:
     shader->lastUsed = s_lastUsed++;
     s_program = shader->program;
     glUseProgram(shader->program);
+
+    s_shaderPositionIndex = glGetAttribLocation(s_program, "a_position");
+    s_shaderNormalIndex   = glGetAttribLocation(s_program, "a_normal");
+    s_shaderTexCoordIndex = glGetAttribLocation(s_program, "a_texCoord");
+    s_shaderColorIndex    = glGetAttribLocation(s_program, "a_color");
 
     float color[4];
     GLint location;
@@ -613,6 +689,11 @@ got_shader:
         glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_projectionMtx);
     if ((location = glGetUniformLocation(shader->program, "u_modelViewMatrix")) >= 0)
         glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_modelViewMtx);
+
+#ifdef DEBUG
+    if (dumpShaders)
+        dump_shaders(shader);
+#endif
 }
 
 void GXSetTevOp(GXTevStageID id, GXTevMode mode)
@@ -659,7 +740,9 @@ void GXSetAlphaCompare(GXCompare comp0, u8 ref0, GXAlphaOp op, GXCompare comp1, 
 
 void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTevColorArg c, GXTevColorArg d)
 {
-    //puts("GXSetTevColorIn is a stub");
+    debug_printf("GXSetTevColorIn(GX_TEVSTAGE%i, %s, %s, %s, %s)\n",
+        stage, GXTevColorArg_name(a), GXTevColorArg_name(b), GXTevColorArg_name(c), GXTevColorArg_name(d));
+
     s_currTevConfig.stages[stage].colorArgs[0] = a;
     s_currTevConfig.stages[stage].colorArgs[1] = b;
     s_currTevConfig.stages[stage].colorArgs[2] = c;
@@ -668,7 +751,9 @@ void GXSetTevColorIn(GXTevStageID stage, GXTevColorArg a, GXTevColorArg b, GXTev
 
 void GXSetTevAlphaIn(GXTevStageID stage, GXTevAlphaArg a, GXTevAlphaArg b, GXTevAlphaArg c, GXTevAlphaArg d)
 {
-    //puts("GXSetTevAlphaIn is a stub");
+    debug_printf("GXSetTevAlphaIn(GX_TEVSTAGE%i, %s, %s, %s, %s)\n",
+        stage, GXTevAlphaArg_name(a), GXTevAlphaArg_name(b), GXTevAlphaArg_name(c), GXTevAlphaArg_name(d));
+
     s_currTevConfig.stages[stage].alphaArgs[0] = a;
     s_currTevConfig.stages[stage].alphaArgs[1] = b;
     s_currTevConfig.stages[stage].alphaArgs[2] = c;
@@ -731,13 +816,16 @@ void GXSetTevSwapModeTable(GXTevSwapSel table, GXTevColorChan red, GXTevColorCha
 
 void GXSetTevOrder(GXTevStageID stage, GXTexCoordID coord, GXTexMapID map, GXChannelID color)
 {
-    puts("GXSetTevOrder is a stub");
+    debug_printf("GXSetTevOrder(GX_TEVSTAGE%i, ?, ?, %s)\n",
+        stage, GXChannelID_name(color));
+
     s_currTevConfig.stages[stage].channelId = color;
 }
 
 void GXSetNumTevStages(u8 nStages)
 {
-    puts("GXSetNumTevStages is a stub");
+    debug_printf("GXSetNumTevStages(%i)\n", nStages);
+
     s_currTevConfig.numTevStages = nStages;
 }
 
@@ -879,7 +967,7 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderPositionIndex,
             attrArrays[GX_VA_POS].size,
             attrArrays[GX_VA_POS].type,
-            GL_FALSE,
+            (attrArrays[GX_VA_POS].type != GL_FLOAT),
             vtxSize,
             attrArrays[GX_VA_POS].ptr);
     }
@@ -891,7 +979,7 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderNormalIndex,
             attrArrays[GX_VA_NRM].size,
             attrArrays[GX_VA_NRM].type,
-            GL_FALSE,
+            (attrArrays[GX_VA_NRM].type != GL_FLOAT),
             vtxSize,
             attrArrays[GX_VA_NRM].ptr);
     }
@@ -918,7 +1006,7 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderTexCoordIndex,
             attrArrays[GX_VA_TEX0].size,
             attrArrays[GX_VA_TEX0].type,
-            GL_FALSE,
+            (attrArrays[GX_VA_TEX0].type != GL_FLOAT),
             vtxSize,
             attrArrays[GX_VA_TEX0].ptr);
     }
@@ -931,7 +1019,7 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderColorIndex,
             attrArrays[GX_VA_CLR0].size,
             attrArrays[GX_VA_CLR0].type,
-            GL_FALSE,
+            (attrArrays[GX_VA_CLR0].type != GL_FLOAT),
             vtxSize,
             attrArrays[GX_VA_CLR0].ptr);
     }
@@ -1049,7 +1137,7 @@ void GXCallDisplayList(void *list, u32 nbytes)
     u32 vtxSize;
     u8 *ptr;
 
-    puts("GXCallDisplayList");
+    debug_puts("GXCallDisplayList");
     while (pos < nbytes)
     {
         u8 opcode = data[pos++];
@@ -1331,6 +1419,9 @@ void GXLoadLightObjImm(GXLightObj *lt_obj, GXLightID light)
 
 void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
 {
+    debug_printf("GXSetChanAmbColor(%s, (%i,%i,%i,%i))\n",
+        GXChannelID_name(chan), amb_color.r, amb_color.g, amb_color.b, amb_color.a);
+
     switch (chan)
     {
     case GX_COLOR0:
@@ -1363,6 +1454,9 @@ void GXSetChanAmbColor(GXChannelID chan, GXColor amb_color)
 
 void GXSetChanMatColor(GXChannelID chan, GXColor mat_color)
 {
+    debug_printf("GXSetChanMatColor(%s, (%i,%i,%i,%i))\n",
+        GXChannelID_name(chan), mat_color.r, mat_color.g, mat_color.b, mat_color.a);
+
     switch (chan)
     {
     case GX_COLOR0:
@@ -1401,7 +1495,31 @@ void GXSetNumChans(u8 nChans)
 void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
     GXColorSrc mat_src, u32 light_mask, GXDiffuseFn diff_fn, GXAttnFn attn_fn)
 {
-    puts("GXSetChanCtrl is a stub");
+    int channelId = 0;
+
+    debug_printf("GXSetChanCtrl(%s, enable:%s, amb_src:%s, mat_src:%s, 0x%08X, ?, ?)\n",
+        GXChannelID_name(chan), GXBool_name(enable), GXColorSrc_name(amb_src), GXColorSrc_name(mat_src), light_mask);
+
+    // TODO: split color and alpha
+    switch (chan)
+    {
+    case GX_COLOR0:
+    case GX_ALPHA0:
+    case GX_COLOR0A0:
+        channelId = 0;
+        break;
+    case GX_COLOR1:
+    case GX_ALPHA1:
+    case GX_COLOR1A1:
+        channelId = 1;
+        break;
+    default:
+        printf("chan %i\n", chan);
+        assert(0);
+    }
+
+    s_currLightConfig.channels[channelId].ambSrc = amb_src;
+    s_currLightConfig.channels[channelId].matSrc = mat_src;
 }
 
 /* Texture */
@@ -1664,7 +1782,7 @@ static void decompress_i8_texture(const u8 *restrict src, u8 *restrict dest, int
             {
                 for (tx = 0; tx < 8; tx++)
                 {
-                    int index = (y*4 + ty) * width + (x*4 + tx);
+                    int index = (y*4 + ty) * width + (x*8 + tx);
                     dest[index*2 + 0] = dest[index*2 + 1] = *src++;
                 }
             }
@@ -2036,11 +2154,6 @@ static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum
 
 GXFifoObj *GXInit(void *base, u32 size)
 {
-    const GLchar *src;
-    GLint srcLen;
-    GLint status;
-    GLchar log[500];
-
     puts("GXInit is a stub");
 #ifdef _WIN32
     if (glewInit() != GLEW_OK)
@@ -2052,69 +2165,10 @@ GXFifoObj *GXInit(void *base, u32 size)
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(debug_proc, NULL);
     glDisable(GL_CULL_FACE);
-    //glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
 
-    s_vtxShader = glCreateShader(GL_VERTEX_SHADER);
-    src = s_vtxShaderSrc;
-    srcLen = strlen(s_vtxShaderSrc);
-    glShaderSource(s_vtxShader, 1, &src, &srcLen);
-    glCompileShader(s_vtxShader);
-
-    s_fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    src = s_fragShaderSrc;
-    srcLen = strlen(s_fragShaderSrc);
-    glShaderSource(s_fragShader, 1, &src, &srcLen);
-    glCompileShader(s_fragShader);
-
-    s_program = glCreateProgram();
-    glAttachShader(s_program, s_vtxShader);
-    glAttachShader(s_program, s_fragShader);
-    s_currFragShader = s_fragShader;
-    glLinkProgram(s_program);
-    glGetProgramiv(s_program, GL_LINK_STATUS, &status);
-    if (!status)
-    {
-        glGetProgramInfoLog(s_program, sizeof(log), NULL, log);
-        fprintf(stderr, "failed to link shader program: %s\n", log);
-        exit(1);
-    }
-
-    /*
-    s_shaderPositionIndex = glGetAttribLocation(s_program, "a_position");
-    s_shaderNormalIndex   = glGetAttribLocation(s_program, "a_normal");
-    s_shaderTexCoordIndex = glGetAttribLocation(s_program, "a_texCoord");
-    s_shaderColorIndex    = glGetAttribLocation(s_program, "a_color");
-    */
-
-    s_shaderPositionIndex = 0;
-    s_shaderNormalIndex = 1;
-    s_shaderTexCoordIndex = 2;
-    s_shaderColorIndex = 3;
-    glBindAttribLocation(s_program, s_shaderPositionIndex, "a_position");
-    glBindAttribLocation(s_program, s_shaderNormalIndex,   "a_normal");
-    glBindAttribLocation(s_program, s_shaderTexCoordIndex, "a_texCoord");
-    glBindAttribLocation(s_program, s_shaderColorIndex,    "a_color");
-
-    printf("a_position: %i\n"
-           "a_normal: %i\n"
-           "a_texCoord: %i\n"
-           "a_color:%i\n",
-           s_shaderPositionIndex,
-           s_shaderNormalIndex,
-           s_shaderTexCoordIndex,
-           s_shaderColorIndex);
-
-    glUseProgram(s_program);
-
-    // set up interpolation formula?
-    /*
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
-    glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_INTERPOLATE);
-    glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_INTERPOLATE);
-    */
-    return NULL;
+    return NULL;  // FIFOs aren't supported
 }
 
 /* Misc */
