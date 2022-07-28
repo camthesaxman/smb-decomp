@@ -97,8 +97,8 @@ void OSSuspendThread(){puts("OSSuspendThread is a stub");}
 void OSTicksToCalendarTime(){puts("OSTicksToCalendarTime is a stub");}
 void OSUnlink(){puts("OSUnlink is a stub");}
 void OSWakeupThread(){puts("OSWakeupThread is a stub");}
-void PADRecalibrate(){puts("PADRecalibrate is a stub");}
-void PADReset(){puts("PADReset is a stub");}
+//void PADRecalibrate(){puts("PADRecalibrate is a stub");}
+//void PADReset(){puts("PADReset is a stub");}
 //void PADSetAnalogMode(){puts("PADSetAnalogMode is a stub");}
 void PERFDumpScreen(){puts("PERFDumpScreen is a stub");}
 void PERFEndFrame(){puts("PERFEndFrame is a stub");}

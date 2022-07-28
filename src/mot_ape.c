@@ -1247,7 +1247,6 @@ struct Ape *u_make_ape(int charaId)
     ape->unk4->joints[0].transformMtx[1][3] = r5->unk1A4.y;
     ape->unk4->joints[0].transformMtx[2][3] = r5->unk1A4.z;
 #endif
-
     return ape;
 }
 
