@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <dolphin/types.h>
 
+#include "src/types.h"
 #include "src/mathutil.h"
 
 #define puts(...)
@@ -344,10 +345,16 @@ struct
     u32 unk4;
     u8 filler8[1];
 } lbl_802014E0;
-void lbl_80292C00_alias(){puts("lbl_80292C00_alias is a stub");}
-void lbl_80292D18(){puts("lbl_80292D18 is a stub");}
-void lbl_802C67D4(){puts("lbl_802C67D4 is a stub");}
-void lbl_802F16B8(){puts("lbl_802F16B8 is a stub");}
+struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u8 fillerC[0x14-0xC];
+    u32 unk14;
+} lbl_80292D18;
+struct Struct802C67D4 lbl_802C67D4[4];
+float lbl_802F16B8;
 u32 lbl_802F1DF8;
 s32 lbl_802F1DFC;
 s32 lbl_802F1EA8;

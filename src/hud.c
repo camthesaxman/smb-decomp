@@ -546,7 +546,11 @@ struct Struct80292C00
 
 struct Struct80292C00 lbl_80292C00[12];
 FORCE_BSS_ORDER(lbl_80292C00)
+#ifdef TARGET_PC
+#define lbl_80292C00_alias lbl_80292C00
+#else
 extern struct Struct80292C00 lbl_80292C00_alias[];
+#endif
 
 struct Struct80292C60
 {

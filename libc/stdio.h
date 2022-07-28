@@ -1,14 +1,6 @@
 #ifndef _STDIO_H_
 #define _STDIO_H_
 
-#if TARGET_PC
-#if _MSC_VER
-#include <../ucrt/stdio.h>
-#else
-#include_next <stdio.h>
-#endif
-#else
-
 #include <stdarg.h>
 
 typedef struct
@@ -38,7 +30,5 @@ int printf(const char *, ...);
 int sprintf(char *s, const char *format, ...);
 int vprintf(const char *format, va_list arg);
 int vsprintf(char *s, const char *format, va_list arg);
-
-#endif
 
 #endif

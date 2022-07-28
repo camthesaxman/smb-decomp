@@ -1,16 +1,6 @@
 #ifndef _MATH_H_
 #define _MATH_H_
 
-#if TARGET_PC
-#if _MSC_VER
-#define _USE_MATH_DEFINES
-#include <../ucrt/math.h>
-#else
-#include_next <math.h>
-#endif
-#define __abs fabs
-#else
-
 #ifndef __MWERKS__
 static inline int __abs(int n)
 {
@@ -62,8 +52,6 @@ long __fpclassifyd(double x);
 
 #ifdef __MWERKS__
 #pragma cplusplus reset
-#endif
-
 #endif
 
 #endif

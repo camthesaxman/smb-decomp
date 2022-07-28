@@ -37,7 +37,7 @@ LZSS    := tools/lzss$(EXE)
 
 # Game include directories
 INCLUDE_DIRS := src data
-SYSTEM_INCLUDE_DIRS := include
+SYSTEM_INCLUDE_DIRS := include libc
 
 ASFLAGS     := -mgekko -I asm
 
