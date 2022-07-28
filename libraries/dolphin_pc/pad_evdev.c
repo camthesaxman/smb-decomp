@@ -104,4 +104,21 @@ u32 PADRead(PADStatus *status)
     return 0;
 }
 
+void PADSetAnalogMode(u32 mode)
+{
+    puts("PADSetAnalogMode is a stub");
+}
+
+BOOL PADRecalibrate(u32 mask)
+{
+    puts("PADRecalibrate is a stub");
+    return TRUE;
+}
+
+BOOL PADReset(u32 mask)
+{
+    puts("PADReset is a stub");
+    return TRUE;
+}
+
 #endif  // __linux__

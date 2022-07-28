@@ -1180,7 +1180,7 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
 
     //puts("GXLoadTexObj is a stub");
     //printf("id %i\n", id);
-    glActiveTexture(id);
+    glActiveTexture(GL_TEXTURE0 + id);
     glBindTexture(GL_TEXTURE_2D, __obj->textureId);
 }
 
