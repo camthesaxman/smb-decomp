@@ -5,6 +5,12 @@
 #include "global.h"
 #include "relocation.h"
 
+#ifdef TARGET_PC
+void sel_stage_rel_prolog(void);
+void sel_stage_rel_epilog(void);
+void sel_stage_rel_undefined(void);
+#endif
+
 // remnants of an unused function that was stripped by the linker
 void relocation_unused(void)
 {
@@ -24,6 +30,17 @@ void relocation_unused(void)
 
 void relocation_load_module(char *name, struct RelModule *rel)
 {
+#ifdef TARGET_PC
+    if (strcmp(name, "mkbe.sel_stage.rel") == 0)
+    {
+        rel->info = OSAlloc(sizeof(*rel->info));
+        rel->info->init = sel_stage_rel_prolog;
+        rel->info->finish = sel_stage_rel_epilog;
+        rel->info->init();
+        return;
+    }
+    OSPanic(__FILE__, __LINE__, "unknown module %s\n", name);
+#else
     DVDFileInfo file;
 
     rel->info = NULL;
@@ -52,6 +69,7 @@ void relocation_load_module(char *name, struct RelModule *rel)
 
         DVDClose(&file);
     }
+#endif
 }
 
 void relocation_unload_module(struct RelModule *rel)
