@@ -1,13 +1,17 @@
 ifeq ($(TARGET_WINDOWS),1)
   CC := i686-w64-mingw32-gcc -m32
+  CCLD := i686-w64-mingw32-g++ -m32 -std=c++20
   CFLAGS := -O0 -g -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
   CPPFLAGS := -idirafter include -idirafter win32/include -DNONMATCHING -DC_ONLY -DTARGET_PC
+  CXXFLAGS := -std=c++20
   LDFLAGS := -mwindows -Lwin32/lib -lglfw3 -lglew32s -lopengl32 -ldinput8 -ldxguid
   EXE := .exe
 else
   CC := gcc -m32
+  CCLD := g++ -m32 -std=c++20
   CFLAGS := -O0 -g -fsanitize=address -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
   CPPFLAGS := -idirafter include -DNONMATCHING -DC_ONLY -DTARGET_PC $(shell pkg-config --cflags libevdev)
+  CXXFLAGS := -std=c++20
   LDFLAGS := -lm -lGL -lglfw $(shell pkg-config --libs libevdev) -fsanitize=address
   EXE :=
 endif
@@ -16,6 +20,7 @@ TARGET := supermonkeyball$(EXE)
 
 SOURCES := \
 	stubs.c \
+	src/byteswap.cpp \
 	src/main.c \
 	src/init.c \
 	src/init_2.c \
@@ -143,10 +148,13 @@ O_FILES := $(addsuffix .o,$(SOURCES))
 ALL_O_FILES := $(O_FILES)
 
 $(TARGET): $(ALL_O_FILES)
-	$(CC) $^ $(LDFLAGS) -o $@
+	$(CCLD) $^ $(LDFLAGS) -o $@
 
 %.c.o: %.c
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+
+%.cpp.o: %.cpp
+	$(CC) -c $(CXXFLAGS) $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
 	$(RM) $(TARGET)
