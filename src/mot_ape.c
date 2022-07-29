@@ -1468,6 +1468,7 @@ void func_8008BFDC(struct Ape *ape, u16 b, u16 c)
 // something related to animation of the head
 void func_8008C090(struct Ape *ape, Vec *b)
 {
+#ifndef TARGET_PC
     struct AnimJoint *r27 = ape->unk0->joints;
     Vec sp2C;
     int r3;
@@ -1551,6 +1552,7 @@ void func_8008C090(struct Ape *ape, Vec *b)
     mathutil_mtxA_from_quat(&sp10);
     mathutil_mtxA_mult_left(r30->transformMtx);
     mathutil_mtxA_to_mtx(r30->transformMtx);
+#endif
 }
 
 void func_8008C408(struct Ape *ape, Vec *b)
