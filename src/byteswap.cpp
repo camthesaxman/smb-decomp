@@ -8,7 +8,7 @@ extern "C"
 #include <cstdlib>
 #include <unordered_set>
 
-template <typename T> constexpr T bswap16(T val) noexcept
+template <typename T> [[nodiscard]] constexpr T bswap16(T val) noexcept
 {
     static_assert(sizeof(T) == sizeof(u16));
     union {
@@ -24,7 +24,7 @@ template <typename T> constexpr T bswap16(T val) noexcept
 #endif
     return v.t;
 }
-template <typename T> constexpr T bswap32(T val) noexcept
+template <typename T> [[nodiscard]] constexpr T bswap32(T val) noexcept
 {
     static_assert(sizeof(T) == sizeof(u32));
     union {
@@ -48,6 +48,12 @@ template <typename B, typename T> T *offset_ptr(B &base, T *ptr)
 {
     return reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
                                  reinterpret_cast<uintptr_t>(ptr));
+}
+template <typename B, typename T> T *offset_ptr(B &base, T *ptr, void *extra)
+{
+    return reinterpret_cast<T *>(reinterpret_cast<uintptr_t>(&base) +
+                                 reinterpret_cast<uintptr_t>(ptr) +
+                                 reinterpret_cast<uintptr_t>(extra));
 }
 
 template <typename B, typename T> static inline void bswap(B &base, T &data);
@@ -88,9 +94,18 @@ template <typename B, typename T> void bswap_list(B &base, T **&ptr)
         ++objBase;
     }
 }
+template <typename B, typename T> void bswap_list(B &base, T *(&ptr)[])
+{
+    T **objBase = ptr;
+    while (*objBase != nullptr)
+    {
+        bswap(base, *objBase, 1);
+        ++objBase;
+    }
+}
 template <typename B, typename T> void bswap_flat(B &base, T *start, s32 count)
 {
-    T *objBase = offset_ptr(base, start);
+    T *objBase = start;
     for (s32 i = 0; i < count; ++i)
     {
         bswap(base, objBase[i]);
@@ -381,22 +396,39 @@ template <typename B> void bswap(B &base, StormFireAnim &anim)
 {
     bswap(base, anim.pos);
 }
-GMAShape *bswap_shape(GMAShape &shape)
+template <typename B> static inline GMAShape *bswap_shape(B &base, GMAShape &shape)
 {
-    bswap(shape, shape.flags);
-    bswap_flat(shape, shape.tevLayerIdxs,
+    bswap(base, shape.flags);
+    bswap_flat(base, shape.tevLayerIdxs,
                sizeof(shape.tevLayerIdxs) / sizeof(shape.tevLayerIdxs[0]));
-    bswap(shape, shape.vtxAttrs);
-    bswap_flat(shape, shape.dispListSizes,
+    bswap(base, shape.vtxAttrs);
+    bswap_flat(base, shape.dispListSizes,
                sizeof(shape.dispListSizes) / sizeof(shape.dispListSizes[0]));
-    bswap(shape, shape.origin);
-    bswap(shape, shape.blendFactors);
-    // TODO display lists
-    return nullptr;
+    bswap(base, shape.origin);
+    bswap(base, shape.blendFactors);
+    u8 *next = shape.dispLists;
+    for (int j = 0; j < 2; j++)
+    {
+        if (shape.dispListFlags & (1 << j))
+        {
+            next += shape.dispListSizes[j];
+        }
+    }
+    if (shape.dispListFlags & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
+    {
+        auto &extra = *reinterpret_cast<GMAExtraDispLists *>(next);
+        bswap_flat(base, extra.dispListSizes, 2);
+        next = extra.dlists + extra.dispListSizes[0] + extra.dispListSizes[1];
+    }
+    return reinterpret_cast<GMAShape *>(next);
 }
 template <typename B> void bswap(B &base, GMAModel &model)
 {
     bswap(base, model.magic);
+    if (model.magic != (('G' << 24) | ('C' << 16) | ('M' << 8) | 'F'))
+    {
+        abort();
+    }
     bswap(base, model.flags);
     bswap(base, model.boundSphereCenter);
     bswap(base, model.boundSphereRadius);
@@ -413,7 +445,7 @@ template <typename B> void bswap(B &base, GMAModel &model)
     auto *shape = reinterpret_cast<GMAShape *>(shapeStart);
     for (int i = 0; i < model.opaqueShapeCount + model.translucentShapeCount; ++i)
     {
-        shape = bswap_shape(*shape);
+        shape = bswap_shape(base, *shape);
     }
 }
 template <typename B> void bswap(B &base, GMATevLayer &layer)
@@ -516,6 +548,97 @@ template <typename B> void bswap(B &base, MotSkeleton &stage)
     bswap(base, stage.unk8, stage.unkC);
 }
 
+template <typename B> void bswap(B &base, NlMesh_sub &obj)
+{
+    bswap(base, obj.materialColorA);
+    bswap(base, obj.materialColorR);
+    bswap(base, obj.materialColorG);
+    bswap(base, obj.materialColorB);
+}
+template <typename B> static inline NlMesh *bswap_nlmesh(B &base, NlMesh &mesh)
+{
+    bswap(base, mesh.flags);
+    bswap(base, mesh.unk4);
+    bswap(base, mesh.texFlags);
+    bswap(base, mesh.texObj);
+    bswap(base, mesh.unk10);
+    bswap(base, mesh.tplTexIdx);
+    bswap(base, mesh.type);
+    bswap(base, mesh.ambientColorScale);
+    bswap(base, mesh.sub2C);
+    bswap(base, mesh.dispListSize);
+    // Taking a shortcut here: instead of parsing the display lists,
+    // we know all members are 32-bits and can simply swap them all.
+    bswap_flat(base, reinterpret_cast<u32 *>(mesh.dispListStart), mesh.dispListSize / 4);
+    return reinterpret_cast<NlMesh *>(mesh.dispListStart + mesh.dispListSize);
+}
+template <typename B> void bswap(B &base, NlModelHeader_child2 &obj)
+{
+    // no-op
+}
+template <typename B> void bswap(B &base, NlModelHeader_child &obj)
+{
+    bswap(base, obj.modelSize);
+}
+template <typename B> void bswap(B &base, NlModelHeader &header)
+{
+    bswap(base, header.unk0, 1);
+    bswap(base, header.unk4, 1);
+}
+template <typename B> void bswap(B &base, NlModel &model)
+{
+    bswap(base, *NLMODEL_HEADER(&model));
+    bswap(base, model.u_valid);
+    bswap(base, model.flags);
+    bswap(base, model.boundSphereCenter);
+    bswap(base, model.boundSphereRadius);
+    auto *mesh = reinterpret_cast<NlMesh *>(model.meshStart);
+    while (mesh->flags != 0)
+    {
+        mesh = bswap_nlmesh(base, *mesh);
+    }
+}
+template <typename B> void bswap(B &base, NlObj_UnkChild_Child &obj)
+{
+    bswap(base, obj.unk0);
+    bswap(base, obj.unk4);
+}
+template <typename B> void bswap(B &base, NlObj_UnkChild &obj)
+{
+    bswap(base, obj.childStructs);
+    auto* ptr = offset_ptr(base, obj.childStructs);
+    while (ptr->unk0 != 0) {
+        bswap(base, *ptr);
+        ++ptr;
+    }
+}
+template <typename B> void bswap(B &base, NlObj &obj)
+{
+    bswap(base, obj.unk0, 1);
+    bswap_list(base, obj.models);
+}
+
+template <typename B> void bswap(B &base, GMAModelEntry &obj)
+{
+    bswap(base, obj.model);
+    bswap(base, obj.name);
+}
+template <typename B> void bswap(B &base, GMA &obj)
+{
+    bswap(base, obj.numModels);
+    bswap(base, obj.modelsBase);
+    auto *entry = reinterpret_cast<GMAModelEntry *>(&obj.modelEntries);
+    for (u32 i = 0; i < obj.numModels; ++i)
+    {
+        bswap(base, *entry);
+        if (reinterpret_cast<u32>(entry->model) != 0xFFFFFFFF)
+        {
+            bswap(base, *offset_ptr(base, entry->model, obj.modelsBase));
+        }
+        ++entry;
+    }
+}
+
 void byteswap_stage(Stage *stage)
 {
     bswap(*stage, *stage);
@@ -524,5 +647,15 @@ void byteswap_stage(Stage *stage)
 void byteswap_motskeleton(MotSkeleton *skel)
 {
     bswap(*skel, *skel);
+    sVisitedPtrs.clear();
+}
+void byteswap_nlobj(NlObj *obj)
+{
+    bswap(*obj, *obj);
+    sVisitedPtrs.clear();
+}
+void byteswap_gma(struct GMA *gma)
+{
+    bswap(*gma, *gma);
     sVisitedPtrs.clear();
 }

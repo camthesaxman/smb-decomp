@@ -1,0 +1,4 @@
+[submodule "extern/aurora"]
+	path = extern/aurora
+	url = https://github.com/encounter/aurora.git
+	branch = main

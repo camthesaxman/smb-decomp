@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
-#include <dolphin/GXEnum.h>
+#include <dolphin/gx/GXEnum.h>
 
 #include "global.h"
 #include "adv.h"

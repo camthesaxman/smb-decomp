@@ -3,7 +3,7 @@
 
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
-#include <dolphin/GXStruct.h>
+#include <dolphin/gx/GXStruct.h>
 
 // NL == NaomiLib, the format for Naomi model archives (analogous to GMA)
 

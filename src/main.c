@@ -1,13 +1,20 @@
-#include <stdlib.h>
 #include <dolphin.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include "global.h"
+#ifdef AURORA
+#include "imgui.h"
+#include <aurora/aurora.h>
+#include <aurora/event.h>
+#include <aurora/main.h>
+#endif
+
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
 #include "course.h"
 #include "event.h"
+#include "global.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
@@ -55,13 +62,61 @@ struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
 struct TPL *g_minigameNlTpl;
 
+#ifdef AURORA
+#include <stdio.h>
+void aurora_log_callback(AuroraLogLevel level, const char *message, unsigned int len)
+{
+    const char *levelStr = "??";
+    FILE *out = stdout;
+    switch (level)
+    {
+    case LOG_DEBUG:
+        levelStr = "DEBUG";
+        break;
+    case LOG_INFO:
+        levelStr = "INFO";
+        break;
+    case LOG_WARNING:
+        levelStr = "WARNING";
+        break;
+    case LOG_ERROR:
+        levelStr = "ERROR";
+        out = stderr;
+        break;
+    case LOG_FATAL:
+        levelStr = "FATAL";
+        out = stderr;
+        break;
+    }
+    fprintf(out, "[%s: %s]\n", levelStr, message);
+    if (level == LOG_FATAL)
+    {
+        fflush(out);
+        abort();
+    }
+}
+#endif
+
 #ifdef __GNUC__
-void __eabi(void) {}
+void __eabi(void)
+{
+}
 __attribute__((section(".text")))
 #endif
+#ifdef AURORA
+int main(int argc, char* argv[])
+#else
 void main(void)
+#endif
 {
-    //dipSwitches |= 1;
+#ifdef AURORA
+    const AuroraInfo auroraInfo = aurora_initialize(argc, argv,
+                                                    &(AuroraConfig){
+                                                        .appName = "Super Monkey Ball",
+                                                        .logCallback = &aurora_log_callback,
+                                                    });
+#endif
+    // dipSwitches = DIP_DEBUG|DIP_STCOLI;
     globalFrameCounter = 0;
     initialize();
     gm_init();
@@ -96,11 +151,31 @@ void main(void)
 
     while (1)
     {
+#ifdef AURORA
+        const AuroraEvent *event = aurora_update();
+        bool exiting = false;
+        while (event != NULL && event->type != AURORA_NONE)
+        {
+            if (event->type == AURORA_EXIT)
+            {
+                exiting = true;
+                break;
+            }
+            ++event;
+        }
+        if (exiting)
+        {
+            break;
+        }
+#endif
         if (perfEnabled)
             PERFEventStart(0);
 
         perf_start_timer(4);
         u_bitmap_frame_reset();
+#ifdef AURORA
+        aurora_begin_frame();
+#endif
         beginframe_main();
         perfInfo.unk0 = perf_stop_timer(4);
 
@@ -158,6 +233,11 @@ void main(void)
         window_main();
         perfInfo.windowTime = perf_stop_timer(4);
 
+#ifdef AURORA
+        imgui_main(&auroraInfo);
+        aurora_end_frame();
+#endif
+
         if (perfEnabled)
             PERFEventEnd(2);
 
@@ -176,7 +256,15 @@ void main(void)
         globalFrameCounter++;
         if ((gamePauseStatus & 0xA) == 0)
             unpausedFrameCounter++;
+
+#ifdef AURORA
+        frame_limiter();
+#endif
     }
+
+#ifdef AURORA
+    aurora_shutdown();
+#endif
 }
 
 #pragma force_active on

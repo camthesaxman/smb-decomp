@@ -102,7 +102,7 @@ static inline float __frsqrte(float n)
 #endif
 }
 
-#ifdef TARGET_PC
+#if defined(TARGET_PC) && !defined(_MATH_H_)
 static inline int __abs(int n)
 {
     int mask = n >> 31;

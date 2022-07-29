@@ -5,6 +5,10 @@
 #include "byteswap.h"
 #include "mathutil.h"
 
+#ifdef TARGET_PC
+#include "byteswap.h"
+#endif
+
 struct MotDat *motDat;
 
 struct Struct800341BC_4

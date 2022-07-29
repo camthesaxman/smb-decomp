@@ -1342,7 +1342,7 @@ void GXSaveCPUFifo(GXFifoObj *fifo)
     debug_puts("GXSaveCPUFifo is a stub");
 }
 
-void GXGetGPStatus(u8 *overhi, u8 *underlow, u8 *readIdle, u8 *cmdIdle, u8 *brkpt)
+void GXGetGPStatus(GXBool *overhi, GXBool *underlow, GXBool *readIdle, GXBool *cmdIdle, GXBool *brkpt)
 {
     debug_puts("GXGetGPStatus is a stub");
     *overhi = *underlow = *readIdle = *cmdIdle = *brkpt = 0;

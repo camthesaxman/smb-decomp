@@ -3,11 +3,11 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXCommandList.h>
+#include <dolphin/gx/GXEnum.h>
+#include <dolphin/gx/GXCommandList.h>
 #include <dolphin/GDLight.h>
-#include <dolphin/GXLighting.h>
-#include <dolphin/GXVert.h>
+#include <dolphin/gx/GXLighting.h>
+#include <dolphin/gx/GXVert.h>
 
 #include "global.h"
 #include "gma.h"
@@ -18,6 +18,10 @@
 #include "mathutil.h"
 #include "ord_tbl.h"
 #include "types.h"
+
+#ifdef TARGET_PC
+#include "byteswap.h"
+#endif
 
 static Mtx **avdispMtxPtrList;  // pointers to all of the animation natrixes?
 static Mtx *u_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
@@ -95,7 +99,7 @@ static Mtx s_identityTexMtx;
 static struct TevMaterialCache s_materialCache;
 static GXTexObj unknownTexObj;
 static u8 filler_802B4F50[0x10];
-static u8 lzssHeader[32] __attribute__((aligned(32)));
+static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
 static u8 unknownTexImg[64];
 
 FORCE_BSS_ORDER(lbl_802B4E60)
@@ -208,7 +212,9 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         ambientColor.a = 0xff * s_materialAlpha;
     }
 
-#ifndef TARGET_PC
+#ifdef TARGET_PC
+    GXSetChanAmbColor(GX_COLOR0, ambientColor);
+#else
     // Equivalent to GXSetChanAmbColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_AMBIENT0_ID;
@@ -230,7 +236,9 @@ void set_tev_material_ambient_colors(struct GMAShape *shape)
         materialColor.b = 0xff;
     }
 
-#ifndef TARGET_PC
+#ifdef TARGET_PC
+    GXSetChanMatColor(GX_COLOR0, materialColor);
+#else
     // Equivalent to GXSetChanMatColor()
     GXWGFifo.u8 = GX_LOAD_XF_REG;
     GXWGFifo.u32 = XF_MATERIAL0_ID;
@@ -339,6 +347,8 @@ void free_model(struct GMAModel *model)
 #ifdef TARGET_PC
 static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
 {
+    // Aurora doesn't require byteswapping here
+#ifndef AURORA
     u32 pos = 0;
     GXPrimitive prim;
     GXVtxFmt fmt;
@@ -435,111 +445,7 @@ static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
             assert(0);
         }
     }
-}
-
-static void byteswap_model(u8 *data)
-{
-    u8 *tevLayer;
-    u8 *shape;
-    u32 flags;
-    u32 headerSize;
-    int opaqueCount;
-    int translucentCount;
-    int tevLayerCount;
-    int i;
-
-    bswap32(data + 0x00);  // magic
-    bswap32(data + 0x04);  // flags
-    bswap32(data + 0x08);  // boundSphereCenter.x
-    bswap32(data + 0x0C);  // boundSphereCenter.y
-    bswap32(data + 0x10);  // boundSphereCenter.z
-    bswap32(data + 0x14);  // boundSphereRadius
-    bswap16(data + 0x18);  // tevLayerCount
-    bswap16(data + 0x1A);  // opaqueShapeCount
-    bswap16(data + 0x1C);  // translucentShapeCount
-    bswap32(data + 0x20);  // headerSize
-
-    flags = read_u32_le(data + 0x04);
-    tevLayerCount = read_u16_le(data + 0x18);
-    opaqueCount = read_u16_le(data + 0x1A);
-    translucentCount = read_u16_le(data + 0x1C);
-    headerSize = read_u32_le(data + 0x20);
-
-    tevLayer = data + 0x40;
-    for (i = 0; i < tevLayerCount; i++)
-    {
-        bswap32(tevLayer + 0);  // flags
-        bswap16(tevLayer + 4);  // texIndex
-        tevLayer += 0x20;
-    }
-
-    shape = data + headerSize;
-    if (flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        shape += 0x20;
-
-    assert(shape >= tevLayer);
-
-    for (i = 0; i < opaqueCount + translucentCount; i++)
-    {
-        u8 *nextShape;
-        u8 *dispList;
-        u32 dispListSize;
-        u32 vtxAttrs;
-        int j;
-
-        bswap32(shape + 0x00);  // flags
-        bswap32(shape + 0x0C);  // specularColor
-        bswap16(shape + 0x16);  // tevLayerIdxs[0]
-        bswap16(shape + 0x18);  // tevLayerIdxs[1]
-        bswap16(shape + 0x1A);  // tevLayerIdxs[2]
-        bswap32(shape + 0x1C);  // vtxAttrs
-        bswap32(shape + 0x28);  // dispListSizes[0]
-        bswap32(shape + 0x2C);  // dispListSizes[1]
-        vtxAttrs = read_u32_le(shape + 0x1C);
-        dispList = shape + 0x60;
-        for (j = 0; j < 2; j++)
-        {
-            if (shape[0x13] & (1 << j))
-            {
-                dispListSize = read_u32_le(shape + 0x28 + j * 4);
-                byteswap_displaylist(dispList, dispListSize, vtxAttrs);
-                dispList += dispListSize;
-            }
-        }
-        nextShape = dispList;
-        if (shape[0x13] & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
-        {
-            bswap32(nextShape + 0x8);
-            bswap32(nextShape + 0xC);
-            nextShape += 0x20 + read_u32_le(nextShape + 0x8) + read_u32_le(nextShape + 0xC);
-        }
-        shape = nextShape;
-    }
-}
-
-static void byteswap_gma(u8 *data)
-{
-    u32 numModels;
-    u32 modelsBase;
-    u32 i;
-    u8 *entry;
-
-    bswap32(data + 0);  // numModels
-    bswap32(data + 4);  // modelsBase
-
-    numModels = read_u32_le(data + 0);
-    modelsBase = read_u32_le(data + 4);
-
-    // model entries
-    entry = data + 8;
-    for (i = 0; i < numModels; i++)
-    {
-        bswap32(entry + 0);  // model
-        bswap32(entry + 4);  // name
-        if (read_u32_le(entry + 0) != 0xFFFFFFFF)
-            byteswap_model(data + modelsBase + read_u32_le(entry + 0));
-        entry += 8;
-    }
+#endif
 }
 
 static void byteswap_tpl(u8 *data)
@@ -1716,7 +1622,9 @@ void *draw_shape_reflection_maybe(struct GMAShape *shape, void *modelSamplers, s
 
     if (bvar)
     {
+#ifndef TARGET_PC
         __GXSetDirtyState();
+#endif
         for (i = 0; i < 2; i++)
         {
             if (shape->dispListFlags & (1 << i))
@@ -2655,7 +2563,6 @@ void view_specular_layer_next(struct TevStageInfo *a)
 
 void build_world_specular_layer_uncached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn, u32 d)
 {
-#ifndef TARGET_PC
     u32 tevStage;
 
     if (s_materialCache.unk44 == 0)
@@ -2695,7 +2602,6 @@ void build_world_specular_layer_uncached(struct TevStageInfo *info, GXTevColorAr
     GXSetTevColorOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn_cached(tevStage + 1, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, alphaIn);
     GXSetTevAlphaOp_cached(tevStage + 1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-#endif
 }
 
 void build_world_specular_layer_cached(struct TevStageInfo *info, GXTevColorArg colorIn, GXTevAlphaArg alphaIn)

@@ -2,9 +2,9 @@
 #define _SRC_TYPES_H_
 
 #include <dolphin/types.h>
-#include <dolphin/GXStruct.h>
-#include <dolphin/GXEnum.h>
-#include <dolphin/GXFifo.h>
+#include <dolphin/gx/GXStruct.h>
+#include <dolphin/gx/GXEnum.h>
+#include <dolphin/gx/GXFifo.h>
 #include <dolphin/mtx.h>
 
 typedef struct {

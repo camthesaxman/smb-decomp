@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "background.h"
 #include "byteswap.h"
@@ -462,6 +463,13 @@ void func_8004482C(void)
     stageAg = decodedStageLzPtr->animGroups;
     for (i = 0; i < 0x48; i++, animGroup++, stageAg++)
     {
+#ifdef TARGET_PC
+        if (i >= decodedStageLzPtr->animGroupCount)
+        {
+            memset(animGroup, 0, sizeof(struct AnimGroupInfo));
+            continue;
+        }
+#endif
         animGroup->pos.x = stageAg->initPos.x;
         animGroup->pos.y = stageAg->initPos.y;
         animGroup->pos.z = stageAg->initPos.z;
@@ -1660,12 +1668,12 @@ void u_some_stage_vtx_callback_2(Point3d *vtx) // duplicate of u_some_stage_vtx_
 
 u8 lbl_801B87FC[] = {1, 1, 1, 1, 1, 1, 3, 4, 4, 4, 1, 2, 7, 6, 5, 0};
 
-u8 lbl_8020AE00[0x20] __attribute__((aligned(32)));
+u8 lbl_8020AE00[0x20] ATTRIBUTE_ALIGN(32);
 FORCE_BSS_ORDER(lbl_8020AE00)
 
 // parameters swapped?
 #undef OFFSET_TO_PTR
-#define OFFSET_TO_PTR(base, offset) (void *)((u32)(offset) + (u32)(base))
+#define OFFSET_TO_PTR(base, offset) (void *)((uintptr_t)(offset) + (uintptr_t)(base))
 
 void load_stagedef(int stageId)
 {

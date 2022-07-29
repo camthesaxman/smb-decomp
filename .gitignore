@@ -36,3 +36,7 @@ GMBE8P/
 /.cache/**
 /.clangd/**
 /.idea/**
+
+# CMake
+build/
+cmake-build-*/

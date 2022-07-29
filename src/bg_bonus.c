@@ -5,7 +5,7 @@
 #include <string.h>
 #include <dolphin.h>
 
-#include <dolphin/GXEnum.h>
+#include <dolphin/gx/GXEnum.h>
 #include "global.h"
 #include "background.h"
 #include "ball.h"
