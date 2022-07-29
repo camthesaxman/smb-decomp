@@ -71,6 +71,10 @@ u32 PADRead(PADStatus *status)
                 status[i].button |= PAD_TRIGGER_Z;
             if (state.rgbButtons[7] & 0x80)
                 status[i].button |= PAD_BUTTON_START;
+            status[i].stickX = -128 + state.lX * 255 / 65535;
+            status[i].stickY = 127 - state.lY * 255 / 65535;
+            status[i].substickX = -128 + state.lRx * 255 / 65535;
+            status[i].substickY = 127 - state.lRy * 255 / 65535;
         }
     }
     return 0;

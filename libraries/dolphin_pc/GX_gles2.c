@@ -29,6 +29,7 @@
 
 //#define puts(...)
 
+/*
 void pause(void)
 {
     char *line = NULL;
@@ -36,6 +37,7 @@ void pause(void)
     getline(&line, &len, stdin);
     free(line);
 }
+*/
 
 static GLuint s_program;
 static GLint s_shaderPositionIndex;
