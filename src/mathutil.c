@@ -586,37 +586,46 @@ asm void mathutil_mtxA_from_identity(void)
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8
-    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8
-    ps_sub f0, f1, f1
+    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8  // f1 = (0, 1)
+    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8  // f2 = (1, 0)
+    ps_sub f0, f1, f1                             // f0 = (0, 0)
 
-    psq_st f2, OFFSET_mtxA+0(r3),  0, GQR_F32
-    psq_st f0, OFFSET_mtxA+8(r3),  0, GQR_F32
-    psq_st f1, OFFSET_mtxA+16(r3), 0, GQR_F32
-    psq_st f0, OFFSET_mtxA+24(r3), 0, GQR_F32
-    psq_st f0, OFFSET_mtxA+32(r3), 0, GQR_F32
-    psq_st f2, OFFSET_mtxA+40(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+0x00(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x08(r3), 0, GQR_F32
+    psq_st f1, OFFSET_mtxA+0x10(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x18(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x20(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+0x28(r3), 0, GQR_F32
 
     blr
 }
 #endif
 
-#ifdef __MWERKS__
+#ifdef C_ONLY
+void mathutil_mtxA_sq_from_identity(void)
+{
+    Mtx *m = &mathutilData->mtxA;
+
+    (*m)[0][0] = 1.0f; (*m)[0][1] = 0.0f; (*m)[0][2] = 0.0f;
+    (*m)[1][0] = 0.0f; (*m)[1][1] = 1.0f; (*m)[1][2] = 0.0f;
+    (*m)[2][0] = 0.0f; (*m)[2][1] = 0.0f; (*m)[2][2] = 1.0f;
+}
+#else
 asm void mathutil_mtxA_sq_from_identity(void)
 {
     nofralloc
 
     lis r3, LC_CACHE_BASE@ha
-    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8
-    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8
-    ps_sub f0, f1, f1
+    psq_l f1, OFFSET_constZeroOne(r3), 0, GQR_U8  // f1 = (0, 1)
+    psq_l f2, OFFSET_constOneZero(r3), 0, GQR_U8  // f2 = (1, 0)
+    ps_sub f0, f1, f1                             // f0 = (0, 0)
 
-    psq_st f2, OFFSET_mtxA+0(r3),  0, GQR_F32
-    psq_st f0, OFFSET_mtxA+8(r3),  1, GQR_F32
-    psq_st f1, OFFSET_mtxA+16(r3), 0, GQR_F32
-    psq_st f0, OFFSET_mtxA+24(r3), 1, GQR_F32
-    psq_st f0, OFFSET_mtxA+32(r3), 0, GQR_F32
-    psq_st f2, OFFSET_mtxA+40(r3), 1, GQR_F32
+    psq_st f2, OFFSET_mtxA+0x00(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x08(r3), 1, GQR_F32
+    psq_st f1, OFFSET_mtxA+0x10(r3), 0, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x18(r3), 1, GQR_F32
+    psq_st f0, OFFSET_mtxA+0x20(r3), 0, GQR_F32
+    psq_st f2, OFFSET_mtxA+0x28(r3), 1, GQR_F32
 
     blr
 }
