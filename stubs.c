@@ -384,7 +384,6 @@ s16 mathutil_atan2(double a, float b)
 void mathutil_init(){puts("mathutil_init is a stub");}
 void mathutil_mtxA_invert(){puts("mathutil_mtxA_invert is a stub");}
 void mathutil_mtxA_rigid_invert(){puts("mathutil_mtxA_rigid_invert is a stub");}
-void mathutil_mtxA_sq_from_identity(){puts("mathutil_mtxA_sq_from_identity is a stub");}
 void mathutil_sin_cos_v(int a, float b[2])
 {
     b[0] = mathutil_sin(a);

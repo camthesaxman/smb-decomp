@@ -226,11 +226,12 @@ static void byteswap_dlist(u8 *data, u32 size, int meshType)
     free(s_visitedVerts);
 }
 
-static void byteswap_nlmodel(u8 *data)
+static void byteswap_nlmodel(u8 *base, u8 *data)
 {
     // header stuff
     bswap32(data - 8);
     bswap32(data - 4);
+    bswap32(base + read_u32_le(data - 4));
 
     bswap32(data + 0x0);  // u_valid
     bswap32(data + 0x4);  // flags
@@ -273,7 +274,7 @@ static void byteswap_nlobj(u8 *data)
     while (read_u32_le(pmodel) != 0)
     {
         bswap32(pmodel);
-        byteswap_nlmodel(data + read_u32_le(pmodel));
+        byteswap_nlmodel(data, data + read_u32_le(pmodel));
         pmodel += 4;
     }
 }
