@@ -1731,13 +1731,25 @@ u32 GXGetTexBufferSize(u16 width, u16 height, u32 format, GXBool mipmap,
     }
 }
 
+static inline u8 expand_to_8(u8 v, u8 n)
+{
+    if (v == 3)
+    {
+        return (n << (8 - 3)) | (n << (8 - 6)) | (n >> (9 - 8));
+    }
+    else
+    {
+        return (n << (8 - v)) | (n >> ((v * 2) - 8));
+    }
+}
+
 static GXColor rgb565_to_color(u16 color)
 {
     GXColor out;
 
-    out.r = ((color >> 11) & 0x1F) << 3;
-    out.g = ((color >>  5) & 0x3F) << 2;
-    out.b = ((color >>  0) & 0x1F) << 3;
+    out.r = expand_to_8(5, (color >> 11) & 0x1F);
+    out.g = expand_to_8(6, (color >>  5) & 0x3F);
+    out.b = expand_to_8(5, (color >>  0) & 0x1F);
     out.a = 255;
     return out;
 }
@@ -1840,7 +1852,7 @@ static void *i4_to_gl_i8(const u8 *src, int width, int height)
                 {
                     int index = (y*8 + ty) * width + x*8 + tx;
                     u8 intensity = (src[tx / 2] >> ((tx & 1) ? 0 : 4)) & 0xF;
-                    dest[index] = intensity << 4;
+                    dest[index] = expand_to_8(4, intensity);
                 }
                 src += 4;
             }
@@ -1866,8 +1878,8 @@ static void *ia4_to_gl_i8a8(const u8 *src, int width, int height)
                 for (tx = 0; tx < 8; tx++)
                 {
                     int index = (y*4 + ty) * width + (x*8 + tx);
-                    dest[index*2 + 0] = (*src & 0xFF) << 4;
-                    dest[index*2 + 1] = ((*src >> 4) & 0xFF) << 4;
+                    dest[index*2 + 0] = expand_to_8(4, *src & 0xFF);
+                    dest[index*2 + 1] = expand_to_8(4, (*src >> 4) & 0xFF);
                     src++;
                 }
             }
@@ -1900,16 +1912,16 @@ static void *rgb5a3_to_gl_rgba8(const u8 *src, int width, int height)
                     if (color & (1 << 15))
                     {
                         a = 255;
-                        r = ((color >> 10) & 0x1F) << 3;
-                        g = ((color >> 5) & 0x1F) << 3;
-                        b = ((color >> 0) & 0x1F) << 3;
+                        r = expand_to_8(5, (color >> 10) & 0x1F);
+                        g = expand_to_8(5, (color >> 5) & 0x1F);
+                        b = expand_to_8(5, (color >> 0) & 0x1F);
                     }
                     else
                     {
-                        a = ((color >> 12) & 0x7) << 5;
-                        r = ((color >> 8) & 0xF) << 4;
-                        g = ((color >> 4) & 0xF) << 4;
-                        b = ((color >> 0) & 0xF) << 4;
+                        a = expand_to_8(3, (color >> 12) & 0x7);
+                        r = expand_to_8(4, (color >> 8) & 0xF);
+                        g = expand_to_8(4, (color >> 4) & 0xF);
+                        b = expand_to_8(4, (color >> 0) & 0xF);
                     }
                     dest[index*4 + 0] = r;
                     dest[index*4 + 1] = g;
@@ -2337,7 +2349,7 @@ static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum
 {
     fprintf(stderr, "GL error: %i, %s\n", severity, message);
     fflush(stdout);
-    if (severity != 33387)
+    if (severity == GL_DEBUG_SEVERITY_HIGH_KHR)
     {
         *(int *)0 = 0;
         exit(1);
