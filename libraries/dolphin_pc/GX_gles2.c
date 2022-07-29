@@ -52,6 +52,14 @@ static struct
     int textureLoads;
 } s_renderStats;
 
+static Mtx44 s_projectionMtx;
+static GXProjectionType s_projectionType;
+static Mtx44 s_positionMatrices[10];
+static Mtx44 s_normalMatrices[10];
+static int s_currMtx;
+static Mtx44 s_textureMatrices[11];
+static int s_currTexMtx;
+
 static u16 read_u16(const u8 *src)
 {
     return (src[0] << 8) | src[1];
@@ -197,6 +205,13 @@ void GXClearVtxDesc(void)
     memset(s_attrTypes, 0, sizeof(s_attrTypes));
 }
 
+void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func, GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx)
+{
+    debug_puts("GXSetTexCoordGen2 is a stub");
+    if (dst_coord == GX_TEXCOORD0)
+        s_currTexMtx = (mtx - 30) / 3;
+}
+
 /* Tev */
 
 struct TevStageConfig
@@ -250,9 +265,6 @@ static GXTevKAlphaSel s_konstAlphaSel[GX_MAX_TEVSTAGE];
 static GXColor s_konstColor;
 static GXColor s_tevRegs[4];
 static GLint s_currTextureId;
-static Mtx44 s_projectionMtx;
-static GXProjectionType s_projectionType;
-static Mtx44 s_modelViewMtx;
 
 static GXColor s_chanMatColors[2];
 static GXColor s_chanAmbColors[2];
@@ -488,6 +500,7 @@ static void prepare_shaders(void)
         "precision mediump float;\n"
         "uniform   mat4 u_modelViewMatrix;\n"
         "uniform   mat4 u_projectionMatrix;\n"
+        "uniform   mat4 u_textureMatrix;\n"
         "uniform   vec4 u_chanAmbColors[2];\n"  // ambient colors, per channel
         "uniform   vec4 u_chanMatColors[2];\n"  // material colors, per channel
         "uniform   vec3 u_lightPos[8];\n"
@@ -516,7 +529,7 @@ static void prepare_shaders(void)
         "void main()\n"
         "{\n"
         "    v_normal   = a_normal;\n"
-        "    v_texCoord = a_texCoord;\n"
+        "    v_texCoord = vec2(u_textureMatrix * vec4(a_texCoord, 0.0, 1.0));\n"
         // Transform vertex into eye space
         "    vec3 mvVertex = vec3(u_modelViewMatrix * a_position);\n"
         // Transform the into eye space
@@ -778,7 +791,9 @@ got_shader:
     if ((location = glGetUniformLocation(shader->program, "u_projectionMatrix")) >= 0)
         glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_projectionMtx);
     if ((location = glGetUniformLocation(shader->program, "u_modelViewMatrix")) >= 0)
-        glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_modelViewMtx);
+        glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_positionMatrices[s_currMtx]);
+    if ((location = glGetUniformLocation(shader->program, "u_textureMatrix")) >= 0)
+        glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)s_textureMatrices[s_currTexMtx]);
 
 #ifdef DEBUG
     if (dumpShaders)
@@ -947,29 +962,52 @@ void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz,
 
 void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
 {
-    memcpy(s_modelViewMtx, mtx, sizeof(s_modelViewMtx));
-    s_modelViewMtx[3][0] = s_modelViewMtx[3][1] = s_modelViewMtx[3][2] = 0.0f;
-    s_modelViewMtx[3][3] = 1.0f;
+    Mtx44 *m = &s_positionMatrices[id / 3];
+
+    memcpy(m, mtx, sizeof(Mtx44));
+    (*m)[3][0] = (*m)[3][1] = (*m)[3][2] = 0.0f;
+    (*m)[3][3] = 1.0f;
 }
 
 void GXLoadNrmMtxImm(f32 mtx[3][4], u32 id)
 {
-    puts("GXLoadNrmMtxImm is a stub");
+    Mtx44 *m = &s_normalMatrices[id / 3];
+
+    memcpy(m, mtx, sizeof(Mtx44));
+    (*m)[3][0] = (*m)[3][1] = (*m)[3][2] = 0.0f;
+    (*m)[3][3] = 1.0f;
 }
 
 void GXSetCurrentMtx(u32 id)
 {
-    puts("GXSetCurrentMtx is a stub");
+    s_currMtx = id / 3;
 }
 
 void GXLoadTexMtxImm(f32 mtx[][4], u32 id, GXTexMtxType type)
 {
-    puts("GXLoadTexMtxImm is a stub");
+    Mtx44 *m = &s_textureMatrices[(id - 30) / 3];
+    debug_printf("GXLoadTexMtxImm(0x%08X, %u, %s)\n",
+        (u32)mtx, id, (type == GX_MTX3x4) ? "GX_MTX3x4" : "GX_MTX2x4");
+
+    if (id >= GX_TEXMTX0 && id <= GX_IDENTITY)
+    {
+        switch (type)
+        {
+        case GX_MTX2x4:
+            memcpy(m, mtx, 2 * 4 * sizeof(f32));
+            break;
+        case GX_MTX3x4:
+            memcpy(m, mtx, 3 * 4 * sizeof(f32));
+            break;
+        default:
+            assert(0);
+        }
+    }
 }
 
 void GXSetViewport(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz)
 {
-    //printf("GXSetViewport: %.2f, %.2f, %.2f, %.2f\n", left, top, wd, ht);
+    debug_printf("GXSetViewport: %.2f, %.2f, %.2f, %.2f\n", left, top, wd, ht);
     glViewport(left, top, wd, ht);
 }
 
@@ -1138,7 +1176,7 @@ static GLenum gx_prim_to_gl_prim(GXPrimitive in)
     return 0;
 }
 
-static u8 s_vertexBuffer[4096];
+static u8 s_vertexBuffer[8192];
 size_t s_vertexBufferPos;
 static int s_currPrim;
 static int s_vertexCount;
@@ -2308,6 +2346,15 @@ static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum
 
 GXFifoObj *GXInit(void *base, u32 size)
 {
+    f32 identity[][4] =
+    {
+        {1, 0, 0, 0},
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {0, 0, 0, 1},
+    };
+    int i;
+
     debug_puts("GXInit");
 #ifdef _WIN32
     if (glewInit() != GLEW_OK)
@@ -2321,6 +2368,12 @@ GXFifoObj *GXInit(void *base, u32 size)
     glDisable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);
+
+    //GXLoadTexMtxImm(identity, GX_IDENTITY, GX_MTX3x4);
+    for (i = 0; i < ARRAY_COUNT(s_textureMatrices); i++)
+    {
+        memcpy(s_textureMatrices[i], identity, sizeof(Mtx44));
+    }
 
     return NULL;  // FIFOs aren't supported
 }
@@ -2393,7 +2446,6 @@ void GXSetNumTexGens(u8 nTexGens){debug_puts("GXSetNumTexGens is a stub");}
 void GXSetPixelFmt(GXPixelFmt pix_fmt, GXZFmt16 z_fmt){puts("GXSetPixelFmt is a stub");}
 void GXSetTevDirect(GXTevStageID tev_stage){debug_puts("GXSetTevDirect is a stub");}
 void GXSetTevIndirect(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXIndTexFormat format, GXIndTexBiasSel bias_sel, GXIndTexMtxID matrix_sel, GXIndTexWrap wrap_s, GXIndTexWrap wrap_t, GXBool add_prev, GXBool ind_lod, GXIndTexAlphaSel alpha_sel){puts("GXSetTevIndirect is a stub");}
-void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func, GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx){debug_puts("GXSetTexCoordGen2 is a stub");}
 void GXSetTexCopyDst(u16 wd, u16 ht, GXTexFmt fmt, GXBool mipmap){puts("GXSetTexCopyDst is a stub");}
 void GXSetTexCopySrc(u16 left, u16 top, u16 wd, u16 ht){puts("GXSetTexCopySrc is a stub");}
 void GXSetZCompLoc(GXBool before_tex){puts("GXSetZCompLoc is a stub");}

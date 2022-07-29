@@ -156,7 +156,7 @@ float mathutil_rsqrt(double n)
 
 float mathutil_sqrt(double n)
 {
-    return mathutil_rsqrt(n) * n;
+    return sqrtf(n);
 }
 #else
 asm float mathutil_sqrt_(double n)
