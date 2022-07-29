@@ -116,7 +116,7 @@ void main(void)
                                                         .logCallback = &aurora_log_callback,
                                                     });
 #endif
-    // dipSwitches |= 1;
+    // dipSwitches = DIP_DEBUG|DIP_STCOLI;
     globalFrameCounter = 0;
     initialize();
     gm_init();

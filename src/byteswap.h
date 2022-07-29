@@ -14,6 +14,7 @@ extern "C"
     void byteswap_stage(struct Stage *stage);
     void byteswap_motskeleton(struct MotSkeleton *stage);
     void byteswap_nlobj(struct NlObj *obj);
+    void byteswap_gma(struct GMA* gma);
 
 #ifdef __cplusplus
 }

@@ -19,6 +19,10 @@
 #include "ord_tbl.h"
 #include "types.h"
 
+#ifdef TARGET_PC
+#include "byteswap.h"
+#endif
+
 static Mtx **avdispMtxPtrList;  // pointers to all of the animation natrixes?
 static Mtx *u_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 static float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)
@@ -442,115 +446,6 @@ static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
         }
     }
 #endif
-}
-
-static void byteswap_model(u8 *data)
-{
-    u8 *tevLayer;
-    u8 *shape;
-    u32 flags;
-    u32 headerSize;
-    int opaqueCount;
-    int translucentCount;
-    int tevLayerCount;
-    int i;
-
-    bswap32(data + 0x00);  // magic
-    bswap32(data + 0x04);  // flags
-    bswap32(data + 0x08);  // boundSphereCenter.x
-    bswap32(data + 0x0C);  // boundSphereCenter.y
-    bswap32(data + 0x10);  // boundSphereCenter.z
-    bswap32(data + 0x14);  // boundSphereRadius
-    bswap16(data + 0x18);  // tevLayerCount
-    bswap16(data + 0x1A);  // opaqueShapeCount
-    bswap16(data + 0x1C);  // translucentShapeCount
-    bswap32(data + 0x20);  // headerSize
-
-    flags = read_u32_le(data + 0x04);
-    tevLayerCount = read_u16_le(data + 0x18);
-    opaqueCount = read_u16_le(data + 0x1A);
-    translucentCount = read_u16_le(data + 0x1C);
-    headerSize = read_u32_le(data + 0x20);
-
-    tevLayer = data + 0x40;
-    for (i = 0; i < tevLayerCount; i++)
-    {
-        bswap32(tevLayer + 0);  // flags
-        bswap16(tevLayer + 4);  // texIndex
-        tevLayer += 0x20;
-    }
-
-    shape = data + headerSize;
-    if (flags & (GCMF_SKIN|GCMF_EFFECTIVE))
-        shape += 0x20;
-
-    assert(shape >= tevLayer);
-
-    for (i = 0; i < opaqueCount + translucentCount; i++)
-    {
-        u8 *nextShape;
-        u8 *dispList;
-        u32 dispListSize;
-        u32 vtxAttrs;
-        int j;
-
-        bswap32(shape + 0x00);  // flags
-        bswap32(shape + 0x0C);  // specularColor
-        bswap16(shape + 0x16);  // tevLayerIdxs[0]
-        bswap16(shape + 0x18);  // tevLayerIdxs[1]
-        bswap16(shape + 0x1A);  // tevLayerIdxs[2]
-        bswap32(shape + 0x1C);  // vtxAttrs
-        bswap32(shape + 0x28);  // dispListSizes[0]
-        bswap32(shape + 0x2C);  // dispListSizes[1]
-        bswap32(shape + 0x30);  // origin.x
-        bswap32(shape + 0x34);  // origin.y
-        bswap32(shape + 0x38);  // origin.z
-        bswap32(shape + 0x40);  // blendFactors
-        vtxAttrs = read_u32_le(shape + 0x1C);
-        dispList = shape + 0x60;
-        for (j = 0; j < 2; j++)
-        {
-            if (shape[0x13] & (1 << j))
-            {
-                dispListSize = read_u32_le(shape + 0x28 + j * 4);
-                byteswap_displaylist(dispList, dispListSize, vtxAttrs);
-                dispList += dispListSize;
-            }
-        }
-        nextShape = dispList;
-        if (shape[0x13] & (GMA_SHAPE_HAS_DLIST2 | GMA_SHAPE_HAS_DLIST3))
-        {
-            bswap32(nextShape + 0x8);
-            bswap32(nextShape + 0xC);
-            nextShape += 0x20 + read_u32_le(nextShape + 0x8) + read_u32_le(nextShape + 0xC);
-        }
-        shape = nextShape;
-    }
-}
-
-static void byteswap_gma(u8 *data)
-{
-    u32 numModels;
-    u32 modelsBase;
-    u32 i;
-    u8 *entry;
-
-    bswap32(data + 0);  // numModels
-    bswap32(data + 4);  // modelsBase
-
-    numModels = read_u32_le(data + 0);
-    modelsBase = read_u32_le(data + 4);
-
-    // model entries
-    entry = data + 8;
-    for (i = 0; i < numModels; i++)
-    {
-        bswap32(entry + 0);  // model
-        bswap32(entry + 4);  // name
-        if (read_u32_le(entry + 0) != 0xFFFFFFFF)
-            byteswap_model(data + modelsBase + read_u32_le(entry + 0));
-        entry += 8;
-    }
 }
 
 static void byteswap_tpl(u8 *data)
