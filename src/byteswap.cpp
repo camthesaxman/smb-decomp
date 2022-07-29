@@ -609,6 +609,7 @@ template <typename B> void bswap(B &base, NlObj_UnkChild &obj)
     auto* ptr = offset_ptr(base, obj.childStructs);
     while (ptr->unk0 != 0) {
         bswap(base, *ptr);
+        ++ptr;
     }
 }
 template <typename B> void bswap(B &base, NlObj &obj)
