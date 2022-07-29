@@ -1,12 +1,15 @@
-extern "C"
-{
-#include "byteswap.h"
-#include "variables.h"
-}
-
+#include <dolphin.h>
+#include <cassert>
 #include <cstdint>
+#include <cstdio>
 #include <cstdlib>
 #include <unordered_set>
+
+extern "C"
+{
+#include "global.h"
+#include "byteswap.h"
+}
 
 template <typename T> [[nodiscard]] constexpr T bswap16(T val) noexcept
 {
@@ -396,6 +399,108 @@ template <typename B> void bswap(B &base, StormFireAnim &anim)
 {
     bswap(base, anim.pos);
 }
+
+static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
+{
+    // Aurora doesn't require byteswapping here
+#ifndef AURORA
+    u32 pos = 0;
+    GXPrimitive prim;
+    GXVtxFmt fmt;
+    int vtxCount;
+
+    while (pos < size)
+    {
+        u8 opcode = data[pos++];
+
+        if (opcode == GX_NOP)
+            continue;
+        if (opcode == GX_LOAD_BP_REG)
+        {
+            bswap(data, *(u32 *)(data + pos));
+            pos += 4;
+        }
+
+        prim = (GXPrimitive)(opcode & ~3);
+        fmt = (GXVtxFmt)(opcode & 3);
+        switch (prim)
+        {
+        case GX_QUADS:
+        case GX_TRIANGLES:
+        case GX_TRIANGLESTRIP:
+        case GX_TRIANGLEFAN:
+        case GX_LINES:
+        case GX_LINESTRIP:
+        case GX_POINTS:
+            bswap(data, *(u16 *)(data + pos));
+            vtxCount = data[pos] | (data[pos + 1] << 8);
+            pos += 2;
+            while (vtxCount-- > 0)
+            {
+                int attr;
+                GXCompCnt compCnt;
+                GXCompType compType;
+                u8 frac;
+                for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
+                {
+                    GXGetVtxAttrFmt(fmt, (GXAttr)attr, &compCnt, &compType, &frac);
+                    if (vtxAttrs & (1 << attr))
+                    {
+                        if (attr >= GX_VA_PNMTXIDX && attr <= GX_VA_TEX7MTXIDX)
+                        {
+                            pos++;
+                            continue;
+                        }
+                        #define COMBINE(val1, val2, val3) (((val1)<<16)|((val2)<<8)|(val3))
+                        switch (COMBINE(attr, compCnt, compType))
+                        {
+                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
+                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
+                            bswap(data, *(f32 *)(data + pos + 0));
+                            bswap(data, *(f32 *)(data + pos + 4));
+                            bswap(data, *(f32 *)(data + pos + 8));
+                            pos += 12;
+                            break;
+                        case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
+                        case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
+                            bswap(data, *(u16 *)(data + pos + 0));
+                            bswap(data, *(u16 *)(data + pos + 2));
+                            bswap(data, *(u16 *)(data + pos + 4));
+                            pos += 6;
+                            break;
+                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
+                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
+                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
+                            bswap(data, *(u32 *)(data + pos + 0));
+                            bswap(data, *(u32 *)(data + pos + 4));
+                            pos += 8;
+                            break;
+                        case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
+                        case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
+                        case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
+                            bswap(data, *(u16 *)(data + pos + 0));
+                            bswap(data, *(u16 *)(data + pos + 2));
+                            pos += 4;
+                            break;
+                        case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
+                            pos += 4;
+                            break;
+                        default:
+                            assert(0);
+                            break;
+                        }
+                        #undef COMBINE
+                    }
+                }
+            }
+            continue;
+        default:
+            assert(0);
+        }
+    }
+#endif
+}
+
 template <typename B> static inline GMAShape *bswap_shape(B &base, GMAShape &shape)
 {
     bswap(base, shape.flags);
@@ -411,6 +516,7 @@ template <typename B> static inline GMAShape *bswap_shape(B &base, GMAShape &sha
     {
         if (shape.dispListFlags & (1 << j))
         {
+            byteswap_displaylist(next, shape.dispListSizes[j], shape.vtxAttrs);
             next += shape.dispListSizes[j];
         }
     }
@@ -639,6 +745,20 @@ template <typename B> void bswap(B &base, GMA &obj)
     }
 }
 
+template <typename B> void bswap(B &base, struct TPLTextureHeader &tpl)
+{
+    bswap(base, tpl.format);
+    bswap(base, tpl.imageOffset);
+    bswap(base, tpl.width);
+    bswap(base, tpl.height);
+}
+
+template <typename B> void bswap(B &base, struct TPL &tpl)
+{
+    bswap(base, tpl.numTextures);
+    bswap_flat(base, reinterpret_cast<TPLTextureHeader*>(&tpl.texHeaders), tpl.numTextures);
+}
+
 void byteswap_stage(Stage *stage)
 {
     bswap(*stage, *stage);
@@ -649,6 +769,17 @@ void byteswap_motskeleton(MotSkeleton *skel)
     bswap(*skel, *skel);
     sVisitedPtrs.clear();
 }
+void byteswap_motlabel(u8 *data)
+{
+    u32 count;
+    u32 *namePtrs;
+
+    bswap(data, *(u32 *)data);  // count
+    count = *(u32 *)data;
+    namePtrs = (u32 *)(data + 4);
+    while (count-- > 0)
+        bswap(data, *namePtrs++);
+}
 void byteswap_nlobj(NlObj *obj)
 {
     bswap(*obj, *obj);
@@ -658,4 +789,8 @@ void byteswap_gma(struct GMA *gma)
 {
     bswap(*gma, *gma);
     sVisitedPtrs.clear();
+}
+void byteswap_tpl(struct TPL *tpl)
+{
+    bswap(*tpl, *tpl);
 }

@@ -5,10 +5,6 @@
 #include "byteswap.h"
 #include "mathutil.h"
 
-#ifdef TARGET_PC
-#include "byteswap.h"
-#endif
-
 struct MotDat *motDat;
 
 struct Struct800341BC_4
@@ -169,23 +165,6 @@ void u_read_channel_from_dat(struct MotDat *dat, struct MotionChannel *chan)
 }
 
 static u8 lzssHeader[32] ATTRIBUTE_ALIGN(32);
-
-#ifdef TARGET_PC
-static void byteswap_motlabel(u8 *data)
-{
-    u32 count;
-    u32 i;
-
-    bswap32(data);
-    count = read_u32_le(data);
-    data += 4;
-    for (i = 0; i < count; i++)
-    {
-        bswap32(data);
-        data += 4;
-    }
-}
-#endif
 
 int init_ape_model_info(char *datname, char *labelname, char *sklname, char *infoname)
 {

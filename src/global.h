@@ -114,36 +114,4 @@ static inline int __abs(int n)
 #define qr0 0
 #define qr2 2
 
-static inline void bswap16(u8 *data)
-{
-    u8 temp;
-
-    temp = data[0];
-    data[0] = data[1];
-    data[1] = temp;
-}
-
-static inline void bswap32(u8 *data)
-{
-    u8 temp;
-
-    temp = data[0];
-    data[0] = data[3];
-    data[3] = temp;
-
-    temp = data[1];
-    data[1] = data[2];
-    data[2] = temp;
-}
-
-static inline u16 read_u16_le(const u8 *data)
-{
-    return data[0] | (data[1] << 8);
-}
-
-static inline u32 read_u32_le(const u8 *data)
-{
-    return data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-}
-
 #endif

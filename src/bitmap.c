@@ -5,6 +5,7 @@
 #include <dolphin/gx/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
+#include "byteswap.h"
 #include "event.h"
 #include "gxcache.h"
 #include "gxutil.h"
@@ -100,26 +101,6 @@ void bitmap_init(void)
     lbl_802F1D04 = 0;
 }
 
-#ifdef TARGET_PC
-static void byteswap_tpl(u8 *data)
-{
-    u32 numTextures;
-    u32 i;
-
-    bswap32(data + 0);  // numTextures
-    numTextures = read_u32_le(data + 0);
-    for (i = 0; i < numTextures; i++)
-    {
-        u8 *hdr = data + 4 + i * 0x10;
-
-        bswap32(hdr + 0x0);  // format
-        bswap32(hdr + 0x4);  // imageOffset
-        bswap16(hdr + 0x8);  // width
-        bswap16(hdr + 0xA);  // height
-    }
-}
-#endif
-
 struct TPL *bitmap_load_tpl(char *filename)
 {
     struct TPL *tpl;
@@ -174,7 +155,7 @@ struct TPL *bitmap_load_tpl(char *filename)
     }
 
 #ifdef TARGET_PC
-    byteswap_tpl(fileData);
+    byteswap_tpl((struct TPL *)fileData);
 #endif
 
     tpl->numTextures = *(u32 *)(fileData + 0);  // 0: number of textures
