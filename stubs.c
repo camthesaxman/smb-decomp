@@ -345,7 +345,14 @@ struct
     u8 filler8[1];
 } lbl_802014E0;
 void lbl_80292C00_alias(){puts("lbl_80292C00_alias is a stub");}
-void lbl_80292D18(){puts("lbl_80292D18 is a stub");}
+struct
+{
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    u8 fillerC[0x14-0xC];
+    u32 unk14;
+} lbl_80292D18;
 void lbl_802C67D4(){puts("lbl_802C67D4 is a stub");}
 void lbl_802F16B8(){puts("lbl_802F16B8 is a stub");}
 u32 lbl_802F1DF8;

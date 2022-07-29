@@ -25,6 +25,8 @@
 #define GL_DEBUG_OUTPUT GL_DEBUG_OUTPUT_KHR
 #endif
 
+#include "__dolphin_pc.h"
+
 //#define puts(...)
 
 void pause(void)
@@ -40,6 +42,13 @@ static GLint s_shaderPositionIndex;
 static GLint s_shaderNormalIndex;
 static GLint s_shaderTexCoordIndex;
 static GLint s_shaderColorIndex;
+
+static struct
+{
+    int drawCalls;
+    int shaderCompiles;
+    int textureLoads;
+} s_renderStats;
 
 static u16 read_u16(const u8 *src)
 {
@@ -67,8 +76,6 @@ typedef struct
 /* Debug */
 
 #ifdef DEBUG
-#define debug_puts   puts
-#define debug_printf printf
 
 #define NAME(x) [x] = #x
 static const char *GXBool_name(GXBool in)
@@ -146,9 +153,6 @@ static const char *GXColorSrc_name(GXColorSrc in)
 }
 #undef NAME
 
-#else
-#define debug_puts(...)   ((void)0)
-#define debug_printf(...) ((void)0)
 #endif  // DEBUG
 
 /* Attr */
@@ -197,14 +201,17 @@ struct TevStageConfig
 {
     u8 colorArgs[4];
     u8 alphaArgs[4];
-    u8 colorOp;
-    u8 colorBias;
-    u8 colorScale;
+
+    u8 colorOp:4;
+    u8 colorBias:2;
+    u8 colorScale:2;
     u8 colorOut;
-    u8 alphaOp;
-    u8 alphaBias;
-    u8 alphaScale;
+
+    u8 alphaOp:4;
+    u8 alphaBias:2;
+    u8 alphaScale:2;
     u8 alphaOut;
+
     u8 channelId;
 };
 
@@ -218,9 +225,9 @@ struct TevConfig
 
 struct ChannelConfig
 {
-    u8 ambSrc;
-    u8 matSrc;
-    u8 lightEnabled;
+    u8 ambSrc:1;
+    u8 matSrc:1;
+    u8 lightEnabled:1;
     u8 lightMask;
 };
 
@@ -242,6 +249,7 @@ static GXColor s_konstColor;
 static GXColor s_tevRegs[4];
 static GLint s_currTextureId;
 static Mtx44 s_projectionMtx;
+static GXProjectionType s_projectionType;
 static Mtx44 s_modelViewMtx;
 
 static GXColor s_chanMatColors[2];
@@ -259,7 +267,7 @@ struct ShaderInfo
 };
 
 static struct ShaderInfo s_shaderCache[64] = {0};
-static int s_lastUsed = 1;
+static int s_shaderLastUsed = 1;
 
 static void gxcolor_to_float_arr(GXColor color, GLfloat *out)
 {
@@ -471,7 +479,7 @@ static void dump_shaders(const struct ShaderInfo *shader)
 }
 #endif
 
-static void prepare_shaders()
+static void prepare_shaders(void)
 {
     static const char vtxShaderHeader[] =
         "#version 100\n"
@@ -675,8 +683,10 @@ static void prepare_shaders()
         exit(1);
     }
 
+    s_renderStats.shaderCompiles++;
+
 got_shader:
-    shader->lastUsed = s_lastUsed++;
+    shader->lastUsed = s_shaderLastUsed++;
     s_program = shader->program;
     glUseProgram(shader->program);
 
@@ -918,7 +928,14 @@ void GXSetProjection(f32 mtx[4][4], GXProjectionType type)
 
 void GXGetProjectionv(f32 *p)
 {
-    puts("GXGetProjectionv is a stub");
+    debug_puts("GXGetProjectionv");
+    p[0] = s_projectionType;
+    p[1] = s_projectionMtx[0][0];
+    p[2] = (s_projectionType == GX_ORTHOGRAPHIC) ? s_projectionMtx[0][3] : s_projectionMtx[0][2];
+    p[3] = s_projectionMtx[1][1];
+    p[4] = (s_projectionType == GX_ORTHOGRAPHIC) ? s_projectionMtx[1][3] : s_projectionMtx[1][2];
+    p[5] = s_projectionMtx[2][2];
+    p[6] = s_projectionMtx[2][3];
 }
 
 void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz, u32 field)
@@ -928,15 +945,9 @@ void GXSetViewportJitter(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz,
 
 void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
 {
-    Mtx44 m;
-
-    memcpy(m, mtx, sizeof(Mtx));
-    m[3][0] = m[3][1] = m[3][2] = 0.0f;
-    m[3][3] = 1.0f;
-
-    //GLint location = glGetUniformLocation(s_program, "u_modelViewMatrix");
-    //glUniformMatrix4fv(location, 1, TRUE, (GLfloat *)m);
-    memcpy(s_modelViewMtx, m, sizeof(s_modelViewMtx));
+    memcpy(s_modelViewMtx, mtx, sizeof(s_modelViewMtx));
+    s_modelViewMtx[3][0] = s_modelViewMtx[3][1] = s_modelViewMtx[3][2] = 0.0f;
+    s_modelViewMtx[3][3] = 1.0f;
 }
 
 void GXLoadNrmMtxImm(f32 mtx[3][4], u32 id)
@@ -962,8 +973,7 @@ void GXSetViewport(f32 left, f32 top, f32 wd, f32 ht, f32 nearz, f32 farz)
 
 void GXSetScissor(u32 left, u32 top, u32 wd, u32 ht)
 {
-    puts("GXSetScissor is a stub");
-    //pause();
+    debug_puts("GXSetScissor is a stub");
 }
 
 /* Geometry */
@@ -1151,6 +1161,7 @@ void GXEnd(void)
     if (s_currPrim == GX_QUADS)
         count *= 2;
     glDrawArrays(gx_prim_to_gl_prim(s_currPrim), 0, count);
+    s_renderStats.drawCalls++;
     if (s_shaderPositionIndex >= 0)
         glDisableVertexAttribArray(s_shaderPositionIndex);
     if (s_shaderNormalIndex >= 0)
@@ -1182,7 +1193,6 @@ static GLenum gx_cull_mode_to_gl_cull_mode(GXCullMode in)
 
 void GXSetCullMode(GXCullMode mode)
 {
-    //puts("GXSetCullMode is a stub");
     if (mode == GX_CULL_NONE)
     {
         glDisable(GL_CULL_FACE);
@@ -1216,6 +1226,7 @@ void GXCallDisplayList(void *list, u32 nbytes)
     u8 *ptr;
 
     debug_puts("GXCallDisplayList");
+    prepare_shaders();
     while (pos < nbytes)
     {
         u8 opcode = data[pos++];
@@ -1240,10 +1251,10 @@ void GXCallDisplayList(void *list, u32 nbytes)
             vtxCount = (data[pos + 1] << 8) | data[pos];
             pos += 2;
 
-            prepare_shaders();
             vtxSize = prepare_vertex_arrays(prim, fmt, data + pos);
 
             glDrawArrays(gx_prim_to_gl_prim(prim), 0, vtxCount);
+            s_renderStats.drawCalls++;
 
             if (s_shaderPositionIndex >= 0)
                 glDisableVertexAttribArray(s_shaderPositionIndex);
@@ -1266,41 +1277,41 @@ static GXFifoObj *CPUFifo;
 
 void GXInitFifoBase(GXFifoObj *fifo, void *base, u32 size)
 {
-    puts("GXInitFifoBase is a stub");
+    debug_puts("GXInitFifoBase is a stub");
 }
 
 void GXInitFifoPtrs(GXFifoObj *fifo, void *readPtr, void *writePtr)
 {
-    puts("GXInitFifoPtrs is a stub");
+    debug_puts("GXInitFifoPtrs is a stub");
 }
 
 void GXSetCPUFifo(GXFifoObj *fifo)
 {
-    puts("GXSetCPUFifo is a stub");
+    debug_puts("GXSetCPUFifo is a stub");
     CPUFifo = fifo;
 }
 
 void GXSetGPFifo(GXFifoObj *fifo)
 {
-    puts("GXSetGPFifo is a stub");
+    debug_puts("GXSetGPFifo is a stub");
     GPFifo = fifo;
 }
 
 void GXSaveCPUFifo(GXFifoObj *fifo)
 {
-    puts("GXSaveCPUFifo is a stub");
+    debug_puts("GXSaveCPUFifo is a stub");
 }
 
 void GXGetGPStatus(u8 *overhi, u8 *underlow, u8 *readIdle, u8 *cmdIdle, u8 *brkpt)
 {
-    puts("GXGetGPStatus is a stub");
+    debug_puts("GXGetGPStatus is a stub");
     *overhi = *underlow = *readIdle = *cmdIdle = *brkpt = 0;
     *readIdle = TRUE;
 }
 
 void GXGetFifoPtrs(GXFifoObj *fifo, void **readPtr, void **writePtr)
 {
-    puts("GXGetFifoPtrs is a stub");
+    debug_puts("GXGetFifoPtrs is a stub");
     *readPtr = NULL;
     *writePtr = NULL;
 }
@@ -1607,16 +1618,28 @@ void GXSetChanCtrl(GXChannelID chan, GXBool enable, GXColorSrc amb_src,
 
 /* Texture */
 
+struct TextureEntry
+{
+    u32 uid;
+    u32 lastUsed;
+    u8 *decoded;  // texture image converted into a GL compatible format
+    GLuint textureId;
+};
+
 typedef struct
 {
     u16 width;
     u16 height;
     GXTexFmt format;
-    u8 *uncompressed;
-    GLuint textureId;
+    //u8 *uncompressed;
+    //GLuint textureId;
     void *data;
     u8 wrapS;
     u8 wrapT;
+    //u8 isLoaded;
+    //int lastUsed;
+    u32 uid;  // must match up with uid in cacheEntry if still in cache
+    struct TextureEntry *entry;
 } __GXTexObj;
 
 static_assert(sizeof(__GXTexObj) <= sizeof(GXTexObj));
@@ -1689,7 +1712,7 @@ static u8 half_blend(u32 a, u32 b)
     return (a + b) >> 1;
 }
 
-static void decode_tile(const u8 *restrict src, u8 *restrict dest, int x, int y, int width, int height)
+static void decode_cmpr_tile(const u8 *restrict src, u8 *restrict dest, int x, int y, int width, int height)
 {
     u16 c1 = read_u16(src + 0);
     u16 c2 = read_u16(src + 2);
@@ -1736,8 +1759,9 @@ static void decode_tile(const u8 *restrict src, u8 *restrict dest, int x, int y,
     }
 }
 
-static void decompress_cmpr_texture(u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *cmpr_to_gl_rgba8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height * 4);
     int x, y;
 
     for (y = 0; y < height / 8; y++)
@@ -1745,20 +1769,22 @@ static void decompress_cmpr_texture(u8 *restrict src, u8 *restrict dest, int wid
         for (x = 0; x < width / 8; x++)
         {
             // decode block
-            decode_tile(src, dest, x*8 + 0, y*8 + 0, width, height);
+            decode_cmpr_tile(src, dest, x*8 + 0, y*8 + 0, width, height);
             src += 8;
-            decode_tile(src, dest, x*8 + 4, y*8 + 0, width, height);
+            decode_cmpr_tile(src, dest, x*8 + 4, y*8 + 0, width, height);
             src += 8;
-            decode_tile(src, dest, x*8 + 0, y*8 + 4, width, height);
+            decode_cmpr_tile(src, dest, x*8 + 0, y*8 + 4, width, height);
             src += 8;
-            decode_tile(src, dest, x*8 + 4, y*8 + 4, width, height);
+            decode_cmpr_tile(src, dest, x*8 + 4, y*8 + 4, width, height);
             src += 8;
         }
     }
+    return dest;
 }
 
-static void decompress_i4_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *i4_to_gl_i8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height);
     int x, y;
 
     for (y = 0; y < height / 8; y++)
@@ -1780,10 +1806,12 @@ static void decompress_i4_texture(const u8 *restrict src, u8 *restrict dest, int
             }
         }
     }
+    return dest;
 }
 
-static void decompress_ia4_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *ia4_to_gl_i8a8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height * 2);
     int x, y;
 
     for (y = 0; y < height / 4; y++)
@@ -1805,10 +1833,12 @@ static void decompress_ia4_texture(const u8 *restrict src, u8 *restrict dest, in
             }
         }
     }
+    return dest;
 }
 
-static void decompress_rgb5a3_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *rgb5a3_to_gl_rgba8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height * 4);
     int x, y;
 
     for (y = 0; y < height / 4; y++)
@@ -1849,10 +1879,12 @@ static void decompress_rgb5a3_texture(const u8 *restrict src, u8 *restrict dest,
             }
         }
     }
+    return dest;
 }
 
-static void decompress_i8_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *i8_to_gl_i8a8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height * 2);
     int x, y;
 
     for (y = 0; y < height / 4; y++)
@@ -1871,10 +1903,12 @@ static void decompress_i8_texture(const u8 *restrict src, u8 *restrict dest, int
             }
         }
     }
+    return dest;
 }
 
-static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, int width, int height)
+static void *rgba8_to_gl_rgba8(const u8 *src, int width, int height)
 {
+    u8 *dest = malloc(width * height * 4);
     int x, y;
 
     for (y = 0; y < height / 4; y++)
@@ -1887,7 +1921,7 @@ static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, 
             {
                 for (tx = 0; tx < 4; tx++)
                 {
-                    int index = (height - 1 - (y*4 + ty)) * width + (x*4 + tx);
+                    int index = (y*4 + ty) * width + (x*4 + tx);
                     int srcIdx = ty*4 + tx;
                     dest[index*4 + 3] = src[0  + srcIdx*2 + 0];  // a
                     dest[index*4 + 0] = src[0  + srcIdx*2 + 1];  // r
@@ -1898,6 +1932,32 @@ static void decompress_rgba8_texture(const u8 *restrict src, u8 *restrict dest, 
             src += 64;
         }
     }
+    return dest;
+}
+
+static void *rgb565_to_gl_rgb565(const u8 *src, int width, int height)
+{
+    u8 *dest = malloc(width * height * 2);
+    int x, y;
+
+    for (y = 0; y < height / 4; y++)
+    {
+        for (x = 0; x < width / 4; x++)
+        {
+            int tx, ty;
+
+            for (ty = 0; ty < 4; ty++)
+            {
+                for (tx = 0; tx < 4; tx++)
+                {
+                    int index = (y*4 + ty) * width + (x*4 + tx);
+                    dest[index*2 + 0] = *src++;
+                    dest[index*2 + 1] = *src++;
+                }
+            }
+        }
+    }
+    return dest;
 }
 
 static GLenum gx_wrap_to_gl_wrap(GXTexWrapMode wrap)
@@ -1913,15 +1973,100 @@ static GLenum gx_wrap_to_gl_wrap(GXTexWrapMode wrap)
     return wrapModes[wrap];
 }
 
+static struct TextureEntry s_textureCache[300];
+static u32 s_textureLastUsed = 1;
+static u32 s_textureUid = 1;
+
+static void load_gl_texture(__GXTexObj *__obj)
+{
+    const struct
+    {
+        GLenum glformat;
+        GLenum gltype;
+        void *(*convert)(const u8 *, int, int);
+    } textureFormats[] =
+    {
+        [GX_TF_I4]     = {GL_LUMINANCE,       GL_UNSIGNED_BYTE,        i4_to_gl_i8},
+        [GX_TF_I8]     = {GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE,        i8_to_gl_i8a8},
+        [GX_TF_IA4]    = {GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE,        ia4_to_gl_i8a8},
+        [GX_TF_RGB565] = {GL_RGB,             GL_UNSIGNED_SHORT_5_6_5, rgb565_to_gl_rgb565},
+        [GX_TF_RGB5A3] = {GL_RGBA,            GL_UNSIGNED_BYTE,        rgb5a3_to_gl_rgba8},
+        [GX_TF_RGBA8]  = {GL_RGBA,            GL_UNSIGNED_BYTE,        rgba8_to_gl_rgba8},
+        [GX_TF_CMPR]   = {GL_RGBA,            GL_UNSIGNED_BYTE,        cmpr_to_gl_rgba8},
+    };
+    struct TextureEntry *entry = __obj->entry;
+    GLenum glformat = textureFormats[__obj->format].glformat;
+    GLenum gltype   = textureFormats[__obj->format].gltype;
+
+    assert(textureFormats[__obj->format].convert != NULL);
+    entry->decoded = textureFormats[__obj->format].convert(__obj->data, __obj->width, __obj->height);
+
+    glGenTextures(1, &entry->textureId);
+    glBindTexture(GL_TEXTURE_2D, entry->textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, glformat, __obj->width, __obj->height, 0, glformat, gltype, entry->decoded);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gx_wrap_to_gl_wrap(__obj->wrapS));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gx_wrap_to_gl_wrap(__obj->wrapT));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    s_renderStats.textureLoads++;
+}
+
+static void free_texture_entry(struct TextureEntry *entry)
+{
+    assert(glIsTexture(entry->textureId));
+    glDeleteTextures(1, &entry->textureId);
+    free(entry->decoded);
+    memset(entry, 0, sizeof(*entry));
+}
+
+static void ensure_texture_loaded(__GXTexObj *__obj)
+{
+    int i;
+    struct TextureEntry *entry;
+    u32 lastUsed = UINT_MAX;
+    int textureToEvict = 0;
+
+    if (__obj->entry != NULL && __obj->uid == __obj->entry->uid)
+        return;
+
+    entry = s_textureCache;
+    for (i = 0; i < ARRAY_COUNT(s_textureCache); i++, entry++)
+    {
+        // texture with the earliest use time may be evicted
+        if (lastUsed > entry->lastUsed)
+        {
+            lastUsed = entry->lastUsed;
+            textureToEvict = i;
+        }
+    }
+
+    entry = &s_textureCache[textureToEvict];
+    if (entry->lastUsed != 0)
+    {
+        // Evict existing texture
+        free_texture_entry(entry);
+    }
+
+    // assign unique ID
+    entry->uid = s_textureUid++;
+
+    __obj->entry = entry;
+    __obj->uid = entry->uid;
+
+    // prepare the texture
+    load_gl_texture(__obj);
+
+    // mark used
+    entry->lastUsed = s_textureLastUsed++;
+}
+
 void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
     GXTexFmt format, GXTexWrapMode wrap_s, GXTexWrapMode wrap_t, GXBool mipmap)
 {
     __GXTexObj *__obj = (__GXTexObj *)obj;
-    int type = -1;
-    int glFmt = -1;
-    void *img = image_ptr;
 
-    //printf("GXInitTexObj: fmt %i, %i x %i\n", format, width, height);
     memset(__obj, 0, sizeof(*__obj));
     __obj->width = width;
     __obj->height = height;
@@ -1929,85 +2074,7 @@ void GXInitTexObj(GXTexObj *obj, void *image_ptr, u16 width, u16 height,
     __obj->data = image_ptr;
     __obj->wrapS = wrap_s;
     __obj->wrapT = wrap_t;
-    switch (format)
-    {
-    case GX_TF_CMPR:
-        __obj->uncompressed = calloc(width * height * 4, 1);
-        decompress_cmpr_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_RGBA;
-        img = __obj->uncompressed;
-        break;
-    case GX_TF_I4:
-        __obj->uncompressed = calloc(width * height, 1);
-        decompress_i4_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_LUMINANCE;
-        img = __obj->uncompressed;
-        break;
-    case GX_TF_IA4:
-        __obj->uncompressed = calloc(width * height * 2, 1);
-        decompress_ia4_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_LUMINANCE_ALPHA;
-        img = __obj->uncompressed;
-        break;
-    case GX_TF_RGB5A3:
-        __obj->uncompressed = calloc(width * height * 4, 1);
-        decompress_rgb5a3_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_RGBA;
-        img = __obj->uncompressed;
-        break;
-    case GX_TF_I8:
-        __obj->uncompressed = malloc(width * height * 2);
-        decompress_i8_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_LUMINANCE_ALPHA;
-        img = __obj->uncompressed;
-        break;
-    case GX_TF_RGB565:
-        type = GL_UNSIGNED_SHORT_5_6_5;
-        glFmt = GL_RGB;
-        break;
-    case GX_TF_RGBA8:
-        __obj->uncompressed = malloc(width * height * 4);
-        decompress_rgba8_texture(image_ptr, __obj->uncompressed, width, height);
-        type = GL_UNSIGNED_BYTE;
-        glFmt = GL_RGBA;
-        img = __obj->uncompressed;
-        break;
-    default:
-        assert(0);
-    }
-
-    assert(type != -1);
-    assert(glFmt != -1);
-    glGenTextures(1, &__obj->textureId);
-    glBindTexture(GL_TEXTURE_2D, __obj->textureId);
-    glTexImage2D(GL_TEXTURE_2D, 0, glFmt, width, height, 0, glFmt, type, img);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gx_wrap_to_gl_wrap(wrap_s));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gx_wrap_to_gl_wrap(wrap_t));
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    /*
-    //printf("using texture %i\n", __obj->textureId);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, __obj->textureId);
-    glBegin(GL_QUADS);
-    width = 640;
-    height = 480;
-    glTexCoord2f(0.0f, 0.0f); glVertex2f(0.0f, 0.0f);
-    glTexCoord2f(1.0f, 0.0f); glVertex2f(width, 0.0f);
-    glTexCoord2f(1.0f, 1.0f); glVertex2f(width, height);
-    glTexCoord2f(0.0f, 1.0f); glVertex2f(0.0f, height);
-    glEnd();
-    glFlush();
-    VIFlush();
-    pause();
-    */
+    ensure_texture_loaded(__obj);
 }
 
 void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
@@ -2021,7 +2088,9 @@ void GXLoadTexObj(GXTexObj *obj, GXTexMapID id)
     glBindTexture(GL_TEXTURE_2D, __obj->textureId);
     glUniform1i(glGetUniformLocation(s_program, "u_texture0"), 0);
     */
-    s_currTextureId = __obj->textureId;
+    ensure_texture_loaded(__obj);
+    s_currTextureId = __obj->entry->textureId;
+    __obj->entry->lastUsed = s_textureLastUsed++;
 }
 
 /* Vert */
@@ -2141,7 +2210,7 @@ static GLenum gx_blend_to_gl_blend(GXBlendFactor in, BOOL isDest)
 
 void GXSetBlendMode(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor, GXLogicOp op)
 {
-    puts("GXSetBlendMode");
+    debug_puts("GXSetBlendMode");
     switch (type)
     {
     case GX_BM_NONE:
@@ -2206,7 +2275,7 @@ GXRenderModeObj GXNtsc480IntDf =
 
 void GXSetCopyClear(GXColor clear_clr, u32 clear_z)
 {
-    puts("GXSetCopyClear");
+    debug_puts("GXSetCopyClear");
     glClearColor(clear_clr.r / 255.0f,
                  clear_clr.g / 255.0f,
                  clear_clr.b / 255.0f,
@@ -2237,7 +2306,7 @@ static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum
 
 GXFifoObj *GXInit(void *base, u32 size)
 {
-    puts("GXInit is a stub");
+    debug_puts("GXInit");
 #ifdef _WIN32
     if (glewInit() != GLEW_OK)
     {
@@ -2267,24 +2336,41 @@ GXDrawDoneCallback GXSetDrawDoneCallback(GXDrawDoneCallback cb)
 
 void GXDrawDone(void)
 {
-    puts("GXDrawDone is a stub");
+    debug_puts("GXDrawDone is a stub");
     DrawDoneCB();
 }
 
 void GXSetDrawDone(void)
 {
-    puts("GXSetDrawDone is a stub");
+    debug_puts("GXSetDrawDone is a stub");
     DrawDoneCB();
+}
+
+void print_render_stats(void)
+{
+    printf(
+        "Render Statistics:\n"
+        "  draw calls: %i\n"
+        "  shader compiles:%i\n"
+        "  texture loads:%i\n",
+        s_renderStats.drawCalls,
+        s_renderStats.shaderCompiles,
+        s_renderStats.textureLoads);
+    memset(&s_renderStats, 0, sizeof(s_renderStats));
 }
 
 /* Stubs */
 
-void GXCopyDisp(void* dest, GXBool clear){puts("GXCopyDisp is a stub");}
+void GXCopyDisp(void* dest, GXBool clear)
+{
+    debug_puts("GXCopyDisp is a stub");
+}
+
 void GXCopyTex(void* dest, GXBool clear){puts("GXCopyTex is a stub");}
 void GXDrawSphere(u8 numMajor, u8 numMinor){puts("GXDrawSphere is a stub");}
 void GXFlush(void){puts("GXFlush is a stub");}
 GXBool GXGetTexObjMipMap(GXTexObj* tex_obj){puts("GXGetTexObjMipMap is a stub");}
-void GXInitTexObjLOD(GXTexObj* obj, GXTexFilter min_filt, GXTexFilter mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, GXBool bias_clamp, GXBool do_edge_lod, GXAnisotropy max_aniso){puts("GXInitTexObjLOD is a stub");}
+void GXInitTexObjLOD(GXTexObj* obj, GXTexFilter min_filt, GXTexFilter mag_filt, f32 min_lod, f32 max_lod, f32 lod_bias, GXBool bias_clamp, GXBool do_edge_lod, GXAnisotropy max_aniso){debug_puts("GXInitTexObjLOD is a stub");}
 void GXInitTexObjWrapMode(GXTexObj* obj, GXTexWrapMode s, GXTexWrapMode t){puts("GXInitTexObjWrapMode is a stub");}
 void GXInvalidateTexAll(void){puts("GXInvalidateTexAll is a stub");}
 GXRenderModeObj GXMpal480IntDf;
@@ -2300,12 +2386,12 @@ void GXSetDither(GXBool dither){puts("GXSetDither is a stub");}
 void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor color){puts("GXSetFog is a stub");}
 void GXSetIndTexMtx(GXIndTexMtxID mtx_sel, f32 offset[2][3], s8 scale_exp){puts("GXSetIndTexMtx is a stub");}
 void GXSetIndTexOrder(GXIndTexStageID ind_stage, GXTexCoordID tex_coord, GXTexMapID tex_map){puts("GXSetIndTexOrder is a stub");}
-void GXSetNumIndStages(u8 nIndStages){puts("GXSetNumIndStages is a stub");}
-void GXSetNumTexGens(u8 nTexGens){puts("GXSetNumTexGens is a stub");}
+void GXSetNumIndStages(u8 nIndStages){debug_puts("GXSetNumIndStages is a stub");}
+void GXSetNumTexGens(u8 nTexGens){debug_puts("GXSetNumTexGens is a stub");}
 void GXSetPixelFmt(GXPixelFmt pix_fmt, GXZFmt16 z_fmt){puts("GXSetPixelFmt is a stub");}
-void GXSetTevDirect(GXTevStageID tev_stage){puts("GXSetTevDirect is a stub");}
+void GXSetTevDirect(GXTevStageID tev_stage){debug_puts("GXSetTevDirect is a stub");}
 void GXSetTevIndirect(GXTevStageID tev_stage, GXIndTexStageID ind_stage, GXIndTexFormat format, GXIndTexBiasSel bias_sel, GXIndTexMtxID matrix_sel, GXIndTexWrap wrap_s, GXIndTexWrap wrap_t, GXBool add_prev, GXBool ind_lod, GXIndTexAlphaSel alpha_sel){puts("GXSetTevIndirect is a stub");}
-void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func, GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx){puts("GXSetTexCoordGen2 is a stub");}
+void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func, GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx){debug_puts("GXSetTexCoordGen2 is a stub");}
 void GXSetTexCopyDst(u16 wd, u16 ht, GXTexFmt fmt, GXBool mipmap){puts("GXSetTexCopyDst is a stub");}
 void GXSetTexCopySrc(u16 left, u16 top, u16 wd, u16 ht){puts("GXSetTexCopySrc is a stub");}
 void GXSetZCompLoc(GXBool before_tex){puts("GXSetZCompLoc is a stub");}

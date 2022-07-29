@@ -45,6 +45,7 @@ u32 VIGetTvFormat(void)
 void VIFlush(void)
 {
     //puts("VIFlush");
+    print_render_stats();
     glfwSwapBuffers(g_window);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
