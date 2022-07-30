@@ -27,6 +27,7 @@ template <typename T> [[nodiscard]] constexpr T bswap16(T val) noexcept
 #endif
     return v.t;
 }
+
 template <typename T> [[nodiscard]] constexpr T bswap32(T val) noexcept
 {
     static_assert(sizeof(T) == sizeof(u32));
@@ -43,6 +44,23 @@ template <typename T> [[nodiscard]] constexpr T bswap32(T val) noexcept
           ((v.u & 0xFF00FF00) >> 8);
 #endif
     return v.t;
+}
+
+static void bswap16_unaligned(u8 *ptr)
+{
+    u8 temp = ptr[0];
+    ptr[0] = ptr[1];
+    ptr[1] = temp;
+}
+
+static void bswap32_unaligned(u8 *ptr)
+{
+    u8 temp = ptr[0];
+    ptr[0] = ptr[3];
+    ptr[3] = temp;
+    temp = ptr[1];
+    ptr[1] = ptr[2];
+    ptr[2] = temp;
 }
 
 static std::unordered_set<void *> sVisitedPtrs;
@@ -456,30 +474,30 @@ static void byteswap_displaylist(u8 *data, u32 size, u32 vtxAttrs)
                         {
                         case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_F32):
                         case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_F32):
-                            bswap(data, *(f32 *)(data + pos + 0));
-                            bswap(data, *(f32 *)(data + pos + 4));
-                            bswap(data, *(f32 *)(data + pos + 8));
+                            bswap32_unaligned(data + pos + 0);
+                            bswap32_unaligned(data + pos + 4);
+                            bswap32_unaligned(data + pos + 8);
                             pos += 12;
                             break;
                         case COMBINE(GX_VA_POS, GX_POS_XYZ, GX_S16):
                         case COMBINE(GX_VA_NRM, GX_NRM_XYZ, GX_S16):
-                            bswap(data, *(u16 *)(data + pos + 0));
-                            bswap(data, *(u16 *)(data + pos + 2));
-                            bswap(data, *(u16 *)(data + pos + 4));
+                            bswap16_unaligned(data + pos + 0);
+                            bswap16_unaligned(data + pos + 2);
+                            bswap16_unaligned(data + pos + 4);
                             pos += 6;
                             break;
                         case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_F32):
                         case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_F32):
                         case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_F32):
-                            bswap(data, *(u32 *)(data + pos + 0));
-                            bswap(data, *(u32 *)(data + pos + 4));
+                            bswap32_unaligned(data + pos + 0);
+                            bswap32_unaligned(data + pos + 4);
                             pos += 8;
                             break;
                         case COMBINE(GX_VA_TEX0, GX_TEX_ST, GX_S16):
                         case COMBINE(GX_VA_TEX1, GX_TEX_ST, GX_S16):
                         case COMBINE(GX_VA_TEX2, GX_TEX_ST, GX_S16):
-                            bswap(data, *(u16 *)(data + pos + 0));
-                            bswap(data, *(u16 *)(data + pos + 2));
+                            bswap16_unaligned(data + pos + 0);
+                            bswap16_unaligned(data + pos + 2);
                             pos += 4;
                             break;
                         case COMBINE(GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8):
