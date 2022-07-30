@@ -278,7 +278,7 @@ void func_80094914(){puts("func_80094914 is a stub");}
 void func_8009492C(){puts("func_8009492C is a stub");}
 void func_80094A34(){puts("func_80094A34 is a stub");}
 void func_8009BEF8(){puts("func_8009BEF8 is a stub");}
-void func_8009D5D8(){puts("func_8009D5D8 is a stub");}
+int func_8009D5D8(){puts("func_8009D5D8 is a stub");return 0;}
 void func_8009D7CC(){puts("func_8009D7CC is a stub");}
 void func_8009D7E8(){puts("func_8009D7E8 is a stub");}
 void func_8009D7FC(){puts("func_8009D7FC is a stub");}
