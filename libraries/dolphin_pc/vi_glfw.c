@@ -1,3 +1,5 @@
+#ifndef _WIN32
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,9 +33,6 @@ void VIInit(void)
     g_window = glfwCreateWindow(640, 480, "Super Monkey Ball", NULL, NULL);
     glfwMakeContextCurrent(g_window);
     glfwSwapInterval(1);
-
-    printf("GL version: %s\n", glGetString(GL_VERSION));
-    printf("GL extensions: %s\n", glGetString(GL_EXTENSIONS));
 }
 
 u32 VIGetTvFormat(void)
@@ -54,3 +53,5 @@ void VIFlush(void)
         exit(0);
     }
 }
+
+#endif  // _WIN32

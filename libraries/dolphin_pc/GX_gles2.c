@@ -2351,7 +2351,7 @@ static void GL_APIENTRY debug_proc(GLenum source, GLenum type, GLuint id, GLenum
 {
     fprintf(stderr, "GL error: %i, %s\n", severity, message);
     fflush(stdout);
-    if (severity == GL_DEBUG_SEVERITY_HIGH_KHR)
+    if (severity == GL_DEBUG_SEVERITY_HIGH)
     {
         *(int *)0 = 0;
         exit(1);
@@ -2371,12 +2371,17 @@ GXFifoObj *GXInit(void *base, u32 size)
 
     debug_puts("GXInit");
 #ifdef _WIN32
-    if (glewInit() != GLEW_OK)
+    GLenum result = glewInit();
+    if (result != GLEW_OK)
     {
-        fputs("failed to initialize glew\n", stderr);
+        fprintf(stderr, "failed to initialize glew: %s\n", glewGetErrorString(result));
         exit(1);
     }
 #endif
+    printf("GL version: %s\n", glGetString(GL_VERSION));
+    printf("GL vendor: %s\n", glGetString(GL_VENDOR));
+    printf("GL renderer: %s\n", glGetString(GL_RENDERER));
+    printf("GL extensions: %s\n", glGetString(GL_EXTENSIONS));
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(debug_proc, NULL);
     glDisable(GL_CULL_FACE);

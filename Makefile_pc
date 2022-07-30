@@ -2,7 +2,7 @@ ifeq ($(TARGET_WINDOWS),1)
   CC := i686-w64-mingw32-gcc -m32
   CFLAGS := -O0 -g -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
   CPPFLAGS := -idirafter include -idirafter win32/include -DNONMATCHING -DC_ONLY -DTARGET_PC
-  LDFLAGS := -mwindows -Lwin32/lib -lglfw3 -lglew32s -lopengl32 -ldinput8 -ldxguid --disable-shared -static -static-libstdc++ -lstdc++
+  LDFLAGS := -mwindows win32/lib/glew32s.lib -lopengl32 -ldinput8 -ldxguid --disable-shared -static -static-libstdc++ -lstdc++
   EXE := .exe
 else
   CC := gcc -m32
@@ -122,7 +122,8 @@ SOURCES := \
 	libraries/dolphin_pc/OS.c \
 	libraries/dolphin_pc/GX_gles2.c \
 	libraries/dolphin_pc/dvd.c \
-	libraries/dolphin_pc/vi.c \
+	libraries/dolphin_pc/vi_glfw.c \
+	libraries/dolphin_pc/vi_wgl.c \
 	libraries/dolphin_pc/pad_evdev.c \
 	libraries/dolphin_pc/pad_dinput.c \
 	libraries/dolphin_pc/ar.c \
