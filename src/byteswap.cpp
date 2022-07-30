@@ -1,14 +1,14 @@
-#include <dolphin.h>
 #include <cassert>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <dolphin.h>
 #include <unordered_set>
 
 extern "C"
 {
-#include "global.h"
 #include "byteswap.h"
+#include "global.h"
 }
 
 template <typename T> [[nodiscard]] constexpr T bswap16(T val) noexcept
@@ -712,8 +712,9 @@ template <typename B> void bswap(B &base, NlObj_UnkChild_Child &obj)
 template <typename B> void bswap(B &base, NlObj_UnkChild &obj)
 {
     bswap(base, obj.childStructs);
-    auto* ptr = offset_ptr(base, obj.childStructs);
-    while (ptr->unk0 != 0) {
+    auto *ptr = offset_ptr(base, obj.childStructs);
+    while (ptr->unk0 != 0)
+    {
         bswap(base, *ptr);
         ++ptr;
     }
@@ -752,11 +753,66 @@ template <typename B> void bswap(B &base, struct TPLTextureHeader &tpl)
     bswap(base, tpl.width);
     bswap(base, tpl.height);
 }
-
 template <typename B> void bswap(B &base, struct TPL &tpl)
 {
     bswap(base, tpl.numTextures);
-    bswap_flat(base, reinterpret_cast<TPLTextureHeader*>(&tpl.texHeaders), tpl.numTextures);
+    bswap_flat(base, reinterpret_cast<TPLTextureHeader *>(&tpl.texHeaders), tpl.numTextures);
+}
+
+template <typename B> void bswap(B &base, struct MotDatJoint &joint)
+{
+    bswap(base, joint.jointIdx);
+    bswap(base, joint.chanFlags);
+}
+template <typename B> void bswap(B &base, struct MotDat &dat)
+{
+    bswap(base, dat.unk0);
+    int numJoints = 0;
+    for (const u32 *flags = u_jointFlagLists[0]; *flags != 0; ++numJoints, ++flags)
+    {
+    }
+    bswap(base, dat.jointInfo, numJoints);
+    auto *jointInfo = offset_ptr(base, dat.jointInfo);
+    int numChannels = 0;
+    for (int jointIdx = 0; jointIdx < numJoints; jointIdx++, jointInfo++)
+    {
+        if (jointInfo->jointIdx != jointIdx)
+        {
+            continue;
+        }
+        u32 chanFlags = jointInfo->chanFlags;
+        for (int i = 0; i < 9; ++i)
+        {
+            if (chanFlags & (1 << i))
+            {
+                ++numChannels;
+            }
+        }
+    }
+    bswap(base, dat.keyframeCounts);
+    auto* keyframeCounts = offset_ptr(base, dat.keyframeCounts);
+    int numKeyframes = 0;
+    for (int i = 0; i < numChannels; ++i)
+    {
+        numKeyframes += *keyframeCounts;
+        ++keyframeCounts;
+    }
+    bswap(base, dat.times, numKeyframes);
+    bswap(base, dat.valueCounts);
+    auto* valueCounts = offset_ptr(base, dat.valueCounts);
+    int numValues = 0;
+    for (int i = 0; i < numKeyframes; ++i)
+    {
+        numValues += *valueCounts;
+        ++valueCounts;
+    }
+    bswap(base, dat.values, numValues);
+}
+
+template <typename B> void bswap(B &base, struct MotInfo &info)
+{
+    bswap_flat(base, info.unk30, 16);
+    bswap_flat(base, info.unk70, 16);
 }
 
 void byteswap_stage(Stage *stage)
@@ -779,6 +835,15 @@ void byteswap_motlabel(u8 *data)
     namePtrs = (u32 *)(data + 4);
     while (count-- > 0)
         bswap(data, *namePtrs++);
+}
+void byteswap_motdat(struct MotDat *dat)
+{
+    bswap(*dat, *dat);
+    sVisitedPtrs.clear();
+}
+void byteswap_motinfo(struct MotInfo* info) {
+    bswap(*info, *info);
+    sVisitedPtrs.clear();
 }
 void byteswap_nlobj(NlObj *obj)
 {

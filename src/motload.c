@@ -209,6 +209,9 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         OSPanic("motload.c", 98, "cannot DVDClose");
     lzs_decompress(compressed, motDat);
     OSFree(compressed);
+#ifdef TARGET_PC
+    byteswap_motdat(motDat);
+#endif
     adjust_motdat_pointers(motDat);
     totalSize = totalSize + totalSize;
 
@@ -244,6 +247,9 @@ int init_ape_model_info(char *datname, char *labelname, char *sklname, char *inf
         OSPanic("motload.c", 159, "cannot DVDClose");
     lzs_decompress(compressed, motInfo);
     OSFree(compressed);
+#ifdef TARGET_PC
+    byteswap_motinfo(motInfo);
+#endif
     adjust_motinfo_pointers(motInfo);
     totalSize += size;
 
