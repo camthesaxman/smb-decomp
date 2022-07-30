@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#ifdef _WIN32
+#include <windows.h>
+#endif
 #include <dolphin.h>
 
 #define ARRAY_COUNT(arr) ((int)(sizeof(arr)/sizeof(arr[0])))
@@ -13,7 +15,6 @@
 #ifdef _WIN32
 #define GLEW_STATIC
 #include <GL/glew.h>
-#include <windows.h>
 #ifndef GL_APIENTRY
 #define GL_APIENTRY APIENTRY
 #endif
@@ -22,7 +23,8 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #define glDebugMessageCallback glDebugMessageCallbackKHR
-#define GL_DEBUG_OUTPUT GL_DEBUG_OUTPUT_KHR
+#define GL_DEBUG_OUTPUT        GL_DEBUG_OUTPUT_KHR
+#define GL_DEBUG_SEVERITY_HIGH GL_DEBUG_SEVERITY_HIGH_KHR
 #endif
 
 #include "__dolphin_pc.h"
