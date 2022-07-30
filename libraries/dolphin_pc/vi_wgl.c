@@ -7,7 +7,11 @@
 #include <GL/gl.h>
 #include <dolphin.h>
 
-static HDC s_dc;
+#include "__dolphin_pc.h"
+
+static HDC s_dc = NULL;
+static HWND s_window = NULL;
+static char s_title[100] = "";
 
 static LRESULT CALLBACK window_proc(HWND window, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -21,9 +25,8 @@ void VIInit(void)
 {
     const char className[] = "GLwin";
     const HINSTANCE instance = GetModuleHandle(NULL);
-    const WNDCLASSEXA wc =
+    const WNDCLASSA wc =
     {
-        .cbSize        = sizeof(wc),
         .style         = CS_OWNDC,
         .lpfnWndProc   = window_proc,
         .hInstance     = instance,
@@ -31,12 +34,11 @@ void VIInit(void)
     };
     const DWORD windowStyle = WS_CAPTION | WS_OVERLAPPED | WS_VISIBLE;
     RECT rect = {0, 0, 640, 480};
-    HWND window;
     const PIXELFORMATDESCRIPTOR pfd =
     {
-        .nSize = sizeof(pfd),
-        .nVersion = 1,
-        .dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+        .nSize      = sizeof(pfd),
+        .nVersion   = 1,
+        .dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
         .iPixelType = PFD_TYPE_RGBA,
         .cColorBits = 32,
         .cAlphaBits = 8,
@@ -44,18 +46,19 @@ void VIInit(void)
     };
     int pixFmt;
     HGLRC context;
+    BOOL (WINAPI *wglSwapInterval)(int interval);
 
     // Create Window
 
-    if (RegisterClassExA(&wc) == 0)
+    if (RegisterClassA(&wc) == 0)
     {
         fprintf(stderr, "failed to register window class: error %lu\n", GetLastError());
         return;
     }
     AdjustWindowRect(&rect, windowStyle, FALSE);
-    window = CreateWindowA(
+    s_window = CreateWindowA(
         className,
-        "Super Monkey Ball",
+        s_title,
         windowStyle,
         CW_USEDEFAULT, CW_USEDEFAULT,
         rect.right - rect.left, rect.bottom - rect.top,
@@ -63,7 +66,7 @@ void VIInit(void)
         NULL,
         instance,
         NULL);
-    if (window == NULL)
+    if (s_window == NULL)
     {
         fprintf(stderr, "failed to create window: error %lu\n", GetLastError());
         return;
@@ -71,7 +74,7 @@ void VIInit(void)
 
     // Create GL context
 
-    s_dc = GetDC(window);
+    s_dc = GetDC(s_window);
     pixFmt = ChoosePixelFormat(s_dc, &pfd);
     if (pixFmt == 0)
     {
@@ -90,6 +93,11 @@ void VIInit(void)
         return;
     }
     wglMakeCurrent(s_dc, context);
+
+    // Try to use vsync if possible
+    wglSwapInterval = wglGetProcAddress("wglSwapIntervalEXT");
+    if (wglSwapInterval != NULL)
+        wglSwapInterval(1);
 }
 
 u32 VIGetTvFormat(void)
@@ -108,6 +116,19 @@ void VIFlush(void)
         TranslateMessage(&msg);
         DispatchMessageA(&msg);
     }
+}
+
+void VISetWindowTitle(const char *title)
+{
+    strncpy(s_title, title, sizeof(s_title));
+    s_title[sizeof(s_title) - 1] = 0;
+    if (s_window != NULL)
+        SetWindowTextA(s_window, title);
+}
+
+void VIShowErrorMessage(const char *message)
+{
+    MessageBoxA(s_window, message, s_title, MB_OK | MB_ICONERROR);
 }
 
 #endif  // _WIN32

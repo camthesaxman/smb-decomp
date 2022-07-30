@@ -2,12 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 #include <dolphin.h>
-
 #include <GLFW/glfw3.h>
 
-static GLFWwindow *g_window;
+#include "__dolphin_pc.h"
+
+static GLFWwindow *s_window;
+static char s_title[100] = "";
 
 static void error_callback(int error, const char *description)
 {
@@ -30,8 +32,8 @@ void VIInit(void)
 #endif
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    g_window = glfwCreateWindow(640, 480, "Super Monkey Ball", NULL, NULL);
-    glfwMakeContextCurrent(g_window);
+    s_window = glfwCreateWindow(640, 480, s_title, NULL, NULL);
+    glfwMakeContextCurrent(s_window);
     glfwSwapInterval(1);
 }
 
@@ -45,13 +47,26 @@ void VIFlush(void)
 {
     //puts("VIFlush");
     print_render_stats();
-    glfwSwapBuffers(g_window);
+    glfwSwapBuffers(s_window);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glfwPollEvents();
-    if (glfwWindowShouldClose(g_window))
+    if (glfwWindowShouldClose(s_window))
     {
         exit(0);
     }
+}
+
+void VISetWindowTitle(const char *title)
+{
+    strncpy(s_title, title, sizeof(s_title));
+    s_title[sizeof(s_title) - 1] = 0;
+    if (s_window != NULL)
+        glfwSetWindowTitle(s_window, title);
+}
+
+void VIShowErrorMessage(const char *message)
+{
+    fprintf(stderr, "%s\n", message);
 }
 
 #endif  // _WIN32

@@ -1,6 +1,8 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <dolphin.h>
 
 static OSErrorHandler OSErrorTable[16];
@@ -17,6 +19,21 @@ void OSReport(char *msg, ...)
 void OSPanic(char *file, int line, char *msg, ...)
 {
     va_list args;
+#ifdef TARGET_PC
+    char buffer[500];
+    int len;
+
+    va_start(args, msg);
+    vsnprintf(buffer, sizeof(buffer), msg, args);
+    len = strlen(buffer);
+    snprintf(buffer + len, sizeof(buffer) - len, " in \"%s\" on line %d.\n", file, line);
+#ifdef AURORA
+    fputs(buffer, stderr);
+#else
+    VIShowErrorMessage(buffer);
+#endif
+    exit(1);
+#else
     u32 i;
     u32 *sp;
 
@@ -25,9 +42,9 @@ void OSPanic(char *file, int line, char *msg, ...)
     va_start(args, msg);
     vprintf(msg, args);
     va_end(args);
+
     OSReport(" in \"%s\" on line %d.\n", file, line);
 
-#ifndef TARGET_PC
     // Print stack trace
     OSReport("\nAddress:      Back Chain    LR Save\n");
     i = 0;
@@ -37,8 +54,8 @@ void OSPanic(char *file, int line, char *msg, ...)
         OSReport("0x%08x:   0x%08x    0x%08x\n", (u32)sp, sp[0], sp[1]);
         sp = (u32 *)sp[0];
     }
-#endif
     PPCHalt();
+#endif
 }
 
 OSErrorHandler OSSetErrorHandler(OSError error, OSErrorHandler handler)

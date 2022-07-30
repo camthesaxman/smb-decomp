@@ -23,6 +23,9 @@ void initialize(void)
     init_cache();
     DVDInit();
     VIInit();
+#if defined(TARGET_PC) && !defined(AURORA)
+    VISetWindowTitle("Super Monkey Ball");
+#endif
     CARDInit();
     input_init();
     mathutil_init();

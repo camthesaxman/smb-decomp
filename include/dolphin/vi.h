@@ -12,4 +12,10 @@ void VISetNextFrameBuffer(void *fb);
 void VIWaitForRetrace(void);
 void VISetBlack(BOOL black);
 
+// These are specific to the PC version
+#ifdef TARGET_PC
+void VISetWindowTitle(const char *title);
+void VIShowErrorMessage(const char *message);
+#endif
+
 #endif
