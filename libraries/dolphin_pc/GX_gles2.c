@@ -509,6 +509,10 @@ static void prepare_shaders(void)
         "uniform   vec4 u_chanMatColors[2];\n"  // material colors, per channel
         "uniform   vec3 u_lightPos[8];\n"
         "uniform   vec3 u_lightDir[8];\n"
+        "uniform   float u_positionScale;\n"
+        "uniform   float u_normalScale;\n"
+        "uniform   float u_tex0Scale;\n"
+        "uniform   float u_clr0Scale;\n"
         "attribute vec4 a_position;\n"
         "attribute vec3 a_normal;\n"
         "attribute vec2 a_texCoord;\n"
@@ -532,15 +536,16 @@ static void prepare_shaders(void)
 
         "void main()\n"
         "{\n"
-        "    v_normal   = a_normal;\n"
-        "    v_texCoord = vec2(u_textureMatrix * vec4(a_texCoord, 0.0, 1.0));\n"
+        "    v_normal   = u_normalScale * a_normal;\n"
+        "    vec4 color = u_clr0Scale * a_color;\n"
+        "    v_texCoord = vec2(u_textureMatrix * vec4(u_tex0Scale * a_texCoord, 0.0, 1.0));\n"
         // Transform vertex into eye space
         "    vec3 mvVertex = vec3(u_modelViewMatrix * a_position);\n"
         // Transform the into eye space
         "    vec3 mvNormal = vec3(u_modelViewMatrix * vec4(a_normal, 0.0));\n"
         ;
     static const char vtxShaderFooter[] =
-        "    gl_Position = u_projectionMatrix * u_modelViewMatrix * a_position;\n"
+        "    gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(a_position.xyz * u_positionScale, a_position.w);\n"
         "}\n";
     char vtxSrc[2][500];
     const GLchar *vtxSrcPtrs[2 + 2 + 8];
@@ -620,7 +625,7 @@ static void prepare_shaders(void)
         if (channel->matSrc == GX_SRC_REG)
             sprintf(vtxSrc[i], "    v_channel%i = u_chanMatColors[%i];\n", i, i);
         else
-            sprintf(vtxSrc[i], "    v_channel%i = a_color;\n", i);
+            sprintf(vtxSrc[i], "    v_channel%i = color;\n", i);
         if (channel->lightEnabled)
         {
             int j;
@@ -1049,6 +1054,7 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
     u32 vtxSize = 0;
     int attr;
     int i;
+    GLint location;
 
     // Calculate attribute offsets and vertex size
     for (attr = 0; attr < GX_VA_MAX_ATTR; attr++)
@@ -1115,9 +1121,11 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderPositionIndex,
             attrArrays[GX_VA_POS].size,
             attrArrays[GX_VA_POS].type,
-            (attrArrays[GX_VA_POS].type != GL_FLOAT),
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_POS].ptr);
+        if ((location = glGetUniformLocation(s_program, "u_positionScale")) >= 0)
+            glUniform1f(location, 1.0f / (1 << s_vtxFmts[vtxfmt][GX_VA_POS].frac));
     }
     if (attrArrays[GX_VA_NRM].ptr != NULL
      && s_shaderNormalIndex >= 0)
@@ -1127,9 +1135,11 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderNormalIndex,
             attrArrays[GX_VA_NRM].size,
             attrArrays[GX_VA_NRM].type,
-            (attrArrays[GX_VA_NRM].type != GL_FLOAT),
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_NRM].ptr);
+        if ((location = glGetUniformLocation(s_program, "u_normalScale")) >= 0)
+            glUniform1f(location, 1.0f / (1 << s_vtxFmts[vtxfmt][GX_VA_NRM].frac));
     }
     /*
     for (i = 0; i <= 2; i++)
@@ -1154,9 +1164,11 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderTexCoordIndex,
             attrArrays[GX_VA_TEX0].size,
             attrArrays[GX_VA_TEX0].type,
-            (attrArrays[GX_VA_TEX0].type != GL_FLOAT),
+            GL_FALSE,
             vtxSize,
             attrArrays[GX_VA_TEX0].ptr);
+        if ((location = glGetUniformLocation(s_program, "u_tex0Scale")) >= 0)
+            glUniform1f(location, 1.0f / (1 << s_vtxFmts[vtxfmt][GX_VA_TEX0].frac));
     }
     glActiveTexture(GL_TEXTURE0);
     if (attrArrays[GX_VA_CLR0].ptr != NULL
@@ -1167,9 +1179,11 @@ static u32 prepare_vertex_arrays(GXPrimitive prim, GXVtxFmt vtxfmt, const u8 *pt
             s_shaderColorIndex,
             attrArrays[GX_VA_CLR0].size,
             attrArrays[GX_VA_CLR0].type,
-            (attrArrays[GX_VA_CLR0].type != GL_FLOAT),
+            GL_TRUE,
             vtxSize,
             attrArrays[GX_VA_CLR0].ptr);
+        if ((location = glGetUniformLocation(s_program, "u_clr0Scale")) >= 0)
+            glUniform1f(location, 1.0f / (1 << s_vtxFmts[vtxfmt][GX_VA_CLR0].frac));
     }
 
     return vtxSize;
