@@ -1,8 +1,13 @@
+GLEW_ZIP     := glew-2.2.0-win32.zip
+GLEW_URL     := https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip
+GLEW_LIB     := glew-2.2.0/lib/Release/Win32/glew32s.lib
+GLEW_INC_DIR := glew-2.2.0/include
+
 ifeq ($(TARGET_WINDOWS),1)
   CC := i686-w64-mingw32-gcc -m32
   CFLAGS := -O0 -g -Wall -Wextra -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter
-  CPPFLAGS := -idirafter include -idirafter win32/include -DNONMATCHING -DC_ONLY -DTARGET_PC
-  LDFLAGS := -mwindows win32/lib/glew32s.lib -lopengl32 -ldinput8 -ldxguid --disable-shared -static -static-libstdc++ -lstdc++
+  CPPFLAGS := -idirafter include -idirafter $(GLEW_INC_DIR) -DNONMATCHING -DC_ONLY -DTARGET_PC
+  LDFLAGS := -mwindows $(GLEW_LIB) -lopengl32 -ldinput8 -ldxguid --disable-shared -static -static-libstdc++ -lstdc++
   EXE := .exe
 else
   CC := gcc -m32
@@ -156,6 +161,17 @@ $(TARGET): $(ALL_O_FILES)
 
 %.cpp.o: %.cpp
 	$(CC) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+
+ifeq ($(TARGET_WINDOWS),1)
+  libraries/dolphin_pc/GX_gles2.c.o: $(GLEW_LIB)
+  $(TARGET): $(GLEW_LIB)
+endif
+
+$(GLEW_LIB): $(GLEW_ZIP)
+	unzip $< && touch $@
+
+$(GLEW_ZIP):
+	wget $(GLEW_URL) -O $@
 
 clean:
 	$(RM) $(TARGET)

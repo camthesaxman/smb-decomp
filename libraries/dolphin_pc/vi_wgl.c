@@ -32,7 +32,7 @@ void VIInit(void)
         .hInstance     = instance,
         .lpszClassName = className,
     };
-    const DWORD windowStyle = WS_CAPTION | WS_OVERLAPPED | WS_VISIBLE;
+    const DWORD windowStyle = WS_CAPTION | WS_OVERLAPPED | WS_VISIBLE | WS_SYSMENU;
     RECT rect = {0, 0, 640, 480};
     const PIXELFORMATDESCRIPTOR pfd =
     {

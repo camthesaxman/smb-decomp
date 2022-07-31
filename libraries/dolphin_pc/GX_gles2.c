@@ -498,8 +498,10 @@ static void dump_shaders(const struct ShaderInfo *shader)
 static void prepare_shaders(void)
 {
     static const char vtxShaderHeader[] =
+        "#ifdef GL_ES\n"
         "#version 100\n"
         "precision mediump float;\n"
+        "#endif\n"
         "uniform   mat4 u_modelViewMatrix;\n"
         "uniform   mat4 u_projectionMatrix;\n"
         "uniform   mat4 u_textureMatrix;\n"
@@ -544,8 +546,10 @@ static void prepare_shaders(void)
     const GLchar *vtxSrcPtrs[2 + 2 + 8];
 
     static const char fragShaderHeader[] =
+        "#ifdef GL_ES\n"
         "#version 100\n"
         "precision mediump float;\n"
+        "#endif\n"
         "uniform sampler2D u_texture0;\n"
         "uniform vec4 u_tevRegPrev;\n"
         "uniform vec4 u_tevReg0;\n"
@@ -670,31 +674,45 @@ static void prepare_shaders(void)
     }
     fragSrcPtrs[1 + i] = fragShaderFooter;
 
+    GLint status;
+    GLchar log[500];
+
     // Compile vertex shader
     puts("Compiling vtx shader:");
     printf("%i chans\n", shader->lightConfig.numChans);
     shader->vtxShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, vtxSrcPtrs, NULL);
     glCompileShader(shader->vtxShader);
+    glGetShaderiv(shader->vtxShader, GL_COMPILE_STATUS, &status);
+    if (!status)
+    {
+        glGetShaderInfoLog(shader->vtxShader, sizeof(log), NULL, log);
+        fprintf(stderr, "failed to compile vertex shader: %s\n", log);
+        exit(1);
+    }
 
     // Compile fragment shader
-
     puts("Compiling frag shader:");
     printf("%i stages\n", shader->tevConfig.numTevStages);
     shader->fragShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, NULL);
     glCompileShader(shader->fragShader);
+    glGetShaderiv(shader->fragShader, GL_COMPILE_STATUS, &status);
+    if (!status)
+    {
+        glGetShaderInfoLog(shader->fragShader, sizeof(log), NULL, log);
+        fprintf(stderr, "failed to compile fragment shader: %s\n", log);
+        exit(1);
+    }
 
     shader->program = glCreateProgram();
     glAttachShader(shader->program, shader->fragShader);
     glAttachShader(shader->program, shader->vtxShader);
 
     glLinkProgram(shader->program);
-    GLint status;
     glGetProgramiv(shader->program, GL_LINK_STATUS, &status);
     if (!status)
     {
-        GLchar log[500];
         glGetProgramInfoLog(shader->program, sizeof(log), NULL, log);
         fprintf(stderr, "failed to link shader program: %s\n", log);
         exit(1);
@@ -966,7 +984,7 @@ void GXLoadPosMtxImm(f32 mtx[3][4], u32 id)
 {
     Mtx44 *m = &s_positionMatrices[id / 3];
 
-    memcpy(m, mtx, sizeof(Mtx44));
+    memcpy(m, mtx, sizeof(Mtx));
     (*m)[3][0] = (*m)[3][1] = (*m)[3][2] = 0.0f;
     (*m)[3][3] = 1.0f;
 }
@@ -975,7 +993,7 @@ void GXLoadNrmMtxImm(f32 mtx[3][4], u32 id)
 {
     Mtx44 *m = &s_normalMatrices[id / 3];
 
-    memcpy(m, mtx, sizeof(Mtx44));
+    memcpy(m, mtx, sizeof(Mtx));
     (*m)[3][0] = (*m)[3][1] = (*m)[3][2] = 0.0f;
     (*m)[3][3] = 1.0f;
 }
@@ -2335,7 +2353,8 @@ void GXSetCopyClear(GXColor clear_clr, u32 clear_z)
                  clear_clr.b / 255.0f,
                  clear_clr.a / 255.0f);
     assert(clear_z == GX_MAX_Z24);  // TODO: handle other values
-    glClearDepthf(1.0f);
+    if (glClearDepthf != NULL)
+        glClearDepthf(1.0f);
 }
 
 void GXAdjustForOverscan(GXRenderModeObj *rmin, GXRenderModeObj *rmout,
@@ -2382,8 +2401,11 @@ GXFifoObj *GXInit(void *base, u32 size)
     printf("GL vendor: %s\n", glGetString(GL_VENDOR));
     printf("GL renderer: %s\n", glGetString(GL_RENDERER));
     printf("GL extensions: %s\n", glGetString(GL_EXTENSIONS));
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(debug_proc, NULL);
+    if (glDebugMessageCallback != NULL)
+    {
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(debug_proc, NULL);
+    }
     glDisable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glFrontFace(GL_CW);

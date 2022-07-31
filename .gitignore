@@ -40,3 +40,7 @@ GMBE8P/
 # CMake
 build/
 cmake-build-*/
+
+# Libraries
+glew-2.2.0/
+glew-2.2.0-win32.zip
