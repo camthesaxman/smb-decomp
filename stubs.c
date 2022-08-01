@@ -90,36 +90,6 @@ void EXILock(){puts("EXILock is a stub");}
 void EXISelect(){puts("EXISelect is a stub");}
 void EXISync(){puts("EXISync is a stub");}
 void EXIUnlock(){puts("EXIUnlock is a stub");}
-//void GXCopyDisp(){puts("GXCopyDisp is a stub");}
-//void GXCopyTex(){puts("GXCopyTex is a stub");}
-//void GXDrawSphere(){puts("GXDrawSphere is a stub");}
-//void GXFlush(){puts("GXFlush is a stub");}
-//void GXGetTexObjMipMap(){puts("GXGetTexObjMipMap is a stub");}
-//void GXInitTexObjLOD(){puts("GXInitTexObjLOD is a stub");}
-//void GXInitTexObjWrapMode(){puts("GXInitTexObjWrapMode is a stub");}
-//void GXInvalidateTexAll(){puts("GXInvalidateTexAll is a stub");}
-//void GXMpal480IntDf(){puts("GXMpal480IntDf is a stub");}
-//void GXPal528IntDf(){puts("GXPal528IntDf is a stub");}
-//void GXSetAlphaUpdate(){puts("GXSetAlphaUpdate is a stub");}
-//void GXSetColorUpdate(){puts("GXSetColorUpdate is a stub");}
-//void GXSetCopyFilter(){puts("GXSetCopyFilter is a stub");}
-//void GXSetDispCopyDst(){puts("GXSetDispCopyDst is a stub");}
-//void GXSetDispCopyGamma(){puts("GXSetDispCopyGamma is a stub");}
-//void GXSetDispCopySrc(){puts("GXSetDispCopySrc is a stub");}
-//void GXSetDispCopyYScale(){puts("GXSetDispCopyYScale is a stub");}
-//void GXSetDither(){puts("GXSetDither is a stub");}
-//void GXSetFog(){puts("GXSetFog is a stub");}
-//void GXSetIndTexMtx(){puts("GXSetIndTexMtx is a stub");}
-//void GXSetIndTexOrder(){puts("GXSetIndTexOrder is a stub");}
-//void GXSetNumIndStages(){puts("GXSetNumIndStages is a stub");}
-//void GXSetNumTexGens(){puts("GXSetNumTexGens is a stub");}
-//void GXSetPixelFmt(){puts("GXSetPixelFmt is a stub");}
-//void GXSetTevDirect(){puts("GXSetTevDirect is a stub");}
-//void GXSetTevIndirect(){puts("GXSetTevIndirect is a stub");}
-//void GXSetTexCoordGen2(){puts("GXSetTexCoordGen2 is a stub");}
-//void GXSetTexCopyDst(){puts("GXSetTexCopyDst is a stub");}
-//void GXSetTexCopySrc(){puts("GXSetTexCopySrc is a stub");}
-//void GXSetZCompLoc(){puts("GXSetZCompLoc is a stub");}
 void LCEnable(){puts("LCEnable is a stub");}
 void OSClearContext(){puts("OSClearContext is a stub");}
 void OSDisableInterrupts(){puts("OSDisableInterrupts is a stub");}
@@ -142,9 +112,6 @@ void OSSuspendThread(){puts("OSSuspendThread is a stub");}
 void OSTicksToCalendarTime(){puts("OSTicksToCalendarTime is a stub");}
 void OSUnlink(){puts("OSUnlink is a stub");}
 void OSWakeupThread(){puts("OSWakeupThread is a stub");}
-//void PADRecalibrate(){puts("PADRecalibrate is a stub");}
-//void PADReset(){puts("PADReset is a stub");}
-//void PADSetAnalogMode(){puts("PADSetAnalogMode is a stub");}
 void PERFDumpScreen(){puts("PERFDumpScreen is a stub");}
 void PERFEndFrame(){puts("PERFEndFrame is a stub");}
 void PERFEventEnd(){puts("PERFEventEnd is a stub");}
@@ -229,60 +196,54 @@ void ev_sound_main(){puts("ev_sound_main is a stub");}
 void ev_vibration_dest(){puts("ev_vibration_dest is a stub");}
 void ev_vibration_init(){puts("ev_vibration_init is a stub");}
 void ev_vibration_main(){puts("ev_vibration_main is a stub");}
-void func_80029788(){puts("func_80029788 is a stub");}
-void func_8002B5C8(){puts("func_8002B5C8 is a stub");}
-void func_8002B610(){puts("func_8002B610 is a stub");}
-void func_8002BFCC(){puts("func_8002BFCC is a stub");}
-void func_8002CA5C(){puts("func_8002CA5C is a stub");}
-void func_8002DB10(){puts("func_8002DB10 is a stub");}
+void func_80029788(void){puts("func_80029788 is a stub");}
+void func_8002B5C8(int a){puts("func_8002B5C8 is a stub");}
+int func_8002B610(int a){puts("func_8002B610 is a stub");return 0;}
+void func_8002BFCC(int a, int b){puts("func_8002BFCC is a stub");}
+void func_8002CA5C(int a, s8 b, s8 c){puts("func_8002CA5C is a stub");}
+void func_8002DB10(void){puts("func_8002DB10 is a stub");}
 void func_8002DB24(){puts("func_8002DB24 is a stub");}
-void func_8002DB38(){puts("func_8002DB38 is a stub");}
-void func_8002DBC4(){puts("func_8002DBC4 is a stub");}
-void func_8002F0E4(){puts("func_8002F0E4 is a stub");}
-void func_8002FCC0(){puts("func_8002FCC0 is a stub");}
-void func_8002FD68(){puts("func_8002FD68 is a stub");}
-void func_8002FFEC(){puts("func_8002FFEC is a stub");}
-void func_8003026C(){puts("func_8003026C is a stub");}
-void func_80030A50(){puts("func_80030A50 is a stub");}
-void func_800487B4(){puts("func_800487B4 is a stub");}
-void func_800489F8(){puts("func_800489F8 is a stub");}
-void func_8004C668(){puts("func_8004C668 is a stub");}
-void func_8004C69C(){puts("func_8004C69C is a stub");}
-void func_8004C6DC(){puts("func_8004C6DC is a stub");}
-void func_8004CFF0(){puts("func_8004CFF0 is a stub");}
-void func_8005AD80(){puts("func_8005AD80 is a stub");}
-void func_8005AE1C(){puts("func_8005AE1C is a stub");}
-void func_80081F30(){puts("func_80081F30 is a stub");}
-void func_80082024(){puts("func_80082024 is a stub");}
-void func_800846B0(){puts("func_800846B0 is a stub");}
-void func_80084794(){puts("func_80084794 is a stub");}
-void func_800924CC(){puts("func_800924CC is a stub");}
-void func_80092D34(){puts("func_80092D34 is a stub");}
-void func_80092F90(){puts("func_80092F90 is a stub");}
-void func_80093B84(){puts("func_80093B84 is a stub");}
-void func_80093E28(){puts("func_80093E28 is a stub");}
-void func_80094028(){puts("func_80094028 is a stub");}
-void func_800940B8(){puts("func_800940B8 is a stub");}
-void func_800940E0(){puts("func_800940E0 is a stub");}
-void func_800946BC(){puts("func_800946BC is a stub");}
-void func_800946DC(){puts("func_800946DC is a stub");}
-void func_80094748(){puts("func_80094748 is a stub");}
-void func_80094750(){puts("func_80094750 is a stub");}
-void func_800947B0(){puts("func_800947B0 is a stub");}
-void func_800947F8(){puts("func_800947F8 is a stub");}
-void func_80094840(){puts("func_80094840 is a stub");}
-void func_80094870(){puts("func_80094870 is a stub");}
-void func_800948D0(){puts("func_800948D0 is a stub");}
-void func_800948F4(){puts("func_800948F4 is a stub");}
-void func_80094914(){puts("func_80094914 is a stub");}
-void func_8009492C(){puts("func_8009492C is a stub");}
-void func_80094A34(){puts("func_80094A34 is a stub");}
-void func_8009BEF8(){puts("func_8009BEF8 is a stub");}
-int func_8009D5D8(){puts("func_8009D5D8 is a stub");return 0;}
-void func_8009D7CC(){puts("func_8009D7CC is a stub");}
-void func_8009D7E8(){puts("func_8009D7E8 is a stub");}
-void func_8009D7FC(){puts("func_8009D7FC is a stub");}
-void func_8009D98C(){puts("func_8009D98C is a stub");}
+void func_8002DB38(void){puts("func_8002DB38 is a stub");}
+void func_8002DBC4(void){puts("func_8002DBC4 is a stub");}
+void func_8002F0E4(void){puts("func_8002F0E4 is a stub");}
+void func_8002FCC0(int a, char *b, ...){puts("func_8002FCC0 is a stub");}
+void func_8002FD68(int a, const char *b){puts("func_8002FD68 is a stub");}
+void func_8002FFEC(void){puts("func_8002FFEC is a stub");}
+void func_8003026C(int a, char *b, ...){puts("func_8003026C is a stub");}
+void func_8004CFF0(int a){puts("func_8004CFF0 is a stub");}
+int func_8005AD80(){puts("func_8005AD80 is a stub");}
+int func_8005AE1C(struct NlModel *a, struct NlModel *b){puts("func_8005AE1C is a stub");}
+void func_80081F30(void){puts("func_80081F30 is a stub");}
+void func_80082024(int a, struct Sprite *b){puts("func_80082024 is a stub");}
+void func_800846B0(int a){puts("func_800846B0 is a stub");}
+void func_80084794(void *a){puts("func_80084794 is a stub");}
+void func_800924CC(void){puts("func_800924CC is a stub");}
+int  func_80092D34(void){puts("func_80092D34 is a stub");return 0;}
+void func_80092F90(void *a){puts("func_80092F90 is a stub");}
+void func_80093B84(void){puts("func_80093B84 is a stub");}
+void func_80093E28(void){puts("func_80093E28 is a stub");}
+void func_80094028(void){puts("func_80094028 is a stub");}
+void func_800940B8(void){puts("func_800940B8 is a stub");}
+void func_800940E0(void){puts("func_800940E0 is a stub");}
+void func_800946BC(Vec *a){puts("func_800946BC is a stub");}
+void func_800946DC(int a, int b){puts("func_800946DC is a stub");}
+void func_80094748(float a){puts("func_80094748 is a stub");}
+void func_80094750(int a){puts("func_80094750 is a stub");}
+void func_800947B0(void){puts("func_800947B0 is a stub");}
+int func_800947F8(void){puts("func_800947F8 is a stub");}
+void func_80094840(void){puts("func_80094840 is a stub");}
+void *func_80094870(){puts("func_80094870 is a stub");}
+void func_800948D0(void *a){puts("func_800948D0 is a stub");}
+void func_800948F4(void){puts("func_800948F4 is a stub");}
+void func_80094914(void){puts("func_80094914 is a stub");}
+void func_8009492C(struct Struct8009492C *a){puts("func_8009492C is a stub");}
+void func_80094A34(void){puts("func_80094A34 is a stub");}
+void func_8009BEF8(void){puts("func_8009BEF8 is a stub");}
+int func_8009D5D8(void){puts("func_8009D5D8 is a stub");return 0;}
+int func_8009D7CC(void){puts("func_8009D7CC is a stub");}
+int func_8009D7E8(void){puts("func_8009D7E8 is a stub");}
+void func_8009D7FC(int a, Vec *b){puts("func_8009D7FC is a stub");}
+void func_8009D98C(Vec *a){puts("func_8009D98C is a stub");}
 void func_8009DB6C(){puts("func_8009DB6C is a stub");}
 void func_800AD180(){puts("func_800AD180 is a stub");}
 void func_800AD38C(){puts("func_800AD38C is a stub");}
@@ -338,7 +299,7 @@ void lbl_8016DD94(){puts("lbl_8016DD94 is a stub");}
 void lbl_8016EBCC(){puts("lbl_8016EBCC is a stub");}
 void lbl_8016F454(){puts("lbl_8016F454 is a stub");}
 void lbl_8016FCDC(){puts("lbl_8016FCDC is a stub");}
-void lbl_801D5A20(){puts("lbl_801D5A20 is a stub");}
+u8 lbl_801D5A20[0x1FC];
 struct
 {
     s32 unk0;
@@ -366,13 +327,13 @@ float lbl_802F1ECC;
 u16 lbl_802F1ED0;
 u16 lbl_802F1ED2;
 u32 lbl_802F1ED8;
-void lbl_802F2060(){puts("lbl_802F2060 is a stub");}
+s8 lbl_802F2060;
 u32 lbl_802F2150;
 void *lbl_802F2154;
-void lbl_802F21E8(){puts("lbl_802F21E8 is a stub");}
-void lbl_802F21EC(){puts("lbl_802F21EC is a stub");}
-void lbl_802F21F0(){puts("lbl_802F21F0 is a stub");}
-void lbl_802F22C8(){puts("lbl_802F22C8 is a stub");}
+s32 lbl_802F21E8;
+float lbl_802F21EC;
+float lbl_802F21F0 = 0;
+u32 lbl_802F22C8 = 0;
 s16 mathutil_atan(float angle)
 {
     return atanf(angle) * 65536.0f / (2.0f * M_PI);
@@ -420,7 +381,7 @@ void u_debug_printf(){puts("u_debug_printf is a stub");}
 void u_debug_set_cursor_pos(){puts("u_debug_set_cursor_pos is a stub");}
 void u_debug_set_text_color(){puts("u_debug_set_text_color is a stub");}
 void u_draw_ball_shadow(){puts("u_draw_ball_shadow is a stub");}
-void u_get_monkey_bitmap_id(){puts("u_get_monkey_bitmap_id is a stub");}
+int u_get_monkey_bitmap_id(int a, int b, int c){puts("u_get_monkey_bitmap_id is a stub");return 0xF;}
 void u_get_replay_info(){puts("u_get_replay_info is a stub");}
 void u_give_points(){puts("u_give_points is a stub");}
 void u_init_shadow_stuff_probably(){puts("u_init_shadow_stuff_probably is a stub");}
