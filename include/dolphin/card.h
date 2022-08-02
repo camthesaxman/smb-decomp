@@ -79,6 +79,6 @@ s32 CARDDelete(s32 chan, char *fileName);
 s32 CARDRename(s32 chan, char *oldName, char *newName);
 
 // private
-s32 __CARDFormatRegionAsync();
+s32 __CARDFormatRegionAsync(int, int);
 
 #endif

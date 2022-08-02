@@ -76,7 +76,7 @@ extern s32 u_printLight;
 extern s32 lbl_802F1C8C;
 extern s32 u_lightToPrint;
 
-void light_init();
+void light_init(int stageId);
 void light_main();
 BOOL add_light_to_pool(struct Light *a);
 void load_light_group_uncached(int);

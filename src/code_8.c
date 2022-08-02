@@ -10,13 +10,6 @@ static float lbl_802F1F60;
 static void lbl_800481A0(struct NlVtxTypeB *);
 static void lbl_800482A4(struct NlVtxTypeA *);
 
-struct Struct80048084
-{
-    u8 filler0[0x20];
-    u32 unk20;
-    GXTexObj *unk24;
-};
-
 #ifdef NONMATCHING
 void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {

@@ -28,7 +28,7 @@ enum
     CAMERA_STATE_MINI_GOLF        = 64,
     CAMERA_STATE_MINI_BILLIARDS   = 65,
     CAMERA_STATE_MINI_PILOT       = 67,
-    CAMERA_STATE_RANK_IN          = 71,    
+    CAMERA_STATE_RANK_IN          = 71,
     CAMERA_STATE_END_CUTSCENE     = 74,
 };
 
@@ -131,7 +131,7 @@ void setup_camera_viewport(int cameraId, float left, float top, float width, flo
 void camera_setup_splitscreen_viewports(int playerCount);
 void camera_setup_singleplayer_viewport(void);
 void camera_apply_viewport(int);
-void u_call_camera_apply_viewport();
+void u_call_camera_apply_viewport(int cameraId);
 // ? camera_apply_viewport_2();
 // ? func_800188A8();
 void func_800188D4(void);
