@@ -1,8 +1,10 @@
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <dolphin.h>
 
 #include "global.h"
+#include "load.h"
 
 struct Struct80110400
 {
@@ -1282,4 +1284,93 @@ void func_800274E8(const char *a, const char *b, ...)
     printf("### Sound ERROR ### at ");
     printf(a);
     printf(buffer);
+}
+
+u8 lbl_801F8E18[0x39C];
+FORCE_BSS_ORDER(lbl_801F8E18)
+u8 lbl_801F91B4[0x4250];
+FORCE_BSS_ORDER(lbl_801F91B4)
+u8 lbl_801FD404[0x1094];
+FORCE_BSS_ORDER(lbl_801FD404)
+u8 lbl_801FE498[0xC0];
+FORCE_BSS_ORDER(lbl_801FE498)
+u8 lbl_801FE558[0x70];
+FORCE_BSS_ORDER(lbl_801FE558)
+u8 lbl_801FE5C8[0x10];
+FORCE_BSS_ORDER(lbl_801FE5C8)
+DTKTrack lbl_801FE5D8[0x94];
+FORCE_BSS_ORDER(lbl_801FE5D8)
+
+void func_800275A0(s32 arg0, s32 arg1)
+{
+    char fileName[0x100];
+    int i;
+    int r0;
+
+    switch (arg1)
+    {
+    case 0:
+        sndOutputMode(0);
+        if (arg0 == 0)
+        {
+            for (i = 0; i < 0x4A; i++)
+                DTKRemoveTrack(&lbl_801FE5D8[i]);
+        }
+        r0 = 0;
+        for (i = 0x4A; i < 0x94; i++, r0++)
+        {
+            sprintf(fileName, "/test/snd/adp/%s.adp", lbl_801B2A5C[i].unk0);
+            DTKQueueTrack(fileName, &lbl_801FE5D8[r0], 0, 0);
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        sndOutputMode(2);
+        if (arg0 == 0)
+        {
+            for (i = 0; i < 0x4A; i++)
+                DTKRemoveTrack(&lbl_801FE5D8[i]);
+        }
+        for (i = 0; i < 0x94 - 0x4A; i++)
+        {
+            sprintf(fileName, "/test/snd/adp/%s.adp", lbl_801B2A5C[i].unk0);
+            DTKQueueTrack(fileName, &lbl_801FE5D8[i], 0, 0);
+        }
+        break;
+    }
+}
+
+void *func_8002773C(char *fileName, u32 *sizeOut)
+{
+    struct File file;
+    u32 size;
+    void *buffer;
+
+    if (!file_open(fileName, &file))
+    {
+        func_800274E8("ReadMusyXData\n", "Unable to open '%s'\n", fileName);
+        return NULL;
+    }
+    size = file_size(&file);
+    if (size == 0)
+    {
+        func_800274E8("ReadMusyXData\n", "Zero length file '%s'\n", fileName);
+        return NULL;
+    }
+    *sizeOut = OSRoundUp32B(size);
+    buffer = OSAlloc(*sizeOut);
+    if (buffer == NULL)
+    {
+        func_800274E8("ReadMusyXData\n", "unable to allocate buffer '%s'\n", fileName);
+        return NULL;
+    }
+    if (file_read(&file, buffer, *sizeOut, 0) <= 0)
+    {
+        func_800274E8("ReadMusyXData\n", "Failed to read data from '%s'\n", fileName);
+        OSFree(buffer);
+        return NULL;
+    }
+    file_close(&file);
+    return buffer;
 }

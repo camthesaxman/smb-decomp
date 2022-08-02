@@ -52,7 +52,6 @@ lbl_8002751C:
 /* 80027594 000234B4  38 21 02 88 */	addi r1, r1, 0x288
 /* 80027598 000234B8  7C 08 03 A6 */	mtlr r0
 /* 8002759C 000234BC  4E 80 00 20 */	blr
-.endif
 
 .global func_800275A0
 func_800275A0:
@@ -253,6 +252,7 @@ lbl_8002784C:
 /* 80027860 00023780  83 81 00 60 */	lwz r28, 0x60(r1)
 /* 80027864 00023784  38 21 00 70 */	addi r1, r1, 0x70
 /* 80027868 00023788  4E 80 00 20 */	blr
+.endif
 
 .global func_8002786C
 func_8002786C:
@@ -8016,6 +8016,7 @@ gamePauseStatus:
 
 .section .bss
 
+.if 0
     .balign 8
 .global lbl_801F8E18
 lbl_801F8E18:
@@ -8035,6 +8036,8 @@ lbl_801FE558:
 .global lbl_801FE5C8
 lbl_801FE5C8:
 	.skip 0x2E50
+.endif
+
 .global lbl_80201418
 lbl_80201418:
 	.skip 0x3C
@@ -16109,10 +16112,10 @@ lbl_801B339C:
 	# ROM: 0x1B039C
 glabel string_____Sound_ERROR_____at_
 	.asciz "### Sound ERROR ### at "
-.endif
 glabel string__test_snd_adp__s_adp
 	.asciz "/test/snd/adp/%s.adp"
 	.balign 4
+
 glabel string_ReadMusyXData_n
 	.asciz "ReadMusyXData\n"
 	.balign 4
@@ -16127,6 +16130,7 @@ glabel string_unable_to_allocate_buffer___s__n
 glabel string_Failed_to_read_data_from___s__n
 	.asciz "Failed to read data from '%s'\n"
 	.balign 4
+.endif
 
 .global lbl_801B344C
 lbl_801B344C:

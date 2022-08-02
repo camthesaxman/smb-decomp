@@ -39,7 +39,7 @@ SECTIONS
     /* debug immediately follows normal stack */
     _db_stack_end = _stack_addr;
     _db_stack_addr = _db_stack_end + 0x2000;
-    
+
     /* arena follows debug stack */
     __ArenaLo = (_db_stack_addr + 0x1F) & ~ 0x1F;
     __ArenaHi = 0x81700000;
@@ -55,6 +55,8 @@ FORCEACTIVE
     lbl_802F1FB4
     lbl_802F1FAC
     lbl_802F1FA8
+
+    lbl_801FE5D8
 }
 
 lbl_80292C00_alias = lbl_80292C00;
