@@ -2,6 +2,7 @@
 
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
+.if 0
 .global func_800274E8
 func_800274E8:
 /* 800274E8 00023408  7C 08 02 A6 */	mflr r0
@@ -51,6 +52,7 @@ lbl_8002751C:
 /* 80027594 000234B4  38 21 02 88 */	addi r1, r1, 0x288
 /* 80027598 000234B8  7C 08 03 A6 */	mtlr r0
 /* 8002759C 000234BC  4E 80 00 20 */	blr
+.endif
 
 .global func_800275A0
 func_800275A0:
@@ -8346,6 +8348,7 @@ lbl_802F3268:
 
 .section .rodata
 
+.if 0
 	.balign 8
 .global lbl_80110400
 lbl_80110400:
@@ -8355,91 +8358,109 @@ lbl_80110400:
 	.4byte 0x00000003
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPse01  ;# ptr
 	.4byte 0x00000004
 	.4byte 0
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPse02  ;# ptr
 	.4byte 0x00000055
 	.4byte 0x00000001
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPse03  ;# ptr
 	.4byte 0x00000072
 	.4byte 0x00000002
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPnar  ;# ptr
 	.4byte 0x0000007E
 	.4byte 0x00000007
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPboy  ;# ptr
 	.4byte 0x000000B2
 	.4byte 0x00000004
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPgirl  ;# ptr
 	.4byte 0x000000F3
 	.4byte 0x00000006
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPbaby  ;# ptr
 	.4byte 0x00000136
 	.4byte 0x00000005
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPgoli  ;# ptr
 	.4byte 0x00000172
 	.4byte 0x00000008
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPbil_set  ;# ptr
 	.4byte 0x0000019B
 	.4byte 0x00000001
 	.4byte 0x00000001
 	.4byte lbl_802F0578  ;# ptr
+	
 	.4byte string_GRPbow_set  ;# ptr
 	.4byte 0x000001DC
 	.4byte 0x00000002
 	.4byte 0x00000002
 	.4byte string_bowl  ;# ptr
+	
 	.4byte string_GRPfight_set  ;# ptr
 	.4byte 0x0000021B
 	.4byte 0x00000006
 	.4byte 0x00000003
 	.4byte string_fight  ;# ptr
+	
 	.4byte string_GRPgolf_set  ;# ptr
 	.4byte 0x00000272
 	.4byte 0x00000003
 	.4byte 0x00000004
 	.4byte string_golf  ;# ptr
+	
 	.4byte string_GRPrace_set  ;# ptr
 	.4byte 0x0000029F
 	.4byte 0x00000004
 	.4byte 0x00000005
 	.4byte string_race  ;# ptr
+	
 	.4byte string_GRPtarget_set  ;# ptr
 	.4byte 0x000002DA
 	.4byte 0x00000005
 	.4byte 0x00000006
 	.4byte string_target  ;# ptr
+	
 	.4byte string_GRPcomn_set  ;# ptr
 	.4byte 0x0000033F
 	.4byte 0x00000007
 	.4byte 0x00000007
 	.4byte string_comn  ;# ptr
+	
 	.4byte string_GRPending  ;# ptr
 	.4byte 0x000003CD
 	.4byte 0x00000008
 	.4byte 0x00000008
 	.4byte string_ending  ;# ptr
+	
 	.4byte string_GRPstream  ;# ptr
 	.4byte 0x000003D9
 	.4byte 0xFFFFFFFF
 	.4byte 0
 	.4byte string_allse  ;# ptr
+	
 	.4byte string_GRPend  ;# ptr
 	.4byte 0x00000424
 	.4byte 0xFFFFFFFE
@@ -12693,6 +12714,7 @@ lbl_8011057C:
 	.4byte string_GRPend  ;# ptr
 	.4byte 0x01000000
 	.4byte 0xFFFF0000
+.endif
 
 .global lbl_801147CC
 lbl_801147CC:
@@ -12717,6 +12739,7 @@ glabel lbl_801147F4
 
 .section .data
 
+.if 0
     .balign 8
 .global lbl_801AC960
 lbl_801AC960:
@@ -15351,6 +15374,8 @@ glabel string_STRM_OPT_INT
 	.balign 4
 glabel string_STRM_OPT_LP
 	.asciz "STRM_OPT_LP"
+.endif
+.if 0
 glabel string_sel2_all
 	.asciz "sel2_all"
 	.balign 4
@@ -16077,12 +16102,14 @@ lbl_801B2A5C:
 	.4byte 0x01000000
 	.4byte 0
 	.4byte 0x49000000
-
+.endif
+.if 0
 .global lbl_801B339C
 lbl_801B339C:
 	# ROM: 0x1B039C
 glabel string_____Sound_ERROR_____at_
 	.asciz "### Sound ERROR ### at "
+.endif
 glabel string__test_snd_adp__s_adp
 	.asciz "/test/snd/adp/%s.adp"
 	.balign 4
@@ -16504,6 +16531,7 @@ glabel string_can_t_allocate_stream_n
 
 .section .sdata
 
+.if 0
     .balign 8
 glabel string_GRPse04
 	.asciz "GRPse04"
@@ -16554,6 +16582,8 @@ glabel string_ending
 glabel string_GRPend
 	.asciz "GRPend"
 	.balign 4
+.endif
+.if 0
 glabel string_theme
 	.asciz "theme"
 	.balign 4
@@ -16570,7 +16600,7 @@ glabel string_sel_lp
 glabel string_sel2_lp
 	.asciz "sel2_lp"
 glabel lbl_802F05EC
-	.4byte 0x73743100
+	.4byte 0x73743100  ;# "st1"
 glabel string_st2_all
 	.asciz "st2_all"
 glabel string_st2_lp
@@ -16597,7 +16627,7 @@ glabel string_st6_lp
 	.asciz "st6_lp"
 	.balign 4
 glabel lbl_802F0640
-	.4byte 0x73743700
+	.4byte 0x73743700  ;# "st7"
 glabel string_st8_int
 	.asciz "st8_int"
 glabel string_st8_lp
@@ -16614,11 +16644,11 @@ glabel string_stm_lp
 	.asciz "stm_lp"
 	.balign 4
 glabel lbl_802F0674
-	.4byte 0x636E7400
+	.4byte 0x636E7400  ;# "cnt"
 glabel lbl_802F0678
-	.4byte 0x6F767200
+	.4byte 0x6F767200  ;# "ovr"
 glabel lbl_802F067C
-	.4byte 0x6F6D6B00
+	.4byte 0x6F6D6B00  ;# "omk"
 glabel string_tget_lp
 	.asciz "tget_lp"
 glabel string_bili_lp
@@ -16629,7 +16659,7 @@ glabel string_bwl_lp
 	.asciz "bwl_lp"
 	.balign 4
 glabel lbl_802F06A0
-	.4byte 0x676C6600
+	.4byte 0x676C6600  ;# "glf"
 glabel string_omk2
 	.asciz "omk2"
 	.balign 4
@@ -16639,7 +16669,7 @@ glabel string_result
 	.asciz "result"
 	.balign 4
 glabel lbl_802F06BC
-	.4byte 0x68796F00
+	.4byte 0x68796F00  ;# "hyo"
 glabel string_ent_int
 	.asciz "ent_int"
 glabel string_ent_lp
@@ -16653,7 +16683,7 @@ glabel string_end_lp
 glabel string_roll_lp
 	.asciz "roll_lp"
 glabel lbl_802F06E8
-	.4byte 0x6F707400
+	.4byte 0x6F707400  ;# "opt"
 glabel string_themem
 	.asciz "themem"
 	.balign 4
@@ -16716,7 +16746,7 @@ glabel string_endm_lp
 glabel string_optm
 	.asciz "optm"
 	.balign 4
-
+.endif
 
 .global lbl_802F07B4
 lbl_802F07B4:

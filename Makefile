@@ -122,6 +122,7 @@ SOURCES := \
 	src/bmp_list_cmd.c \
 	src/trig_tables.c \
 	src/perf.c \
+	src/sound.c \
 	asm/sound.s \
 	asm/window.s \
 	src/pool.c \
