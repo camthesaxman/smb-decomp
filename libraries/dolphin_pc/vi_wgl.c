@@ -98,6 +98,7 @@ void VIInit(void)
     wglSwapInterval = wglGetProcAddress("wglSwapIntervalEXT");
     if (wglSwapInterval != NULL)
         wglSwapInterval(1);
+    g_isOpenGLES = 0;
 }
 
 u32 VIGetTvFormat(void)

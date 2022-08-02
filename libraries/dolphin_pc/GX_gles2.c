@@ -41,6 +41,8 @@ void pause(void)
 }
 */
 
+int g_isOpenGLES = 0;
+
 static GLuint s_program;
 static GLint s_shaderPositionIndex;
 static GLint s_shaderNormalIndex;
@@ -497,11 +499,10 @@ static void dump_shaders(const struct ShaderInfo *shader)
 
 static void prepare_shaders(void)
 {
-    static const char vtxShaderHeader[] =
-        "#ifdef GL_ES\n"
+    static const char glesHeader[] =
         "#version 100\n"
-        "precision mediump float;\n"
-        "#endif\n"
+        "precision mediump float;\n";
+    static const char vtxShaderHeader[] =
         "uniform   mat4 u_modelViewMatrix;\n"
         "uniform   mat4 u_projectionMatrix;\n"
         "uniform   mat4 u_textureMatrix;\n"
@@ -548,13 +549,9 @@ static void prepare_shaders(void)
         "    gl_Position = u_projectionMatrix * u_modelViewMatrix * vec4(a_position.xyz * u_positionScale, a_position.w);\n"
         "}\n";
     char vtxSrc[2][500];
-    const GLchar *vtxSrcPtrs[2 + 2 + 8];
+    const GLchar *vtxSrcPtrs[1 + 2 + 2 + 8];
 
     static const char fragShaderHeader[] =
-        "#ifdef GL_ES\n"
-        "#version 100\n"
-        "precision mediump float;\n"
-        "#endif\n"
         "uniform sampler2D u_texture0;\n"
         "uniform vec4 u_tevRegPrev;\n"
         "uniform vec4 u_tevReg0;\n"
@@ -576,8 +573,7 @@ static void prepare_shaders(void)
         "    gl_FragColor = tevRegPrev;\n"
         "}\n";
     char tevSrc[GX_MAX_TEVSTAGE][500];
-    const GLchar *fragSrcPtrs[2 + GX_MAX_TEVSTAGE];
-
+    const GLchar *fragSrcPtrs[1 + 2 + GX_MAX_TEVSTAGE];
     int line;
     int i;
     int shaderToEvict = 0;
@@ -585,6 +581,8 @@ static void prepare_shaders(void)
     struct ShaderInfo *shader;
     struct TevStageConfig *stage;
     struct ChannelConfig *channel;
+    GLint status;
+    GLchar log[500];
 
     // check to see if a suitable shader exists
     shader = s_shaderCache;
@@ -604,7 +602,7 @@ static void prepare_shaders(void)
         }
     }
 
-    printf("evicting %i, last used at %i\n", shaderToEvict, s_shaderCache[shaderToEvict].lastUsed);
+    //printf("evicting %i, last used at %i\n", shaderToEvict, s_shaderCache[shaderToEvict].lastUsed);
     shader = &s_shaderCache[shaderToEvict];
     if (shader->lastUsed > 0)
     {
@@ -619,6 +617,8 @@ static void prepare_shaders(void)
     // Generate vtx shader code
     channel = shader->lightConfig.channels;
     line = 0;
+    if (g_isOpenGLES)
+        vtxSrcPtrs[line++] = glesHeader;
     vtxSrcPtrs[line++] = vtxShaderHeader;
     for (i = 0; i < shader->lightConfig.numChans; i++, channel++)
     {
@@ -644,9 +644,26 @@ static void prepare_shaders(void)
     }
     vtxSrcPtrs[line++] = vtxShaderFooter;
 
+    // Compile vertex shader
+    //puts("Compiling vtx shader:");
+    //printf("%i chans\n", shader->lightConfig.numChans);
+    shader->vtxShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(shader->vtxShader, line, vtxSrcPtrs, NULL);
+    glCompileShader(shader->vtxShader);
+    glGetShaderiv(shader->vtxShader, GL_COMPILE_STATUS, &status);
+    if (!status)
+    {
+        glGetShaderInfoLog(shader->vtxShader, sizeof(log), NULL, log);
+        fprintf(stderr, "failed to compile vertex shader: %s\n", log);
+        exit(1);
+    }
+
     // Generate frag shader code
     stage = shader->tevConfig.stages;
-    fragSrcPtrs[0] = fragShaderHeader;
+    line = 0;
+    if (g_isOpenGLES)
+        fragSrcPtrs[line++] = glesHeader;
+    fragSrcPtrs[line++] = fragShaderHeader;
     for (i = 0; i < shader->tevConfig.numTevStages; i++, stage++)
     {
         size_t len = sprintf(tevSrc[i],
@@ -675,32 +692,15 @@ static void prepare_shaders(void)
             shader_tev_op(stage->alphaOp),
             shader_tev_alpha_arg(stage->alphaArgs[3]));
         assert(len < sizeof(tevSrc[i]));
-        fragSrcPtrs[1 + i] = tevSrc[i];
+        fragSrcPtrs[line++] = tevSrc[i];
     }
-    fragSrcPtrs[1 + i] = fragShaderFooter;
-
-    GLint status;
-    GLchar log[500];
-
-    // Compile vertex shader
-    puts("Compiling vtx shader:");
-    printf("%i chans\n", shader->lightConfig.numChans);
-    shader->vtxShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(shader->vtxShader, 2 + shader->lightConfig.numChans, vtxSrcPtrs, NULL);
-    glCompileShader(shader->vtxShader);
-    glGetShaderiv(shader->vtxShader, GL_COMPILE_STATUS, &status);
-    if (!status)
-    {
-        glGetShaderInfoLog(shader->vtxShader, sizeof(log), NULL, log);
-        fprintf(stderr, "failed to compile vertex shader: %s\n", log);
-        exit(1);
-    }
+    fragSrcPtrs[line++] = fragShaderFooter;
 
     // Compile fragment shader
-    puts("Compiling frag shader:");
-    printf("%i stages\n", shader->tevConfig.numTevStages);
+    //puts("Compiling frag shader:");
+    //printf("%i stages\n", shader->tevConfig.numTevStages);
     shader->fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(shader->fragShader, 2 + shader->tevConfig.numTevStages, fragSrcPtrs, NULL);
+    glShaderSource(shader->fragShader, line, fragSrcPtrs, NULL);
     glCompileShader(shader->fragShader);
     glGetShaderiv(shader->fragShader, GL_COMPILE_STATUS, &status);
     if (!status)
@@ -710,10 +710,10 @@ static void prepare_shaders(void)
         exit(1);
     }
 
+    // Link program
     shader->program = glCreateProgram();
     glAttachShader(shader->program, shader->fragShader);
     glAttachShader(shader->program, shader->vtxShader);
-
     glLinkProgram(shader->program);
     glGetProgramiv(shader->program, GL_LINK_STATUS, &status);
     if (!status)

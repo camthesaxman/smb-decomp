@@ -27,8 +27,10 @@ void VIInit(void)
     glfwSetErrorCallback(error_callback);
 #ifdef _WIN32
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+    g_isOpenGLES = 0;
 #else
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+    g_isOpenGLES = 1;
 #endif
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
