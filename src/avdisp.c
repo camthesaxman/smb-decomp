@@ -19,6 +19,9 @@
 #include "mathutil.h"
 #include "ord_tbl.h"
 
+// FIXME this file touches GX internals?
+#include "../libraries/gx/__gx.h"
+
 static Mtx **avdispMtxPtrList;  // pointers to all of the animation natrixes?
 static Mtx *u_transformMtxList;  // result of matrix multiplications between mtxA and avdispMtxPtrList?
 static float s_ambientRed; // Red of AMB of lighting equation: MAT * (RAS + AMB)

@@ -420,7 +420,7 @@ void func_8003765C(struct Ape *ape)
 // needed here due to float constant ordering
 static float get_0_05(void) {return 0.05f;}
 
-void func_80037718(/* struct Ape *unused */)
+void func_80037718(struct Ape *a)
 {
     Quaternion sp30;
     Vec sp24;

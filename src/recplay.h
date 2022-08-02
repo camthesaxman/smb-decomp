@@ -108,7 +108,7 @@ void func_8004C28C(struct ReplayHeader *);
 // ? decompress_rle();
 u32 u_calc_compressed_replay_size(void);
 u32 compress_replay(void *);
-int decompress_replay();
+int decompress_replay(void *arg0);
 int func_8004C70C(void);
 void func_8004C754(void);
 void func_8004C780(void);

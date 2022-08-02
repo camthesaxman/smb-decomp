@@ -329,7 +329,7 @@ void bg_default_finish(void);
 void bg_default_draw(void);
 void bg_default_interact(int);
 void animate_bg_objects(struct StageBgObject *bgModels, int bgModelCount, float timeSeconds);
-void draw_bg_objects();
+void draw_bg_objects(Mtx viewFromWorld, struct StageBgObject *bgObj, int bgObjCount);
 void draw_bg_flipbooks(Mtx a, struct StageFlipbookAnims *b);
 void bg_night_init(void);
 void bg_night_main(void);

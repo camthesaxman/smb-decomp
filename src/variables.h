@@ -551,7 +551,7 @@ extern struct BgLightInfo s_bgLightInfo;
 // extern ? lbl_801FE5C8;
 // extern ? lbl_80201418;
 // extern ? lbl_80201454;
-extern struct
+extern struct lbl_802014E0_Struct
 {
     s32 unk0;
     u32 unk4;
@@ -1025,11 +1025,7 @@ extern float lbl_802F16B8;
 // extern ? cmdCalibrate;
 // extern ? lbl_802F1994;
 // extern ? Chan;
-extern struct
-{
-    u8 filler0[0x204];
-    u32 unk204;
-} *gx;
+extern struct GX *gx;
 // extern ? tbl1;
 // extern ? tbl2;
 // extern ? tbl3;

@@ -1010,4 +1010,11 @@ struct Struct80250A68
     s32 unk14;
 };
 
+struct Struct80048084
+{
+    u8 filler0[0x20];
+    u32 unk20;
+    GXTexObj *unk24;
+};
+
 #endif
