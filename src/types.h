@@ -1010,4 +1010,11 @@ struct Struct80250A68
     s32 unk14;
 };
 
+struct Struct801EEDA8
+{
+    u8 filler0[0x100];
+    float unk100;
+    u8 filler104[0x118-0x104];
+};
+
 #endif

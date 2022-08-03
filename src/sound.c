@@ -4,7 +4,11 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "adv.h"
+#include "background.h"
 #include "load.h"
+#include "mode.h"
+#include "stage.h"
 
 struct Struct80110400
 {
@@ -916,48 +920,48 @@ const struct Struct8011057C lbl_8011057C[] =
     { 743, "SFXgauge4_basic_macro",  9, 0, 284 },
     { 744, "SFXbirdc_basic_macro",  0, 0, 502 },
     { 745, "SFXbirdc_loop_basic_macro",  9, 0, 503 },
-    { 746, "SFXbonus_finish_basic_macro",  8, 0,  -1 },
-    { 747, "SFXcount_00_basic_macro",  8, 0,  -1 },
-    { 748, "SFXcount_01_basic_macro",  8, 0,  -1 },
-    { 749, "SFXcount_02_basic_macro",  8, 0,  -1 },
-    { 750, "SFXcount_03_basic_macro",  8, 0,  -1 },
-    { 751, "SFXcount_04_basic_macro",  8, 0,  -1 },
-    { 752, "SFXcount_05_basic_macro",  8, 0,  -1 },
-    { 753, "SFXcount_06_basic_macro",  8, 0,  -1 },
-    { 754, "SFXcount_07_basic_macro",  8, 0,  -1 },
-    { 755, "SFXcount_08_basic_macro",  8, 0,  -1 },
-    { 756, "SFXcount_09_basic_macro",  8, 0,  -1 },
-    { 757, "SFXcount_10_basic_macro",  8, 0,  -1 },
-    { 758, "SFXcount_11_basic_macro",  8, 0,  -1 },
-    { 759, "SFXcount_12_basic_macro",  8, 0,  -1 },
-    { 760, "SFXcount_13_basic_macro",  8, 0,  -1 },
-    { 761, "SFXcount_14_basic_macro",  8, 0,  -1 },
-    { 762, "SFXcount_15_basic_macro",  8, 0,  -1 },
-    { 763, "SFXcount_16_basic_macro",  8, 0,  -1 },
-    { 764, "SFXcount_17_basic_macro",  8, 0,  -1 },
-    { 765, "SFXcount_18_basic_macro",  8, 0,  -1 },
-    { 766, "SFXcount_19_basic_macro",  8, 0,  -1 },
-    { 767, "SFXcount_20_basic_macro",  8, 0,  -1 },
-    { 768, "SFXfallout_01_basic_macro",  8, 0,  -1 },
-    { 769, "SFXfallout_02_basic_macro",  8, 0,  -1 },
-    { 770, "SFXfallout_03_basic_macro",  8, 0,  -1 },
-    { 771, "SFXfloor_clear_basic_macro",  8, 0,  -1 },
-    { 772, "SFXgame_clear_basic_macro",  8, 0,  -1 },
-    { 773, "SFXgame_over_basic_macro",  8, 0,  -1 },
-    { 774, "SFXgo_01_basic_macro",  8, 0,  -1 },
-    { 775, "SFXgo_02_basic_macro",  8, 0,  -1 },
-    { 776, "SFXgo_03_basic_macro",  8, 0,  -1 },
-    { 777, "SFXgo_04_basic_macro",  8, 0,  -1 },
-    { 778, "SFXgoal_01_basic_macro",  8, 0,  -1 },
-    { 779, "SFXgoal_02_basic_macro",  8, 0,  -1 },
-    { 780, "SFXgoal_03_basic_macro",  8, 0,  -1 },
-    { 781, "SFXgoal_04_basic_macro",  8, 0,  -1 },
-    { 782, "SFXhurry_up_basic_macro",  8, 0,  -1 },
-    { 783, "SFXready_01_basic_macro",  8, 0,  -1 },
-    { 784, "SFXready_02_basic_macro",  8, 0,  -1 },
-    { 785, "SFXstage_clear_basic_macro",  8, 0,  -1 },
-    { 786, "SFXtime_over_basic_macro",  8, 0,  -1 },
-    { 787, "SFXcontinue2_basic_macro",  8, 0,  -1 },
+    { 746, "SFXbonus_finish_basic_macro",     8, 0,  -1 },
+    { 747, "SFXcount_00_basic_macro",         8, 0,  -1 },
+    { 748, "SFXcount_01_basic_macro",         8, 0,  -1 },
+    { 749, "SFXcount_02_basic_macro",         8, 0,  -1 },
+    { 750, "SFXcount_03_basic_macro",         8, 0,  -1 },
+    { 751, "SFXcount_04_basic_macro",         8, 0,  -1 },
+    { 752, "SFXcount_05_basic_macro",         8, 0,  -1 },
+    { 753, "SFXcount_06_basic_macro",         8, 0,  -1 },
+    { 754, "SFXcount_07_basic_macro",         8, 0,  -1 },
+    { 755, "SFXcount_08_basic_macro",         8, 0,  -1 },
+    { 756, "SFXcount_09_basic_macro",         8, 0,  -1 },
+    { 757, "SFXcount_10_basic_macro",         8, 0,  -1 },
+    { 758, "SFXcount_11_basic_macro",         8, 0,  -1 },
+    { 759, "SFXcount_12_basic_macro",         8, 0,  -1 },
+    { 760, "SFXcount_13_basic_macro",         8, 0,  -1 },
+    { 761, "SFXcount_14_basic_macro",         8, 0,  -1 },
+    { 762, "SFXcount_15_basic_macro",         8, 0,  -1 },
+    { 763, "SFXcount_16_basic_macro",         8, 0,  -1 },
+    { 764, "SFXcount_17_basic_macro",         8, 0,  -1 },
+    { 765, "SFXcount_18_basic_macro",         8, 0,  -1 },
+    { 766, "SFXcount_19_basic_macro",         8, 0,  -1 },
+    { 767, "SFXcount_20_basic_macro",         8, 0,  -1 },
+    { 768, "SFXfallout_01_basic_macro",       8, 0,  -1 },
+    { 769, "SFXfallout_02_basic_macro",       8, 0,  -1 },
+    { 770, "SFXfallout_03_basic_macro",       8, 0,  -1 },
+    { 771, "SFXfloor_clear_basic_macro",      8, 0,  -1 },
+    { 772, "SFXgame_clear_basic_macro",       8, 0,  -1 },
+    { 773, "SFXgame_over_basic_macro",        8, 0,  -1 },
+    { 774, "SFXgo_01_basic_macro",            8, 0,  -1 },
+    { 775, "SFXgo_02_basic_macro",            8, 0,  -1 },
+    { 776, "SFXgo_03_basic_macro",            8, 0,  -1 },
+    { 777, "SFXgo_04_basic_macro",            8, 0,  -1 },
+    { 778, "SFXgoal_01_basic_macro",          8, 0,  -1 },
+    { 779, "SFXgoal_02_basic_macro",          8, 0,  -1 },
+    { 780, "SFXgoal_03_basic_macro",          8, 0,  -1 },
+    { 781, "SFXgoal_04_basic_macro",          8, 0,  -1 },
+    { 782, "SFXhurry_up_basic_macro",         8, 0,  -1 },
+    { 783, "SFXready_01_basic_macro",         8, 0,  -1 },
+    { 784, "SFXready_02_basic_macro",         8, 0,  -1 },
+    { 785, "SFXstage_clear_basic_macro",      8, 0,  -1 },
+    { 786, "SFXtime_over_basic_macro",        8, 0,  -1 },
+    { 787, "SFXcontinue2_basic_macro",        8, 0,  -1 },
     { 788, "SFXenter_your_name_basic_macro",  8, 0,  -1 },
     { 789, "SFXsee_you_again_basic_macro",  8, 0,  -1 },
     { 790, "SFXthanx_for_playn_basic_macro",  8, 0, 576 },
@@ -993,132 +997,132 @@ const struct Struct8011057C lbl_8011057C[] =
     { 820, "SFXstandard_mode_basic_macro", 14, 0, 552 },
     { 821, "SFXstroke_play_basic_macro", 14, 0, 554 },
     { 822, "SFXtournament_mode_basic_macro", 14, 0, 551 },
-    { 823, "SFXversus_mode_basic_macro", 14, 0, 550 },
+    { 823, "SFXversus_mode_basic_macro",  14, 0, 550 },
     { 824, "SFXgamesettings_basic_macro", 14, 0, 557 },
-    { 825, "SFXchamp_01_basic_macro",  8, 0,  -1 },
-    { 826, "SFXchamp_02_basic_macro",  8, 0,  -1 },
-    { 827, "SFXcongra_01_basic_macro",  8, 0,  -1 },
-    { 828, "SFXcongra_02_basic_macro",  8, 0, 489 },
-    { 829, "SFXcongra_03_basic_macro",  8, 0,  -1 },
-    { 830, "SFXdraw_basic_macro",  8, 0, 465 },
-    { 831, "SFXfinish_01_basic_macro",  8, 0, 510 },
-    { 832, "SFXfinish_02_basic_macro",  8, 0,  -1 },
-    { 833, "SFXfinish_03_basic_macro",  8, 0,  -1 },
-    { 834, "SFXlose_01_basic_macro",  8, 0,  -1 },
-    { 835, "SFXlose_02_basic_macro",  8, 0, 583 },
-    { 836, "SFXplayer1_basic_macro",  8, 0, 490 },
-    { 837, "SFXplayer1win_basic_macro",  8, 0, 476 },
-    { 838, "SFXplayer2_basic_macro",  8, 0, 491 },
-    { 839, "SFXplayer2win_basic_macro",  8, 0, 477 },
-    { 840, "SFXplayer3_basic_macro",  8, 0, 492 },
-    { 841, "SFXplayer3win_basic_macro",  8, 0, 478 },
-    { 842, "SFXplayer4_basic_macro",  8, 0, 493 },
-    { 843, "SFXplayer4win_basic_macro",  8, 0, 479 },
-    { 844, "SFXrank_in_basic_macro",  8, 0, 494 },
-    { 845, "SFXresult_01_basic_macro", 14, 0, 480 },
-    { 846, "SFXresult_02_basic_macro",  8, 0,  -1 },
-    { 847, "SFXstart_basic_macro",  8, 0, 501 },
-    { 848, "SFXtoobad_01_basic_macro",  8, 0, 474 },
-    { 849, "SFXtoobad_02_basic_macro",  8, 0, 475 },
-    { 850, "SFXwin_01_basic_macro",  8, 0, 495 },
-    { 851, "SFXwinner_01_basic_macro",  8, 0,  -1 },
+    { 825, "SFXchamp_01_basic_macro",     8, 0,  -1 },
+    { 826, "SFXchamp_02_basic_macro",     8, 0,  -1 },
+    { 827, "SFXcongra_01_basic_macro",    8, 0,  -1 },
+    { 828, "SFXcongra_02_basic_macro",    8, 0, 489 },
+    { 829, "SFXcongra_03_basic_macro",    8, 0,  -1 },
+    { 830, "SFXdraw_basic_macro",         8, 0, 465 },
+    { 831, "SFXfinish_01_basic_macro",    8, 0, 510 },
+    { 832, "SFXfinish_02_basic_macro",    8, 0,  -1 },
+    { 833, "SFXfinish_03_basic_macro",    8, 0,  -1 },
+    { 834, "SFXlose_01_basic_macro",      8, 0,  -1 },
+    { 835, "SFXlose_02_basic_macro",      8, 0, 583 },
+    { 836, "SFXplayer1_basic_macro",      8, 0, 490 },
+    { 837, "SFXplayer1win_basic_macro",   8, 0, 476 },
+    { 838, "SFXplayer2_basic_macro",      8, 0, 491 },
+    { 839, "SFXplayer2win_basic_macro",   8, 0, 477 },
+    { 840, "SFXplayer3_basic_macro",      8, 0, 492 },
+    { 841, "SFXplayer3win_basic_macro",   8, 0, 478 },
+    { 842, "SFXplayer4_basic_macro",      8, 0, 493 },
+    { 843, "SFXplayer4win_basic_macro",   8, 0, 479 },
+    { 844, "SFXrank_in_basic_macro",      8, 0, 494 },
+    { 845, "SFXresult_01_basic_macro",   14, 0, 480 },
+    { 846, "SFXresult_02_basic_macro",    8, 0,  -1 },
+    { 847, "SFXstart_basic_macro",        8, 0, 501 },
+    { 848, "SFXtoobad_01_basic_macro",    8, 0, 474 },
+    { 849, "SFXtoobad_02_basic_macro",    8, 0, 475 },
+    { 850, "SFXwin_01_basic_macro",       8, 0, 495 },
+    { 851, "SFXwinner_01_basic_macro",    8, 0,  -1 },
     { 852, "SFXyou_lose_03_basic_macro",  8, 0, 496 },
-    { 853, "SFXyou_win_01_basic_macro",  8, 0, 497 },
-    { 854, "SFXyou_win_02_basic_macro",  8, 0,  -1 },
-    { 855, "SFXav_basic_macro",  8, 0,  -1 },
-    { 856, "SFXsmb_basic_macro",  8, 0,  -1 },
-    { 857, "SFXsega2_basic_macro",  8, 0,  -1 },
-    { 858, "SFXperfect3_basic_macro",  8, 0, 453 },
-    { 859, "SFXpressstart_basic_macro",  8, 0,  -1 },
-    { 860, "SFXringout_03_basic_macro",  8, 0,  -1 },
-    {   8, "GRPending",  1, 0,  -1 },
-    { 861, "SFXdropstone_basic_macro",  0, 0, 558 },
-    { 862, "SFXfly1_basic_macro",  0, 0, 560 },
-    { 863, "SFXfly2_basic_macro",  0, 0, 562 },
-    { 864, "SFXheavydrope_basic_macro",  0, 0, 564 },
-    { 865, "SFXopen_c_basic_macro",  0, 0, 563 },
-    { 866, "SFXsit_basic_macro",  0, 0, 561 },
-    { 867, "SFXcharge_basic_macro",  0, 0, 568 },
-    { 868, "SFXdoorclose_basic_macro",  0, 0, 566 },
-    { 869, "SFXdooropen_basic_macro",  0, 0, 565 },
-    { 870, "SFXknock1_basic_macro",  0, 0, 567 },
+    { 853, "SFXyou_win_01_basic_macro",   8, 0, 497 },
+    { 854, "SFXyou_win_02_basic_macro",   8, 0,  -1 },
+    { 855, "SFXav_basic_macro",           8, 0,  -1 },
+    { 856, "SFXsmb_basic_macro",          8, 0,  -1 },
+    { 857, "SFXsega2_basic_macro",        8, 0,  -1 },
+    { 858, "SFXperfect3_basic_macro",     8, 0, 453 },
+    { 859, "SFXpressstart_basic_macro",   8, 0,  -1 },
+    { 860, "SFXringout_03_basic_macro",   8, 0,  -1 },
+    {   8, "GRPending",                   1, 0,  -1 },
+    { 861, "SFXdropstone_basic_macro",    0, 0, 558 },
+    { 862, "SFXfly1_basic_macro",         0, 0, 560 },
+    { 863, "SFXfly2_basic_macro",         0, 0, 562 },
+    { 864, "SFXheavydrope_basic_macro",   0, 0, 564 },
+    { 865, "SFXopen_c_basic_macro",       0, 0, 563 },
+    { 866, "SFXsit_basic_macro",          0, 0, 561 },
+    { 867, "SFXcharge_basic_macro",       0, 0, 568 },
+    { 868, "SFXdoorclose_basic_macro",    0, 0, 566 },
+    { 869, "SFXdooropen_basic_macro",     0, 0, 565 },
+    { 870, "SFXknock1_basic_macro",       0, 0, 567 },
     { 871, "SFXbananadorop_basic_macro",  0, 0, 559 },
-    {  -1, "GRPstream",  1, 0,  -1 },
-    {   0, "STRM_THEME_INT",  0, 0,  -1 },
-    {   1, "STRM_THEME_LP",  0, 0,  -1 },
-    {   2, "STRM_ADV_INT",  0, 0,  -1 },
-    {   3, "STRM_ADV_LP",  0, 0,  -1 },
-    {   4, "STRM_SEL_INT",  0, 0,  -1 },
-    {   5, "STRM_SEL_LP",  0, 0,  -1 },
-    {   6, "STRM_SEL2_INT",  0, 0,  -1 },
-    {   7, "STRM_SEL2_LP",  0, 0,  -1 },
-    {   8, "STRM_SEL_RACE_INT",  0, 0,  -1 },
-    {   9, "STRM_SEL_RACE_LP",  0, 0,  -1 },
-    {  10, "STRM_SEL_FIGHT_INT",  0, 0,  -1 },
-    {  11, "STRM_SEL_FIGHT_LP",  0, 0,  -1 },
-    {  12, "STRM_SEL_TARGET_INT",  0, 0,  -1 },
-    {  13, "STRM_SEL_TARGET_LP",  0, 0,  -1 },
-    {  14, "STRM_SEL_BILL_INT",  0, 0,  -1 },
-    {  15, "STRM_SEL_BILL_LP",  0, 0,  -1 },
-    {  16, "STRM_SEL_BOWL_INT",  0, 0,  -1 },
-    {  17, "STRM_SEL_BOWL_LP",  0, 0,  -1 },
-    {  18, "STRM_SEL_GOLF_INT",  0, 0,  -1 },
-    {  19, "STRM_SEL_GOLF_LP",  0, 0,  -1 },
-    {  20, "STRM_ST1_INT",  0, 0,  -1 },
-    {  21, "STRM_ST1_LP",  0, 0,  -1 },
-    {  22, "STRM_ST2_INT",  0, 0,  -1 },
-    {  23, "STRM_ST2_LP",  0, 0,  -1 },
-    {  24, "STRM_ST3_INT",  0, 0,  -1 },
-    {  25, "STRM_ST3_LP",  0, 0,  -1 },
-    {  26, "STRM_ST4_INT",  0, 0,  -1 },
-    {  27, "STRM_ST4_LP",  0, 0,  -1 },
-    {  28, "STRM_ST5_INT",  0, 0,  -1 },
-    {  29, "STRM_ST5_LP",  0, 0,  -1 },
-    {  30, "STRM_ST6_INT",  0, 0,  -1 },
-    {  31, "STRM_ST6_LP",  0, 0,  -1 },
-    {  32, "STRM_ST7_INT",  0, 0,  -1 },
-    {  33, "STRM_ST7_LP",  0, 0,  -1 },
-    {  34, "STRM_ST8_INT",  0, 0,  -1 },
-    {  35, "STRM_ST8_LP",  0, 0,  -1 },
-    {  36, "STRM_STB_INT",  0, 0,  -1 },
-    {  37, "STRM_STB_LP",  0, 0,  -1 },
-    {  38, "STRM_STM_INT",  0, 0,  -1 },
-    {  39, "STRM_STM_LP",  0, 0,  -1 },
-    {  40, "STRM_CNT_INT",  0, 0,  -1 },
-    {  41, "STRM_CNT_LP",  0, 0,  -1 },
-    {  42, "STRM_OVR_INT",  0, 0,  -1 },
-    {  43, "STRM_OVR_LP",  0, 0,  -1 },
-    {  44, "STRM_RACE_INT",  0, 0,  -1 },
-    {  45, "STRM_RACE_LP",  0, 0,  -1 },
-    {  46, "STRM_FIGHT_INT",  0, 0,  -1 },
-    {  47, "STRM_FIGHT_LP",  0, 0,  -1 },
-    {  48, "STRM_OMK_INT",  0, 0,  -1 },
-    {  49, "STRM_OMK_LP",  0, 0,  -1 },
-    {  50, "STRM_PILOT_INT",  0, 0,  -1 },
-    {  51, "STRM_PILOT_LP",  0, 0,  -1 },
-    {  52, "STRM_BILI_INT",  0, 0,  -1 },
-    {  53, "STRM_BILI_LP",  0, 0,  -1 },
-    {  54, "STRM_BWL_INT",  0, 0,  -1 },
-    {  55, "STRM_BWL_LP",  0, 0,  -1 },
-    {  56, "STRM_GLF_INT",  0, 0,  -1 },
-    {  57, "STRM_GLF_LP",  0, 0,  -1 },
-    {  58, "STRM_OMK2_INT",  0, 0,  -1 },
-    {  59, "STRM_OMK2_LP",  0, 0,  -1 },
-    {  60, "STRM_GREP_INT",  0, 0,  -1 },
-    {  61, "STRM_GREP_LP",  0, 0,  -1 },
-    {  62, "STRM_RESULT_INT",  0, 0,  -1 },
-    {  63, "STRM_RESULT_LP",  0, 0,  -1 },
-    {  64, "STRM_HYO_INT",  0, 0,  -1 },
-    {  65, "STRM_HYO_LP",  0, 0,  -1 },
-    {  66, "STRM_ENT_INT",  0, 0,  -1 },
-    {  67, "STRM_ENT_LP",  0, 0,  -1 },
-    {  68, "STRM_END_INT",  0, 0,  -1 },
-    {  69, "STRM_END_LP",  0, 0,  -1 },
-    {  70, "STRM_ROLL_INT",  0, 0,  -1 },
-    {  71, "STRM_ROLL_LP",  0, 0,  -1 },
-    {  72, "STRM_OPT_INT",  0, 0,  -1 },
-    {  73, "STRM_OPT_LP",  0, 0,  -1 },
-    {  -2, "GRPend",  1, 0,  -1 },
+    {  -1, "GRPstream",                   1, 0,  -1 },
+    {   0, "STRM_THEME_INT",              0, 0,  -1 },
+    {   1, "STRM_THEME_LP",               0, 0,  -1 },
+    {   2, "STRM_ADV_INT",                0, 0,  -1 },
+    {   3, "STRM_ADV_LP",                 0, 0,  -1 },
+    {   4, "STRM_SEL_INT",                0, 0,  -1 },
+    {   5, "STRM_SEL_LP",                 0, 0,  -1 },
+    {   6, "STRM_SEL2_INT",               0, 0,  -1 },
+    {   7, "STRM_SEL2_LP",                0, 0,  -1 },
+    {   8, "STRM_SEL_RACE_INT",           0, 0,  -1 },
+    {   9, "STRM_SEL_RACE_LP",            0, 0,  -1 },
+    {  10, "STRM_SEL_FIGHT_INT",          0, 0,  -1 },
+    {  11, "STRM_SEL_FIGHT_LP",           0, 0,  -1 },
+    {  12, "STRM_SEL_TARGET_INT",         0, 0,  -1 },
+    {  13, "STRM_SEL_TARGET_LP",          0, 0,  -1 },
+    {  14, "STRM_SEL_BILL_INT",           0, 0,  -1 },
+    {  15, "STRM_SEL_BILL_LP",            0, 0,  -1 },
+    {  16, "STRM_SEL_BOWL_INT",           0, 0,  -1 },
+    {  17, "STRM_SEL_BOWL_LP",            0, 0,  -1 },
+    {  18, "STRM_SEL_GOLF_INT",           0, 0,  -1 },
+    {  19, "STRM_SEL_GOLF_LP",            0, 0,  -1 },
+    {  20, "STRM_ST1_INT",                0, 0,  -1 },
+    {  21, "STRM_ST1_LP",                 0, 0,  -1 },
+    {  22, "STRM_ST2_INT",                0, 0,  -1 },
+    {  23, "STRM_ST2_LP",                 0, 0,  -1 },
+    {  24, "STRM_ST3_INT",                0, 0,  -1 },
+    {  25, "STRM_ST3_LP",                 0, 0,  -1 },
+    {  26, "STRM_ST4_INT",                0, 0,  -1 },
+    {  27, "STRM_ST4_LP",                 0, 0,  -1 },
+    {  28, "STRM_ST5_INT",                0, 0,  -1 },
+    {  29, "STRM_ST5_LP",                 0, 0,  -1 },
+    {  30, "STRM_ST6_INT",                0, 0,  -1 },
+    {  31, "STRM_ST6_LP",                 0, 0,  -1 },
+    {  32, "STRM_ST7_INT",                0, 0,  -1 },
+    {  33, "STRM_ST7_LP",                 0, 0,  -1 },
+    {  34, "STRM_ST8_INT",                0, 0,  -1 },
+    {  35, "STRM_ST8_LP",                 0, 0,  -1 },
+    {  36, "STRM_STB_INT",                0, 0,  -1 },
+    {  37, "STRM_STB_LP",                 0, 0,  -1 },
+    {  38, "STRM_STM_INT",                0, 0,  -1 },
+    {  39, "STRM_STM_LP",                 0, 0,  -1 },
+    {  40, "STRM_CNT_INT",                0, 0,  -1 },
+    {  41, "STRM_CNT_LP",                 0, 0,  -1 },
+    {  42, "STRM_OVR_INT",                0, 0,  -1 },
+    {  43, "STRM_OVR_LP",                 0, 0,  -1 },
+    {  44, "STRM_RACE_INT",               0, 0,  -1 },
+    {  45, "STRM_RACE_LP",                0, 0,  -1 },
+    {  46, "STRM_FIGHT_INT",              0, 0,  -1 },
+    {  47, "STRM_FIGHT_LP",               0, 0,  -1 },
+    {  48, "STRM_OMK_INT",                0, 0,  -1 },
+    {  49, "STRM_OMK_LP",                 0, 0,  -1 },
+    {  50, "STRM_PILOT_INT",              0, 0,  -1 },
+    {  51, "STRM_PILOT_LP",               0, 0,  -1 },
+    {  52, "STRM_BILI_INT",               0, 0,  -1 },
+    {  53, "STRM_BILI_LP",                0, 0,  -1 },
+    {  54, "STRM_BWL_INT",                0, 0,  -1 },
+    {  55, "STRM_BWL_LP",                 0, 0,  -1 },
+    {  56, "STRM_GLF_INT",                0, 0,  -1 },
+    {  57, "STRM_GLF_LP",                 0, 0,  -1 },
+    {  58, "STRM_OMK2_INT",               0, 0,  -1 },
+    {  59, "STRM_OMK2_LP",                0, 0,  -1 },
+    {  60, "STRM_GREP_INT",               0, 0,  -1 },
+    {  61, "STRM_GREP_LP",                0, 0,  -1 },
+    {  62, "STRM_RESULT_INT",             0, 0,  -1 },
+    {  63, "STRM_RESULT_LP",              0, 0,  -1 },
+    {  64, "STRM_HYO_INT",                0, 0,  -1 },
+    {  65, "STRM_HYO_LP",                 0, 0,  -1 },
+    {  66, "STRM_ENT_INT",                0, 0,  -1 },
+    {  67, "STRM_ENT_LP",                 0, 0,  -1 },
+    {  68, "STRM_END_INT",                0, 0,  -1 },
+    {  69, "STRM_END_LP",                 0, 0,  -1 },
+    {  70, "STRM_ROLL_INT",               0, 0,  -1 },
+    {  71, "STRM_ROLL_LP",                0, 0,  -1 },
+    {  72, "STRM_OPT_INT",                0, 0,  -1 },
+    {  73, "STRM_OPT_LP",                 0, 0,  -1 },
+    {  -2, "GRPend",                      1, 0,  -1 },
 };
 
 struct Struct801B2A5C lbl_801B2A5C[] =
@@ -1300,6 +1304,21 @@ u8 lbl_801FE5C8[0x10];
 FORCE_BSS_ORDER(lbl_801FE5C8)
 DTKTrack lbl_801FE5D8[0x94];
 FORCE_BSS_ORDER(lbl_801FE5D8)
+u8 lbl_80201418[0x3C];
+FORCE_BSS_ORDER(lbl_80201418)
+//u8 lbl_80201454[0x48];
+struct
+{
+    u8 filler0[0x3C];
+    u32 unk3C;  //8678
+    u32 unk40;  //867C
+    u32 unk44;  //8680
+} lbl_80201454;
+FORCE_BSS_ORDER(lbl_80201454)
+u8 lbl_8020149C[0x24];
+FORCE_BSS_ORDER(lbl_8020149C)
+u8 lbl_802014C0[0x20];
+FORCE_BSS_ORDER(lbl_802014C0)
 
 void func_800275A0(s32 arg0, s32 arg1)
 {
@@ -1373,4 +1392,286 @@ void *func_8002773C(char *fileName, u32 *sizeOut)
     }
     file_close(&file);
     return buffer;
+}
+
+extern s32 lbl_802F1DC4;
+extern s32 lbl_802F1DC8;
+extern float lbl_802F1D40;
+
+void SoundOff(u16);
+
+s8 func_8002BB20();
+
+#define SOME_MACRO(a, b, c, d) \
+    ((a) | (((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25))
+
+#define SOME_MACRO2(a, b, c, d) \
+    ((((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25) | (a))
+
+void func_8002786C(void)
+{
+    s8 sp15 = 0;
+    s8 sp14 = 0;
+    Vec sp8 = {0};
+    float temp_f1;
+    s8 r3;
+
+    if (!(advDemoInfo.flags & 0x100) && gameMode != MD_SEL)
+    {
+        if (((gameSubmode == SMD_SEL_NGC_MAIN) && lbl_801EEDA8.unk100 == 0.0f) || is_load_queue_not_empty())
+        {
+            if (lbl_802F1DC4 != 0)
+            {
+                SoundOff(lbl_80201454.unk3C);
+                SoundOff(lbl_80201454.unk40);
+                SoundOff(lbl_80201454.unk44);
+                lbl_802F1DC4 = 0;
+            }
+            if (lbl_802F1DC8 != 0)
+            {
+                SoundOffID(0x1F7);
+                lbl_802F1DC8 = 0;
+            }
+        }
+        else
+        {
+            if (backgroundInfo.bgId == BG_TYPE_STORM_D || backgroundInfo.bgId == BG_TYPE_STM)
+            {
+                if (lbl_802F1DC4 == 0 && lbl_802F1D40 == 1.0)
+                {
+                    lbl_802F1DC4 = 1;
+                    lbl_80201454.unk3C = func_8002B5EC(0x4C);
+                }
+                if ((int)lbl_80206DEC.u_stageTimer % 300 == 60)
+                {
+                    lbl_80201454.unk40 = func_8002B610(
+                        SOME_MACRO(
+                            0x4D,
+                            ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 0x23,
+                            ((int)(59.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40,
+                            ((int)(77.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40
+                        )
+                    );
+                    SoundPitch(lbl_80201454.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
+                }
+                if ((int)lbl_80206DEC.u_stageTimer % 1000 == 200)
+                {
+                    lbl_80201454.unk44 = func_8002B610(
+                        SOME_MACRO(
+                            0x4E,
+                            ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 5,
+                            ((int)(59.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40,
+                            ((int)(77.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40
+                        )
+                    );
+                    SoundPitch(lbl_80201454.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
+                }
+            }
+            else if (lbl_802F1DC4 != 0)
+            {
+                SoundOff(lbl_80201454.unk3C);
+                SoundOff(lbl_80201454.unk40);
+                SoundOff(lbl_80201454.unk44);
+                lbl_802F1DC4 = 0;
+            }
+            if (backgroundInfo.bgId == BG_TYPE_JUN
+             && (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL || modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE))
+            {
+                if (lbl_802F1DC8 == 0 && lbl_802F1D40 == 1.0)
+                {
+                    lbl_802F1DC8 = 1;
+                    u_play_sound(0x389F7);
+                }
+                if ((int)lbl_80206DEC.u_stageTimer % 1000 == 200)
+                {
+                    u_play_sound(
+                        SOME_MACRO(
+                            0x1F6,
+                            ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 0x28,
+                            ((int)(59.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40,
+                            ((int)(77.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40
+                        )
+                    );
+                }
+            }
+            else if ((s32) lbl_802F1DC8 != 0)
+            {
+                SoundOffID(0xC4);
+                lbl_802F1DC8 = 0;
+            }
+            temp_f1 = lbl_80206DEC.u_stageTimer;
+            if (0.0 != temp_f1)
+            {
+                switch (currStageId)
+                {
+                case ST_109_FACTORY:
+                    if ((int)temp_f1 % 180 == 60)
+                    {
+                        sp8.x = 0.0f;
+                        sp8.y = 7.5f;
+                        sp8.z = -17.2f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
+                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                    }
+                    break;
+                case ST_061_TWIN_ATTACKER:
+                    if ((int)temp_f1 % 75 == 0)
+                    {
+                        if ((int)temp_f1 % 150 == 0)
+                        {
+                            sp8.x = -3.0f;
+                            sp8.y = 0.25f;
+                            sp8.z = 42.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            sp8.x = -3.0f;
+                            sp8.y = 0.25f;
+                            sp8.z = -15.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                        }
+                        else
+                        {
+                            sp8.x = 2.0f;
+                            sp8.y = 0.25f;
+                            sp8.z = 42.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            sp8.x = 2.0f;
+                            sp8.y = 0.25f;
+                            sp8.z = -15.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                        }
+                    }
+                    break;
+                case ST_038_SPIKY:
+                    if ((int)temp_f1 % 75 == 0)
+                    {
+                        if ((int)temp_f1 % 150 == 0)
+                        {
+                            sp8.x = -3.0f;
+                            sp8.y = 0.5f;
+                            sp8.z = -9.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            sp8.x = -3.0f;
+                            sp8.y = 0.5f;
+                            sp8.z = 4.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                        }
+                        else
+                        {
+                            sp8.x = 3.0f;
+                            sp8.y = 0.5f;
+                            sp8.z = -9.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            sp8.x = 3.0f;
+                            sp8.y = 0.5f;
+                            sp8.z = 4.0f;
+                            r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
+                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                        }
+                    }
+                    break;
+                case ST_023_JUMPIES:
+                    if ((int)temp_f1 % 150 == 90)
+                    {
+                        sp8.x = 0.0f;
+                        sp8.y = 0.0f;
+                        sp8.z = -3.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
+                        r3 *= 0.333;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        sp8.x = 0.0f;
+                        sp8.y = 3.0f;
+                        sp8.z = -15.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
+                        r3 *= 0.333;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        sp8.x = 0.0f;
+                        sp8.y = 7.0f;
+                        sp8.z = -26.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
+                        r3 *= 0.333;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                    }
+                    break;
+                case ST_113_DAA_LOO_MAA:
+                    if ((int)temp_f1 % 150 == 0)
+                    {
+                        sp8.x = 0.0f;
+                        sp8.y = 0.0f;
+                        sp8.z = 0.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
+                        r3 += 20;
+                        u_play_sound(SOME_MACRO2(0x40, r3, sp15, sp14));
+                    }
+                    break;
+                case ST_107_BREATHE:
+                    if ((int)temp_f1 % 0x78 == 1)
+                    {
+                        sp8.x = 16.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = 16.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        sp8.x = -16.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = -16.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        sp8.x = 18.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = -18.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        sp8.x = -18.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = 18.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                    }
+                    break;
+                case ST_077_QUAKE:
+                    if ((int)temp_f1 % 480 == 150)
+                    {
+                        sp8.x = -16.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = 16.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        sp8.x = 16.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = -16.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        sp8.x = 12.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = 12.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        sp8.x = -12.0f;
+                        sp8.y = 0.5f;
+                        sp8.z = -12.0f;
+                        r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
+                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                    }
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void *u_alloc(u32 size)
+{
+    return OSAlloc(size);
+}
+
+void u_free(void *ptr)
+{
+    OSFree(ptr);
 }

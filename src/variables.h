@@ -529,7 +529,7 @@ extern struct Struct801EEC90 lbl_801EEC90;
 
 // extern ? lbl_801EED50;
 extern struct Struct801EED88 lbl_801EED88;
-// extern ? lbl_801EEDA8;
+extern struct Struct801EEDA8 lbl_801EEDA8;
 // extern ? lbl_801EEEC0;
 
 // extern ? lbl_801EFC18;
