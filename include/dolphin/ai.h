@@ -3,5 +3,7 @@
 
 void AIInit(u8 *stack);
 void AISetStreamSampleRate(u32 rate);
+u32 AIGetStreamSampleCount(void);
+void AIResetStreamSampleCount(void);
 
 #endif

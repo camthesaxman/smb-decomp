@@ -281,159 +281,159 @@ const struct Struct8011057C lbl_8011057C[] =
     {  93, "SND_SED_VO1_BOYM_SEEYOU",      15, 0,  -1 },
     {  66, "SND_SED_VO1_BOYH_START1",      15, 0,  30 },
     {  59, "SND_SED_VO1_BOYH_OCHISOU1",    16, 8,  58 },
-    {  -1, "DMY_CODE", 16, 7,  87 },
-    {  -1, "DMY_CODE", 16, 7,  90 },
-    {  -1, "DMY_CODE", 16, 7,  97 },
-    {  60, "SND_SED_VO1_BOYH_OCHISOU2", 16, 8,  59 },
-    {  -1, "DMY_CODE", 16, 7,  91 },
-    {  61, "SND_SED_VO1_BOYH_OCHISOU3", 16, 8,  63 },
-    {  -1, "DMY_CODE", 16, 7,  92 },
-    {  62, "SND_SED_VO1_BOYH_OCHISOU5", 16, 8,  83 },
-    {  -1, "DMY_CODE", 16, 7,  93 },
-    {  63, "SND_SED_VO1_BOYH_OCHISOU7", 16, 8,  84 },
-    {  -1, "DMY_CODE", 16, 7,  94 },
-    {  64, "SND_SED_VO1_BOYH_OCHISOU8", 16, 8,  85 },
-    {  -1, "DMY_CODE", 16, 7,  95 },
-    {  65, "SND_SED_VO1_BOYH_OCHISOU9", 16, 8,  86 },
-    {  -1, "DMY_CODE", 16, 7,  96 },
-    {  58, "SND_SED_VO1_BOYH_LAUGH2", 15, 0,  82 },
-    {  -1, "DMY_CODE", 19, 0, 301 },
-    {  55, "SND_SED_VO1_BOYH_GOAL1", 15, 0,  89 },
-    {  -1, "DMY_CODE", 19, 0, 304 },
-    {  56, "SND_SED_VO1_BOYH_GOAL2", 15, 0,  88 },
-    {  -1, "DMY_CODE", 19, 0, 303 },
-    {  57, "SND_SED_VO1_BOYH_GOAL3", 15, 0,  27 },
-    {  -1, "DMY_CODE", 19, 0, 302 },
-    {  53, "SND_SED_VO1_BOYH_FALL1", 15, 0,  -1 },
-    {  54, "SND_SED_VO1_BOYH_FALL1L", 15, 0,  81 },
-    {  -1, "DMY_CODE", 15, 0,  29 },
-    {   6, "GRPgirl",  1, 0,  -1 },
-    { 156, "SND_SED_VO2_GIRLM_START", 15, 0,  -1 },
-    { 157, "SND_SED_VO2_GIRLM_TIMEOVER", 15, 0,  62 },
-    {  -1, "DMY_CODE", 19, 1, 556 },
-    { 150, "SND_SED_VO2_GIRLM_OCHISOU1", 15, 0,  -1 },
-    { 151, "SND_SED_VO2_GIRLM_OCHISOU2", 15, 0,  -1 },
-    { 152, "SND_SED_VO2_GIRLM_OCHISOU3", 15, 0,  -1 },
-    { 124, "SND_SED_VO2_GIRLM_BGET1", 15, 0,  -1 },
-    { 125, "SND_SED_VO2_GIRLM_BGET2", 15, 0,  -1 },
-    { 126, "SND_SED_VO2_GIRLM_BGET3", 17, 0,  31 },
-    { 127, "SND_SED_VO2_GIRLM_BGET4", 15, 0,  -1 },
-    { 128, "SND_SED_VO2_GIRLM_BGET5", 15, 0,  -1 },
-    { 120, "SND_SED_VO2_GIRLM_BBGET1", 15, 0,  82 },
-    {  -1, "DMY_CODE", 19, 1, 301 },
-    { 121, "SND_SED_VO2_GIRLM_BBGET2", 18, 0,  32 },
-    { 122, "SND_SED_VO2_GIRLM_BBGET3", 15, 0,  88 },
-    {  -1, "DMY_CODE", 19, 1, 303 },
-    { 123, "SND_SED_VO2_GIRLM_BBGET4", 15, 0,  -1 },
-    { 131, "SND_SED_VO2_GIRLM_COLI1", 16, 8,  23 },
-    { 132, "SND_SED_VO2_GIRLM_COLI2", 16, 8,  -1 },
-    { 133, "SND_SED_VO2_GIRLM_COLI3", 16, 8,  -1 },
-    { 134, "SND_SED_VO2_GIRLM_COLI4", 16, 8,  26 },
-    { 135, "SND_SED_VO2_GIRLM_COLI5", 16, 8,  -1 },
-    { 136, "SND_SED_VO2_GIRLM_COLI6", 16, 8,  24 },
-    { 137, "SND_SED_VO2_GIRLM_COLI7", 16, 8,  25 },
-    { 138, "SND_SED_VO2_GIRLM_COLI8", 16, 8,  -1 },
-    { 139, "SND_SED_VO2_GIRLM_COLI9", 16, 8,  -1 },
-    { 153, "SND_SED_VO2_GIRLM_QUEST1", 15, 0,  -1 },
-    { 154, "SND_SED_VO2_GIRLM_QUEST2", 15, 0,  -1 },
-    { 118, "SND_SED_VO2_GIRLM_ANGLY1", 15, 0,  -1 },
-    { 119, "SND_SED_VO2_GIRLM_ANGLY2", 15, 0,  -1 },
-    { 140, "SND_SED_VO2_GIRLM_CRY1", 15, 0,  28 },
-    {  -1, "DMY_CODE", 15, 1, 109 },
-    {  -1, "DMY_CODE", 19, 1, 300 },
-    { 145, "SND_SED_VO2_GIRLM_GOAL1", 15, 0,  89 },
-    {  -1, "DMY_CODE", 19, 1, 304 },
-    { 146, "SND_SED_VO2_GIRLM_GOAL2", 15, 0,  -1 },
-    { 147, "SND_SED_VO2_GIRLM_GOAL3", 19, 0,  80 },
-    {  -1, "DMY_CODE", 15, 1,  27 },
-    {  -1, "DMY_CODE", 19, 1, 302 },
-    { 148, "SND_SED_VO2_GIRLM_GOAL4", 15, 0,  -1 },
-    { 141, "SND_SED_VO2_GIRLM_FALL1", 15, 0,  -1 },
-    { 144, "SND_SED_VO2_GIRLM_FALL2", 15, 0,  -1 },
-    { 149, "SND_SED_VO2_GIRLM_HELLO", 15, 0,  -1 },
-    { 129, "SND_SED_VO2_GIRLM_BYE1", 15, 0,  -1 },
-    { 130, "SND_SED_VO2_GIRLM_BYE2", 15, 0,  -1 },
-    { 155, "SND_SED_VO2_GIRLM_SEEYOU", 15, 0,  -1 },
-    { 117, "SND_SED_VO2_GIRLH_START1", 15, 0,  30 },
-    { 112, "SND_SED_VO2_GIRLH_OCHISOU1", 16, 8,  58 },
-    {  -1, "DMY_CODE", 15, 1,  86 },
-    {  -1, "DMY_CODE", 16, 8,  90 },
-    {  -1, "DMY_CODE", 16, 8,  94 },
-    { 113, "SND_SED_VO2_GIRLH_OCHISOU2", 16, 8,  59 },
-    {  -1, "DMY_CODE", 15, 1,  87 },
-    {  -1, "DMY_CODE", 16, 8,  91 },
-    {  -1, "DMY_CODE", 16, 8,  95 },
-    { 114, "SND_SED_VO2_GIRLH_OCHISOU3", 16, 8,  63 },
-    {  -1, "DMY_CODE", 15, 1,  85 },
-    {  -1, "DMY_CODE", 16, 8,  92 },
-    {  -1, "DMY_CODE", 16, 8,  96 },
-    { 115, "SND_SED_VO2_GIRLH_OCHISOU5", 16, 8,  84 },
-    {  -1, "DMY_CODE", 16, 8,  93 },
-    {  -1, "DMY_CODE", 16, 8,  97 },
-    { 116, "SND_SED_VO2_GIRLH_OCHISOU8", 15, 0,  83 },
-    { 110, "SND_SED_VO2_GIRLH_FALL2", 15, 0,  -1 },
-    { 111, "SND_SED_VO2_GIRLH_FALL2L", 15, 0,  81 },
-    {  -1, "DMY_CODE", 15, 1,  29 },
-    {   5, "GRPbaby",  1, 0,  -1 },
-    {  49, "SND_SED_VO3_BABYM_START2", 15, 0,  -1 },
-    {  50, "SND_SED_VO3_BABYM_START3", 19, 0,  80 },
-    {  51, "SND_SED_VO3_BABYM_TIMEOVER", 15, 0,  -1 },
-    {  44, "SND_SED_VO3_BABYM_OCHISOU1", 15, 0,  -1 },
-    {  45, "SND_SED_VO3_BABYM_OCHISOU2", 15, 0,  -1 },
-    {  46, "SND_SED_VO3_BABYM_OCHISOU3", 15, 0,  -1 },
-    {  27, "SND_SED_VO3_BABYM_BGET1", 17, 0,  31 },
-    {  28, "SND_SED_VO3_BABYM_BGET2", 15, 0,  -1 },
-    {  29, "SND_SED_VO3_BABYM_BGET3", 15, 0,  -1 },
-    {  24, "SND_SED_VO3_BABYM_BBGET1", 15, 0,  -1 },
-    {  25, "SND_SED_VO3_BABYM_BBGET2", 18, 0,  32 },
-    {  26, "SND_SED_VO3_BABYM_BBGET3", 15, 0,  82 },
-    {  -1, "DMY_CODE", 19, 2, 301 },
-    {  30, "SND_SED_VO3_BABYM_COLI1", 16, 8,  -1 },
-    {  31, "SND_SED_VO3_BABYM_COLI2", 16, 8,  24 },
-    {  32, "SND_SED_VO3_BABYM_COLI4", 16, 8,  25 },
-    {  33, "SND_SED_VO3_BABYM_COLI5", 16, 8,  -1 },
-    {  34, "SND_SED_VO3_BABYM_COLI6", 16, 8,  -1 },
-    {  47, "SND_SED_VO3_BABYM_QUEST1", 15, 0,  -1 },
-    {  48, "SND_SED_VO3_BABYM_QUEST2", 15, 0,  -1 },
-    {  23, "SND_SED_VO3_BABYM_ANGLY", 15, 0,  -1 },
-    {  43, "SND_SED_VO3_BABYM_LAUGH", 15, 0,  -1 },
-    {  35, "SND_SED_VO3_BABYM_CRY1", 15, 0, 109 },
-    {  36, "SND_SED_VO3_BABYM_CRY2", 15, 0,  28 },
-    {  -1, "DMY_CODE", 19, 2, 300 },
-    {  41, "SND_SED_VO3_BABYM_GOAL1", 15, 0,  27 },
-    {  -1, "DMY_CODE", 19, 2, 302 },
-    {  42, "SND_SED_VO3_BABYM_GOAL2", 15, 0,  88 },
-    {  -1, "DMY_CODE", 19, 2, 303 },
-    {  37, "SND_SED_VO3_BABYM_FALL1", 15, 0,  -1 },
-    {  38, "SND_SED_VO3_BABYM_FALL2", 15, 0,  -1 },
-    {  39, "SND_SED_VO3_BABYM_FALL3", 15, 0,  -1 },
-    {  40, "SND_SED_VO3_BABYM_FALL4", 15, 0,  -1 },
-    {  21, "SND_SED_VO3_BABYH_START1", 15, 0,  30 },
-    {  22, "SND_SED_VO3_BABYH_TIMEOVER3", 15, 0,  62 },
-    {  -1, "DMY_CODE", 19, 2, 556 },
-    {  15, "SND_SED_VO3_BABYH_OCHISOU1", 16, 8,  58 },
-    {  -1, "DMY_CODE", 16, 9,  90 },
-    {  -1, "DMY_CODE", 16, 9,  97 },
-    {  16, "SND_SED_VO3_BABYH_OCHISOU2", 16, 8,  59 },
-    {  -1, "DMY_CODE", 15, 2,  87 },
-    {  -1, "DMY_CODE", 16, 9,  91 },
-    {  17, "SND_SED_VO3_BABYH_OCHISOU3", 16, 8,  63 },
-    {  -1, "DMY_CODE", 15, 2,  86 },
-    {  -1, "DMY_CODE", 16, 9,  92 },
-    {  18, "SND_SED_VO3_BABYH_OCHISOU4", 16, 8,  83 },
-    {  -1, "DMY_CODE", 16, 9,  93 },
-    {  -1, "DMY_CODE", 16, 9,  94 },
-    {  19, "SND_SED_VO3_BABYH_OCHISOU6", 16, 8,  84 },
-    {  -1, "DMY_CODE", 16, 9,  95 },
-    {  20, "SND_SED_VO3_BABYH_OCHISOU7", 16, 8,  85 },
-    {  -1, "DMY_CODE", 16, 9,  96 },
-    {  10, "SND_SED_VO3_BABYH_BGET4", 16, 8,  23 },
-    {  11, "SND_SED_VO3_BABYH_COLI4", 16, 8,  26 },
-    {  14, "SND_SED_VO3_BABYH_LAUGH1", 15, 0,  89 },
-    {  -1, "DMY_CODE", 19, 2, 304 },
-    {  12, "SND_SED_VO3_BABYH_FALL1", 15, 0,  -1 },
-    {  13, "SND_SED_VO3_BABYH_FALL1L", 15, 0,  81 },
-    {  -1, "DMY_CODE", 15, 2,  29 },
+    {  -1, "DMY_CODE",                     16, 7,  87 },
+    {  -1, "DMY_CODE",                     16, 7,  90 },
+    {  -1, "DMY_CODE",                     16, 7,  97 },
+    {  60, "SND_SED_VO1_BOYH_OCHISOU2",    16, 8,  59 },
+    {  -1, "DMY_CODE",                     16, 7,  91 },
+    {  61, "SND_SED_VO1_BOYH_OCHISOU3",    16, 8,  63 },
+    {  -1, "DMY_CODE",                     16, 7,  92 },
+    {  62, "SND_SED_VO1_BOYH_OCHISOU5",    16, 8,  83 },
+    {  -1, "DMY_CODE",                     16, 7,  93 },
+    {  63, "SND_SED_VO1_BOYH_OCHISOU7",    16, 8,  84 },
+    {  -1, "DMY_CODE",                     16, 7,  94 },
+    {  64, "SND_SED_VO1_BOYH_OCHISOU8",    16, 8,  85 },
+    {  -1, "DMY_CODE",                     16, 7,  95 },
+    {  65, "SND_SED_VO1_BOYH_OCHISOU9",    16, 8,  86 },
+    {  -1, "DMY_CODE",                     16, 7,  96 },
+    {  58, "SND_SED_VO1_BOYH_LAUGH2",      15, 0,  82 },
+    {  -1, "DMY_CODE",                     19, 0, 301 },
+    {  55, "SND_SED_VO1_BOYH_GOAL1",       15, 0,  89 },
+    {  -1, "DMY_CODE",                     19, 0, 304 },
+    {  56, "SND_SED_VO1_BOYH_GOAL2",       15, 0,  88 },
+    {  -1, "DMY_CODE",                     19, 0, 303 },
+    {  57, "SND_SED_VO1_BOYH_GOAL3",       15, 0,  27 },
+    {  -1, "DMY_CODE",                     19, 0, 302 },
+    {  53, "SND_SED_VO1_BOYH_FALL1",       15, 0,  -1 },
+    {  54, "SND_SED_VO1_BOYH_FALL1L",      15, 0,  81 },
+    {  -1, "DMY_CODE",                     15, 0,  29 },
+    {   6, "GRPgirl",                       1, 0,  -1 },
+    { 156, "SND_SED_VO2_GIRLM_START",      15, 0,  -1 },
+    { 157, "SND_SED_VO2_GIRLM_TIMEOVER",   15, 0,  62 },
+    {  -1, "DMY_CODE",                     19, 1, 556 },
+    { 150, "SND_SED_VO2_GIRLM_OCHISOU1",   15, 0,  -1 },
+    { 151, "SND_SED_VO2_GIRLM_OCHISOU2",   15, 0,  -1 },
+    { 152, "SND_SED_VO2_GIRLM_OCHISOU3",   15, 0,  -1 },
+    { 124, "SND_SED_VO2_GIRLM_BGET1",      15, 0,  -1 },
+    { 125, "SND_SED_VO2_GIRLM_BGET2",      15, 0,  -1 },
+    { 126, "SND_SED_VO2_GIRLM_BGET3",      17, 0,  31 },
+    { 127, "SND_SED_VO2_GIRLM_BGET4",      15, 0,  -1 },
+    { 128, "SND_SED_VO2_GIRLM_BGET5",      15, 0,  -1 },
+    { 120, "SND_SED_VO2_GIRLM_BBGET1",     15, 0,  82 },
+    {  -1, "DMY_CODE",                     19, 1, 301 },
+    { 121, "SND_SED_VO2_GIRLM_BBGET2",     18, 0,  32 },
+    { 122, "SND_SED_VO2_GIRLM_BBGET3",     15, 0,  88 },
+    {  -1, "DMY_CODE",                     19, 1, 303 },
+    { 123, "SND_SED_VO2_GIRLM_BBGET4",     15, 0,  -1 },
+    { 131, "SND_SED_VO2_GIRLM_COLI1",      16, 8,  23 },
+    { 132, "SND_SED_VO2_GIRLM_COLI2",      16, 8,  -1 },
+    { 133, "SND_SED_VO2_GIRLM_COLI3",      16, 8,  -1 },
+    { 134, "SND_SED_VO2_GIRLM_COLI4",      16, 8,  26 },
+    { 135, "SND_SED_VO2_GIRLM_COLI5",      16, 8,  -1 },
+    { 136, "SND_SED_VO2_GIRLM_COLI6",      16, 8,  24 },
+    { 137, "SND_SED_VO2_GIRLM_COLI7",      16, 8,  25 },
+    { 138, "SND_SED_VO2_GIRLM_COLI8",      16, 8,  -1 },
+    { 139, "SND_SED_VO2_GIRLM_COLI9",      16, 8,  -1 },
+    { 153, "SND_SED_VO2_GIRLM_QUEST1",     15, 0,  -1 },
+    { 154, "SND_SED_VO2_GIRLM_QUEST2",     15, 0,  -1 },
+    { 118, "SND_SED_VO2_GIRLM_ANGLY1",     15, 0,  -1 },
+    { 119, "SND_SED_VO2_GIRLM_ANGLY2",     15, 0,  -1 },
+    { 140, "SND_SED_VO2_GIRLM_CRY1",       15, 0,  28 },
+    {  -1, "DMY_CODE",                     15, 1, 109 },
+    {  -1, "DMY_CODE",                     19, 1, 300 },
+    { 145, "SND_SED_VO2_GIRLM_GOAL1",      15, 0,  89 },
+    {  -1, "DMY_CODE",                     19, 1, 304 },
+    { 146, "SND_SED_VO2_GIRLM_GOAL2",      15, 0,  -1 },
+    { 147, "SND_SED_VO2_GIRLM_GOAL3",      19, 0,  80 },
+    {  -1, "DMY_CODE",                     15, 1,  27 },
+    {  -1, "DMY_CODE",                     19, 1, 302 },
+    { 148, "SND_SED_VO2_GIRLM_GOAL4",      15, 0,  -1 },
+    { 141, "SND_SED_VO2_GIRLM_FALL1",      15, 0,  -1 },
+    { 144, "SND_SED_VO2_GIRLM_FALL2",      15, 0,  -1 },
+    { 149, "SND_SED_VO2_GIRLM_HELLO",      15, 0,  -1 },
+    { 129, "SND_SED_VO2_GIRLM_BYE1",       15, 0,  -1 },
+    { 130, "SND_SED_VO2_GIRLM_BYE2",       15, 0,  -1 },
+    { 155, "SND_SED_VO2_GIRLM_SEEYOU",     15, 0,  -1 },
+    { 117, "SND_SED_VO2_GIRLH_START1",     15, 0,  30 },
+    { 112, "SND_SED_VO2_GIRLH_OCHISOU1",   16, 8,  58 },
+    {  -1, "DMY_CODE",                     15, 1,  86 },
+    {  -1, "DMY_CODE",                     16, 8,  90 },
+    {  -1, "DMY_CODE",                     16, 8,  94 },
+    { 113, "SND_SED_VO2_GIRLH_OCHISOU2",   16, 8,  59 },
+    {  -1, "DMY_CODE",                     15, 1,  87 },
+    {  -1, "DMY_CODE",                     16, 8,  91 },
+    {  -1, "DMY_CODE",                     16, 8,  95 },
+    { 114, "SND_SED_VO2_GIRLH_OCHISOU3",   16, 8,  63 },
+    {  -1, "DMY_CODE",                     15, 1,  85 },
+    {  -1, "DMY_CODE",                     16, 8,  92 },
+    {  -1, "DMY_CODE",                     16, 8,  96 },
+    { 115, "SND_SED_VO2_GIRLH_OCHISOU5",   16, 8,  84 },
+    {  -1, "DMY_CODE",                     16, 8,  93 },
+    {  -1, "DMY_CODE",                     16, 8,  97 },
+    { 116, "SND_SED_VO2_GIRLH_OCHISOU8",   15, 0,  83 },
+    { 110, "SND_SED_VO2_GIRLH_FALL2",      15, 0,  -1 },
+    { 111, "SND_SED_VO2_GIRLH_FALL2L",     15, 0,  81 },
+    {  -1, "DMY_CODE",                     15, 1,  29 },
+    {   5, "GRPbaby",                       1, 0,  -1 },
+    {  49, "SND_SED_VO3_BABYM_START2",     15, 0,  -1 },
+    {  50, "SND_SED_VO3_BABYM_START3",     19, 0,  80 },
+    {  51, "SND_SED_VO3_BABYM_TIMEOVER",   15, 0,  -1 },
+    {  44, "SND_SED_VO3_BABYM_OCHISOU1",   15, 0,  -1 },
+    {  45, "SND_SED_VO3_BABYM_OCHISOU2",   15, 0,  -1 },
+    {  46, "SND_SED_VO3_BABYM_OCHISOU3",   15, 0,  -1 },
+    {  27, "SND_SED_VO3_BABYM_BGET1",      17, 0,  31 },
+    {  28, "SND_SED_VO3_BABYM_BGET2",      15, 0,  -1 },
+    {  29, "SND_SED_VO3_BABYM_BGET3",      15, 0,  -1 },
+    {  24, "SND_SED_VO3_BABYM_BBGET1",     15, 0,  -1 },
+    {  25, "SND_SED_VO3_BABYM_BBGET2",     18, 0,  32 },
+    {  26, "SND_SED_VO3_BABYM_BBGET3",     15, 0,  82 },
+    {  -1, "DMY_CODE",                     19, 2, 301 },
+    {  30, "SND_SED_VO3_BABYM_COLI1",      16, 8,  -1 },
+    {  31, "SND_SED_VO3_BABYM_COLI2",      16, 8,  24 },
+    {  32, "SND_SED_VO3_BABYM_COLI4",      16, 8,  25 },
+    {  33, "SND_SED_VO3_BABYM_COLI5",      16, 8,  -1 },
+    {  34, "SND_SED_VO3_BABYM_COLI6",      16, 8,  -1 },
+    {  47, "SND_SED_VO3_BABYM_QUEST1",     15, 0,  -1 },
+    {  48, "SND_SED_VO3_BABYM_QUEST2",     15, 0,  -1 },
+    {  23, "SND_SED_VO3_BABYM_ANGLY",      15, 0,  -1 },
+    {  43, "SND_SED_VO3_BABYM_LAUGH",      15, 0,  -1 },
+    {  35, "SND_SED_VO3_BABYM_CRY1",       15, 0, 109 },
+    {  36, "SND_SED_VO3_BABYM_CRY2",       15, 0,  28 },
+    {  -1, "DMY_CODE",                     19, 2, 300 },
+    {  41, "SND_SED_VO3_BABYM_GOAL1",      15, 0,  27 },
+    {  -1, "DMY_CODE",                     19, 2, 302 },
+    {  42, "SND_SED_VO3_BABYM_GOAL2",      15, 0,  88 },
+    {  -1, "DMY_CODE",                     19, 2, 303 },
+    {  37, "SND_SED_VO3_BABYM_FALL1",      15, 0,  -1 },
+    {  38, "SND_SED_VO3_BABYM_FALL2",      15, 0,  -1 },
+    {  39, "SND_SED_VO3_BABYM_FALL3",      15, 0,  -1 },
+    {  40, "SND_SED_VO3_BABYM_FALL4",      15, 0,  -1 },
+    {  21, "SND_SED_VO3_BABYH_START1",     15, 0,  30 },
+    {  22, "SND_SED_VO3_BABYH_TIMEOVER3",  15, 0,  62 },
+    {  -1, "DMY_CODE",                     19, 2, 556 },
+    {  15, "SND_SED_VO3_BABYH_OCHISOU1",   16, 8,  58 },
+    {  -1, "DMY_CODE",                     16, 9,  90 },
+    {  -1, "DMY_CODE",                     16, 9,  97 },
+    {  16, "SND_SED_VO3_BABYH_OCHISOU2",   16, 8,  59 },
+    {  -1, "DMY_CODE",                     15, 2,  87 },
+    {  -1, "DMY_CODE",                     16, 9,  91 },
+    {  17, "SND_SED_VO3_BABYH_OCHISOU3",   16, 8,  63 },
+    {  -1, "DMY_CODE",                     15, 2,  86 },
+    {  -1, "DMY_CODE",                     16, 9,  92 },
+    {  18, "SND_SED_VO3_BABYH_OCHISOU4",   16, 8,  83 },
+    {  -1, "DMY_CODE",                     16, 9,  93 },
+    {  -1, "DMY_CODE",                     16, 9,  94 },
+    {  19, "SND_SED_VO3_BABYH_OCHISOU6",   16, 8,  84 },
+    {  -1, "DMY_CODE",                     16, 9,  95 },
+    {  20, "SND_SED_VO3_BABYH_OCHISOU7",   16, 8,  85 },
+    {  -1, "DMY_CODE",                     16, 9,  96 },
+    {  10, "SND_SED_VO3_BABYH_BGET4",      16, 8,  23 },
+    {  11, "SND_SED_VO3_BABYH_COLI4",      16, 8,  26 },
+    {  14, "SND_SED_VO3_BABYH_LAUGH1",     15, 0,  89 },
+    {  -1, "DMY_CODE",                     19, 2, 304 },
+    {  12, "SND_SED_VO3_BABYH_FALL1",      15, 0,  -1 },
+    {  13, "SND_SED_VO3_BABYH_FALL1L",     15, 0,  81 },
+    {  -1, "DMY_CODE",                     15, 2,  29 },
     {   8, "GRPgoli",  1, 0,  -1 },
     { 275, "SFXgoli_1up_basic_macro", 15, 0,  82 },
     {  -1, "DMY_CODE", 19, 3, 301 },
@@ -876,255 +876,255 @@ const struct Struct8011057C lbl_8011057C[] =
     { 614, "SFXtriple_score_basic_macro_1",  8, 0, 449 },
     { 615, "SFXvery_good_basic_macro_1",  8, 0, 450 },
     { 616, "SFXexcellent2_basic_macro_1",  8, 0, 451 },
-    { 617, "SFXmiss2_basic_macro_1",  8, 0, 452 },
-    { 618, "SFXround01_basic_macro_2",  8, 0, 512 },
-    { 619, "SFXround02_basic_macro_2",  8, 0, 513 },
-    { 620, "SFXround03_basic_macro_2",  8, 0, 514 },
-    { 621, "SFXround04_basic_macro_2",  8, 0, 515 },
-    { 622, "SFXround05_basic_macro_2",  8, 0, 516 },
-    { 623, "SFXround06_basic_macro_2",  8, 0, 517 },
-    { 624, "SFXround07_basic_macro_1_1",  8, 0, 518 },
-    { 625, "SFXround08_basic_macro_1_1",  8, 0, 519 },
-    { 626, "SFXround09_basic_macro_1_1",  8, 0, 520 },
-    { 627, "SFXround10_basic_macro_1_1",  8, 0, 521 },
-    { 628, "SFXround11_basic_macro_1_1",  8, 0, 522 },
-    { 629, "SFXround12_basic_macro_1_1",  8, 0, 523 },
-    { 630, "SFXround13_basic_macro_1_1",  8, 0, 524 },
-    { 631, "SFXround14_basic_macro_1_1",  8, 0, 525 },
-    { 632, "SFXround15_basic_macro_1_1",  8, 0, 526 },
-    { 633, "SFXfinal_round_01_basic_macro_2",  8, 0, 527 },
-    { 634, "SFXfinal_round_03_basic_macro_2",  8, 0, 528 },
-    { 635, "SFXfinal_round_04_basic_macro_2",  8, 0, 529 },
-    {   7, "GRPcomn_set",  1, 0,  -1 },
-    { 722, "SFXball_bump_basic_macro", 10, 0, 266 },
-    { 723, "SFXbomb_basic_macro", 10, 0, 267 },
-    {  -1, "DMY_CODE",  0, 10, 296 },
-    { 724, "SFXcamera_switch1_basic_macro",  0, 0, 268 },
-    { 725, "SFXcamera_switch2_basic_macro",  0, 0, 269 },
-    { 726, "SFXitem_basic_macro",  0, 0, 270 },
-    { 727, "SFXnormalitem_get_basic_macro",  0, 0, 271 },
-    { 728, "SFXpowerscale1_basic_macro",  0, 0, 272 },
-    { 729, "SFXpowerscale2_basic_macro",  0, 0, 273 },
-    { 730, "SFXshot_power_basic_macro",  0, 0, 274 },
-    { 731, "SFXspitem_get_basic_macro",  0, 0, 275 },
-    { 732, "SFX1up_basic_macro",  0, 0,  14 },
-    { 733, "SFXfinishfly2_basic_macro", 10, 1, 294 },
-    { 734, "SFXtapecut_basic_macro", 10, 0, 295 },
-    { 735, "SFXball_bumpbig_basic_macro", 10, 0, 276 },
-    {  -1, "DMY_CODE",  0, 0, 347 },
-    { 736, "SFXpower1_basic_macro",  9, 0, 277 },
-    { 737, "SFXpower2_basic_macro",  9, 0, 278 },
-    { 738, "SFXgauge1_basic_macro",  9, 0, 279 },
-    { 739, "SFXgauge2_basic_macro",  9, 0, 280 },
-    { 740, "SFXcancell_basic_macro",  0, 0, 281 },
-    { 741, "SFXcomdecision_basic_macro",  0, 0, 282 },
-    { 742, "SFXgauge3_basic_macro",  9, 0, 283 },
-    { 743, "SFXgauge4_basic_macro",  9, 0, 284 },
-    { 744, "SFXbirdc_basic_macro",  0, 0, 502 },
-    { 745, "SFXbirdc_loop_basic_macro",  9, 0, 503 },
-    { 746, "SFXbonus_finish_basic_macro",     8, 0,  -1 },
-    { 747, "SFXcount_00_basic_macro",         8, 0,  -1 },
-    { 748, "SFXcount_01_basic_macro",         8, 0,  -1 },
-    { 749, "SFXcount_02_basic_macro",         8, 0,  -1 },
-    { 750, "SFXcount_03_basic_macro",         8, 0,  -1 },
-    { 751, "SFXcount_04_basic_macro",         8, 0,  -1 },
-    { 752, "SFXcount_05_basic_macro",         8, 0,  -1 },
-    { 753, "SFXcount_06_basic_macro",         8, 0,  -1 },
-    { 754, "SFXcount_07_basic_macro",         8, 0,  -1 },
-    { 755, "SFXcount_08_basic_macro",         8, 0,  -1 },
-    { 756, "SFXcount_09_basic_macro",         8, 0,  -1 },
-    { 757, "SFXcount_10_basic_macro",         8, 0,  -1 },
-    { 758, "SFXcount_11_basic_macro",         8, 0,  -1 },
-    { 759, "SFXcount_12_basic_macro",         8, 0,  -1 },
-    { 760, "SFXcount_13_basic_macro",         8, 0,  -1 },
-    { 761, "SFXcount_14_basic_macro",         8, 0,  -1 },
-    { 762, "SFXcount_15_basic_macro",         8, 0,  -1 },
-    { 763, "SFXcount_16_basic_macro",         8, 0,  -1 },
-    { 764, "SFXcount_17_basic_macro",         8, 0,  -1 },
-    { 765, "SFXcount_18_basic_macro",         8, 0,  -1 },
-    { 766, "SFXcount_19_basic_macro",         8, 0,  -1 },
-    { 767, "SFXcount_20_basic_macro",         8, 0,  -1 },
-    { 768, "SFXfallout_01_basic_macro",       8, 0,  -1 },
-    { 769, "SFXfallout_02_basic_macro",       8, 0,  -1 },
-    { 770, "SFXfallout_03_basic_macro",       8, 0,  -1 },
-    { 771, "SFXfloor_clear_basic_macro",      8, 0,  -1 },
-    { 772, "SFXgame_clear_basic_macro",       8, 0,  -1 },
-    { 773, "SFXgame_over_basic_macro",        8, 0,  -1 },
-    { 774, "SFXgo_01_basic_macro",            8, 0,  -1 },
-    { 775, "SFXgo_02_basic_macro",            8, 0,  -1 },
-    { 776, "SFXgo_03_basic_macro",            8, 0,  -1 },
-    { 777, "SFXgo_04_basic_macro",            8, 0,  -1 },
-    { 778, "SFXgoal_01_basic_macro",          8, 0,  -1 },
-    { 779, "SFXgoal_02_basic_macro",          8, 0,  -1 },
-    { 780, "SFXgoal_03_basic_macro",          8, 0,  -1 },
-    { 781, "SFXgoal_04_basic_macro",          8, 0,  -1 },
-    { 782, "SFXhurry_up_basic_macro",         8, 0,  -1 },
-    { 783, "SFXready_01_basic_macro",         8, 0,  -1 },
-    { 784, "SFXready_02_basic_macro",         8, 0,  -1 },
-    { 785, "SFXstage_clear_basic_macro",      8, 0,  -1 },
-    { 786, "SFXtime_over_basic_macro",        8, 0,  -1 },
-    { 787, "SFXcontinue2_basic_macro",        8, 0,  -1 },
-    { 788, "SFXenter_your_name_basic_macro",  8, 0,  -1 },
-    { 789, "SFXsee_you_again_basic_macro",  8, 0,  -1 },
-    { 790, "SFXthanx_for_playn_basic_macro",  8, 0, 576 },
-    { 791, "SFXhow_many_players_basic_macro",  8, 0, 575 },
-    { 792, "SFXselect_course_basic_macro",  8, 0, 569 },
-    { 793, "SFXselect_game_basic_macro",  8, 0, 570 },
-    { 794, "SFXselect_level_basic_macro",  8, 0, 571 },
-    { 795, "SFXselect_mode_basic_macro",  8, 0, 572 },
-    { 796, "SFXselect_stage_basic_macro",  8, 0, 573 },
+    { 617, "SFXmiss2_basic_macro_1",             8, 0, 452 },
+    { 618, "SFXround01_basic_macro_2",           8, 0, 512 },
+    { 619, "SFXround02_basic_macro_2",           8, 0, 513 },
+    { 620, "SFXround03_basic_macro_2",           8, 0, 514 },
+    { 621, "SFXround04_basic_macro_2",           8, 0, 515 },
+    { 622, "SFXround05_basic_macro_2",           8, 0, 516 },
+    { 623, "SFXround06_basic_macro_2",           8, 0, 517 },
+    { 624, "SFXround07_basic_macro_1_1",         8, 0, 518 },
+    { 625, "SFXround08_basic_macro_1_1",         8, 0, 519 },
+    { 626, "SFXround09_basic_macro_1_1",         8, 0, 520 },
+    { 627, "SFXround10_basic_macro_1_1",         8, 0, 521 },
+    { 628, "SFXround11_basic_macro_1_1",         8, 0, 522 },
+    { 629, "SFXround12_basic_macro_1_1",         8, 0, 523 },
+    { 630, "SFXround13_basic_macro_1_1",         8, 0, 524 },
+    { 631, "SFXround14_basic_macro_1_1",         8, 0, 525 },
+    { 632, "SFXround15_basic_macro_1_1",         8, 0, 526 },
+    { 633, "SFXfinal_round_01_basic_macro_2",    8, 0, 527 },
+    { 634, "SFXfinal_round_03_basic_macro_2",    8, 0, 528 },
+    { 635, "SFXfinal_round_04_basic_macro_2",    8, 0, 529 },
+    {   7, "GRPcomn_set",                        1, 0,  -1 },
+    { 722, "SFXball_bump_basic_macro",          10, 0, 266 },
+    { 723, "SFXbomb_basic_macro",               10, 0, 267 },
+    {  -1, "DMY_CODE",                           0, 10, 296 },
+    { 724, "SFXcamera_switch1_basic_macro",      0, 0, 268 },
+    { 725, "SFXcamera_switch2_basic_macro",      0, 0, 269 },
+    { 726, "SFXitem_basic_macro",                0, 0, 270 },
+    { 727, "SFXnormalitem_get_basic_macro",      0, 0, 271 },
+    { 728, "SFXpowerscale1_basic_macro",         0, 0, 272 },
+    { 729, "SFXpowerscale2_basic_macro",         0, 0, 273 },
+    { 730, "SFXshot_power_basic_macro",          0, 0, 274 },
+    { 731, "SFXspitem_get_basic_macro",          0, 0, 275 },
+    { 732, "SFX1up_basic_macro",                 0, 0,  14 },
+    { 733, "SFXfinishfly2_basic_macro",         10, 1, 294 },
+    { 734, "SFXtapecut_basic_macro",            10, 0, 295 },
+    { 735, "SFXball_bumpbig_basic_macro",       10, 0, 276 },
+    {  -1, "DMY_CODE",                           0, 0, 347 },
+    { 736, "SFXpower1_basic_macro",              9, 0, 277 },
+    { 737, "SFXpower2_basic_macro",              9, 0, 278 },
+    { 738, "SFXgauge1_basic_macro",              9, 0, 279 },
+    { 739, "SFXgauge2_basic_macro",              9, 0, 280 },
+    { 740, "SFXcancell_basic_macro",             0, 0, 281 },
+    { 741, "SFXcomdecision_basic_macro",         0, 0, 282 },
+    { 742, "SFXgauge3_basic_macro",              9, 0, 283 },
+    { 743, "SFXgauge4_basic_macro",              9, 0, 284 },
+    { 744, "SFXbirdc_basic_macro",               0, 0, 502 },
+    { 745, "SFXbirdc_loop_basic_macro",          9, 0, 503 },
+    { 746, "SFXbonus_finish_basic_macro",        8, 0,  -1 },
+    { 747, "SFXcount_00_basic_macro",            8, 0,  -1 },
+    { 748, "SFXcount_01_basic_macro",            8, 0,  -1 },
+    { 749, "SFXcount_02_basic_macro",            8, 0,  -1 },
+    { 750, "SFXcount_03_basic_macro",            8, 0,  -1 },
+    { 751, "SFXcount_04_basic_macro",            8, 0,  -1 },
+    { 752, "SFXcount_05_basic_macro",            8, 0,  -1 },
+    { 753, "SFXcount_06_basic_macro",            8, 0,  -1 },
+    { 754, "SFXcount_07_basic_macro",            8, 0,  -1 },
+    { 755, "SFXcount_08_basic_macro",            8, 0,  -1 },
+    { 756, "SFXcount_09_basic_macro",            8, 0,  -1 },
+    { 757, "SFXcount_10_basic_macro",            8, 0,  -1 },
+    { 758, "SFXcount_11_basic_macro",            8, 0,  -1 },
+    { 759, "SFXcount_12_basic_macro",            8, 0,  -1 },
+    { 760, "SFXcount_13_basic_macro",            8, 0,  -1 },
+    { 761, "SFXcount_14_basic_macro",            8, 0,  -1 },
+    { 762, "SFXcount_15_basic_macro",            8, 0,  -1 },
+    { 763, "SFXcount_16_basic_macro",            8, 0,  -1 },
+    { 764, "SFXcount_17_basic_macro",            8, 0,  -1 },
+    { 765, "SFXcount_18_basic_macro",            8, 0,  -1 },
+    { 766, "SFXcount_19_basic_macro",            8, 0,  -1 },
+    { 767, "SFXcount_20_basic_macro",            8, 0,  -1 },
+    { 768, "SFXfallout_01_basic_macro",          8, 0,  -1 },
+    { 769, "SFXfallout_02_basic_macro",          8, 0,  -1 },
+    { 770, "SFXfallout_03_basic_macro",          8, 0,  -1 },
+    { 771, "SFXfloor_clear_basic_macro",         8, 0,  -1 },
+    { 772, "SFXgame_clear_basic_macro",          8, 0,  -1 },
+    { 773, "SFXgame_over_basic_macro",           8, 0,  -1 },
+    { 774, "SFXgo_01_basic_macro",               8, 0,  -1 },
+    { 775, "SFXgo_02_basic_macro",               8, 0,  -1 },
+    { 776, "SFXgo_03_basic_macro",               8, 0,  -1 },
+    { 777, "SFXgo_04_basic_macro",               8, 0,  -1 },
+    { 778, "SFXgoal_01_basic_macro",             8, 0,  -1 },
+    { 779, "SFXgoal_02_basic_macro",             8, 0,  -1 },
+    { 780, "SFXgoal_03_basic_macro",             8, 0,  -1 },
+    { 781, "SFXgoal_04_basic_macro",             8, 0,  -1 },
+    { 782, "SFXhurry_up_basic_macro",            8, 0,  -1 },
+    { 783, "SFXready_01_basic_macro",            8, 0,  -1 },
+    { 784, "SFXready_02_basic_macro",            8, 0,  -1 },
+    { 785, "SFXstage_clear_basic_macro",         8, 0,  -1 },
+    { 786, "SFXtime_over_basic_macro",           8, 0,  -1 },
+    { 787, "SFXcontinue2_basic_macro",           8, 0,  -1 },
+    { 788, "SFXenter_your_name_basic_macro",     8, 0,  -1 },
+    { 789, "SFXsee_you_again_basic_macro",       8, 0,  -1 },
+    { 790, "SFXthanx_for_playn_basic_macro",     8, 0, 576 },
+    { 791, "SFXhow_many_players_basic_macro",    8, 0, 575 },
+    { 792, "SFXselect_course_basic_macro",       8, 0, 569 },
+    { 793, "SFXselect_game_basic_macro",         8, 0, 570 },
+    { 794, "SFXselect_level_basic_macro",        8, 0, 571 },
+    { 795, "SFXselect_mode_basic_macro",         8, 0, 572 },
+    { 796, "SFXselect_stage_basic_macro",        8, 0, 573 },
     { 797, "SFXselect_your_monkey_basic_macro",  8, 0, 574 },
-    { 798, "SFXadvanced_basic_macro", 14, 0, 535 },
-    { 799, "SFXbiginner_basic_macro", 14, 0, 534 },
-    { 800, "SFXcompetition_mode_basic_macro", 14, 0, 532 },
-    { 801, "SFXexpert_basic_macro", 14, 0, 536 },
-    { 802, "SFXextra_basic_macro", 14, 0,  -1 },
-    { 803, "SFXmain_game_basic_macro", 14, 0, 530 },
-    { 804, "SFXmaster_basic_macro", 14, 0,  -1 },
-    { 805, "SFXnormal_mode_basic_macro", 14, 0, 531 },
-    { 806, "SFXpractice_mode_basic_macro", 14, 0, 533 },
-    { 807, "SFXgrandprix_basic_macro", 14, 0, 544 },
-    { 808, "SFXmonkey_fight_basic_macro", 14, 0, 541 },
-    { 809, "SFXmonkey_target_basic_macro", 14, 0, 542 },
-    { 810, "SFXmonky_race_basic_macro", 14, 0, 540 },
-    { 811, "SFXonecourse_race_basic_macro", 14, 0, 543 },
-    { 812, "SFXparty_game_basic_macro", 14, 0, 539 },
-    { 813, "SFXtime_attack_basic_macro", 14, 0, 545 },
-    { 814, "SFXchallenge_mode_basic_macro", 14, 0, 553 },
-    { 815, "SFXmatch_play_basic_macro", 14, 0, 555 },
-    { 816, "SFXmini_game_basic_macro", 14, 0, 546 },
-    { 817, "SFXmonkey_billiards_basic_macro", 14, 0, 547 },
-    { 818, "SFXmonkey_bowling_basic_macro", 14, 0, 548 },
-    { 819, "SFXmonkey_golf_basic_macro", 14, 0, 549 },
-    { 820, "SFXstandard_mode_basic_macro", 14, 0, 552 },
-    { 821, "SFXstroke_play_basic_macro", 14, 0, 554 },
-    { 822, "SFXtournament_mode_basic_macro", 14, 0, 551 },
-    { 823, "SFXversus_mode_basic_macro",  14, 0, 550 },
-    { 824, "SFXgamesettings_basic_macro", 14, 0, 557 },
-    { 825, "SFXchamp_01_basic_macro",     8, 0,  -1 },
-    { 826, "SFXchamp_02_basic_macro",     8, 0,  -1 },
-    { 827, "SFXcongra_01_basic_macro",    8, 0,  -1 },
-    { 828, "SFXcongra_02_basic_macro",    8, 0, 489 },
-    { 829, "SFXcongra_03_basic_macro",    8, 0,  -1 },
-    { 830, "SFXdraw_basic_macro",         8, 0, 465 },
-    { 831, "SFXfinish_01_basic_macro",    8, 0, 510 },
-    { 832, "SFXfinish_02_basic_macro",    8, 0,  -1 },
-    { 833, "SFXfinish_03_basic_macro",    8, 0,  -1 },
-    { 834, "SFXlose_01_basic_macro",      8, 0,  -1 },
-    { 835, "SFXlose_02_basic_macro",      8, 0, 583 },
-    { 836, "SFXplayer1_basic_macro",      8, 0, 490 },
-    { 837, "SFXplayer1win_basic_macro",   8, 0, 476 },
-    { 838, "SFXplayer2_basic_macro",      8, 0, 491 },
-    { 839, "SFXplayer2win_basic_macro",   8, 0, 477 },
-    { 840, "SFXplayer3_basic_macro",      8, 0, 492 },
-    { 841, "SFXplayer3win_basic_macro",   8, 0, 478 },
-    { 842, "SFXplayer4_basic_macro",      8, 0, 493 },
-    { 843, "SFXplayer4win_basic_macro",   8, 0, 479 },
-    { 844, "SFXrank_in_basic_macro",      8, 0, 494 },
-    { 845, "SFXresult_01_basic_macro",   14, 0, 480 },
-    { 846, "SFXresult_02_basic_macro",    8, 0,  -1 },
-    { 847, "SFXstart_basic_macro",        8, 0, 501 },
-    { 848, "SFXtoobad_01_basic_macro",    8, 0, 474 },
-    { 849, "SFXtoobad_02_basic_macro",    8, 0, 475 },
-    { 850, "SFXwin_01_basic_macro",       8, 0, 495 },
-    { 851, "SFXwinner_01_basic_macro",    8, 0,  -1 },
-    { 852, "SFXyou_lose_03_basic_macro",  8, 0, 496 },
-    { 853, "SFXyou_win_01_basic_macro",   8, 0, 497 },
-    { 854, "SFXyou_win_02_basic_macro",   8, 0,  -1 },
-    { 855, "SFXav_basic_macro",           8, 0,  -1 },
-    { 856, "SFXsmb_basic_macro",          8, 0,  -1 },
-    { 857, "SFXsega2_basic_macro",        8, 0,  -1 },
-    { 858, "SFXperfect3_basic_macro",     8, 0, 453 },
-    { 859, "SFXpressstart_basic_macro",   8, 0,  -1 },
-    { 860, "SFXringout_03_basic_macro",   8, 0,  -1 },
-    {   8, "GRPending",                   1, 0,  -1 },
-    { 861, "SFXdropstone_basic_macro",    0, 0, 558 },
-    { 862, "SFXfly1_basic_macro",         0, 0, 560 },
-    { 863, "SFXfly2_basic_macro",         0, 0, 562 },
-    { 864, "SFXheavydrope_basic_macro",   0, 0, 564 },
-    { 865, "SFXopen_c_basic_macro",       0, 0, 563 },
-    { 866, "SFXsit_basic_macro",          0, 0, 561 },
-    { 867, "SFXcharge_basic_macro",       0, 0, 568 },
-    { 868, "SFXdoorclose_basic_macro",    0, 0, 566 },
-    { 869, "SFXdooropen_basic_macro",     0, 0, 565 },
-    { 870, "SFXknock1_basic_macro",       0, 0, 567 },
-    { 871, "SFXbananadorop_basic_macro",  0, 0, 559 },
-    {  -1, "GRPstream",                   1, 0,  -1 },
-    {   0, "STRM_THEME_INT",              0, 0,  -1 },
-    {   1, "STRM_THEME_LP",               0, 0,  -1 },
-    {   2, "STRM_ADV_INT",                0, 0,  -1 },
-    {   3, "STRM_ADV_LP",                 0, 0,  -1 },
-    {   4, "STRM_SEL_INT",                0, 0,  -1 },
-    {   5, "STRM_SEL_LP",                 0, 0,  -1 },
-    {   6, "STRM_SEL2_INT",               0, 0,  -1 },
-    {   7, "STRM_SEL2_LP",                0, 0,  -1 },
-    {   8, "STRM_SEL_RACE_INT",           0, 0,  -1 },
-    {   9, "STRM_SEL_RACE_LP",            0, 0,  -1 },
-    {  10, "STRM_SEL_FIGHT_INT",          0, 0,  -1 },
-    {  11, "STRM_SEL_FIGHT_LP",           0, 0,  -1 },
-    {  12, "STRM_SEL_TARGET_INT",         0, 0,  -1 },
-    {  13, "STRM_SEL_TARGET_LP",          0, 0,  -1 },
-    {  14, "STRM_SEL_BILL_INT",           0, 0,  -1 },
-    {  15, "STRM_SEL_BILL_LP",            0, 0,  -1 },
-    {  16, "STRM_SEL_BOWL_INT",           0, 0,  -1 },
-    {  17, "STRM_SEL_BOWL_LP",            0, 0,  -1 },
-    {  18, "STRM_SEL_GOLF_INT",           0, 0,  -1 },
-    {  19, "STRM_SEL_GOLF_LP",            0, 0,  -1 },
-    {  20, "STRM_ST1_INT",                0, 0,  -1 },
-    {  21, "STRM_ST1_LP",                 0, 0,  -1 },
-    {  22, "STRM_ST2_INT",                0, 0,  -1 },
-    {  23, "STRM_ST2_LP",                 0, 0,  -1 },
-    {  24, "STRM_ST3_INT",                0, 0,  -1 },
-    {  25, "STRM_ST3_LP",                 0, 0,  -1 },
-    {  26, "STRM_ST4_INT",                0, 0,  -1 },
-    {  27, "STRM_ST4_LP",                 0, 0,  -1 },
-    {  28, "STRM_ST5_INT",                0, 0,  -1 },
-    {  29, "STRM_ST5_LP",                 0, 0,  -1 },
-    {  30, "STRM_ST6_INT",                0, 0,  -1 },
-    {  31, "STRM_ST6_LP",                 0, 0,  -1 },
-    {  32, "STRM_ST7_INT",                0, 0,  -1 },
-    {  33, "STRM_ST7_LP",                 0, 0,  -1 },
-    {  34, "STRM_ST8_INT",                0, 0,  -1 },
-    {  35, "STRM_ST8_LP",                 0, 0,  -1 },
-    {  36, "STRM_STB_INT",                0, 0,  -1 },
-    {  37, "STRM_STB_LP",                 0, 0,  -1 },
-    {  38, "STRM_STM_INT",                0, 0,  -1 },
-    {  39, "STRM_STM_LP",                 0, 0,  -1 },
-    {  40, "STRM_CNT_INT",                0, 0,  -1 },
-    {  41, "STRM_CNT_LP",                 0, 0,  -1 },
-    {  42, "STRM_OVR_INT",                0, 0,  -1 },
-    {  43, "STRM_OVR_LP",                 0, 0,  -1 },
-    {  44, "STRM_RACE_INT",               0, 0,  -1 },
-    {  45, "STRM_RACE_LP",                0, 0,  -1 },
-    {  46, "STRM_FIGHT_INT",              0, 0,  -1 },
-    {  47, "STRM_FIGHT_LP",               0, 0,  -1 },
-    {  48, "STRM_OMK_INT",                0, 0,  -1 },
-    {  49, "STRM_OMK_LP",                 0, 0,  -1 },
-    {  50, "STRM_PILOT_INT",              0, 0,  -1 },
-    {  51, "STRM_PILOT_LP",               0, 0,  -1 },
-    {  52, "STRM_BILI_INT",               0, 0,  -1 },
-    {  53, "STRM_BILI_LP",                0, 0,  -1 },
-    {  54, "STRM_BWL_INT",                0, 0,  -1 },
-    {  55, "STRM_BWL_LP",                 0, 0,  -1 },
-    {  56, "STRM_GLF_INT",                0, 0,  -1 },
-    {  57, "STRM_GLF_LP",                 0, 0,  -1 },
-    {  58, "STRM_OMK2_INT",               0, 0,  -1 },
-    {  59, "STRM_OMK2_LP",                0, 0,  -1 },
-    {  60, "STRM_GREP_INT",               0, 0,  -1 },
-    {  61, "STRM_GREP_LP",                0, 0,  -1 },
-    {  62, "STRM_RESULT_INT",             0, 0,  -1 },
-    {  63, "STRM_RESULT_LP",              0, 0,  -1 },
-    {  64, "STRM_HYO_INT",                0, 0,  -1 },
-    {  65, "STRM_HYO_LP",                 0, 0,  -1 },
-    {  66, "STRM_ENT_INT",                0, 0,  -1 },
-    {  67, "STRM_ENT_LP",                 0, 0,  -1 },
-    {  68, "STRM_END_INT",                0, 0,  -1 },
-    {  69, "STRM_END_LP",                 0, 0,  -1 },
-    {  70, "STRM_ROLL_INT",               0, 0,  -1 },
-    {  71, "STRM_ROLL_LP",                0, 0,  -1 },
-    {  72, "STRM_OPT_INT",                0, 0,  -1 },
-    {  73, "STRM_OPT_LP",                 0, 0,  -1 },
-    {  -2, "GRPend",                      1, 0,  -1 },
+    { 798, "SFXadvanced_basic_macro",           14, 0, 535 },
+    { 799, "SFXbiginner_basic_macro",           14, 0, 534 },
+    { 800, "SFXcompetition_mode_basic_macro",   14, 0, 532 },
+    { 801, "SFXexpert_basic_macro",             14, 0, 536 },
+    { 802, "SFXextra_basic_macro",              14, 0,  -1 },
+    { 803, "SFXmain_game_basic_macro",          14, 0, 530 },
+    { 804, "SFXmaster_basic_macro",             14, 0,  -1 },
+    { 805, "SFXnormal_mode_basic_macro",        14, 0, 531 },
+    { 806, "SFXpractice_mode_basic_macro",      14, 0, 533 },
+    { 807, "SFXgrandprix_basic_macro",          14, 0, 544 },
+    { 808, "SFXmonkey_fight_basic_macro",       14, 0, 541 },
+    { 809, "SFXmonkey_target_basic_macro",      14, 0, 542 },
+    { 810, "SFXmonky_race_basic_macro",         14, 0, 540 },
+    { 811, "SFXonecourse_race_basic_macro",     14, 0, 543 },
+    { 812, "SFXparty_game_basic_macro",         14, 0, 539 },
+    { 813, "SFXtime_attack_basic_macro",        14, 0, 545 },
+    { 814, "SFXchallenge_mode_basic_macro",     14, 0, 553 },
+    { 815, "SFXmatch_play_basic_macro",         14, 0, 555 },
+    { 816, "SFXmini_game_basic_macro",          14, 0, 546 },
+    { 817, "SFXmonkey_billiards_basic_macro",   14, 0, 547 },
+    { 818, "SFXmonkey_bowling_basic_macro",     14, 0, 548 },
+    { 819, "SFXmonkey_golf_basic_macro",        14, 0, 549 },
+    { 820, "SFXstandard_mode_basic_macro",      14, 0, 552 },
+    { 821, "SFXstroke_play_basic_macro",        14, 0, 554 },
+    { 822, "SFXtournament_mode_basic_macro",    14, 0, 551 },
+    { 823, "SFXversus_mode_basic_macro",        14, 0, 550 },
+    { 824, "SFXgamesettings_basic_macro",       14, 0, 557 },
+    { 825, "SFXchamp_01_basic_macro",            8, 0,  -1 },
+    { 826, "SFXchamp_02_basic_macro",            8, 0,  -1 },
+    { 827, "SFXcongra_01_basic_macro",           8, 0,  -1 },
+    { 828, "SFXcongra_02_basic_macro",           8, 0, 489 },
+    { 829, "SFXcongra_03_basic_macro",           8, 0,  -1 },
+    { 830, "SFXdraw_basic_macro",                8, 0, 465 },
+    { 831, "SFXfinish_01_basic_macro",           8, 0, 510 },
+    { 832, "SFXfinish_02_basic_macro",           8, 0,  -1 },
+    { 833, "SFXfinish_03_basic_macro",           8, 0,  -1 },
+    { 834, "SFXlose_01_basic_macro",             8, 0,  -1 },
+    { 835, "SFXlose_02_basic_macro",             8, 0, 583 },
+    { 836, "SFXplayer1_basic_macro",             8, 0, 490 },
+    { 837, "SFXplayer1win_basic_macro",          8, 0, 476 },
+    { 838, "SFXplayer2_basic_macro",             8, 0, 491 },
+    { 839, "SFXplayer2win_basic_macro",          8, 0, 477 },
+    { 840, "SFXplayer3_basic_macro",             8, 0, 492 },
+    { 841, "SFXplayer3win_basic_macro",          8, 0, 478 },
+    { 842, "SFXplayer4_basic_macro",             8, 0, 493 },
+    { 843, "SFXplayer4win_basic_macro",          8, 0, 479 },
+    { 844, "SFXrank_in_basic_macro",             8, 0, 494 },
+    { 845, "SFXresult_01_basic_macro",          14, 0, 480 },
+    { 846, "SFXresult_02_basic_macro",           8, 0,  -1 },
+    { 847, "SFXstart_basic_macro",               8, 0, 501 },
+    { 848, "SFXtoobad_01_basic_macro",           8, 0, 474 },
+    { 849, "SFXtoobad_02_basic_macro",           8, 0, 475 },
+    { 850, "SFXwin_01_basic_macro",              8, 0, 495 },
+    { 851, "SFXwinner_01_basic_macro",           8, 0,  -1 },
+    { 852, "SFXyou_lose_03_basic_macro",         8, 0, 496 },
+    { 853, "SFXyou_win_01_basic_macro",          8, 0, 497 },
+    { 854, "SFXyou_win_02_basic_macro",          8, 0,  -1 },
+    { 855, "SFXav_basic_macro",                  8, 0,  -1 },
+    { 856, "SFXsmb_basic_macro",                 8, 0,  -1 },
+    { 857, "SFXsega2_basic_macro",               8, 0,  -1 },
+    { 858, "SFXperfect3_basic_macro",            8, 0, 453 },
+    { 859, "SFXpressstart_basic_macro",          8, 0,  -1 },
+    { 860, "SFXringout_03_basic_macro",          8, 0,  -1 },
+    {   8, "GRPending",                          1, 0,  -1 },
+    { 861, "SFXdropstone_basic_macro",           0, 0, 558 },
+    { 862, "SFXfly1_basic_macro",                0, 0, 560 },
+    { 863, "SFXfly2_basic_macro",                0, 0, 562 },
+    { 864, "SFXheavydrope_basic_macro",          0, 0, 564 },
+    { 865, "SFXopen_c_basic_macro",              0, 0, 563 },
+    { 866, "SFXsit_basic_macro",                 0, 0, 561 },
+    { 867, "SFXcharge_basic_macro",              0, 0, 568 },
+    { 868, "SFXdoorclose_basic_macro",           0, 0, 566 },
+    { 869, "SFXdooropen_basic_macro",            0, 0, 565 },
+    { 870, "SFXknock1_basic_macro",              0, 0, 567 },
+    { 871, "SFXbananadorop_basic_macro",         0, 0, 559 },
+    {  -1, "GRPstream",                          1, 0,  -1 },
+    {   0, "STRM_THEME_INT",                     0, 0,  -1 },
+    {   1, "STRM_THEME_LP",                      0, 0,  -1 },
+    {   2, "STRM_ADV_INT",                       0, 0,  -1 },
+    {   3, "STRM_ADV_LP",                        0, 0,  -1 },
+    {   4, "STRM_SEL_INT",                       0, 0,  -1 },
+    {   5, "STRM_SEL_LP",                        0, 0,  -1 },
+    {   6, "STRM_SEL2_INT",                      0, 0,  -1 },
+    {   7, "STRM_SEL2_LP",                       0, 0,  -1 },
+    {   8, "STRM_SEL_RACE_INT",                  0, 0,  -1 },
+    {   9, "STRM_SEL_RACE_LP",                   0, 0,  -1 },
+    {  10, "STRM_SEL_FIGHT_INT",                 0, 0,  -1 },
+    {  11, "STRM_SEL_FIGHT_LP",                  0, 0,  -1 },
+    {  12, "STRM_SEL_TARGET_INT",                0, 0,  -1 },
+    {  13, "STRM_SEL_TARGET_LP",                 0, 0,  -1 },
+    {  14, "STRM_SEL_BILL_INT",                  0, 0,  -1 },
+    {  15, "STRM_SEL_BILL_LP",                   0, 0,  -1 },
+    {  16, "STRM_SEL_BOWL_INT",                  0, 0,  -1 },
+    {  17, "STRM_SEL_BOWL_LP",                   0, 0,  -1 },
+    {  18, "STRM_SEL_GOLF_INT",                  0, 0,  -1 },
+    {  19, "STRM_SEL_GOLF_LP",                   0, 0,  -1 },
+    {  20, "STRM_ST1_INT",                       0, 0,  -1 },
+    {  21, "STRM_ST1_LP",                        0, 0,  -1 },
+    {  22, "STRM_ST2_INT",                       0, 0,  -1 },
+    {  23, "STRM_ST2_LP",                        0, 0,  -1 },
+    {  24, "STRM_ST3_INT",                       0, 0,  -1 },
+    {  25, "STRM_ST3_LP",                        0, 0,  -1 },
+    {  26, "STRM_ST4_INT",                       0, 0,  -1 },
+    {  27, "STRM_ST4_LP",                        0, 0,  -1 },
+    {  28, "STRM_ST5_INT",                       0, 0,  -1 },
+    {  29, "STRM_ST5_LP",                        0, 0,  -1 },
+    {  30, "STRM_ST6_INT",                       0, 0,  -1 },
+    {  31, "STRM_ST6_LP",                        0, 0,  -1 },
+    {  32, "STRM_ST7_INT",                       0, 0,  -1 },
+    {  33, "STRM_ST7_LP",                        0, 0,  -1 },
+    {  34, "STRM_ST8_INT",                       0, 0,  -1 },
+    {  35, "STRM_ST8_LP",                        0, 0,  -1 },
+    {  36, "STRM_STB_INT",                       0, 0,  -1 },
+    {  37, "STRM_STB_LP",                        0, 0,  -1 },
+    {  38, "STRM_STM_INT",                       0, 0,  -1 },
+    {  39, "STRM_STM_LP",                        0, 0,  -1 },
+    {  40, "STRM_CNT_INT",                       0, 0,  -1 },
+    {  41, "STRM_CNT_LP",                        0, 0,  -1 },
+    {  42, "STRM_OVR_INT",                       0, 0,  -1 },
+    {  43, "STRM_OVR_LP",                        0, 0,  -1 },
+    {  44, "STRM_RACE_INT",                      0, 0,  -1 },
+    {  45, "STRM_RACE_LP",                       0, 0,  -1 },
+    {  46, "STRM_FIGHT_INT",                     0, 0,  -1 },
+    {  47, "STRM_FIGHT_LP",                      0, 0,  -1 },
+    {  48, "STRM_OMK_INT",                       0, 0,  -1 },
+    {  49, "STRM_OMK_LP",                        0, 0,  -1 },
+    {  50, "STRM_PILOT_INT",                     0, 0,  -1 },
+    {  51, "STRM_PILOT_LP",                      0, 0,  -1 },
+    {  52, "STRM_BILI_INT",                      0, 0,  -1 },
+    {  53, "STRM_BILI_LP",                       0, 0,  -1 },
+    {  54, "STRM_BWL_INT",                       0, 0,  -1 },
+    {  55, "STRM_BWL_LP",                        0, 0,  -1 },
+    {  56, "STRM_GLF_INT",                       0, 0,  -1 },
+    {  57, "STRM_GLF_LP",                        0, 0,  -1 },
+    {  58, "STRM_OMK2_INT",                      0, 0,  -1 },
+    {  59, "STRM_OMK2_LP",                       0, 0,  -1 },
+    {  60, "STRM_GREP_INT",                      0, 0,  -1 },
+    {  61, "STRM_GREP_LP",                       0, 0,  -1 },
+    {  62, "STRM_RESULT_INT",                    0, 0,  -1 },
+    {  63, "STRM_RESULT_LP",                     0, 0,  -1 },
+    {  64, "STRM_HYO_INT",                       0, 0,  -1 },
+    {  65, "STRM_HYO_LP",                        0, 0,  -1 },
+    {  66, "STRM_ENT_INT",                       0, 0,  -1 },
+    {  67, "STRM_ENT_LP",                        0, 0,  -1 },
+    {  68, "STRM_END_INT",                       0, 0,  -1 },
+    {  69, "STRM_END_LP",                        0, 0,  -1 },
+    {  70, "STRM_ROLL_INT",                      0, 0,  -1 },
+    {  71, "STRM_ROLL_LP",                       0, 0,  -1 },
+    {  72, "STRM_OPT_INT",                       0, 0,  -1 },
+    {  73, "STRM_OPT_LP",                        0, 0,  -1 },
+    {  -2, "GRPend",                             1, 0,  -1 },
 };
 
 struct Struct801B2A5C lbl_801B2A5C[] =
@@ -1279,7 +1279,7 @@ struct Struct801B2A5C lbl_801B2A5C[] =
     { "optm",          0x01000000, 0x00000000, 73 },
 };
 
-void func_800274E8(const char *a, const char *b, ...)
+void print_sound_error(const char *a, const char *b, ...)
 {
     va_list args;
     char buffer[0x200];
@@ -1292,8 +1292,29 @@ void func_800274E8(const char *a, const char *b, ...)
     printf(buffer);
 }
 
-u8 lbl_801F8E18[0x120];
+void *lbl_801F8E18[9];
 FORCE_BSS_ORDER(lbl_801F8E18)
+
+void *lbl_801F8E3C[9];
+FORCE_BSS_ORDER(lbl_801F8E3C)
+
+void *lbl_801F8E60[9];
+FORCE_BSS_ORDER(lbl_801F8E60)
+
+void *lbl_801F8E84[9];
+FORCE_BSS_ORDER(lbl_801F8E84)
+
+u32 lbl_801F8EA8[9];
+FORCE_BSS_ORDER(lbl_801F8EA8)
+
+u32 lbl_801F8ECC[9];
+FORCE_BSS_ORDER(lbl_801F8ECC)
+
+u32 lbl_801F8EF0[9];
+FORCE_BSS_ORDER(lbl_801F8EF0)
+
+u32 lbl_801F8F14[9];
+FORCE_BSS_ORDER(lbl_801F8F14)
 
 SND_AUX_REVERBHI lbl_801F8F38;
 FORCE_BSS_ORDER(lbl_801F8F38)
@@ -1311,11 +1332,28 @@ u32 lbl_801F91B4[4][0x425];  // 39C
 FORCE_BSS_ORDER(lbl_801F91B4)
 u8 lbl_801FD404[0x1094];
 FORCE_BSS_ORDER(lbl_801FD404)
-u8 lbl_801FE498[0xC0];
+
+struct Struct801FE498
+{
+    s16 unk0;
+    s16 unk2;
+    u8 unk4;
+    u8 unk5;
+    u8 unk6;
+    u8 unk7;
+    u32 unk8;
+};
+
+//u8 lbl_801FE498[0xC0];
+struct Struct801FE498 lbl_801FE498[16];
 FORCE_BSS_ORDER(lbl_801FE498)
+
+//u8 lbl_801FE558_unk0[4][20];
+//FORCE_BSS_ORDER(lbl_801FE558_unk0)
+
 struct
 {
-    u8 filler0[0x50];
+    u8 unk0[4][20];
     u32 unk50;
     u8 filler54[4];
     u32 unk58;
@@ -1342,7 +1380,7 @@ struct
 } lbl_80201454;
 FORCE_BSS_ORDER(lbl_80201454)
 
-u32 lbl_8020149C[9];  // 8684
+s32 lbl_8020149C[9];  // 8684
 FORCE_BSS_ORDER(lbl_8020149C)
 
 s32 lbl_802014C0[8];  // 86A8
@@ -1391,7 +1429,7 @@ void func_800275A0(s32 arg0, s32 arg1)
     }
 }
 
-void *func_8002773C(char *fileName, u32 *sizeOut)
+void *read_musyx_file(char *fileName, u32 *sizeOut)
 {
     struct File file;
     u32 size;
@@ -1399,25 +1437,25 @@ void *func_8002773C(char *fileName, u32 *sizeOut)
 
     if (!file_open(fileName, &file))
     {
-        func_800274E8("ReadMusyXData\n", "Unable to open '%s'\n", fileName);
+        print_sound_error("ReadMusyXData\n", "Unable to open '%s'\n", fileName);
         return NULL;
     }
     size = file_size(&file);
     if (size == 0)
     {
-        func_800274E8("ReadMusyXData\n", "Zero length file '%s'\n", fileName);
+        print_sound_error("ReadMusyXData\n", "Zero length file '%s'\n", fileName);
         return NULL;
     }
     *sizeOut = OSRoundUp32B(size);
     buffer = OSAlloc(*sizeOut);
     if (buffer == NULL)
     {
-        func_800274E8("ReadMusyXData\n", "unable to allocate buffer '%s'\n", fileName);
+        print_sound_error("ReadMusyXData\n", "unable to allocate buffer '%s'\n", fileName);
         return NULL;
     }
     if (file_read(&file, buffer, *sizeOut, 0) <= 0)
     {
-        func_800274E8("ReadMusyXData\n", "Failed to read data from '%s'\n", fileName);
+        print_sound_error("ReadMusyXData\n", "Failed to read data from '%s'\n", fileName);
         OSFree(buffer);
         return NULL;
     }
@@ -1728,10 +1766,10 @@ extern u8 lbl_802F1DD9;
 extern u8 lbl_802F1DD8;
 extern u32 lbl_802F1DEC;
 extern u32 lbl_802F1DF0;
-extern u32 lbl_802F1D64;
-extern u32 lbl_802F1D68;
-extern u32 lbl_802F1D6C;
-extern u32 lbl_802F1D70;
+extern s32 lbl_802F1D64;
+extern s32 lbl_802F1D68;
+extern s32 lbl_802F1D6C;
+extern s32 lbl_802F1D70;
 extern u32 lbl_802F1D74;
 extern u32 lbl_802F1DBC;
 extern u32 lbl_802F1DE4;
@@ -1739,6 +1777,8 @@ extern u32 lbl_802F1DE8;
 extern s32 lbl_802F1E00;
 
 void sndAuxCallbackChorus();
+
+void func_80029228(int arg0);
 
 void sound_init(void)
 {
@@ -1837,3 +1877,306 @@ void sound_init(void)
     lbl_802F1DE4 = 0;
     lbl_802F1DE8 = 1;
 }
+
+extern const char *lbl_802F1DDC;
+extern const char *lbl_802F1DE0;
+extern u32 lbl_802F1DD0;
+extern u32 lbl_802F1D48;
+
+void func_8002CEB8(int);
+
+void sound_main(void)
+{
+    struct Struct801B2A5C *temp_r29 = &lbl_801B2A5C[lbl_802F1D64];
+    u8 unused[8];
+
+    lbl_802014E0.unk1C = DTKGetState();
+    if (lbl_802014E0.unk1C != 3 && lbl_802F1D70 == 0)
+    {
+        if (temp_r29->unkC != -1)
+        {
+            if (temp_r29->unk8 != 0 && AIGetStreamSampleCount() > temp_r29->unk8 + lbl_802F1DD0 * 256)
+            {
+                lbl_802F1D68 = temp_r29->unkC;
+                lbl_802F1D6C = lbl_802F1D68 - lbl_802F1D64;
+                lbl_802F1D70 = 1;
+                lbl_802F1D74 = -1;
+            }
+        }
+        else if (AIGetStreamSampleCount() > temp_r29->unk8)
+            u_play_music(-1, 1);
+    }
+
+    if (lbl_802014E0.unk1C != 3)
+    {
+        if (lbl_802F1D70 > 0)
+        {
+            if (--lbl_802F1D70 == 0)
+            {
+                switch (lbl_802F1D74)
+                {
+                case -4:
+                    DTKSetState(0);
+                    AIResetStreamSampleCount();
+                    lbl_802F1D74 = 0;
+                    lbl_802F1D70 = 1;
+                    lbl_802F1D44 = 1.0f;
+                    lbl_802F1D40 = 1.0f;
+                    lbl_802F1D48 = 1;
+                    lbl_802F1D54 = lbl_802F1D4C;
+                    lbl_802F1D50 = 1.0f;
+                    lbl_802F1D58 = 0xF;
+                    break;
+                case -3:
+                    if (lbl_802014E0.unk4 != 0 && lbl_802F1D64 != lbl_802F1D68)
+                    {
+                        lbl_802F1D44 = lbl_802F1D40;
+                        u_play_music(0x1E, 2);
+                        lbl_802F1D74 = -4;
+                        lbl_802F1D70 = 0x1E;
+                    }
+                    else
+                    {
+                        lbl_802F1D74 = -1;
+                        lbl_802F1D70 = 1;
+                        lbl_802F1D44 = 1.0f;
+                        lbl_802F1D40 = 1.0f;
+                        lbl_802F1D48 = 1;
+                        lbl_802F1D54 = lbl_802F1D4C;
+                        lbl_802F1D50 = 1.0f;
+                        lbl_802F1D58 = 0xF;
+                    }
+                    break;
+                case -2:
+                    func_8002CEB8(lbl_802F1D4C * (lbl_802F1D78 * lbl_802F1D40));
+                    lbl_802F1D74 = 0;
+                    break;
+                case -1:
+                    DTKSetState(0);
+                    AIResetStreamSampleCount();
+                    lbl_802F1D74 = 0;
+                    lbl_802F1D70 = 1;
+                    break;
+                case 0:
+                    if (lbl_802F1D6C > 0)
+                    {
+                        DTKNextTrack();
+                        lbl_802F1D70 = 1;
+                        lbl_802F1D64 += 1;
+                        lbl_802F1D6C -= 1;
+                    }
+                    else if (lbl_802F1D6C < 0)
+                    {
+                        DTKPrevTrack();
+                        lbl_802F1D70 = 1;
+                        lbl_802F1D64 -= 1;
+                        lbl_802F1D6C += 1;
+                    }
+                    else
+                    {
+                        DTKSetState(1);
+                        AIResetStreamSampleCount();
+                        lbl_802F1D74 = -2;
+                        lbl_802F1D70 = 1;
+                        lbl_802F1D78 = lbl_802014E0.unkC;
+                        lbl_802014E0.unk4 = 0U;
+                    }
+                    break;
+                case 1:
+                    DTKSetState(0);
+                    AIResetStreamSampleCount();
+                    lbl_802F1D74 = 0;
+                    lbl_802014E0.unk4 = 0U;
+                    break;
+                case 5:
+                    if (lbl_802014E0.unk1C == 1)
+                        DTKSetState(2);
+                    else if (lbl_802014E0.unk1C == 2)
+                        DTKSetState(1);
+                    lbl_802F1D74 = 0;
+                    break;
+                }
+            }
+        }
+    }
+    if (lbl_802014E0.unk0 != -1 && lbl_802014E0.unk1C == 1)
+        lbl_802014E0.unk4++;
+    lbl_802F1DDC = lbl_80110400[lbl_802F1DE4].unk0;
+    lbl_802F1DE0 = lbl_8011057C[lbl_802F1DE8].unk4;
+}
+
+extern s32 lbl_802F1DC0;
+
+void func_80029228(int arg0)
+{
+    char poolFileName[0x100];
+    char projFileName[0x100];
+    char sampFileName[0x100];
+    char sdirFileName[0x100];
+    u32 spC;
+    s32 temp_cr0_eq;
+    u32 temp_r3_7;
+    OSHeapHandle heap;
+    u32 temp_r7;
+    const struct Struct80110400 *temp_r29;
+    int i;
+
+    if (lbl_802F1E00 == 8)
+        return;
+    temp_r29 = &lbl_80110400[arg0];
+    if (lbl_8020149C[temp_r29->unkC] != 0)
+        return;
+    for (i = 0; i < 8; i++)
+    {
+        if (arg0 == lbl_802014C0[i])
+            return;
+    }
+
+
+    sprintf(poolFileName, "%s.pool", temp_r29->unk10);
+    sprintf(projFileName, "%s.proj", temp_r29->unk10);
+    sprintf(sampFileName, "%s.samp", temp_r29->unk10);
+    sprintf(sdirFileName, "%s.sdir", temp_r29->unk10);
+    DVDChangeDir("snd/mkb");
+    lbl_802F1DC0 = 0;
+    lbl_801F8E84[temp_r29->unkC] = read_musyx_file(sampFileName, &spC);
+    if (lbl_801F8E84[temp_r29->unkC] == NULL)
+    {
+        temp_r3_7 = OSCheckHeap(mainHeap);
+        if (temp_r3_7 == -1U)
+            print_sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n", temp_r29->unk10, spC);
+        else if (spC < temp_r3_7)
+            print_sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+        else
+            print_sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
+        lbl_802F1DC0 = 1;
+        heap = OSSetCurrentHeap(charaHeap);
+        lbl_801F8E84[temp_r29->unkC] = read_musyx_file(sampFileName, &spC);
+        OSSetCurrentHeap(heap);
+        if (lbl_801F8E84[temp_r29->unkC] == NULL)
+        {
+            temp_r3_7 = OSCheckHeap(charaHeap);
+            if (temp_r3_7 == -1U)
+                print_sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n", temp_r29->unk10, spC);
+            else if (spC < temp_r3_7)
+                print_sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+            else
+                print_sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
+            DVDChangeDir("/test");
+            return;
+        }
+        printf("--> but SUCCESS !! use CharaHeap\n");
+    }
+
+    lbl_801F8F14[temp_r29->unkC] = spC;
+    lbl_802F1DEC += lbl_801F8F14[temp_r29->unkC];
+    temp_r7 = lbl_802F1DF0 + lbl_801F8F14[temp_r29->unkC];
+    if (temp_r7 >= 0x700000U)
+    {
+        print_sound_error("SoundGroupLoad\n", "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n", temp_r29->unk10, lbl_801F8F14[temp_r29->unkC], temp_r7 + 0xFF900000);
+        if (lbl_802F1DC0 != 0)
+            heap = OSSetCurrentHeap(charaHeap);
+        OSFree(lbl_801F8E84[temp_r29->unkC]);
+        if (lbl_802F1DC0 != 0)
+            OSSetCurrentHeap(heap);
+        lbl_802F1DEC -= lbl_801F8F14[temp_r29->unkC];
+        DVDChangeDir("/test");
+        return;
+    }
+
+    lbl_801F8E18[temp_r29->unkC] = read_musyx_file(poolFileName, &spC);
+    lbl_801F8EA8[temp_r29->unkC] = spC;
+    lbl_802F1DEC += lbl_801F8EA8[temp_r29->unkC];
+    lbl_801F8E3C[temp_r29->unkC] = read_musyx_file(projFileName, &spC);
+    lbl_801F8ECC[temp_r29->unkC] = spC;
+    lbl_802F1DEC += lbl_801F8ECC[temp_r29->unkC];
+    lbl_801F8E60[temp_r29->unkC] = read_musyx_file(sdirFileName, &spC);
+    lbl_801F8EF0[temp_r29->unkC] = spC;
+    lbl_802F1DEC += lbl_801F8EF0[temp_r29->unkC];
+    temp_cr0_eq = sndPushGroup(
+        lbl_801F8E3C[temp_r29->unkC],
+        (u16)temp_r29->unk8,
+        lbl_801F8E84[temp_r29->unkC],
+        lbl_801F8E60[temp_r29->unkC],
+        lbl_801F8E18[temp_r29->unkC]);
+    lbl_802F1DF0 += lbl_801F8F14[temp_r29->unkC];
+    if (temp_cr0_eq == 0)
+    {
+        DVDChangeDir("/test");
+        return;
+    }
+    if (lbl_802F1DC0 != 0)
+        heap = OSSetCurrentHeap(charaHeap);
+    OSFree(lbl_801F8E84[temp_r29->unkC]);
+    if (lbl_802F1DC0 != 0)
+        OSSetCurrentHeap(heap);
+
+    lbl_802F1DEC -= lbl_801F8F14[temp_r29->unkC];
+    lbl_8020149C[temp_r29->unkC] = 1;
+    DVDChangeDir("/test");
+    lbl_802014C0[lbl_802F1E00++] = arg0;
+}
+
+void func_80029788(void)
+{
+    const struct Struct80110400 *temp_r29;
+
+    if (lbl_802F1E00 > 2)
+    {
+        temp_r29 = &lbl_80110400[lbl_802014C0[--lbl_802F1E00]];
+        sndPopGroup();
+        lbl_802F1DF0 -= lbl_801F8F14[temp_r29->unkC];
+        OSFree(lbl_801F8E18[temp_r29->unkC]);
+        lbl_802F1DEC -= lbl_801F8EA8[temp_r29->unkC];
+        OSFree(lbl_801F8E3C[temp_r29->unkC]);
+        lbl_802F1DEC -= lbl_801F8ECC[temp_r29->unkC];
+        OSFree(lbl_801F8E60[temp_r29->unkC]);
+        lbl_802F1DEC -= lbl_801F8EF0[temp_r29->unkC];
+        lbl_8020149C[temp_r29->unkC] = 0;
+        lbl_802014C0[lbl_802F1E00] = -1;
+    }
+}
+
+void func_8002CA38(int, int);
+
+#ifdef NONMATCHING
+// https://decomp.me/scratch/8mIVf
+void ev_sound_init(void)
+{
+    struct Struct801FE498 *ptr;
+    int i;
+    int j;
+    int i2;
+
+    func_8002CA38(0, 0);
+    ptr = lbl_801FE498;
+    for (i = 0; i < 16; i++, ptr++)
+    {
+        ptr->unk0 = -1;
+        ptr->unk2 = 0;
+        ptr->unk4 = 0;
+        ptr->unk5 = 0;
+        ptr->unk6 = 0;
+        ptr->unk7 = 0;
+        ptr->unk8 = 0;
+    }
+
+    for (i2 = 0; i2 < 4; i2++)
+    {
+        for (j = 0; j < 20; j++)
+            lbl_801FE558.unk0[i2][j] = 0;
+    }
+
+    lbl_802F1DC4 = 0;
+    lbl_802F1DC8 = 0;
+    lbl_802F1DFC = -1;
+    lbl_802F1DF8 = (u32) -1;
+
+}
+#else
+asm void ev_sound_init(void)
+{
+    nofralloc
+#include "../asm/nonmatchings/ev_sound_init.s"
+}
+#endif

@@ -3,8 +3,8 @@
 .section .text, "ax"  # 0x800065A0 - 0x8010F860
 
 .if 0
-.global func_800274E8
-func_800274E8:
+.global print_sound_error
+print_sound_error:
 /* 800274E8 00023408  7C 08 02 A6 */	mflr r0
 /* 800274EC 0002340C  90 01 00 04 */	stw r0, 4(r1)
 /* 800274F0 00023410  94 21 FD 78 */	stwu r1, -0x288(r1)
@@ -169,8 +169,8 @@ lbl_8002771C:
 /* 80027734 00023654  38 21 01 20 */	addi r1, r1, 0x120
 /* 80027738 00023658  4E 80 00 20 */	blr
 
-.global func_8002773C
-func_8002773C:
+.global read_musyx_file
+read_musyx_file:
 /* 8002773C 0002365C  7C 08 02 A6 */	mflr r0
 /* 80027740 00023660  3C A0 80 1B */	lis r5, lbl_801AC960@ha
 /* 80027744 00023664  90 01 00 04 */	stw r0, 4(r1)
@@ -190,7 +190,7 @@ func_8002773C:
 /* 8002777C 0002369C  4C C6 31 82 */	crclr 6
 /* 80027780 000236A0  38 7F 6A 6C */	addi r3, r31, 0x6a6c
 /* 80027784 000236A4  38 9F 6A 7C */	addi r4, r31, 0x6a7c
-/* 80027788 000236A8  4B FF FD 61 */	bl func_800274E8
+/* 80027788 000236A8  4B FF FD 61 */	bl print_sound_error
 /* 8002778C 000236AC  38 60 00 00 */	li r3, 0
 /* 80027790 000236B0  48 00 00 BC */	b lbl_8002784C
 lbl_80027794:
@@ -202,7 +202,7 @@ lbl_80027794:
 /* 800277A8 000236C8  4C C6 31 82 */	crclr 6
 /* 800277AC 000236CC  38 7F 6A 6C */	addi r3, r31, 0x6a6c
 /* 800277B0 000236D0  38 9F 6A 94 */	addi r4, r31, 0x6a94
-/* 800277B4 000236D4  4B FF FD 35 */	bl func_800274E8
+/* 800277B4 000236D4  4B FF FD 35 */	bl print_sound_error
 /* 800277B8 000236D8  38 60 00 00 */	li r3, 0
 /* 800277BC 000236DC  48 00 00 90 */	b lbl_8002784C
 lbl_800277C0:
@@ -218,7 +218,7 @@ lbl_800277C0:
 /* 800277E4 00023704  4C C6 31 82 */	crclr 6
 /* 800277E8 00023708  38 7F 6A 6C */	addi r3, r31, 0x6a6c
 /* 800277EC 0002370C  38 9F 6A AC */	addi r4, r31, 0x6aac
-/* 800277F0 00023710  4B FF FC F9 */	bl func_800274E8
+/* 800277F0 00023710  4B FF FC F9 */	bl print_sound_error
 /* 800277F4 00023714  38 60 00 00 */	li r3, 0
 /* 800277F8 00023718  48 00 00 54 */	b lbl_8002784C
 lbl_800277FC:
@@ -233,7 +233,7 @@ lbl_800277FC:
 /* 8002781C 0002373C  4C C6 31 82 */	crclr 6
 /* 80027820 00023740  38 7F 6A 6C */	addi r3, r31, 0x6a6c
 /* 80027824 00023744  38 9F 6A CC */	addi r4, r31, 0x6acc
-/* 80027828 00023748  4B FF FC C1 */	bl func_800274E8
+/* 80027828 00023748  4B FF FC C1 */	bl print_sound_error
 /* 8002782C 0002374C  80 6D 97 48 */	lwz r3, __OSCurrHeap@sda21(r13)
 /* 80027830 00023750  7F C4 F3 78 */	mr r4, r30
 /* 80027834 00023754  48 09 AF 95 */	bl OSFreeToHeap
@@ -1712,7 +1712,6 @@ lbl_80028E58:
 /* 80028E68 00024D88  83 A1 00 5C */	lwz r29, 0x5c(r1)
 /* 80028E6C 00024D8C  38 21 00 68 */	addi r1, r1, 0x68
 /* 80028E70 00024D90  4E 80 00 20 */	blr
-.endif
 
 .global sound_main
 sound_main:
@@ -2054,7 +2053,7 @@ func_80029228:
 /* 80029344 00025264  90 0D 9B E0 */	stw r0, lbl_802F1DC0@sda21(r13)
 /* 80029348 00025268  38 61 01 10 */	addi r3, r1, 0x110
 /* 8002934C 0002526C  38 81 00 0C */	addi r4, r1, 0xc
-/* 80029350 00025270  4B FF E3 ED */	bl func_8002773C
+/* 80029350 00025270  4B FF E3 ED */	bl read_musyx_file
 /* 80029354 00025274  80 1D 00 0C */	lwz r0, 0xc(r29)
 /* 80029358 00025278  54 00 10 3A */	slwi r0, r0, 2
 /* 8002935C 0002527C  7C 9F 02 14 */	add r4, r31, r0
@@ -2076,7 +2075,7 @@ func_80029228:
 /* 8002939C 000252BC  80 C1 00 0C */	lwz r6, 0xc(r1)
 /* 800293A0 000252C0  38 9E 6B 24 */	addi r4, r30, 0x6b24
 /* 800293A4 000252C4  4C C6 31 82 */	crclr 6
-/* 800293A8 000252C8  4B FF E1 41 */	bl func_800274E8
+/* 800293A8 000252C8  4B FF E1 41 */	bl print_sound_error
 /* 800293AC 000252CC  48 00 00 44 */	b lbl_800293F0
 lbl_800293B0:
 /* 800293B0 000252D0  80 C1 00 0C */	lwz r6, 0xc(r1)
@@ -2086,7 +2085,7 @@ lbl_800293B0:
 /* 800293C0 000252E0  4C C6 31 82 */	crclr 6
 /* 800293C4 000252E4  38 7E 6B 14 */	addi r3, r30, 0x6b14
 /* 800293C8 000252E8  38 9E 6B 4C */	addi r4, r30, 0x6b4c
-/* 800293CC 000252EC  4B FF E1 1D */	bl func_800274E8
+/* 800293CC 000252EC  4B FF E1 1D */	bl print_sound_error
 /* 800293D0 000252F0  48 00 00 20 */	b lbl_800293F0
 lbl_800293D4:
 /* 800293D4 000252F4  80 BD 00 10 */	lwz r5, 0x10(r29)
@@ -2095,7 +2094,7 @@ lbl_800293D4:
 /* 800293E0 00025300  38 7E 6B 14 */	addi r3, r30, 0x6b14
 /* 800293E4 00025304  38 9E 6B 78 */	addi r4, r30, 0x6b78
 /* 800293E8 00025308  7C E7 30 50 */	subf r7, r7, r6
-/* 800293EC 0002530C  4B FF E0 FD */	bl func_800274E8
+/* 800293EC 0002530C  4B FF E0 FD */	bl print_sound_error
 lbl_800293F0:
 /* 800293F0 00025310  38 00 00 01 */	li r0, 1
 /* 800293F4 00025314  80 6D 99 3C */	lwz r3, charaHeap@sda21(r13)
@@ -2104,7 +2103,7 @@ lbl_800293F0:
 /* 80029400 00025320  3B 83 00 00 */	addi r28, r3, 0
 /* 80029404 00025324  38 61 01 10 */	addi r3, r1, 0x110
 /* 80029408 00025328  38 81 00 0C */	addi r4, r1, 0xc
-/* 8002940C 0002532C  4B FF E3 31 */	bl func_8002773C
+/* 8002940C 0002532C  4B FF E3 31 */	bl read_musyx_file
 /* 80029410 00025330  80 1D 00 0C */	lwz r0, 0xc(r29)
 /* 80029414 00025334  54 00 10 3A */	slwi r0, r0, 2
 /* 80029418 00025338  7C 9F 02 14 */	add r4, r31, r0
@@ -2128,7 +2127,7 @@ lbl_800293F0:
 /* 80029460 00025380  80 C1 00 0C */	lwz r6, 0xc(r1)
 /* 80029464 00025384  38 9E 6B B0 */	addi r4, r30, 0x6bb0
 /* 80029468 00025388  4C C6 31 82 */	crclr 6
-/* 8002946C 0002538C  4B FF E0 7D */	bl func_800274E8
+/* 8002946C 0002538C  4B FF E0 7D */	bl print_sound_error
 /* 80029470 00025390  48 00 00 44 */	b lbl_800294B4
 lbl_80029474:
 /* 80029474 00025394  80 C1 00 0C */	lwz r6, 0xc(r1)
@@ -2138,7 +2137,7 @@ lbl_80029474:
 /* 80029484 000253A4  4C C6 31 82 */	crclr 6
 /* 80029488 000253A8  38 7E 6B 14 */	addi r3, r30, 0x6b14
 /* 8002948C 000253AC  38 9E 6B D8 */	addi r4, r30, 0x6bd8
-/* 80029490 000253B0  4B FF E0 59 */	bl func_800274E8
+/* 80029490 000253B0  4B FF E0 59 */	bl print_sound_error
 /* 80029494 000253B4  48 00 00 20 */	b lbl_800294B4
 lbl_80029498:
 /* 80029498 000253B8  80 BD 00 10 */	lwz r5, 0x10(r29)
@@ -2147,7 +2146,7 @@ lbl_80029498:
 /* 800294A4 000253C4  38 7E 6B 14 */	addi r3, r30, 0x6b14
 /* 800294A8 000253C8  38 9E 6C 08 */	addi r4, r30, 0x6c08
 /* 800294AC 000253CC  7C E7 30 50 */	subf r7, r7, r6
-/* 800294B0 000253D0  4B FF E0 39 */	bl func_800274E8
+/* 800294B0 000253D0  4B FF E0 39 */	bl print_sound_error
 lbl_800294B4:
 /* 800294B4 000253D4  38 6D 85 FC */	addi r3, r13, lbl_802F07DC@sda21
 /* 800294B8 000253D8  48 0A 29 15 */	bl DVDChangeDir
@@ -2183,7 +2182,7 @@ lbl_800294CC:
 /* 80029528 00025448  4C C6 31 82 */	crclr 6
 /* 8002952C 0002544C  38 9E 6C 68 */	addi r4, r30, 0x6c68
 /* 80029530 00025450  3C E7 FF 90 */	addis r7, r7, 0xff90
-/* 80029534 00025454  4B FF DF B5 */	bl func_800274E8
+/* 80029534 00025454  4B FF DF B5 */	bl print_sound_error
 /* 80029538 00025458  80 0D 9B E0 */	lwz r0, lbl_802F1DC0@sda21(r13)
 /* 8002953C 0002545C  2C 00 00 00 */	cmpwi r0, 0
 /* 80029540 00025460  41 82 00 10 */	beq lbl_80029550
@@ -2216,7 +2215,7 @@ lbl_8002957C:
 lbl_800295A4:
 /* 800295A4 000254C4  38 61 03 10 */	addi r3, r1, 0x310
 /* 800295A8 000254C8  38 81 00 0C */	addi r4, r1, 0xc
-/* 800295AC 000254CC  4B FF E1 91 */	bl func_8002773C
+/* 800295AC 000254CC  4B FF E1 91 */	bl read_musyx_file
 /* 800295B0 000254D0  80 1D 00 0C */	lwz r0, 0xc(r29)
 /* 800295B4 000254D4  38 81 00 0C */	addi r4, r1, 0xc
 /* 800295B8 000254D8  54 00 10 3A */	slwi r0, r0, 2
@@ -2234,7 +2233,7 @@ lbl_800295A4:
 /* 800295E8 00025508  80 05 00 90 */	lwz r0, 0x90(r5)
 /* 800295EC 0002550C  7C 06 02 14 */	add r0, r6, r0
 /* 800295F0 00025510  90 0D 9C 0C */	stw r0, lbl_802F1DEC@sda21(r13)
-/* 800295F4 00025514  4B FF E1 49 */	bl func_8002773C
+/* 800295F4 00025514  4B FF E1 49 */	bl read_musyx_file
 /* 800295F8 00025518  80 1D 00 0C */	lwz r0, 0xc(r29)
 /* 800295FC 0002551C  38 81 00 0C */	addi r4, r1, 0xc
 /* 80029600 00025520  54 00 10 3A */	slwi r0, r0, 2
@@ -2253,7 +2252,7 @@ lbl_800295A4:
 /* 80029634 00025554  80 05 00 B4 */	lwz r0, 0xb4(r5)
 /* 80029638 00025558  7C 06 02 14 */	add r0, r6, r0
 /* 8002963C 0002555C  90 0D 9C 0C */	stw r0, lbl_802F1DEC@sda21(r13)
-/* 80029640 00025560  4B FF E0 FD */	bl func_8002773C
+/* 80029640 00025560  4B FF E0 FD */	bl read_musyx_file
 /* 80029644 00025564  80 1D 00 0C */	lwz r0, 0xc(r29)
 /* 80029648 00025568  54 00 10 3A */	slwi r0, r0, 2
 /* 8002964C 0002556C  7C 9F 02 14 */	add r4, r31, r0
@@ -2427,6 +2426,7 @@ lbl_800298BC:
 /* 800298CC 000257EC  83 A1 00 0C */	lwz r29, 0xc(r1)
 /* 800298D0 000257F0  38 21 00 18 */	addi r1, r1, 0x18
 /* 800298D4 000257F4  4E 80 00 20 */	blr
+
 .global ev_sound_init
 ev_sound_init:
 /* 800298D8 000257F8  7C 08 02 A6 */	mflr r0
@@ -2559,6 +2559,7 @@ lbl_80029AB4:
 /* 80029AB8 000259D8  38 21 00 08 */	addi r1, r1, 8
 /* 80029ABC 000259DC  7C 08 03 A6 */	mtlr r0
 /* 80029AC0 000259E0  4E 80 00 20 */	blr
+.endif
 .global ev_sound_main
 ev_sound_main:
 /* 80029AC4 000259E4  7C 08 02 A6 */	mflr r0
@@ -6974,7 +6975,7 @@ lbl_8002D8A0:
 /* 8002D8D0 000297F0  38 7F 71 58 */	addi r3, r31, 0x7158
 /* 8002D8D4 000297F4  4C C6 31 82 */	crclr 6
 /* 8002D8D8 000297F8  38 9F 71 6C */	addi r4, r31, 0x716c
-/* 8002D8DC 000297FC  4B FF 9C 0D */	bl func_800274E8
+/* 8002D8DC 000297FC  4B FF 9C 0D */	bl print_sound_error
 lbl_8002D8E0:
 /* 8002D8E0 00029800  3C 60 80 20 */	lis r3, lbl_80201454@ha
 /* 8002D8E4 00029804  38 83 14 54 */	addi r4, r3, lbl_80201454@l
@@ -6985,7 +6986,7 @@ lbl_8002D8E0:
 /* 8002D8F8 00029818  38 7F 71 58 */	addi r3, r31, 0x7158
 /* 8002D8FC 0002981C  4C C6 31 82 */	crclr 6
 /* 8002D900 00029820  38 9F 71 6C */	addi r4, r31, 0x716c
-/* 8002D904 00029824  4B FF 9B E5 */	bl func_800274E8
+/* 8002D904 00029824  4B FF 9B E5 */	bl print_sound_error
 lbl_8002D908:
 /* 8002D908 00029828  3B 80 00 00 */	li r28, 0
 /* 8002D90C 0002982C  93 8D 9B AC */	stw r28, lbl_802F1D8C@sda21(r13)
@@ -7039,7 +7040,7 @@ lbl_8002D908:
 /* 8002D9CC 000298EC  38 7F 71 58 */	addi r3, r31, 0x7158
 /* 8002D9D0 000298F0  4C C6 31 82 */	crclr 6
 /* 8002D9D4 000298F4  38 9F 71 9C */	addi r4, r31, 0x719c
-/* 8002D9D8 000298F8  4B FF 9B 11 */	bl func_800274E8
+/* 8002D9D8 000298F8  4B FF 9B 11 */	bl print_sound_error
 lbl_8002D9DC:
 /* 8002D9DC 000298FC  80 6D 9B D8 */	lwz r3, lbl_802F1DB8@sda21(r13)
 /* 8002D9E0 00029900  3C 03 00 01 */	addis r0, r3, 1
@@ -7048,7 +7049,7 @@ lbl_8002D9DC:
 /* 8002D9EC 0002990C  38 7F 71 58 */	addi r3, r31, 0x7158
 /* 8002D9F0 00029910  4C C6 31 82 */	crclr 6
 /* 8002D9F4 00029914  38 9F 71 9C */	addi r4, r31, 0x719c
-/* 8002D9F8 00029918  4B FF 9A F1 */	bl func_800274E8
+/* 8002D9F8 00029918  4B FF 9A F1 */	bl print_sound_error
 lbl_8002D9FC:
 /* 8002D9FC 0002991C  38 00 00 01 */	li r0, 1
 /* 8002DA00 00029920  90 0D 9B DC */	stw r0, lbl_802F1DBC@sda21(r13)
@@ -16140,7 +16141,6 @@ glabel string_unable_to_allocate_buffer___s__n
 glabel string_Failed_to_read_data_from___s__n
 	.asciz "Failed to read data from '%s'\n"
 	.balign 4
-.endif
 
 .global lbl_801B344C
 lbl_801B344C:
@@ -16155,6 +16155,7 @@ lbl_801B344C:
 	.4byte lbl_800291AC  ;# ptr
 	.4byte lbl_800291AC  ;# ptr
 	.4byte lbl_80029180  ;# ptr
+
 glabel string_SoundGroupLoad_n
 	.asciz "SoundGroupLoad\n"
 glabel string_RAM_ERROR____
@@ -16178,6 +16179,7 @@ glabel string_____but_SUCCESS____use_CharaHeap_n
 glabel string_ARAM_SIZE_OVER____
 	.asciz "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n"
 	.balign 4
+.endif
 
 .global lbl_801B35F0
 lbl_801B35F0:
@@ -16760,7 +16762,6 @@ glabel string_endm_lp
 glabel string_optm
 	.asciz "optm"
 	.balign 4
-.endif
 
 .global lbl_802F07B4
 lbl_802F07B4:
@@ -16798,6 +16799,8 @@ lbl_802F07DC:
 glabel string__test_2
 	.asciz "/test"
 	.balign 4
+.endif
+
 glabel lbl_802F07E4
 	.4byte 0
 	.4byte 0

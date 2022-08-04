@@ -17,7 +17,11 @@ typedef struct DTKTrack
 void DTKInit(void);
 u32 DTKQueueTrack(char *fileName, DTKTrack *track, u32 eventMask, DTKCallback callback);
 u32 DTKRemoveTrack(DTKTrack *track);
+u32 DTKGetState(void);
+void DTKSetState(u32 state);
 void DTKSetRepeatMode(u32 repeat);
 void DTKSetVolume(int left, int right);
+void DTKPrevTrack(void);
+void DTKNextTrack(void);
 
 #endif

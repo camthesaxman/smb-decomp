@@ -84,9 +84,9 @@ int load_common_graphics(void);
 void func_800249D4(void);
 void u_free_minigame_graphics(void);
 
-// ? func_800274E8();
+// ? print_sound_error();
 // ? func_800275A0();
-// ? func_8002773C();
+// ? read_musyx_file();
 // ? func_8002786C();
 // ? u_alloc();
 // ? u_free();
