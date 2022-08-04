@@ -14,7 +14,10 @@ typedef struct DTKTrack
     /*0x14*/ DVDFileInfo dvdFileInfo;
 } DTKTrack;
 
+void DTKInit(void);
 u32 DTKQueueTrack(char *fileName, DTKTrack *track, u32 eventMask, DTKCallback callback);
 u32 DTKRemoveTrack(DTKTrack *track);
+void DTKSetRepeatMode(u32 repeat);
+void DTKSetVolume(int left, int right);
 
 #endif

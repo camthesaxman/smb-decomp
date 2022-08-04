@@ -1,7 +1,9 @@
+#include <assert.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <dolphin.h>
+#include <musyx/musyx.h>
 
 #include "global.h"
 #include "adv.h"
@@ -62,223 +64,223 @@ const struct Struct80110400 lbl_80110400[] =
 
 const struct Struct8011057C lbl_8011057C[] =
 {
-    {   3, "GRPse04",  1, 0,  -1 },
-    { 209, "SND_SEB_SE_COIN_SEPCM_2",  7, 0,   0 },
-    { 210, "SND_SEB_SE_COIN_SEPCM_3",  7, 0,   1 },
-    { 205, "SND_SEB_SE_START_SEPCM",  7, 0,   2 },
-    {   0, "GRPse01",  1, 0,  -1 },
-    {  -1, "SND_SNGA_SNG_BNK0_FX_TEST",  0, 0,  -1 },
-    { 174, "SND_SEB_SE_BALL_SEPCM",  5, 8,  53 },
-    {  -1, "DMY_CODE",  7, 0, 101 },
-    { 175, "SND_SEB_SE_BALL_SEPCM_1",  6, 0, 105 },
-    {  -1, "DMY_CODE",  0, 0,  50 },
-    {  -1, "DMY_CODE",  7, 0, 107 },
-    { 176, "SND_SEB_SE_BALL_SEPCM_2",  3, 8,  47 },
-    { 177, "SND_SEB_SE_BALL_SEPCM_3",  5, 8,  54 },
-    {  -1, "DMY_CODE",  7, 0, 102 },
-    { 178, "SND_SEB_SE_BALL_SEPCM_4",  3, 8,  19 },
-    { 179, "SND_SEB_SE_BALL_SEPCM_5",  0, 0, 103 },
-    {  -1, "DMY_CODE",  0, 0,  46 },
-    { 180, "SND_SEB_SE_BALL_SEPCM_6",  0, 0,  64 },
-    { 181, "SND_SEB_SE_BALL_SEPCM_7",  5, 8,  55 },
-    { 184, "SND_SEB_SE_BALL_SEPCM_8",  3, 8,  18 },
-    { 185, "SND_SEB_SE_BALL_SEPCM_9",  3, 8,  20 },
-    { 186, "SND_SEB_SE_BALL_SEPCM_10",  0, 0,  -1 },
-    { 197, "SND_SEB_SE_BALL_SEPCM_18",  0, 0,  -1 },
-    { 198, "SND_SEB_SE_BALL_SEPCM_19",  0, 0,  -1 },
-    { 199, "SND_SEB_SE_BALL_SEPCM_20",  0, 0,  -1 },
-    { 200, "SND_SEB_SE_BALL_SEPCM_21",  0, 0,  -1 },
-    { 201, "SND_SEB_SE_BALL_SEPCM_22",  0, 0,  -1 },
-    { 202, "SND_SEB_SE_BALL_SEPCM_23",  5, 8,  56 },
-    { 204, "SND_SEB_SE_BALL_SEPCM_25",  0, 0,  -1 },
-    { 182, "SND_SEB_SE_BALL_SEPCM_11",  0, 0,  -1 },
-    { 183, "SND_SEB_SE_BALL_SEPCM_12",  0, 0,  -1 },
-    { 187, "SND_SEB_SE_BALL_SEPCM_13",  0, 0,  -1 },
-    { 188, "SND_SEB_SE_BALL_SEPCM_14",  0, 0,  -1 },
-    { 189, "SND_SEB_SE_BALL_SEPCM_15",  0, 0,  -1 },
-    { 190, "SND_SEB_SE_BALL_SEPCM_16",  0, 0,  -1 },
-    { 191, "SND_SEB_SE_BALL_SEPCM_17",  0, 0,  -1 },
-    { 194, "SND_SEB_SE_BALL_SEPCM_26",  0, 0,  -1 },
-    { 195, "SND_SEB_SE_BALL_SEPCM_27",  0, 0,  -1 },
-    { 196, "SND_SEB_SE_BALL_SEPCM_28",  0, 0,  -1 },
-    { 192, "SND_SEB_SE_BALL_SEPCM_29",  0, 0,  -1 },
-    { 193, "SND_SEB_SE_BALL_SEPCM_30",  0, 0,  -1 },
-    { 203, "SND_SEB_SE_BALL_SEPCM_31",  0, 0,  -1 },
-    { 208, "SND_SEB_SE_ETC_SEPCM",  0, 0,  -1 },
-    { 209, "SND_SEB_SE_ETC_SEPCM_2",  7, 0,  -1 },
-    { 210, "SND_SEB_SE_ETC_SEPCM_3",  7, 0,  -1 },
-    { 211, "SND_SEB_SE_ETC_SEPCM_5", 10, 0,  22 },
-    {  -1, "DMY_CODE", 10, 0, 104 },
-    {  -1, "DMY_CODE",  7, 0, 365 },
-    { 213, "SND_SEB_SE_ETC_SEPCM_6",  0, 0,  -1 },
-    { 214, "SND_SEB_SE_ETC_SEPCM_7",  0, 0,  15 },
-    {  -1, "DMY_CODE",  7, 0, 108 },
-    {  -1, "DMY_CODE",  7, 0, 361 },
-    { 215, "SND_SEB_SE_ETC_SEPCM_8",  0, 0,  -1 },
-    { 216, "SND_SEB_SE_ETC_SEPCM_9",  0, 0,  -1 },
-    { 217, "SND_SEB_SE_ETC_SEPCM_10",  7, 0,   9 },
-    {  -1, "DMY_CODE",  7, 0, 111 },
-    { 218, "SND_SEB_SE_ETC_SEPCM_11",  7, 0,  10 },
-    { 226, "SND_SEB_SE_ETC_SEPCM_12",  0, 0,  -1 },
-    { 227, "SND_SEB_SE_ETC_SEPCM_22",  0, 0,  -1 },
-    { 228, "SND_SEB_SE_ETC_SEPCM_14",  9, 0,  -1 },
-    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF",  0, 0,  -1 },
-    { 229, "SND_SEB_SE_ETC_SEPCM_15",  0, 0,  77 },
-    { 239, "SND_SEB_SE_ETC_SEPCM_16",  0, 0,  78 },
-    { 240, "SND_SEB_SE_ETC_SEPCM_17",  0, 0,  -1 },
-    { 241, "SND_SEB_SE_ETC_SEPCM_18",  9, 0,  -1 },
-    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF_1",  0, 0,  -1 },
-    { 242, "SND_SEB_SE_ETC_SEPCM_19",  9, 0,  -1 },
-    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF_2",  0, 0,  -1 },
-    { 243, "SND_SEB_SE_ETC_SEPCM_20",  7, 0,  48 },
-    {  -1, "DMY_CODE",  7, 0, 112 },
-    {  -1, "DMY_CODE",  7, 0, 209 },
-    { 244, "SND_SEB_SE_ETC_SEPCM_21",  0, 0,  16 },
-    {  -1, "DMY_CODE",  7, 0, 106 },
-    {  -1, "DMY_CODE",  7, 0, 110 },
-    { 212, "SND_SEB_SE_ETC_SEPCM_24",  0, 0,  52 },
-    {  -1, "DMY_CODE",  0, 0,  68 },
-    { 205, "SND_SEB_SE_JGL_SEPCM_2",  7, 0,  -1 },
-    { 206, "SND_SEB_SE_JGL_SEPCM_3", 10, 2,   3 },
-    {  -1, "DMY_CODE",  7, 0, 354 },
-    { 207, "SND_SEB_SE_JGL_SE034UP_1", 10, 0,  57 },
-    { 271, "SND_SEB_SE_JGL_JGL01A_AIF_1", 13, 0, 285 },
-    { 248, "SND_SE01_RUN01",  4, 8,  45 },
-    { 273, "SND_SE01_RUN02",  4, 8,  -1 },
-    { 274, "SND_SE01_RUN03",  4, 8,  -1 },
-    {  -1, "SND_SE01_FORPOP01_FPD",  0, 0,  -1 },
-    {   1, "GRPse02",  1, 0,  -1 },
-    { 260, "SND_SEB_SE_ETC_0_SEPCM_25",  0, 0,  -1 },
-    { 219, "SND_SEB_SE_ETC_0_SEPCM_27",  0, 0,  -1 },
-    { 220, "SND_SEB_SE_ETC_0_SEPCM_31",  0, 0,  -1 },
-    { 221, "SND_SEB_SE_ETC_0_SEPCM_32",  0, 0,  -1 },
-    { 222, "SND_SEB_SE_ETC_0_SEPCM_33",  0, 0,  -1 },
-    { 223, "SND_SEB_SE_ETC_0_SEPCM_34",  0, 0,  66 },
-    { 224, "SND_SEB_SE_ETC_0_SEPCM_35",  0, 0,  65 },
-    { 225, "SND_SEB_SE_ETC_0_SEPCM_36",  0, 0,  67 },
-    { 230, "SND_SEB_SE_ETC_0_SEPCM_37",  9, 0,  -1 },
+    {   3, "GRPse04",                       1, 0,  -1 },
+    { 209, "SND_SEB_SE_COIN_SEPCM_2",       7, 0,   0 },
+    { 210, "SND_SEB_SE_COIN_SEPCM_3",       7, 0,   1 },
+    { 205, "SND_SEB_SE_START_SEPCM",        7, 0,   2 },
+    {   0, "GRPse01",                       1, 0,  -1 },
+    {  -1, "SND_SNGA_SNG_BNK0_FX_TEST",     0, 0,  -1 },
+    { 174, "SND_SEB_SE_BALL_SEPCM",         5, 8,  53 },
+    {  -1, "DMY_CODE",                      7, 0, 101 },
+    { 175, "SND_SEB_SE_BALL_SEPCM_1",       6, 0, 105 },
+    {  -1, "DMY_CODE",                      0, 0,  50 },
+    {  -1, "DMY_CODE",                      7, 0, 107 },
+    { 176, "SND_SEB_SE_BALL_SEPCM_2",       3, 8,  47 },
+    { 177, "SND_SEB_SE_BALL_SEPCM_3",       5, 8,  54 },
+    {  -1, "DMY_CODE",                      7, 0, 102 },
+    { 178, "SND_SEB_SE_BALL_SEPCM_4",       3, 8,  19 },
+    { 179, "SND_SEB_SE_BALL_SEPCM_5",       0, 0, 103 },
+    {  -1, "DMY_CODE",                      0, 0,  46 },
+    { 180, "SND_SEB_SE_BALL_SEPCM_6",       0, 0,  64 },
+    { 181, "SND_SEB_SE_BALL_SEPCM_7",       5, 8,  55 },
+    { 184, "SND_SEB_SE_BALL_SEPCM_8",       3, 8,  18 },
+    { 185, "SND_SEB_SE_BALL_SEPCM_9",       3, 8,  20 },
+    { 186, "SND_SEB_SE_BALL_SEPCM_10",      0, 0,  -1 },
+    { 197, "SND_SEB_SE_BALL_SEPCM_18",      0, 0,  -1 },
+    { 198, "SND_SEB_SE_BALL_SEPCM_19",      0, 0,  -1 },
+    { 199, "SND_SEB_SE_BALL_SEPCM_20",      0, 0,  -1 },
+    { 200, "SND_SEB_SE_BALL_SEPCM_21",      0, 0,  -1 },
+    { 201, "SND_SEB_SE_BALL_SEPCM_22",      0, 0,  -1 },
+    { 202, "SND_SEB_SE_BALL_SEPCM_23",      5, 8,  56 },
+    { 204, "SND_SEB_SE_BALL_SEPCM_25",      0, 0,  -1 },
+    { 182, "SND_SEB_SE_BALL_SEPCM_11",      0, 0,  -1 },
+    { 183, "SND_SEB_SE_BALL_SEPCM_12",      0, 0,  -1 },
+    { 187, "SND_SEB_SE_BALL_SEPCM_13",      0, 0,  -1 },
+    { 188, "SND_SEB_SE_BALL_SEPCM_14",      0, 0,  -1 },
+    { 189, "SND_SEB_SE_BALL_SEPCM_15",      0, 0,  -1 },
+    { 190, "SND_SEB_SE_BALL_SEPCM_16",      0, 0,  -1 },
+    { 191, "SND_SEB_SE_BALL_SEPCM_17",      0, 0,  -1 },
+    { 194, "SND_SEB_SE_BALL_SEPCM_26",      0, 0,  -1 },
+    { 195, "SND_SEB_SE_BALL_SEPCM_27",      0, 0,  -1 },
+    { 196, "SND_SEB_SE_BALL_SEPCM_28",      0, 0,  -1 },
+    { 192, "SND_SEB_SE_BALL_SEPCM_29",      0, 0,  -1 },
+    { 193, "SND_SEB_SE_BALL_SEPCM_30",      0, 0,  -1 },
+    { 203, "SND_SEB_SE_BALL_SEPCM_31",      0, 0,  -1 },
+    { 208, "SND_SEB_SE_ETC_SEPCM",          0, 0,  -1 },
+    { 209, "SND_SEB_SE_ETC_SEPCM_2",        7, 0,  -1 },
+    { 210, "SND_SEB_SE_ETC_SEPCM_3",        7, 0,  -1 },
+    { 211, "SND_SEB_SE_ETC_SEPCM_5",       10, 0,  22 },
+    {  -1, "DMY_CODE",                     10, 0, 104 },
+    {  -1, "DMY_CODE",                      7, 0, 365 },
+    { 213, "SND_SEB_SE_ETC_SEPCM_6",        0, 0,  -1 },
+    { 214, "SND_SEB_SE_ETC_SEPCM_7",        0, 0,  15 },
+    {  -1, "DMY_CODE",                      7, 0, 108 },
+    {  -1, "DMY_CODE",                      7, 0, 361 },
+    { 215, "SND_SEB_SE_ETC_SEPCM_8",        0, 0,  -1 },
+    { 216, "SND_SEB_SE_ETC_SEPCM_9",        0, 0,  -1 },
+    { 217, "SND_SEB_SE_ETC_SEPCM_10",       7, 0,   9 },
+    {  -1, "DMY_CODE",                      7, 0, 111 },
+    { 218, "SND_SEB_SE_ETC_SEPCM_11",       7, 0,  10 },
+    { 226, "SND_SEB_SE_ETC_SEPCM_12",       0, 0,  -1 },
+    { 227, "SND_SEB_SE_ETC_SEPCM_22",       0, 0,  -1 },
+    { 228, "SND_SEB_SE_ETC_SEPCM_14",       9, 0,  -1 },
+    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF",      0, 0,  -1 },
+    { 229, "SND_SEB_SE_ETC_SEPCM_15",       0, 0,  77 },
+    { 239, "SND_SEB_SE_ETC_SEPCM_16",       0, 0,  78 },
+    { 240, "SND_SEB_SE_ETC_SEPCM_17",       0, 0,  -1 },
+    { 241, "SND_SEB_SE_ETC_SEPCM_18",       9, 0,  -1 },
+    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF_1",    0, 0,  -1 },
+    { 242, "SND_SEB_SE_ETC_SEPCM_19",       9, 0,  -1 },
+    {  -1, "SND_SEB_SE_ETC_SEPCM_OFF_2",    0, 0,  -1 },
+    { 243, "SND_SEB_SE_ETC_SEPCM_20",       7, 0,  48 },
+    {  -1, "DMY_CODE",                      7, 0, 112 },
+    {  -1, "DMY_CODE",                      7, 0, 209 },
+    { 244, "SND_SEB_SE_ETC_SEPCM_21",       0, 0,  16 },
+    {  -1, "DMY_CODE",                      7, 0, 106 },
+    {  -1, "DMY_CODE",                      7, 0, 110 },
+    { 212, "SND_SEB_SE_ETC_SEPCM_24",       0, 0,  52 },
+    {  -1, "DMY_CODE",                      0, 0,  68 },
+    { 205, "SND_SEB_SE_JGL_SEPCM_2",        7, 0,  -1 },
+    { 206, "SND_SEB_SE_JGL_SEPCM_3",       10, 2,   3 },
+    {  -1, "DMY_CODE",                      7, 0, 354 },
+    { 207, "SND_SEB_SE_JGL_SE034UP_1",     10, 0,  57 },
+    { 271, "SND_SEB_SE_JGL_JGL01A_AIF_1",  13, 0, 285 },
+    { 248, "SND_SE01_RUN01",                4, 8,  45 },
+    { 273, "SND_SE01_RUN02",                4, 8,  -1 },
+    { 274, "SND_SE01_RUN03",                4, 8,  -1 },
+    {  -1, "SND_SE01_FORPOP01_FPD",         0, 0,  -1 },
+    {   1, "GRPse02",                       1, 0,  -1 },
+    { 260, "SND_SEB_SE_ETC_0_SEPCM_25",     0, 0,  -1 },
+    { 219, "SND_SEB_SE_ETC_0_SEPCM_27",     0, 0,  -1 },
+    { 220, "SND_SEB_SE_ETC_0_SEPCM_31",     0, 0,  -1 },
+    { 221, "SND_SEB_SE_ETC_0_SEPCM_32",     0, 0,  -1 },
+    { 222, "SND_SEB_SE_ETC_0_SEPCM_33",     0, 0,  -1 },
+    { 223, "SND_SEB_SE_ETC_0_SEPCM_34",     0, 0,  66 },
+    { 224, "SND_SEB_SE_ETC_0_SEPCM_35",     0, 0,  65 },
+    { 225, "SND_SEB_SE_ETC_0_SEPCM_36",     0, 0,  67 },
+    { 230, "SND_SEB_SE_ETC_0_SEPCM_37",     9, 0,  -1 },
     {  -1, "SND_SEB_SE_ETC_0_SEPCM_OFF_3",  0, 0,  -1 },
-    { 231, "SND_SEB_SE_ETC_0_SEPCM_38",  9, 0,  -1 },
+    { 231, "SND_SEB_SE_ETC_0_SEPCM_38",     9, 0,  -1 },
     {  -1, "SND_SEB_SE_ETC_0_SEPCM_OFF_4",  0, 0,  -1 },
-    { 232, "SND_SEB_SE_ETC_0_SEPCM_39",  0, 0,  -1 },
-    { 233, "SND_SEB_SE_ETC_0_SEPCM_40",  0, 0,  -1 },
-    { 234, "SND_SEB_SE_ETC_0_SEPCM_41",  0, 0,  -1 },
-    { 235, "SND_SEB_SE_ETC_0_SEPCM_42",  0, 0,  -1 },
-    { 236, "SND_SEB_SE_ETC_0_SEPCM_43",  0, 0,  -1 },
-    { 261, "SND_SEB_SE_ETC_0_SEPCM_44",  0, 0,  -1 },
-    { 262, "SND_SEB_SE_ETC_0_SEPCM_45",  0, 0,  -1 },
-    { 263, "SND_SEB_SE_ETC_0_SEPCM_46",  0, 0,  -1 },
-    { 264, "SND_SEB_SE_ETC_0_SEPCM_47",  0, 0,  -1 },
-    { 265, "SND_SEB_SE_ETC_0_SEPCM_48",  0, 0,  -1 },
-    { 266, "SND_SEB_SE_ETC_0_SEPCM_49",  0, 0,  -1 },
-    { 267, "SND_SEB_SE_ETC_0_SEPCM_50",  0, 0,  -1 },
-    { 268, "SND_SEB_SE_ETC_0_SEPCM_51",  0, 0,  -1 },
-    { 269, "SND_SEB_SE_ETC_0_SEPCM_52", 11, 0,  61 },
-    { 270, "SND_SEB_SE_ETC_0_SEPCM_56",  0, 0,  60 },
-    { 237, "SND_SEB_SE_ETC_0_SEPCM_13",  0, 0,  -1 },
-    {   2, "GRPse03",  1, 0,  -1 },
-    { 257, "SND_SEB_RACKA_31_01_2",  0, 0,  -1 },
-    { 258, "SND_SEB_RACKA_C_0003_WAV_2",  0, 0,  -1 },
-    { 259, "SND_SEB_RACKA_C_0004_WAV",  0, 0,  -1 },
-    { 247, "SND_SEB_YUKA_SEPCM_1_1",  0, 0,  99 },
-    { 246, "SND_SEB_YUKA_SEPCM_3_2",  0, 0, 100 },
-    { 245, "SND_SEB_YUKA_SEPCM_5_3",  0, 0,  98 },
-    { 161, "SFXse162", 13, 0, 498 },
-    { 162, "SFXse163", 13, 0, 499 },
-    { 187, "SFXse188",  0, 0, 500 },
-    { 188, "SFXse189",  0, 0, 511 },
-    { 160, "SFXse161",  0, 0,  -1 },
-    {   7, "GRPnar",  1, 0,  -1 },
-    { 251, "SND_SED_NAR_SEGA",  8, 0,  33 },
-    { 256, "SND_SED_NAR_TITTLE1",  7, 0,  34 },
-    { 272, "SND_SED_NAR_TITTLE2",  7, 0,  -1 },
-    {   0, "SND_SED_NAR_0",  8, 0,  35 },
-    {   1, "SND_SED_NAR_1",  8, 0,  36 },
-    {   2, "SND_SED_NAR_2",  8, 0,  37 },
-    {   3, "SND_SED_NAR_3",  8, 0,  38 },
-    {   4, "SND_SED_NAR_4",  8, 0,  39 },
-    {   5, "SND_SED_NAR_5",  8, 0,  40 },
-    {   6, "SND_SED_NAR_6",  8, 0,  41 },
-    {   7, "SND_SED_NAR_7",  8, 0,  42 },
-    {   8, "SND_SED_NAR_8",  8, 0,  43 },
-    {   9, "SND_SED_NAR_9",  8, 0,  44 },
-    { 170, "SND_SED_NAR_READY",  8, 0,   4 },
-    { 158, "SND_SED_NAR_GO",  8, 0,   5 },
-    { 159, "SND_SED_NAR_GO2",  8, 0,  -1 },
-    { 172, "SND_SED_NAR_RINGOUT",  8, 0,  -1 },
-    { 163, "SND_SED_NAR_HURRY",  8, 0,   7 },
-    { 100, "SND_SED_NAR_CLEAR",  8, 0,  -1 },
-    { 255, "SND_SED_NAR_TIMEOVER",  8, 0,  11 },
-    { 109, "SND_SED_NAR_GAMEOVER",  7, 0,  13 },
-    {  52, "SND_SED_NAR_BONUSFIN",  8, 0,  69 },
-    { 101, "SND_SED_NAR_CLEAR_FLOOR",  8, 0,  -1 },
-    { 102, "SND_SED_NAR_CLEAR_GAME",  8, 0,  -1 },
-    { 103, "SND_SED_NAR_CONGLA",  8, 0,  70 },
-    { 104, "SND_SED_NAR_CONTINUE",  7, 0,  71 },
-    { 108, "SND_SED_NAR_FALLOUT",  8, 0,  12 },
-    { 160, "SND_SED_NAR_GOAL",  8, 0,   8 },
-    {  -1, "DMY_CODE", 14, 0, 366 },
-    { 166, "SND_SED_NAR_PERFECT",  8, 0,  72 },
-    { 167, "SND_SED_NAR_PRESS",  8, 0,  73 },
-    { 171, "SND_SED_NAR_READY2",  8, 0,  -1 },
-    { 252, "SND_SED_NAR_SEL_LV",  8, 0,  74 },
-    { 253, "SND_SED_NAR_SEL_MK",  8, 0,  75 },
-    { 254, "SND_SED_NAR_THANKYOU",  8, 0,  -1 },
-    { 105, "SND_SED_NAR_FALL00", 10, 0,  21 },
-    { 106, "SND_SED_NAR_FALL01",  0, 0,  -1 },
-    { 107, "SND_SED_NAR_FALL02",  0, 0,  -1 },
-    { 164, "SND_SED_NAR_N4_ES",  0, 0,   6 },
-    { 165, "SND_SED_NAR_OP_TRN",  2, 8,  17 },
-    { 173, "SND_SED_NAR_RST5",  0, 0,  -1 },
-    { 161, "SND_SED_NAR_HAMMER1",  0, 0,  -1 },
-    { 162, "SND_SED_NAR_HAMMER2",  0, 0,  -1 },
-    { 168, "SND_SED_NAR_RAIN1",  9, 0,  -1 },
-    {  -1, "SND_SED_NAR_RAIN1_OFF",  0, 0,  -1 },
-    { 169, "SND_SED_NAR_RAIN2",  9, 0,  76 },
-    {  -1, "SND_SED_NAR_RAIN2_OFF",  0, 0,  -1 },
-    {  95, "SND_SED_NAR_BOYM_START2", 15, 0,  49 },
-    {  96, "SND_SED_NAR_BOYM_START3", 15, 0,  79 },
-    { 147, "SND_SED_NAR_GIRLM_GOAL3", 15, 0,  79 },
-    {  50, "SND_SED_NAR_BABYM_START3", 15, 0,  79 },
-    {   4, "GRPboy",  1, 0,  -1 },
-    {  94, "SND_SED_VO1_BOYM_START1", 17, 0,  31 },
-    {  95, "SND_SED_VO1_BOYM_START2", 15, 0,  -1 },
-    {  96, "SND_SED_VO1_BOYM_START3", 15, 0,  -1 },
-    {  -1, "DMY_CODE", 19, 0,  80 },
-    {  97, "SND_SED_VO1_BOYM_START4", 15, 0,  -1 },
-    {  98, "SND_SED_VO1_BOYM_TIMEOVER1", 15, 0,  62 },
-    {  -1, "DMY_CODE", 19, 0, 556 },
-    {  99, "SND_SED_VO1_BOYM_TIMEOVER2", 15, 0,  28 },
-    {  -1, "DMY_CODE", 19, 0, 300 },
-    {  89, "SND_SED_VO1_BOYM_OCHISOU1", 15, 0,  -1 },
-    {  90, "SND_SED_VO1_BOYM_OCHISOU2", 15, 0,  -1 },
-    {  91, "SND_SED_VO1_BOYM_OCHISOU3", 15, 0,  -1 },
-    {  70, "SND_SED_VO1_BOYM_BGET", 15, 0,  -1 },
-    {  68, "SND_SED_VO1_BOYM_BBGET1", 15, 0,  -1 },
-    {  69, "SND_SED_VO1_BOYM_BBGET2", 18, 0,  32 },
-    {  72, "SND_SED_VO1_BOYM_COLI1", 16, 8,  -1 },
-    {  73, "SND_SED_VO1_BOYM_COLI2", 16, 8,  -1 },
-    {  74, "SND_SED_VO1_BOYM_COLI3", 16, 8,  24 },
-    {  75, "SND_SED_VO1_BOYM_COLI4", 16, 8,  25 },
-    {  76, "SND_SED_VO1_BOYM_COLI5", 16, 8,  23 },
-    {  77, "SND_SED_VO1_BOYM_COLI6", 16, 8,  -1 },
-    {  78, "SND_SED_VO1_BOYM_COLI7", 16, 8,  26 },
-    {  92, "SND_SED_VO1_BOYM_QUEST1", 15, 0,  -1 },
-    {  67, "SND_SED_VO1_BOYM_ANGLY", 15, 0,  -1 },
-    {  88, "SND_SED_VO1_BOYM_LAUGH", 15, 0,  -1 },
-    {  79, "SND_SED_VO1_BOYM_CRY", 15, 0, 109 },
-    {  84, "SND_SED_VO1_BOYM_GOAL1", 15, 0,  -1 },
-    {  85, "SND_SED_VO1_BOYM_GOAL2", 15, 0,  -1 },
-    {  86, "SND_SED_VO1_BOYM_GOAL3", 15, 0,  -1 },
-    {  80, "SND_SED_VO1_BOYM_FALL1", 15, 0,  -1 },
-    {  81, "SND_SED_VO1_BOYM_FALL2", 15, 0,  -1 },
-    {  82, "SND_SED_VO1_BOYM_FALL3", 15, 0,  -1 },
-    {  83, "SND_SED_VO1_BOYM_FALL4", 15, 0,  -1 },
-    {  87, "SND_SED_VO1_BOYM_HELLO", 15, 0,  -1 },
-    {  71, "SND_SED_VO1_BOYM_BYE", 15, 0,  -1 },
-    {  93, "SND_SED_VO1_BOYM_SEEYOU", 15, 0,  -1 },
-    {  66, "SND_SED_VO1_BOYH_START1", 15, 0,  30 },
-    {  59, "SND_SED_VO1_BOYH_OCHISOU1", 16, 8,  58 },
+    { 232, "SND_SEB_SE_ETC_0_SEPCM_39",     0, 0,  -1 },
+    { 233, "SND_SEB_SE_ETC_0_SEPCM_40",     0, 0,  -1 },
+    { 234, "SND_SEB_SE_ETC_0_SEPCM_41",     0, 0,  -1 },
+    { 235, "SND_SEB_SE_ETC_0_SEPCM_42",     0, 0,  -1 },
+    { 236, "SND_SEB_SE_ETC_0_SEPCM_43",     0, 0,  -1 },
+    { 261, "SND_SEB_SE_ETC_0_SEPCM_44",     0, 0,  -1 },
+    { 262, "SND_SEB_SE_ETC_0_SEPCM_45",     0, 0,  -1 },
+    { 263, "SND_SEB_SE_ETC_0_SEPCM_46",     0, 0,  -1 },
+    { 264, "SND_SEB_SE_ETC_0_SEPCM_47",     0, 0,  -1 },
+    { 265, "SND_SEB_SE_ETC_0_SEPCM_48",     0, 0,  -1 },
+    { 266, "SND_SEB_SE_ETC_0_SEPCM_49",     0, 0,  -1 },
+    { 267, "SND_SEB_SE_ETC_0_SEPCM_50",     0, 0,  -1 },
+    { 268, "SND_SEB_SE_ETC_0_SEPCM_51",     0, 0,  -1 },
+    { 269, "SND_SEB_SE_ETC_0_SEPCM_52",    11, 0,  61 },
+    { 270, "SND_SEB_SE_ETC_0_SEPCM_56",     0, 0,  60 },
+    { 237, "SND_SEB_SE_ETC_0_SEPCM_13",     0, 0,  -1 },
+    {   2, "GRPse03",                       1, 0,  -1 },
+    { 257, "SND_SEB_RACKA_31_01_2",         0, 0,  -1 },
+    { 258, "SND_SEB_RACKA_C_0003_WAV_2",    0, 0,  -1 },
+    { 259, "SND_SEB_RACKA_C_0004_WAV",      0, 0,  -1 },
+    { 247, "SND_SEB_YUKA_SEPCM_1_1",        0, 0,  99 },
+    { 246, "SND_SEB_YUKA_SEPCM_3_2",        0, 0, 100 },
+    { 245, "SND_SEB_YUKA_SEPCM_5_3",        0, 0,  98 },
+    { 161, "SFXse162",                     13, 0, 498 },
+    { 162, "SFXse163",                     13, 0, 499 },
+    { 187, "SFXse188",                      0, 0, 500 },
+    { 188, "SFXse189",                      0, 0, 511 },
+    { 160, "SFXse161",                      0, 0,  -1 },
+    {   7, "GRPnar",                        1, 0,  -1 },
+    { 251, "SND_SED_NAR_SEGA",              8, 0,  33 },
+    { 256, "SND_SED_NAR_TITTLE1",           7, 0,  34 },
+    { 272, "SND_SED_NAR_TITTLE2",           7, 0,  -1 },
+    {   0, "SND_SED_NAR_0",                 8, 0,  35 },
+    {   1, "SND_SED_NAR_1",                 8, 0,  36 },
+    {   2, "SND_SED_NAR_2",                 8, 0,  37 },
+    {   3, "SND_SED_NAR_3",                 8, 0,  38 },
+    {   4, "SND_SED_NAR_4",                 8, 0,  39 },
+    {   5, "SND_SED_NAR_5",                 8, 0,  40 },
+    {   6, "SND_SED_NAR_6",                 8, 0,  41 },
+    {   7, "SND_SED_NAR_7",                 8, 0,  42 },
+    {   8, "SND_SED_NAR_8",                 8, 0,  43 },
+    {   9, "SND_SED_NAR_9",                 8, 0,  44 },
+    { 170, "SND_SED_NAR_READY",             8, 0,   4 },
+    { 158, "SND_SED_NAR_GO",                8, 0,   5 },
+    { 159, "SND_SED_NAR_GO2",               8, 0,  -1 },
+    { 172, "SND_SED_NAR_RINGOUT",           8, 0,  -1 },
+    { 163, "SND_SED_NAR_HURRY",             8, 0,   7 },
+    { 100, "SND_SED_NAR_CLEAR",             8, 0,  -1 },
+    { 255, "SND_SED_NAR_TIMEOVER",          8, 0,  11 },
+    { 109, "SND_SED_NAR_GAMEOVER",          7, 0,  13 },
+    {  52, "SND_SED_NAR_BONUSFIN",          8, 0,  69 },
+    { 101, "SND_SED_NAR_CLEAR_FLOOR",       8, 0,  -1 },
+    { 102, "SND_SED_NAR_CLEAR_GAME",        8, 0,  -1 },
+    { 103, "SND_SED_NAR_CONGLA",            8, 0,  70 },
+    { 104, "SND_SED_NAR_CONTINUE",          7, 0,  71 },
+    { 108, "SND_SED_NAR_FALLOUT",           8, 0,  12 },
+    { 160, "SND_SED_NAR_GOAL",              8, 0,   8 },
+    {  -1, "DMY_CODE",                     14, 0, 366 },
+    { 166, "SND_SED_NAR_PERFECT",           8, 0,  72 },
+    { 167, "SND_SED_NAR_PRESS",             8, 0,  73 },
+    { 171, "SND_SED_NAR_READY2",            8, 0,  -1 },
+    { 252, "SND_SED_NAR_SEL_LV",            8, 0,  74 },
+    { 253, "SND_SED_NAR_SEL_MK",            8, 0,  75 },
+    { 254, "SND_SED_NAR_THANKYOU",          8, 0,  -1 },
+    { 105, "SND_SED_NAR_FALL00",           10, 0,  21 },
+    { 106, "SND_SED_NAR_FALL01",            0, 0,  -1 },
+    { 107, "SND_SED_NAR_FALL02",            0, 0,  -1 },
+    { 164, "SND_SED_NAR_N4_ES",             0, 0,   6 },
+    { 165, "SND_SED_NAR_OP_TRN",            2, 8,  17 },
+    { 173, "SND_SED_NAR_RST5",              0, 0,  -1 },
+    { 161, "SND_SED_NAR_HAMMER1",           0, 0,  -1 },
+    { 162, "SND_SED_NAR_HAMMER2",           0, 0,  -1 },
+    { 168, "SND_SED_NAR_RAIN1",             9, 0,  -1 },
+    {  -1, "SND_SED_NAR_RAIN1_OFF",         0, 0,  -1 },
+    { 169, "SND_SED_NAR_RAIN2",             9, 0,  76 },
+    {  -1, "SND_SED_NAR_RAIN2_OFF",         0, 0,  -1 },
+    {  95, "SND_SED_NAR_BOYM_START2",      15, 0,  49 },
+    {  96, "SND_SED_NAR_BOYM_START3",      15, 0,  79 },
+    { 147, "SND_SED_NAR_GIRLM_GOAL3",      15, 0,  79 },
+    {  50, "SND_SED_NAR_BABYM_START3",     15, 0,  79 },
+    {   4, "GRPboy",                        1, 0,  -1 },
+    {  94, "SND_SED_VO1_BOYM_START1",      17, 0,  31 },
+    {  95, "SND_SED_VO1_BOYM_START2",      15, 0,  -1 },
+    {  96, "SND_SED_VO1_BOYM_START3",      15, 0,  -1 },
+    {  -1, "DMY_CODE",                     19, 0,  80 },
+    {  97, "SND_SED_VO1_BOYM_START4",      15, 0,  -1 },
+    {  98, "SND_SED_VO1_BOYM_TIMEOVER1",   15, 0,  62 },
+    {  -1, "DMY_CODE",                     19, 0, 556 },
+    {  99, "SND_SED_VO1_BOYM_TIMEOVER2",   15, 0,  28 },
+    {  -1, "DMY_CODE",                     19, 0, 300 },
+    {  89, "SND_SED_VO1_BOYM_OCHISOU1",    15, 0,  -1 },
+    {  90, "SND_SED_VO1_BOYM_OCHISOU2",    15, 0,  -1 },
+    {  91, "SND_SED_VO1_BOYM_OCHISOU3",    15, 0,  -1 },
+    {  70, "SND_SED_VO1_BOYM_BGET",        15, 0,  -1 },
+    {  68, "SND_SED_VO1_BOYM_BBGET1",      15, 0,  -1 },
+    {  69, "SND_SED_VO1_BOYM_BBGET2",      18, 0,  32 },
+    {  72, "SND_SED_VO1_BOYM_COLI1",       16, 8,  -1 },
+    {  73, "SND_SED_VO1_BOYM_COLI2",       16, 8,  -1 },
+    {  74, "SND_SED_VO1_BOYM_COLI3",       16, 8,  24 },
+    {  75, "SND_SED_VO1_BOYM_COLI4",       16, 8,  25 },
+    {  76, "SND_SED_VO1_BOYM_COLI5",       16, 8,  23 },
+    {  77, "SND_SED_VO1_BOYM_COLI6",       16, 8,  -1 },
+    {  78, "SND_SED_VO1_BOYM_COLI7",       16, 8,  26 },
+    {  92, "SND_SED_VO1_BOYM_QUEST1",      15, 0,  -1 },
+    {  67, "SND_SED_VO1_BOYM_ANGLY",       15, 0,  -1 },
+    {  88, "SND_SED_VO1_BOYM_LAUGH",       15, 0,  -1 },
+    {  79, "SND_SED_VO1_BOYM_CRY",         15, 0, 109 },
+    {  84, "SND_SED_VO1_BOYM_GOAL1",       15, 0,  -1 },
+    {  85, "SND_SED_VO1_BOYM_GOAL2",       15, 0,  -1 },
+    {  86, "SND_SED_VO1_BOYM_GOAL3",       15, 0,  -1 },
+    {  80, "SND_SED_VO1_BOYM_FALL1",       15, 0,  -1 },
+    {  81, "SND_SED_VO1_BOYM_FALL2",       15, 0,  -1 },
+    {  82, "SND_SED_VO1_BOYM_FALL3",       15, 0,  -1 },
+    {  83, "SND_SED_VO1_BOYM_FALL4",       15, 0,  -1 },
+    {  87, "SND_SED_VO1_BOYM_HELLO",       15, 0,  -1 },
+    {  71, "SND_SED_VO1_BOYM_BYE",         15, 0,  -1 },
+    {  93, "SND_SED_VO1_BOYM_SEEYOU",      15, 0,  -1 },
+    {  66, "SND_SED_VO1_BOYH_START1",      15, 0,  30 },
+    {  59, "SND_SED_VO1_BOYH_OCHISOU1",    16, 8,  58 },
     {  -1, "DMY_CODE", 16, 7,  87 },
     {  -1, "DMY_CODE", 16, 7,  90 },
     {  -1, "DMY_CODE", 16, 7,  97 },
@@ -1290,15 +1292,39 @@ void func_800274E8(const char *a, const char *b, ...)
     printf(buffer);
 }
 
-u8 lbl_801F8E18[0x39C];
+u8 lbl_801F8E18[0x120];
 FORCE_BSS_ORDER(lbl_801F8E18)
-u8 lbl_801F91B4[0x4250];
+
+SND_AUX_REVERBHI lbl_801F8F38;
+FORCE_BSS_ORDER(lbl_801F8F38)
+
+struct
+{
+    u8 unk300[0x390-0x300];
+    u32 unk390;
+    u32 unk394;
+    u32 unk398;
+} lbl_801F9118;
+FORCE_BSS_ORDER(lbl_801F9118)
+
+u32 lbl_801F91B4[4][0x425];  // 39C
 FORCE_BSS_ORDER(lbl_801F91B4)
 u8 lbl_801FD404[0x1094];
 FORCE_BSS_ORDER(lbl_801FD404)
 u8 lbl_801FE498[0xC0];
 FORCE_BSS_ORDER(lbl_801FE498)
-u8 lbl_801FE558[0x70];
+struct
+{
+    u8 filler0[0x50];
+    u32 unk50;
+    u8 filler54[4];
+    u32 unk58;
+    u8 filler5C[4];
+    u32 unk60;
+    u8 filler64[4];
+    u32 unk68;
+    u8 filler6C[4];
+} lbl_801FE558;
 FORCE_BSS_ORDER(lbl_801FE558)
 u8 lbl_801FE5C8[0x10];
 FORCE_BSS_ORDER(lbl_801FE5C8)
@@ -1306,7 +1332,7 @@ DTKTrack lbl_801FE5D8[0x94];
 FORCE_BSS_ORDER(lbl_801FE5D8)
 u8 lbl_80201418[0x3C];
 FORCE_BSS_ORDER(lbl_80201418)
-//u8 lbl_80201454[0x48];
+
 struct
 {
     u8 filler0[0x3C];
@@ -1315,10 +1341,15 @@ struct
     u32 unk44;  //8680
 } lbl_80201454;
 FORCE_BSS_ORDER(lbl_80201454)
-u8 lbl_8020149C[0x24];
+
+u32 lbl_8020149C[9];  // 8684
 FORCE_BSS_ORDER(lbl_8020149C)
-u8 lbl_802014C0[0x20];
+
+s32 lbl_802014C0[8];  // 86A8
 FORCE_BSS_ORDER(lbl_802014C0)
+
+struct Struct802014E0 lbl_802014E0;
+FORCE_BSS_ORDER(lbl_802014E0);
 
 void func_800275A0(s32 arg0, s32 arg1)
 {
@@ -1413,7 +1444,6 @@ void func_8002786C(void)
     s8 sp15 = 0;
     s8 sp14 = 0;
     Vec sp8 = {0};
-    float temp_f1;
     s8 r3;
 
     if (!(advDemoInfo.flags & 0x100) && gameMode != MD_SEL)
@@ -1494,18 +1524,18 @@ void func_8002786C(void)
                     );
                 }
             }
-            else if ((s32) lbl_802F1DC8 != 0)
+            else if (lbl_802F1DC8 != 0)
             {
                 SoundOffID(0xC4);
                 lbl_802F1DC8 = 0;
             }
-            temp_f1 = lbl_80206DEC.u_stageTimer;
-            if (0.0 != temp_f1)
+
+            if (lbl_80206DEC.u_stageTimer != 0.0)
             {
                 switch (currStageId)
                 {
                 case ST_109_FACTORY:
-                    if ((int)temp_f1 % 180 == 60)
+                    if ((int)lbl_80206DEC.u_stageTimer % 180 == 60)
                     {
                         sp8.x = 0.0f;
                         sp8.y = 7.5f;
@@ -1515,9 +1545,9 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_061_TWIN_ATTACKER:
-                    if ((int)temp_f1 % 75 == 0)
+                    if ((int)lbl_80206DEC.u_stageTimer % 75 == 0)
                     {
-                        if ((int)temp_f1 % 150 == 0)
+                        if ((int)lbl_80206DEC.u_stageTimer % 150 == 0)
                         {
                             sp8.x = -3.0f;
                             sp8.y = 0.25f;
@@ -1546,9 +1576,9 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_038_SPIKY:
-                    if ((int)temp_f1 % 75 == 0)
+                    if ((int)lbl_80206DEC.u_stageTimer % 75 == 0)
                     {
-                        if ((int)temp_f1 % 150 == 0)
+                        if ((int)lbl_80206DEC.u_stageTimer % 150 == 0)
                         {
                             sp8.x = -3.0f;
                             sp8.y = 0.5f;
@@ -1577,7 +1607,7 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_023_JUMPIES:
-                    if ((int)temp_f1 % 150 == 90)
+                    if ((int)lbl_80206DEC.u_stageTimer % 150 == 90)
                     {
                         sp8.x = 0.0f;
                         sp8.y = 0.0f;
@@ -1600,7 +1630,7 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_113_DAA_LOO_MAA:
-                    if ((int)temp_f1 % 150 == 0)
+                    if ((int)lbl_80206DEC.u_stageTimer % 150 == 0)
                     {
                         sp8.x = 0.0f;
                         sp8.y = 0.0f;
@@ -1611,7 +1641,7 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_107_BREATHE:
-                    if ((int)temp_f1 % 0x78 == 1)
+                    if ((int)lbl_80206DEC.u_stageTimer % 0x78 == 1)
                     {
                         sp8.x = 16.0f;
                         sp8.y = 0.5f;
@@ -1636,7 +1666,7 @@ void func_8002786C(void)
                     }
                     break;
                 case ST_077_QUAKE:
-                    if ((int)temp_f1 % 480 == 150)
+                    if ((int)lbl_80206DEC.u_stageTimer % 480 == 150)
                     {
                         sp8.x = -16.0f;
                         sp8.y = 0.5f;
@@ -1674,4 +1704,136 @@ void *u_alloc(u32 size)
 void u_free(void *ptr)
 {
     OSFree(ptr);
+}
+
+u32 lbl_802F1D30[2];
+
+void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
+s32 sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
+s32 sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
+
+extern float lbl_802F1D78;
+extern u32 lbl_802F1D58;
+extern float lbl_802F1D44;
+extern float lbl_802F1D4C;
+extern float lbl_802F1D50;
+extern float lbl_802F1D54;
+extern float lbl_802F3208;
+extern u8 lbl_802F1D38;
+extern u8 lbl_802F1D39;
+extern s16 lbl_802F1D3A;
+extern u8 lbl_802F1DF5;
+extern u8 lbl_802F1DF4;
+extern u8 lbl_802F1DD9;
+extern u8 lbl_802F1DD8;
+extern u32 lbl_802F1DEC;
+extern u32 lbl_802F1DF0;
+extern u32 lbl_802F1D64;
+extern u32 lbl_802F1D68;
+extern u32 lbl_802F1D6C;
+extern u32 lbl_802F1D70;
+extern u32 lbl_802F1D74;
+extern u32 lbl_802F1DBC;
+extern u32 lbl_802F1DE4;
+extern u32 lbl_802F1DE8;
+extern s32 lbl_802F1E00;
+
+void sndAuxCallbackChorus();
+
+void sound_init(void)
+{
+    SND_HOOKS sp28 = { u_alloc, u_free };
+    u8 unused[16];
+    s32 i;
+    s32 j;
+    s32 i2;
+
+    lbl_802F1DEC = 0;
+    lbl_802F1DF0 = 0;
+    ARInit(lbl_802F1D30, ARRAY_COUNT(lbl_802F1D30));
+    ARQInit();
+    AIInit(0);
+    AISetStreamSampleRate(1);
+    sndSetHooks(&sp28);
+    sndActive(0x30, 0x30, 0x30, 0, 0x700000);
+    lbl_802F1DF5 = 0x5A;
+    lbl_802F1DF4 = 0x5A;
+    sndVolume(0.01f * (127.0f * lbl_802F1DF5), 0, 0xFF);
+    lbl_802F1DD9 = 0x50;
+    lbl_802F1DD8 = 0x50;
+    DTKSetVolume(lbl_802F1D78 * (0.01f * lbl_802F1DD9), lbl_802F1D78 * (0.01f * lbl_802F1DD9));
+    lbl_802F1D58 = 0;
+    lbl_802F1D40 = 1.0f;
+    lbl_802F1D44 = 1.0f;
+    lbl_802F1D4C = 1.0f;
+    lbl_802F1D50 = 1.0f;
+    lbl_802F1D54 = 1.0f;
+    for (i = 0; i < 9; i++)
+        lbl_8020149C[i] = 0;
+    lbl_802F1E00 = 0;
+    lbl_802014C0[0] = -1;
+    lbl_802014C0[1] = -1;
+    lbl_802014C0[2] = -1;
+    lbl_802014C0[3] = -1;
+    lbl_802014C0[4] = -1;
+    lbl_802014C0[5] = -1;
+    lbl_802014C0[6] = -1;
+    lbl_802014C0[7] = -1;
+    func_80029228(1);
+    func_80029228(0xF);
+    lbl_801F8F38.tempDisableFX = 0;
+    lbl_801F8F38.time = 3.0f;
+    lbl_801F8F38.preDelay = 0.1f;
+    lbl_801F8F38.damping = 0.6f;
+    lbl_801F8F38.coloration = 0.9f;
+    lbl_801F8F38.crosstalk = 0.0f;
+    lbl_801F8F38.mix = 0.65f;
+    lbl_801F9118.unk390 = 0xF;
+    lbl_801F9118.unk394 = 0;
+    lbl_801F9118.unk398 = 0x1F4;
+    sndAuxCallbackPrepareReverbHI(&lbl_801F8F38);
+    sndAuxCallbackPrepareChorus(&lbl_801F9118.unk300);
+
+    sndSetAuxProcessingCallbacks(
+        0,
+        &sndAuxCallbackReverbHI,
+        &lbl_801F8F38,
+        0xFF,
+        0,
+        &sndAuxCallbackChorus,
+        &lbl_801F9118.unk300,
+        0xFF,
+        0);
+    lbl_802F1D38 = 0;
+    lbl_802F1D39 = 0;
+    sndMasterVolume(0x7F, 0, 1, 1);
+    sndVolume(0.01f * (127.0f * lbl_802F1DF5), 0, 0xFF);
+
+    for (i2 = 0; i2 < 4; i2++)
+    {
+        for (j = 0; j < 0x425; j++)
+            lbl_801F91B4[i2][j] = -1;
+    }
+
+    lbl_802F1D3A = -1;
+    lbl_801FE558.unk50 = 0;
+    lbl_801FE558.unk58 = 0;
+    lbl_801FE558.unk60 = 0;
+    lbl_801FE558.unk68 = 0;
+    AISetStreamSampleRate(1);
+    DTKInit();
+    if (OSGetSoundMode() == 0)
+        func_800275A0(1, 0);
+    else
+        func_800275A0(1, 2);
+    DTKSetRepeatMode(2);
+    lbl_802F1D64 = 0;
+    lbl_802F1D68 = 0;
+    lbl_802F1D6C = 0;
+    lbl_802F1D70 = 0;
+    lbl_802F1D74 = 1;
+    lbl_802014E0.unk0 = -1;
+    lbl_802F1DBC = 0;
+    lbl_802F1DE4 = 0;
+    lbl_802F1DE8 = 1;
 }

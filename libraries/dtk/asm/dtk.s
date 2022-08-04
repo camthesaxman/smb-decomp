@@ -761,8 +761,8 @@ DTKGetState:
 /* 80103370 000FF290  80 6D A5 AC */	lwz r3, __DTKState@sda21(r13)
 /* 80103374 000FF294  4E 80 00 20 */	blr
 
-.global func_80103378
-func_80103378:
+.global DTKSetVolume
+DTKSetVolume:
 /* 80103378 000FF298  7C 08 02 A6 */	mflr r0
 /* 8010337C 000FF29C  90 01 00 04 */	stw r0, 4(r1)
 /* 80103380 000FF2A0  94 21 FF E8 */	stwu r1, -0x18(r1)

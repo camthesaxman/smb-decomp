@@ -551,12 +551,7 @@ extern struct BgLightInfo s_bgLightInfo;
 // extern ? lbl_801FE5C8;
 // extern ? lbl_80201418;
 // extern ? lbl_80201454;
-extern struct
-{
-    s32 unk0;
-    u32 unk4;
-    u8 filler8[1];
-} lbl_802014E0;
+extern struct Struct802014E0 lbl_802014E0;
 // extern ? lbl_80201500;
 // extern ? lbl_80201928;
 // extern ? lbl_802020D4;

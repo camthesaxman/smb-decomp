@@ -1826,7 +1826,7 @@ void __GXSetDirtyState(void);
 // ? DTKNextTrack();
 // ? DTKPrevTrack();
 // ? DTKGetState();
-// ? func_80103378();
+// ? DTKSetVolume();
 // ? __va_arg();
 // ? __destroy_global_chain();
 // ? __unregister_fragment();

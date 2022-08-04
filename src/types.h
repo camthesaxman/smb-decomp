@@ -1017,4 +1017,11 @@ struct Struct801EEDA8
     u8 filler104[0x118-0x104];
 };
 
+struct Struct802014E0
+{
+    s32 unk0;
+    u32 unk4;
+    u8 filler8[0x20-0x8];
+};
+
 #endif
