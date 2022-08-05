@@ -1023,7 +1023,10 @@ struct Struct802014E0
     u32 unk4;
     u8 filler8[4];
     u8 unkC;
-    u8 fillerD[0x1C-0xD];
+    u8 fillerD[0x10-0xD];
+    s32 unk10;
+    s32 unk14;
+    s32 unk18;
     s32 unk1C;
 };
 

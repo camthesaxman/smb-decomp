@@ -2559,7 +2559,7 @@ lbl_80029AB4:
 /* 80029AB8 000259D8  38 21 00 08 */	addi r1, r1, 8
 /* 80029ABC 000259DC  7C 08 03 A6 */	mtlr r0
 /* 80029AC0 000259E0  4E 80 00 20 */	blr
-.endif
+
 .global ev_sound_main
 ev_sound_main:
 /* 80029AC4 000259E4  7C 08 02 A6 */	mflr r0
@@ -2948,6 +2948,7 @@ lbl_8002A028:
 /* 8002A038 00025F58  7C 08 03 A6 */	mtlr r0
 /* 8002A03C 00025F5C  38 21 00 68 */	addi r1, r1, 0x68
 /* 8002A040 00025F60  4E 80 00 20 */	blr
+
 .global ev_sound_dest
 ev_sound_dest:
 /* 8002A044 00025F64  7C 08 02 A6 */	mflr r0
@@ -3584,7 +3585,7 @@ lbl_8002A93C:
 /* 8002A958 00026878  CB 61 00 90 */	lfd f27, 0x90(r1)
 /* 8002A95C 0002687C  38 21 00 B8 */	addi r1, r1, 0xb8
 /* 8002A960 00026880  4E 80 00 20 */	blr
-
+.endif
 .global func_8002A964
 func_8002A964:
 /* 8002A964 00026884  7C 08 02 A6 */	mflr r0
@@ -8243,7 +8244,7 @@ lbl_802F31EC:
 	# ROM: 0x1ECC0C
 	.4byte u_free  ;# ptr
 .endif
-
+asdf:
 .if 0
 .global lbl_802F31F0
 lbl_802F31F0:
@@ -8287,7 +8288,6 @@ lbl_802F3210:
 	# ROM: 0x1ECC30
 	.4byte 0x43300000
 	.4byte 0
-.endif
 
 .global lbl_802F3218
 lbl_802F3218:
@@ -8309,6 +8309,8 @@ lbl_802F3224:
 lbl_802F3228:
 	# ROM: 0x1ECC48
 	.4byte 0x42C80000
+.endif
+
 	.4byte 0
 
 .global lbl_802F3230
@@ -16179,7 +16181,6 @@ glabel string_____but_SUCCESS____use_CharaHeap_n
 glabel string_ARAM_SIZE_OVER____
 	.asciz "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n"
 	.balign 4
-.endif
 
 .global lbl_801B35F0
 lbl_801B35F0:
@@ -16233,6 +16234,7 @@ lbl_801B3670:
 	.4byte 0x3F800000
 	.4byte 0x3F800000
 	.4byte 0x3F800000
+.endif
 
 .global lbl_801B3694
 lbl_801B3694:
@@ -16799,7 +16801,6 @@ lbl_802F07DC:
 glabel string__test_2
 	.asciz "/test"
 	.balign 4
-.endif
 
 glabel lbl_802F07E4
 	.4byte 0
@@ -16822,6 +16823,7 @@ glabel lbl_802F080C
 glabel lbl_802F0814
 	.4byte 0xC0003F00
 	.4byte 0xC0C00000
+.endif
 
 .global lbl_802F081C
 lbl_802F081C:
