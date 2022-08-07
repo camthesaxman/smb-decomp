@@ -3,6 +3,9 @@
 
 #define SND_AUX_NUMPARAMETERS 4
 
+typedef u32 SND_VOICEID;
+typedef u16 SND_FXID;
+
 typedef struct SND_AUX_INFO
 {
     union SND_AUX_DATA
@@ -66,5 +69,23 @@ typedef struct SND_AUX_REVERBHI
 
 void sndVolume(int, int, int);
 void sndMasterVolume(int, int, int, int);
+
+typedef struct SND_PARAMETER
+{
+    u8 ctrl;
+    union
+    {
+        u8 value7;
+        u16 value14;
+    } paraData;
+} SND_PARAMETER;
+
+typedef struct SND_PARAMETER_INFO
+{
+    u8 numPara;
+    SND_PARAMETER *paraArray;
+} SND_PARAMETER_INFO;
+
+SND_VOICEID sndFXStartParaInfo(SND_FXID fid, u8 vol, u8 pan, u8 studio, SND_PARAMETER_INFO *paraInfo);
 
 #endif

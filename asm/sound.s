@@ -3585,7 +3585,7 @@ lbl_8002A93C:
 /* 8002A958 00026878  CB 61 00 90 */	lfd f27, 0x90(r1)
 /* 8002A95C 0002687C  38 21 00 B8 */	addi r1, r1, 0xb8
 /* 8002A960 00026880  4E 80 00 20 */	blr
-.endif
+
 .global func_8002A964
 func_8002A964:
 /* 8002A964 00026884  7C 08 02 A6 */	mflr r0
@@ -4308,6 +4308,7 @@ lbl_8002B348:
 /* 8002B354 00027274  7C 08 03 A6 */	mtlr r0
 /* 8002B358 00027278  38 21 00 28 */	addi r1, r1, 0x28
 /* 8002B35C 0002727C  4E 80 00 20 */	blr
+.endif
 
 .global SoundReqID
 SoundReqID:
@@ -8052,15 +8053,14 @@ glabel lbl_8020149C
     .skip 0x24
 glabel lbl_802014C0
     .skip 0x20
-
 .global lbl_802014E0
 lbl_802014E0:
 	.skip 0x20
-.endif
-
 .global lbl_80201500
 lbl_80201500:
 	.skip 0x428
+.endif
+
 .global lbl_80201928
 lbl_80201928:
 	.skip 0x7AC
@@ -16234,7 +16234,6 @@ lbl_801B3670:
 	.4byte 0x3F800000
 	.4byte 0x3F800000
 	.4byte 0x3F800000
-.endif
 
 .global lbl_801B3694
 lbl_801B3694:
@@ -16327,6 +16326,7 @@ lbl_801B37D4:
 	# ROM: 0x1B07D4
 glabel string_SoundReqDirect__s_ape_is_NULL______pid___0_n
 	.asciz "SoundReqDirect %s ape is NULL. --> pid = 0\n"
+.endif
 
 .global lbl_801B3800
 lbl_801B3800:
@@ -16823,9 +16823,9 @@ glabel lbl_802F080C
 glabel lbl_802F0814
 	.4byte 0xC0003F00
 	.4byte 0xC0C00000
-.endif
 
 .global lbl_802F081C
 lbl_802F081C:
 	# ROM: 0x1EAF5C
 	.4byte 0x0001FF02
+.endif

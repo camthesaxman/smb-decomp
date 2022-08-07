@@ -31,7 +31,7 @@ struct Struct8011057C
     char *unk4;
     s8 unk8;
     // filler9
-    u16 unkA;
+    s16 unkA;
     s16 unkC;
 };  // size = 0x10
 
@@ -1342,15 +1342,15 @@ struct Struct801FE498
 {
     s16 unk0;
     s16 unk2;
-    u8 unk4;
-    u8 unk5;
-    u8 unk6;
-    u8 unk7;
+    s8 unk4;
+    s8 unk5;
+    s8 unk6;
+    s8 unk7;
     u32 unk8;
 };
 
 //u8 lbl_801FE498[0xC0];
-struct Struct801FE498 lbl_801FE498[16];
+struct Struct801FE498 lbl_801FE498[16];  // 0x5680
 FORCE_BSS_ORDER(lbl_801FE498)
 
 //u8 lbl_801FE558_unk0[4][20];
@@ -1367,7 +1367,7 @@ struct
     u8 filler64[4];
     u32 unk68;
     u8 filler6C[4];
-} lbl_801FE558;
+} lbl_801FE558;  // 0x5740
 FORCE_BSS_ORDER(lbl_801FE558)
 
 float lbl_801FE5C8[4];
@@ -2191,6 +2191,7 @@ asm void ev_sound_init(void)
 
 void sndFXCtrl(int, int, int);
 void func_8002A34C(void);
+void func_8002A964(struct Struct801FE498 *arg0);
 
 void ev_sound_main(void)
 {
@@ -2406,6 +2407,7 @@ u8 func_8002A22C(int arg0, int arg1)
         return lbl_801B3630[temp_r4][arg1 * 2 + 1];
 }
 
+#pragma dont_inline on
 float func_8002A324(int arg0)
 {
     float temp_f1;
@@ -2416,6 +2418,7 @@ float func_8002A324(int arg0)
     else
         return temp_f1;
 }
+#pragma dont_inline reset
 
 float lbl_801B3670[] = { 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 
@@ -2524,4 +2527,280 @@ void func_8002A34C(void)
             lbl_802F1D60[i] /= (float)var_r24;
         }
     }
+}
+
+void func_8002A964(struct Struct801FE498 *arg0)
+{
+    int temp_r0;
+    u8 temp_r31;
+    int var_r5;
+    s8 var_r9;
+    s8 temp_r9;
+    const struct Struct8011057C *temp_r3;
+    SND_PARAMETER_INFO sp1C;
+    SND_PARAMETER spC[4];
+    int temp;
+
+    temp_r0 = lbl_8011057C[arg0->unk0].unk0;
+    temp_r3 = &lbl_8011057C[arg0->unk2];
+    if (temp_r0 != -1)
+    {
+        if (arg0->unk5 > 63)
+            arg0->unk5 = -(128 - arg0->unk5);
+        if (arg0->unk6 > 63)
+            arg0->unk6 = -(128 - arg0->unk6);
+        temp_r9 = temp_r3->unk8;
+        var_r5 = (temp_r9 == 7 || temp_r9 == 0xD || temp_r9 == 8 || temp_r9 == 14 || temp_r9 == 19);
+        temp_r31 = var_r5 ? arg0->unk4 : arg0->unk4 * lbl_802F1D40;
+
+        var_r9 = 0;
+        spC[var_r9].ctrl = 0x83;
+        spC[var_r9].paraData.value7 = arg0->unk6 + 0x40;
+        var_r9++;
+        if (arg0->unk7 != 0)
+        {
+            spC[var_r9].ctrl = 0x80;
+            spC[var_r9].paraData.value14 = (s16) (((s8) arg0->unk7 << 0xC) + 0x1FFF);
+            var_r9++;
+        }
+        if ((temp_r3->unk8 != 7) && (temp_r3->unk8 != 0xC))
+        {
+            spC[var_r9].ctrl = 0x5B;
+            spC[var_r9].paraData.value7 = lbl_802F1D38;
+            var_r9++;
+            spC[var_r9].ctrl = 0x5D;
+            spC[var_r9].paraData.value7 = lbl_802F1D39;
+            var_r9++;
+        }
+        sp1C.numPara = var_r9;
+        sp1C.paraArray = spC;
+        temp = sndFXStartParaInfo(temp_r0, temp_r31, arg0->unk5 + 0x40, 0, &sp1C);
+        lbl_801F91B4[arg0->unk8][arg0->unk2] = temp;
+        lbl_801FD404[arg0->unk8][arg0->unk2] = temp_r31;
+    }
+}
+
+s8 lbl_802F081C[4] = { 0, 1, -1, 2 };
+
+int func_8002ABF0(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
+{
+    float var_f2;
+    int var_r3;
+    int var_r3_2;
+    s32 r26;
+
+    r26 = (*arg0 >> 11) & 0x7F;
+    if (r26 > 63)
+        r26 = -(128 - r26);
+    *arg0 &= ~(0x7F << 11);
+    var_r3_2 = CLAMP(r26 + 100, 0, 127);
+    *arg0 |= (var_r3_2 & 0x7F) << 11;
+
+    if (modeCtrl.unk30 == 0)
+        return 0;
+
+    if (gameMode != MD_SEL)
+    {
+        switch (arg1->unk8)
+        {
+        case 2:
+        case 3:
+        case 6:
+        case 10:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+            r26 = (*arg0 >> 18) & 0x7F;
+            *arg0 &= ~(0x7F << 18);
+            var_r3_2 = (s8) func_8002A22C(0, arg2);
+            if (var_r3_2 < 0)
+                var_r3_2 += 128;
+            *arg0 |= ((var_r3_2 + r26) & 0x7F) << 18;
+
+            r26 = (*arg0 >> 25) & 0x7F;
+            *arg0 &= ~(0x7F << 25);
+            var_r3_2 = (s8) func_8002A22C(1, arg2);
+            if (var_r3_2 < 0)
+                var_r3_2 += 128;
+            *arg0 |= (var_r3_2 + r26) << 25;
+
+            r26 = (*arg0 >> 11) & 0x7F;
+            *arg0 &= ~(0x7F << 11);
+            var_f2 = lbl_801FE5C8[arg2] != -1.0f ? lbl_801FE5C8[arg2] : 1.0f;
+            var_r3_2 = (r26 * var_f2 < 0.0f) ? 0.0f : (r26 * func_8002A324(arg2) > 127.0f ? 127.0f : r26 * func_8002A324(arg2));
+            *arg0 |= (var_r3_2 & 0x7F) << 11;
+            break;
+        }
+    }
+    var_r3 = 0;
+    switch (arg1->unk8)
+    {
+    case 2:
+    case 3:
+    case 6:
+    case 10:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+        if (modeCtrl.unk30 > 1)
+            var_r3 = lbl_802F081C[arg2];
+        break;
+    }
+    return var_r3;
+}
+
+int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
+{
+    int i;
+    int j;
+    const struct Struct8011057C *var_r25;
+
+    switch (arg1->unk8)
+    {
+    case 1:
+        return 1;
+    case 4:
+    case 9:
+    case 11:
+        if (lbl_801F91B4[arg2][*arg0 & 0x7FF] != -1U)
+            return 1;
+        break;
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+        if (lbl_801F91B4[arg2][*arg0 & 0x7FF] != -1U)
+        {
+            sndFXKeyOff(lbl_801F91B4[arg2][*arg0 & 0x7FF]);
+            lbl_801F91B4[arg2][*arg0 & 0x7FF] = -1U;
+        }
+        break;
+    case 8:
+    case 13:
+    case 14:
+        for (i = 0; i < 4; i++)
+        {
+            var_r25 = lbl_8011057C;
+            for (j = 0; j < 0x425; j++, var_r25++)
+            {
+                if (lbl_801F91B4[i][j] != -1U)
+                {
+                    if (arg1->unk8 == 8 || arg1->unk8 == 14)
+                    {
+                        if (var_r25->unk8 != 8 && var_r25->unk8 != 14)
+                            continue;
+                    }
+                    else
+                    {
+                        if (arg1->unk8 != var_r25->unk8)
+                            continue;
+                    }
+                    sndFXKeyOff(lbl_801F91B4[i][j]);
+                    lbl_801F91B4[i][j] = -1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+s8 lbl_80201500[0x428];
+FORCE_BSS_ORDER(lbl_80201500)
+
+static int sound_req_inline(void)
+{
+    int var_r6 = lbl_802F1DF8;
+
+    if (var_r6 != -1)
+        lbl_802F1DF8 = -1;
+    else if (currentBallStructPtr == NULL)
+        return -1;
+    else
+        return currentBallStructPtr->playerId;
+    return var_r6;
+}
+
+s16 SoundReq(u32 arg0)
+{
+    int i;
+    int var_r0_2;
+    int temp_r3_2;
+    s32 var_r30;
+    struct Struct801FE498 *var_r29;
+    const struct Struct8011057C *temp_r28;
+
+    temp_r28 = &lbl_8011057C[arg0 & 0x7FF];
+    var_r30 = sound_req_inline();
+    if (var_r30 == -1)
+    {
+        printf("SoundReq %s nowball is NULL. --> pid = 0\n", temp_r28->unk4);
+        var_r30 = 0;
+    }
+    if (func_8002AE58(&arg0, temp_r28, var_r30) != 0)
+        return -1;
+    if (modeCtrl.gameType != 6 && lbl_801FE558.unk0[var_r30][temp_r28->unk8] > 0)
+        return -1;
+
+    var_r29 = lbl_801FE498;
+    for (i = 0; i < 16; i++, var_r29++)
+    {
+        if (var_r29->unk0 == -1)
+        {
+            temp_r3_2 = func_8002ABF0(&arg0, temp_r28, var_r30);
+            var_r29->unk0 = arg0 & 0x7FF;
+            var_r29->unk2 = (lbl_802F1D3A == -1) ? var_r29->unk0 : lbl_802F1D3A;
+            var_r29->unk4 = (arg0 >> 11) & 0x7F;
+            var_r29->unk5 = (arg0 >> 18) & 0x7F;
+            var_r29->unk6 = (u8)(arg0 >> 25);
+            var_r29->unk7 = temp_r3_2;
+            var_r29->unk8 = var_r30;
+            if (temp_r28->unk8 != 0)
+                lbl_801FE558.unk0[var_r30][temp_r28->unk8] = temp_r28->unkA;
+            lbl_802F1D3A = -1;
+            var_r0_2 = var_r29->unk4 + lbl_80201500[var_r29->unk0];
+            var_r29->unk4 = CLAMP(var_r0_2, 0, 127);
+            return var_r29->unk2;
+        }
+    }
+    lbl_802F1D3A = -1;
+    printf("warning : SoundReq() cue over %s\n", temp_r28->unk4);
+    return -1;
+}
+
+s16 SoundReqDirect(u32 arg0)
+{
+    struct Struct801FE498 sp10;
+    int var_r0;
+    int temp_r3_2;
+    struct Ball *temp_r3;
+    s32 var_r31;
+    const struct Struct8011057C *temp_r30;
+
+    temp_r30 = &lbl_8011057C[arg0 & 0x7FF];
+    var_r31 = sound_req_inline();
+    if (var_r31 == -1)
+    {
+        printf("SoundReqDirect %s ape is NULL. --> pid = 0\n", temp_r30->unk4);
+        var_r31 = 0;
+    }
+    if (func_8002AE58(&arg0, temp_r30, var_r31) != 0)
+        return -1;
+    temp_r3_2 = func_8002ABF0(&arg0, temp_r30, var_r31);
+    sp10.unk0 = arg0 & 0x7FF;
+    sp10.unk2 = (lbl_802F1D3A == -1) ? sp10.unk0 : lbl_802F1D3A;
+    sp10.unk4 = (arg0 >> 11) & 0x7F;
+    sp10.unk5 = (arg0 >> 18) & 0x7F;
+    sp10.unk6 = (u8)(arg0 >> 25);
+    sp10.unk7 = temp_r3_2;
+    sp10.unk8 = var_r31;
+    lbl_802F1D3A = -1;
+    var_r0 = sp10.unk4 + lbl_80201500[sp10.unk0];
+    sp10.unk4 = CLAMP(var_r0, 0, 127);
+    func_8002A964(&sp10);
+    return sp10.unk2;
 }
