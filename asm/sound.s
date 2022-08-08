@@ -4308,7 +4308,6 @@ lbl_8002B348:
 /* 8002B354 00027274  7C 08 03 A6 */	mtlr r0
 /* 8002B358 00027278  38 21 00 28 */	addi r1, r1, 0x28
 /* 8002B35C 0002727C  4E 80 00 20 */	blr
-.endif
 
 .global SoundReqID
 SoundReqID:
@@ -4348,7 +4347,7 @@ lbl_8002B3D4:
 /* 8002B3DC 000272FC  41 80 00 78 */	blt lbl_8002B454
 /* 8002B3E0 00027300  2C 09 FF FF */	cmpwi r9, -1
 /* 8002B3E4 00027304  3B DE 00 01 */	addi r30, r30, 1
-/* 8002B3E8 00027308  41 82 00 18 */	beq lbl_8002B400
+/* 8002B3E8 00027308  41 82 00 18 */	beq lbl_8002B400  ;# print
 /* 8002B3EC 0002730C  7C 0A F0 00 */	cmpw r10, r30
 /* 8002B3F0 00027310  40 82 01 8C */	bne lbl_8002B57C
 /* 8002B3F4 00027314  38 E0 FF FF */	li r7, -1
@@ -4865,6 +4864,7 @@ lbl_8002BAAC:
 /* 8002BB14 00027A34  38 21 00 60 */	addi r1, r1, 0x60
 /* 8002BB18 00027A38  7C 08 03 A6 */	mtlr r0
 /* 8002BB1C 00027A3C  4E 80 00 20 */	blr
+.endif
 
 .global func_8002BB20
 func_8002BB20:
@@ -8080,9 +8080,10 @@ lbl_80203F84:
 lbl_80205688:
 	.skip 0x300
 
+.if 0
 .section .sdata2
 
-.if 0
+
     .balign 8
 .global lbl_802F3150
 lbl_802F3150:
@@ -8309,7 +8310,6 @@ lbl_802F3224:
 lbl_802F3228:
 	# ROM: 0x1ECC48
 	.4byte 0x42C80000
-.endif
 
 	.4byte 0
 
@@ -8360,6 +8360,7 @@ lbl_802F3268:
 	# ROM: 0x1ECC88
 	.4byte 0x3F5FF2E4
 	.4byte 0x8E8A71DE
+.endif
 
 .section .rodata
 
@@ -16326,7 +16327,6 @@ lbl_801B37D4:
 	# ROM: 0x1B07D4
 glabel string_SoundReqDirect__s_ape_is_NULL______pid___0_n
 	.asciz "SoundReqDirect %s ape is NULL. --> pid = 0\n"
-.endif
 
 .global lbl_801B3800
 lbl_801B3800:
@@ -16334,6 +16334,7 @@ lbl_801B3800:
 glabel string_SoundReqID__s_ERROR____ape_is_NULL__n
 	.asciz "SoundReqID %s ERROR !! ape is NULL.\n"
 	.balign 4
+.endif
 
 .global lbl_801B3828
 lbl_801B3828:
