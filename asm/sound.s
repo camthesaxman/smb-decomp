@@ -4864,7 +4864,6 @@ lbl_8002BAAC:
 /* 8002BB14 00027A34  38 21 00 60 */	addi r1, r1, 0x60
 /* 8002BB18 00027A38  7C 08 03 A6 */	mtlr r0
 /* 8002BB1C 00027A3C  4E 80 00 20 */	blr
-.endif
 
 .global func_8002BB20
 func_8002BB20:
@@ -5950,6 +5949,7 @@ lbl_8002CA48:
 /* 8002CA50 00028970  4D 82 00 20 */	beqlr
 /* 8002CA54 00028974  98 8D 9B 59 */	stb r4, lbl_802F1D39@sda21(r13)
 /* 8002CA58 00028978  4E 80 00 20 */	blr
+.endif
 
 .global func_8002CA5C
 func_8002CA5C:
@@ -16334,7 +16334,6 @@ lbl_801B3800:
 glabel string_SoundReqID__s_ERROR____ape_is_NULL__n
 	.asciz "SoundReqID %s ERROR !! ape is NULL.\n"
 	.balign 4
-.endif
 
 .global lbl_801B3828
 lbl_801B3828:
@@ -16406,6 +16405,7 @@ lbl_801B38D4:
 glabel string_SoundOffID
 	.asciz "SoundOffID"
 	.balign 4
+
 glabel string_SoundVolID
 	.asciz "SoundVolID"
 	.balign 4
@@ -16435,6 +16435,9 @@ lbl_801B392C:
 glabel string_SoundChoID
 	.asciz "SoundChoID"
 	.balign 4
+.endif
+
+blah:
 	.4byte 0xFFFFFFFF
 	.4byte 0x00000051
 	.4byte 0xFFFFFFFF

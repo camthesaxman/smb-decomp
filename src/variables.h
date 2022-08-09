@@ -1206,7 +1206,7 @@ extern s8 lbl_802F1C32;
 // extern ? lbl_802F1DF0;
 // extern ? lbl_802F1DF4;
 // extern ? lbl_802F1DF5;
-extern u32 lbl_802F1DF8;
+extern int lbl_802F1DF8;
 extern s32 lbl_802F1DFC;
 // extern ? lbl_802F1E00;
 // extern ? lbl_802F1E08;

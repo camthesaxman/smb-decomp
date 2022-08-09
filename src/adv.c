@@ -171,7 +171,7 @@ void update_av_logo_pos_and_sound(void)
     if (advLogoInfo.rollTimer > 0)
     {
         s8 r4, r5;
-        int r29, r28;
+        u8 r29, r28;
         float speed = mathutil_sqrt(
             (advLogoInfo.pos.x - prevLogoPos.x) * (advLogoInfo.pos.x - prevLogoPos.x)
           + (advLogoInfo.pos.z - prevLogoPos.z) * (advLogoInfo.pos.z - prevLogoPos.z));

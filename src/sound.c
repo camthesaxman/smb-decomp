@@ -1476,8 +1476,9 @@ extern float lbl_802F1D40;
 
 void SoundOff(u16);
 
-s8 func_8002BB20();
+s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3);
 int func_8002B5EC(int arg0);
+void SoundOffID(int arg0_);
 
 #define SOME_MACRO(a, b, c, d) \
     ((a) | (((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25))
@@ -2145,7 +2146,7 @@ void func_80029788(void)
     }
 }
 
-void func_8002CA38(int, int);
+void func_8002CA38(s8, s8);
 
 #ifdef NONMATCHING
 // https://decomp.me/scratch/8mIVf
@@ -2190,7 +2191,7 @@ asm void ev_sound_init(void)
 #pragma peephole on
 #endif
 
-void sndFXCtrl(int, int, int);
+//void sndFXCtrl(int, int, int);
 void func_8002A34C(void);
 void func_8002A964(struct Struct801FE498 *arg0);
 
@@ -2380,7 +2381,7 @@ u8 *lbl_801B3630[] =
     lbl_802F07FC,
 };
 
-u8 func_8002A22C(int arg0, int arg1)
+s8 func_8002A22C(int arg0, int arg1)
 {
     int temp_r4;
 
@@ -2505,16 +2506,14 @@ void func_8002A34C(void)
         lbl_802F1D5C[i] = 0;
         lbl_802F1D60[i] = 0;
         if (modeCtrl.unk30 == 1)
-        {
             func_8002B634(var_r22, &ballInfo[i].pos, &lbl_802F1D5C[i], &lbl_802F1D60[i]);
-        }
         else if (modeCtrl.unk30 == 2)
         {
             for (j = 0; j < var_r24; j++)
             {
                 func_8002B634(j, &ballInfo[i].pos, &sp9, &sp8);
                 lbl_802F1D5C[i] += sp9 * spC[j];
-                lbl_802F1D60[i] += spC[j] * (s8)func_8002A22C(1, j);
+                lbl_802F1D60[i] += spC[j] * func_8002A22C(1, j);
             }
             lbl_802F1D5C[i] /= (float)var_r24;
             lbl_802F1D60[i] /= (float)var_r24;
@@ -2523,8 +2522,8 @@ void func_8002A34C(void)
         {
             for (j = 0; j < var_r24; j++)
             {
-                lbl_802F1D5C[i] += spC[j] * (s8)func_8002A22C(0, j);
-                lbl_802F1D60[i] += spC[j] * (s8)func_8002A22C(1, j);
+                lbl_802F1D5C[i] += spC[j] * func_8002A22C(0, j);
+                lbl_802F1D60[i] += spC[j] * func_8002A22C(1, j);
             }
             lbl_802F1D5C[i] /= (float)var_r24;
             lbl_802F1D60[i] /= (float)var_r24;
@@ -2617,14 +2616,14 @@ int func_8002ABF0(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
         case 19:
             r26 = (*arg0 >> 18) & 0x7F;
             *arg0 &= ~(0x7F << 18);
-            var_r3_2 = (s8) func_8002A22C(0, arg2);
+            var_r3_2 = func_8002A22C(0, arg2);
             if (var_r3_2 < 0)
                 var_r3_2 += 128;
             *arg0 |= ((var_r3_2 + r26) & 0x7F) << 18;
 
             r26 = (*arg0 >> 25) & 0x7F;
             *arg0 &= ~(0x7F << 25);
-            var_r3_2 = (s8) func_8002A22C(1, arg2);
+            var_r3_2 = func_8002A22C(1, arg2);
             if (var_r3_2 < 0)
                 var_r3_2 += 128;
             *arg0 |= (var_r3_2 + r26) << 25;
@@ -2813,8 +2812,8 @@ int SoundReqID(u32 arg0, s32 arg1)
     int var_r0;
     int var_r5;
     int r31;
-    int var_ctr;
-    int var_ctr_2;
+    int i;
+    int j;
     int var_r30;
     s8 var_r8;
     const struct Struct8011057C *var_r6;
@@ -2825,7 +2824,7 @@ int SoundReqID(u32 arg0, s32 arg1)
     var_r0 = -1;
     var_r30 = 0;
     var_r5 = 0;
-    for (var_ctr = 0; var_ctr < 0x425; var_ctr++, var_r5++, var_r6++)
+    for (i = 0; i < 0x425; i++, var_r5++, var_r6++)
     {
         if (var_r6->unkC == r31)
         {
@@ -2858,7 +2857,7 @@ int SoundReqID(u32 arg0, s32 arg1)
             lbl_802F1D3A = var_r5;
             if ((u32)var_r6->unk0 == -1U)
             {
-                for (var_ctr_2 = var_r5; var_ctr_2 >= 0; var_ctr_2--, var_r6--)
+                for (j = var_r5; j >= 0; j--, var_r6--)
                 {
                     if ((u32)var_r6->unk0 != -1U)
                         break;
@@ -2964,4 +2963,251 @@ int func_8002B634(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
     }
     *arg3 = 0.6635 * (*arg3 + (0.00195 * temp_r31));
     return ret;
+}
+
+s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
+{
+    float var_f31;
+    float temp_f30;
+    int i;
+    int var_r28;
+    s8 ret;
+    float sp1C[4];
+    s8 sp19;
+    s8 sp18;
+
+    var_r28 = arg0;
+    ret = 0;
+    temp_f30 = lbl_801B3670[modeCtrl.gameType];
+    switch (modeCtrl.gameType)
+    {
+    case 2:
+        break;
+    case 1:
+    case 3:
+        if (arg0 == 3 && modeCtrl.splitscreenMode == 3)
+            var_r28 = 4;
+        break;
+    }
+
+    var_f31 = 1.0e7f;
+    for (i = 0; i < var_r28; i++)
+    {
+        float dist = mathutil_vec_distance(&cameraInfo[i].eye, arg1);
+        float var_f0 = 1.0f - ((dist * temp_f30) / 100.0f);
+        sp1C[i] = CLAMP(var_f0, 0.0f, 1.0f);
+        if (!(dist > var_f31))
+        {
+            var_f31 = dist;
+            ret = sp1C[i];
+        }
+    }
+
+    *arg2 = 0;
+    *arg3 = 0;
+    if (modeCtrl.unk30 == 1)
+        func_8002B634(0, arg1, arg2, arg3);
+    else if (modeCtrl.unk30 == 2)
+    {
+        for (i = 0; i < var_r28; i++)
+        {
+            func_8002B634(i, arg1, &sp19, &sp18);
+            *arg2 += sp19 * sp1C[i];
+            *arg3 += sp1C[i] * func_8002A22C(1, i);
+        }
+        *arg2 /= (float)var_r28;
+        *arg3 /= (float)var_r28;
+    }
+    else
+    {
+        for (i = 0; i < var_r28; i++)
+        {
+            *arg2 += sp1C[i] * func_8002A22C(0, i);
+            *arg3 += sp1C[i] * func_8002A22C(1, i);
+        }
+        *arg2 /= (float)var_r28;
+        *arg3 /= (float)var_r28;
+    }
+    return ret;
+}
+
+void func_8002BFCC(u32 arg0, u32 arg1)
+{
+    lbl_802F1DF8 = 0;
+    SoundReqID(arg0 | 0x01000000, 0);
+    lbl_802F1DF8 = 0;
+    SoundReqID(arg1 | 0xFC0000, 0);
+}
+
+static int get_some_id(const char *func, int arg1)
+{
+    int var_r3;
+
+    if (lbl_8011057C[arg1].unk8 == 13)
+        return 0;
+    else if (lbl_802F1DF8 == -1 && currentBallStructPtr == NULL)
+    {
+        printf("%s %s nowball is NULL. --> pid = 0\n", func, lbl_8011057C[arg1].unk4);
+        var_r3 = 0;
+    }
+    else if (lbl_802F1DF8 != -1)
+    {
+        var_r3 = *(int *)&lbl_802F1DF8;
+        lbl_802F1DF8 = -1;
+    }
+    else
+        var_r3 = currentBallStructPtr->playerId;
+    return var_r3;
+}
+
+void SoundOff(u16 arg0)
+{
+    int var_r3 = get_some_id("SoundOff", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+    {
+        sndFXKeyOff(lbl_801F91B4[var_r3][arg0 & 0xFFFF]);
+        lbl_801F91B4[var_r3][arg0 & 0xFFFF] = -1U;
+    }
+}
+
+#pragma force_active on
+void func_8002C100(u16 arg0, u8 arg1)
+{
+    int var_r3 = get_some_id("SoundVol", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 7, arg1);
+}
+#pragma force_active reset
+
+void SoundPan(u16 arg0, u8 arg1, u8 arg2)
+{
+    int var_r3 = get_some_id("SoundPan", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+    {
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x0A, arg1 + 64);
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x83, arg2 + 64);
+    }
+}
+
+void SoundPitch(u16 arg0, u16 arg1)
+{
+    int var_r3 = get_some_id("SoundPitch", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl14(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x80, arg1);
+}
+
+#pragma force_active on
+void func_8002C3E0(u16 arg0, u16 arg1)
+{
+    int var_r3 = get_some_id("SoundDop", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl14(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x84, arg1);
+}
+
+char string_SoundMod[] = "SoundMod";
+
+void func_8002C4CC(u16 arg0, u8 arg1)
+{
+    int var_r3 = get_some_id("SoundRev", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x5B, arg1);
+}
+
+void func_8002C5B8(u16 arg0, u8 arg1)
+{
+    int var_r3 = get_some_id("SoundCho", (u16)arg0);
+
+    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x5D, arg1);
+}
+#pragma force_active reset
+
+int SoundSearchID(int arg0)
+{
+    int i;
+    int var_r9;
+    const struct Struct8011057C *var_r10;
+
+    var_r10 = lbl_8011057C;
+    var_r9 = 0;
+    for (i = 0; i < 0x425; i++, var_r10++)
+    {
+        if (var_r10->unkC == arg0)
+        {
+            if (var_r10->unk8 >= 0xF)
+            {
+                var_r9++;
+                if (lbl_802F1DFC != -1)
+                {
+                    if (lbl_802F1DFC + 1 != var_r9)
+                        continue;
+                    lbl_802F1DFC = -1;
+                }
+                else
+                {
+                    if (currentBallStructPtr->ape == NULL)
+                    {
+                        printf("SoundSearchID %s ERROR !! ape is NULL.\n", var_r10->unk4);
+                        return -1;
+                    }
+                    if (currentBallStructPtr->ape->charaId + 1 != var_r9)
+                        continue;
+                }
+            }
+            return i;
+        }
+    }
+    return -1;
+}
+
+void SoundOffID(int arg0_)
+{
+    int arg0 = SoundSearchID(arg0_);
+    int var_r3 = get_some_id("SoundOffID", arg0);
+
+    if (lbl_801F91B4[var_r3][arg0] != -1U)
+    {
+        sndFXKeyOff(lbl_801F91B4[var_r3][arg0]);
+        lbl_801F91B4[var_r3][arg0] = -1U;
+    }
+}
+
+#pragma force_active on
+char string_SoundVolID[] = "SoundVolID";
+char string_SoundPanID[] = "SoundPanID";
+char string_SoundPitchID[] = "SoundPitchID";
+char string_SoundDopID[] = "SoundDopID";
+char string_SoundModID[] = "SoundModID";
+#pragma force_active reset
+
+void SoundRevID(int arg0_, u8 arg1)
+{
+    int arg0 = SoundSearchID(arg0_);
+    int var_r3 = get_some_id("SoundRevID", arg0);
+
+    if (lbl_801F91B4[var_r3][arg0] != -1U)
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5B, arg1);
+}
+
+void SoundChoID(int arg0_, u8 arg1)
+{
+    int arg0 = SoundSearchID(arg0_);
+    int var_r3 = get_some_id("SoundChoID", arg0);
+
+    if (lbl_801F91B4[var_r3][arg0] != -1U)
+        sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5D, arg1);
+}
+
+void func_8002CA38(s8 arg0, s8 arg1)
+{
+    if (arg0 != -1)
+        lbl_802F1D38 = arg0;
+    if (arg1 != -1)
+        lbl_802F1D39 = arg1;
 }

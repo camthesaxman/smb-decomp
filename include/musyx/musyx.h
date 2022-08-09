@@ -87,5 +87,7 @@ typedef struct SND_PARAMETER_INFO
 } SND_PARAMETER_INFO;
 
 SND_VOICEID sndFXStartParaInfo(SND_FXID fid, u8 vol, u8 pan, u8 studio, SND_PARAMETER_INFO *paraInfo);
+int sndFXCtrl(SND_VOICEID vid, u8 ctrl, u8 value);
+int sndFXCtrl14(SND_VOICEID vid, u8 ctrl, u16 value);
 
 #endif
