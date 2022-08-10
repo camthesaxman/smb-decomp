@@ -121,7 +121,7 @@ void SoundPitch(u16, u16);
 void SoundRevID(int, u8);
 void SoundChoID(int, u8);
 // ? func_8002CA38();
-void func_8002CA5C(int, s8, s8);
+void func_8002CA5C(u32, u8, s8);
 // ? func_8002CEB8();
 void u_play_music(int, int);
 void func_8002DB10();

@@ -5949,7 +5949,6 @@ lbl_8002CA48:
 /* 8002CA50 00028970  4D 82 00 20 */	beqlr
 /* 8002CA54 00028974  98 8D 9B 59 */	stb r4, lbl_802F1D39@sda21(r13)
 /* 8002CA58 00028978  4E 80 00 20 */	blr
-.endif
 
 .global func_8002CA5C
 func_8002CA5C:
@@ -6245,6 +6244,7 @@ lbl_8002CE88:
 /* 8002CEA0 00028DC0  CB 81 00 68 */	lfd f28, 0x68(r1)
 /* 8002CEA4 00028DC4  38 21 00 88 */	addi r1, r1, 0x88
 /* 8002CEA8 00028DC8  4E 80 00 20 */	blr
+.endif
 
 glabel func_8002CEAC
 /* 8002CEAC 00028DCC  4E 80 00 20 */	blr
@@ -16435,9 +16435,8 @@ lbl_801B392C:
 glabel string_SoundChoID
 	.asciz "SoundChoID"
 	.balign 4
-.endif
 
-blah:
+glabel lbl_801B3938
 	.4byte 0xFFFFFFFF
 	.4byte 0x00000051
 	.4byte 0xFFFFFFFF
@@ -16462,6 +16461,7 @@ blah:
 	.4byte 0x00000052
 	.4byte 0xFFFFFFFF
 	.4byte 0x00000053
+
 glabel lbl_801B3998
 	.4byte 0
 	.4byte 0
@@ -16489,9 +16489,12 @@ glabel lbl_801B39D8
 	.4byte 0x42FE0000
 	.4byte 0
 	.4byte 0
+glabel lbl_801B39F8
 	.4byte lbl_801B3998  ;# ptr
 	.4byte lbl_801B39B8  ;# ptr
 	.4byte lbl_801B39D8  ;# ptr
+
+glabel lbl_801B3A04
 	.4byte 0
 	.4byte 0x45900000
 	.4byte 0
@@ -16500,6 +16503,7 @@ glabel lbl_801B39D8
 	.4byte 0x467FFC00
 	.4byte 0
 	.4byte 0
+.endif
 
 .global lbl_801B3A24
 lbl_801B3A24:

@@ -1356,25 +1356,28 @@ FORCE_BSS_ORDER(lbl_801FE498)
 //u8 lbl_801FE558_unk0[4][20];
 //FORCE_BSS_ORDER(lbl_801FE558_unk0)
 
+struct Struct801FE558_sub
+{
+    s32 unk0;
+    u8 filler4[4];
+};
+
 struct
 {
     s8 unk0[4][20];
-    u32 unk50;
-    u8 filler54[4];
-    u32 unk58;
-    u8 filler5C[4];
-    u32 unk60;
-    u8 filler64[4];
-    u32 unk68;
-    u8 filler6C[4];
+    struct Struct801FE558_sub unk50[4];  // 0x5790
 } lbl_801FE558;  // 0x5740
 FORCE_BSS_ORDER(lbl_801FE558)
 
-float lbl_801FE5C8[4];
+float lbl_801FE5C8[4];  // 0x57B0
 FORCE_BSS_ORDER(lbl_801FE5C8)
 
-DTKTrack lbl_801FE5D8[0x94];
+DTKTrack lbl_801FE5D8[0x4A];
 FORCE_BSS_ORDER(lbl_801FE5D8)
+
+u8 lbl_801FFCF8[0x50*0x4A];
+FORCE_BSS_ORDER(lbl_801FFCF8)
+
 u8 lbl_80201418[0x3C];
 FORCE_BSS_ORDER(lbl_80201418)
 
@@ -1427,7 +1430,7 @@ void func_800275A0(s32 arg0, s32 arg1)
             for (i = 0; i < 0x4A; i++)
                 DTKRemoveTrack(&lbl_801FE5D8[i]);
         }
-        for (i = 0; i < 0x94 - 0x4A; i++)
+        for (i = 0; i < 0x4A; i++)
         {
             sprintf(fileName, "/test/snd/adp/%s.adp", lbl_801B2A5C[i].unk0);
             DTKQueueTrack(fileName, &lbl_801FE5D8[i], 0, 0);
@@ -1865,10 +1868,10 @@ void sound_init(void)
     }
 
     lbl_802F1D3A = -1;
-    lbl_801FE558.unk50 = 0;
-    lbl_801FE558.unk58 = 0;
-    lbl_801FE558.unk60 = 0;
-    lbl_801FE558.unk68 = 0;
+    lbl_801FE558.unk50[0].unk0 = 0;
+    lbl_801FE558.unk50[1].unk0 = 0;
+    lbl_801FE558.unk50[2].unk0 = 0;
+    lbl_801FE558.unk50[3].unk0 = 0;
     AISetStreamSampleRate(1);
     DTKInit();
     if (OSGetSoundMode() == 0)
@@ -2342,10 +2345,10 @@ void ev_sound_dest(void)
             lbl_801F91B4[i][j] = -1;
     }
 
-    lbl_801FE558.unk50 = 0;
-    lbl_801FE558.unk58 = 0;
-    lbl_801FE558.unk60 = 0;
-    lbl_801FE558.unk68 = 0;
+    lbl_801FE558.unk50[0].unk0 = 0;
+    lbl_801FE558.unk50[1].unk0 = 0;
+    lbl_801FE558.unk50[2].unk0 = 0;
+    lbl_801FE558.unk50[3].unk0 = 0;
     lbl_802F1DC4 = 0;
     lbl_802F1DC8 = 0;
 }
@@ -3210,4 +3213,152 @@ void func_8002CA38(s8 arg0, s8 arg1)
         lbl_802F1D38 = arg0;
     if (arg1 != -1)
         lbl_802F1D39 = arg1;
+}
+
+struct Struct801B3938
+{
+    s32 unk0;
+    s32 unk4;
+};
+
+struct Struct801B3938 lbl_801B3938[][3] =
+{
+    {
+    { -1, 0x00000051 },
+    { -1, 0x00000052 },
+    { -1, 0x00000053 },
+    },
+    {
+    { -1, 0x00000051 },
+    { -1, 0x00000052 },
+    { -1, 0x00000053 },
+    },
+    {
+    { -1, 0x00000051 },
+    { -1, 0x00000052 },
+    { -1, 0x00000053 },
+    },
+    {
+    { -1, 0x00000051 },
+    { -1, 0x00000052 },
+    { -1, 0x00000053 },
+    }
+};
+
+struct Struct80176434 lbl_801B3998[] =
+{
+    {   0,   0.0f, 0.0f, 0.0f },
+    { 127, 127.0f, 0.0f, 0.0f },
+};
+
+struct Struct80176434 lbl_801B39B8[] =
+{
+    {   0, 127.0f, 0.0f, 0.0f },
+    { 127, 127.0f, 0.0f, 0.0f },
+};
+
+struct Struct80176434 lbl_801B39D8[] =
+{
+    {   0,   0.0f, 0.0f, 0.0f },
+    { 127, 127.0f, 0.0f, 0.0f },
+};
+
+struct Struct80176434 *lbl_801B39F8[] =
+{
+    lbl_801B3998,
+    lbl_801B39B8,
+    lbl_801B39D8,
+};
+
+struct Struct80176434 lbl_801B3A04[] =
+{
+    {   0,  4608.0f, 0.0f, 0.0f },
+    { 127, 16383.0f, 0.0f, 0.0f },
+};
+
+extern u8 lbl_802F1D3C;
+
+void func_8002CA5C(u32 arg0, u8 arg1, s8 arg2)
+{
+    s8 var_r23;
+    s8 var_r22;
+    struct Struct801B3938 *ptr;
+    u16 temp_r21_2;
+    int i;
+    float f28;
+    u16 temp_r21;
+    SND_PARAMETER_INFO sp14;
+    SND_PARAMETER sp10;
+
+    var_r23 = (arg0 >> 18) & 0x7F;
+    var_r22 = (arg0 >> 25) & 0x7F;
+    temp_r21 = (arg0 >> 0) & 0x7FF;
+    !var_r23;
+    if (var_r23 > 0x3F)
+        var_r23 = -(0x80 - var_r23);
+    if (var_r22 > 0x3F)
+        var_r22 = -(0x80 - var_r22);
+
+    lbl_802F1D3C = arg2;
+
+    if (lbl_801FE558.unk50[temp_r21].unk0 == 0)
+    {
+        if (arg2 == 0 || arg1 == 0)
+            return;
+
+        if (modeCtrl.unk30 > 0)
+        {
+            var_r23 = func_8002A22C(0, currentBallStructPtr->playerId);
+            var_r22 = func_8002A22C(1, currentBallStructPtr->playerId);
+            arg2 *= lbl_801FE5C8[currentBallStructPtr->playerId] != -1.0f ? lbl_801FE5C8[currentBallStructPtr->playerId] : 1.0f;
+        }
+
+        f28 = arg2 / 127.0f;
+
+        sp10.ctrl = 0x83;
+        sp10.paraData.value7 = var_r22 + 0x40;
+        sp14.numPara = 1;
+        sp14.paraArray = &sp10;
+
+        for (i = 0; i < 3; i++)
+        {
+            ptr = &lbl_801B3938[temp_r21][i];
+            arg2 = f28 * func_8008CDC0(arg1, lbl_801B39F8[i]);
+            ptr->unk0 = sndFXStartParaInfo(lbl_8011057C[ptr->unk4].unk0, 0x7FU, var_r23 + 0x40, 0U, &sp14);
+            lbl_801F91B4[temp_r21][ptr->unk4] = ptr->unk0;
+            sndFXCtrl(ptr->unk0, 7, arg2);
+        }
+        lbl_801FE558.unk50[temp_r21].unk0 = 1;
+    }
+    else
+    {
+        if (arg2 == 0 || arg1 == 0)
+        {
+            for (i = 0; i < 3; i++)
+            {
+                ptr = &lbl_801B3938[temp_r21][i];
+                sndFXKeyOff(ptr->unk0);
+            }
+            lbl_801FE558.unk50[temp_r21].unk0 = 0;
+            return;
+        }
+
+        f28 = arg2 / 127.0f;
+        temp_r21_2 = func_8008CDC0(arg1, lbl_801B3A04);
+        for (i = 0; i < 3; i++)
+        {
+            ptr = &lbl_801B3938[temp_r21][i];
+            arg2 = f28 * func_8008CDC0(arg1, lbl_801B39F8[i]);
+            if (modeCtrl.unk30 > 0)
+            {
+                var_r23 = func_8002A22C(0, currentBallStructPtr->playerId);
+                var_r22 = func_8002A22C(1, currentBallStructPtr->playerId);
+                arg2 *= lbl_801FE5C8[currentBallStructPtr->playerId] != -1.0f ? lbl_801FE5C8[currentBallStructPtr->playerId] : 1.0f;
+            }
+            sndFXCtrl(ptr->unk0, 7, arg2);
+            sndFXCtrl(ptr->unk0, 0xA, var_r23 + 0x40);
+            sndFXCtrl(ptr->unk0, 0x83, var_r22 + 0x40);
+            sndFXCtrl14(ptr->unk0, 0x84, temp_r21_2);
+        }
+    }
 }
