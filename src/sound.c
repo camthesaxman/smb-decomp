@@ -24,17 +24,16 @@ struct Struct80110400
     s32 unk8;
     u32 unkC;
     char *unk10;
-};  // size = 0x14
+};
 
 struct Struct8011057C
 {
     s32 unk0;
     char *unk4;
     s8 unk8;
-    // filler9
     s16 unkA;
     s16 unkC;
-};  // size = 0x10
+};
 
 struct Struct801B2A5C
 {
@@ -42,7 +41,7 @@ struct Struct801B2A5C
     u32 unk4;
     u32 unk8;
     s8 unkC;
-};  // size = 0x10
+};
 
 const struct Struct80110400 lbl_80110400[] =
 {
@@ -1284,6 +1283,64 @@ struct Struct801B2A5C lbl_801B2A5C[] =
     { "optm",          0x01000000, 0x00000000, 73 },
 };
 
+static u32 lbl_802F1D30[2];
+static u8 lbl_802F1D38;
+static u8 lbl_802F1D39;
+static s16 lbl_802F1D3A;
+static u8 lbl_802F1D3C;
+static float lbl_802F1D40;
+static float lbl_802F1D44;
+static s32 lbl_802F1D48;
+static float lbl_802F1D4C;
+static float lbl_802F1D50;
+static float lbl_802F1D54;
+static s32 lbl_802F1D58;
+static s8 lbl_802F1D5C[4];
+static s8 lbl_802F1D60[4];
+static s32 lbl_802F1D64;
+static s32 lbl_802F1D68;
+static s32 lbl_802F1D6C;
+static s32 lbl_802F1D70;
+static s32 lbl_802F1D74;
+static float lbl_802F1D78;
+static u8 *lbl_802F1D7C;
+static u8 *lbl_802F1D80;
+static u8 *lbl_802F1D84;
+static u8 *lbl_802F1D88;
+static u32 lbl_802F1D8C;
+static u32 lbl_802F1D90;
+static s32 lbl_802F1D94;
+static s32 lbl_802F1D98;
+static u32 lbl_802F1D9C;
+static u32 lbl_802F1DA0;
+static volatile s32 lbl_802F1DA4;
+static volatile s32 lbl_802F1DA8;
+static s32 lbl_802F1DAC;
+static s32 lbl_802F1DB0;
+static u32 lbl_802F1DB4;
+static u32 lbl_802F1DB8;
+static u32 lbl_802F1DBC;
+static s32 lbl_802F1DC0;
+static s32 lbl_802F1DC4;
+static s32 lbl_802F1DC8;
+
+s32 lbl_802F1E00;
+s32 lbl_802F1DFC;
+int lbl_802F1DF8;
+u8 lbl_802F1DF5;
+u8 lbl_802F1DF4;
+u32 lbl_802F1DF0;
+u32 lbl_802F1DEC;
+u32 lbl_802F1DE8;
+u32 lbl_802F1DE4;
+const char *lbl_802F1DE0;
+const char *lbl_802F1DDC;
+u8 lbl_802F1DD9;
+u8 lbl_802F1DD8;
+s32 lbl_802F1DD4;
+u32 lbl_802F1DD0;
+s32 lbl_802F1DCC;
+
 void print_sound_error(const char *a, const char *b, ...)
 {
     va_list args;
@@ -1476,10 +1533,6 @@ void *read_musyx_file(char *fileName, u32 *sizeOut)
     file_close(&file);
     return buffer;
 }
-
-extern s32 lbl_802F1DC4;
-extern s32 lbl_802F1DC8;
-extern float lbl_802F1D40;
 
 void SoundOff(u16);
 
@@ -1760,37 +1813,9 @@ void u_free(void *ptr)
     OSFree(ptr);
 }
 
-u32 lbl_802F1D30[2];
-
 void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
 s32 sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
 s32 sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
-
-extern float lbl_802F1D78;
-extern s32 lbl_802F1D58;
-extern float lbl_802F1D44;
-extern float lbl_802F1D4C;
-extern float lbl_802F1D50;
-extern float lbl_802F1D54;
-extern float lbl_802F3208;
-extern u8 lbl_802F1D38;
-extern u8 lbl_802F1D39;
-extern s16 lbl_802F1D3A;
-extern u8 lbl_802F1DF5;
-extern u8 lbl_802F1DF4;
-extern u8 lbl_802F1DD9;
-extern u8 lbl_802F1DD8;
-extern u32 lbl_802F1DEC;
-extern u32 lbl_802F1DF0;
-extern s32 lbl_802F1D64;
-extern s32 lbl_802F1D68;
-extern s32 lbl_802F1D6C;
-extern s32 lbl_802F1D70;
-extern s32 lbl_802F1D74;
-extern u32 lbl_802F1DBC;
-extern u32 lbl_802F1DE4;
-extern u32 lbl_802F1DE8;
-extern s32 lbl_802F1E00;
 
 void sndAuxCallbackChorus();
 
@@ -1893,11 +1918,6 @@ void sound_init(void)
     lbl_802F1DE4 = 0;
     lbl_802F1DE8 = 1;
 }
-
-extern const char *lbl_802F1DDC;
-extern const char *lbl_802F1DE0;
-extern u32 lbl_802F1DD0;
-extern s32 lbl_802F1D48;
 
 void func_8002CEB8(int);
 
@@ -2020,8 +2040,6 @@ void sound_main(void)
     lbl_802F1DDC = lbl_80110400[lbl_802F1DE4].unk0;
     lbl_802F1DE0 = lbl_8011057C[lbl_802F1DE8].unk4;
 }
-
-extern s32 lbl_802F1DC0;
 
 void func_80029228(int arg0)
 {
@@ -2356,9 +2374,6 @@ void ev_sound_dest(void)
     lbl_802F1DC4 = 0;
     lbl_802F1DC8 = 0;
 }
-
-extern s8 lbl_802F1D5C[4];
-extern s8 lbl_802F1D60[4];
 
 u8 lbl_802F07E4[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 u8 lbl_802F07EC[8] = { 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x00 };
@@ -3280,8 +3295,6 @@ struct Struct80176434 lbl_801B3A04[] =
     { 127, 16383.0f, 0.0f, 0.0f },
 };
 
-extern u8 lbl_802F1D3C;
-
 void func_8002CA5C(u32 arg0, u8 arg1, s8 arg2)
 {
     s8 var_r23;
@@ -3375,8 +3388,6 @@ void func_8002CEB0(void) {}
 void func_8002CEB4(void) {}
 #pragma force_active reset
 
-extern s32 lbl_802F1DD4;
-
 void func_8002CEB8(int arg0)
 {
     float temp_f0;
@@ -3386,8 +3397,6 @@ void func_8002CEB8(int arg0)
     temp_f0 = temp_f2 * (0.01f * lbl_802F1DD9);
     DTKSetVolume(temp_f0, temp_f0);
 }
-
-extern s32 lbl_802F1DCC;
 
 void u_play_music(u32 arg0, s8 arg1)
 {
@@ -3491,11 +3500,6 @@ void u_play_music(u32 arg0, s8 arg1)
     }
 }
 
-extern u8 *lbl_802F1D84;
-extern volatile s32 lbl_802F1DA4;
-extern s32 lbl_802F1DAC;
-extern s32 lbl_802F1D94;
-
 void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
 
 void lbl_8002D344(s32 result, DVDFileInfo *fileInfo)
@@ -3522,11 +3526,6 @@ void lbl_8002D420(s32 result, DVDFileInfo *fileInfo)
         OSReport("DVDReadAsync result %x\n", result);
 }
 
-extern u8 *lbl_802F1D88;
-extern s32 lbl_802F1D98;
-extern s32 lbl_802F1DB0;
-extern volatile s32 lbl_802F1DA8;
-
 void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
 
 void lbl_8002D45C(s32 result, DVDFileInfo *fileInfo)
@@ -3552,11 +3551,6 @@ void lbl_8002D538(s32 result, DVDFileInfo *fileInfo)
     if (result != lbl_802F1DB0)
         OSReport("DVDReadAsync result %x\n", result);
 }
-
-extern u32 lbl_802F1D9C;
-extern u32 lbl_802F1DA0;
-extern u32 lbl_802F1D8C;
-extern u32 lbl_802F1D90;
 
 u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
 {
@@ -3627,11 +3621,6 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
     }
     return 0;
 }
-
-extern u8 *lbl_802F1D7C;
-extern u8 *lbl_802F1D80;
-extern u32 lbl_802F1DB4;
-extern u32 lbl_802F1DB8;
 
 #pragma force_active on
 void func_8002D798(void)

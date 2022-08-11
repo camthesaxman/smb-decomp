@@ -123,7 +123,6 @@ SOURCES := \
 	src/trig_tables.c \
 	src/perf.c \
 	src/sound.c \
-	asm/sound.s \
 	asm/window.s \
 	src/pool.c \
 	src/nl2ngc.c \
