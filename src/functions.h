@@ -123,7 +123,7 @@ void SoundChoID(int, u8);
 // ? func_8002CA38();
 void func_8002CA5C(u32, u8, s8);
 // ? func_8002CEB8();
-void u_play_music(int, int);
+void u_play_music(u32, s8);
 void func_8002DB10();
 void func_8002DB24();
 void func_8002DB38();

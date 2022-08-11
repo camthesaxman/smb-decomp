@@ -6244,7 +6244,6 @@ lbl_8002CE88:
 /* 8002CEA0 00028DC0  CB 81 00 68 */	lfd f28, 0x68(r1)
 /* 8002CEA4 00028DC4  38 21 00 88 */	addi r1, r1, 0x88
 /* 8002CEA8 00028DC8  4E 80 00 20 */	blr
-.endif
 
 glabel func_8002CEAC
 /* 8002CEAC 00028DCC  4E 80 00 20 */	blr
@@ -6586,7 +6585,9 @@ lbl_8002D334:
 /* 8002D338 00029258  38 21 00 30 */	addi r1, r1, 0x30
 /* 8002D33C 0002925C  7C 08 03 A6 */	mtlr r0
 /* 8002D340 00029260  4E 80 00 20 */	blr
-lbl_8002D344:
+.endif
+.if 0
+glabel lbl_8002D344
 /* 8002D344 00029264  7C 08 02 A6 */	mflr r0
 /* 8002D348 00029268  90 01 00 04 */	stw r0, 4(r1)
 /* 8002D34C 0002926C  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -6644,7 +6645,8 @@ lbl_8002D400:
 /* 8002D414 00029334  83 81 00 10 */	lwz r28, 0x10(r1)
 /* 8002D418 00029338  38 21 00 20 */	addi r1, r1, 0x20
 /* 8002D41C 0002933C  4E 80 00 20 */	blr
-lbl_8002D420:
+
+glabel lbl_8002D420
 /* 8002D420 00029340  7C 08 02 A6 */	mflr r0
 /* 8002D424 00029344  38 83 00 00 */	addi r4, r3, 0
 /* 8002D428 00029348  90 01 00 04 */	stw r0, 4(r1)
@@ -6736,7 +6738,8 @@ lbl_8002D564:
 /* 8002D568 00029488  38 21 00 08 */	addi r1, r1, 8
 /* 8002D56C 0002948C  7C 08 03 A6 */	mtlr r0
 /* 8002D570 00029490  4E 80 00 20 */	blr
-lbl_8002D574:
+
+glabel lbl_8002D574
 /* 8002D574 00029494  7C 08 02 A6 */	mflr r0
 /* 8002D578 00029498  3C A0 80 20 */	lis r5, lbl_801F8E18@ha
 /* 8002D57C 0002949C  90 01 00 04 */	stw r0, 4(r1)
@@ -7233,7 +7236,7 @@ lbl_8002DC18:
 /* 8002DC48 00029B68  38 21 00 20 */	addi r1, r1, 0x20
 /* 8002DC4C 00029B6C  7C 08 03 A6 */	mtlr r0
 /* 8002DC50 00029B70  4E 80 00 20 */	blr
-
+.endif
 .global func_8002DC54
 func_8002DC54:
 /* 8002DC54 00029B74  80 0D 9C C8 */	lwz r0, lbl_802F1EA8@sda21(r13)
@@ -15391,8 +15394,6 @@ glabel string_STRM_OPT_INT
 	.balign 4
 glabel string_STRM_OPT_LP
 	.asciz "STRM_OPT_LP"
-.endif
-.if 0
 glabel string_sel2_all
 	.asciz "sel2_all"
 	.balign 4
@@ -16119,8 +16120,7 @@ lbl_801B2A5C:
 	.4byte 0x01000000
 	.4byte 0
 	.4byte 0x49000000
-.endif
-.if 0
+
 .global lbl_801B339C
 lbl_801B339C:
 	# ROM: 0x1B039C
@@ -16503,7 +16503,6 @@ glabel lbl_801B3A04
 	.4byte 0x467FFC00
 	.4byte 0
 	.4byte 0
-.endif
 
 .global lbl_801B3A24
 lbl_801B3A24:
@@ -16532,12 +16531,15 @@ glabel string_restL__d_n
 glabel string_extraL__d_n
 	.asciz "extraL %d\n"
 	.balign 4
+
 glabel string_restR__d_n
 	.asciz "restR %d\n"
 	.balign 4
+
 glabel string_extraR__d_n
 	.asciz "extraR %d\n"
 	.balign 4
+
 glabel string__test_snd_test_streamL_pcm
 	.asciz "/test/snd/test/streamL.pcm"
 	.balign 4
@@ -16554,6 +16556,7 @@ glabel string_can_t_allocate_stream_n
 	.asciz "can't allocate stream\n"
 	.balign 4
 	.4byte 0
+.endif
 
 .section .sdata
 

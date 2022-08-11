@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <dolphin.h>
 #include <musyx/musyx.h>
 
@@ -1378,17 +1379,20 @@ FORCE_BSS_ORDER(lbl_801FE5D8)
 u8 lbl_801FFCF8[0x50*0x4A];
 FORCE_BSS_ORDER(lbl_801FFCF8)
 
-u8 lbl_80201418[0x3C];
+DVDFileInfo lbl_80201418;  // 8600
 FORCE_BSS_ORDER(lbl_80201418)
+
+DVDFileInfo lbl_80201454;
+FORCE_BSS_ORDER(lbl_80201454)
 
 struct
 {
-    u8 filler0[0x3C];
+    //DVDFileInfo unk0;
     u32 unk3C;  //8678
     u32 unk40;  //867C
     u32 unk44;  //8680
-} lbl_80201454;
-FORCE_BSS_ORDER(lbl_80201454)
+} lbl_80201490;
+FORCE_BSS_ORDER(lbl_80201490)
 
 s32 lbl_8020149C[9];  // 8684
 FORCE_BSS_ORDER(lbl_8020149C)
@@ -1502,9 +1506,9 @@ void func_8002786C(void)
         {
             if (lbl_802F1DC4 != 0)
             {
-                SoundOff(lbl_80201454.unk3C);
-                SoundOff(lbl_80201454.unk40);
-                SoundOff(lbl_80201454.unk44);
+                SoundOff(lbl_80201490.unk3C);
+                SoundOff(lbl_80201490.unk40);
+                SoundOff(lbl_80201490.unk44);
                 lbl_802F1DC4 = 0;
             }
             if (lbl_802F1DC8 != 0)
@@ -1520,11 +1524,11 @@ void func_8002786C(void)
                 if (lbl_802F1DC4 == 0 && lbl_802F1D40 == 1.0)
                 {
                     lbl_802F1DC4 = 1;
-                    lbl_80201454.unk3C = func_8002B5EC(0x4C);
+                    lbl_80201490.unk3C = func_8002B5EC(0x4C);
                 }
                 if ((int)lbl_80206DEC.u_stageTimer % 300 == 60)
                 {
-                    lbl_80201454.unk40 = func_8002B610(
+                    lbl_80201490.unk40 = func_8002B610(
                         SOME_MACRO(
                             0x4D,
                             ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 0x23,
@@ -1532,11 +1536,11 @@ void func_8002786C(void)
                             ((int)(77.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40
                         )
                     );
-                    SoundPitch(lbl_80201454.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
+                    SoundPitch(lbl_80201490.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
                 }
                 if ((int)lbl_80206DEC.u_stageTimer % 1000 == 200)
                 {
-                    lbl_80201454.unk44 = func_8002B610(
+                    lbl_80201490.unk44 = func_8002B610(
                         SOME_MACRO(
                             0x4E,
                             ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 5,
@@ -1544,14 +1548,14 @@ void func_8002786C(void)
                             ((int)(77.0f + lbl_80206DEC.u_stageTimer) & 0x7F) - 0x40
                         )
                     );
-                    SoundPitch(lbl_80201454.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
+                    SoundPitch(lbl_80201490.unk40, ((int)lbl_80206DEC.u_stageTimer * 0x1E) & 0x3FFF);
                 }
             }
             else if (lbl_802F1DC4 != 0)
             {
-                SoundOff(lbl_80201454.unk3C);
-                SoundOff(lbl_80201454.unk40);
-                SoundOff(lbl_80201454.unk44);
+                SoundOff(lbl_80201490.unk3C);
+                SoundOff(lbl_80201490.unk40);
+                SoundOff(lbl_80201490.unk44);
                 lbl_802F1DC4 = 0;
             }
             if (backgroundInfo.bgId == BG_TYPE_JUN
@@ -3359,6 +3363,382 @@ void func_8002CA5C(u32 arg0, u8 arg1, s8 arg2)
             sndFXCtrl(ptr->unk0, 0xA, var_r23 + 0x40);
             sndFXCtrl(ptr->unk0, 0x83, var_r22 + 0x40);
             sndFXCtrl14(ptr->unk0, 0x84, temp_r21_2);
+        }
+    }
+}
+
+#pragma force_active on
+void func_8002CEAC(void) {}
+
+void func_8002CEB0(void) {}
+
+void func_8002CEB4(void) {}
+#pragma force_active reset
+
+extern s32 lbl_802F1DD4;
+
+void func_8002CEB8(int arg0)
+{
+    float temp_f0;
+    u8 temp_f2;
+
+    temp_f2 = (lbl_802F1DD4 != 0) ? 0 : arg0;
+    temp_f0 = temp_f2 * (0.01f * lbl_802F1DD9);
+    DTKSetVolume(temp_f0, temp_f0);
+}
+
+extern s32 lbl_802F1DCC;
+
+void u_play_music(u32 arg0, s8 arg1)
+{
+    s32 hi = (arg0 >> 16) & 0xFFFF;
+    u32 lo = arg0 & 0xFFFF;
+    u8 var_r3;
+    float temp_f0;
+
+    switch (arg1)
+    {
+    case 0:
+        lbl_802014E0.unk0 = lo;
+        if (hi > 255)
+            hi = -(0x10000 - hi);
+        hi += lbl_802F1DCC;
+        lbl_802014E0.unkC =  CLAMP(hi + 0xFF, 0, 0xFF);
+        lbl_802014E0.unk14 = 0;
+        lbl_802014E0.unk18 = 0;
+        lbl_802F1D68 = lo;
+        lbl_802F1D6C = lbl_802F1D68 - lbl_802F1D64;
+        lbl_802F1D74 = -3;
+        lbl_802F1D70 = 1;
+        break;
+    case 1:
+        lbl_802F1D70 = 1;
+        lbl_802F1D74 = 1;
+        lbl_802014E0.unk0 = -1;
+        lbl_802014E0.unk14 = 0;
+        lbl_802014E0.unk18 = 0;
+        break;
+    case 2:
+        if (lbl_802014E0.unk14 <= 0)
+        {
+            lbl_802014E0.unk10 = 2;
+            lbl_802014E0.unk14 = lo;
+            lbl_802014E0.unk18 = lo;
+        }
+        break;
+    case 3:
+        if (lbl_802014E0.unk14 <= 0)
+        {
+            lbl_802014E0.unk10 = 3;
+            lbl_802014E0.unk14 = lo;
+            lbl_802014E0.unk18 = lo;
+        }
+        break;
+    case 4:
+        var_r3 = lo * lbl_802F1D4C;
+        if (lbl_802F1DD4 != 0)
+            var_r3 = 0;
+        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
+        DTKSetVolume(temp_f0, temp_f0);
+        break;
+    case 6:
+        lbl_802014E0.unk0 = lo;
+        if (hi > 255)
+            hi = -(0x10000 - hi);
+        lbl_802014E0.unkC = CLAMP(hi + 255, 0, 255);
+        lbl_802014E0.unk14 = 0;
+        lbl_802014E0.unk18 = 0;
+        lbl_802F1D68 = lo;
+        lbl_802F1D6C = lbl_802F1D68 - lbl_802F1D64;
+        lbl_802F1D74 = -3;
+        lbl_802F1D70 = 1;
+        break;
+    case 5:
+        lbl_802F1D70 = 1;
+        lbl_802F1D74 = 5;
+        break;
+    case 8:
+        lbl_802F1D54 = lbl_802F1D4C;
+        lbl_802F1D50 = 0.01f * lo;
+        lbl_802F1D58 = 60;
+        break;
+    case 9:
+        lbl_802F1D54 = lbl_802F1D4C;
+        lbl_802F1D50 = 1.0f;
+        lbl_802F1D58 = 60;
+        break;
+    case 10:
+        lbl_802F1D44 = 0.01f * lo;
+        lbl_802F1D40 = 0.01f * lo;
+        if (lo == 100)
+            lbl_802F1D48 = 1;
+        var_r3 = lbl_802F1D4C * (lbl_802F1D78 * *(float *)&lbl_802F1D40);
+        if (lbl_802F1DD4 != 0)
+            var_r3 = 0;
+        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
+        DTKSetVolume(temp_f0, temp_f0);
+        break;
+    case 11:
+        lbl_802F1D44 = 1.0f;
+        lbl_802F1D40 = 1.0f;
+        lbl_802F1D48 = 1;
+        var_r3 = (lbl_802F1D78 * lbl_802F1D4C);
+        if (lbl_802F1DD4 != 0)
+            var_r3 = 0;
+        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
+        DTKSetVolume(temp_f0, temp_f0);
+        break;
+    }
+}
+
+extern u8 *lbl_802F1D84;
+extern volatile s32 lbl_802F1DA4;
+extern s32 lbl_802F1DAC;
+extern s32 lbl_802F1D94;
+
+void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
+
+void lbl_8002D344(s32 result, DVDFileInfo *fileInfo)
+{
+    u8 *temp_r31;
+
+    if (result != lbl_802F1DA4)
+        OSReport("DVDReadAsync result %x\n", result);
+
+    if (result < 0x8000)
+    {
+        memset(lbl_802F1D84, 0, lbl_802F1D94);
+        lbl_802F1DAC = 0x8000 - result;
+        temp_r31 = lbl_802F1D84 + lbl_802F1D94;
+        OSReport("restL %d\n", lbl_802F1DAC);
+        OSReport("extraL %d\n", lbl_802F1D94);
+        DVDReadAsyncPrio(fileInfo, temp_r31, lbl_802F1DAC, 0, lbl_8002D420, 2);
+    }
+}
+
+void lbl_8002D420(s32 result, DVDFileInfo *fileInfo)
+{
+    if (result != lbl_802F1DAC)
+        OSReport("DVDReadAsync result %x\n", result);
+}
+
+extern u8 *lbl_802F1D88;
+extern s32 lbl_802F1D98;
+extern s32 lbl_802F1DB0;
+extern volatile s32 lbl_802F1DA8;
+
+void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
+
+void lbl_8002D45C(s32 result, DVDFileInfo *fileInfo)
+{
+    u8 *temp_r31;
+
+    if (result != lbl_802F1DA8)
+        OSReport("DVDReadAsync result %x\n", result);
+
+    if (result < 0x8000)
+    {
+        memset(lbl_802F1D88, 0, lbl_802F1D98);
+        lbl_802F1DB0 = 0x8000 - result;
+        temp_r31 = lbl_802F1D88 + lbl_802F1D98;
+        OSReport("restR %d\n", lbl_802F1DB0);
+        OSReport("extraR %d\n", lbl_802F1D98);
+        DVDReadAsyncPrio(fileInfo, temp_r31, lbl_802F1DB0, 0, lbl_8002D538, 2);
+    }
+}
+
+void lbl_8002D538(s32 result, DVDFileInfo *fileInfo)
+{
+    if (result != lbl_802F1DB0)
+        OSReport("DVDReadAsync result %x\n", result);
+}
+
+extern u32 lbl_802F1D9C;
+extern u32 lbl_802F1DA0;
+extern u32 lbl_802F1D8C;
+extern u32 lbl_802F1D90;
+
+u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
+{
+    s32 temp_r5;
+    s32 temp_r4;
+
+    switch (arg4)
+    {
+    case 0:
+        if (lbl_802F1D9C != 0 && arg1 < 0x4000)
+            lbl_802F1D9C = 0;
+        break;
+    case 1:
+        if (lbl_802F1DA0 != 0 && arg1 < 0x4000)
+            lbl_802F1DA0 = 0;
+        break;
+    }
+    if (arg1 >= 0x4000)
+    {
+        switch (arg4)
+        {
+        case 0:
+            if (lbl_802F1D9C == 0)
+            {
+                temp_r4 = OSRoundUp32B(lbl_80201418.length - lbl_802F1D8C);
+                if (temp_r4 > 0x8000)
+                {
+                    lbl_802F1DA4 = 0x8000;
+                    DVDReadAsyncPrio(&lbl_80201418, arg0, lbl_802F1DA4, lbl_802F1D8C, lbl_8002D344, 2);
+                    lbl_802F1D8C += 0x8000;
+                }
+                else
+                {
+                    lbl_802F1DA4 = temp_r4;
+                    temp_r5 = lbl_802F1DA4;
+                    lbl_802F1D94 = (temp_r5 + lbl_802F1D8C) - lbl_80201418.length;
+                    lbl_802F1D84 = (arg0 + temp_r5) - lbl_802F1D94;
+                    DVDReadAsyncPrio(&lbl_80201418, arg0, temp_r5, lbl_802F1D8C, lbl_8002D344, 2);
+                    lbl_802F1D8C = 0x8000 - lbl_802F1DA4;
+                }
+                lbl_802F1D9C = 1;
+            }
+            break;
+        case 1:
+            if (lbl_802F1DA0 == 0)
+            {
+                temp_r4 = OSRoundUp32B(lbl_80201454.length - lbl_802F1D90);
+                if (temp_r4 > 0x8000)
+                {
+                    lbl_802F1DA8 = 0x8000;
+                    DVDReadAsyncPrio(&lbl_80201454, arg0, lbl_802F1DA8, lbl_802F1D90, lbl_8002D45C, 2);
+                    lbl_802F1D90 += 0x8000;
+                }
+                else
+                {
+                    lbl_802F1DA8 = temp_r4;
+                    temp_r5 = lbl_802F1DA8;
+                    lbl_802F1D98 = (temp_r5 + lbl_802F1D90) - lbl_80201454.length;
+                    lbl_802F1D88 = (arg0 + temp_r5) - lbl_802F1D98;
+                    DVDReadAsyncPrio(&lbl_80201454, arg0, temp_r5, lbl_802F1D90, lbl_8002D45C, 2);
+                    lbl_802F1D90 = 0x8000 - lbl_802F1DA8;
+                }
+                lbl_802F1DA0 = 1;
+            }
+            break;
+        }
+        return 0x4000;
+    }
+    return 0;
+}
+
+extern u8 *lbl_802F1D7C;
+extern u8 *lbl_802F1D80;
+extern u32 lbl_802F1DB4;
+extern u32 lbl_802F1DB8;
+
+#pragma force_active on
+void func_8002D798(void)
+{
+    BOOL intrEnabled;
+    int var_ctr;
+    u8 *var_r5;
+
+    if (lbl_802F1DBC == 0)
+    {
+        lbl_802F1D7C = OSAlloc(0x10000);
+        lbl_802F1D80 = OSAlloc(0x10000);
+        var_r5 = lbl_802F1D7C;
+        for (var_ctr = 0; var_ctr < 0x10000; var_ctr++, var_r5++)
+            *var_r5 = 0;
+        var_r5 = lbl_802F1D80;
+        for (var_ctr = 0; var_ctr < 0x10000; var_ctr++, var_r5++)
+            *var_r5 = 0;
+        DCFlushRange(lbl_802F1D7C, 0x10000);
+        DCFlushRange(lbl_802F1D80, 0x10000);
+        if (DVDOpen("/test/snd/test/streamL.pcm", &lbl_80201418) == 0)
+            print_sound_error("SoundStreamStart\n", "can't open data\n");
+        if (DVDOpen("/test/snd/test/streamR.pcm", &lbl_80201454) == 0)
+            print_sound_error("SoundStreamStart\n", "can't open data\n");
+        lbl_802F1D8C = 0;
+        lbl_802F1D90 = 0;
+        lbl_802F1D9C = 0;
+        lbl_802F1DA0 = 0;
+        intrEnabled = OSDisableInterrupts();
+        lbl_802F1DB4 = sndStreamAllocEx(0xFF, lbl_802F1D7C, 0x8000, 0xABE0, 0x7F, 0, 0, 0, 0, 0, 0, lbl_8002D574, 0, 0);
+        lbl_802F1DB8 = sndStreamAllocEx(0xFF, lbl_802F1D80, 0x8000, 0xABE0, 0x7F, 0x7F, 0, 0, 0, 0, 0, lbl_8002D574, 1, 0);
+        OSRestoreInterrupts(intrEnabled);
+        if (lbl_802F1DB4 == -1U)
+            print_sound_error("SoundStreamStart\n", "can't allocate stream\n");
+        if (lbl_802F1DB8 == -1U)
+            print_sound_error("SoundStreamStart\n", "can't allocate stream\n");
+        lbl_802F1DBC = 1;
+    }
+}
+
+void func_8002DA18(void)
+{
+    if (lbl_802F1DBC != 0)
+    {
+        if (lbl_802F1DB4 != -1U)
+            sndStreamFree(lbl_802F1DB4);
+        if (lbl_802F1DB8 != -1U)
+            sndStreamFree(lbl_802F1DB8);
+        DVDClose(&lbl_80201418);
+        DVDClose(&lbl_80201454);
+        if (lbl_802F1D7C != NULL)
+            OSFree(lbl_802F1D7C);
+        if (lbl_802F1D80 != NULL)
+            OSFree(lbl_802F1D80);
+        lbl_802F1DBC = 0;
+    }
+}
+
+void func_8002DAB0(u32 mode)
+{
+    if (mode != OSGetSoundMode())
+    {
+        OSSetSoundMode(mode);
+        if (mode == 0)
+            func_800275A0(0, 0);
+        else
+            func_800275A0(0, 2);
+    }
+}
+#pragma force_active reset
+
+void func_8002DB10(struct MemcardGameData *arg0)
+{
+    arg0->unk5844.unk4C = lbl_802F1DD9;
+    arg0->unk5844.unk4D = lbl_802F1DF5;
+}
+
+void func_8002DB24(struct MemcardGameData *arg0)
+{
+    lbl_802F1DD9 = arg0->unk5844.unk4C;
+    lbl_802F1DF5 = arg0->unk5844.unk4D;
+}
+
+void func_8002DB38(void)
+{
+    int j, i;
+
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 0x425; j++)
+        {
+            if (lbl_801F91B4[i][j] != -1U)
+                sndFXCtrl(lbl_801F91B4[i][j], 7, 0);
+        }
+    }
+}
+
+void func_8002DBC4(void)
+{
+    int j, i;
+
+    for (i = 0; i < 4; i++)
+    {
+        for (j = 0; j < 0x425; j++)
+        {
+            if (lbl_801F91B4[i][j] != -1U)
+                sndFXCtrl(lbl_801F91B4[i][j], 7, lbl_801FD404[i][j]);
         }
     }
 }

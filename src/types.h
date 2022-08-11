@@ -752,7 +752,8 @@ struct MemcardGameData_sub
     /*0x588D*/ u8 unk49;
     /*0x588E*/ u8 unk4A;
     /*0x588F*/ u8 unk4B;
-    /*0x5890*/ u8 filler4C[2];
+    /*0x5890*/ u8 unk4C;
+    /*0x5891*/ u8 unk4D;
     /*0x5892*/ u8 unk4E;
     /*0x5893*/ u8 unk4F;
     /*0x5894*/ u8 unk50;
@@ -1019,7 +1020,7 @@ struct Struct801EEDA8
 
 struct Struct802014E0
 {
-    s32 unk0;
+    s32 unk0;  // 86C8
     u32 unk4;
     u8 filler8[4];
     u8 unkC;
