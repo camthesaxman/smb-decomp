@@ -233,7 +233,6 @@ void ev_recplay_init(void)
     dummy_8004AFD4();
 }
 
-#ifdef NONMATCHING
 void ev_recplay_main(void)
 {
     struct Ball *ball;
@@ -254,6 +253,8 @@ void ev_recplay_main(void)
     ball = ballInfo;
     for (i = 4; i > 0; i--, var_r28++, ball++)
     {
+        modeCtrl.gameType;  // needed to match
+
         if ((s16)(int)var_r28->unk2 != 0)
         {
             struct BuiltinReplay *replay;
@@ -293,14 +294,6 @@ void ev_recplay_main(void)
      || modeCtrl.gameType == GAMETYPE_MAIN_PRACTICE)
         u_serialize_some_replay_data();
 }
-#else
-asm void ev_recplay_main(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/ev_recplay_main.s"
-}
-#pragma peephole on
-#endif
 
 void ev_recplay_dest(void)
 {

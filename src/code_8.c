@@ -17,12 +17,11 @@ struct Struct80048084
     GXTexObj *unk24;
 };
 
-#ifdef NONMATCHING
 void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
     struct NlMesh *mesh;
     struct NlMesh *next;
-    u32 r30;
+    u64 r30;
     GXTexObj *r29;
 
     if (arg0->u_valid == -1)
@@ -56,14 +55,6 @@ void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg
         mesh = next;
     }
 }
-#else
-asm void func_80048084(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_80048084.s"
-}
-#pragma peephole on
-#endif
 
 static void lbl_800481A0(struct NlVtxTypeB *arg0)
 {
@@ -133,12 +124,11 @@ static void lbl_800482A4(struct NlVtxTypeA *arg0)
 static void lbl_8004853C(struct NlVtxTypeB *);
 static void lbl_8004863C(struct NlVtxTypeA *);
 
-#ifdef NONMATCHING
 void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
 {
     struct NlMesh *mesh;
     struct NlMesh *next;
-    u32 r30;
+    u64 r30;
     GXTexObj *r29;
 
     if (arg0->u_valid == -1)
@@ -172,14 +162,6 @@ void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg
         mesh = next;
     }
 }
-#else
-asm void func_80048420(struct NlModel *arg0, struct Struct80048084 *arg1, float *arg2)
-{
-	nofralloc
-#include "../asm/nonmatchings/func_80048420.s"
-}
-#pragma peephole on
-#endif
 
 static void lbl_8004853C(struct NlVtxTypeB *arg0)
 {

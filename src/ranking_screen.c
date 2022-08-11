@@ -670,11 +670,11 @@ void draw_ranking_floor_num(int rank, int startX, int startY, struct ScoreRecord
     }
 }
 
-#ifdef NONMATCHING
 void func_800885EC(void)
 {
     int i;
-    struct RankingLetterBall *var;
+    float new_var;
+    struct RankingLetterBall *letterBall;
     struct Struct801C79C8 *var2;
     s16 *var3;
 
@@ -682,32 +682,36 @@ void func_800885EC(void)
     lbl_802B37F0.unk4 = 0;
     lbl_802B37F0.unk1C = 0;
 
+#ifdef NONMATCHING
+    letterBall = lbl_802B37F0.letterBalls;
+    for (i = 0; i < 7; i++, letterBall++)
+    {
+        letterBall->bmpId = s_rankingBallBmpIds[i];
+        letterBall->x     = lbl_801C79C8[i].unk0;
+        letterBall->unk10 = lbl_801C79C8[i].unk4;
+    }
+#else
     var2 = lbl_801C79C8;
-    var = lbl_802B37F0.letterBalls;
+    letterBall = lbl_802B37F0.letterBalls;
     var3 = s_rankingBallBmpIds;
-
-    for (i = 0; i < 7; i++, var++)
+    if ((&lbl_802B37F0) && (&lbl_802B37F0))
+    {
+    }
+    for (i = 0; i < 7; i++, letterBall++)
     {
         var2 = &lbl_801C79C8[i];
-        var->bmpId = var3[i];
-        var->x = lbl_801C79C8[i].unk0;
-        var->unk10 = lbl_801C79C8[i].unk4;
+        letterBall->bmpId = var3[i];
+        letterBall->x     = var2->unk0;
+        letterBall->unk10 = (new_var = var2->unk4);
         !var2;
     }
-    !var;
+#endif
+
     lbl_802B37F0.unkC = 0.0f;
     lbl_802B37F0.unk10 = 0.0f;
     lbl_802B37F0.unk12C = 0;
     lbl_802B37F0.unk130 = 0;
 }
-#else
-asm void func_800885EC(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/func_800885EC.s"
-}
-#pragma peephole on
-#endif
 
 void init_ranking_screen(int difficulty)
 {
