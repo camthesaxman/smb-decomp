@@ -1,3 +1,4 @@
+#include <float.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,6 +14,10 @@
 #include "mode.h"
 #include "nl2ngc.h"
 #include "stage.h"
+#include "light.h"
+
+#include "../data/bg_nig.gma.h"
+#include "../data/bg_stm.gma.h"
 
 #pragma force_active on
 
@@ -56,7 +61,7 @@ void (*bgInitFuncs[])(void) =
     bg_old_cave_init,
     bg_old_bonus_init,
     bg_old_extramaster_init,
-    bg_e3_init,
+    bg_default_init,
     bg_jungle_init,
     bg_water_init,
     bg_night_init,
@@ -89,7 +94,7 @@ void (*bgMainFuncs[])(void) =
     bg_old_cave_main,
     bg_old_bonus_main,
     bg_old_extramaster_main,
-    bg_e3_main,
+    bg_default_main,
     bg_jungle_main,
     bg_water_main,
     bg_night_main,
@@ -122,7 +127,7 @@ void (*bgFinishFuncs[])(void) =
     bg_old_cave_finish,
     bg_old_bonus_finish,
     bg_old_extramaster_finish,
-    bg_e3_finish,
+    bg_default_finish,
     bg_jungle_finish,
     bg_water_finish,
     bg_night_finish,
@@ -155,7 +160,7 @@ void (*bgDrawFuncs[])(void) =
     bg_old_cave_draw,
     bg_old_bonus_draw,
     bg_old_extramaster_draw,
-    bg_e3_draw,
+    bg_default_draw,
     bg_jungle_draw,
     bg_water_draw,
     bg_night_draw,
@@ -188,7 +193,7 @@ void (*bgInteractFuncs[])(int) =
     bg_old_cave_interact,
     bg_old_bonus_interact,
     bg_old_extramaster_interact,
-    bg_e3_interact,
+    bg_default_interact,
     bg_jungle_interact,
     bg_water_interact,
     bg_night_interact,
@@ -240,7 +245,7 @@ int (*lbl_801B96CC[])() =
     NULL,
 };
 
-int (*lbl_801B9740[])() =
+int (*lbl_801B9740[])(struct NlModel *, struct NlModel *) =
 {
     NULL,
     NULL,
@@ -294,16 +299,16 @@ char *oldBgFileNames[] =
 void ev_background_init(void)
 {
     s16 r29 = backgroundInfo.bgId;
-    void *r27 = backgroundInfo.unk9C;
+    void *r27 = backgroundInfo.work;
     u32 r26 = backgroundInfo.unkA0;
 
     memset(&backgroundInfo, 0, sizeof(backgroundInfo));
 
     backgroundInfo.bgId = r29;
-    backgroundInfo.unk9C = r27;
+    backgroundInfo.work = r27;
     backgroundInfo.unkA0 = r26;
 
-    backgroundInfo.unk4 = 0.0f;
+    backgroundInfo.animTimer = 0.0f;
     backgroundInfo.unk8 = 0;
 
     backgroundInfo.backdropColor = bgBackdropColors[backgroundInfo.bgId];
@@ -329,7 +334,7 @@ void ev_background_main(void)
 {
     if ((gamePauseStatus & 0xA) == 0)
     {
-        backgroundInfo.unk4 += 1.0f;
+        backgroundInfo.animTimer += 1.0f;
         backgroundInfo.unkA4++;
     }
     if (backgroundInfo.bgId > 0)
@@ -364,12 +369,12 @@ void func_8005507C(void)
 {
     if (backgroundInfo.bgId > 0)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
-        if (backgroundInfo.unk9C != NULL)
+        if (backgroundInfo.work != NULL)
         {
-            OSFree(backgroundInfo.unk9C);
-            backgroundInfo.unk9C = NULL;
+            OSFree(backgroundInfo.work);
+            backgroundInfo.work = NULL;
         }
         if (decodedBgTpl != NULL || decodedBgGma != NULL)
         {
@@ -386,7 +391,7 @@ void func_8005507C(void)
             free_gma(decodedBgGma);
             decodedBgGma = NULL;
         }
-        free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
+        free_nlobj(&g_bgNlObj, &g_bgNlTpl);
 
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = -1;
@@ -446,11 +451,11 @@ u32 bgWorkSizes[] =
     0,
     0,
     sizeof(struct BGJungleWork),
-    0x194,
+    sizeof(struct BGWaterWork),
     0,
     sizeof(struct BGSunsetWork),
-    0xAC,
-    0x56C,
+    sizeof(struct BGSpaceWork),
+    sizeof(struct BGSandWork),
     0,
     sizeof(struct BGStormWork),
     sizeof(struct BGBonusWork),
@@ -459,7 +464,7 @@ u32 bgWorkSizes[] =
     0,
     0,
     0xB90,
-    0x94,
+    sizeof(struct BGEndWork),
     0,
 };
 
@@ -480,15 +485,15 @@ void load_bg_files(int bgId)
 
     if (backgroundInfo.bgId != bgId)
     {
-        OSHeapHandle oldHeap = OSSetCurrentHeap(memHeap3);
+        OSHeapHandle oldHeap = OSSetCurrentHeap(backgroundHeap);
 
         if (backgroundInfo.bgId > 0)
         {
             // free working memory
-            if (backgroundInfo.unk9C != NULL)
+            if (backgroundInfo.work != NULL)
             {
-                OSFree(backgroundInfo.unk9C);
-                backgroundInfo.unk9C = NULL;
+                OSFree(backgroundInfo.work);
+                backgroundInfo.work = NULL;
             }
 
             // free GMA/TPL
@@ -509,7 +514,7 @@ void load_bg_files(int bgId)
             }
 
             // free old NAOMI resources
-            free_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl);
+            free_nlobj(&g_bgNlObj, &g_bgNlTpl);
         }
         if (bgId > 0)
         {
@@ -534,22 +539,22 @@ void load_bg_files(int bgId)
                 DVDChangeDir(bgDir);
                 sprintf(gmaFileName, "%s_p.lz", bgName);
                 sprintf(tplFileName, "%s.lz", bgName);
-                load_nlobj(&naomiBackgroundObj, &naomiBackgroundTpl, gmaFileName, tplFileName);
+                load_nlobj(&g_bgNlObj, &g_bgNlTpl, gmaFileName, tplFileName);
                 DVDChangeDir("/test");
             }
 
             // allocate working memory for background
             if (bgWorkSizes[bgId] != 0)
             {
-                backgroundInfo.unk9C = OSAlloc(bgWorkSizes[bgId]);
-                if (backgroundInfo.unk9C == NULL)
+                backgroundInfo.work = OSAlloc(bgWorkSizes[bgId]);
+                if (backgroundInfo.work == NULL)
                     OSPanic("background.c", 0x30B, "cannot OSAlloc\n");
-                memset(backgroundInfo.unk9C, 0, bgWorkSizes[bgId]);
+                memset(backgroundInfo.work, 0, bgWorkSizes[bgId]);
             }
         }
         OSSetCurrentHeap(oldHeap);
         backgroundInfo.bgId = bgId;
-        func_80021DB4(currStageId);
+        light_init(currStageId);
     }
 }
 
@@ -559,48 +564,48 @@ void background_interact(int a)
         bgInteractFuncs[backgroundInfo.bgId](a);
 }
 
-void bg_e3_init(void) {}
+void bg_default_init(void) {}
 
-void bg_e3_main(void)
+void bg_default_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
-void bg_e3_finish(void) {}
+void bg_default_finish(void) {}
 
-void bg_e3_draw(void)
+void bg_default_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != 0)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != 0)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != 0)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != 0)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
-void bg_e3_interact(int a) {}
+void bg_default_interact(int a) {}
 
-void g_animate_background_parts(struct StageBgModel *a, int b, float c)
+void animate_bg_objects(struct StageBgObject *bgObj, int bgObjCount, float timeSeconds)
 {
     int i;
     int r29;
-    Vec sp1C;
+    Vec boundSphereCenter;
 
-    if (a == NULL2)
+    if (bgObj == NULL2)
         return;
     if (lbl_801EEC90.unk0 & 0x11)
         r29 = 16;
@@ -608,78 +613,91 @@ void g_animate_background_parts(struct StageBgModel *a, int b, float c)
         r29 = 1 << (modeCtrl.unk30 - 1);
     else
         r29 = 1;
-    for (i = 0; i < b; i++, a++)
+    for (i = 0; i < bgObjCount; i++, bgObj++)
     {
-        float t;
-        float f2;
-        struct UnkStruct8005562C_child *anim;
+        float timeSecondsLooped;
+        float loopDurationSeconds;
+        struct StageBgAnim *anim;
 
-        a->unk0 &= ~(1 << 16);
-        if (!(a->unk0 & r29))
+        bgObj->flags &= ~(1 << 16);
+        if (!(bgObj->flags & r29))
             continue;
-        if (a->model == NULL2)
+        if (bgObj->model == NULL2)
             continue;
-        a->unk0 |= 0x10000;
-        anim = a->unk30;
+        bgObj->flags |= (1 << 16);
+        anim = bgObj->anim;
         if (anim == NULL2)
             continue;
-        t = c;
-        if (a->unk0 & (1 << 6))
-            t = lbl_80206DEC.unk4 / 60.0;
-        t += anim->unk0;
-        f2 = (float)(anim->unk4 - anim->unk0);
-        t -= f2 * mathutil_floor(t / f2);
-        t += (float)anim->unk0;
-        if (anim->unk54 != NULL2 && g_interpolate_anim(anim->unk50, anim->unk54, t) < 0.5)
+        timeSecondsLooped = timeSeconds;
+        if (bgObj->flags & (1 << 6))
+            timeSecondsLooped = lbl_80206DEC.u_stageTimer / 60.0;
+        timeSecondsLooped += anim->loopStartSeconds;
+        loopDurationSeconds = (float)(anim->loopEndSeconds - anim->loopStartSeconds);
+        timeSecondsLooped -=
+            loopDurationSeconds * mathutil_floor(timeSecondsLooped / loopDurationSeconds);
+        timeSecondsLooped += (float)anim->loopStartSeconds;
+        if (anim->visibleKeyframes != NULL2 &&
+            interpolate_keyframes(anim->visibleKeyframeCount, anim->visibleKeyframes,
+                                  timeSecondsLooped) < 0.5)
         {
-            a->unk0 &= ~(1 << 16);
+            bgObj->flags &= ~(1 << 16);
             continue;
         }
-        if (anim->unk5C != NULL2)
+        if (anim->translucencyKeyframes != NULL2)
         {
-            a->unk2C = g_interpolate_anim(anim->unk58, anim->unk5C, t);
-            if (a->unk2C >= 1.0)
+            bgObj->translucency = interpolate_keyframes(
+                anim->translucencyKeyframeCount, anim->translucencyKeyframes, timeSecondsLooped);
+            if (bgObj->translucency >= 1.0)
                 continue;
         }
-        if (anim->unkC != NULL2)
-            a->scale.x = g_interpolate_anim(anim->unk8, anim->unkC, t);
-        if (anim->unk14 != NULL2)
-            a->scale.y = g_interpolate_anim(anim->unk10, anim->unk14, t);
-        if (anim->unk1C != NULL2)
-            a->scale.z = g_interpolate_anim(anim->unk18, anim->unk1C, t);
-        if (anim->unk24 != NULL2)
-            a->xrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk20, anim->unk24, t));
-        if (anim->unk2C != NULL2)
-            a->yrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk28, anim->unk2C, t));
-        if (anim->unk34 != NULL2)
-            a->zrot = DEGREES_TO_S16(g_interpolate_anim(anim->unk30, anim->unk34, t));
-        if (anim->unk3C != NULL2)
-            a->pos.x = g_interpolate_anim(anim->unk38, anim->unk3C, t);
-        if (anim->unk44 != NULL2)
-            a->pos.y = g_interpolate_anim(anim->unk40, anim->unk44, t);
-        if (anim->unk4C != NULL2)
-            a->pos.z = g_interpolate_anim(anim->unk48, anim->unk4C, t);
-        if ((a->unk0 & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
+        if (anim->scaleXKeyframes != NULL2)
+            bgObj->scale.x = interpolate_keyframes(anim->scaleXKeyframeCount,
+                                                      anim->scaleXKeyframes, timeSecondsLooped);
+        if (anim->scaleYKeyframes != NULL2)
+            bgObj->scale.y = interpolate_keyframes(anim->scaleYKeyframeCount,
+                                                      anim->scaleYKeyframes, timeSecondsLooped);
+        if (anim->scaleZKeyframes != NULL2)
+            bgObj->scale.z = interpolate_keyframes(anim->scaleZKeyframeCount,
+                                                      anim->scaleZKeyframes, timeSecondsLooped);
+        if (anim->rotXKeyframes != NULL2)
+            bgObj->rotX = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotXKeyframeCount, anim->rotXKeyframes, timeSecondsLooped));
+        if (anim->rotYKeyframes != NULL2)
+            bgObj->rotY = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotYKeyframeCount, anim->rotYKeyframes, timeSecondsLooped));
+        if (anim->rotZKeyframes != NULL2)
+            bgObj->rotZ = DEGREES_TO_S16(interpolate_keyframes(
+                anim->rotZKeyframeCount, anim->rotZKeyframes, timeSecondsLooped));
+        if (anim->posXKeyframes != NULL2)
+            bgObj->pos.x = interpolate_keyframes(anim->posXKeyframeCount, anim->posXKeyframes,
+                                                    timeSecondsLooped);
+        if (anim->posYKeyframes != NULL2)
+            bgObj->pos.y = interpolate_keyframes(anim->posYKeyframeCount, anim->posYKeyframes,
+                                                    timeSecondsLooped);
+        if (anim->posZKeyframes != NULL2)
+            bgObj->pos.z = interpolate_keyframes(anim->posZKeyframeCount, anim->posZKeyframes,
+                                                    timeSecondsLooped);
+        if ((bgObj->flags & (1 << 5)) && gameSubmode != SMD_ADV_INFO_MAIN)
         {
-            mathutil_mtxA_from_translate(&a->pos);
-            mathutil_mtxA_rotate_z(a->zrot);
-            mathutil_mtxA_rotate_y(a->yrot);
-            mathutil_mtxA_rotate_x(a->xrot);
-            mathutil_mtxA_tf_point(&a->model->boundsCenter, &sp1C);
-            func_800390C8(5, &sp1C, 1.0f);
+            mathutil_mtxA_from_translate(&bgObj->pos);
+            mathutil_mtxA_rotate_z(bgObj->rotZ);
+            mathutil_mtxA_rotate_y(bgObj->rotY);
+            mathutil_mtxA_rotate_x(bgObj->rotX);
+            mathutil_mtxA_tf_point(&bgObj->model->boundSphereCenter, &boundSphereCenter);
+            func_800390C8(5, &boundSphereCenter, 1.0f);
         }
     }
 }
 
-void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
+void draw_bg_objects(Mtx viewFromWorld, struct StageBgObject *bgObj, int bgObjCount)
 {
     int i;
     int r30;
-    float f29;
-    struct GMAModelHeader *model;
-    int r23;
+    float scale;
+    struct GMAModel *model;
+    int customLightGroup;
 
-    if (b == NULL)
+    if (bgObj == NULL)
         return;
     if (lbl_801EEC90.unk0 & ((1 << 0)|(1 << 4)))
         r30 = 1 << 4;
@@ -687,252 +705,305 @@ void g_draw_bg_models(Mtx a, struct StageBgModel *b, int c)
         r30 = 1 << (modeCtrl.unk30 - 1);
     else
         r30 = 1;
-    for (i = 0; i < c; i++, b++)
+    for (i = 0; i < bgObjCount; i++, bgObj++)
     {
-        if (!(b->unk0 & r30))
+        if (!(bgObj->flags & r30))
             continue;
         if ((lbl_801EEC90.unk0 & (1 << 2))
-         && (b->unk0 & (1 << 7)))
+         && (bgObj->flags & (1 << 7)))
             continue;
-        if (!(b->unk0 & (1 << 16)))
+        if (!(bgObj->flags & (1 << 16)))
             continue;
-        if (b->unk2C >= 1.0)
+        if (bgObj->translucency >= 1.0)
             continue;
-        if ((model = b->model) == NULL)
+        if ((model = bgObj->model) == NULL)
             continue;
-        mathutil_mtxA_from_mtx(a);
-        mathutil_mtxA_translate(&b->pos);
-        mathutil_mtxA_rotate_z(b->zrot);
-        mathutil_mtxA_rotate_y(b->yrot);
-        mathutil_mtxA_rotate_x(b->xrot);
-        mathutil_mtxA_scale(&b->scale);
-        f29 = MAX(b->scale.x, b->scale.y);
-        f29 = MAX(b->scale.z, f29);
+        mathutil_mtxA_from_mtx(viewFromWorld);
+        mathutil_mtxA_translate(&bgObj->pos);
+        mathutil_mtxA_rotate_z(bgObj->rotZ);
+        mathutil_mtxA_rotate_y(bgObj->rotY);
+        mathutil_mtxA_rotate_x(bgObj->rotX);
+        mathutil_mtxA_scale(&bgObj->scale);
+        scale = MAX(bgObj->scale.x, bgObj->scale.y);
+        scale = MAX(bgObj->scale.z, scale);
         if ((lbl_801EEC90.unk0 & (1 << 2))
-         && func_8000E444(&model->boundsCenter) < -(f29 * model->boundsRadius))
+         && func_8000E444(&model->boundSphereCenter) < -(scale * model->boundSphereRadius))
             continue;
-        if (g_frustum_test_maybe_2(&model->boundsCenter, model->boundsRadius, f29) == 0)
+        if (test_scaled_sphere_in_frustum(&model->boundSphereCenter, model->boundSphereRadius, scale) == 0)
             continue;
-        r23 = b->unk0 >> 28;
+        customLightGroup = bgObj->flags >> 28;
         GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
         GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-        if (r23 > 0)
+        if (customLightGroup > 0)
         {
-            func_800224CC();
-            func_80022274(r23 + 6);
+            push_light_group();
+            load_light_group_uncached(customLightGroup + LIGHT_GROUP_BG_0);
         }
-        if (backgroundInfo.unk90 != 0 && (b->unk0 & (1 << 24)))
-            g_avdisp_set_some_func_1(backgroundInfo.unk90);
-        g_avdisp_set_model_scale(f29);
-        if (b->unk2C < FLT_EPSILON)
-            g_avdisp_draw_model_1(model);
+        if (backgroundInfo.unk90 != 0 && (bgObj->flags & (1 << 24)))
+            u_avdisp_set_some_func_1(backgroundInfo.unk90);
+        avdisp_set_bound_sphere_scale(scale);
+        if (bgObj->translucency < FLT_EPSILON)
+            avdisp_draw_model_unculled_sort_translucent(model);
         else
         {
-            g_avdisp_set_alpha(1.0 - b->unk2C);
-            g_avdisp_draw_model_3(model);
+            avdisp_set_alpha(1.0 - bgObj->translucency);
+            avdisp_draw_model_unculled_sort_all(model);
         }
-        if (b->unk34 != 0)
-            func_80055C6C(a, b->unk34);
-        g_avdisp_set_some_func_1(0);
-        if (r23 > 0)
-            func_80022530();
+        if (bgObj->flipbooks != 0)
+            draw_bg_flipbooks(viewFromWorld, bgObj->flipbooks);
+        u_avdisp_set_some_func_1(0);
+        if (customLightGroup > 0)
+            pop_light_group();
     }
 }
 
-// 890
-s16 lbl_801B9A08[] =
+// Dancing monkey flipbook animations in windows in Night bg
+// "mado" is "window" in Japanese
+
+s16 s_nightWindowAModels[] =
 {
-    0x09,
-    0x0A,
-    0x0B,
-    0x0C,
-    0x0D,
-    0x0E,
-    0x0F,
-    0x10,
-    0x11,
-    0x12,
-    0x13,
-    0x14,
-    0x15,
-    0x16,
+    NIG_MADO_A_PT00,
+    NIG_MADO_A_PT01,
+    NIG_MADO_A_PT02,
+    NIG_MADO_A_PT03,
+    NIG_MADO_A_PT04,
+    NIG_MADO_A_PT05,
+    NIG_MADO_A_PT06,
+    NIG_MADO_A_PT07,
+    NIG_MADO_A_PT08,
+    NIG_MADO_A_PT09,
+    NIG_MADO_A_PT10,
+    NIG_MADO_A_PT11,
+    NIG_MADO_A_PT12,
+    NIG_MADO_A_PT13,
 };
 
-// 8AC
-s16 lbl_801B9A24[] =
+s16 s_nightWindowBModels[] =
 {
-    0x17, 0x18,
-    0x19, 0x1A,
-    0x1B, 0x1C,
-    0x1D, 0x1E,
-    0x1F, 0x20,
-    0x21,
+    NIG_MADO_B_PT00,
+    NIG_MADO_B_PT01,
+    NIG_MADO_B_PT02,
+    NIG_MADO_B_PT03,
+    NIG_MADO_B_PT04,
+    NIG_MADO_B_PT05,
+    NIG_MADO_B_PT06,
+    NIG_MADO_B_PT07,
+    NIG_MADO_B_PT08,
+    NIG_MADO_B_PT09,
+    NIG_MADO_B_PT10,
 };
 
-// 8C4
-s16 lbl_801B9A3C[] =
+s16 s_nightWindowCModels[] =
 {
-    0x22, 0x23,
-    0x24, 0x25,
-    0x26, 0x27,
-    0x28, 0x29,
-    0x2A, 0x2B,
-    0x2C, 0x2D,
-    0x2E, 0x2F,
-    0x30, 0x31,
-    0x32, 0x33,
+    NIG_MADO_C_PT00,
+    NIG_MADO_C_PT01,
+    NIG_MADO_C_PT02,
+    NIG_MADO_C_PT03,
+    NIG_MADO_C_PT04,
+    NIG_MADO_C_PT05,
+    NIG_MADO_C_PT06,
+    NIG_MADO_C_PT07,
+    NIG_MADO_C_PT08,
+    NIG_MADO_C_PT09,
+    NIG_MADO_C_PT10,
+    NIG_MADO_C_PT11,
+    NIG_MADO_C_PT12,
+    NIG_MADO_C_PT13,
+    NIG_MADO_C_PT14,
+    NIG_MADO_C_PT15,
+    NIG_MADO_C_PT16,
+    NIG_MADO_C_PT17,
 };
 
-// 8E8
-s16 lbl_801B9A60[] =
+s16 s_nightWindowDModels[] =
 {
-    0x34, 0x35,
-    0x36, 0x37,
-    0x38, 0x39,
-    0x3A, 0x3B,
-    0x3C, 0x3D,
-    0x3E, 0x3F,
-    0x40, 0x41,
-    0x42, 0x43,
-    0x44, 0x45,
+    NIG_MADO_D_PT00,
+    NIG_MADO_D_PT01,
+    NIG_MADO_D_PT02,
+    NIG_MADO_D_PT03,
+    NIG_MADO_D_PT04,
+    NIG_MADO_D_PT05,
+    NIG_MADO_D_PT06,
+    NIG_MADO_D_PT07,
+    NIG_MADO_D_PT08,
+    NIG_MADO_D_PT09,
+    NIG_MADO_D_PT10,
+    NIG_MADO_D_PT11,
+    NIG_MADO_D_PT12,
+    NIG_MADO_D_PT13,
+    NIG_MADO_D_PT14,
+    NIG_MADO_D_PT15,
+    NIG_MADO_D_PT16,
+    NIG_MADO_D_PT17,
 };
 
-// 90C
-s16 lbl_801B9A84[] =
+s16 s_nightWindowEModels[] =
 {
-    0x46,
-    0x47,
-    0x48, 0x49,
-    0x4A, 0x4B,
-    0x4C, 0x4D,
-    0x4E, 0x4F,
-    0x50, 0x51,
-    0x52, 0x53,
-    0x54, 0x55,
-    0x56, 0x57,
+    NIG_MADO_E_PT00,
+    NIG_MADO_E_PT01,
+    NIG_MADO_E_PT02,
+    NIG_MADO_E_PT03,
+    NIG_MADO_E_PT04,
+    NIG_MADO_E_PT05,
+    NIG_MADO_E_PT06,
+    NIG_MADO_E_PT07,
+    NIG_MADO_E_PT08,
+    NIG_MADO_E_PT09,
+    NIG_MADO_E_PT10,
+    NIG_MADO_E_PT11,
+    NIG_MADO_E_PT12,
+    NIG_MADO_E_PT13,
+    NIG_MADO_E_PT14,
+    NIG_MADO_E_PT15,
+    NIG_MADO_E_PT16,
+    NIG_MADO_E_PT17,
 };
 
-// 930
-s16 lbl_801B9AA8[] =
+s16 s_nightWindowFModels[] =
 {
-    0x5C,
-    0x5D,
-    0x5E,
-    0x5F,
-    0x60,
-    0x61,
-    0x62,
-    0x63,
-    0x64,
-    0x65,
-    0x66,
-    0x67,
-    0x68,
-    0x69,
-    0x6A,
-    0x6B,
+    NIG_MADO_F_PT00,
+    NIG_MADO_F_PT01,
+    NIG_MADO_F_PT02,
+    NIG_MADO_F_PT03,
+    NIG_MADO_F_PT04,
+    NIG_MADO_F_PT05,
+    NIG_MADO_F_PT06,
+    NIG_MADO_F_PT07,
+    NIG_MADO_F_PT08,
+    NIG_MADO_F_PT09,
+    NIG_MADO_F_PT10,
+    NIG_MADO_F_PT11,
+    NIG_MADO_F_PT12,
+    NIG_MADO_F_PT13,
+    NIG_MADO_F_PT14,
+    NIG_MADO_F_PT15,
 };
 
-// 950
-s16 lbl_801B9AC8[] =
+s16 s_nightWindowGModels[] =
 {
-    0x6C, 0x6D,
-    0x6E, 0x6F,
-    0x70, 0x71,
-    0x72, 0x73,
-    0x74, 0x75,
-    0x76, 0x77,
-    0x78, 0x79,
-    0x7A, 0x00,
+    NIG_MADO_G_PT00,
+    NIG_MADO_G_PT01,
+    NIG_MADO_G_PT02,
+    NIG_MADO_G_PT03,
+    NIG_MADO_G_PT04,
+    NIG_MADO_G_PT05,
+    NIG_MADO_G_PT06,
+    NIG_MADO_G_PT07,
+    NIG_MADO_G_PT08,
+    NIG_MADO_G_PT09,
+    NIG_MADO_G_PT10,
+    NIG_MADO_G_PT11,
+    NIG_MADO_G_PT12,
+    NIG_MADO_G_PT13,
+    NIG_MADO_G_PT14,
 };
 
-// 970
-s16 lbl_801B9AE8[] =
+// Models to flipbook animate for flames in Storm
+s16 s_stormFireModels[] =
 {
-    0x08, 0x09,
-    0x0A, 0x0B,
-    0x0C, 0x0D,
-    0x0E, 0x0F,
-    0x10, 0x11,
-    0x12, 0x13,
-    0x14, 0x15,
-    0x16, 0x17,
-    0x18, 0x19,
-    0x1A, 0x1B,
-    0x1C, 0x1D,
-    0x1E, 0x1F,
-    0x20, 0x21,
-    0x22, 0x23,
-    0x24, 0x25,
-    0x26, 0x27,
+    STM_FIRE00,
+    STM_FIRE01,
+    STM_FIRE02,
+    STM_FIRE03,
+    STM_FIRE04,
+    STM_FIRE05,
+    STM_FIRE06,
+    STM_FIRE07,
+    STM_FIRE08,
+    STM_FIRE09,
+    STM_FIRE10,
+    STM_FIRE11,
+    STM_FIRE12,
+    STM_FIRE13,
+    STM_FIRE14,
+    STM_FIRE15,
+    STM_FIRE16,
+    STM_FIRE17,
+    STM_FIRE18,
+    STM_FIRE19,
+    STM_FIRE20,
+    STM_FIRE21,
+    STM_FIRE22,
+    STM_FIRE23,
+    STM_FIRE24,
+    STM_FIRE25,
+    STM_FIRE26,
+    STM_FIRE27,
+    STM_FIRE28,
+    STM_FIRE29,
+    STM_FIRE30,
+    STM_FIRE31,
 };
 
-void func_80055C6C(Mtx mtx, struct UnkStruct8005562C_child2 *b)
+void draw_bg_flipbooks(Mtx viewFromWorld, struct StageFlipbookAnims *flipbooks)
 {
     u8 unused[8];
-    u32 r4;
+    u32 t;
 
-    if (b->unk4 != NULL)
+    if (flipbooks->nightWindowAnims != NULL)
     {
-        struct UnkStruct8005562C_child2_child *r26 = b->unk4;
+        struct NightWindowAnim *nightFlipbook = flipbooks->nightWindowAnims;
         int i;
 
-        for (i = 0; i < b->unk0; i++, r26++)
+        for (i = 0; i < flipbooks->nightWindowAnimCount; i++, nightFlipbook++)
         {
             int modelId;
 
-            mathutil_mtxA_from_mtx(mtx);
-            mathutil_mtxA_translate(&r26->unk0);
-            mathutil_mtxA_rotate_z(r26->unk10);
-            mathutil_mtxA_rotate_y(r26->unkE);
-            mathutil_mtxA_rotate_x(r26->unkC);
+            // Pose in world space
+            mathutil_mtxA_from_mtx(viewFromWorld);
+            mathutil_mtxA_translate(&nightFlipbook->pos);
+            mathutil_mtxA_rotate_z(nightFlipbook->rotZ);
+            mathutil_mtxA_rotate_y(nightFlipbook->rotY);
+            mathutil_mtxA_rotate_x(nightFlipbook->rotX);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            r4 = unpausedFrameCounter / 2;
-            switch (r26->unk12)
+            t = unpausedFrameCounter / 2;
+            switch (nightFlipbook->id)
             {
             default:
             case 65:
-                modelId = lbl_801B9A08[r4 % 14];
+                modelId = s_nightWindowAModels[t % ARRAY_COUNT(s_nightWindowAModels)];
                 break;
             case 66:
-                modelId = lbl_801B9A24[r4 % 11];
+                modelId = s_nightWindowBModels[t % ARRAY_COUNT(s_nightWindowBModels)];
                 break;
             case 67:
-                modelId = lbl_801B9A3C[r4 % 18];
+                modelId = s_nightWindowCModels[t % ARRAY_COUNT(s_nightWindowCModels)];
                 break;
             case 68:
-                modelId = lbl_801B9A60[r4 % 18];
+                modelId = s_nightWindowDModels[t % ARRAY_COUNT(s_nightWindowDModels)];
                 break;
             case 69:
-                modelId = lbl_801B9A84[r4 % 18];
+                modelId = s_nightWindowEModels[t % ARRAY_COUNT(s_nightWindowEModels)];
                 break;
             case 70:
-                modelId = lbl_801B9AA8[r4 % 16];
+                modelId = s_nightWindowFModels[t % ARRAY_COUNT(s_nightWindowFModels)];
                 break;
             case 71:
-                modelId = lbl_801B9AC8[(r4 % 15)];
+                modelId = s_nightWindowGModels[(t % ARRAY_COUNT(s_nightWindowGModels))];
                 break;
             }
-            g_avdisp_draw_model_2(decodedBgGma->modelEntries[modelId].modelOffset);
+            avdisp_draw_model_unculled_sort_none(decodedBgGma->modelEntries[modelId].model);
         }
     }
-    if (b->unkC != NULL)
+    if (flipbooks->stormFireAnims != NULL)
     {
-        struct UnkStruct8005562C_child2_child2 *r22 = b->unkC;
+        struct StormFireAnim *stormFlipbook = flipbooks->stormFireAnims;
         int i;
 
-        for (i = 0; i < b->unk8; i++, r22++)
+        for (i = 0; i < flipbooks->stormFireAnimCount; i++, stormFlipbook++)
         {
             int modelId;
-            mathutil_mtxA_from_mtx(mtx);
-            mathutil_mtxA_translate(&r22->unk0);
+
+            // Position is in world space, Y rotation is billboarded
+            mathutil_mtxA_from_mtx(viewFromWorld);
+            mathutil_mtxA_translate(&stormFlipbook->pos);
             mathutil_mtxA_rotate_y(currentCameraStructPtr->rotY);
             GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
             GXLoadNrmMtxImm(mathutilData->mtxA, GX_PNMTX0);
-            r4 = (unpausedFrameCounter + r22->unkC * 4);
-            modelId = lbl_801B9AE8[r4 % 32];
-            g_avdisp_draw_model_1(decodedBgGma->modelEntries[modelId].modelOffset);
+            t = (unpausedFrameCounter + stormFlipbook->frameOffset * 4);
+            modelId = s_stormFireModels[t % ARRAY_COUNT(s_stormFireModels)];
+            avdisp_draw_model_unculled_sort_translucent(decodedBgGma->modelEntries[modelId].model);
         }
     }
 }
@@ -941,33 +1012,33 @@ void bg_night_init(void) {}
 
 void bg_night_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
 void bg_night_finish(void) {}
 
 void bg_night_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != NULL)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != NULL)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
 void bg_night_interact(int a) {}
@@ -976,62 +1047,56 @@ void bg_ice2_init(void) {}
 
 void bg_ice2_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
 void bg_ice2_finish(void) {}
 
 void bg_ice2_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != NULL)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != NULL)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
 void bg_ice2_interact(int a) {}
-
-extern struct Struct80180F14
-{
-    char *unk0;
-    s8 unk4;
-} lbl_80180F14[];
 
 void bg_billiards_init(void)
 {
     int i;
     int j;
-    struct StageBgModel *r29 = decodedStageLzPtr->bgModels;
+    struct StageBgObject *r29 = decodedStageLzPtr->bgObjects;
 
-    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, r29++)
+    for (i = 0; i < decodedStageLzPtr->bgObjectCount; i++, r29++)
     {
-        struct Struct80180F14 *r27 = lbl_80180F14;
+        struct GBilLightGroup *r27 = s_bilLightGroupNames;
 
-        while (r27->unk4 != -1)
+        while (r27->u_bgLightGroupId != -1)
         {
-            int len1 = strlen(r27->unk0);
+            int len1 = strlen(r27->name);
             int len2 = strlen(r29->name) - 1;
             int matched = 0;
 
             for (j = 0; j < len1; j++)
             {
-                if (r29->name[j] != r27->unk0[j])
+                if (r29->name[j] != r27->name[j])
                     break;
                 if (len2 == j)
                 {
@@ -1041,7 +1106,7 @@ void bg_billiards_init(void)
             }
             if (matched)
             {
-                r29->unk0 |= r27->unk4 << 28;
+                r29->flags |= r27->u_bgLightGroupId << 28;
                 break;
             }
             r27++;
@@ -1051,33 +1116,33 @@ void bg_billiards_init(void)
 
 void bg_billiards_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
 void bg_billiards_finish(void) {}
 
 void bg_billiards_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != NULL)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != NULL)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
 void bg_billiards_interact(int a) {}
@@ -1086,33 +1151,33 @@ void bg_golf_init(void) {}
 
 void bg_golf_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
 void bg_golf_finish(void) {}
 
 void bg_golf_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != NULL)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != NULL)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
 void bg_golf_interact(int a) {}
@@ -1121,47 +1186,48 @@ void bg_bowling_init(void) {}
 
 void bg_bowling_main(void)
 {
-    float var = backgroundInfo.unk4 / 60.0;
+    float timeSeconds = backgroundInfo.animTimer / 60.0;
 
-    g_animate_background_parts(decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount, var);
-    g_animate_background_parts(decodedStageLzPtr->unk74, decodedStageLzPtr->unk70, var);
+    animate_bg_objects(decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount, timeSeconds);
+    animate_bg_objects(decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount, timeSeconds);
 }
 
 void bg_bowling_finish(void) {}
 
 void bg_bowling_draw(void)
 {
-    func_800224CC();
-    if ((decodedStageLzPtr->bgModels != NULL || decodedStageLzPtr->unk74 != NULL)
+    push_light_group();
+    if ((decodedStageLzPtr->bgObjects != NULL || decodedStageLzPtr->fgObjects != NULL)
      && (lbl_801EEC90.unk0 & 1))
-        g_avdisp_set_3_floats(0.5f, 0.5f, 0.5f);
-    if (decodedStageLzPtr->bgModels != NULL)
+        avdisp_set_ambient(0.5f, 0.5f, 0.5f);
+    if (decodedStageLzPtr->bgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
-        func_80022274(4);
+        load_light_group_uncached(LIGHT_GROUP_DEF_GMAT);
     }
-    g_draw_bg_models(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgModels, decodedStageLzPtr->bgModelsCount);
-    if (decodedStageLzPtr->unk74 != NULL)
+    draw_bg_objects(lbl_802F1B3C->matrices[0], decodedStageLzPtr->bgObjects, decodedStageLzPtr->bgObjectCount);
+    if (decodedStageLzPtr->fgObjects != NULL)
     {
         mathutil_mtxA_from_mtx(mathutilData->mtxB);
-        func_80022274(0);
+        load_light_group_uncached(LIGHT_GROUP_DEFAULT);
     }
-    g_draw_bg_models(mathutilData->mtxB, decodedStageLzPtr->unk74, decodedStageLzPtr->unk70);
-    func_80022530();
+    draw_bg_objects(mathutilData->mtxB, decodedStageLzPtr->fgObjects, decodedStageLzPtr->fgObjectCount);
+    pop_light_group();
 }
 
 void bg_bowling_interact(int a) {}
 
-int func_80056610(u32 **a, void *b)
+int func_80056610(struct NlModel *a, struct NlModel *b)
 {
     float sp10 = backgroundInfo.unk84;
-    memcpy(b, a, a[-1][0]);  // WTF???
+    memcpy(b, a, NLMODEL_HEADER(a)->unk4->modelSize);  // WTF???
     mathutil_mtxA_mult_left(backgroundInfo.unk48);
     func_80048420(b, backgroundInfo.unk80, &sp10);
     return 1;
 }
 
-void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struct GMAModelEntry *))
+// Finds the specified models in the current background's GMA
+void find_background_gma_models(struct BGModelSearch *searchList, BgModelFindProc proc)
 {
     int i;
     int j;
@@ -1209,7 +1275,7 @@ void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struc
             }
             if (matched)
             {
-                r25 = func(j, gmaEntry);
+                r25 = proc(j, gmaEntry);
                 if (r25 == 0)
                     break;
             }
@@ -1221,18 +1287,19 @@ void g_search_bg_models(struct BGModelSearch *searchList, int (*func)(int, struc
     }
 }
 
-void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, struct BGModelSearch *searchList, Func800567DC func)
+// Finds the specified background objects in a user-provided array
+void find_background_objects(struct StageBgObject *bgObj, int bgObjCount, struct BGModelSearch *searchList, BgObjFindProc proc)
 {
     int i;
     int j;
     int r25 = 1;
     struct BGModelSearch *search;
 
-    for (i = count; i > 0; i--, bgModels++)
+    for (i = bgObjCount; i > 0; i--, bgObj++)
     {
-        if (bgModels->model != 0)
+        if (bgObj->model != NULL)
         {
-            char *modelName = bgModels->name;
+            char *modelName = bgObj->name;
             int len1 = strlen(modelName);
 
             // find entries for the model
@@ -1263,7 +1330,7 @@ void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, stru
                 }
                 if (matched)
                 {
-                    r25 = func(j, bgModels);
+                    r25 = proc(j, bgObj);
                     if (r25 == 0)
                         break;
                 }
@@ -1279,19 +1346,19 @@ void g_search_bg_models_from_list(struct StageBgModel *bgModels, int count, stru
 void func_80056934(void)
 {
     int i;
-    struct StageBgModel *var1;
+    struct StageBgObject *bgObj;
 
-    var1 = decodedStageLzPtr->bgModels;
-    for (i = 0; i < decodedStageLzPtr->bgModelsCount; i++, var1++)
+    bgObj = decodedStageLzPtr->bgObjects;
+    for (i = 0; i < decodedStageLzPtr->bgObjectCount; i++, bgObj++)
     {
-        if (var1->model != NULL)
-            var1->unk0 &= 0xFFFFFF;
+        if (bgObj->model != NULL)
+            bgObj->flags &= 0xFFFFFF;
     }
-    var1 = decodedStageLzPtr->unk74;
-    for (i = 0; i < decodedStageLzPtr->unk70; i++, var1++)
+    bgObj = decodedStageLzPtr->fgObjects;
+    for (i = 0; i < decodedStageLzPtr->fgObjectCount; i++, bgObj++)
     {
-        if (var1->model != NULL)
-            var1->unk0 &= 0xFFFFFF;
+        if (bgObj->model != NULL)
+            bgObj->flags &= 0xFFFFFF;
     }
 }
 

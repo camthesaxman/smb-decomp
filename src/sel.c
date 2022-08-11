@@ -3,15 +3,17 @@
 #include <dolphin.h>
 
 #include "global.h"
+#include "camera.h"
 #include "event.h"
 #include "mode.h"
 #include "relocation.h"
+#include "sound.h"
 #include "sprite.h"
 
-struct StageSelection stageSelection;
-struct RelModule lbl_802F1BD8;
-void (*lbl_802F1BD4)(void);
-void (*menuCallback)(void);
+extern struct StageSelection stageSelection;
+extern struct RelModule lbl_802F1BD8;
+extern void (*lbl_802F1BD4)(void);
+extern void (*menuCallback)(void);
 
 void unload_sel_submode_rel(void);
 
@@ -19,8 +21,8 @@ void mode_sel_func(void)
 {
     if (!(gameSubmode > SMD_SEL_TOP && gameSubmode < SMD_SEL_BOTTOM))
     {
-        g_debug_set_cursor_pos(10, 10);
-        g_debug_printf("sub_mode: error %d in Sel", gameSubmode);
+        u_debug_set_cursor_pos(10, 10);
+        u_debug_printf("sub_mode: error %d in Sel", gameSubmode);
         return;
     }
     
@@ -30,7 +32,7 @@ void mode_sel_func(void)
 #pragma force_active on
 void func_800123DC(void)
 {
-    stageSelection.levelSet = 0;
+    stageSelection.difficulty = 0;
     stageSelection.levelNum = 1;
 }
 #pragma force_active reset
@@ -51,13 +53,13 @@ void func_80012434(int a)
     case 6:
     case 7:
     case 8:
-        modeCtrl.levelSetFlags |= 0x80000;
+        modeCtrl.courseFlags |= 0x80000;
         break;
     case 1:
     case 3:
     case 4:
     case 5:
-        modeCtrl.levelSetFlags |= 0x10000;
+        modeCtrl.courseFlags |= 0x10000;
         break;
     case 0:
     case 2:

@@ -1309,10 +1309,8 @@ __init_cpp_exceptions_reference:
 	.4byte 0
 
 .section .dtors, "wa"  # 0x8010F880 - 0x8010F8A0
-.global lbl_8010F880
-lbl_8010F880:
+__dtors:
 	# ROM: 0x10C880
 	.4byte __destroy_global_chain  ;# ptr
 	.4byte __fini_cpp_exceptions  ;# ptr
 	.4byte __destroy_global_chain  ;# ptr
-	.4byte 0

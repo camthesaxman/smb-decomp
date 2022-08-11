@@ -5,123 +5,171 @@
 #include <dolphin/mtx.h>
 #include <dolphin/GXStruct.h>
 
-struct NaomiVtxWithNormal
+// NL == NaomiLib, the format for Naomi model archives (analogous to GMA)
+
+// Type A: no normal, vertex material colors, always unlit
+struct NlVtxTypeA
+{
+    /*0x00*/ float x, y, z;
+    /*0x0C*/ u32 unkC;
+    /*0x10*/ u32 color;
+    /*0x14*/ u32 unk14;
+    /*0x18*/ float s, t;
+};
+
+// Type B: has normal, no vertex material colors, can be lit or unlit
+struct NlVtxTypeB
 {
     /*0x00*/ float x, y, z;
     /*0x0C*/ float nx, ny, nz;
     /*0x18*/ float s, t;
 };
 
-struct NaomiVtxWithColor
+struct NlDispList
 {
-    /*0x00*/ float x, y, z;
-    /*0x0C*/ u8 fillerC[4];
-    /*0x10*/ u32 color;
-    /*0x14*/ u8 filler14[4];
-    /*0x18*/ float s, t;
-};
-
-struct NaomiDispList
-{
-    u32 unk0;
+    u32 flags;
     u32 faceCount;
-    u8 vtxData[];  // array of NaomiVtxWithNormal or NaomiVtxWithColor structs
+    u8 vtxData[];  // array of NlVtxTypeB or NlVtxTypeA structs
 };
 
-struct NaomiMesh
+enum
 {
-    /*0x00*/ s32 unk0;
+    // 13-14 are min/mag filter: if either set it's near for all, else linear
+    NL_TEX_FLAG_T_CLAMP = 1 << 15,
+    NL_TEX_FLAG_S_CLAMP = 1 << 16,
+    NL_TEX_FLAG_T_MIRROR = 1 << 17,
+    NL_TEX_FLAG_S_MIRROR = 1 << 18,
+};
+
+enum
+{
+    NL_DLIST_FLAG_QUADS = 1 << 2,
+    NL_DLIST_FLAG_TRIANGLES = 1 << 3,
+    NL_DLIST_FLAG_TRIANGLESTRIP = 1 << 4,
+};
+
+enum
+{
+    NL_MODEL_FLAG_VTX_TYPE_A = 1 << 1, // All meshes in model have vertices of type A (type B if unset)
+    NL_MODEL_FLAG_TRANSLUCENT = 1 << 8, // Model has at least 1 translucent mesh
+    NL_MODEL_FLAG_OPAQUE = 1 << 9, // Model has at least 1 opaque mesh
+};
+
+enum
+{
+    // Non-negative model types also exist, these are treated as lit with constant material color
+    NL_MODEL_TYPE_UNLIT_CONST_MAT_COLOR = -1,
+    NL_MODEL_TYPE_LIT_CONST_MAT_COLOR = -2, // Ignored
+    NL_MODEL_TYPE_UNLIT_VERT_MAT_COLOR = -3,
+    // No lit + vertex material color type
+};
+
+struct NlMesh_sub
+{
+    /*0x2C*/ float materialColorA;
+    /*0x30*/ float materialColorR;
+    /*0x34*/ float materialColorG;
+    /*0x38*/ float materialColorB;
+};
+
+struct NlMesh
+{
+    /*0x00*/ s32 flags;
     /*0x04*/ u32 unk4;
-    /*0x08*/ u32 unk8;
+    /*0x08*/ u32 texFlags;
     /*0x0C*/ GXTexObj *texObj;
     /*0x10*/ u32 unk10;
     /*0x14*/ u8 filler14[0x20-0x14];
-    /*0x20*/ s32 unk20;
+    /*0x20*/ s32 tplTexIdx;
     /*0x24*/ s32 type;
-    /*0x28*/ float unk28;
-    /*0x2C*/ float unk2C;
-    /*0x30*/ float unk30;
-    /*0x34*/ float unk34;
-    /*0x38*/ float unk38;
+    /*0x28*/ float ambientColorScale;
+    /*0x2C*/ struct NlMesh_sub sub2C;
     /*0x3C*/ u8 filler3C[0x4C-0x3C];
     /*0x4C*/ u32 dispListSize;
     /*0x50*/ u8 dispListStart[];  // display list immediately follows the Mesh struct
 };
 
-struct NaomiModel
+struct NlModel
 {
-    /*0x00*/ s32 unk0;
+    /*0x00*/ s32 u_valid;
     /*0x04*/ u32 flags;
-    /*0x08*/ Vec boundsCenter;
-    /*0x14*/ float boundsRadius;
+    /*0x08*/ Vec boundSphereCenter;
+    /*0x14*/ float boundSphereRadius;
     /*0x18*/ u8 meshStart[];  // meshes immediately follow the Model struct
 };
 
-struct NaomiModelHeader_child
+struct NlModelHeader_child
 {
     u32 modelSize;
 };
 
-// immediately before the NaomiModel struct
-// use the NLMODEL_HEADER macro to access it.
-struct NaomiModelHeader
+struct NlModelHeader_child2
 {
-    /*-0x08*/ s8 *unk0;
-    /*-0x04*/ struct NaomiModelHeader_child *unk4;
+    char unk0[4];
+    char name[];
 };
 
-#define NLMODEL_HEADER(model) ((struct NaomiModelHeader *)((u8 *)(model) - 8))
+// immediately before the NlModel struct
+// use the NLMODEL_HEADER macro to access it.
+struct NlModelHeader
+{
+    /*-0x08*/ struct NlModelHeader_child2 *unk0;
+    /*-0x04*/ struct NlModelHeader_child *unk4;
+};
 
-struct NaomiObj_UnkChild_Child
+#define NLMODEL_HEADER(model) ((struct NlModelHeader *)((u8 *)(model) - 8))
+
+struct NlObj_UnkChild_Child
 {
     u32 unk0;
     u32 unk4;
 };
 
-struct NaomiObj_UnkChild
+struct NlObj_UnkChild
 {
     u8 filler0[4];
-    struct NaomiObj_UnkChild_Child *childStructs;
+    struct NlObj_UnkChild_Child *childStructs;
 };
 
-struct NaomiObj
+// NaomiLib model container analogous to GMA
+struct NlObj
 {
-    struct NaomiObj_UnkChild **unk0;  // points to an array of UnkStruct ptrs
+    struct NlObj_UnkChild **unk0;  // points to an array of UnkStruct ptrs
                                       // doesn't seem to be actually used for anything
-    struct NaomiModel *modelPtrs[];  // array of pointers to the models
+    struct NlModel *models[];  // array of pointers to the models
 };
 
-#define NLOBJ_MODEL(obj, index) (((struct NaomiModel **)obj->modelPtrs)[index])
+#define NLOBJ_MODEL(obj, index) (((struct NlModel **)obj->models)[index])
 
 // ? func_80030AF8();
 // ? nl2ngc_draw_line_deferred();
-void g_nl2ngc_set_scale(float);
-void func_80030BB8(float r, float g, float b);
-BOOL load_nlobj(struct NaomiObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
-BOOL free_nlobj(struct NaomiObj **pobj, struct TPL **ptpl);
-void g_init_naomi_model_textures(struct NaomiModel *model, struct TPL *tpl);
-void g_draw_naomi_model_and_do_other_stuff(struct NaomiModel *);
-void g_draw_naomi_model_1(struct NaomiModel *model);
-// ? g_draw_naomi_model_with_alpha_deferred();
-void g_draw_naomi_model_with_alpha(struct NaomiModel *model, float b);
-void func_80031764(struct NaomiModel *a);
-void g_call_draw_naomi_model_1(struct NaomiModel *a);
-void g_draw_naomi_disp_list_pos_nrm_tex(struct NaomiDispList *dl, void *end);
-void g_draw_naomi_disp_list_pos_color_tex_1(struct NaomiDispList *dl, void *end);
-void do_some_stuff_with_mesh_colors_2(struct NaomiMesh *);
-void g_draw_naomi_disp_list_pos_color_tex_2(struct NaomiDispList *dl, void *end);
-void g_call_draw_naomi_model_and_do_other_stuff(struct NaomiModel *model);
-void g_dupe_of_call_draw_naomi_model_1(struct NaomiModel *model);
-void g_call_draw_model_with_alpha_deferred(struct NaomiModel *model, float b);
-// ? g_nl2ngc_set_light_mask();
-// ? g_nl2ngc_set_ambient_color();
-void func_80033B50(int);
-void func_80033B58(u32 a, float b, float c);
-void g_nl2ngc_set_some_other_color(int r, int g, int b);
-void g_draw_naomi_model_3(struct NaomiModel *);
-void g_draw_naomi_model_4(struct NaomiModel *);
-void g_draw_naomi_model_5(struct NaomiModel *);
-void g_draw_naomi_model_with_mesh_func(struct NaomiModel *a, int (*func)());
-void func_800341B8(void);
+void nl2ngc_set_scale(float);
+void nl2ngc_set_material_color(float r, float g, float b);
+BOOL load_nlobj(struct NlObj **pobj, struct TPL **ptpl, char *modelName, char *texName);
+BOOL free_nlobj(struct NlObj **pobj, struct TPL **ptpl);
+void init_nl_model_textures(struct NlModel *model, struct TPL *tpl);
+void nl2ngc_draw_model_sort_translucent(struct NlModel *);
+void nl2ngc_draw_model_sort_none(struct NlModel *model);
+void nl2ngc_draw_model_alpha_sort_all(struct NlModel *model, float alpha);
+void nl2ngc_draw_model_alpha_sort_none(struct NlModel *model, float b);
+void nl2ngc_draw_model_sort_translucent_alt(struct NlModel *a);
+void nl2ngc_draw_model_sort_none_alt(struct NlModel *a);
+void u_draw_nl_disp_list_type_b_1(struct NlDispList *dl, void *end);
+void draw_nl_disp_list_type_a(struct NlDispList *dl, void *end);
+void build_alpha_mesh_tev_material(struct NlMesh *);
+void draw_nl_disp_list_type_a_alpha(struct NlDispList *dl, void *end);
+void nl2ngc_draw_model_sort_translucent_alt2(struct NlModel *model);
+void nl2ngc_draw_model_sort_none_alt2(struct NlModel *model);
+void nl2ngc_draw_model_alpha_sort_all_alt(struct NlModel *model, float b);
+void nl2ngc_set_light_mask(u32 lightMask);
+void nl2ngc_set_ambient(float r, float g, float b);
+void nl2ngc_enable_fog(int);
+void nl2ngc_set_fog_params(u32 a, float b, float c);
+void nl2ngc_set_fog_color(int r, int g, int b);
+void nl2ngc_draw_opaque_model_meshes(struct NlModel *);
+void nl2ngc_draw_translucent_model_meshes(struct NlModel *);
+void nl2ngc_draw_all_model_meshes_alpha(struct NlModel *);
+void u_nl2ngc_draw_model_with_mesh_func(struct NlModel *a, int (*func)());
+void unk_empty(void);
 
 #endif

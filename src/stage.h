@@ -4,6 +4,8 @@
 #include <dolphin/types.h>
 #include <dolphin/mtx.h>
 
+#include "types.h"
+
 #define STAGE_LIST \
     DEFINE_STAGE(ST_000_DUMMY,                  BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_001_PLAIN,                  BG_TYPE_JUN) \
@@ -31,7 +33,7 @@
     DEFINE_STAGE(ST_023_JUMPIES,                BG_TYPE_NIG) \
     DEFINE_STAGE(ST_024_STOPPERS,               BG_TYPE_NIG) \
     DEFINE_STAGE(ST_025_FLOOR_BENT,             BG_TYPE_NIG) \
-    DEFINE_STAGE(ST_026_CONVEYER,               BG_TYPE_NIG) \
+    DEFINE_STAGE(ST_026_CONVEYOR,               BG_TYPE_NIG) \
     DEFINE_STAGE(ST_027_EXAM_B,                 BG_TYPE_NIG) \
     DEFINE_STAGE(ST_028_CHASER,                 BG_TYPE_NIG) \
     DEFINE_STAGE(ST_029_JUMP_DOUBLE,            BG_TYPE_NIG) \
@@ -40,7 +42,7 @@
     DEFINE_STAGE(ST_032_ANTLION,                BG_TYPE_WAT) \
     DEFINE_STAGE(ST_033_COLLAPSE,               BG_TYPE_WAT) \
     DEFINE_STAGE(ST_034_SWING_BAR,              BG_TYPE_WAT) \
-    DEFINE_STAGE(ST_035_LABRYNITH,              BG_TYPE_WAT) \
+    DEFINE_STAGE(ST_035_LABYRINTH,              BG_TYPE_WAT) \
     DEFINE_STAGE(ST_036_SPIRAL,                 BG_TYPE_WAT) \
     DEFINE_STAGE(ST_037_WAVY_JUMP,              BG_TYPE_WAT) \
     DEFINE_STAGE(ST_038_SPIKY,                  BG_TYPE_WAT) \
@@ -74,7 +76,7 @@
     DEFINE_STAGE(ST_066_FALL_DOWN,              BG_TYPE_SND) \
     DEFINE_STAGE(ST_067_TWIN_CROSS,             BG_TYPE_SND) \
     DEFINE_STAGE(ST_068_SPIRAL_HARD,            BG_TYPE_SND) \
-    DEFINE_STAGE(ST_069_CONVEYER_PARTS,         BG_TYPE_SND) \
+    DEFINE_STAGE(ST_069_CONVEYOR_PARTS,         BG_TYPE_SND) \
     DEFINE_STAGE(ST_070_ARCADE_HITTER,          BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_071_GAPS,                   BG_TYPE_ICE2) \
     DEFINE_STAGE(ST_072_CURVATURE,              BG_TYPE_ICE2) \
@@ -103,7 +105,7 @@
     DEFINE_STAGE(ST_095_BONUS_HUNTING,          BG_TYPE_BNS) \
     DEFINE_STAGE(ST_096_ARCADE_SNAKE,           BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_097_ARCADE_GEARS,           BG_TYPE_BLUESKY_A) \
-    DEFINE_STAGE(ST_098_ARCADE_CONVEYER_PARTS,  BG_TYPE_BLUESKY_A) \
+    DEFINE_STAGE(ST_098_ARCADE_CONVEYOR_PARTS,  BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_099_JUNGLE_BG,              BG_TYPE_JUN) \
     DEFINE_STAGE(ST_100_ARCADE_POLAR_LARGE,     BG_TYPE_BLUESKY_A) \
     DEFINE_STAGE(ST_101_BLUR_BRIDGE,            BG_TYPE_SPA) \
@@ -215,58 +217,100 @@ STAGE_LIST
 #undef DEFINE_STAGE
 };
 
-struct StageBgModel
+struct StageColiTri
 {
-    u32 unk0;
+    /*0x00*/ Point3d pos; // Position of vertex 1 in itemgroup space
+    /*0x0C*/ Vec normal;  // Triangle normal in itemgroup space
+    /*0x18*/ S16Vec rot;  // Rotation to bring from triangle -> itemgroup space
+    /*0x1E*/ u16 flags;
+
+    // Vertex 1 in triangle space is (0, 0)
+    /*0x20*/ Point2d vert2;       // Vertex 2 in triangle space
+    /*0x28*/ Point2d vert3;       // Vertex 3 in triangle space
+    // Edge 1 normal in triangle space is (0, 1)
+    /*0x30*/ Vec2d edge2Normal; // Normal of edge from vertex 2 -> vertex 3, in triangle space
+    /*0x38*/ Vec2d edge3Normal; // Normal of edge from vertex 3 -> vertex 1, in triangle space
+};
+
+struct StageColiCone
+{
+    Point3d pos;
+    S16Vec rot;
+    u16 flags;
+    Vec scale;
+};
+
+struct StageColiSphere
+{
+    Point3d pos;
+    float radius;
+    u16 flags;
+};
+
+struct StageColiCylinder
+{
+    Point3d pos;
+    float radius;
+    float height;
+    S16Vec rot;
+    u16 flags;
+};
+
+struct ColiRect
+{
+    Point3d pos;
+    S16Vec rot;
+    Vec normal;
+    float width;
+    float height;
+};
+
+struct ColiCircle
+{
+    Point3d pos;
+    float radius;
+    S16Vec rot;
+};
+
+struct StageBgObject
+{
+    u32 flags;
     /*0x04*/ char *name;
-    /*0x08*/ struct GMAModelHeader *model;
+    /*0x08*/ struct GMAModel *model;
+
+    // These hold initial values, but are overwritten by animated values at runtime
     /*0x0C*/ Point3d pos;
-    /*0x18*/ s16 xrot;
-    /*0x1A*/ s16 yrot;
-    /*0x1C*/ s16 zrot;
+    /*0x18*/ s16 rotX;
+    /*0x1A*/ s16 rotY;
+    /*0x1C*/ s16 rotZ;
     /*0x20*/ Vec scale;
-    float unk2C;
-    struct UnkStruct8005562C_child *unk30;
-    struct UnkStruct8005562C_child2 *unk34;
+    /*0x2C*/ float translucency;
+
+    /*0x30*/ struct StageBgAnim *anim;
+    /*0x34*/ struct StageFlipbookAnims *flipbooks;
 };
 
-struct StageAnimHdr
+struct StageAnimGroupAnim
 {
-    /*0x00*/ u32 xRotFramesCount;
-    /*0x04*/ struct AnimKeyframe *xRotFrames;
-    /*0x08*/ u32 yRotFramesCount;
-    /*0x0C*/ struct AnimKeyframe *yRotFrames;
-    /*0x10*/ u32 zRotFramesCount;
-    /*0x14*/ struct AnimKeyframe *zRotFrames;
-    /*0x18*/ u32 xTrnslFramesCount;
-    /*0x1C*/ struct AnimKeyframe *xTrnslFrames;
-    /*0x20*/ u32 yTrnslFramesCount;
-    /*0x24*/ struct AnimKeyframe *yTrnslFrames;
-    /*0x28*/ u32 zTrnslFramesCount;
-    /*0x2C*/ struct AnimKeyframe *zTrnslFrames;
+    /*0x00*/ u32 rotXKeyframeCount;
+    /*0x04*/ struct Keyframe *rotXKeyframes;
+    /*0x08*/ u32 rotYKeyframeCount;
+    /*0x0C*/ struct Keyframe *rotYKeyframes;
+    /*0x10*/ u32 rotZKeyframeCount;
+    /*0x14*/ struct Keyframe *rotZKeyframes;
+    /*0x18*/ u32 posXKeyframeCount;
+    /*0x1C*/ struct Keyframe *posXKeyframes;
+    /*0x20*/ u32 posYKeyframeCount;
+    /*0x24*/ struct Keyframe *posYKeyframes;
+    /*0x28*/ u32 posZKeyframeCount;
+    /*0x2C*/ struct Keyframe *posZKeyframes;
 };
-
-struct DecodedStageLzPtr_child_child3
-{
-    u8 filler0[4];
-    void *unk4;
-    u8 filler8[4];
-};  // size = 0xC
 
 struct DecodedStageLzPtr_child_child4
 {
     void *unk0;
-    u8 filler4[4];
+    struct GMAModel *unk4;
 };  // size = 8
-
-struct StageCollHdr_child
-{
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
-    s8 unk12;
-};
 
 struct StageCollHdr_child2
 {
@@ -278,60 +322,68 @@ struct StageCollHdr_child2
     u8 padding[2];
 };  // size = 0x20
 
-struct StageCollHdr_child3  // banana?
+struct StageBanana
 {
-    Vec unk0;
-    s32 unkC;
+    Vec pos;
+    s32 type;  // 0 for single, 1 for bunch
 };
 
-struct StageCollHdr_child4
+struct StageBumper
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[2];
+    /*0x14*/ Vec unk14;  // unknown type
 };
 
-struct StageCollHdr_child5
+struct StageJamabar
 {
-    Vec unk0;
-    s16 unkC;
-    s16 unkE;
-    s16 unk10;
+    /*0x00*/ Point3d pos;
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x12*/ u8 filler12[2];
+    /*0x14*/ Vec unk14;  // unknown type
 };
 
-struct StageCollHdr
+struct StageAnimGroup
 {
-    Vec unk0;
-    /*0x0C*/ s16 initXRot;
-    /*0x0E*/ s16 initYRot;
-    /*0x10*/ s16 initZRot;
+    Point3d initPos;
+    S16Vec initRot;
     u16 unk12;
-    /*0x14*/ struct StageAnimHdr *animHdr;
+
+    /*0x14*/ struct StageAnimGroupAnim *anim;
     /*0x18*/ char **modelNames;
-    /*0x1C*/ void *triangles;
-    /*0x20*/ void *collCells;
-    u8 filler24[0x34-0x24];
-    /*0x34*/ s32 cellsX;  // number of cells in x direction
-    /*0x38*/ s32 cellsY;  // number of cells in y direction
-    /*0x3C*/ s32 unk3C;
-    struct StageCollHdr_child *unk40;  // goals?
+    /*0x1C*/ struct StageColiTri *triangles;
+
+    /*0x20*/ s16 **gridCellTris;
+    /*0x24*/ f32 gridOriginX;
+    /*0x28*/ f32 gridOriginZ;
+    /*0x2C*/ f32 gridStepX;
+    /*0x30*/ f32 gridStepZ;
+    /*0x34*/ s32 gridCellCountX;  // Number of cells in X direction
+    /*0x38*/ s32 gridCellCountZ;  // Number of cells in Z direction
+
+    /*0x3C*/ s32 goalCount;
+    /*0x40*/ struct StageGoal *goals;
     u8 filler44[4];
     void *unk48;
-    s32 unk4C;
-    struct StageCollHdr_child4 *unk50;
-    s32 unk54;
-    struct StageCollHdr_child5 *unk58;
-    s32 unk5C;
-    struct StageCollHdr_child3 *unk60;
-    u8 filler64[4];
-    void *unk68;
-    u8 filler6C[4];
-    void *unk70;
-    u8 filler74[4];
-    void *unk78;
-    s32 unk7C;
-    struct DecodedStageLzPtr_child_child3 *unk80;
+    /*0x4C*/ s32 bumperCount;
+    /*0x50*/ struct StageBumper *bumpers;
+    /*0x54*/ s32 jamabarCount;
+    /*0x58*/ struct StageJamabar *jamabars;
+    /*0x5C*/ s32 bananaCount;
+    /*0x60*/ struct StageBanana *bananas;
+    /*0x64*/ s32 coliConeCount;
+    /*0x68*/ struct StageColiCone *coliCones;
+    /*0x6C*/ s32 coliSphereCount;
+    /*0x70*/ struct StageColiSphere *coliSpheres;
+    /*0x74*/ s32 coliCylinderCount;
+    /*0x78*/ struct StageColiCylinder *coliCylinders;
+    s32 animGroupModelCount;
+    struct AnimGroupModel *animGroupModels;
     s32 unk84;
     struct StageCollHdr_child2 *unk88;
     s32 unk8C;
@@ -340,10 +392,10 @@ struct StageCollHdr
     Vec unkB8;
 };  // size = 0xC4
 
-struct StageModel
+struct AnimGroupModel
 {
     u32 unk0;
-    u32 nameOffset;
+    char *name;
     float unk8;
 };
 
@@ -359,11 +411,11 @@ struct StageStartPos
 struct StageGoal
 {
     /*0x00*/ Point3d pos;
-    /*0x0C*/ s16 xrot;
-    /*0x0E*/ s16 yrot;
-    /*0x10*/ s16 zrot;
-    u8 filler12[0x14-0x12];
-};  // size = 0x14
+    /*0x0C*/ s16 rotX;
+    /*0x0E*/ s16 rotY;
+    /*0x10*/ s16 rotZ;
+    /*0x14*/ char type;  // 'B', 'G', or 'R' for blue, green, or red goal
+};
 
 struct DecodedStageLzPtr_child5_child
 {
@@ -408,44 +460,52 @@ struct DecodedStageLzPtr_child5
 struct DecodedStageLzPtr_child6
 {
     u8 filler0[0xC];
-    struct StageAnimHdr *unkC;
-    struct StageAnimHdr *unk10;
+    struct StageAnimGroupAnim *unkC;
+    struct StageAnimGroupAnim *unk10;
+};
+
+struct StageMirror
+{
+    char *name;
+    struct GMAModel *model;  // filled in at runtime
 };
 
 struct Stage
 {
-    s32 unk0;
-    s32 unk4;
-    /*0x08*/ s32 collHdrsCount;
-    /*0x0C*/ struct StageCollHdr *collHdrs;
+    s32 loopStartSeconds;
+    s32 loopEndSeconds;
+    /*0x08*/ s32 animGroupCount;
+    /*0x0C*/ struct StageAnimGroup *animGroups;
     /*0x10*/ struct StageStartPos *startPos;
     /*0x14*/ float *pFallOutY;
     /*0x18*/ s32 goalsCount;
     /*0x1C*/ struct StageGoal *goals;
     u8 filler20[4];
     void *unk24;
-    /*0x28*/ s32 bumpersCount;
-    /*0x2C*/ void *bumpers;
-    /*0x30*/ s32 jamabarsCount;
-    /*0x34*/ void *jamabars;
-    /*0x38*/ s32 bananasCount;
-    /*0x3C*/ void *bananas;
-    u8 filler40[4];
-    void *unk44;
-    u8 filler48[0x54-0x48];
-    void *unk54;
-    /*0x58*/ s32 lvlModelsCount;
-    /*0x5C*/ struct StageModel *lvlModels;
+    /*0x28*/ s32 bumperCount;
+    /*0x2C*/ struct StageBumper *bumpers;
+    /*0x30*/ s32 jamabarCount;
+    /*0x34*/ struct StageJamabar *jamabars;
+    /*0x38*/ s32 bananaCount;
+    /*0x3C*/ struct StageBanana *bananas;
+    s32 coliConeCount;
+    struct StageColiCone *coliCones;
+    s32 coliSphereCount;
+    struct StageColiSphere *coliSpheres;
+    s32 coliCylinderCount;
+    struct StageColiCylinder *coliCylinders;
+    /*0x58*/ s32 animGroupModelCount;
+    /*0x5C*/ struct AnimGroupModel *animGroupModels;
     u8 filler60[4];
     void *unk64;
-    /*0x68*/ s32 bgModelsCount;
-    /*0x6C*/ struct StageBgModel *bgModels;
-    s32 unk70;
-    struct StageBgModel *unk74;
+    /*0x68*/ s32 bgObjectCount;
+    /*0x6C*/ struct StageBgObject *bgObjects;
+    /*0x70*/ s32 fgObjectCount;
+    /*0x74*/ struct StageBgObject *fgObjects; // Like bgObjects but tilt with the stage
     struct DecodedStageLzPtr_child5 *unk78;
     s32 unk7C;
-    /*0x80*/ s32 reflObjsCount;
-    /*0x84*/ void *reflObjs;
+    /*0x80*/ s32 mirrorCount;
+    /*0x84*/ void *mirrors;
     struct DecodedStageLzPtr_child6 *unk88;
     u8 filler8C[4];
     void *unk90;
@@ -454,11 +514,11 @@ struct Stage
 void ev_stage_init(void);
 void ev_stage_main(void);
 void ev_stage_dest(void);
-// ? stage_find_model();
+struct GMAModel *stage_find_model(struct GMA *gma, char *name);
 void find_blur_bridge_accordion(void);
 void draw_blur_bridge_accordions(void);
-void g_animate_stage(float);
-void g_initialize_stage_dyn_part_info(void);
+void animate_anim_groups(float);
+void u_initialize_stage_dyn_part_info(void);
 void func_8004482C(void);
 void func_80044920(void);
 void load_stage(int);
@@ -468,18 +528,17 @@ void load_stage_files(int stageId);
 void func_80044E18(void);
 void func_80045194(void);
 // ? find_stage_or_bg_model();
-void g_initialize_stuff_for_dynamic_stage_parts(int stageId);
-int string_match_len();
+void u_initialize_stuff_for_dynamic_stage_parts(int stageId);
 int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);
 // ? func_800463E8();
-float func_80046884(struct NaomiModel *);
+float func_80046884(struct NlModel *);
 void load_stagedef(int stageId);
-void func_800472E8(void);
-void adjust_stage_anim_ptrs(struct StageAnimHdr **, struct Stage *);
-void func_800473C0(struct UnkStruct8005562C_child **, struct Stage *);
-void func_800474D8(struct UnkStruct8005562C_child2 **, struct Stage *);
+void free_stagedef(void);
+void adjust_stage_anim_ptrs(struct StageAnimGroupAnim **, struct Stage *);
+void func_800473C0(struct StageBgAnim **, struct Stage *);
+void adjust_stage_flipbook_anims_ptrs(struct StageFlipbookAnims **, struct Stage *);
 void stage_draw(void);
 
 #endif

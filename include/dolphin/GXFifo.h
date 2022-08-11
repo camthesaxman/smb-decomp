@@ -18,5 +18,6 @@ void GXSetGPFifo(GXFifoObj *fifo);
 void GXSaveCPUFifo(GXFifoObj *fifo);
 void GXGetFifoStatus(GXFifoObj *fifo, GXBool *overhi, GXBool *underlow, u32 *fifoCount, GXBool *cpu_write, GXBool *gp_read, GXBool *fifowrap);
 void GXGetGPStatus(GXBool *overhi, GXBool *underlow, GXBool *readIdle, GXBool *cmdIdle, GXBool *brkpt);
+void GXInitFifoLimits(GXFifoObj *fifo, u32 hiWaterMark, u32 loWaterMark);
 
 #endif

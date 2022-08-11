@@ -12,9 +12,12 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
+#include "recplay.h"
 #include "world.h"
 
-struct World worldInfo[4];
+struct World *currentWorldStructPtr;
+struct World worldInfo[MAX_PLAYERS];
 Vec lbl_80206CF0;
 
 struct Struct80176434 tutorialStickInputs[] =
@@ -194,11 +197,11 @@ void ev_world_init(void)
 void ev_world_main(void)
 {
     struct World *world = worldInfo;
-    s8 *unk = spritePoolInfo.unkC;
+    s8 *unk = g_poolInfo.playerPool.statusList;
     int i;
     Vec sp8;
 
-    for (i = 0; i < spritePoolInfo.unk8; i++, world++, unk++)
+    for (i = 0; i < g_poolInfo.playerPool.count; i++, world++, unk++)
     {
         if (*unk == 0 || *unk == 4)
             continue;
@@ -242,9 +245,9 @@ void ev_world_main(void)
         sp8.x = 0.0f;
         sp8.y = 0.0f;
         sp8.z = 0.0f;
-        unk = spritePoolInfo.unkC;
+        unk = g_poolInfo.playerPool.statusList;
         world = worldInfo;
-        for (i = spritePoolInfo.unk8; i > 0; i--, world++, unk++)
+        for (i = g_poolInfo.playerPool.count; i > 0; i--, world++, unk++)
         {
             if (*unk == 0 || *unk == 4)
                 continue;
@@ -265,7 +268,7 @@ void ev_world_main(void)
         }
         break;
     default:
-        lbl_80206CF0 = worldInfo[modeCtrl.unk2C].unk10;
+        lbl_80206CF0 = worldInfo[modeCtrl.currPlayer].unk10;
         break;
     }
 }
@@ -318,7 +321,7 @@ void world_sub_input_main(struct World *world)
 
     if (gameSubmode == SMD_ADV_INFO_MAIN)
     {
-        float f31 = 4380 - modeCtrl.unk0;
+        float f31 = 4380 - modeCtrl.submodeTimer;
 
         world->xrotPrev = world->xrot;
         world->zrotPrev = world->zrot;
@@ -334,7 +337,7 @@ void world_sub_input_main(struct World *world)
         spC.z = 0.0f;
         mathutil_mtxA_tf_vec(&spC, &spC);
         inpXRot = (s16)mathutil_atan2(spC.z, spC.y);
-        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+        inpYRot = -(s16)mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
     }
     else
     {
@@ -386,7 +389,7 @@ void world_sub_input_main(struct World *world)
             spC.z = 0.0f;
             mathutil_mtxA_tf_vec(&spC, &spC);
             inpXRot = mathutil_atan2(spC.z, spC.y);
-            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq(spC.z, spC.y)));
+            inpYRot = -mathutil_atan2(spC.x, mathutil_sqrt(mathutil_sum_of_sq_2(spC.z, spC.y)));
         }
     }
 
@@ -425,12 +428,12 @@ void world_sub_7(struct World *world)
     s16 var1;
     s16 var2;
     Vec sp10;
-    s16 spC[2];
+    struct ReplayWorldFrame spC;
 
     if (gamePauseStatus & 0xA)
         return;
 
-    func_80049C1C(lbl_80250A68.unk0[world->playerId], spC, lbl_80250A68.unk10);
+    func_80049C1C(lbl_80250A68.unk0[world->playerId], &spC, lbl_80250A68.unk10);
     var1 = -world->xrot;
     var2 = -world->zrot;
     world->xrot += var1 >> 2;
@@ -438,11 +441,11 @@ void world_sub_7(struct World *world)
     sp10.x = 0.0f;
     sp10.y = -1.0f;
     sp10.z = 0.0f;
-    if (infoWork.unk0 & (1 << 4))
+    if (infoWork.flags & INFO_FLAG_REPLAY)
     {
         mathutil_mtxA_from_identity();
-        mathutil_mtxA_rotate_x(spC[0]);
-        mathutil_mtxA_rotate_z(spC[1]);
+        mathutil_mtxA_rotate_x(spC.rotX);
+        mathutil_mtxA_rotate_z(spC.rotZ);
         mathutil_mtxA_rigid_inv_tf_vec(&sp10, &world->unk10);
     }
     else
@@ -458,15 +461,15 @@ void world_sub_9(struct World *world)
 {
     s16 var1;
     s16 var2;
-    s16 spC[2];
+    struct ReplayWorldFrame spC;
     Vec sp10;
 
     if (gamePauseStatus & 0xA)
         return;
 
-    func_80049C1C(lbl_80250A68.unk0[world->playerId], spC, lbl_80250A68.unk10);
-    var1 = spC[0] - world->xrot;
-    var2 = spC[1] - world->zrot;
+    func_80049C1C(lbl_80250A68.unk0[world->playerId], &spC, lbl_80250A68.unk10);
+    var1 = spC.rotX - world->xrot;
+    var2 = spC.rotZ - world->zrot;
     world->xrot += var1 >> 2;
     world->zrot += var2 >> 2;
     sp10.x = 0.0f;

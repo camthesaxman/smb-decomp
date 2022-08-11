@@ -5,13 +5,20 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "info.h"
 #include "item.h"
+#include "obj_collision.h"
 #include "perf.h"
+#include "recplay.h"
+#include "rend_efc.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stobj.h"
 #include "world.h"
+#include "mouse.h"
 
 struct Event eventInfo[] =
 {
@@ -56,11 +63,12 @@ void event_main(void)
     func_8008D158(0x00FFFFEF);
     for (i = 0, event = eventInfo; i < ARRAY_COUNT(eventInfo); i++, event++)
     {
-        perf_init_timer(5);
+        perf_start_timer(5);
         switch (event->state)
         {
         case 1:
             event_start(i);
+            // fall through
         case EV_STATE_RUNNING:
             event->main();
             break;
@@ -110,10 +118,7 @@ void event_finish_all(void)
 
     for (i = 0; i < ARRAY_COUNT(eventInfo); i++, ev++)
     {
-        if (ev->state != EV_STATE_INACTIVE && eventInfo[i].state != EV_STATE_INACTIVE)
-        {
-            eventInfo[i].finish();
-            eventInfo[i].state = EV_STATE_INACTIVE;
-        }
+        if (ev->state != EV_STATE_INACTIVE)
+            event_finish(i);
     }
 }

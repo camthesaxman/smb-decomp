@@ -95,7 +95,7 @@ static inline void DEMOLoadFont(GXTexMapID texMap, GXTexMtx texMtx, DMTexFlt tex
 
     GXLoadTexObj(&fontTexObj, texMap);
 
-    C_MTXScale(fontTMtx, 1.0f/(float)(64 - !fontShift), 1.0f/(float)(96 - !fontShift), 1.0f);
+    MTXScale(fontTMtx, 1.0f/(float)(64 - !fontShift), 1.0f/(float)(96 - !fontShift), 1.0f);
 
     GXLoadTexMtxImm(fontTMtx, texMtx, GX_MTX2x4);
     GXSetNumTexGens(1);
@@ -107,7 +107,7 @@ static inline void DEMOSetupScrnSpc(s32 width, s32 height, float depth)
     Mtx44 pMtx;
     Mtx mMtx;
 
-    C_MTXOrtho(pMtx, 0.0f, (float)height, 0.0f, (float)width, 0.0f, -depth);
+    MTXOrtho(pMtx, 0.0f, (float)height, 0.0f, (float)width, 0.0f, -depth);
     GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
     PSMTXIdentity(mMtx);
     GXLoadPosMtxImm(mMtx, GX_PNMTX0);
@@ -217,7 +217,7 @@ static inline void LoadSheet(void* image, GXTexMapID texMapID)
                     GX_ANISO_1);   // max_aniso   (don't care)
 
     GXLoadTexObj(&texObj, texMapID);
-    C_MTXScale(mtx, 1.0f / FontData->sheetWidth,
+    MTXScale(mtx, 1.0f / FontData->sheetWidth,
                   1.0f / FontData->sheetHeight,
                   1.0f);
     GXLoadTexMtxImm(mtx, GX_TEXMTX0, GX_MTX2x4);
@@ -282,6 +282,7 @@ void DEMORFPrintf(s16 x, s16 y, s16 z, char *fmt, ...)
 }
 
 // unused
+#ifndef NONMATCHING
 char* DEMODumpROMFont(char* string)
 {
     u32   image[48/2*48/4];   // 48 x 48
@@ -324,6 +325,7 @@ char* DEMODumpROMFont(char* string)
 
     return string;
 }
+#endif
 
 int DEMOGetRFTextWidth(char *string)
 {

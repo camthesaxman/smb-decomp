@@ -1,6 +1,8 @@
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "input.h"
 #include "perf.h"
@@ -8,31 +10,30 @@
 OSTick perfTimers[8];
 u32 perfEnabled;
 s8 zTrigTimer;
-u32 lbl_802F1D20;
+u32 currDispList;
 u32 perfDispListSizes[2];
 void *perfDispLists[2];
+struct PerfInfo perfInfo;
 
-#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
-
-void perf_init_timer(int timerId)
+void perf_start_timer(int timerId)
 {
     perfTimers[timerId] = OSGetTick();
 }
 
-u32 perf_stop_timer(volatile /* why ?*/ int timerId2)
+u32 perf_stop_timer(volatile /* why ?*/ int timerId)
 {
-    return ((OSGetTick() - perfTimers[timerId2]) * 8)
+    return ((OSGetTick() - perfTimers[timerId]) * 8)
          / ((OS_BUS_CLOCK_SPEED / 4) / 125000);
 }
 
 void perf_free(void *ptr)
 {
-    OSFreeToHeap(memHeap1, ptr);
+    OSFreeToHeap(subHeap, ptr);
 }
 
 void *perf_alloc(u32 size)
 {
-    return OSAllocFromHeap(memHeap1, size);
+    return OSAllocFromHeap(subHeap, size);
 }
 
 void perf_init_draw(void)
@@ -50,22 +51,14 @@ void perf_init_draw(void)
         GX_AF_NONE);  // attn_fn
     GXSetChanAmbColor(GX_COLOR0A0, ambColor);
     GXSetChanMatColor(GX_COLOR0A0, matColor);
-    func_8009E110(1, 4, 5, 0);
-    if (zMode->updateEnable  != GX_ENABLE
-     || zMode->compareFunc   != GX_LEQUAL
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
-    }
-    func_8009E398(0, ambColor, 0.0f, 100.0f, 0.1f, 20000.0f);
-    func_8009E588(1);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
+    GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, ambColor);
+    GXSetZCompLoc_cached(1);
     GXSetNumTexGens(1);
     GXSetNumChans(1);
-    func_8009EFF4(0, 0, 0, 4);
-    func_8009EA30(0, 1);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_DECAL);
     perfEnabled = FALSE;
 }
 
@@ -84,35 +77,36 @@ void perf_init(void)
     PERFSetDrawBWBarKey(TRUE);
     perfDispLists[0] = OSAlloc(0x3000);
     perfDispLists[1] = OSAlloc(0x3000);
-    lbl_802F1D20 = 0;
+    currDispList = 0;
 }
 
-void func_80027388(void)
+void perf_frameend(void)
 {
     if (perfEnabled)
     {
         PERFEndFrame();
         PERFStopAutoSampling();
-        gxutil_begin_display_list(perfDispLists[lbl_802F1D20 & 1], 0x3000);
+        gxutil_begin_display_list(perfDispLists[currDispList & 1], 0x3000);
         PERFDumpScreen();
-        perfDispListSizes[lbl_802F1D20 & 1] = gxutil_end_display_list();
+        perfDispListSizes[currDispList & 1] = gxutil_end_display_list();
     }
-    if (lbl_802F1D20 != 0 && perfEnabled)
+    if (currDispList != 0 && perfEnabled)
     {
         PERFPreDraw();
         GXCallDisplayList(
-            perfDispLists[lbl_802F1D20 & 1],
-            perfDispListSizes[lbl_802F1D20 & 1]);
+            perfDispLists[currDispList & 1],
+            perfDispListSizes[currDispList & 1]);
         PERFPostDraw();
-        GXSetLineWidth(zMode->lineWidth, zMode->texOffsets);
-        func_8009E5BC();
-        func_8009F314();
+        GXSetLineWidth(gxCache->lineWidth, gxCache->texOffsets);
+        GXSetZCompLoc_from_cache();
+        GXSetNumTevStages_from_cache();
     }
-    lbl_802F1D20++;
+    currDispList++;
 }
 
-void func_80027448(void)
+void perf_framestart(void)
 {
+    // Show perf info if the Z button is held for 30 frames
     if (dipSwitches & DIP_DEBUG)
     {
         if (controllerInfo[0].unk0[0].button & PAD_TRIGGER_Z)

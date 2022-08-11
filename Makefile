@@ -13,6 +13,8 @@ ifeq ($(VERBOSE),0)
   QUIET := @
 endif
 
+COMPILER ?= mwcc
+
 # default recipe
 default: all
 
@@ -22,7 +24,7 @@ default: all
 
 COMPILER_DIR := mwcc_compiler/$(COMPILER_VERSION)
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
-CC      := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
+MWCC    := $(WINE) $(COMPILER_DIR)/mwcceppc.exe
 LD      := $(WINE) $(COMPILER_DIR)/mwldeppc.exe
 OBJCOPY := $(DEVKITPPC)/bin/powerpc-eabi-objcopy
 OBJDUMP := $(DEVKITPPC)/bin/powerpc-eabi-objdump
@@ -33,20 +35,40 @@ ELF2DOL := tools/elf2dol$(EXE)
 ELF2REL := tools/elf2rel$(EXE)
 LZSS    := tools/lzss$(EXE)
 
-INCLUDE_DIRS := src
+# Game include directories
+INCLUDE_DIRS := src data
 SYSTEM_INCLUDE_DIRS := include
 
-RUNTIME_INCLUDE_DIRS := libraries/PowerPC_EABI_Support/Runtime/Inc
-
 ASFLAGS     := -mgekko -I asm
-CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
-CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+
+# Metrowerks compiler flags
+MWCC_CFLAGS      := -O4,p -inline auto -nodefaults -proc gekko -fp hard -Cpp_exceptions off -enum int -warn pragmas -pragma 'cats off'
+MWCC_CPPFLAGS     = $(addprefix -i ,$(INCLUDE_DIRS) $(dir $^)) -I- $(addprefix -i ,$(SYSTEM_INCLUDE_DIRS))
+# GNU compiler flags
+GCC_CFLAGS       := -O2 -Wall -Wextra -Wno-unused -Wno-switch -Wno-main -Wno-unknown-pragmas \
+                    -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare \
+                    -Wno-missing-field-initializers -Wno-char-subscripts -Wno-empty-body \
+                    -fno-jump-tables -fno-builtin -fsigned-char -fno-asynchronous-unwind-tables -mno-gnu-attribute
+GCC_CPPFLAGS     := -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING -DC_ONLY
+
+ifeq ($(COMPILER),mwcc)
+  CC        = $(MWCC)
+  CFLAGS    = $(MWCC_CFLAGS)
+  CPPFLAGS  = $(MWCC_CPPFLAGS)
+  REL_FLAGS := -sdata 0 -sdata2 0 -g
+else
+  CC        = $(GCC)
+  CFLAGS    = $(GCC_CFLAGS)
+  CPPFLAGS  = $(GCC_CPPFLAGS)
+  REL_FLAGS := -mno-sdata
+endif
+
 DOL_LDFLAGS := -nodefaults -fp hard
 REL_LDFLAGS := -nodefaults -fp hard -r1 -m _prolog -g
 
 HOSTCFLAGS   := -Wall -O3 -s
 
-CC_CHECK     := $(GCC) -Wall -Wextra -Wno-unused -Wno-main -Wno-unknown-pragmas -Wno-unused-variable -Wno-unused-parameter -Wno-sign-compare -Wno-missing-field-initializers -Wno-char-subscripts -fsyntax-only -fno-builtin -fsigned-char -nostdinc $(addprefix -I ,$(INCLUDE_DIRS) $(SYSTEM_INCLUDE_DIRS)) -DNONMATCHING
+CC_CHECK     := $(GCC) $(GCC_CFLAGS) -fsyntax-only $(GCC_CPPFLAGS)
 
 #-------------------------------------------------------------------------------
 # Files
@@ -68,7 +90,7 @@ SOURCES := \
 	src/init_2.c \
 	src/mathutil.c \
 	src/mode.c \
-	src/mode_2.c \
+	src/pause_menu.c \
 	src/event.c \
 	src/polydisp.c \
 	src/adv.c \
@@ -76,8 +98,10 @@ SOURCES := \
 	src/sel.c \
 	src/game.c \
 	src/camera.c \
+	src/frustum.c \
+	src/light.c \
 	asm/code_0.s \
-	src/code_1.c \
+	src/gxsync.c \
 	src/info.c \
 	src/code_7.c \
 	src/input.c \
@@ -98,20 +122,23 @@ SOURCES := \
 	src/bmp_list_cmd.c \
 	src/trig_tables.c \
 	src/perf.c \
-	asm/sound.s \
+	src/sound.c \
 	asm/window.s \
+	src/pool.c \
 	src/nl2ngc.c \
 	src/motload.c \
-	src/motload_2.c \
-	asm/motload.s \
+	src/mot_joint.c \
+	src/motload_3.c \
+	src/motload_4.c \
 	src/ball.c \
 	src/mathutil_vec_cross_prod.c \
-	asm/stcoli.s \
+	src/stcoli.c \
 	src/world.c \
-	asm/interp_anim.s \
+	src/interpolate_keyframes.c \
 	src/stage.c \
-	asm/stage.s \
-	asm/recplay.s \
+	src/code_8.c \
+	src/recplay.c \
+	src/recplay_2.c \
 	asm/effect.s \
 	src/background.c \
 	asm/bg_old_bluesky.s \
@@ -123,48 +150,58 @@ SOURCES := \
 	src/bg_old_bonus.c \
 	asm/bg_old_ice.s \
 	src/bg_old_sand.c \
-	asm/bg_old_storm.s \
+	src/bg_old_storm.c \
 	asm/bg_old_water.s \
 	src/bg_jungle.c \
-	asm/bg_sand.s \
-	asm/bg_water.s \
-	asm/bg_space.s \
+	src/bg_sand.c \
+	src/bg_water.c \
+	src/bg_space.c \
 	src/bg_sunset.c \
 	src/bg_bonus.c \
 	src/bg_storm.c \
 	asm/bg_master.s \
 	asm/bg_pilot.s \
-	asm/bg_end.s \
-	asm/course.s \
+	src/bg_end.c \
+	src/course.c \
 	src/item.c \
 	src/item_coin.c \
 	src/item_pilot.c \
-	asm/stobj.s \
+	src/obj_collision.c \
+	src/stobj.c \
+	src/stobj_goal.c \
 	src/sprite.c \
+	src/textbox.c \
+	src/hud.c \
 	asm/code_5.s \
 	src/minimap.c \
 	asm/minimap.s \
 	src/ord_tbl.c \
-	asm/code_3.s \
-	asm/mot_ape.s \
+	src/code_3.c \
+	src/ranking_screen.c \
+	src/mot_ape.c \
+	src/code_2.c \
 	src/lzs_decompress.c \
 	src/avdisp.c \
 	src/load.c \
 	asm/shadow.s \
 	asm/mini.s \
-	asm/mouse.s \
-	asm/rend_efc.s \
+	src/mouse.c \
+	src/rend_efc.c \
+	src/rend_efc_mirror.c \
+	src/rend_efc_3.c \
 	src/relocation.c \
 	src/gxutil.c \
 	asm/mini_commend.s \
-	asm/tevutil.s \
+	src/gxcache.c \
 	src/memcard.c \
 	src/DEMOPuts.c \
 	src/view.c \
 	src/code_6.c \
 	asm/mini_ranking.s \
+	src/dvd.c \
 	src/preview.c \
-	asm/code_4.s \
+	asm/name_entry.s \
+	asm/credits.s \
 	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
 	libraries/os/__start.c \
@@ -172,7 +209,7 @@ SOURCES := \
 	libraries/os/asm/OSAlarm.s \
 	libraries/os/OSAlloc.c \
 	libraries/os/OSArena.c \
-	libraries/os/asm/OSAudioSystem.s \
+	libraries/os/OSAudioSystem.c \
 	libraries/os/asm/OSCache.s \
 	libraries/os/asm/OSContext.s \
 	libraries/os/OSError.c \
@@ -180,26 +217,26 @@ SOURCES := \
 	libraries/os/asm/OSFont.s \
 	libraries/os/asm/OSInterrupt.s \
 	libraries/os/asm/OSLink.s \
-	libraries/os/asm/OSMemory.s \
+	libraries/os/OSMemory.c \
 	libraries/os/OSMutex.c \
 	libraries/os/asm/OSReboot.s \
 	libraries/os/asm/OSReset.s \
 	libraries/os/asm/OSResetSW.s \
 	libraries/os/asm/OSRtc.s \
 	libraries/si/asm/SIBios.s \
-	libraries/os/asm/OSSync.s \
+	libraries/os/OSSync.c \
 	libraries/os/asm/OSThread.s \
 	libraries/os/asm/OSTime.s \
 	libraries/exi/asm/EXIUart.s \
 	libraries/os/__ppc_eabi_init.c \
 	libraries/db/db.c \
 	libraries/mtx/asm/mtx.s \
-	libraries/mtx/asm/mtx44.s \
+	libraries/mtx/mtx44.c \
 	libraries/mtx/asm/vec.s \
 	libraries/dvd/asm/dvdlow.s \
 	libraries/dvd/asm/dvdfs.s \
 	libraries/dvd/asm/dvd.s \
-	libraries/dvd/asm/dvdqueue.s \
+	libraries/dvd/dvdqueue.c \
 	libraries/dvd/asm/dvderror.s \
 	libraries/dvd/fstload.c \
 	libraries/vi/asm/vi.s \
@@ -228,26 +265,26 @@ SOURCES := \
 	libraries/card/asm/CARDRename.s \
 	libraries/hio/hio.c \
 	libraries/gx/asm/GXInit.s \
-	libraries/gx/asm/GXFifo.s \
+	libraries/gx/GXFifo.c \
 	libraries/gx/asm/GXAttr.s \
 	libraries/gx/asm/GXMisc.s \
-	libraries/gx/asm/GXGeometry.s \
+	libraries/gx/GXGeometry.c \
 	libraries/gx/asm/GXFrameBuf.s \
-	libraries/gx/asm/GXLight.s \
+	libraries/gx/GXLight.c \
 	libraries/gx/asm/GXTexture.s \
 	libraries/gx/asm/GXBump.s \
-	libraries/gx/asm/GXTev.s \
+	libraries/gx/GXTev.c \
 	libraries/gx/asm/GXPixel.s \
 	libraries/gx/asm/GXDraw.s \
-	libraries/gx/asm/GXStubs.s \
+	libraries/gx/GXStubs.c \
 	libraries/gx/GXDisplayList.c \
-	libraries/gx/asm/GXTransform.s \
+	libraries/gx/GXTransform.c \
 	libraries/gx/GXPerf.c \
 	libraries/perf/asm/perf.s \
 	libraries/perf/asm/perfdraw.s \
 	libraries/musyx/asm/seq.s \
 	libraries/musyx/asm/synth.s \
-	libraries/musyx/asm/seq_api.s \
+	libraries/musyx/seq_api.c \
 	libraries/musyx/asm/snd_synthapi.s \
 	libraries/musyx/asm/stream.s \
 	libraries/musyx/asm/synthdata.s \
@@ -261,14 +298,14 @@ SOURCES := \
 	libraries/musyx/asm/hw_volconv.s \
 	libraries/musyx/asm/snd3d.s \
 	libraries/musyx/asm/synth_2.s \
-	libraries/musyx/asm/snd_math.s \
+	libraries/musyx/snd_math.c \
 	libraries/musyx/asm/snd_midictrl.s \
 	libraries/musyx/asm/snd_service.s \
 	libraries/musyx/asm/HARDWARE.s \
 	libraries/musyx/asm/hw_aramdma.s \
 	libraries/musyx/asm/hw_dolphin.s \
-	libraries/musyx/asm/hw_memory.s \
-	libraries/musyx/asm/reverb_fx.s \
+	libraries/musyx/hw_memory.c \
+	libraries/musyx/reverb_fx.c \
 	libraries/musyx/asm/reverb.s \
 	libraries/musyx/asm/chorus_fx.s \
 	libraries/dtk/asm/dtk.s \
@@ -278,14 +315,14 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp \
 	libraries/PowerPC_EABI_Support/asm/Runtime/Src/runtime.s \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/abort_exit.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/abort_exit.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Src/ansi_fp.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/buffer_io.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/buffer_io.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/char_io.s \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/PPC_EABI/SRC/critical_regions.ppc_eabi.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/ctype.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/direct_io.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mbstring.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mbstring.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem_funcs.s \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/misc_io.c \
@@ -486,11 +523,22 @@ define COMPILE =
 @echo "Compiling " $<
 $(QUIET) $(CC_CHECK) -MMD -MF $(@:.o=.dep) -MT $@ $<
 $(QUIET) $(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
-$(QUIET) $(OBJDUMP) -Drz $@ > $(@:.o=.dump)
 endef
 
+# These currently cause problems when compiled with gcc
+MWCC_ONLY_OBJECTS := \
+	src/mathutil.c.o \
+	libraries/os/__start.c.o \
+	libraries/os/__ppc_eabi_init.c.o \
+	libraries/os/OSSync.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/%.o \
+	libraries/TRK_MINNOW_DOLPHIN/%.o
+$(MWCC_ONLY_OBJECTS): CC       := $(MWCC)
+$(MWCC_ONLY_OBJECTS): CFLAGS   := $(MWCC_CFLAGS)
+$(MWCC_ONLY_OBJECTS): CPPFLAGS  = $(MWCC_CPPFLAGS)
+
 # relocatable modules must not use the small data sections
-%.plf: CFLAGS += -sdata 0 -sdata2 0 -g
+%.plf: CFLAGS += $(REL_FLAGS)
 
 %.c.o: %.c
 	$(COMPILE)
@@ -502,6 +550,10 @@ endef
 %.s.o: %.s
 	@echo Assembling $<
 	$(QUIET) $(AS) $(ASFLAGS) -o $@ $<
+
+# disassemble object file
+%.dump: %.o
+	$(OBJDUMP) -Drz $< > $@
 
 clean:
 	$(RM) $(DOL) $(ELF) $(MAP) $(ALL_RELS) $(ELF2DOL) $(ELF2REL)
@@ -533,13 +585,14 @@ RUNTIME_OBJECTS := \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__mem.c.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o
+	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o \
+	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
-$(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += $(RUNTIME_INCLUDE_DIRS)
+$(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += libraries/PowerPC_EABI_Support/Runtime/Inc
 
 libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c.o: CC_CHECK := true
-libraries/PowerPC_EABI_Support/%.o: CFLAGS += -fp_contract on
+libraries/PowerPC_EABI_Support/%.o: MWCC_CFLAGS += -fp_contract on
 
 # Automatic dependency files
 DEP_FILES := $(addsuffix .dep,$(basename $(ALL_O_FILES)))

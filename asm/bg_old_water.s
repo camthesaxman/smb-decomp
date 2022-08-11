@@ -352,14 +352,14 @@ lbl_8005A5A0:
 /* 8005A6C4 000565E4  C0 21 00 B4 */	lfs f1, 0xb4(r1)
 /* 8005A6C8 000565E8  C0 01 00 BC */	lfs f0, 0xbc(r1)
 /* 8005A6CC 000565EC  EC 22 08 2A */	fadds f1, f2, f1
-/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005A6D0 000565F0  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005A6D4 000565F4  D0 21 00 3C */	stfs f1, 0x3c(r1)
 /* 8005A6D8 000565F8  C0 21 00 44 */	lfs f1, 0x44(r1)
 /* 8005A6DC 000565FC  EC 01 00 2A */	fadds f0, f1, f0
 /* 8005A6E0 00056600  D0 01 00 44 */	stfs f0, 0x44(r1)
 /* 8005A6E4 00056604  80 04 00 18 */	lwz r0, 0x18(r4)
 /* 8005A6E8 00056608  90 01 00 38 */	stw r0, 0x38(r1)
-/* 8005A6EC 0005660C  4B FF 28 1D */	bl g_spawn_effect_object
+/* 8005A6EC 0005660C  4B FF 28 1D */	bl spawn_effect
 lbl_8005A6F0:
 /* 8005A6F0 00056610  38 61 00 08 */	addi r3, r1, 8
 /* 8005A6F4 00056614  38 80 00 00 */	li r4, 0
@@ -473,12 +473,12 @@ lbl_8005A6F0:
 /* 8005A8A4 000567C4  B0 01 00 56 */	sth r0, 0x56(r1)
 /* 8005A8A8 000567C8  48 0A BF BD */	bl rand
 /* 8005A8AC 000567CC  54 60 04 7E */	clrlwi r0, r3, 0x11
-/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005A8B0 000567D0  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005A8B4 000567D4  B0 01 00 58 */	sth r0, 0x58(r1)
 /* 8005A8B8 000567D8  38 61 00 08 */	addi r3, r1, 8
 /* 8005A8BC 000567DC  80 04 00 14 */	lwz r0, 0x14(r4)
 /* 8005A8C0 000567E0  90 01 00 38 */	stw r0, 0x38(r1)
-/* 8005A8C4 000567E4  4B FF 26 45 */	bl g_spawn_effect_object
+/* 8005A8C4 000567E4  4B FF 26 45 */	bl spawn_effect
 lbl_8005A8C8:
 /* 8005A8C8 000567E8  3C 60 80 1C */	lis r3, backgroundInfo@ha
 /* 8005A8CC 000567EC  3B E3 91 78 */	addi r31, r3, backgroundInfo@l
@@ -754,10 +754,10 @@ bg_old_water_draw:
 /* 8005ACD0 00056BF0  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005ACD4 00056BF4  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005ACD8 00056BF8  4B FA CB D9 */	bl mathutil_mtxA_from_mtx
-/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, naomiBackgroundObj@sda21(r13)
+/* 8005ACDC 00056BFC  80 6D 99 1C */	lwz r3, g_bgNlObj@sda21(r13)
 /* 8005ACE0 00056C00  80 63 00 04 */	lwz r3, 4(r3)
-/* 8005ACE4 00056C04  4B FD 8D F1 */	bl g_call_draw_naomi_model_and_do_other_stuff
-/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005ACE4 00056C04  4B FD 8D F1 */	bl nl2ngc_draw_model_sort_translucent_alt2
+/* 8005ACE8 00056C08  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005ACEC 00056C0C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005ACF0 00056C10  80 84 00 08 */	lwz r4, 8(r4)
 /* 8005ACF4 00056C14  80 A4 FF FC */	lwz r5, -4(r4)
@@ -767,13 +767,13 @@ bg_old_water_draw:
 /* 8005AD04 00056C24  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD08 00056C28  38 A4 AE A8 */	addi r5, r4, lbl_8005AEA8@l
 /* 8005AD0C 00056C2C  38 80 00 00 */	li r4, 0
-/* 8005AD10 00056C30  4B FE D1 09 */	bl g_apply_func_to_naomi_model_vertices
+/* 8005AD10 00056C30  4B FE D1 09 */	bl u_apply_func_to_nl_model_vertices
 /* 8005AD14 00056C34  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005AD18 00056C38  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD1C 00056C3C  4B FA CB 95 */	bl mathutil_mtxA_from_mtx
 /* 8005AD20 00056C40  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD24 00056C44  4B FD 8D D1 */	bl g_dupe_of_call_draw_naomi_model_1
-/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005AD24 00056C44  4B FD 8D D1 */	bl nl2ngc_draw_model_sort_none_alt2
+/* 8005AD28 00056C48  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005AD2C 00056C4C  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
 /* 8005AD30 00056C50  80 84 00 10 */	lwz r4, 0x10(r4)
 /* 8005AD34 00056C54  80 A4 FF FC */	lwz r5, -4(r4)
@@ -784,12 +784,12 @@ bg_old_water_draw:
 /* 8005AD48 00056C68  3C A0 80 06 */	lis r5, lbl_8005B0C8@ha
 /* 8005AD4C 00056C6C  38 84 AF B8 */	addi r4, r4, lbl_8005AFB8@l
 /* 8005AD50 00056C70  38 A5 B0 C8 */	addi r5, r5, lbl_8005B0C8@l
-/* 8005AD54 00056C74  4B FE D0 C5 */	bl g_apply_func_to_naomi_model_vertices
+/* 8005AD54 00056C74  4B FE D0 C5 */	bl u_apply_func_to_nl_model_vertices
 /* 8005AD58 00056C78  80 6D 99 5C */	lwz r3, lbl_802F1B3C@sda21(r13)
 /* 8005AD5C 00056C7C  38 63 00 30 */	addi r3, r3, 0x30
 /* 8005AD60 00056C80  4B FA CB 51 */	bl mathutil_mtxA_from_mtx
 /* 8005AD64 00056C84  80 6D 99 6C */	lwz r3, lbl_802F1B4C@sda21(r13)
-/* 8005AD68 00056C88  4B FD 8D 8D */	bl g_dupe_of_call_draw_naomi_model_1
+/* 8005AD68 00056C88  4B FD 8D 8D */	bl nl2ngc_draw_model_sort_none_alt2
 /* 8005AD6C 00056C8C  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 8005AD70 00056C90  38 21 00 08 */	addi r1, r1, 8
 /* 8005AD74 00056C94  7C 08 03 A6 */	mtlr r0
@@ -828,7 +828,7 @@ lbl_8005ADC8:
 /* 8005ADE0 00056D00  4B FA 86 35 */	bl memcpy
 /* 8005ADE4 00056D04  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005ADE8 00056D08  4B FA CE 6D */	bl mathutil_mtxA_mult_left
-/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005ADEC 00056D0C  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005ADF0 00056D10  38 7E 00 00 */	addi r3, r30, 0
 /* 8005ADF4 00056D14  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005ADF8 00056D18  80 84 00 0C */	lwz r4, 0xc(r4)
@@ -867,7 +867,7 @@ lbl_8005AE58:
 /* 8005AE6C 00056D8C  4B FA 85 A9 */	bl memcpy
 /* 8005AE70 00056D90  38 7F 00 48 */	addi r3, r31, 0x48
 /* 8005AE74 00056D94  4B FA CD E1 */	bl mathutil_mtxA_mult_left
-/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, naomiBackgroundObj@sda21(r13)
+/* 8005AE78 00056D98  80 8D 99 1C */	lwz r4, g_bgNlObj@sda21(r13)
 /* 8005AE7C 00056D9C  38 7E 00 00 */	addi r3, r30, 0
 /* 8005AE80 00056DA0  38 A1 00 10 */	addi r5, r1, 0x10
 /* 8005AE84 00056DA4  80 84 00 0C */	lwz r4, 0xc(r4)

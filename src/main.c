@@ -1,30 +1,29 @@
 #include <stdlib.h>
 #include <dolphin.h>
+#include <string.h>
 
 #include "global.h"
 #include "ball.h"
 #include "bitmap.h"
 #include "camera.h"
+#include "course.h"
 #include "event.h"
 #include "input.h"
 #include "load.h"
 #include "mode.h"
+#include "mot_ape.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "perf.h"
+#include "pool.h"
+#include "recplay.h"
+#include "sound.h"
 #include "stage.h"
 #include "world.h"
 
-// bss
-u8 lbl_801ED920[0x1240];  // unknown type
-GXRenderModeObj lbl_801EEB60;
+struct Struct8008CF00 lbl_801ED920[146];
 
-// .sbss
-
-BOOL lbl_802F1B58;
-void *lbl_802F1B54;
-void *lbl_802F1B50;
-struct NaomiModel *lbl_802F1B4C;
+struct NlModel *lbl_802F1B4C;
 void *dvdReadBuffer;
 void *lbl_802F1B44;
 void *lbl_802F1B40;
@@ -33,32 +32,37 @@ u32 globalFrameCounter;
 u32 unpausedFrameCounter;
 GXRenderModeObj *currRenderMode;
 
-OSHeapHandle memHeap5;
-OSHeapHandle memHeap1;
-OSHeapHandle memHeap2;
-OSHeapHandle memHeap3;
-OSHeapHandle memHeap4;
+OSHeapHandle mainHeap;
+OSHeapHandle subHeap;
+OSHeapHandle stageHeap;
+OSHeapHandle backgroundHeap;
+OSHeapHandle charaHeap;
 
-long memHeap5Size;
-long memHeap1Size;
-long memHeap2Size;
-long memHeap3Size;
-long memHeap4Size;
+long mainHeapSize;
+long subHeapSize;
+long stageHeapSize;
+long backgroundHeapSize;
+long charaHeapSize;
 
-struct NaomiObj *naomiCommonObj;
-struct NaomiObj *naomiStageObj;
-struct NaomiObj *naomiBackgroundObj;
-struct NaomiObj *lbl_802F1AF8;
-struct NaomiObj *minigameNaomiObj;
+struct NlObj *g_commonNlObj;
+struct NlObj *g_stageNlObj;
+struct NlObj *g_bgNlObj;
+struct NlObj *lbl_802F1AF8;
+struct NlObj *g_minigameNlObj;
 
-struct TPL *naomiCommonTpl;
-struct TPL *naomiStageTpl;
-struct TPL *naomiBackgroundTpl;
+struct TPL *g_commonNlTpl;
+struct TPL *g_stageNlTpl;
+struct TPL *g_bgNlTpl;
 struct TPL *lbl_802F1AE4;
-struct TPL *minigameNaomiTpl;
+struct TPL *g_minigameNlTpl;
 
+#ifdef __GNUC__
+void __eabi(void) {}
+__attribute__((section(".text")))
+#endif
 void main(void)
 {
+    //dipSwitches |= 1;
     globalFrameCounter = 0;
     initialize();
     gm_init();
@@ -67,12 +71,12 @@ void main(void)
     event_init();
     perf_init();
     sound_init();
-    func_8008D788();
+    avdisp_init();
     currentBallStructPtr = &ballInfo[0];
     currentWorldStructPtr = &worldInfo[0];
     chkstatus_init();
     func_8008CF00(lbl_801ED920, 0x80);
-    func_800487B4();
+    recplay_init();
     camera_init();
     polydisp_init();
     ord_tbl_init_buffer(lbl_802F1B44, 0x10000);
@@ -81,13 +85,13 @@ void main(void)
     func_800948F4();
     load_common_graphics();
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
-    func_8008AE98();
+    mot_ape_init();
     func_800AD38C();
-    g_initialize_stage_dyn_part_info();
+    u_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;
-    func_80011E1C();
-    func_80065C58();
+    u_reset_gamedata();
+    course_init();
     globalFrameCounter++;
     srand(OSGetTime());
 
@@ -96,30 +100,30 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(0);
 
-        perf_init_timer(4);
-        func_80026394();
-        preproc_main();
+        perf_start_timer(4);
+        u_bitmap_frame_reset();
+        beginframe_main();
         perfInfo.unk0 = perf_stop_timer(4);
 
         func_800ACA40();
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         sound_main();
-        perfInfo.unk4 = perf_stop_timer(4);
+        perfInfo.soundTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         input_main();
-        perfInfo.unk8 = perf_stop_timer(4);
+        perfInfo.inputTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         debug_main();
-        perfInfo.unkC = perf_stop_timer(4);
+        perfInfo.debugTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         load_main();
-        perfInfo.unk10 = perf_stop_timer(4);
+        perfInfo.loadTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         gm_main();
         perfInfo.unk14 = perf_stop_timer(4);
 
@@ -129,13 +133,13 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(1);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         chkstatus_main();
         perfInfo.unk18 = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         event_main();
-        perfInfo.unk1C = perf_stop_timer(4);
+        perfInfo.eventTime = perf_stop_timer(4);
 
         if (perfEnabled)
             PERFEventEnd(1);
@@ -143,30 +147,30 @@ void main(void)
         if (perfEnabled)
             PERFEventStart(2);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         polydisp_main();
-        perfInfo.unk20 = perf_stop_timer(4);
+        perfInfo.polydispTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         bitmap_main();
-        perfInfo.unk24 = perf_stop_timer(4);
+        perfInfo.bitmapTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         window_main();
-        perfInfo.unk28 = perf_stop_timer(4);
+        perfInfo.windowTime = perf_stop_timer(4);
 
         if (perfEnabled)
             PERFEventEnd(2);
 
-        perf_init_timer(4);
-        epiproc_main();
-        perfInfo.unk2C = perf_stop_timer(4);
+        perf_start_timer(4);
+        gpwait_main();
+        perfInfo.gpwaitTime = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         syncwait_main();
         perfInfo.unk30 = perf_stop_timer(4);
 
-        perf_init_timer(4);
+        perf_start_timer(4);
         shadowerase_main();
         perfInfo.unk34 = perf_stop_timer(4);
 

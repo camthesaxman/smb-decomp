@@ -26,15 +26,16 @@ struct World
     u8 filler22[0x40-0x22];
 };  // size = 0x40
 
+extern struct World *currentWorldStructPtr;
 extern struct World worldInfo[];
 extern Vec lbl_80206CF0;
 
 #define WORLD_FOREACH(code) \
     { \
         struct World *world = worldInfo; \
-        s8 *unk_ = spritePoolInfo.unkC; \
+        s8 *unk_ = g_poolInfo.playerPool.statusList; \
         int i_; \
-        for (i_ = 0; i_ < spritePoolInfo.unk8; i_++, world++, unk_++) \
+        for (i_ = 0; i_ < g_poolInfo.playerPool.count; i_++, world++, unk_++) \
         { \
             if (*unk_ == 2) \
                 { code } \

@@ -12,6 +12,8 @@ void GXBegin(GXPrimitive type, GXVtxFmt vtxfmt, u16 nverts);
 void GXSetTexCoordGen2(GXTexCoordID dst_coord, GXTexGenType func,
     GXTexGenSrc src_param, u32 mtx, GXBool normalize, u32 postmtx);
 void GXSetLineWidth(u8 width, GXTexOffset texOffsets);
+void GXSetPointSize(u8 pointSize, GXTexOffset texOffsets);
+void GXEnableTexOffsets(GXTexCoordID coord, GXBool line_enable, GXBool point_enable);
 
 static inline void GXSetTexCoordGen(GXTexCoordID dst_coord, GXTexGenType func,
     GXTexGenSrc src_param, u32 mtx)

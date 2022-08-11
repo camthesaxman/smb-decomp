@@ -3,12 +3,17 @@
 
 #include "global.h"
 #include "adv.h"
+#include "course.h"
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "pool.h"
 #include "stage.h"
+#include "stcoli.h"
 
-struct Item itemInfo[256];
+struct Item itemPool[256];
+
+s16 lbl_802F1FC8;
 
 #pragma force_active on
 char *itemNames[] =
@@ -21,6 +26,16 @@ char *itemNames[] =
     "IT_PILOT",
 };
 #pragma force_active reset
+
+enum
+{
+    IT_COIN,
+    IT_FGT_BANANA,
+    IT_MINI_RACE,
+    IT_FGT_POWER,
+    IT_FGT_PUNCH,
+    IT_PILOT,
+};
 
 void (*itemInitFuncs[])(struct Item *) =
 {
@@ -55,7 +70,7 @@ void (*itemDrawFuncs[])(struct Item *) =
     NULL,
 };
 
-void (*itemCollectFuncs[])(struct Item *, struct Struct800690DC *) =
+void (*itemCollectFuncs[])(struct Item *, struct PhysicsBall *) =
 {
     item_coin_collect,
     item_dummy_collect,
@@ -134,30 +149,30 @@ void ev_item_init(void)
     struct Item *item;
 
     lbl_802F1FC8 = 0;
-    memset(itemInfo, 0, sizeof(itemInfo));
-    item = itemInfo;
-    for (i = 0; i < ARRAY_COUNT(itemInfo); i++, item++)
+    memset(itemPool, 0, sizeof(itemPool));
+    item = itemPool;
+    for (i = 0; i < ARRAY_COUNT(itemPool); i++, item++)
     {
         item->id = i;
         item->unk2 = -1;
     }
 
-    func_80030A50(spritePoolInfo.unk10);
+    pool_reset(&g_poolInfo.itemPool);
     switch (modeCtrl.gameType)
     {
     case GAMETYPE_MINI_FIGHT:
-        if (func_800672D0(currStageId) != 0)
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+        if (is_bonus_stage(currStageId) != 0)
+            spawn_stage_banana_items(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     case GAMETYPE_MAIN_COMPETITION:
-        if (func_800672D0(currStageId) != 0
+        if (is_bonus_stage(currStageId) != 0
          || gameMode == MD_SEL
-         || (modeCtrl.levelSetFlags & (1 << 12))
+         || (modeCtrl.courseFlags & (1 << 12))
          || (advDemoInfo.flags & (1 << 8)))
-            make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+            spawn_stage_banana_items(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     default:
-        make_stage_bananas(decodedStageLzPtr->collHdrs, decodedStageLzPtr->collHdrsCount);
+        spawn_stage_banana_items(decodedStageLzPtr->animGroups, decodedStageLzPtr->animGroupCount);
         break;
     }
 }
@@ -166,23 +181,23 @@ void ev_item_main(void)
 {
     int r31;
     struct Item *item;
-    s8 *r29;
+    s8 *status;
 
     if (gamePauseStatus & 0xA)
         return;
-    r29 = spritePoolInfo.unk1C;
-    item = itemInfo;
-    for (r31 = spritePoolInfo.unk18; r31 > 0; r31--, r29++, item++)
+    status = g_poolInfo.itemPool.statusList;
+    item = itemPool;
+    for (r31 = g_poolInfo.itemPool.count; r31 > 0; r31--, status++, item++)
     {
-        if (*r29 != 0)
+        if (*status != 0)
         {
             if (item->unkC != 0)
                 item->unkC--;
             item->unk12--;
-            if (item->unk12 == 0 || *r29 == 3)
+            if (item->unk12 == 0 || *status == 3)
             {
                 itemDestroyFuncs[item->type](item);
-                *r29 = 0;
+                *status = 0;
             }
             else
                 itemMainFuncs[item->type](item);
@@ -196,9 +211,9 @@ void ev_item_dest(void)
     struct Item *item;
     s8 *r27;
 
-    r27 = spritePoolInfo.unk1C;
-    item = itemInfo;
-    for (r29 = spritePoolInfo.unk18; r29 > 0; r29--, r27++, item++)
+    r27 = g_poolInfo.itemPool.statusList;
+    item = itemPool;
+    for (r29 = g_poolInfo.itemPool.count; r29 > 0; r29--, r27++, item++)
     {
         if (*r27 != 0)
         {
@@ -210,40 +225,40 @@ void ev_item_dest(void)
 
 void item_draw(void)
 {
-    Mtx sp8;
-    int r31;
+    Mtx viewFromWorld;
+    int itemCtr;
     struct Item *item;
-    s8 *r29;
-    int r28 = -1;
+    s8 *status;
+    int animGrpId = -1;
 
-    mathutil_mtx_copy(mathutilData->mtxB, sp8);
-    r29 = spritePoolInfo.unk1C;
-    item = itemInfo;
-    for (r31 = spritePoolInfo.unk18; r31 > 0; r31--, r29++, item++)
+    mathutil_mtx_copy(mathutilData->mtxB, viewFromWorld);
+    status = g_poolInfo.itemPool.statusList;
+    item = itemPool;
+    for (itemCtr = g_poolInfo.itemPool.count; itemCtr > 0; itemCtr--, status++, item++)
     {
-        if (*r29 != 0 && !(item->unk8 & 1))
+        if (*status != 0 && !(item->flags & ITEM_FLAG_INVISIBLE))
         {
-            if (r28 != item->attachedTo)
+            if (animGrpId != item->animGroupId)
             {
-                mathutil_mtxA_from_mtx(sp8);
-                mathutil_mtxA_mult_right(movableStageParts[item->attachedTo].unk24);
+                mathutil_mtxA_from_mtx(viewFromWorld);
+                mathutil_mtxA_mult_right(animGroups[item->animGroupId].transform);
                 mathutil_mtxA_to_mtx(mathutilData->mtxB);
-                r28 = item->attachedTo;
+                animGrpId = item->animGroupId;
             }
             itemDrawFuncs[item->type](item);
         }
     }
-    mathutil_mtx_copy(sp8, mathutilData->mtxB);
+    mathutil_mtx_copy(viewFromWorld, mathutilData->mtxB);
 }
 
 int func_80068474(struct Item *a)
 {
     struct Item *r31;
-    int r30 = pool_alloc(spritePoolInfo.unk10, 1);
+    int r30 = pool_alloc(&g_poolInfo.itemPool, 1);
 
     if (r30 < 0)
         return -1;
-    r31 = &itemInfo[r30];
+    r31 = &itemPool[r30];
     memcpy(r31, a, sizeof(struct Item));
     r31->id = r30;
     r31->unk5E = -1;
@@ -251,13 +266,13 @@ int func_80068474(struct Item *a)
     r31->unkC = 0;
     if (r31->unk18 <= 0.0)
         r31->unk18 = 1.0f;
-    r31->unk44 = r31->unk20;
+    r31->prevPos = r31->pos;
     r31->unk58 = itemCollectFuncs[r31->type];
     r31->unk2 = lbl_802F1FC8;
     lbl_802F1FC8++;
     if (lbl_802F1FC8 < 0)
         lbl_802F1FC8 = 0;
-    if (r31->unk8 & (1 << 5))
+    if (r31->flags & (1 << 5))
     {
         r31->unk64 = 0;
         r31->unk88 = 0.0f;
@@ -265,46 +280,46 @@ int func_80068474(struct Item *a)
     return r31->unk2;
 }
 
-void func_800685C4(void)
+void item_draw_shadows(void)
 {
     int r28;
     struct Item *item;
     s8 *r26;
-    int r25 = 0;
-    int r23;
+    int animGrpId = 0;
+    int onStage;
     float f2;
     float f1;
-    struct Struct8003FB48 sp58;
+    struct RaycastHit hit;
     Vec sp4C;
-    Vec sp40;
+    Vec pos;
     struct Struct8009492C sp8;
 
-    r26 = spritePoolInfo.unk1C;
-    item = itemInfo;
-    for (r28 = spritePoolInfo.unk18; r28 > 0; r28--, r26++, item++)
+    r26 = g_poolInfo.itemPool.statusList;
+    item = itemPool;
+    for (r28 = g_poolInfo.itemPool.count; r28 > 0; r28--, r26++, item++)
     {
         if (*r26 == 0
-         || !(item->unk8 & (1 << 5))
-         || (item->unk8 & 1))
+         || !(item->flags & (1 << 5))
+         || (item->flags & ITEM_FLAG_INVISIBLE))
             continue;
 
-        if (item->attachedTo == 0)
-            sp40 = item->unk20;
+        if (item->animGroupId == 0)
+            pos = item->pos;
         else
         {
-            if (r25 != item->attachedTo)
+            if (animGrpId != item->animGroupId)
             {
-                mathutil_mtxA_from_mtx(movableStageParts[item->attachedTo].unk24);
-                r25 = item->attachedTo;
+                mathutil_mtxA_from_mtx(animGroups[item->animGroupId].transform);
+                animGrpId = item->animGroupId;
             }
-            mathutil_mtxA_tf_point(&item->unk20, &sp40);
+            mathutil_mtxA_tf_point(&item->pos, &pos);
         }
 
         mathutil_mtxA_push();
-        r23 = func_8003FB48(&sp40, &sp58, &sp4C);
+        onStage = raycast_stage_down(&pos, &hit, &sp4C);
         mathutil_mtxA_pop();
 
-        if (r23 != 0)
+        if (onStage)
         {
             item->unk64 = 1;
             item->unk88 += (1.0f - item->unk88) * 0.15f;
@@ -322,21 +337,21 @@ void func_800685C4(void)
             }
         }
 
-        if (r23 == 0)
+        if (!onStage)
         {
             sp8.unkC = item->unk6C;
-            sp8.unk0.x = sp40.x;
-            sp8.unk0.y = sp40.y + item->unk74;
-            sp8.unk0.z = sp40.z;
+            sp8.unk0.x = pos.x;
+            sp8.unk0.y = pos.y + item->unk74;
+            sp8.unk0.z = pos.z;
         }
         else
         {
-            mathutil_vec_to_euler(&sp58.unk10, &sp8.unkC);
+            mathutil_vec_to_euler(&hit.normal, &sp8.unkC);
             item->unk6C.x = sp8.unkC.x;
             item->unk6C.y = sp8.unkC.y;
             sp8.unkC.z = item->unk6C.z;
-            sp8.unk0 = sp58.unk4;
-            item->unk74 = sp8.unk0.y - sp40.y;
+            sp8.unk0 = hit.pos;
+            item->unk74 = sp8.unk0.y - pos.y;
         }
         sp8.unk14 = item->unk7C;
         sp8.unk2C = item->shadowColor;
@@ -375,9 +390,9 @@ void func_800689B4(int a)
     if (gamePauseStatus & 0xA)
         return;
 
-    r26 = spritePoolInfo.unk1C;
-    item = itemInfo;
-    for (r29 = spritePoolInfo.unk18; r29 > 0; r29--, r26++, item++)
+    r26 = g_poolInfo.itemPool.statusList;
+    item = itemPool;
+    for (r29 = g_poolInfo.itemPool.count; r29 > 0; r29--, r26++, item++)
     {
         if (*r26 != 0 && item->unk5E >= 0 && item->unk5E <= a)
         {
@@ -388,7 +403,7 @@ void func_800689B4(int a)
     }
 }
 
-void make_stage_bananas(struct StageCollHdr *coll, int count)
+void spawn_stage_banana_items(struct StageAnimGroup *stageAg, int agCount)
 {
     struct Item item;
     int i;
@@ -396,16 +411,16 @@ void make_stage_bananas(struct StageCollHdr *coll, int count)
 
     memset(&item, 0, sizeof(item));
     item.type = 0;
-    for (i = 0; i < count; i++, coll++)
+    for (i = 0; i < agCount; i++, stageAg++)
     {
-        struct StageCollHdr_child3 *r28 = coll->unk60;
+        struct StageBanana *stageBanana = stageAg->bananas;
 
-        for (j = 0; j < coll->unk5C; j++, r28++)
+        for (j = 0; j < stageAg->bananaCount; j++, stageBanana++)
         {
-            item.unk20 = r28->unk0;
-            item.subtype = r28->unkC;
-            item.attachedTo = i;
-            item.unk60 = r28;
+            item.pos = stageBanana->pos;
+            item.subType = stageBanana->type;
+            item.animGroupId = i;
+            item.stageBanana = stageBanana;
             func_80068474(&item);
         }
     }
@@ -463,7 +478,7 @@ void item_dummy_main(struct Item *item) {}
 
 void item_dummy_draw(struct Item *item) {}
 
-void item_dummy_collect(struct Item *item, struct Struct800690DC *b) {}
+void item_dummy_collect(struct Item *item, struct PhysicsBall *b) {}
 
 void item_dummy_destroy(struct Item *item) {}
 

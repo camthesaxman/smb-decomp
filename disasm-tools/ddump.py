@@ -6,12 +6,13 @@ import re
 import sys
 import struct
 
-#startLabel = sys.argv[2]
-startLabel = 'lbl_801BA0A4'  # starting label
+startLabel = sys.argv[2]
+#startLabel = 'lbl_80117068'  # starting label
 #endLabel = 'lbl_0000CA5C'    # ending label
-structFmt = '>fff'
-GXColorFmt = '{%i, %i, %i, %i}'
-cFmt = '{ %4.7g, %4.7g, %4.7g },'
+#structFmt = '>fff'
+#cFmt = '{%3.8g, %3.8g, %3.8g},'
+structFmt = sys.argv[3]
+cFmt = sys.argv[4]
 dumping = False
 
 def print_struct(data):
@@ -53,11 +54,25 @@ data = bytearray()
 structSize = struct.calcsize(structFmt)
 print('size = %i bytes' % structSize)
 
+def write_c():
+    global startLabel
+    global data
+    global structSize
+    global structFmt
+    print('struct ? %s[] =\n{' % startLabel)
+    while len(data) >= structSize:
+        print_struct(struct.unpack(structFmt, data[0:structSize]))
+        data = data[structSize:]
+    print('};\n')
+
 with open(sys.argv[1], 'r') as f:
     for line in f.readlines():
         if dumping:
             #if read_label(line) == endLabel:
-            if read_label(line):
+            label = read_label(line)
+            if label:
+                write_c()
+                startLabel = label
                 break
             data += read_data(line)
         else:
@@ -66,9 +81,4 @@ with open(sys.argv[1], 'r') as f:
                 print('dumping')
                 continue
 
-#print(str(len(data)))
-print('struct ? %s[] =\n{' % startLabel)
-while len(data) >= structSize:
-    print_struct(struct.unpack(structFmt, data[0:structSize]))
-    data = data[structSize:]
-print('};')
+write_c()

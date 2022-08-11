@@ -18,7 +18,7 @@ void DBInit(void)
 	return;
 }
 
-static void __DBExceptionDestinationAux(void)
+void __DBExceptionDestinationAux(void)
 {
     u8 dummy[8];
     OSContext *ctx = (void *)(0x80000000 + *(u32 *)0xC0);  // WTF??

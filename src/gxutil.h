@@ -3,6 +3,7 @@
 
 #include <dolphin/mtx.h>
 #include <dolphin/GXStruct.h>
+#include <dolphin/GXEnum.h>
 
 struct PointWithColor
 {
@@ -15,14 +16,14 @@ u32 gxutil_end_display_list(void);
 void gxutil_clear_vtx_attrs(void);
 void gxutil_set_vtx_attrs(u32);
 void gxutil_dummy(void);
-void g_gxutil_upload_some_mtx(Mtx, int);
-void g_init_bg_fog_params(void);
+void u_gxutil_upload_some_mtx(Mtx, int);
+void u_init_bg_fog_params(void);
 void func_8009AB5C(void);
-// ? func_8009AC0C();
-// ? func_8009AC44();
+void func_8009AC0C(s8);
+void func_8009AC44(void);
 void func_8009AC8C(void);
 void gxutil_set_line_width(int);
-void g_gxutil_set_some_line_params(int a, int b, int c, int d);
+void gxutil_set_line_blend_params(GXBlendMode blendMode, GXBlendFactor srcFactor, GXBlendFactor dstFactor, GXLogicOp blendLogicOp);
 void gxutil_draw_line(Vec *pos1, Vec *pos2, GXColor *c);
 void gxutil_draw_line_strip(u16 numPoints, Point3d *points, GXColor *color);
 void gxutil_draw_line_deferred(Point3d *start, Point3d *end, GXColor *c);

@@ -436,6 +436,7 @@ __GXPEInit:
 
 .section .sbss
 
+	.balign 8
 .global TokenCB
 TokenCB:
 	.skip 0x4

@@ -2,6 +2,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
 #include "nl2ngc.h"
@@ -54,28 +55,36 @@ void gxutil_set_vtx_attrs(u32 attrs)
 
 void gxutil_dummy(void) {}
 
-#ifdef __MWERKS__
-asm void g_gxutil_upload_some_mtx(Mtx a, int b)
+#ifdef C_ONLY
+void u_gxutil_upload_some_mtx(register Mtx mtx, register int index)
+{
+    GXLoadPosMtxImm(mtx, index * 3);
+    GXLoadNrmMtxImm(mtx, index * 3);
+}
+#else
+asm void u_gxutil_upload_some_mtx(register Mtx mtx, register int index)
 {
     nofralloc
     mr r5, r4
-    add r4, r4, r4
-    add r4, r4, r5
+    add r4, r4, r4  // r4 = index * 2
+    add r4, r4, r5  // r4 = index * 3
     li r7, 0x10
-    add r5, r4, r4
+    add r5, r4, r4  // r5 = index * 6
     lis r6, GXFIFO_ADDR@h
-    add r4, r5, r4
+    add r4, r5, r4  // r4 = index * 9
     ori r6, r6, GXFIFO_ADDR@l
-    add r5, r5, r5
+    add r5, r5, r5   // r5 = index * 12
     addis r5, r5, 0xb
     stb r7, 0(r6)
     stw r5, 0(r6)
-    psq_l f0, 0(r3), 0, qr0
-    psq_l f1, 8(r3), 0, qr0
-    psq_l f2, 16(r3), 0, qr0
-    psq_l f3, 24(r3), 0, qr0
-    psq_l f4, 32(r3), 0, qr0
-    psq_l f5, 40(r3), 0, qr0
+
+    // Copy matrix into FIFO
+    psq_l f0, 0(mtx), 0, qr0
+    psq_l f1, 8(mtx), 0, qr0
+    psq_l f2, 16(mtx), 0, qr0
+    psq_l f3, 24(mtx), 0, qr0
+    psq_l f4, 32(mtx), 0, qr0
+    psq_l f5, 40(mtx), 0, qr0
     psq_st f0, 0(r6), 0, qr0
     psq_st f1, 0(r6), 0, qr0
     psq_st f2, 0(r6), 0, qr0
@@ -94,8 +103,6 @@ asm void g_gxutil_upload_some_mtx(Mtx a, int b)
     psq_st f5, 0(r6), 1, qr0
     blr
 }
-#else
-// TODO
 #endif
 
 #pragma peephole on  // above function isn't pure asm?
@@ -108,7 +115,7 @@ const struct FogParams bgFogParamsTable[] =
 
 struct FogInfo fogInfo;
 
-void g_init_bg_fog_params(void)
+void u_init_bg_fog_params(void)
 {
     const struct FogParams *params = bgFogParamsTable;
 
@@ -116,7 +123,7 @@ void g_init_bg_fog_params(void)
     {
         if (params->bgId == backgroundInfo.bgId)
         {
-            fogInfo.unkF = 1;
+            fogInfo.enabled = 1;
             fogInfo.unk0 = params->unk1;
             fogInfo.unk4 = params->unk4;
             fogInfo.unk8 = params->unk8;
@@ -128,7 +135,7 @@ void g_init_bg_fog_params(void)
         params++;
     }
 
-    fogInfo.unkF = 0;
+    fogInfo.enabled = 0;
     fogInfo.unk0 = 5;
     fogInfo.unk4 = 0.0f;
     fogInfo.unk8 = 100.0f;
@@ -139,27 +146,27 @@ void g_init_bg_fog_params(void)
 
 void func_8009AB5C(void)
 {
-    func_8008F878(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
-    if (fogInfo.unkF != 0)
+    avdisp_enable_fog(fogInfo.enabled);
+    nl2ngc_enable_fog(fogInfo.enabled);
+    if (fogInfo.enabled != 0)
     {
-        func_8008F880(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
-        func_8008F890(fogInfo.r, fogInfo.g, fogInfo.b);
-        func_80033B58(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
-        g_nl2ngc_set_some_other_color(fogInfo.r, fogInfo.g, fogInfo.b);
+        avdisp_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        avdisp_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
+        nl2ngc_set_fog_params(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8);
+        nl2ngc_set_fog_color(fogInfo.r, fogInfo.g, fogInfo.b);
     }
 }
 
 void func_8009AC0C(s8 a)
 {
-    func_8008F878(a);
-    func_80033B50(a);
+    avdisp_enable_fog(a);
+    nl2ngc_enable_fog(a);
 }
 
 void func_8009AC44(void)
 {
-    func_8008F878(fogInfo.unkF);
-    func_80033B50(fogInfo.unkF);
+    avdisp_enable_fog(fogInfo.enabled);
+    nl2ngc_enable_fog(fogInfo.enabled);
 }
 
 void func_8009AC8C(void)
@@ -169,19 +176,19 @@ void func_8009AC8C(void)
     sp10.r = fogInfo.r;
     sp10.g = fogInfo.g;
     sp10.b = fogInfo.b;
-    if (fogInfo.unkF != 0)
-        func_8009E398(fogInfo.unk0, sp10, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f);
+    if (fogInfo.enabled != 0)
+        GXSetFog_cached(fogInfo.unk0, fogInfo.unk4, fogInfo.unk8, 0.1f, 20000.0f, sp10);
     else
-        func_8009E398(0, sp10, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, sp10);
 }
 
 struct LineInfo
 {
     u8 lineWidth;
-    u32 unk4;
-    u32 unk8;
-    u32 unkC;
-    u32 unk10;
+    GXBlendMode blendMode;
+    GXBlendFactor blendSrcFactor;
+    GXBlendFactor blendDstFactor;
+    GXLogicOp blendLogicOp;
     GXTexOffset texOffset;
     u8 filler18[4];
 };
@@ -193,12 +200,12 @@ void gxutil_set_line_width(int width)
     lineInfo.lineWidth = width;
 }
 
-void g_gxutil_set_some_line_params(int a, int b, int c, int d)
+void gxutil_set_line_blend_params(GXBlendMode mode, GXBlendFactor srcFactor, GXBlendFactor dstFactor, GXLogicOp logicOp)
 {
-    lineInfo.unk4 = a;
-    lineInfo.unk8 = b;
-    lineInfo.unkC = c;
-    lineInfo.unk10 = d;
+    lineInfo.blendMode = mode;
+    lineInfo.blendSrcFactor = srcFactor;
+    lineInfo.blendDstFactor = dstFactor;
+    lineInfo.blendLogicOp = logicOp;
 }
 
 void gxutil_draw_line(Vec *start, Vec *end, GXColor *c)
@@ -282,16 +289,7 @@ static void draw_line_deferred_callback(struct DrawLineDeferredNode *node)
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != zMode->updateEnable
-     || GX_LEQUAL != zMode->compareFunc
-     || GX_ENABLE != zMode->compareEnable)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     c = node->color;
     GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
     GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
@@ -352,14 +350,14 @@ void gxutil_draw_line_multicolor_deferred(struct PointWithColor *start, struct P
 
 void prepare_for_drawing_lines(void)
 {
-    if (lineInfo.lineWidth != zMode->lineWidth || lineInfo.texOffset != zMode->texOffsets)
+    if (lineInfo.lineWidth != gxCache->lineWidth || lineInfo.texOffset != gxCache->texOffsets)
     {
         GXSetLineWidth(lineInfo.lineWidth, lineInfo.texOffset);
-        zMode->lineWidth = lineInfo.lineWidth;
-        zMode->texOffsets = lineInfo.texOffset;
+        gxCache->lineWidth = lineInfo.lineWidth;
+        gxCache->texOffsets = lineInfo.texOffset;
     }
     gxutil_set_vtx_attrs((1 << GX_VA_POS) | (1 << GX_VA_CLR0));
-    func_8009E110(lineInfo.unk4, lineInfo.unk8, lineInfo.unkC, lineInfo.unk10);
+    GXSetBlendMode_cached(lineInfo.blendMode, lineInfo.blendSrcFactor, lineInfo.blendDstFactor, lineInfo.blendLogicOp);
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -368,10 +366,10 @@ void prepare_for_drawing_lines(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_SPOT);  // attn_fn
-    func_8009EFF4(0, 0xFF, 0xFF, 4);
-    func_8009EA30(0, 4);
+    GXSetTevOrder_cached(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_PASSCLR);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetNumTexGens(0);
     GXSetNumIndStages(0);
     GXSetNumChans(1);
@@ -385,16 +383,7 @@ static void draw_line_multicolor_deferred_callback(struct DrawLineMulticolorDefe
 
     lineInfo = node->lineInfo;
     prepare_for_drawing_lines();
-    if (GX_ENABLE != zMode->updateEnable
-     || GX_LEQUAL != zMode->compareFunc
-     || GX_ENABLE != zMode->compareEnable)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc   = GX_LEQUAL;
-        zMode->updateEnable  = GX_ENABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
     GXLoadPosMtxImm(node->mtx, GX_PNMTX0);
     GXBegin(node->primType, GX_VTXFMT0, node->vtxCount);
     p = node->points;

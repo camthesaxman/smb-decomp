@@ -163,39 +163,32 @@ OSHeapHandle OSSetCurrentHeap(OSHeapHandle heap)
     return old;
 }
 
-#ifdef NONMATCHING
-void *OSInitAlloc(void *a, void *b, int c)
+void *OSInitAlloc(void *arenaStart, void *arenaEnd, int maxHeaps)
 {
-    u32 r7 = c * sizeof(struct Heap);
-    int r8;
-    struct Heap *hd;
-    u8 *r3;
+    u32 totalSize = maxHeaps * sizeof(struct Heap);
+    int i;
 
-    HeapArray = a;
-    NumHeaps = c;
-    for (r8 = 0; r8 < NumHeaps; r8++)
+    HeapArray = arenaStart;
+    NumHeaps = maxHeaps;
+
+    for (i = 0; i < NumHeaps; i++)
     {
-        hd = &HeapArray[r8];
-        hd->size = -1;
-        hd->free = hd->allocated = NULL;
+        struct Heap* heap = &HeapArray[i];
+
+        heap->size = -1;
+        heap->free = heap->allocated = NULL;
     }
 
-    r3 = (void *)HeapArray;
-    r3 += r7;
-    r3 = (void *)OSRoundUp32B(r3);
-    ArenaStart = (void *)r3;
-     __OSCurrHeap = -1;
-    ArenaEnd = (void *)OSRoundDown32B(b);
-    return r3;
+    __OSCurrHeap = -1;
+
+    arenaStart = (u8 *)HeapArray + totalSize;
+    arenaStart = (void *)OSRoundUp32B(arenaStart);
+
+    ArenaStart = arenaStart;
+    ArenaEnd = (void *)OSRoundDown32B(arenaEnd);
+
+    return arenaStart;
 }
-#else
-asm void *OSInitAlloc(void *a, void *b, int c)
-{
-    nofralloc
-#include "../asm/nonmatchings/OSInitAlloc.s"
-}
-#pragma peephole on
-#endif
 
 OSHeapHandle OSCreateHeap(void *start, void *end)
 {

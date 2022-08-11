@@ -9,4 +9,9 @@ then
     WINE=wine
 fi
 
-"$WINE" mwcc_compiler/1.1/mwcceppc.exe -EP -i src -I- -i include "$src_file"
+if [ "${2:-}" = "-c" ]; then
+    def=-DC_ONLY
+fi
+
+"$WINE" mwcc_compiler/1.1/mwcceppc.exe -EP -i src -I- -i include "$def" "$src_file"
+

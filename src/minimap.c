@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "ball.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "mathutil.h"
 #include "mode.h"
@@ -70,11 +71,11 @@ struct Struct801C5758 lbl_801C5758 =
 
 void ev_minimap_init(void)
 {
-    func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 11), 0x1BFFFFFF, 0x24000000);
-    func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 12), 0x1FFFFFFF, 0xE0000000);
-    func_8008D330(NLOBJ_MODEL(naomiCommonObj, 13), 0xF8FFFFFF, 0x02000000);
-    func_8008D36C(NLOBJ_MODEL(naomiCommonObj, 13), 0x1FFFFFFF, 0xE0000000);
-    func_8008D3A8(NLOBJ_MODEL(naomiCommonObj, 13), 0x90EFFFFF, 0x08000000);
+    func_8008D36C(NLOBJ_MODEL(g_commonNlObj, 11), 0x1BFFFFFF, 0x24000000);
+    func_8008D36C(NLOBJ_MODEL(g_commonNlObj, 12), 0x1FFFFFFF, 0xE0000000);
+    func_8008D330(NLOBJ_MODEL(g_commonNlObj, 13), 0xF8FFFFFF, 0x02000000);
+    func_8008D36C(NLOBJ_MODEL(g_commonNlObj, 13), 0x1FFFFFFF, 0xE0000000);
+    func_8008D3A8(NLOBJ_MODEL(g_commonNlObj, 13), 0x90EFFFFF, 0x08000000);
     if (gameSubmode == 13)
     {
         lbl_801C5758.unk32 = 0x1A8;
@@ -269,21 +270,21 @@ void func_800847FC(struct Struct800847FC *a)
     float f27 = a->unk10;
 
     gxutil_set_vtx_attrs(1 << GX_VA_POS);
-    func_8009E110(1, 0, 1, 0);
-    CHANGE_Z_MODE(1, 7, 1);
+    GXSetBlendMode_cached(1, 0, 1, 0);
+    GXSetZMode_cached(1, 7, 1);
     {
         GXColor color = {0, 0, 0, 0};
-        func_8009E398(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(0, 0.0f, 100.0f, 0.1f, 20000.0f, color);
     }
-    func_8009E094(0);
+    GXSetCullMode_cached(0);
     GXSetTevDirect(0);
-    func_8009EFF4(0, 0xFF, 0xFF, 0xFF);
-    func_8009F224(0, 0);
-    func_8009E618(0, 15, 15, 15, 15);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 7, 7, 6);
-    func_8009E918(0, 0, 0, 3, 1, 0);
-    func_8009F2C8(1);
+    GXSetTevOrder_cached(0, 0xFF, 0xFF, 0xFF);
+    GXSetTevKAlphaSel_cached(0, 0);
+    GXSetTevColorIn_cached(0, 15, 15, 15, 15);
+    GXSetTevColorOp_cached(0, 0, 0, 0, 1, 0);
+    GXSetTevAlphaIn_cached(0, 7, 7, 7, 6);
+    GXSetTevAlphaOp_cached(0, 0, 0, 3, 1, 0);
+    GXSetNumTevStages_cached(1);
     mathutil_mtxA_push();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, 0);
@@ -293,7 +294,7 @@ void func_800847FC(struct Struct800847FC *a)
     GXPosition3f32(f31, f30, f27);
     GXPosition3f32(f31, f28, f27);
     GXPosition3f32(f29, f28, f27);
-    CHANGE_Z_MODE(1, 3, 1);
+    GXSetZMode_cached(1, 3, 1);
 }
 
 /*

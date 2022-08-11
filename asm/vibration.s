@@ -276,7 +276,7 @@ func_800B6234:
 /* 800B626C 000B218C  B0 1E 00 02 */	sth r0, 2(r30)
 /* 800B6270 000B2190  4B F5 51 ED */	bl event_finish_all
 /* 800B6274 000B2194  3F E0 00 01 */	lis r31, 0x0000C2D0@ha
-/* 800B6278 000B2198  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800B6278 000B2198  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800B627C 000B219C  38 9F C2 D0 */	addi r4, r31, 0x0000C2D0@l
 /* 800B6280 000B21A0  48 00 C4 4D */	bl OSAllocFromHeap
 /* 800B6284 000B21A4  90 7E 00 08 */	stw r3, 8(r30)
@@ -295,7 +295,7 @@ lbl_800B62B0:
 /* 800B62B4 000B21D4  38 80 00 00 */	li r4, 0
 /* 800B62B8 000B21D8  4B F4 D0 69 */	bl memset
 /* 800B62BC 000B21DC  38 60 00 10 */	li r3, 0x10
-/* 800B62C0 000B21E0  4B F7 2F 69 */	bl func_80029228
+/* 800B62C0 000B21E0  4B F7 2F 69 */	bl SoundGroupLoad
 /* 800B62C4 000B21E4  48 00 58 B5 */	bl func_800BBB78
 /* 800B62C8 000B21E8  48 00 71 A9 */	bl func_800BD470
 /* 800B62CC 000B21EC  48 00 4D 9D */	bl func_800BB068
@@ -410,7 +410,7 @@ func_800B6430:
 /* 800B6450 000B2370  48 00 8E 81 */	bl func_800BF2D0
 /* 800B6454 000B2374  48 00 63 CD */	bl func_800BC820
 /* 800B6458 000B2378  3C 80 80 2C */	lis r4, lbl_802C6BD8@ha
-/* 800B645C 000B237C  80 6D 99 44 */	lwz r3, memHeap2@sda21(r13)
+/* 800B645C 000B237C  80 6D 99 44 */	lwz r3, stageHeap@sda21(r13)
 /* 800B6460 000B2380  38 84 6B D8 */	addi r4, r4, lbl_802C6BD8@l
 /* 800B6464 000B2384  3B C4 00 08 */	addi r30, r4, 8
 /* 800B6468 000B2388  80 84 00 08 */	lwz r4, 8(r4)
@@ -447,8 +447,8 @@ func_800B64B0:
 /* 800B64D4 000B23F4  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B64D8 000B23F8  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800B64DC 000B23FC  80 63 00 2C */	lwz r3, 0x2c(r3)
-/* 800B64E0 000B2400  4B F6 21 69 */	bl func_80018648
-/* 800B64E4 000B2404  4B FD C8 59 */	bl g_draw_ball_shadow
+/* 800B64E0 000B2400  4B F6 21 69 */	bl u_call_camera_apply_viewport
+/* 800B64E4 000B2404  4B FD C8 59 */	bl u_draw_ball_shadow
 /* 800B64E8 000B2408  4B F9 EB 09 */	bl func_80054FF0
 /* 800B64EC 000B240C  48 00 8D E9 */	bl func_800BF2D4
 /* 800B64F0 000B2410  84 1F 00 04 */	lwzu r0, 4(r31)
@@ -457,11 +457,11 @@ func_800B64B0:
 /* 800B64FC 000B241C  4B F5 14 B1 */	bl mathutil_mtxA_from_mtxB
 /* 800B6500 000B2420  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800B6504 000B2424  38 80 00 00 */	li r4, 0
-/* 800B6508 000B2428  4B FE 45 1D */	bl g_gxutil_upload_some_mtx
+/* 800B6508 000B2428  4B FE 45 1D */	bl u_gxutil_upload_some_mtx
 /* 800B650C 000B242C  80 6D 9A E0 */	lwz r3, decodedBgGma@sda21(r13)
 /* 800B6510 000B2430  80 63 00 08 */	lwz r3, 8(r3)
 /* 800B6514 000B2434  80 63 00 20 */	lwz r3, 0x20(r3)
-/* 800B6518 000B2438  4B FD 7F 21 */	bl g_avdisp_maybe_draw_model_1
+/* 800B6518 000B2438  4B FD 7F 21 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_800B651C:
 /* 800B651C 000B243C  48 00 63 9D */	bl func_800BC8B8
 /* 800B6520 000B2440  48 00 55 39 */	bl func_800BBA58
@@ -592,8 +592,8 @@ lbl_800B667C:
 /* 800B66D0 000B25F0  38 60 00 0B */	li r3, 0xb
 /* 800B66D4 000B25F4  4B F5 4C 55 */	bl event_start
 /* 800B66D8 000B25F8  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl func_80021DB4
-/* 800B66E0 000B2600  4B FE 0B ED */	bl func_800972CC
+/* 800B66DC 000B25FC  4B F6 B6 D9 */	bl light_init
+/* 800B66E0 000B2600  4B FE 0B ED */	bl rend_efc_mirror_enable
 /* 800B66E4 000B2604  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B66E8 000B2608  38 63 EC 20 */	addi r3, r3, modeCtrl@l
 /* 800B66EC 000B260C  3B E3 00 2C */	addi r31, r3, 0x2c
@@ -672,10 +672,10 @@ lbl_800B680C:
 /* 800B680C 000B272C  38 60 01 00 */	li r3, 0x100
 /* 800B6810 000B2730  38 80 00 00 */	li r4, 0
 /* 800B6814 000B2734  38 A0 00 1E */	li r5, 0x1e
-/* 800B6818 000B2738  4B FB CA C5 */	bl g_start_screen_fade
+/* 800B6818 000B2738  4B FB CA C5 */	bl start_screen_fade
 /* 800B681C 000B273C  38 60 00 44 */	li r3, 0x44
 /* 800B6820 000B2740  38 80 00 00 */	li r4, 0
-/* 800B6824 000B2744  4B F7 67 15 */	bl g_play_music
+/* 800B6824 000B2744  4B F7 67 15 */	bl u_play_music
 /* 800B6828 000B2748  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800B682C 000B274C  83 E1 00 24 */	lwz r31, 0x24(r1)
 /* 800B6830 000B2750  83 C1 00 20 */	lwz r30, 0x20(r1)
@@ -728,7 +728,7 @@ lbl_800B68CC:
 /* 800B68D4 000B27F4  48 00 00 D8 */	b lbl_800B69AC
 lbl_800B68D8:
 /* 800B68D8 000B27F8  38 60 02 30 */	li r3, 0x230
-/* 800B68DC 000B27FC  4B F7 4C C9 */	bl g_play_sound
+/* 800B68DC 000B27FC  4B F7 4C C9 */	bl u_play_sound_0
 /* 800B68E0 000B2800  48 00 00 CC */	b lbl_800B69AC
 lbl_800B68E4:
 /* 800B68E4 000B2804  38 00 00 01 */	li r0, 1
@@ -773,7 +773,7 @@ lbl_800B695C:
 lbl_800B6978:
 /* 800B6978 000B2898  48 00 90 B5 */	bl func_800BFA2C
 /* 800B697C 000B289C  38 60 02 31 */	li r3, 0x231
-/* 800B6980 000B28A0  4B F7 4C 25 */	bl g_play_sound
+/* 800B6980 000B28A0  4B F7 4C 25 */	bl u_play_sound_0
 /* 800B6984 000B28A4  48 00 00 28 */	b lbl_800B69AC
 lbl_800B6988:
 /* 800B6988 000B28A8  38 00 00 02 */	li r0, 2
@@ -913,7 +913,7 @@ lbl_800B6B74:
 /* 800B6B84 000B2AA4  90 01 00 24 */	stw r0, 0x24(r1)
 /* 800B6B88 000B2AA8  38 60 00 00 */	li r3, 0
 /* 800B6B8C 000B2AAC  38 80 00 01 */	li r4, 1
-/* 800B6B90 000B2AB0  4B FB ED 71 */	bl g_create_textbox
+/* 800B6B90 000B2AB0  4B FB ED 71 */	bl textbox_set_properties
 /* 800B6B94 000B2AB4  3F BE 00 01 */	addis r29, r30, 1
 /* 800B6B98 000B2AB8  3B 60 00 00 */	li r27, 0
 /* 800B6B9C 000B2ABC  48 00 00 3C */	b lbl_800B6BD8
@@ -924,7 +924,7 @@ lbl_800B6BA0:
 /* 800B6BAC 000B2ACC  3C 84 00 01 */	addis r4, r4, 1
 /* 800B6BB0 000B2AD0  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B6BB4 000B2AD4  7C 9E 20 2E */	lwzx r4, r30, r4
-/* 800B6BB8 000B2AD8  4B FB F0 61 */	bl g_set_textbox_text
+/* 800B6BB8 000B2AD8  4B FB F0 61 */	bl textbox_add_text
 /* 800B6BBC 000B2ADC  80 7D AA B0 */	lwz r3, -0x5550(r29)
 /* 800B6BC0 000B2AE0  3B 7B 00 01 */	addi r27, r27, 1
 /* 800B6BC4 000B2AE4  38 03 FF FF */	addi r0, r3, -1
@@ -1039,8 +1039,8 @@ lbl_800B6D60:
 /* 800B6D60 000B2C80  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B6D64 000B2C84  2C 00 00 00 */	cmpwi r0, 0
 /* 800B6D68 000B2C88  40 82 01 04 */	bne lbl_800B6E6C
-/* 800B6D6C 000B2C8C  3C 60 80 1F */	lis r3, lbl_801F3D88@ha
-/* 800B6D70 000B2C90  38 63 3D 88 */	addi r3, r3, lbl_801F3D88@l
+/* 800B6D6C 000B2C8C  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B6D70 000B2C90  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B6D74 000B2C94  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B6D78 000B2C98  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B6D7C 000B2C9C  41 82 00 F0 */	beq lbl_800B6E6C
@@ -1054,7 +1054,7 @@ lbl_800B6D60:
 /* 800B6D9C 000B2CBC  38 60 00 00 */	li r3, 0
 /* 800B6DA0 000B2CC0  38 80 00 14 */	li r4, 0x14
 /* 800B6DA4 000B2CC4  38 A0 00 00 */	li r5, 0
-/* 800B6DA8 000B2CC8  4B FB EB 59 */	bl g_create_textbox
+/* 800B6DA8 000B2CC8  4B FB EB 59 */	bl textbox_set_properties
 /* 800B6DAC 000B2CCC  38 61 00 08 */	addi r3, r1, 8
 /* 800B6DB0 000B2CD0  38 80 00 00 */	li r4, 0
 /* 800B6DB4 000B2CD4  38 A0 00 28 */	li r5, 0x28
@@ -1073,7 +1073,7 @@ lbl_800B6D60:
 /* 800B6DE8 000B2D08  7C C6 07 74 */	extsb r6, r6
 /* 800B6DEC 000B2D0C  98 C1 00 1D */	stb r6, 0x1d(r1)
 /* 800B6DF0 000B2D10  90 01 00 24 */	stw r0, 0x24(r1)
-/* 800B6DF4 000B2D14  4B FB EB 0D */	bl g_create_textbox
+/* 800B6DF4 000B2D14  4B FB EB 0D */	bl textbox_set_properties
 /* 800B6DF8 000B2D18  3B A0 00 00 */	li r29, 0
 /* 800B6DFC 000B2D1C  48 00 00 3C */	b lbl_800B6E38
 lbl_800B6E00:
@@ -1083,7 +1083,7 @@ lbl_800B6E00:
 /* 800B6E0C 000B2D2C  3C 84 00 01 */	addis r4, r4, 1
 /* 800B6E10 000B2D30  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B6E14 000B2D34  7C 9E 20 2E */	lwzx r4, r30, r4
-/* 800B6E18 000B2D38  4B FB EE 01 */	bl g_set_textbox_text
+/* 800B6E18 000B2D38  4B FB EE 01 */	bl textbox_add_text
 /* 800B6E1C 000B2D3C  80 7F AA B0 */	lwz r3, -0x5550(r31)
 /* 800B6E20 000B2D40  3B BD 00 01 */	addi r29, r29, 1
 /* 800B6E24 000B2D44  38 03 FF FF */	addi r0, r3, -1
@@ -1105,7 +1105,7 @@ lbl_800B6E4C:
 /* 800B6E5C 000B2D7C  38 60 00 00 */	li r3, 0
 /* 800B6E60 000B2D80  38 80 00 14 */	li r4, 0x14
 /* 800B6E64 000B2D84  38 A0 00 00 */	li r5, 0
-/* 800B6E68 000B2D88  4B FB EA 99 */	bl g_create_textbox
+/* 800B6E68 000B2D88  4B FB EA 99 */	bl textbox_set_properties
 lbl_800B6E6C:
 /* 800B6E6C 000B2D8C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B6E70 000B2D90  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -1227,7 +1227,7 @@ lbl_800B701C:
 /* 800B701C 000B2F3C  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 800B7020 000B2F40  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800B7024 000B2F44  38 60 00 01 */	li r3, 1
-/* 800B7028 000B2F48  4B FB C2 B5 */	bl g_start_screen_fade
+/* 800B7028 000B2F48  4B FB C2 B5 */	bl start_screen_fade
 lbl_800B702C:
 /* 800B702C 000B2F4C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B7030 000B2F50  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -1309,8 +1309,8 @@ lbl_800B70EC:
 /* 800B7140 000B3060  38 60 00 0B */	li r3, 0xb
 /* 800B7144 000B3064  4B F5 41 E5 */	bl event_start
 /* 800B7148 000B3068  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B714C 000B306C  4B F6 AC 69 */	bl func_80021DB4
-/* 800B7150 000B3070  4B FE 01 7D */	bl func_800972CC
+/* 800B714C 000B306C  4B F6 AC 69 */	bl light_init
+/* 800B7150 000B3070  4B FE 01 7D */	bl rend_efc_mirror_enable
 /* 800B7154 000B3074  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B7158 000B3078  3B E3 EC 20 */	addi r31, r3, modeCtrl@l
 /* 800B715C 000B307C  3B BF 00 2C */	addi r29, r31, 0x2c
@@ -1394,12 +1394,12 @@ lbl_800B7290:
 /* 800B7290 000B31B0  38 60 01 00 */	li r3, 0x100
 /* 800B7294 000B31B4  38 80 00 00 */	li r4, 0
 /* 800B7298 000B31B8  38 A0 00 1E */	li r5, 0x1e
-/* 800B729C 000B31BC  4B FB C0 41 */	bl g_start_screen_fade
+/* 800B729C 000B31BC  4B FB C0 41 */	bl start_screen_fade
 /* 800B72A0 000B31C0  38 60 00 44 */	li r3, 0x44
 /* 800B72A4 000B31C4  38 80 00 00 */	li r4, 0
-/* 800B72A8 000B31C8  4B F7 5C 91 */	bl g_play_music
+/* 800B72A8 000B31C8  4B F7 5C 91 */	bl u_play_music
 /* 800B72AC 000B31CC  38 60 02 32 */	li r3, 0x232
-/* 800B72B0 000B31D0  4B F7 42 F5 */	bl g_play_sound
+/* 800B72B0 000B31D0  4B F7 42 F5 */	bl u_play_sound_0
 /* 800B72B4 000B31D4  80 01 00 2C */	lwz r0, 0x2c(r1)
 /* 800B72B8 000B31D8  CB E1 00 20 */	lfd f31, 0x20(r1)
 /* 800B72BC 000B31DC  83 E1 00 1C */	lwz r31, 0x1c(r1)
@@ -1874,7 +1874,7 @@ lbl_800B7880:
 /* 800B79BC 000B38DC  C0 1E 00 20 */	lfs f0, 0x20(r30)
 /* 800B79C0 000B38E0  EC 01 00 2A */	fadds f0, f1, f0
 /* 800B79C4 000B38E4  D0 01 00 50 */	stfs f0, 0x50(r1)
-/* 800B79C8 000B38E8  4B F9 55 41 */	bl g_spawn_effect_object
+/* 800B79C8 000B38E8  4B F9 55 41 */	bl spawn_effect
 /* 800B79CC 000B38EC  A8 1E 00 56 */	lha r0, 0x56(r30)
 /* 800B79D0 000B38F0  38 7C 00 00 */	addi r3, r28, 0
 /* 800B79D4 000B38F4  38 9B 00 00 */	addi r4, r27, 0
@@ -1907,10 +1907,10 @@ lbl_800B7880:
 /* 800B7A40 000B3960  C0 1E 00 20 */	lfs f0, 0x20(r30)
 /* 800B7A44 000B3964  EC 01 00 2A */	fadds f0, f1, f0
 /* 800B7A48 000B3968  D0 01 00 50 */	stfs f0, 0x50(r1)
-/* 800B7A4C 000B396C  4B F9 54 BD */	bl g_spawn_effect_object
+/* 800B7A4C 000B396C  4B F9 54 BD */	bl spawn_effect
 /* 800B7A50 000B3970  B3 BE 00 56 */	sth r29, 0x56(r30)
 /* 800B7A54 000B3974  38 60 02 33 */	li r3, 0x233
-/* 800B7A58 000B3978  4B F7 3B 4D */	bl g_play_sound
+/* 800B7A58 000B3978  4B F7 3B 4D */	bl u_play_sound_0
 /* 800B7A5C 000B397C  48 00 00 B4 */	b lbl_800B7B10
 lbl_800B7A60:
 /* 800B7A60 000B3980  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2040,7 +2040,7 @@ lbl_800B7C1C:
 /* 800B7C2C 000B3B4C  90 01 00 28 */	stw r0, 0x28(r1)
 /* 800B7C30 000B3B50  38 60 00 00 */	li r3, 0
 /* 800B7C34 000B3B54  38 80 00 01 */	li r4, 1
-/* 800B7C38 000B3B58  4B FB DC C9 */	bl g_create_textbox
+/* 800B7C38 000B3B58  4B FB DC C9 */	bl textbox_set_properties
 /* 800B7C3C 000B3B5C  3F BE 00 01 */	addis r29, r30, 1
 /* 800B7C40 000B3B60  3B 80 00 00 */	li r28, 0
 /* 800B7C44 000B3B64  48 00 00 3C */	b lbl_800B7C80
@@ -2051,7 +2051,7 @@ lbl_800B7C48:
 /* 800B7C54 000B3B74  3C 84 00 01 */	addis r4, r4, 1
 /* 800B7C58 000B3B78  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B7C5C 000B3B7C  7C 9E 20 2E */	lwzx r4, r30, r4
-/* 800B7C60 000B3B80  4B FB DF B9 */	bl g_set_textbox_text
+/* 800B7C60 000B3B80  4B FB DF B9 */	bl textbox_add_text
 /* 800B7C64 000B3B84  80 7D AA B0 */	lwz r3, -0x5550(r29)
 /* 800B7C68 000B3B88  3B 9C 00 01 */	addi r28, r28, 1
 /* 800B7C6C 000B3B8C  38 03 FF FF */	addi r0, r3, -1
@@ -2174,8 +2174,8 @@ lbl_800B7E28:
 /* 800B7E28 000B3D48  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B7E2C 000B3D4C  2C 00 00 00 */	cmpwi r0, 0
 /* 800B7E30 000B3D50  40 82 01 04 */	bne lbl_800B7F34
-/* 800B7E34 000B3D54  3C 60 80 1F */	lis r3, lbl_801F3D88@ha
-/* 800B7E38 000B3D58  38 63 3D 88 */	addi r3, r3, lbl_801F3D88@l
+/* 800B7E34 000B3D54  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B7E38 000B3D58  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B7E3C 000B3D5C  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B7E40 000B3D60  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B7E44 000B3D64  41 82 00 F0 */	beq lbl_800B7F34
@@ -2189,7 +2189,7 @@ lbl_800B7E28:
 /* 800B7E64 000B3D84  38 60 00 00 */	li r3, 0
 /* 800B7E68 000B3D88  38 80 00 14 */	li r4, 0x14
 /* 800B7E6C 000B3D8C  38 A0 00 00 */	li r5, 0
-/* 800B7E70 000B3D90  4B FB DA 91 */	bl g_create_textbox
+/* 800B7E70 000B3D90  4B FB DA 91 */	bl textbox_set_properties
 /* 800B7E74 000B3D94  38 61 00 08 */	addi r3, r1, 8
 /* 800B7E78 000B3D98  38 80 00 00 */	li r4, 0
 /* 800B7E7C 000B3D9C  38 A0 00 28 */	li r5, 0x28
@@ -2208,7 +2208,7 @@ lbl_800B7E28:
 /* 800B7EB0 000B3DD0  7C C6 07 74 */	extsb r6, r6
 /* 800B7EB4 000B3DD4  98 C1 00 1D */	stb r6, 0x1d(r1)
 /* 800B7EB8 000B3DD8  90 01 00 24 */	stw r0, 0x24(r1)
-/* 800B7EBC 000B3DDC  4B FB DA 45 */	bl g_create_textbox
+/* 800B7EBC 000B3DDC  4B FB DA 45 */	bl textbox_set_properties
 /* 800B7EC0 000B3DE0  3B A0 00 00 */	li r29, 0
 /* 800B7EC4 000B3DE4  48 00 00 3C */	b lbl_800B7F00
 lbl_800B7EC8:
@@ -2218,7 +2218,7 @@ lbl_800B7EC8:
 /* 800B7ED4 000B3DF4  3C 84 00 01 */	addis r4, r4, 1
 /* 800B7ED8 000B3DF8  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B7EDC 000B3DFC  7C 9E 20 2E */	lwzx r4, r30, r4
-/* 800B7EE0 000B3E00  4B FB DD 39 */	bl g_set_textbox_text
+/* 800B7EE0 000B3E00  4B FB DD 39 */	bl textbox_add_text
 /* 800B7EE4 000B3E04  80 7F AA B0 */	lwz r3, -0x5550(r31)
 /* 800B7EE8 000B3E08  3B BD 00 01 */	addi r29, r29, 1
 /* 800B7EEC 000B3E0C  38 03 FF FF */	addi r0, r3, -1
@@ -2240,7 +2240,7 @@ lbl_800B7F14:
 /* 800B7F24 000B3E44  38 60 00 00 */	li r3, 0
 /* 800B7F28 000B3E48  38 80 00 14 */	li r4, 0x14
 /* 800B7F2C 000B3E4C  38 A0 00 00 */	li r5, 0
-/* 800B7F30 000B3E50  4B FB D9 D1 */	bl g_create_textbox
+/* 800B7F30 000B3E50  4B FB D9 D1 */	bl textbox_set_properties
 lbl_800B7F34:
 /* 800B7F34 000B3E54  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B7F38 000B3E58  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -2376,7 +2376,7 @@ lbl_800B8098:
 /* 800B811C 000B403C  90 1C 00 14 */	stw r0, 0x14(r28)
 /* 800B8120 000B4040  80 05 00 9C */	lwz r0, 0x9c(r5)
 /* 800B8124 000B4044  90 1C 00 18 */	stw r0, 0x18(r28)
-/* 800B8128 000B4048  4B F7 34 7D */	bl g_play_sound
+/* 800B8128 000B4048  4B F7 34 7D */	bl u_play_sound_0
 /* 800B812C 000B404C  80 9E 00 00 */	lwz r4, 0(r30)
 /* 800B8130 000B4050  3C 60 80 20 */	lis r3, playerCharacterSelection@ha
 /* 800B8134 000B4054  38 03 6B C0 */	addi r0, r3, playerCharacterSelection@l
@@ -2411,9 +2411,9 @@ lbl_800B8194:
 /* 800B8194 000B40B4  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 800B8198 000B40B8  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800B819C 000B40BC  38 60 00 01 */	li r3, 1
-/* 800B81A0 000B40C0  4B FB B1 3D */	bl g_start_screen_fade
+/* 800B81A0 000B40C0  4B FB B1 3D */	bl start_screen_fade
 /* 800B81A4 000B40C4  38 60 02 2F */	li r3, 0x22f
-/* 800B81A8 000B40C8  4B F7 33 FD */	bl g_play_sound
+/* 800B81A8 000B40C8  4B F7 33 FD */	bl u_play_sound_0
 lbl_800B81AC:
 /* 800B81AC 000B40CC  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B81B0 000B40D0  80 03 EC 20 */	lwz r0, modeCtrl@l(r3)
@@ -2530,7 +2530,7 @@ lbl_800B8338:
 /* 800B835C 000B427C  7C 00 20 51 */	subf. r0, r0, r4
 /* 800B8360 000B4280  40 82 00 0C */	bne lbl_800B836C
 /* 800B8364 000B4284  38 60 02 2E */	li r3, 0x22e
-/* 800B8368 000B4288  4B F7 32 3D */	bl g_play_sound
+/* 800B8368 000B4288  4B F7 32 3D */	bl u_play_sound_0
 lbl_800B836C:
 /* 800B836C 000B428C  C0 1C 00 10 */	lfs f0, 0x10(r28)
 /* 800B8370 000B4290  3C 60 80 1F */	lis r3, modeCtrl@ha
@@ -2625,8 +2625,8 @@ lbl_800B8460:
 /* 800B84B4 000B43D4  38 60 00 0B */	li r3, 0xb
 /* 800B84B8 000B43D8  4B F5 2E 71 */	bl event_start
 /* 800B84BC 000B43DC  A8 6D 9D 78 */	lha r3, currStageId@sda21(r13)
-/* 800B84C0 000B43E0  4B F6 98 F5 */	bl func_80021DB4
-/* 800B84C4 000B43E4  4B FD EE 09 */	bl func_800972CC
+/* 800B84C0 000B43E0  4B F6 98 F5 */	bl light_init
+/* 800B84C4 000B43E4  4B FD EE 09 */	bl rend_efc_mirror_enable
 /* 800B84C8 000B43E8  38 60 00 00 */	li r3, 0
 /* 800B84CC 000B43EC  38 80 00 00 */	li r4, 0
 /* 800B84D0 000B43F0  48 00 49 85 */	bl func_800BCE54
@@ -2753,10 +2753,10 @@ lbl_800B86A4:
 /* 800B86A4 000B45C4  38 60 01 00 */	li r3, 0x100
 /* 800B86A8 000B45C8  38 80 00 00 */	li r4, 0
 /* 800B86AC 000B45CC  38 A0 00 1E */	li r5, 0x1e
-/* 800B86B0 000B45D0  4B FB AC 2D */	bl g_start_screen_fade
+/* 800B86B0 000B45D0  4B FB AC 2D */	bl start_screen_fade
 /* 800B86B4 000B45D4  38 60 00 44 */	li r3, 0x44
 /* 800B86B8 000B45D8  38 80 00 00 */	li r4, 0
-/* 800B86BC 000B45DC  4B F7 48 7D */	bl g_play_music
+/* 800B86BC 000B45DC  4B F7 48 7D */	bl u_play_music
 /* 800B86C0 000B45E0  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800B86C4 000B45E4  83 E1 00 14 */	lwz r31, 0x14(r1)
 /* 800B86C8 000B45E8  83 C1 00 10 */	lwz r30, 0x10(r1)
@@ -2942,7 +2942,7 @@ lbl_800B8968:
 /* 800B8978 000B4898  90 01 00 24 */	stw r0, 0x24(r1)
 /* 800B897C 000B489C  38 60 00 00 */	li r3, 0
 /* 800B8980 000B48A0  38 80 00 01 */	li r4, 1
-/* 800B8984 000B48A4  4B FB CF 7D */	bl g_create_textbox
+/* 800B8984 000B48A4  4B FB CF 7D */	bl textbox_set_properties
 /* 800B8988 000B48A8  3F FC 00 01 */	addis r31, r28, 1
 /* 800B898C 000B48AC  3B 40 00 00 */	li r26, 0
 /* 800B8990 000B48B0  48 00 00 3C */	b lbl_800B89CC
@@ -2953,7 +2953,7 @@ lbl_800B8994:
 /* 800B89A0 000B48C0  3C 84 00 01 */	addis r4, r4, 1
 /* 800B89A4 000B48C4  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B89A8 000B48C8  7C 9C 20 2E */	lwzx r4, r28, r4
-/* 800B89AC 000B48CC  4B FB D2 6D */	bl g_set_textbox_text
+/* 800B89AC 000B48CC  4B FB D2 6D */	bl textbox_add_text
 /* 800B89B0 000B48D0  80 7F AA B0 */	lwz r3, -0x5550(r31)
 /* 800B89B4 000B48D4  3B 5A 00 01 */	addi r26, r26, 1
 /* 800B89B8 000B48D8  38 03 FF FF */	addi r0, r3, -1
@@ -3125,8 +3125,8 @@ lbl_800B8C30:
 /* 800B8C30 000B4B50  80 04 00 00 */	lwz r0, 0(r4)
 /* 800B8C34 000B4B54  2C 00 00 00 */	cmpwi r0, 0
 /* 800B8C38 000B4B58  40 82 01 04 */	bne lbl_800B8D3C
-/* 800B8C3C 000B4B5C  3C 60 80 1F */	lis r3, lbl_801F3D88@ha
-/* 800B8C40 000B4B60  38 63 3D 88 */	addi r3, r3, lbl_801F3D88@l
+/* 800B8C3C 000B4B5C  3C 60 80 1F */	lis r3, g_currPlayerButtons@ha
+/* 800B8C40 000B4B60  38 63 3D 88 */	addi r3, r3, g_currPlayerButtons@l
 /* 800B8C44 000B4B64  A0 03 00 04 */	lhz r0, 4(r3)
 /* 800B8C48 000B4B68  54 00 05 EF */	rlwinm. r0, r0, 0, 0x17, 0x17
 /* 800B8C4C 000B4B6C  41 82 00 F0 */	beq lbl_800B8D3C
@@ -3140,7 +3140,7 @@ lbl_800B8C30:
 /* 800B8C6C 000B4B8C  38 60 00 00 */	li r3, 0
 /* 800B8C70 000B4B90  38 80 00 14 */	li r4, 0x14
 /* 800B8C74 000B4B94  38 A0 00 00 */	li r5, 0
-/* 800B8C78 000B4B98  4B FB CC 89 */	bl g_create_textbox
+/* 800B8C78 000B4B98  4B FB CC 89 */	bl textbox_set_properties
 /* 800B8C7C 000B4B9C  38 61 00 08 */	addi r3, r1, 8
 /* 800B8C80 000B4BA0  38 80 00 00 */	li r4, 0
 /* 800B8C84 000B4BA4  38 A0 00 28 */	li r5, 0x28
@@ -3159,7 +3159,7 @@ lbl_800B8C30:
 /* 800B8CB8 000B4BD8  7C C6 07 74 */	extsb r6, r6
 /* 800B8CBC 000B4BDC  98 C1 00 1D */	stb r6, 0x1d(r1)
 /* 800B8CC0 000B4BE0  90 01 00 24 */	stw r0, 0x24(r1)
-/* 800B8CC4 000B4BE4  4B FB CC 3D */	bl g_create_textbox
+/* 800B8CC4 000B4BE4  4B FB CC 3D */	bl textbox_set_properties
 /* 800B8CC8 000B4BE8  3B 80 00 00 */	li r28, 0
 /* 800B8CCC 000B4BEC  48 00 00 3C */	b lbl_800B8D08
 lbl_800B8CD0:
@@ -3169,7 +3169,7 @@ lbl_800B8CD0:
 /* 800B8CDC 000B4BFC  3C 84 00 01 */	addis r4, r4, 1
 /* 800B8CE0 000B4C00  38 84 AA B4 */	addi r4, r4, -21836
 /* 800B8CE4 000B4C04  7C 9E 20 2E */	lwzx r4, r30, r4
-/* 800B8CE8 000B4C08  4B FB CF 31 */	bl g_set_textbox_text
+/* 800B8CE8 000B4C08  4B FB CF 31 */	bl textbox_add_text
 /* 800B8CEC 000B4C0C  80 7F AA B0 */	lwz r3, -0x5550(r31)
 /* 800B8CF0 000B4C10  3B 9C 00 01 */	addi r28, r28, 1
 /* 800B8CF4 000B4C14  38 03 FF FF */	addi r0, r3, -1
@@ -3191,7 +3191,7 @@ lbl_800B8D1C:
 /* 800B8D2C 000B4C4C  38 60 00 00 */	li r3, 0
 /* 800B8D30 000B4C50  38 80 00 14 */	li r4, 0x14
 /* 800B8D34 000B4C54  38 A0 00 00 */	li r5, 0
-/* 800B8D38 000B4C58  4B FB CB C9 */	bl g_create_textbox
+/* 800B8D38 000B4C58  4B FB CB C9 */	bl textbox_set_properties
 lbl_800B8D3C:
 /* 800B8D3C 000B4C5C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B8D40 000B4C60  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -3364,7 +3364,7 @@ lbl_800B8F88:
 /* 800B8FB8 000B4ED8  80 04 00 14 */	lwz r0, 0x14(r4)
 /* 800B8FBC 000B4EDC  54 00 06 B0 */	rlwinm r0, r0, 0, 0x1a, 0x18
 /* 800B8FC0 000B4EE0  90 04 00 14 */	stw r0, 0x14(r4)
-/* 800B8FC4 000B4EE4  4B F7 25 E1 */	bl g_play_sound
+/* 800B8FC4 000B4EE4  4B F7 25 E1 */	bl u_play_sound_0
 /* 800B8FC8 000B4EE8  48 00 03 40 */	b lbl_800B9308
 lbl_800B8FCC:
 /* 800B8FCC 000B4EEC  3B 7C 00 08 */	addi r27, r28, 8
@@ -3574,9 +3574,9 @@ lbl_800B92F0:
 /* 800B92F0 000B5210  3C 60 01 00 */	lis r3, 0x00FFFFFF@ha
 /* 800B92F4 000B5214  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800B92F8 000B5218  38 60 00 01 */	li r3, 1
-/* 800B92FC 000B521C  4B FB 9F E1 */	bl g_start_screen_fade
+/* 800B92FC 000B521C  4B FB 9F E1 */	bl start_screen_fade
 /* 800B9300 000B5220  38 60 02 2F */	li r3, 0x22f
-/* 800B9304 000B5224  4B F7 22 A1 */	bl g_play_sound
+/* 800B9304 000B5224  4B F7 22 A1 */	bl u_play_sound_0
 lbl_800B9308:
 /* 800B9308 000B5228  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B930C 000B522C  80 03 EC 20 */	lwz r0, modeCtrl@l(r3)
@@ -3642,7 +3642,7 @@ lbl_800B93D0:
 /* 800B93F4 000B5314  7C 00 20 51 */	subf. r0, r0, r4
 /* 800B93F8 000B5318  40 82 00 0C */	bne lbl_800B9404
 /* 800B93FC 000B531C  38 60 02 2E */	li r3, 0x22e
-/* 800B9400 000B5320  4B F7 21 A5 */	bl g_play_sound
+/* 800B9400 000B5320  4B F7 21 A5 */	bl u_play_sound_0
 lbl_800B9404:
 /* 800B9404 000B5324  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800B9408 000B5328  38 83 EC 20 */	addi r4, r3, modeCtrl@l
@@ -3681,7 +3681,7 @@ func_800B9444:
 /* 800B9480 000B53A0  38 00 01 68 */	li r0, 0x168
 /* 800B9484 000B53A4  90 1E 00 00 */	stw r0, 0(r30)
 /* 800B9488 000B53A8  38 60 00 00 */	li r3, 0
-/* 800B948C 000B53AC  4B FB 9E 51 */	bl g_start_screen_fade
+/* 800B948C 000B53AC  4B FB 9E 51 */	bl start_screen_fade
 /* 800B9490 000B53B0  48 00 3F E1 */	bl func_800BD470
 /* 800B9494 000B53B4  48 00 60 61 */	bl func_800BF4F4
 /* 800B9498 000B53B8  3C 60 80 1F */	lis r3, cameraInfo@ha
@@ -4114,7 +4114,7 @@ lbl_800B9B04:
 /* 800B9B08 000B5A28  38 60 02 35 */	li r3, 0x235
 /* 800B9B0C 000B5A2C  60 00 00 04 */	ori r0, r0, 4
 /* 800B9B10 000B5A30  90 1F 00 04 */	stw r0, 4(r31)
-/* 800B9B14 000B5A34  4B F7 1A 91 */	bl g_play_sound
+/* 800B9B14 000B5A34  4B F7 1A 91 */	bl u_play_sound_0
 /* 800B9B18 000B5A38  48 00 03 4C */	b lbl_800B9E64
 lbl_800B9B1C:
 /* 800B9B1C 000B5A3C  80 7F 00 08 */	lwz r3, 8(r31)
@@ -4323,7 +4323,7 @@ lbl_800B9E30:
 /* 800B9E34 000B5D54  38 60 02 36 */	li r3, 0x236
 /* 800B9E38 000B5D58  54 00 07 B8 */	rlwinm r0, r0, 0, 0x1e, 0x1c
 /* 800B9E3C 000B5D5C  90 1F 00 04 */	stw r0, 4(r31)
-/* 800B9E40 000B5D60  4B F7 17 65 */	bl g_play_sound
+/* 800B9E40 000B5D60  4B F7 17 65 */	bl u_play_sound_0
 /* 800B9E44 000B5D64  80 7F 00 08 */	lwz r3, 8(r31)
 /* 800B9E48 000B5D68  38 00 00 01 */	li r0, 1
 /* 800B9E4C 000B5D6C  3C 63 00 01 */	addis r3, r3, 1
@@ -4407,7 +4407,7 @@ func_800B9EA4:
 /* 800B9F74 000B5E94  D0 06 00 48 */	stfs f0, 0x48(r6)
 /* 800B9F78 000B5E98  D0 06 00 4C */	stfs f0, 0x4c(r6)
 /* 800B9F7C 000B5E9C  D0 06 00 50 */	stfs f0, 0x50(r6)
-/* 800B9F80 000B5EA0  4B F7 16 25 */	bl g_play_sound
+/* 800B9F80 000B5EA0  4B F7 16 25 */	bl u_play_sound_0
 /* 800B9F84 000B5EA4  38 60 01 7B */	li r3, 0x17b
 /* 800B9F88 000B5EA8  4B F7 10 49 */	bl SoundReq
 /* 800B9F8C 000B5EAC  80 7F 00 00 */	lwz r3, 0(r31)
@@ -4474,7 +4474,7 @@ lbl_800BA054:
 /* 800BA070 000B5F90  40 82 00 0C */	bne lbl_800BA07C
 lbl_800BA074:
 /* 800BA074 000B5F94  38 60 02 38 */	li r3, 0x238
-/* 800BA078 000B5F98  4B F7 15 2D */	bl g_play_sound
+/* 800BA078 000B5F98  4B F7 15 2D */	bl u_play_sound_0
 lbl_800BA07C:
 /* 800BA07C 000B5F9C  80 7D 00 00 */	lwz r3, 0(r29)
 /* 800BA080 000B5FA0  80 03 00 9C */	lwz r0, 0x9c(r3)
@@ -4512,7 +4512,7 @@ lbl_800BA0C4:
 /* 800BA0F4 000B6014  C0 02 BC D0 */	lfs f0, lbl_802F64D0@sda21(r2)
 /* 800BA0F8 000B6018  80 9E 00 00 */	lwz r4, 0(r30)
 /* 800BA0FC 000B601C  D0 04 00 00 */	stfs f0, 0(r4)
-/* 800BA100 000B6020  4B F7 14 A5 */	bl g_play_sound
+/* 800BA100 000B6020  4B F7 14 A5 */	bl u_play_sound_0
 lbl_800BA104:
 /* 800BA104 000B6024  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800BA108 000B6028  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -4992,7 +4992,7 @@ lbl_800BA7CC:
 /* 800BA7FC 000B671C  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800BA800 000B6720  80 BD 00 00 */	lwz r5, 0(r29)
 /* 800BA804 000B6724  38 60 00 01 */	li r3, 1
-/* 800BA808 000B6728  4B FB 8A D5 */	bl g_start_screen_fade
+/* 800BA808 000B6728  4B FB 8A D5 */	bl start_screen_fade
 /* 800BA80C 000B672C  80 7D 00 00 */	lwz r3, 0(r29)
 /* 800BA810 000B6730  38 00 00 01 */	li r0, 1
 /* 800BA814 000B6734  C0 42 BC E4 */	lfs f2, lbl_802F64E4@sda21(r2)
@@ -5519,7 +5519,7 @@ lbl_800BAFC8:
 /* 800BAFF4 000B6F14  38 83 FF FF */	addi r4, r3, 0x00FFFFFF@l
 /* 800BAFF8 000B6F18  80 A5 00 00 */	lwz r5, 0(r5)
 /* 800BAFFC 000B6F1C  38 60 00 01 */	li r3, 1
-/* 800BB000 000B6F20  4B FB 82 DD */	bl g_start_screen_fade
+/* 800BB000 000B6F20  4B FB 82 DD */	bl start_screen_fade
 lbl_800BB004:
 /* 800BB004 000B6F24  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800BB008 000B6F28  38 63 EC 20 */	addi r3, r3, modeCtrl@l
@@ -6230,9 +6230,9 @@ func_800BBA58:
 /* 800BBA98 000B79B8  4B F4 BC 45 */	bl mathutil_mtxA_from_mtxB_translate
 /* 800BBA9C 000B79BC  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BBAA0 000B79C0  38 80 00 00 */	li r4, 0
-/* 800BBAA4 000B79C4  4B FD EF 81 */	bl g_gxutil_upload_some_mtx
+/* 800BBAA4 000B79C4  4B FD EF 81 */	bl u_gxutil_upload_some_mtx
 /* 800BBAA8 000B79C8  7F C3 F3 78 */	mr r3, r30
-/* 800BBAAC 000B79CC  4B FD 2D 01 */	bl g_avdisp_draw_model_1
+/* 800BBAAC 000B79CC  4B FD 2D 01 */	bl avdisp_draw_model_unculled_sort_translucent
 /* 800BBAB0 000B79D0  80 8D 9A E0 */	lwz r4, decodedBgGma@sda21(r13)
 /* 800BBAB4 000B79D4  38 7F 00 20 */	addi r3, r31, 0x20
 /* 800BBAB8 000B79D8  80 84 00 08 */	lwz r4, 8(r4)
@@ -6248,9 +6248,9 @@ func_800BBA58:
 /* 800BBAE0 000B7A00  4B F4 C5 A9 */	bl mathutil_mtxA_rotate_z
 /* 800BBAE4 000B7A04  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BBAE8 000B7A08  38 80 00 00 */	li r4, 0
-/* 800BBAEC 000B7A0C  4B FD EF 39 */	bl g_gxutil_upload_some_mtx
+/* 800BBAEC 000B7A0C  4B FD EF 39 */	bl u_gxutil_upload_some_mtx
 /* 800BBAF0 000B7A10  7F C3 F3 78 */	mr r3, r30
-/* 800BBAF4 000B7A14  4B FD 2C B9 */	bl g_avdisp_draw_model_1
+/* 800BBAF4 000B7A14  4B FD 2C B9 */	bl avdisp_draw_model_unculled_sort_translucent
 lbl_800BBAF8:
 /* 800BBAF8 000B7A18  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 800BBAFC 000B7A1C  83 E1 00 0C */	lwz r31, 0xc(r1)
@@ -6602,7 +6602,7 @@ lbl_800BBFAC:
 /* 800BBFFC 000B7F1C  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC000 000B7F20  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC004 000B7F24  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC008 000B7F28  4B F9 0F 01 */	bl g_spawn_effect_object
+/* 800BC008 000B7F28  4B F9 0F 01 */	bl spawn_effect
 /* 800BC00C 000B7F2C  48 00 00 28 */	b lbl_800BC034
 lbl_800BC010:
 /* 800BC010 000B7F30  C0 10 00 18 */	lfs f0, 0x18(r16)
@@ -6671,7 +6671,7 @@ lbl_800BC0D0:
 /* 800BC0FC 000B801C  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC100 000B8020  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC104 000B8024  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC108 000B8028  4B F9 0E 01 */	bl g_spawn_effect_object
+/* 800BC108 000B8028  4B F9 0E 01 */	bl spawn_effect
 /* 800BC10C 000B802C  48 00 06 98 */	b lbl_800BC7A4
 .global lbl_800BC110
 lbl_800BC110:
@@ -6749,7 +6749,7 @@ lbl_800BC218:
 /* 800BC218 000B8138  38 70 00 0C */	addi r3, r16, 0xc
 /* 800BC21C 000B813C  38 81 00 08 */	addi r4, r1, 8
 /* 800BC220 000B8140  38 A0 00 00 */	li r5, 0
-/* 800BC224 000B8144  4B F8 39 25 */	bl func_8003FB48
+/* 800BC224 000B8144  4B F8 39 25 */	bl raycast_stage_down
 /* 800BC228 000B8148  C0 50 00 1C */	lfs f2, 0x1c(r16)
 /* 800BC22C 000B814C  FC 02 F8 40 */	fcmpo cr0, f2, f31
 /* 800BC230 000B8150  40 80 00 30 */	bge lbl_800BC260
@@ -6779,13 +6779,13 @@ lbl_800BC260:
 /* 800BC28C 000B81AC  90 01 00 5C */	stw r0, 0x5c(r1)
 /* 800BC290 000B81B0  80 10 00 14 */	lwz r0, 0x14(r16)
 /* 800BC294 000B81B4  90 01 00 60 */	stw r0, 0x60(r1)
-/* 800BC298 000B81B8  4B F9 0C 71 */	bl g_spawn_effect_object
+/* 800BC298 000B81B8  4B F9 0C 71 */	bl spawn_effect
 .global lbl_800BC29C
 lbl_800BC29C:
 /* 800BC29C 000B81BC  38 70 00 0C */	addi r3, r16, 0xc
 /* 800BC2A0 000B81C0  38 81 00 08 */	addi r4, r1, 8
 /* 800BC2A4 000B81C4  38 A0 00 00 */	li r5, 0
-/* 800BC2A8 000B81C8  4B F8 38 A1 */	bl func_8003FB48
+/* 800BC2A8 000B81C8  4B F8 38 A1 */	bl raycast_stage_down
 /* 800BC2AC 000B81CC  C0 10 00 18 */	lfs f0, 0x18(r16)
 /* 800BC2B0 000B81D0  EC 00 05 72 */	fmuls f0, f0, f21
 /* 800BC2B4 000B81D4  D0 10 00 18 */	stfs f0, 0x18(r16)
@@ -6822,7 +6822,7 @@ lbl_800BC29C:
 /* 800BC330 000B8250  FC 01 00 40 */	fcmpo cr0, f1, f0
 /* 800BC334 000B8254  40 80 00 0C */	bge lbl_800BC340
 /* 800BC338 000B8258  38 60 00 69 */	li r3, 0x69
-/* 800BC33C 000B825C  4B F6 F2 69 */	bl g_play_sound
+/* 800BC33C 000B825C  4B F6 F2 69 */	bl u_play_sound_0
 lbl_800BC340:
 /* 800BC340 000B8260  C0 01 00 10 */	lfs f0, 0x10(r1)
 /* 800BC344 000B8264  EC 1B 00 2A */	fadds f0, f27, f0
@@ -6862,7 +6862,7 @@ lbl_800BC368:
 /* 800BC3C8 000B82E8  D3 41 00 B0 */	stfs f26, 0xb0(r1)
 /* 800BC3CC 000B82EC  D3 E1 00 B4 */	stfs f31, 0xb4(r1)
 /* 800BC3D0 000B82F0  D0 01 00 CC */	stfs f0, 0xcc(r1)
-/* 800BC3D4 000B82F4  4B F9 0B 35 */	bl g_spawn_effect_object
+/* 800BC3D4 000B82F4  4B F9 0B 35 */	bl spawn_effect
 /* 800BC3D8 000B82F8  48 00 03 CC */	b lbl_800BC7A4
 .global lbl_800BC3DC
 lbl_800BC3DC:
@@ -6879,7 +6879,7 @@ lbl_800BC3DC:
 /* 800BC404 000B8324  90 10 00 10 */	stw r0, 0x10(r16)
 /* 800BC408 000B8328  80 16 00 08 */	lwz r0, 8(r22)
 /* 800BC40C 000B832C  90 10 00 14 */	stw r0, 0x14(r16)
-/* 800BC410 000B8330  4B F8 37 39 */	bl func_8003FB48
+/* 800BC410 000B8330  4B F8 37 39 */	bl raycast_stage_down
 /* 800BC414 000B8334  28 03 00 00 */	cmplwi r3, 0
 /* 800BC418 000B8338  41 82 00 28 */	beq lbl_800BC440
 /* 800BC41C 000B833C  80 61 00 0C */	lwz r3, 0xc(r1)
@@ -6938,7 +6938,7 @@ lbl_800BC4DC:
 /* 800BC4DC 000B83FC  38 70 00 0C */	addi r3, r16, 0xc
 /* 800BC4E0 000B8400  38 81 00 08 */	addi r4, r1, 8
 /* 800BC4E4 000B8404  38 A0 00 00 */	li r5, 0
-/* 800BC4E8 000B8408  4B F8 36 61 */	bl func_8003FB48
+/* 800BC4E8 000B8408  4B F8 36 61 */	bl raycast_stage_down
 /* 800BC4EC 000B840C  28 03 00 00 */	cmplwi r3, 0
 /* 800BC4F0 000B8410  41 82 00 28 */	beq lbl_800BC518
 /* 800BC4F4 000B8414  80 61 00 0C */	lwz r3, 0xc(r1)
@@ -7205,7 +7205,7 @@ lbl_800BC898:
 .global func_800BC8B8
 func_800BC8B8:
 /* 800BC8B8 000B87D8  7C 08 02 A6 */	mflr r0
-/* 800BC8BC 000B87DC  3C 60 80 1F */	lis r3, lbl_801F0614@ha
+/* 800BC8BC 000B87DC  3C 60 80 1F */	lis r3, s_bgLightInfo@ha
 /* 800BC8C0 000B87E0  90 01 00 04 */	stw r0, 4(r1)
 /* 800BC8C4 000B87E4  94 21 FE F8 */	stwu r1, -0x108(r1)
 /* 800BC8C8 000B87E8  DB E1 01 00 */	stfd f31, 0x100(r1)
@@ -7220,7 +7220,7 @@ func_800BC8B8:
 /* 800BC8EC 000B880C  DA C1 00 B8 */	stfd f22, 0xb8(r1)
 /* 800BC8F0 000B8810  DA A1 00 B0 */	stfd f21, 0xb0(r1)
 /* 800BC8F4 000B8814  BE A1 00 84 */	stmw r21, 0x84(r1)
-/* 800BC8F8 000B8818  3B 03 06 14 */	addi r24, r3, lbl_801F0614@l
+/* 800BC8F8 000B8818  3B 03 06 14 */	addi r24, r3, s_bgLightInfo@l
 /* 800BC8FC 000B881C  A8 78 00 42 */	lha r3, 0x42(r24)
 /* 800BC900 000B8820  4B F4 AD 59 */	bl mathutil_mtxA_from_rotate_y
 /* 800BC904 000B8824  A8 78 00 40 */	lha r3, 0x40(r24)
@@ -7287,11 +7287,11 @@ lbl_800BC974:
 /* 800BC9F4 000B8914  4B F4 B5 95 */	bl mathutil_mtxA_rotate_x
 /* 800BC9F8 000B8918  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BC9FC 000B891C  38 80 00 00 */	li r4, 0
-/* 800BCA00 000B8920  4B FD E0 25 */	bl g_gxutil_upload_some_mtx
+/* 800BCA00 000B8920  4B FD E0 25 */	bl u_gxutil_upload_some_mtx
 /* 800BCA04 000B8924  C0 3A 00 58 */	lfs f1, 0x58(r26)
-/* 800BCA08 000B8928  4B FD 1A 19 */	bl g_avdisp_set_model_scale
+/* 800BCA08 000B8928  4B FD 1A 19 */	bl avdisp_set_bound_sphere_scale
 /* 800BCA0C 000B892C  7E A3 AB 78 */	mr r3, r21
-/* 800BCA10 000B8930  4B FD 1A 29 */	bl g_avdisp_maybe_draw_model_1
+/* 800BCA10 000B8930  4B FD 1A 29 */	bl avdisp_draw_model_culled_sort_translucent
 lbl_800BCA14:
 /* 800BCA14 000B8934  A8 1B 00 56 */	lha r0, 0x56(r27)
 /* 800BCA18 000B8938  2C 00 00 00 */	cmpwi r0, 0
@@ -7429,7 +7429,7 @@ lbl_800BCB38:
 /* 800BCC1C 000B8B3C  C0 21 00 08 */	lfs f1, 8(r1)
 /* 800BCC20 000B8B40  C0 41 00 0C */	lfs f2, 0xc(r1)
 /* 800BCC24 000B8B44  C0 61 00 10 */	lfs f3, 0x10(r1)
-/* 800BCC28 000B8B48  4B FD 2A ED */	bl g_avdisp_set_some_color_1
+/* 800BCC28 000B8B48  4B FD 2A ED */	bl avdisp_set_post_mult_color
 /* 800BCC2C 000B8B4C  C0 41 00 1C */	lfs f2, 0x1c(r1)
 /* 800BCC30 000B8B50  EC 7E 05 72 */	fmuls f3, f30, f21
 /* 800BCC34 000B8B54  C0 99 00 14 */	lfs f4, 0x14(r25)
@@ -7458,13 +7458,13 @@ lbl_800BCB38:
 /* 800BCC90 000B8BB0  4B F4 B2 F9 */	bl mathutil_mtxA_rotate_x
 /* 800BCC94 000B8BB4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BCC98 000B8BB8  38 80 00 00 */	li r4, 0
-/* 800BCC9C 000B8BBC  4B FD DD 89 */	bl g_gxutil_upload_some_mtx
+/* 800BCC9C 000B8BBC  4B FD DD 89 */	bl u_gxutil_upload_some_mtx
 /* 800BCCA0 000B8BC0  FC 20 A8 90 */	fmr f1, f21
-/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl g_avdisp_set_model_scale
+/* 800BCCA4 000B8BC4  4B FD 17 7D */	bl avdisp_set_bound_sphere_scale
 /* 800BCCA8 000B8BC8  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 800BCCAC 000B8BCC  80 63 00 08 */	lwz r3, 8(r3)
 /* 800BCCB0 000B8BD0  80 63 02 70 */	lwz r3, 0x270(r3)
-/* 800BCCB4 000B8BD4  4B FD 18 4D */	bl g_avdisp_maybe_draw_model_3
+/* 800BCCB4 000B8BD4  4B FD 18 4D */	bl avdisp_draw_model_culled_sort_all
 lbl_800BCCB8:
 /* 800BCCB8 000B8BD8  4B F4 AB 7D */	bl mathutil_mtxA_pop
 lbl_800BCCBC:
@@ -7474,7 +7474,7 @@ lbl_800BCCC0:
 /* 800BCCC4 000B8BE4  7C 00 07 74 */	extsb r0, r0
 /* 800BCCC8 000B8BE8  2C 00 FF FF */	cmpwi r0, -1
 /* 800BCCCC 000B8BEC  40 82 FD F8 */	bne lbl_800BCAC4
-/* 800BCCD0 000B8BF0  4B F5 16 ED */	bl func_8000E3BC
+/* 800BCCD0 000B8BF0  4B F5 16 ED */	bl u_reset_post_mult_color
 /* 800BCCD4 000B8BF4  38 60 00 01 */	li r3, 1
 /* 800BCCD8 000B8BF8  38 80 00 03 */	li r4, 3
 /* 800BCCDC 000B8BFC  38 A0 00 01 */	li r5, 1
@@ -7516,7 +7516,7 @@ lbl_800BCD30:
 /* 800BCD64 000B8C84  7F A0 1A 14 */	add r29, r0, r3
 /* 800BCD68 000B8C88  4B F4 AC 45 */	bl mathutil_mtxA_from_mtxB
 /* 800BCD6C 000B8C8C  38 60 00 00 */	li r3, 0
-/* 800BCD70 000B8C90  4B F6 55 05 */	bl func_80022274
+/* 800BCD70 000B8C90  4B F6 55 05 */	bl load_light_group_uncached
 /* 800BCD74 000B8C94  C0 42 BD 2C */	lfs f2, lbl_802F652C@sda21(r2)
 /* 800BCD78 000B8C98  C0 1E 00 10 */	lfs f0, 0x10(r30)
 /* 800BCD7C 000B8C9C  C0 3E 00 0C */	lfs f1, 0xc(r30)
@@ -7531,7 +7531,7 @@ lbl_800BCD30:
 /* 800BCDA0 000B8CC0  4B F4 B2 E9 */	bl mathutil_mtxA_rotate_z
 /* 800BCDA4 000B8CC4  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BCDA8 000B8CC8  38 80 00 00 */	li r4, 0
-/* 800BCDAC 000B8CCC  4B FD DC 79 */	bl g_gxutil_upload_some_mtx
+/* 800BCDAC 000B8CCC  4B FD DC 79 */	bl u_gxutil_upload_some_mtx
 /* 800BCDB0 000B8CD0  38 60 00 01 */	li r3, 1
 /* 800BCDB4 000B8CD4  38 80 00 03 */	li r4, 3
 /* 800BCDB8 000B8CD8  38 A0 00 00 */	li r5, 0
@@ -7540,15 +7540,15 @@ lbl_800BCD30:
 /* 800BCDC4 000B8CE4  A8 03 7B A0 */	lha r0, clearHemisphereInsideParts@l(r3)
 /* 800BCDC8 000B8CE8  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCDCC 000B8CEC  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800BCDD0 000B8CF0  4B FD 1C 95 */	bl g_avdisp_draw_model_2
+/* 800BCDD0 000B8CF0  4B FD 1C 95 */	bl avdisp_draw_model_unculled_sort_none
 /* 800BCDD4 000B8CF4  A8 1D 00 00 */	lha r0, 0(r29)
 /* 800BCDD8 000B8CF8  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCDDC 000B8CFC  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800BCDE0 000B8D00  4B FD 1C 85 */	bl g_avdisp_draw_model_2
+/* 800BCDE0 000B8D00  4B FD 1C 85 */	bl avdisp_draw_model_unculled_sort_none
 /* 800BCDE4 000B8D04  A8 1D 00 0C */	lha r0, 0xc(r29)
 /* 800BCDE8 000B8D08  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCDEC 000B8D0C  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800BCDF0 000B8D10  4B FD 1C 75 */	bl g_avdisp_draw_model_2
+/* 800BCDF0 000B8D10  4B FD 1C 75 */	bl avdisp_draw_model_unculled_sort_none
 /* 800BCDF4 000B8D14  38 60 00 01 */	li r3, 1
 /* 800BCDF8 000B8D18  38 80 00 03 */	li r4, 3
 /* 800BCDFC 000B8D1C  38 A0 00 01 */	li r5, 1
@@ -7557,11 +7557,11 @@ lbl_800BCD30:
 /* 800BCE08 000B8D28  A8 03 7B 98 */	lha r0, clearHemisphereOutsideParts@l(r3)
 /* 800BCE0C 000B8D2C  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCE10 000B8D30  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800BCE14 000B8D34  4B FD 1C 51 */	bl g_avdisp_draw_model_2
+/* 800BCE14 000B8D34  4B FD 1C 51 */	bl avdisp_draw_model_unculled_sort_none
 /* 800BCE18 000B8D38  A8 1D 00 06 */	lha r0, 6(r29)
 /* 800BCE1C 000B8D3C  54 00 18 38 */	slwi r0, r0, 3
 /* 800BCE20 000B8D40  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800BCE24 000B8D44  4B FD 1C 41 */	bl g_avdisp_draw_model_2
+/* 800BCE24 000B8D44  4B FD 1C 41 */	bl avdisp_draw_model_unculled_sort_none
 /* 800BCE28 000B8D48  38 60 00 01 */	li r3, 1
 /* 800BCE2C 000B8D4C  38 80 00 03 */	li r4, 3
 /* 800BCE30 000B8D50  38 A0 00 01 */	li r5, 1
@@ -7666,7 +7666,7 @@ lbl_800BCF6C:
 /* 800BCF9C 000B8EBC  3B E4 6B D8 */	addi r31, r4, lbl_802C6BD8@l
 /* 800BCFA0 000B8EC0  41 82 00 1C */	beq lbl_800BCFBC
 /* 800BCFA4 000B8EC4  7F A3 EB 78 */	mr r3, r29
-/* 800BCFA8 000B8EC8  4B FC E3 2D */	bl func_8008B2D4
+/* 800BCFA8 000B8EC8  4B FC E3 2D */	bl u_ape_free
 /* 800BCFAC 000B8ECC  2C 1E 00 03 */	cmpwi r30, 3
 /* 800BCFB0 000B8ED0  41 82 04 A4 */	beq lbl_800BD454
 /* 800BCFB4 000B8ED4  4B FD 02 8D */	bl func_8008D240
@@ -7853,7 +7853,7 @@ lbl_800BD214:
 /* 800BD224 000B9144  38 7D 00 00 */	addi r3, r29, 0
 /* 800BD228 000B9148  38 80 00 07 */	li r4, 7
 /* 800BD22C 000B914C  38 C0 00 00 */	li r6, 0
-/* 800BD230 000B9150  4B FC E9 A5 */	bl func_8008BBD4
+/* 800BD230 000B9150  4B FC E9 A5 */	bl u_set_ape_anim
 /* 800BD234 000B9154  48 00 00 1C */	b lbl_800BD250
 lbl_800BD238:
 /* 800BD238 000B9158  38 A5 FF EE */	addi r5, r5, -18
@@ -7861,10 +7861,10 @@ lbl_800BD238:
 /* 800BD240 000B9160  38 7D 00 00 */	addi r3, r29, 0
 /* 800BD244 000B9164  38 C5 00 01 */	addi r6, r5, 1
 /* 800BD248 000B9168  38 80 00 01 */	li r4, 1
-/* 800BD24C 000B916C  4B FC E9 89 */	bl func_8008BBD4
+/* 800BD24C 000B916C  4B FC E9 89 */	bl u_set_ape_anim
 lbl_800BD250:
 /* 800BD250 000B9170  7F A3 EB 78 */	mr r3, r29
-/* 800BD254 000B9174  4B FC F2 55 */	bl func_8008C4A8
+/* 800BD254 000B9174  4B FC F2 55 */	bl u_do_ape_anim
 /* 800BD258 000B9178  80 1E 00 70 */	lwz r0, 0x70(r30)
 /* 800BD25C 000B917C  2C 00 00 02 */	cmpwi r0, 2
 /* 800BD260 000B9180  41 82 00 14 */	beq lbl_800BD274
@@ -7979,7 +7979,7 @@ lbl_800BD3E4:
 /* 800BD3E4 000B9304  28 00 00 76 */	cmplwi r0, 0x76
 /* 800BD3E8 000B9308  40 82 00 6C */	bne lbl_800BD454
 /* 800BD3EC 000B930C  38 60 01 FF */	li r3, 0x1ff
-/* 800BD3F0 000B9310  4B F6 E1 B5 */	bl g_play_sound
+/* 800BD3F0 000B9310  4B F6 E1 B5 */	bl u_play_sound_0
 /* 800BD3F4 000B9314  48 00 00 60 */	b lbl_800BD454
 lbl_800BD3F8:
 /* 800BD3F8 000B9318  80 1F 00 04 */	lwz r0, 4(r31)
@@ -9201,7 +9201,7 @@ lbl_800BE5AC:
 /* 800BE66C 000BA58C  90 01 00 70 */	stw r0, 0x70(r1)
 /* 800BE670 000BA590  80 1D 00 14 */	lwz r0, 0x14(r29)
 /* 800BE674 000BA594  90 01 00 74 */	stw r0, 0x74(r1)
-/* 800BE678 000BA598  4B F8 E8 91 */	bl g_spawn_effect_object
+/* 800BE678 000BA598  4B F8 E8 91 */	bl spawn_effect
 lbl_800BE67C:
 /* 800BE67C 000BA59C  C0 1D 00 48 */	lfs f0, 0x48(r29)
 /* 800BE680 000BA5A0  EC 2F 00 28 */	fsubs f1, f15, f0
@@ -10105,7 +10105,7 @@ lbl_800BF3EC:
 lbl_800BF408:
 /* 800BF408 000BB328  38 61 00 08 */	addi r3, r1, 8
 /* 800BF40C 000BB32C  FC 40 E8 90 */	fmr f2, f29
-/* 800BF410 000BB330  4B F6 1B C1 */	bl g_frustum_test_maybe_2
+/* 800BF410 000BB330  4B F6 1B C1 */	bl test_scaled_sphere_in_frustum
 /* 800BF414 000BB334  2C 03 00 00 */	cmpwi r3, 0
 /* 800BF418 000BB338  41 82 00 A0 */	beq lbl_800BF4B8
 /* 800BF41C 000BB33C  80 1E 00 08 */	lwz r0, 8(r30)
@@ -10127,30 +10127,30 @@ lbl_800BF454:
 /* 800BF458 000BB378  40 82 00 38 */	bne lbl_800BF490
 /* 800BF45C 000BB37C  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BF460 000BB380  38 80 00 00 */	li r4, 0
-/* 800BF464 000BB384  4B FD B5 C1 */	bl g_gxutil_upload_some_mtx
+/* 800BF464 000BB384  4B FD B5 C1 */	bl u_gxutil_upload_some_mtx
 /* 800BF468 000BB388  FC 1C F8 40 */	fcmpo cr0, f28, f31
 /* 800BF46C 000BB38C  40 80 00 18 */	bge lbl_800BF484
 /* 800BF470 000BB390  FC 20 E0 90 */	fmr f1, f28
-/* 800BF474 000BB394  4B FC F0 F1 */	bl g_avdisp_set_alpha
+/* 800BF474 000BB394  4B FC F0 F1 */	bl avdisp_set_alpha
 /* 800BF478 000BB398  7F 83 E3 78 */	mr r3, r28
-/* 800BF47C 000BB39C  4B FC F7 19 */	bl g_avdisp_draw_model_3
+/* 800BF47C 000BB39C  4B FC F7 19 */	bl avdisp_draw_model_unculled_sort_all
 /* 800BF480 000BB3A0  48 00 00 38 */	b lbl_800BF4B8
 lbl_800BF484:
 /* 800BF484 000BB3A4  7F 83 E3 78 */	mr r3, r28
-/* 800BF488 000BB3A8  4B FC F3 25 */	bl g_avdisp_draw_model_1
+/* 800BF488 000BB3A8  4B FC F3 25 */	bl avdisp_draw_model_unculled_sort_translucent
 /* 800BF48C 000BB3AC  48 00 00 2C */	b lbl_800BF4B8
 lbl_800BF490:
 /* 800BF490 000BB3B0  FC 20 E8 90 */	fmr f1, f29
-/* 800BF494 000BB3B4  4B F7 17 15 */	bl g_nl2ngc_set_scale
+/* 800BF494 000BB3B4  4B F7 17 15 */	bl nl2ngc_set_scale
 /* 800BF498 000BB3B8  FC 1C F8 40 */	fcmpo cr0, f28, f31
 /* 800BF49C 000BB3BC  40 80 00 14 */	bge lbl_800BF4B0
 /* 800BF4A0 000BB3C0  7F 83 E3 78 */	mr r3, r28
 /* 800BF4A4 000BB3C4  FC 20 E0 90 */	fmr f1, f28
-/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl g_draw_naomi_model_with_alpha_deferred
+/* 800BF4A8 000BB3C8  4B F7 20 11 */	bl nl2ngc_draw_model_alpha_sort_all
 /* 800BF4AC 000BB3CC  48 00 00 0C */	b lbl_800BF4B8
 lbl_800BF4B0:
 /* 800BF4B0 000BB3D0  7F 83 E3 78 */	mr r3, r28
-/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl g_draw_naomi_model_and_do_other_stuff
+/* 800BF4B4 000BB3D4  4B F7 1D 5D */	bl nl2ngc_draw_model_sort_translucent
 lbl_800BF4B8:
 /* 800BF4B8 000BB3D8  37 FF FF FF */	addic. r31, r31, -1
 /* 800BF4BC 000BB3DC  3B DE 00 54 */	addi r30, r30, 0x54
@@ -10536,7 +10536,7 @@ lbl_800BF9E4:
 /* 800BFA04 000BB924  B0 05 00 04 */	sth r0, 4(r5)
 /* 800BFA08 000BB928  C0 02 BC D0 */	lfs f0, lbl_802F64D0@sda21(r2)
 /* 800BFA0C 000BB92C  D0 05 00 48 */	stfs f0, 0x48(r5)
-/* 800BFA10 000BB930  80 6D 99 24 */	lwz r3, naomiCommonObj@sda21(r13)
+/* 800BFA10 000BB930  80 6D 99 24 */	lwz r3, g_commonNlObj@sda21(r13)
 /* 800BFA14 000BB934  80 03 01 04 */	lwz r0, 0x104(r3)
 /* 800BFA18 000BB938  90 05 00 50 */	stw r0, 0x50(r5)
 /* 800BFA1C 000BB93C  4E 80 00 20 */	blr
@@ -10803,10 +10803,10 @@ func_800BFC2C:
 /* 800BFDD0 000BBCF0  38 60 00 01 */	li r3, 1
 /* 800BFDD4 000BBCF4  48 01 F2 91 */	bl GXSetNumTexGens
 /* 800BFDD8 000BBCF8  38 60 00 01 */	li r3, 1
-/* 800BFDDC 000BBCFC  4B FD F4 ED */	bl func_8009F2C8
+/* 800BFDDC 000BBCFC  4B FD F4 ED */	bl GXSetNumTevStages_cached
 /* 800BFDE0 000BBD00  38 61 00 6C */	addi r3, r1, 0x6c
 /* 800BFDE4 000BBD04  38 80 00 00 */	li r4, 0
-/* 800BFDE8 000BBD08  4B FD F6 49 */	bl func_8009F430
+/* 800BFDE8 000BBD08  4B FD F6 49 */	bl GXLoadTexObj_cached
 /* 800BFDEC 000BBD0C  38 00 00 FF */	li r0, 0xff
 /* 800BFDF0 000BBD10  C0 22 BE E0 */	lfs f1, lbl_802F66E0@sda21(r2)
 /* 800BFDF4 000BBD14  98 01 00 68 */	stb r0, 0x68(r1)
@@ -10822,12 +10822,12 @@ func_800BFC2C:
 /* 800BFE1C 000BBD3C  98 01 00 6B */	stb r0, 0x6b(r1)
 /* 800BFE20 000BBD40  80 01 00 68 */	lwz r0, 0x68(r1)
 /* 800BFE24 000BBD44  90 01 00 0C */	stw r0, 0xc(r1)
-/* 800BFE28 000BBD48  4B FD F5 15 */	bl func_8009F33C
+/* 800BFE28 000BBD48  4B FD F5 15 */	bl GXSetTevKColor_cached
 /* 800BFE2C 000BBD4C  38 60 00 00 */	li r3, 0
 /* 800BFE30 000BBD50  48 02 22 AD */	bl GXSetTevDirect
 /* 800BFE34 000BBD54  38 60 00 00 */	li r3, 0
 /* 800BFE38 000BBD58  38 80 00 1C */	li r4, 0x1c
-/* 800BFE3C 000BBD5C  4B FD F3 E9 */	bl func_8009F224
+/* 800BFE3C 000BBD5C  4B FD F3 E9 */	bl GXSetTevKAlphaSel_cached
 /* 800BFE40 000BBD60  38 60 00 00 */	li r3, 0
 /* 800BFE44 000BBD64  38 80 00 01 */	li r4, 1
 /* 800BFE48 000BBD68  38 A0 00 04 */	li r5, 4
@@ -10839,37 +10839,37 @@ func_800BFC2C:
 /* 800BFE60 000BBD80  38 80 00 00 */	li r4, 0
 /* 800BFE64 000BBD84  38 A0 00 00 */	li r5, 0
 /* 800BFE68 000BBD88  38 C0 00 FF */	li r6, 0xff
-/* 800BFE6C 000BBD8C  4B FD F1 89 */	bl func_8009EFF4
+/* 800BFE6C 000BBD8C  4B FD F1 89 */	bl GXSetTevOrder_cached
 /* 800BFE70 000BBD90  38 60 00 00 */	li r3, 0
 /* 800BFE74 000BBD94  38 80 00 00 */	li r4, 0
 /* 800BFE78 000BBD98  38 A0 00 00 */	li r5, 0
-/* 800BFE7C 000BBD9C  4B FD E4 4D */	bl func_8009E2C8
+/* 800BFE7C 000BBD9C  4B FD E4 4D */	bl GXSetTevSwapMode_cached
 /* 800BFE80 000BBDA0  38 60 00 00 */	li r3, 0
 /* 800BFE84 000BBDA4  38 80 00 0F */	li r4, 0xf
 /* 800BFE88 000BBDA8  38 A0 00 0F */	li r5, 0xf
 /* 800BFE8C 000BBDAC  38 C0 00 0F */	li r6, 0xf
 /* 800BFE90 000BBDB0  38 E0 00 08 */	li r7, 8
-/* 800BFE94 000BBDB4  4B FD E7 85 */	bl func_8009E618
+/* 800BFE94 000BBDB4  4B FD E7 85 */	bl GXSetTevColorIn_cached
 /* 800BFE98 000BBDB8  38 60 00 00 */	li r3, 0
 /* 800BFE9C 000BBDBC  38 80 00 00 */	li r4, 0
 /* 800BFEA0 000BBDC0  38 A0 00 00 */	li r5, 0
 /* 800BFEA4 000BBDC4  38 C0 00 00 */	li r6, 0
 /* 800BFEA8 000BBDC8  38 E0 00 01 */	li r7, 1
 /* 800BFEAC 000BBDCC  39 00 00 00 */	li r8, 0
-/* 800BFEB0 000BBDD0  4B FD E9 51 */	bl func_8009E800
+/* 800BFEB0 000BBDD0  4B FD E9 51 */	bl GXSetTevColorOp_cached
 /* 800BFEB4 000BBDD4  38 60 00 00 */	li r3, 0
 /* 800BFEB8 000BBDD8  38 80 00 07 */	li r4, 7
 /* 800BFEBC 000BBDDC  38 A0 00 07 */	li r5, 7
 /* 800BFEC0 000BBDE0  38 C0 00 07 */	li r6, 7
 /* 800BFEC4 000BBDE4  38 E0 00 06 */	li r7, 6
-/* 800BFEC8 000BBDE8  4B FD E8 45 */	bl func_8009E70C
+/* 800BFEC8 000BBDE8  4B FD E8 45 */	bl GXSetTevAlphaIn_cached
 /* 800BFECC 000BBDEC  38 60 00 00 */	li r3, 0
 /* 800BFED0 000BBDF0  38 80 00 00 */	li r4, 0
 /* 800BFED4 000BBDF4  38 A0 00 00 */	li r5, 0
 /* 800BFED8 000BBDF8  38 C0 00 00 */	li r6, 0
 /* 800BFEDC 000BBDFC  38 E0 00 01 */	li r7, 1
 /* 800BFEE0 000BBE00  39 00 00 00 */	li r8, 0
-/* 800BFEE4 000BBE04  4B FD EA 35 */	bl func_8009E918
+/* 800BFEE4 000BBE04  4B FD EA 35 */	bl GXSetTevAlphaOp_cached
 /* 800BFEE8 000BBE08  38 60 00 04 */	li r3, 4
 /* 800BFEEC 000BBE0C  38 80 00 00 */	li r4, 0
 /* 800BFEF0 000BBE10  38 A0 00 00 */	li r5, 0
@@ -10878,7 +10878,7 @@ func_800BFC2C:
 /* 800BFEFC 000BBE1C  39 00 00 02 */	li r8, 2
 /* 800BFF00 000BBE20  39 20 00 02 */	li r9, 2
 /* 800BFF04 000BBE24  48 02 0E 1D */	bl GXSetChanCtrl
-/* 800BFF08 000BBE28  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF08 000BBE28  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF0C 000BBE2C  88 03 00 08 */	lbz r0, 8(r3)
 /* 800BFF10 000BBE30  28 00 00 00 */	cmplwi r0, 0
 /* 800BFF14 000BBE34  40 82 00 1C */	bne lbl_800BFF30
@@ -10893,21 +10893,21 @@ lbl_800BFF30:
 /* 800BFF34 000BBE54  38 80 00 06 */	li r4, 6
 /* 800BFF38 000BBE58  38 A0 00 00 */	li r5, 0
 /* 800BFF3C 000BBE5C  48 02 30 99 */	bl GXSetZMode
-/* 800BFF40 000BBE60  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF40 000BBE60  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF44 000BBE64  38 00 00 01 */	li r0, 1
 /* 800BFF48 000BBE68  38 80 00 06 */	li r4, 6
 /* 800BFF4C 000BBE6C  98 03 00 00 */	stb r0, 0(r3)
 /* 800BFF50 000BBE70  38 00 00 00 */	li r0, 0
-/* 800BFF54 000BBE74  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF54 000BBE74  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF58 000BBE78  90 83 00 04 */	stw r4, 4(r3)
-/* 800BFF5C 000BBE7C  80 6D 9F C0 */	lwz r3, zMode@sda21(r13)
+/* 800BFF5C 000BBE7C  80 6D 9F C0 */	lwz r3, gxCache@sda21(r13)
 /* 800BFF60 000BBE80  98 03 00 08 */	stb r0, 8(r3)
 lbl_800BFF64:
 /* 800BFF64 000BBE84  38 60 00 01 */	li r3, 1
 /* 800BFF68 000BBE88  38 80 00 04 */	li r4, 4
 /* 800BFF6C 000BBE8C  38 A0 00 05 */	li r5, 5
 /* 800BFF70 000BBE90  38 C0 00 00 */	li r6, 0
-/* 800BFF74 000BBE94  4B FD E1 9D */	bl func_8009E110
+/* 800BFF74 000BBE94  4B FD E1 9D */	bl GXSetBlendMode_cached
 /* 800BFF78 000BBE98  80 02 BE DC */	lwz r0, lbl_802F66DC@sda21(r2)
 /* 800BFF7C 000BBE9C  38 81 00 08 */	addi r4, r1, 8
 /* 800BFF80 000BBEA0  C0 22 BC D0 */	lfs f1, lbl_802F64D0@sda21(r2)
@@ -10918,9 +10918,9 @@ lbl_800BFF64:
 /* 800BFF94 000BBEB4  C0 62 BD 2C */	lfs f3, lbl_802F652C@sda21(r2)
 /* 800BFF98 000BBEB8  90 01 00 08 */	stw r0, 8(r1)
 /* 800BFF9C 000BBEBC  C0 82 BE E4 */	lfs f4, lbl_802F66E4@sda21(r2)
-/* 800BFFA0 000BBEC0  4B FD E3 F9 */	bl func_8009E398
+/* 800BFFA0 000BBEC0  4B FD E3 F9 */	bl GXSetFog_cached
 /* 800BFFA4 000BBEC4  38 60 00 00 */	li r3, 0
-/* 800BFFA8 000BBEC8  4B FD E0 ED */	bl func_8009E094
+/* 800BFFA8 000BBEC8  4B FD E0 ED */	bl GXSetCullMode_cached
 /* 800BFFAC 000BBECC  4B F4 75 B9 */	bl mathutil_mtxA_from_identity
 /* 800BFFB0 000BBED0  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800BFFB4 000BBED4  38 80 00 00 */	li r4, 0
@@ -10947,7 +10947,7 @@ lbl_800BFF64:
 /* 800C0008 000BBF28  D3 C4 80 00 */	stfs f30, -0x8000(r4)
 /* 800C000C 000BBF2C  C0 02 BC E4 */	lfs f0, lbl_802F64E4@sda21(r2)
 /* 800C0010 000BBF30  D0 44 80 00 */	stfs f2, -0x8000(r4)
-/* 800C0014 000BBF34  80 6D 9A 60 */	lwz r3, lbl_802F1C40@sda21(r13)
+/* 800C0014 000BBF34  80 6D 9A 60 */	lwz r3, u_cameraId1@sda21(r13)
 /* 800C0018 000BBF38  D0 24 80 00 */	stfs f1, -0x8000(r4)
 /* 800C001C 000BBF3C  D0 04 80 00 */	stfs f0, -0x8000(r4)
 /* 800C0020 000BBF40  D3 A4 80 00 */	stfs f29, -0x8000(r4)
@@ -11781,7 +11781,7 @@ func_800C0C1C:
 /* 800C0C54 000BCB74  38 04 0C 94 */	addi r0, r4, lbl_800C0C94@l
 /* 800C0C58 000BCB78  90 03 00 04 */	stw r0, 4(r3)
 /* 800C0C5C 000BCB7C  3B E3 00 00 */	addi r31, r3, 0
-/* 800C0C60 000BCB80  4B F6 17 71 */	bl func_800223D0
+/* 800C0C60 000BCB80  4B F6 17 71 */	bl peek_light_group
 /* 800C0C64 000BCB84  90 7F 00 08 */	stw r3, 8(r31)
 /* 800C0C68 000BCB88  38 7E 00 00 */	addi r3, r30, 0
 /* 800C0C6C 000BCB8C  38 9F 00 00 */	addi r4, r31, 0
@@ -11802,7 +11802,7 @@ lbl_800C0C94:
 /* 800C0CA4 000BCBC4  93 C1 00 10 */	stw r30, 0x10(r1)
 /* 800C0CA8 000BCBC8  7C 7E 1B 78 */	mr r30, r3
 /* 800C0CAC 000BCBCC  80 63 00 08 */	lwz r3, 8(r3)
-/* 800C0CB0 000BCBD0  4B F6 17 29 */	bl func_800223D8
+/* 800C0CB0 000BCBD0  4B F6 17 29 */	bl load_light_group_cached
 /* 800C0CB4 000BCBD4  83 FE 00 0C */	lwz r31, 0xc(r30)
 /* 800C0CB8 000BCBD8  38 7F 00 34 */	addi r3, r31, 0x34
 /* 800C0CBC 000BCBDC  4B F4 6A 21 */	bl mathutil_mtxA_from_mtxB_translate
@@ -11814,7 +11814,7 @@ lbl_800C0C94:
 /* 800C0CD4 000BCBF4  4B F4 73 B5 */	bl mathutil_mtxA_rotate_z
 /* 800C0CD8 000BCBF8  80 6D 99 80 */	lwz r3, mathutilData@sda21(r13)
 /* 800C0CDC 000BCBFC  38 80 00 00 */	li r4, 0
-/* 800C0CE0 000BCC00  4B FD 9D 45 */	bl g_gxutil_upload_some_mtx
+/* 800C0CE0 000BCC00  4B FD 9D 45 */	bl u_gxutil_upload_some_mtx
 /* 800C0CE4 000BCC04  A8 9F 00 A0 */	lha r4, 0xa0(r31)
 /* 800C0CE8 000BCC08  80 6D 9A E8 */	lwz r3, commonGma@sda21(r13)
 /* 800C0CEC 000BCC0C  7C 80 07 35 */	extsh. r0, r4
@@ -11828,7 +11828,7 @@ lbl_800C0C94:
 /* 800C0D0C 000BCC2C  A8 03 7B A0 */	lha r0, clearHemisphereInsideParts@l(r3)
 /* 800C0D10 000BCC30  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D14 000BCC34  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800C0D18 000BCC38  4B FC D7 85 */	bl g_avdisp_maybe_draw_model_2
+/* 800C0D18 000BCC38  4B FC D7 85 */	bl avdisp_draw_model_culled_sort_none
 /* 800C0D1C 000BCC3C  38 60 00 01 */	li r3, 1
 /* 800C0D20 000BCC40  38 80 00 03 */	li r4, 3
 /* 800C0D24 000BCC44  38 A0 00 01 */	li r5, 1
@@ -11837,7 +11837,7 @@ lbl_800C0C94:
 /* 800C0D30 000BCC50  A8 03 7B 98 */	lha r0, clearHemisphereOutsideParts@l(r3)
 /* 800C0D34 000BCC54  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D38 000BCC58  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800C0D3C 000BCC5C  4B FC D7 61 */	bl g_avdisp_maybe_draw_model_2
+/* 800C0D3C 000BCC5C  4B FC D7 61 */	bl avdisp_draw_model_culled_sort_none
 /* 800C0D40 000BCC60  48 00 00 64 */	b lbl_800C0DA4
 lbl_800C0D44:
 /* 800C0D44 000BCC64  1C 84 00 12 */	mulli r4, r4, 0x12
@@ -11851,11 +11851,11 @@ lbl_800C0D44:
 /* 800C0D64 000BCC84  A8 1E 00 00 */	lha r0, 0(r30)
 /* 800C0D68 000BCC88  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D6C 000BCC8C  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800C0D70 000BCC90  4B FC DC F5 */	bl g_avdisp_draw_model_2
+/* 800C0D70 000BCC90  4B FC DC F5 */	bl avdisp_draw_model_unculled_sort_none
 /* 800C0D74 000BCC94  A8 1E 00 0C */	lha r0, 0xc(r30)
 /* 800C0D78 000BCC98  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D7C 000BCC9C  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800C0D80 000BCCA0  4B FC DC E5 */	bl g_avdisp_draw_model_2
+/* 800C0D80 000BCCA0  4B FC DC E5 */	bl avdisp_draw_model_unculled_sort_none
 /* 800C0D84 000BCCA4  38 60 00 01 */	li r3, 1
 /* 800C0D88 000BCCA8  38 80 00 03 */	li r4, 3
 /* 800C0D8C 000BCCAC  38 A0 00 01 */	li r5, 1
@@ -11863,7 +11863,7 @@ lbl_800C0D44:
 /* 800C0D94 000BCCB4  A8 1E 00 06 */	lha r0, 6(r30)
 /* 800C0D98 000BCCB8  54 00 18 38 */	slwi r0, r0, 3
 /* 800C0D9C 000BCCBC  7C 7F 00 2E */	lwzx r3, r31, r0
-/* 800C0DA0 000BCCC0  4B FC DC C5 */	bl g_avdisp_draw_model_2
+/* 800C0DA0 000BCCC0  4B FC DC C5 */	bl avdisp_draw_model_unculled_sort_none
 lbl_800C0DA4:
 /* 800C0DA4 000BCCC4  80 01 00 1C */	lwz r0, 0x1c(r1)
 /* 800C0DA8 000BCCC8  83 E1 00 14 */	lwz r31, 0x14(r1)
@@ -12040,7 +12040,7 @@ func_800C0F94:
 /* 800C0FB8 000BCED8  38 00 00 00 */	li r0, 0
 /* 800C0FBC 000BCEDC  98 01 00 18 */	stb r0, 0x18(r1)
 /* 800C0FC0 000BCEE0  38 60 00 06 */	li r3, 6
-/* 800C0FC4 000BCEE4  4B FA 66 1D */	bl func_800675E0
+/* 800C0FC4 000BCEE4  4B FA 66 1D */	bl is_minigame_unlocked
 /* 800C0FC8 000BCEE8  2C 03 00 00 */	cmpwi r3, 0
 /* 800C0FCC 000BCEEC  41 82 00 10 */	beq lbl_800C0FDC
 /* 800C0FD0 000BCEF0  88 61 00 18 */	lbz r3, 0x18(r1)
@@ -12048,7 +12048,7 @@ func_800C0F94:
 /* 800C0FD8 000BCEF8  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C0FDC:
 /* 800C0FDC 000BCEFC  38 60 00 07 */	li r3, 7
-/* 800C0FE0 000BCF00  4B FA 66 01 */	bl func_800675E0
+/* 800C0FE0 000BCF00  4B FA 66 01 */	bl is_minigame_unlocked
 /* 800C0FE4 000BCF04  2C 03 00 00 */	cmpwi r3, 0
 /* 800C0FE8 000BCF08  41 82 00 10 */	beq lbl_800C0FF8
 /* 800C0FEC 000BCF0C  88 61 00 18 */	lbz r3, 0x18(r1)
@@ -12056,16 +12056,16 @@ lbl_800C0FDC:
 /* 800C0FF4 000BCF14  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C0FF8:
 /* 800C0FF8 000BCF18  38 60 00 08 */	li r3, 8
-/* 800C0FFC 000BCF1C  4B FA 65 E5 */	bl func_800675E0
+/* 800C0FFC 000BCF1C  4B FA 65 E5 */	bl is_minigame_unlocked
 /* 800C1000 000BCF20  2C 03 00 00 */	cmpwi r3, 0
 /* 800C1004 000BCF24  41 82 00 10 */	beq lbl_800C1014
 /* 800C1008 000BCF28  88 61 00 18 */	lbz r3, 0x18(r1)
 /* 800C100C 000BCF2C  38 03 00 01 */	addi r0, r3, 1
 /* 800C1010 000BCF30  98 01 00 18 */	stb r0, 0x18(r1)
 lbl_800C1014:
-/* 800C1014 000BCF34  80 0D 9D E4 */	lwz r0, lbl_802F1FC4@sda21(r13)
+/* 800C1014 000BCF34  80 0D 9D E4 */	lwz r0, g_playPointsEarned@sda21(r13)
 /* 800C1018 000BCF38  38 A0 09 C4 */	li r5, 0x9c4
-/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, lbl_802F1FBC@sda21(r13)
+/* 800C101C 000BCF3C  80 6D 9D DC */	lwz r3, g_totalPlayPoints@sda21(r13)
 /* 800C1020 000BCF40  90 01 00 0C */	stw r0, 0xc(r1)
 /* 800C1024 000BCF44  90 61 00 10 */	stw r3, 0x10(r1)
 /* 800C1028 000BCF48  90 61 00 14 */	stw r3, 0x14(r1)
@@ -12073,7 +12073,7 @@ lbl_800C1014:
 /* 800C1030 000BCF50  20 00 00 03 */	subfic r0, r0, 3
 /* 800C1034 000BCF54  98 01 00 19 */	stb r0, 0x19(r1)
 /* 800C1038 000BCF58  80 81 00 14 */	lwz r4, 0x14(r1)
-/* 800C103C 000BCF5C  88 0D 9A 2D */	lbz r0, lbl_802F1C0D@sda21(r13)
+/* 800C103C 000BCF5C  88 0D 9A 2D */	lbz r0, g_unlockFlags@sda21(r13)
 /* 800C1040 000BCF60  7C 83 2A 38 */	eqv r3, r4, r5
 /* 800C1044 000BCF64  7C 84 28 10 */	subfc r4, r4, r5
 /* 800C1048 000BCF68  54 63 0F FE */	srwi r3, r3, 0x1f
@@ -12089,7 +12089,7 @@ lbl_800C1014:
 /* 800C1070 000BCF90  7C 00 01 94 */	addze r0, r0
 /* 800C1074 000BCF94  54 00 07 FE */	clrlwi r0, r0, 0x1f
 /* 800C1078 000BCF98  90 01 00 24 */	stw r0, 0x24(r1)
-/* 800C107C 000BCF9C  4B FA 65 E9 */	bl func_80067664
+/* 800C107C 000BCF9C  4B FA 65 E9 */	bl get_max_continues
 /* 800C1080 000BCFA0  98 61 00 2C */	stb r3, 0x2c(r1)
 /* 800C1084 000BCFA4  38 00 09 C4 */	li r0, 0x9c4
 /* 800C1088 000BCFA8  80 81 00 14 */	lwz r4, 0x14(r1)
@@ -12158,7 +12158,7 @@ lbl_800C1164:
 /* 800C1170 000BD090  90 A1 00 34 */	stw r5, 0x34(r1)
 /* 800C1174 000BD094  54 00 07 FE */	clrlwi r0, r0, 0x1f
 /* 800C1178 000BD098  7C 00 00 34 */	cntlzw r0, r0
-/* 800C117C 000BD09C  80 AD 9D D8 */	lwz r5, lbl_802F1FB8@sda21(r13)
+/* 800C117C 000BD09C  80 AD 9D D8 */	lwz r5, g_maxPlayPointRecord@sda21(r13)
 /* 800C1180 000BD0A0  54 00 D9 7E */	srwi r0, r0, 5
 /* 800C1184 000BD0A4  90 01 00 38 */	stw r0, 0x38(r1)
 /* 800C1188 000BD0A8  38 84 EC 20 */	addi r4, r4, modeCtrl@l
@@ -12569,3 +12569,2010 @@ lbl_800C16A8:
 /* 800C16F8 000BD618  7C 08 03 A6 */	mtlr r0
 /* 800C16FC 000BD61C  4E 80 00 20 */	blr
 
+.section .bss
+
+.global lbl_802C6BB8
+lbl_802C6BB8:
+	.skip 0x10
+.global lbl_802C6BC8
+lbl_802C6BC8:
+	.skip 0x10
+.global lbl_802C6BD8
+lbl_802C6BD8:
+	.skip 0x10
+
+.section .data
+
+.global lbl_801E2A98
+lbl_801E2A98:
+	# ROM: 0x1DFA98
+	.4byte 0x3F333333
+	.4byte 0xBECCCCCD
+glabel string__333_3
+	.asciz "?333"
+	.byte 0x00, 0x80, 0x00
+	.4byte 0
+	.4byte 0xBF2CCCCD
+	.4byte 0
+	.4byte 0x3F400000
+	.4byte 0x00008000
+	.4byte 0
+	.4byte 0x3CA3D70B
+	.4byte 0xBECCCCCD
+	.4byte 0x3F8CCCCD
+	.4byte 0x00008000
+	.4byte 0
+
+.global lbl_801E2AD4
+lbl_801E2AD4:
+	# ROM: 0x1DFAD4
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x40B00000
+	.4byte 0xBF99999A
+	.4byte 0x41200000
+	.4byte 0x40A00000
+	.4byte 0x3F99999A
+	.4byte 0x41200000
+	.4byte 0x40A00000
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x40800000
+	.4byte 0xBDCCCCCD
+	.4byte 0x41200000
+	.4byte 0x40B00000
+	.4byte 0x3DCCCCCD
+	.4byte 0x41200000
+	.4byte 0x40D00000
+	.4byte 0
+	.4byte 0x41200000
+	.4byte 0x41180000
+
+.global lbl_801E2B28
+lbl_801E2B28:
+	# ROM: 0x1DFB28
+	.4byte 0x00E800E8
+	.4byte 0x01010101
+	.4byte 0x016D016D
+	.4byte 0x01860187
+
+.global lbl_801E2B38
+lbl_801E2B38:
+	# ROM: 0x1DFB38
+	.4byte func_800B65B4  ;# ptr
+	.4byte func_800B6608  ;# ptr
+	.4byte func_800B6848  ;# ptr
+	.4byte func_800B69F8  ;# ptr
+	.4byte func_800B6C14  ;# ptr
+	.4byte func_800B6EA4  ;# ptr
+	.4byte func_800B6F9C  ;# ptr
+	.4byte func_800B7078  ;# ptr
+	.4byte func_800B72D4  ;# ptr
+	.4byte func_800B7B6C  ;# ptr
+	.4byte func_800B7D38  ;# ptr
+	.4byte func_800B7F6C  ;# ptr
+	.4byte func_800B7FB4  ;# ptr
+	.4byte func_800B83EC  ;# ptr
+	.4byte func_800B86E0  ;# ptr
+	.4byte func_800B8780  ;# ptr
+	.4byte func_800B8AA4  ;# ptr
+	.4byte func_800B8D7C  ;# ptr
+	.4byte func_800B8E1C  ;# ptr
+	.4byte func_800B9444  ;# ptr
+	.4byte func_800B9724  ;# ptr
+	.4byte func_800B9920  ;# ptr
+	.4byte func_800B9A8C  ;# ptr
+	.4byte func_800B9EA4  ;# ptr
+	.4byte func_800B9FDC  ;# ptr
+	.4byte func_800BA124  ;# ptr
+	.4byte func_800BA160  ;# ptr
+	.4byte func_800BA928  ;# ptr
+	.4byte func_800BA950  ;# ptr
+	.4byte func_800BA4F4  ;# ptr
+	.4byte func_800BA51C  ;# ptr
+	.4byte func_800BB050  ;# ptr
+	.4byte func_800BB064  ;# ptr
+
+.global lbl_801E2BBC
+lbl_801E2BBC:
+	# ROM: 0x1DFBBC
+glabel string_fail_to_alloc_memory_for_ending_management__n
+	.asciz "fail to alloc memory for ending-management!\n"
+	.balign 4
+
+.global lbl_801E2BEC
+lbl_801E2BEC:
+	# ROM: 0x1DFBEC
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BBD34  ;# ptr
+	.4byte lbl_800BBDA4  ;# ptr
+	.4byte lbl_800BBDF0  ;# ptr
+	.4byte lbl_800BBE9C  ;# ptr
+	.4byte lbl_800BBEB0  ;# ptr
+	.4byte lbl_800BBEF8  ;# ptr
+	.4byte lbl_800BBFAC  ;# ptr
+	.4byte lbl_800BC080  ;# ptr
+	.4byte lbl_800BC110  ;# ptr
+	.4byte lbl_800BC218  ;# ptr
+	.4byte lbl_800BC29C  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC7A4  ;# ptr
+	.4byte lbl_800BC3DC  ;# ptr
+	.4byte lbl_800BC468  ;# ptr
+	.4byte lbl_800BC590  ;# ptr
+	.4byte lbl_800BC5C4  ;# ptr
+	.4byte lbl_800BC650  ;# ptr
+	.4byte lbl_800BC6A4  ;# ptr
+glabel lbl_801E2C44
+	.4byte 0x00232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x18232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x13232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x08232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x0D232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x05232526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DCCCCCD
+	.4byte 0x3E9374BD
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E2DAC
+	.4byte 0x00181919
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x18202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x13202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x08202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x0D202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DA3D70B
+	.4byte 0x05202223
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3D23D70A
+	.4byte 0x3FB851EB
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E2F14
+	.4byte 0x00201B19
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EA3D70B
+	.4byte 0x07161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0C161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x16171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x1B171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x15171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x1A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E23D70B
+	.4byte 0x0F171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x0A171819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x18161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x13161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x08161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x0D161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3DC49BA6
+	.4byte 0x05161819
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E4CCCCD
+	.4byte 0x3E75C290
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+glabel lbl_801E307C
+	.4byte 0x00212526
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3EF5C290
+	.4byte 0x07252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x0C252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x16191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E449BA6
+	.4byte 0x1B191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E449BA6
+	.4byte 0x15191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x1A191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E75C290
+	.4byte 0x0F191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E83126F
+	.4byte 0x0A191A1C
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E83126F
+	.4byte 0x18252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x13252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x08252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x0D252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E03126F
+	.4byte 0x05252829
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0x3E4CCCCD
+	.4byte 0x3EFDF3B7
+	.4byte 0xFF000000
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+	.4byte 0
+
+.global lbl_801E31E4
+lbl_801E31E4:
+	# ROM: 0x1E01E4
+	.4byte lbl_801E2C44  ;# ptr
+	.4byte lbl_801E2DAC  ;# ptr
+	.4byte lbl_801E2F14  ;# ptr
+	.4byte lbl_801E307C  ;# ptr
+
+.global lbl_801E31F4
+lbl_801E31F4:
+	# ROM: 0x1E01F4
+	.4byte lbl_800BD07C  ;# ptr
+	.4byte lbl_800BD058  ;# ptr
+	.4byte lbl_800BD0A0  ;# ptr
+	.4byte lbl_800BD0E8  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD0C4  ;# ptr
+	.4byte lbl_800BD10C  ;# ptr
+	.4byte lbl_800BD164  ;# ptr
+	.4byte lbl_800BD140  ;# ptr
+
+.global lbl_801E321C
+lbl_801E321C:
+	# ROM: 0x1E021C
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BD708  ;# ptr
+	.4byte lbl_800BE6D4  ;# ptr
+	.4byte lbl_800BD9D8  ;# ptr
+	.4byte lbl_800BDCA4  ;# ptr
+	.4byte lbl_800BDD48  ;# ptr
+	.4byte lbl_800BDF68  ;# ptr
+	.4byte lbl_800BE1D4  ;# ptr
+	.4byte lbl_800BE33C  ;# ptr
+	.4byte lbl_800BE694  ;# ptr
+
+.global lbl_801E3248
+lbl_801E3248:
+	# ROM: 0x1E0248
+	.4byte func_800C013C  ;# ptr
+	.4byte func_800C0354  ;# ptr
+	.4byte 0
+	.4byte 0
+
+.global lbl_801E3258
+lbl_801E3258:
+	# ROM: 0x1E0258
+glabel string_h_KONNDOHA_SARANI
+	.asciz "h/KONNDOHA SARANI"
+	.balign 4
+glabel string_h_UENOk_REBERUh_DE_ASONNDENE
+	.asciz "h/UENOk/REBERUh/DE ASONNDENE"
+	.balign 4
+	.4byte string_h_KONNDOHA_SARANI  ;# ptr
+	.4byte string_h_UENOk_REBERUh_DE_ASONNDENE  ;# ptr
+	.4byte 0
+glabel string_Try_a_higher_level
+	.asciz "Try a higher level"
+	.balign 4
+glabel string_next_time
+	.asciz "next time"
+	.balign 4
+glabel lbl_801E32B8
+	.4byte string_Try_a_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_KOREDE_k_KIMIh_MO
+	.asciz "h/KOREDE k/KIMIh/MO"
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO
+	.asciz "h/ICHININNMAENO Ok/SARUh/SANNDAYO"
+	.balign 4
+	.4byte string_h_KOREDE_k_KIMIh_MO  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNDAYO  ;# ptr
+	.4byte 0
+glabel string_Now_you_ve_become
+	.asciz "Now you've become"
+	.balign 4
+glabel string_cool_monkey_like_me
+	.asciz "cool monkey like me"
+glabel lbl_801E3330
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_cool_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO
+	.asciz "k/KIMIh/TTEk/SUGOIh/NE! KOREKARAMO"
+	.balign 4
+glabel string_k_MONNKI_BO_RUh_WO_YOROSIKU_
+	.asciz "k/MONNKI-BO-RUh/WO YOROSIKU!"
+	.balign 4
+	.4byte string_k_KIMIh_TTEk_SUGOIh_NE__KOREKARAMO  ;# ptr
+	.4byte string_k_MONNKI_BO_RUh_WO_YOROSIKU_  ;# ptr
+	.4byte 0
+glabel string_You_are_so_cool__Remember_
+	.asciz "You are so cool! Remember,"
+	.balign 4
+glabel string_Monkey_Ball_is_the_best_game_for_you_
+	.asciz "Monkey Ball is the best game for you!"
+	.balign 4
+glabel lbl_801E33D0
+	.4byte string_You_are_so_cool__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KOKOMADE__k_PUREIh_DEKITAk_KIMIh_HAk_SUGOIh_YO_
+	.asciz "h/KOKOMADE, k/PUREIh/DEKITAk/KIMIh/HAk/SUGOIh/YO!"
+	.balign 4
+glabel string_h_KOKOMADENOk_PUREIh___OTUKARESAMADESITA_
+	.asciz "h/KOKOMADENOk/PUREIh/, OTUKARESAMADESITA!"
+	.balign 4
+glabel string_p_TSUGI_h_NIk_PUREIh_SURUTOKIHA__SAIGOMADE
+	.asciz "p/TSUGI/h/NIk/PUREIh/SURUTOKIHA, SAIGOMADE"
+	.balign 4
+glabel string_h_IKERUYOUNI__GANNBATTEMITENE_
+	.asciz "h/IKERUYOUNI, GANNBATTEMITENE!"
+	.balign 4
+	.4byte string_h_KOKOMADE__k_PUREIh_DEKITAk_KIMIh_HAk_SUGOIh_YO_  ;# ptr
+	.4byte string_h_KOKOMADENOk_PUREIh___OTUKARESAMADESITA_  ;# ptr
+	.4byte string_p_TSUGI_h_NIk_PUREIh_SURUTOKIHA__SAIGOMADE  ;# ptr
+	.4byte string_h_IKERUYOUNI__GANNBATTEMITENE_  ;# ptr
+	.4byte 0
+glabel string_Wow__You_ve_made_it_this_far_
+	.asciz "Wow! You've made it this far!"
+	.balign 4
+glabel string_You_re_incredible_
+	.asciz "You're incredible!"
+	.balign 4
+glabel string_The_next_time_you_play_
+	.asciz "The next time you play,"
+glabel string_let_s_try_to_make_it
+	.asciz "let's try to make it"
+	.balign 4
+glabel string_all_the_way_to_the_end_
+	.asciz "all the way to the end!"
+glabel lbl_801E3518
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_re_incredible_  ;# ptr
+	.4byte string_The_next_time_you_play_  ;# ptr
+	.4byte string_let_s_try_to_make_it  ;# ptr
+	.4byte string_all_the_way_to_the_end_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "h/%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_ZENBUDE_tk_POINNTOh_DANE_
+	.asciz "h/ZENBUDE%tk/POINNTOh/DANE!"
+glabel string_h_ATO_nk_POINNTOh_DE
+	.asciz "h/ATO%nk/POINNTOh/DE"
+	.balign 4
+glabel string_k_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_
+	.asciz "k/MINIGE-MUh/WOk/GETTOh/DEKIRUYO!"
+	.balign 4
+	.4byte string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_  ;# ptr
+	.4byte 0
+glabel string_You_got__p_
+	.asciz "You got %p!"
+glabel string_All_together__you_have__t_
+	.asciz "All together, you have %t!"
+	.balign 4
+glabel string_Only__n_left_to
+	.asciz "Only %n left to"
+glabel string_unlock_the_next_Mini_Game_
+	.asciz "unlock the next Mini Game!"
+	.balign 4
+glabel lbl_801E3614
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_unlock_the_next_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_h_ZENNBUDE_tk_POINNTOh_DANE_
+	.asciz "h/ZENNBUDE%tk/POINNTOh/DANE!"
+	.balign 4
+glabel string_k_POINNTOh_GATAKUSANNTAMATTAKARA
+	.asciz "k/POINNTOh/GATAKUSANNTAMATTAKARA"
+	.balign 4
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUYO!"
+	.balign 4
+	.4byte string_h__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENNBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUYO_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_lot_of_points_
+	.asciz "Since you got a lot of points,"
+	.balign 4
+glabel string_you_can_unlock_a_Mini_Game_
+	.asciz "you can unlock a Mini Game!"
+glabel lbl_801E36E8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_SAIGONOk_MINIGE_MUh_WOk_GETTOh_SHITENE_
+	.asciz "h/SAIGONOk/MINIGE-MUh/WOk/GETTOh/SHITENE!"
+	.balign 4
+	.4byte string__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_h_SAIGONOk_MINIGE_MUh_WOk_GETTOh_SHITENE_  ;# ptr
+	.4byte 0
+glabel string_you_can_unlock_the_last_Mini_Game_
+	.asciz "you can unlock the last Mini Game!"
+	.balign 4
+glabel lbl_801E3784
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_
+	.asciz "k/%pk/POINNTOh/WOk/GETTOh/SHITAYO!"
+	.balign 4
+glabel string_h_k_KONNTEXINYU_h_p_KAISUUh_WOHUYASERUYO_
+	.asciz "h/k/KONNTEXINYU-h/p/KAISUUh/WOHUYASERUYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENNBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_h_k_KONNTEXINYU_h_p_KAISUUh_WOHUYASERUYO_  ;# ptr
+	.4byte 0
+glabel string_increase_your_number_of_continues_
+	.asciz "increase your number of continues!"
+	.balign 4
+glabel lbl_801E3820
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_increase_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAYO_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/GA%cp/KAIsuu/h/NINATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_POINNTOh_GATAKUSANNTAMATTAKARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAYO_  ;# ptr
+	.4byte 0
+glabel string_you_increase_your_number
+	.asciz "you increase your number"
+	.balign 4
+glabel string_of_continues_to__c_
+	.asciz "of continues to %c!"
+glabel lbl_801E38AC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_increase_your_number  ;# ptr
+	.4byte string_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO
+	.asciz "h/KOREDEk/KONNTEXINYU-h/GAp/NANNKAI/h/DEMO"
+	.balign 4
+glabel string_h_DEKIRUYOUNINATTAYO_
+	.asciz "h/DEKIRUYOUNINATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTAYO_  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_play_with
+	.asciz "Now, you can play with"
+	.balign 4
+glabel string_infinite_continues_
+	.asciz "infinite continues!"
+glabel lbl_801E3948
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KIMIh_HA__SUBETENOMONOWOk_GETTOh_SHITEIRUYO_
+	.asciz "k/KIMIh/HA, SUBETENOMONOWOk/GETTOh/SHITEIRUYO!"
+	.balign 4
+glabel string_h_KOREKARAHA__1k_PUREIh_DEk_GETTOh_DEKIRU
+	.asciz "h/KOREKARAHA, 1k/PUREIh/DEk/GETTOh/DEKIRU"
+	.balign 4
+glabel string_k_PUREIPOINNTOh_KIROKUNIk_TYARENJIh_DAYO_
+	.asciz "k/PUREIPOINNTOh/KIROKUNIk/TYARENJIh/DAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_KIMIh_HA__SUBETENOMONOWOk_GETTOh_SHITEIRUYO_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_GETTOh_DEKIRU  ;# ptr
+	.4byte string_k_PUREIPOINNTOh_KIROKUNIk_TYARENJIh_DAYO_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unlocked_everything_
+	.asciz "You've unlocked everything!"
+glabel string_Now__you_can_try_to_set_the
+	.asciz "Now, you can try to set the"
+glabel string_high_score_for_the_most_Play_Points_
+	.asciz "high score for the most Play Points!"
+	.balign 4
+glabel lbl_801E3A58
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything_  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_the_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA___bk_POINNTOh_DANE_
+	.asciz "k/SAIKO-h/HA, %bk/POINNTOh/DANE!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKUWOKOERARERUYOUNI
+	.asciz "k/SAIKO-h/KIROKUWOKOERARERUYOUNI"
+	.balign 4
+glabel string_h_KOREKARAMO__GANBATTENE_
+	.asciz "h/KOREKARAMO, GANBATTENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_DANE_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKUWOKOERARERUYOUNI  ;# ptr
+	.4byte string_h_KOREKARAMO__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_The_high_score_is__b_
+	.asciz "The high score is %b!"
+	.balign 4
+glabel string_Do_your_best_to_try_and_beat
+	.asciz "Do your best to try and beat"
+	.balign 4
+glabel string_the_high_score__okay_
+	.asciz "the high score, okay?"
+	.balign 4
+glabel lbl_801E3B34
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score__okay_  ;# ptr
+	.4byte 0
+glabel string_h_KORETTE__k_SAIKO_h_KIROKUDAYO_
+	.asciz "h/KORETTE, k/SAIKO-h/KIROKUDAYO!"
+	.balign 4
+glabel string_k_YATTAh_NE__KOREKARAMO__SARANIUENO
+	.asciz "k/YATTAh/NE! KOREKARAMO, SARANIUENO"
+glabel string_h_KIROKUWOMEZASITE__GANBATTENE_
+	.asciz "h/KIROKUWOMEZASITE, GANBATTENE!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_KORETTE__k_SAIKO_h_KIROKUDAYO_  ;# ptr
+	.4byte string_k_YATTAh_NE__KOREKARAMO__SARANIUENO  ;# ptr
+	.4byte string_h_KIROKUWOMEZASITE__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_That_s_a_new_high_score_
+	.asciz "That's a new high score!"
+	.balign 4
+glabel string_Congratulations_
+	.asciz "Congratulations!"
+	.balign 4
+glabel string_That_was_truly_a_great_game_
+	.asciz "That was truly a great game!"
+	.balign 4
+glabel lbl_801E3C14
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congratulations_  ;# ptr
+	.4byte string_That_was_truly_a_great_game_  ;# ptr
+	.4byte 0
+glabel string_h_KOREYORIk_SUGOIh_KIROKUHANAIYO_
+	.asciz "h/KOREYORIk/SUGOIh/KIROKUHANAIYO!"
+	.balign 4
+glabel string_k_KIMIh_HA__k_KANPEKIh_DANE_
+	.asciz "k/KIMIh/HA, k/KANPEKIh/DANE!"
+	.balign 4
+glabel string_h_TYO_k_MIRAKURUh_NAk_PUREIh_DATTAYO_
+	.asciz "h/TYO-k/MIRAKURUh/NAk/PUREIh/DATTAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_h_KOREYORIk_SUGOIh_KIROKUHANAIYO_  ;# ptr
+	.4byte string_k_KIMIh_HA__k_KANPEKIh_DANE_  ;# ptr
+	.4byte string_h_TYO_k_MIRAKURUh_NAk_PUREIh_DATTAYO_  ;# ptr
+	.4byte 0
+glabel string_There_s_no_record_better_than_this_
+	.asciz "There's no record better than this!"
+glabel string_You_are_the_greatest_
+	.asciz "You are the greatest!"
+	.balign 4
+glabel lbl_801E3CE4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte string_That_was_truly_a_great_game_  ;# ptr
+	.4byte 0
+glabel string_h_MOUITIDO___bk_POINNTOh_DASERUKA
+	.asciz "h/MOUITIDO, %bk/POINNTOh/DASERUKA"
+	.balign 4
+glabel string_k_TYARENJIh_SHITEMITENE_
+	.asciz "k/TYARENJIh/SHITEMITENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAYO_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_DANE_  ;# ptr
+	.4byte string_h_MOUITIDO___bk_POINNTOh_DASERUKA  ;# ptr
+	.4byte string_k_TYARENJIh_SHITEMITENE_  ;# ptr
+	.4byte 0
+glabel string_Try_one_more_time_to_see
+	.asciz "Try one more time to see"
+	.balign 4
+glabel string_if_you_can_get__b_
+	.asciz "if you can get %b!"
+	.balign 4
+glabel lbl_801E3D7C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b_  ;# ptr
+	.4byte 0
+glabel string_h_KONNDOHA_MOTTO
+	.asciz "h/KONNDOHA MOTTO"
+	.balign 4
+glabel string_h_UENOk_REBERUh_WO_MEZASHITENE
+	.asciz "h/UENOk/REBERUh/WO MEZASHITENE"
+	.balign 4
+	.4byte string_h_KONNDOHA_MOTTO  ;# ptr
+	.4byte string_h_UENOk_REBERUh_WO_MEZASHITENE  ;# ptr
+	.4byte 0
+glabel lbl_801E3DD0
+	.4byte string_Try_a_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_ANATAMO_KOREDE
+	.asciz "h/ANATAMO KOREDE"
+	.balign 4
+glabel string_h_ICHININNMAENO_Ok_SARUh_SANNNE
+	.asciz "h/ICHININNMAENO Ok/SARUh/SANNNE"
+	.4byte string_h_ANATAMO_KOREDE  ;# ptr
+	.4byte string_h_ICHININNMAENO_Ok_SARUh_SANNNE  ;# ptr
+	.4byte 0
+glabel string_pretty_monkey_like_me
+	.asciz "pretty monkey like me"
+	.balign 4
+glabel lbl_801E3E34
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_pretty_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO
+	.asciz "h/ANATATTEk/SUGOIh/WA! KOREKARAMO"
+	.balign 4
+glabel string_k_PUREI_h_SHIMAKUTTENE
+	.asciz "k/PUREI h/SHIMAKUTTENE"
+	.balign 4
+	.4byte string_h_ANATATTEk_SUGOIh_WA__KOREKARAMO  ;# ptr
+	.4byte string_k_PUREI_h_SHIMAKUTTENE  ;# ptr
+	.4byte 0
+glabel string_You_are_so_fantastic__Remember_
+	.asciz "You are so fantastic! Remember,"
+glabel lbl_801E3EA8
+	.4byte string_You_are_so_fantastic__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KOKOMADEk_PUREIh_DEKITAANATAHA__k_ERAIh_WA_
+	.asciz "h/KOKOMADEk/PUREIh/DEKITAANATAHA, k/ERAIh/WA!"
+	.balign 4
+glabel string_p_JIBUNN_h_DEp_JIBUNN_h_WOHOMETEAGETEMOIIKAMO_
+	.asciz "p/JIBUNN/h/DEp/JIBUNN/h/WOHOMETEAGETEMOIIKAMO!"
+	.balign 4
+glabel string_p_IMA_p_KAIsuu_h_HAAKIRAMETAKEDO__p_TSUGI_h_NOk_PUREIh_DEHA
+	.asciz "p/IMA/p/KAIsuu/h/HAAKIRAMETAKEDO, p/TSUGI/h/NOk/PUREIh/DEHA"
+glabel string_k_KURIAh_DEKIRUYOUNI__GANNBATTENE_
+	.asciz "k/KURIAh/DEKIRUYOUNI, GANNBATTENE!"
+	.balign 4
+	.4byte string_h_KOKOMADEk_PUREIh_DEKITAANATAHA__k_ERAIh_WA_  ;# ptr
+	.4byte string_p_JIBUNN_h_DEp_JIBUNN_h_WOHOMETEAGETEMOIIKAMO_  ;# ptr
+	.4byte string_p_IMA_p_KAIsuu_h_HAAKIRAMETAKEDO__p_TSUGI_h_NOk_PUREIh_DEHA  ;# ptr
+	.4byte string_k_KURIAh_DEKIRUYOUNI__GANNBATTENE_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_something_
+	.asciz "You really are something!"
+	.balign 4
+glabel string_I_guess_you_should_take_a_break_
+	.asciz "I guess you should take a break."
+	.balign 4
+glabel string_Next_time__let_s_try_to_make_it
+	.asciz "Next time, let's try to make it"
+glabel lbl_801E3FE8
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_really_are_something_  ;# ptr
+	.4byte string_I_guess_you_should_take_a_break_  ;# ptr
+	.4byte string_Next_time__let_s_try_to_make_it  ;# ptr
+	.4byte string_all_the_way_to_the_end_  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_
+	.asciz "k/%pk/POINNTOh/WOk/GETTOh/SHITAWA!"
+	.balign 4
+glabel string_h_ZE_NBUDE_tk_POINNTOh_YO_
+	.asciz "h/ZE~NBUDE%tk/POINNTOh/YO."
+	.balign 4
+glabel string_k_MINIGE_MUh_GAk_GETTOh_DEKITYATTARISHITE_
+	.asciz "k/MINIGE-MUh/GAk/GETTOh/DEKITYATTARISHITE."
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUh_GAk_GETTOh_DEKITYATTARISHITE_  ;# ptr
+	.4byte 0
+glabel string_All_together__that_s__t_
+	.asciz "All together, that's %t!"
+	.balign 4
+glabel string_You_might_be_able_to_unlock_a_game
+	.asciz "You might be able to unlock a game"
+	.balign 4
+glabel string_with__n__more_points_
+	.asciz "with %n_ more points!"
+	.balign 4
+glabel lbl_801E40D8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_You_might_be_able_to_unlock_a_game  ;# ptr
+	.4byte string_with__n__more_points_  ;# ptr
+	.4byte 0
+glabel string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA
+	.asciz "h/TAKKUSA~NNk/POINNTOh/GAATUMATTAKARA"
+	.balign 4
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUWAYO_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUWAYO!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUWAYO_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_whole_lot_more_points_
+	.asciz "Since you got a whole lot more points,"
+	.balign 4
+glabel string_you_can_unlock_any_Mini_Game
+	.asciz "you can unlock any Mini Game"
+	.balign 4
+glabel string_you_want_
+	.asciz "you want!"
+	.balign 4
+glabel lbl_801E41A8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_can_unlock_any_Mini_Game  ;# ptr
+	.4byte string_you_want_  ;# ptr
+	.4byte 0
+glabel string_h_SAIGONOk_MINIGE_MUh_MOk_GETTOh_DEKIRUWAYO_
+	.asciz "h/SAIGONOk/MINIGE-MUh/MOk/GETTOh/DEKIRUWAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_h_SAIGONOk_MINIGE_MUh_MOk_GETTOh_DEKIRUWAYO_  ;# ptr
+	.4byte 0
+glabel string_you_ll_be_able_to_unlock
+	.asciz "you'll be able to unlock"
+	.balign 4
+glabel string_the_last_Mini_Game_
+	.asciz "the last Mini Game!"
+glabel lbl_801E4234
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_ll_be_able_to_unlock  ;# ptr
+	.4byte string_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_WOHUYASERUWAYO_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/WOHUYASERUWAYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_WOHUYASERUWAYO_  ;# ptr
+	.4byte 0
+glabel string_You_can_increase
+	.asciz "You can increase"
+	.balign 4
+glabel string_your_number_of_continues
+	.asciz "your number of continues"
+	.balign 4
+glabel string_if_you_get__n__more_points_
+	.asciz "if you get %n_ more points!"
+glabel lbl_801E42D8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_You_can_increase  ;# ptr
+	.4byte string_your_number_of_continues  ;# ptr
+	.4byte string_if_you_get__n__more_points_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAWA_
+	.asciz "k/KONNTEXINYU-p/KAISUU/h/GA%cp/KAIsuu/h/NINATTAWA!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_TAKKUSA_NNk_POINNTOh_GAATUMATTAKARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_p_KAISUU_h_GA_cp_KAIsuu_h_NINATTAWA_  ;# ptr
+	.4byte 0
+glabel string_you_ll_be_able_to_increase
+	.asciz "you'll be able to increase"
+	.balign 4
+glabel string_your_number_of_continues_to__c_
+	.asciz "your number of continues to %c!"
+glabel lbl_801E4374
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Since_you_got_a_whole_lot_more_points_  ;# ptr
+	.4byte string_you_ll_be_able_to_increase  ;# ptr
+	.4byte string_your_number_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_h_DEKIRUYOUNINATTAWAYO_
+	.asciz "h/DEKIRUYOUNINATTAWAYO!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ZE_NBUDE_tk_POINNTOh_YO_  ;# ptr
+	.4byte string_h_KOREDEk_KONNTEXINYU_h_GAp_NANNKAI_h_DEMO  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTAWAYO_  ;# ptr
+	.4byte 0
+glabel lbl_801E43B8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__that_s__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_h_ANATANIAGERARERUMONOHA__MOUNAIWA_
+	.asciz "h/ANATANIAGERARERUMONOHA, MOUNAIWA!"
+glabel string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO
+	.asciz "h/KOREKARAHA, 1k/PUREIh/DEk/PUREIPOINNTOh/WO"
+	.balign 4
+glabel string_h_DOREDAKETORERUKANI__TYOUSENNYO_
+	.asciz "h/DOREDAKETORERUKANI, TYOUSENNYO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_ANATANIAGERARERUMONOHA__MOUNAIWA_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO  ;# ptr
+	.4byte string_h_DOREDAKETORERUKANI__TYOUSENNYO_  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_try_to_see_how_many
+	.asciz "Now, you can try to see how many"
+	.balign 4
+glabel string_points_you_can_get_in_1_player_mode_
+	.asciz "points you can get in 1 player mode!"
+	.balign 4
+glabel lbl_801E44A4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything_  ;# ptr
+	.4byte string_Now__you_can_try_to_see_how_many  ;# ptr
+	.4byte string_points_you_can_get_in_1_player_mode_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA___bk_POINNTOh_YO_
+	.asciz "k/SAIKO-h/HA, %bk/POINNTOh/YO!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKUWONURIKAERARERUYOUNI
+	.asciz "k/SAIKO-h/KIROKUWONURIKAERARERUYOUNI"
+	.balign 4
+glabel string_h_KOREKARAMO__ASOBITUDUKETENE_
+	.asciz "h/KOREKARAMO, ASOBITUDUKETENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_k_SAIKO_h_HA___bk_POINNTOh_YO_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKUWONURIKAERARERUYOUNI  ;# ptr
+	.4byte string_h_KOREKARAMO__ASOBITUDUKETENE_  ;# ptr
+	.4byte 0
+glabel string_Do_your_best_and_play_more_to_beat
+	.asciz "Do your best and play more to beat"
+	.balign 4
+glabel lbl_801E4558
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_and_play_more_to_beat  ;# ptr
+	.4byte string_the_high_score__okay_  ;# ptr
+	.4byte 0
+glabel string_h_KOREHA__k_SAIKO_h_KIROKUDAWA_
+	.asciz "h/KOREHA, k/SAIKO-h/KIROKUDAWA!"
+glabel string_k_SUGGO_I__h_KOREKARAMO
+	.asciz "k/SUGGO~I! h/KOREKARAMO"
+glabel string_h_UENOKIROKUWOMEZASHITE__GANBATTENE_
+	.asciz "h/UENOKIROKUWOMEZASHITE, GANBATTENE!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KOREHA__k_SAIKO_h_KIROKUDAWA_  ;# ptr
+	.4byte string_k_SUGGO_I__h_KOREKARAMO  ;# ptr
+	.4byte string_h_UENOKIROKUWOMEZASHITE__GANBATTENE_  ;# ptr
+	.4byte 0
+glabel string_You_got_the_high_score_
+	.asciz "You got the high score!"
+glabel string_Wow__I_can_t_believe_it_
+	.asciz "Wow! I can't believe it!"
+	.balign 4
+glabel string_Now_just_try_to_beat
+	.asciz "Now just try to beat"
+	.balign 4
+glabel string_your_own_record_
+	.asciz "your own record!"
+	.balign 4
+glabel lbl_801E4640
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_got_the_high_score_  ;# ptr
+	.4byte string_Wow__I_can_t_believe_it_  ;# ptr
+	.4byte string_Now_just_try_to_beat  ;# ptr
+	.4byte string_your_own_record_  ;# ptr
+	.4byte 0
+glabel string_h_KOREIJYOUNOKIROKUHA__DENAIWAYO_
+	.asciz "h/KOREIJYOUNOKIROKUHA, DENAIWAYO!"
+	.balign 4
+glabel string_h_ANATATTE__k_PA_FEKUTOh_NE_
+	.asciz "h/ANATATTE, k/PA-FEKUTOh/NE!"
+	.balign 4
+glabel string_h_MOU__k_SUTEKIp___k_TOKIMEKIp___k_DA_ISUKIh_YO_
+	.asciz "h/MOU, k/SUTEKIp/./k/TOKIMEKIp/./k/DA~ISUKIh/YO!"
+	.balign 4
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KOREIJYOUNOKIROKUHA__DENAIWAYO_  ;# ptr
+	.4byte string_h_ANATATTE__k_PA_FEKUTOh_NE_  ;# ptr
+	.4byte string_h_MOU__k_SUTEKIp___k_TOKIMEKIp___k_DA_ISUKIh_YO_  ;# ptr
+	.4byte 0
+glabel string_You_are_perfect_
+	.asciz "You are perfect!"
+	.balign 4
+glabel lbl_801E46F8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_You_are_perfect_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte 0
+glabel string_h_KIROKUHA__bk_POINNTOh_YO_
+	.asciz "h/KIROKUHA,%bk/POINNTOh/YO!"
+glabel string_h__bk_POINNTOh_TOIUk_SAIKO_h_KIROKUWO
+	.asciz "h/%bk/POINNTOh/TOIUk/SAIKO-h/KIROKUWO"
+	.balign 4
+glabel string_h_MATADASERUKA__TYOUSENNSITENE_
+	.asciz "h/MATADASERUKA, TYOUSENNSITENE!"
+	.4byte string_k__pk_POINNTOh_WOk_GETTOh_SHITAWA_  ;# ptr
+	.4byte string_h_KIROKUHA__bk_POINNTOh_YO_  ;# ptr
+	.4byte string_h__bk_POINNTOh_TOIUk_SAIKO_h_KIROKUWO  ;# ptr
+	.4byte string_h_MATADASERUKA__TYOUSENNSITENE_  ;# ptr
+	.4byte 0
+glabel string_if_you_can_get_the_high_score
+	.asciz "if you can get the high score"
+	.balign 4
+glabel lbl_801E47A4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get_the_high_score  ;# ptr
+	.4byte string_of__b_  ;# ptr
+	.4byte 0
+glabel string_h_MOTTO_UENOk_REBERUh_DE
+	.asciz "h/MOTTO UENOk/REBERUh/DE"
+	.balign 4
+glabel string_h_ASOBITAIDEk_CHU
+	.asciz "h/ASOBITAIDEk/CHU"
+	.balign 4
+	.4byte string_h_MOTTO_UENOk_REBERUh_DE  ;# ptr
+	.4byte string_h_ASOBITAIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_I_want_to_play_higher_level
+	.asciz "I want to play higher level"
+glabel lbl_801E4814
+	.4byte string_I_want_to_play_higher_level  ;# ptr
+	.4byte string_next_time  ;# ptr
+	.4byte 0
+glabel string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO
+	.asciz "h/KOREDE RIPPANA Ok/SARUh/SANNNO"
+	.balign 4
+glabel string_h_NAKAMAIRIDEk_CHU
+	.asciz "h/NAKAMAIRIDEk/CHU"
+	.balign 4
+	.4byte string_h_KOREDE_RIPPANA_Ok_SARUh_SANNNO  ;# ptr
+	.4byte string_h_NAKAMAIRIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_grown_up_monkey_like_me
+	.asciz "grown up monkey like me"
+glabel lbl_801E487C
+	.4byte string_Now_you_ve_become  ;# ptr
+	.4byte string_grown_up_monkey_like_me  ;# ptr
+	.4byte 0
+glabel string_k_SUGOIh_DEk_CHU__h_KOREKARAMO
+	.asciz "k/SUGOIh/DEk/CHU! h/KOREKARAMO"
+	.balign 4
+glabel string_h_ZUTTO_ASONNDEHOSIIDEk_CHU
+	.asciz "h/ZUTTO ASONNDEHOSIIDEk/CHU"
+	.4byte string_k_SUGOIh_DEk_CHU__h_KOREKARAMO  ;# ptr
+	.4byte string_h_ZUTTO_ASONNDEHOSIIDEk_CHU  ;# ptr
+	.4byte 0
+glabel string_You_are_such_grown_up__Remember_
+	.asciz "You are such grown up! Remember,"
+	.balign 4
+glabel lbl_801E48F4
+	.4byte string_You_are_such_grown_up__Remember_  ;# ptr
+	.4byte string_Monkey_Ball_is_the_best_game_for_you_  ;# ptr
+	.4byte 0
+glabel string_h_KONOk_SUTE_JIh_MADEk_PUREIh_DEKIRUNANNTE
+	.asciz "h/KONOk/SUTE-JIh/MADEk/PUREIh/DEKIRUNANNTE"
+	.balign 4
+glabel string_k_SUGOIh_DEk_TYU__ODOROKIh_DEk_TYU_
+	.asciz "k/SUGOIh/DEk/TYU! ODOROKIh/DEk/TYU!"
+glabel string_h_TOTTEMOk_MUZUKAh_TIIDEk_TYUh_KEDO
+	.asciz "h/TOTTEMOk/MUZUKAh/TIIDEk/TYUh/KEDO"
+glabel string_h_TUGIHAk_SAIGOh_MADEITTEHOTIIDEk_TYU_
+	.asciz "h/TUGIHAk/SAIGOh/MADEITTEHOTIIDEk/TYU!"
+	.balign 4
+	.4byte string_h_KONOk_SUTE_JIh_MADEk_PUREIh_DEKIRUNANNTE  ;# ptr
+	.4byte string_k_SUGOIh_DEk_TYU__ODOROKIh_DEk_TYU_  ;# ptr
+	.4byte string_h_TOTTEMOk_MUZUKAh_TIIDEk_TYUh_KEDO  ;# ptr
+	.4byte string_h_TUGIHAk_SAIGOh_MADEITTEHOTIIDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_You_are_weally_good_
+	.asciz "You are weally good!"
+	.balign 4
+glabel string_It_s_a_wittle_hard__but_let_s_try
+	.asciz "It's a wittle hard, but let's try"
+	.balign 4
+glabel string_to_make_it_all_da_way_to_da_end_
+	.asciz "to make it all da way to da end!"
+	.balign 4
+glabel lbl_801E4A10
+	.4byte string_Wow__You_ve_made_it_this_far_  ;# ptr
+	.4byte string_You_are_weally_good_  ;# ptr
+	.4byte string_It_s_a_wittle_hard__but_let_s_try  ;# ptr
+	.4byte string_to_make_it_all_da_way_to_da_end_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTO__GETTOh_DEk_TYU_
+	.asciz "h/%pk/POINNTO, GETTOh/DEk/TYU!"
+	.balign 4
+glabel string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_
+	.asciz "h/ZENBUDE%tk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_MINIGE_MUGETTOh_DEk_TYU__BABU__
+	.asciz "k/MINIGE-MUGETTOh/DEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_MINIGE_MUGETTOh_DEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_All_togeder__you_have__t_
+	.asciz "All togeder, you have %t!"
+	.balign 4
+glabel string_Only__n_weft_to
+	.asciz "Only %n weft to"
+glabel string_unwock_the_next_Mini_Game_
+	.asciz "unwock the next Mini Game!"
+	.balign 4
+glabel lbl_801E4AE4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Only__n_weft_to  ;# ptr
+	.4byte string_unwock_the_next_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA
+	.asciz "k/POINNTOh/WOTAKUSANNk/GETTOh/TITADEk/TYUh/KARA"
+glabel string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_
+	.asciz "h/SUKINAk/MINIGE-MUh/WOk/GETTOh/DEKIRUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_h_SUKINAk_MINIGE_MUh_WOk_GETTOh_DEKIRUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel lbl_801E4B6C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_h__pk_POINNTO_GETTOh_DEk_TYU_
+	.asciz "h/%pk/POINNTO,GETTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_MINIGE_MUh_WOZENNBUk_GETTOh_DEKIRUDEk_TYU_
+	.asciz "k/MINIGE-MUh/WOZENNBUk/GETTOh/DEKIRUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_k_MINIGE_MUh_WOZENNBUk_GETTOh_DEKIRUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_Since_you_got_a_wot_of_points_
+	.asciz "Since you got a wot of points,"
+	.balign 4
+glabel string_you_can_unwock_the_last_Mini_Game_
+	.asciz "you can unwock the last Mini Game!"
+	.balign 4
+glabel lbl_801E4C28
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
+	.4byte string_you_can_unwock_the_last_Mini_Game_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_h_WOHUYASERUDEk_TYU_
+	.asciz "k/KONNTEXINYU-h/WOHUYASERUDEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ATO_nk_POINNTOh_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU_h_WOHUYASERUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_All_togedder__you_have__p_
+	.asciz "All togedder, you have %p!"
+	.balign 4
+glabel string_incwease_your_number_of_continues_
+	.asciz "incwease your number of continues!"
+	.balign 4
+glabel lbl_801E4CB4
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togedder__you_have__p_  ;# ptr
+	.4byte string_Only__n_weft_to  ;# ptr
+	.4byte string_incwease_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU_h_GA_ch_KAININATTADEk_TYU_
+	.asciz "k/KONNTEXINYU-h/GA%ch/KAININATTADEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_POINNTOh_WOTAKUSANNk_GETTOh_TITADEk_TYUh_KARA  ;# ptr
+	.4byte string_k_KONNTEXINYU_h_GA_ch_KAININATTADEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_you_incwease_your_number
+	.asciz "you incwease your number"
+	.balign 4
+glabel string_of_continues_
+	.asciz "of continues!"
+	.balign 4
+glabel lbl_801E4D34
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_wot_of_points_  ;# ptr
+	.4byte string_you_incwease_your_number  ;# ptr
+	.4byte string_of_continues_  ;# ptr
+	.4byte 0
+glabel string_h_NANNKAIDEMOk_KONNTEXINYU_h_GA
+	.asciz "h/NANNKAIDEMOk/KONNTEXINYU-h/GA"
+glabel string_h_DEKIRUYOUNINATTADEk_TYU__BABU__
+	.asciz "h/DEKIRUYOUNINATTADEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_ZENBUDE_tk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_NANNKAIDEMOk_KONNTEXINYU_h_GA  ;# ptr
+	.4byte string_h_DEKIRUYOUNINATTADEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_Now__you_can_pway_with
+	.asciz "Now, you can pway with"
+	.balign 4
+glabel lbl_801E4DBC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_togeder__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_pway_with  ;# ptr
+	.4byte string_infinite_continues_  ;# ptr
+	.4byte 0
+glabel string_h_MOU__k_PUREZENNTOh_SURUMONOHANAIDEk_TYU_
+	.asciz "h/MOU, k/PUREZENNTOh/SURUMONOHANAIDEk/TYU!"
+	.balign 4
+glabel string_h_IKUTUk_GETTOh_SURUKANIk_TYARENJIh_DEk_TYU_
+	.asciz "h/IKUTUk/GETTOh/SURUKANIk/TYARENJIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_MOU__k_PUREZENNTOh_SURUMONOHANAIDEk_TYU_  ;# ptr
+	.4byte string_h_KOREKARAHA__1k_PUREIh_DEk_PUREIPOINNTOh_WO  ;# ptr
+	.4byte string_h_IKUTUk_GETTOh_SURUKANIk_TYARENJIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unwocked_everyting_
+	.asciz "You've unwocked everyting!"
+	.balign 4
+glabel lbl_801E4E5C
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unwocked_everyting_  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_the_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA_bk_POINNTOh_DEk_TYU_
+	.asciz "k/SAIKO-h/HA%bk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_k_SAIKO_h_KIROKU__MEZATITE
+	.asciz "k/SAIKO-h/KIROKU, MEZATITE"
+	.balign 4
+glabel string_h_KOREKARAMO__k_PUREIh_SURUDEk_TYU_
+	.asciz "h/KOREKARAMO, k/PUREIh/SURUDEk/TYU!"
+	.4byte string_h__pk_POINNTO_GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_HA_bk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_KIROKU__MEZATITE  ;# ptr
+	.4byte string_h_KOREKARAMO__k_PUREIh_SURUDEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_the_high_score___Let_s_go__
+	.asciz "the high score!! Let's go!!"
+glabel lbl_801E4F04
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score___Let_s_go__  ;# ptr
+	.4byte 0
+glabel string_h_KOREHA__k_SAIKO_h_KIROKUDEk_TYU_
+	.asciz "h/KOREHA, k/SAIKO-h/KIROKUDEk/TYU!"
+	.balign 4
+glabel string_h_YATTADEk_TYU__h_URETIIDEk_TYU_
+	.asciz "h/YATTADEk/TYU! h/URETIIDEk/TYU!"
+	.balign 4
+glabel string_k_SUGOIh_DEk_TYU__UKIUKIh_DEk_TYU_
+	.asciz "k/SUGOIh/DEk/TYU! UKIUKIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_h_KOREHA__k_SAIKO_h_KIROKUDEk_TYU_  ;# ptr
+	.4byte string_h_YATTADEk_TYU__h_URETIIDEk_TYU_  ;# ptr
+	.4byte string_k_SUGOIh_DEk_TYU__UKIUKIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_Congwatuwations_
+	.asciz "Congwatuwations!"
+	.balign 4
+glabel string_That_was_truly_a_gweat_game_
+	.asciz "That was truly a gweat game!"
+	.balign 4
+glabel lbl_801E4FCC
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congwatuwations_  ;# ptr
+	.4byte string_That_was_truly_a_gweat_game_  ;# ptr
+	.4byte 0
+glabel string_k_PA_FEKUTOh_NAKIROKUDEk_TYU_
+	.asciz "k/PA-FEKUTOh/NAKIROKUDEk/TYU!"
+	.balign 4
+glabel string_h_KOREYORIk_SUGOIh_KIROKUHA
+	.asciz "h/KOREYORIk/SUGOIh/KIROKUHA"
+glabel string_h_MOUNAIDEk_TYU__ODOROKIh_DEk_TYU_
+	.asciz "h/MOUNAIDEk/TYU! ODOROKIh/DEk/TYU!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_PA_FEKUTOh_NAKIROKUDEk_TYU_  ;# ptr
+	.4byte string_h_KOREYORIk_SUGOIh_KIROKUHA  ;# ptr
+	.4byte string_h_MOUNAIDEk_TYU__ODOROKIh_DEk_TYU_  ;# ptr
+	.4byte 0
+glabel string_There_s_no_wecord_better_than_this_
+	.asciz "There's no wecord better than this!"
+glabel lbl_801E5078
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_wecord_better_than_this_  ;# ptr
+	.4byte string_You_are_the_greatest_  ;# ptr
+	.4byte string_That_was_truly_a_gweat_game_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_h_HA__bk_POINNTOh_DEk_TYU_
+	.asciz "k/SAIKO-h/HA,%bk/POINNTOh/DEk/TYU!"
+	.balign 4
+glabel string_h__bk_POINNTOh_WOMATAk_GETTOh_DEKIRUKA
+	.asciz "h/%bk/POINNTOh/WOMATAk/GETTOh/DEKIRUKA"
+	.balign 4
+glabel string_k_TYARENNJIh_TITEHOSIIDEk_TYU__BABU__
+	.asciz "k/TYARENNJIh/TITEHOSIIDEk/TYU! BABU~!"
+	.balign 4
+	.4byte string_h__pk_POINNTO__GETTOh_DEk_TYU_  ;# ptr
+	.4byte string_k_SAIKO_h_HA__bk_POINNTOh_DEk_TYU_  ;# ptr
+	.4byte string_h__bk_POINNTOh_WOMATAk_GETTOh_DEKIRUKA  ;# ptr
+	.4byte string_k_TYARENNJIh_TITEHOSIIDEk_TYU__BABU__  ;# ptr
+	.4byte 0
+glabel string_if_you_can_get__b__Goo_goo___
+	.asciz "if you can get %b! Goo goo!!!"
+	.balign 4
+glabel lbl_801E5134
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b__Goo_goo___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKYO_NOSARU_MEZASHITE_MOTTO
+	.asciz "k/SAIKYO~NOSARU MEZASHITE MOTTO"
+glabel string_k_UENO_REBERUDE_ASONDEKURE__
+	.asciz "k/UENO REBERUDE ASONDEKURE~!"
+	.balign 4
+	.4byte string_k_SAIKYO_NOSARU_MEZASHITE_MOTTO  ;# ptr
+	.4byte string_k_UENO_REBERUDE_ASONDEKURE__  ;# ptr
+	.4byte 0
+glabel string_Try_to_be_the_greatest_monkey_ever_
+	.asciz "Try to be the greatest monkey ever!"
+glabel string_Play_the_more_difficult_levels_
+	.asciz "Play the more difficult levels!"
+glabel lbl_801E51D8
+	.4byte string_Try_to_be_the_greatest_monkey_ever_  ;# ptr
+	.4byte string_Play_the_more_difficult_levels_  ;# ptr
+	.4byte 0
+glabel string_k_SUGOIJYANE_KA__ODOROKIDAZE_
+	.asciz "k/SUGOIJYANE~KA! ODOROKIDAZE!"
+	.balign 4
+glabel string_k_DAXA_KEDO_UEHA_MADA_ARUZE_
+	.asciz "k/DAXA~KEDO UEHA MADA ARUZE!"
+	.balign 4
+	.4byte string_k_SUGOIJYANE_KA__ODOROKIDAZE_  ;# ptr
+	.4byte string_k_DAXA_KEDO_UEHA_MADA_ARUZE_  ;# ptr
+	.4byte 0
+glabel string_Wow__You_re_really_good_
+	.asciz "Wow! You're really good!"
+	.balign 4
+glabel string_I_m_surprised_
+	.asciz "I'm surprised!"
+	.balign 4
+glabel string_Buuuut__there_s_still_a_more
+	.asciz "Buuuut, there's still a more"
+	.balign 4
+glabel string_difficult_level_to_beat_
+	.asciz "difficult level to beat!"
+	.balign 4
+glabel lbl_801E5298
+	.4byte string_Wow__You_re_really_good_  ;# ptr
+	.4byte string_I_m_surprised_  ;# ptr
+	.4byte string_Buuuut__there_s_still_a_more  ;# ptr
+	.4byte string_difficult_level_to_beat_  ;# ptr
+	.4byte 0
+glabel string_k_UHOUHO_UHOHO_I__YATTA__
+	.asciz "k/UHOUHO UHOHO~I! YATTA~!"
+	.balign 4
+glabel string_k_KOREDE_SAIKYO_NOSARU_DAZE__
+	.asciz "k/KOREDE SAIKYO~NOSARU DAZE~!"
+	.balign 4
+	.4byte string_k_UHOUHO_UHOHO_I__YATTA__  ;# ptr
+	.4byte string_k_KOREDE_SAIKYO_NOSARU_DAZE__  ;# ptr
+	.4byte 0
+glabel string_I_can_t_believe_it_
+	.asciz "I can't believe it!"
+glabel string_You_really_are_the_greatest
+	.asciz "You really are the greatest"
+glabel string_monkey_ever__
+	.asciz "monkey ever!!"
+	.balign 4
+glabel lbl_801E5334
+	.4byte string_Oh_wow_  ;# ptr
+	.4byte string_I_can_t_believe_it_  ;# ptr
+	.4byte string_You_really_are_the_greatest  ;# ptr
+	.4byte string_monkey_ever__  ;# ptr
+	.4byte 0
+glabel string_k_KONOSUTE_JIMADE_KORETA_OMAEHA
+	.asciz "k/KONOSUTE~JIMADE KORETA OMAEHA"
+glabel string_k_KANARINO_UDEMAEDA_XTU__UHOUHO_
+	.asciz "k/KANARINO UDEMAEDA~XTU! UHOUHO!"
+	.balign 4
+glabel string_k_TUGINI_PUREISURUTOKIHA_AKIRAMEZUNI
+	.asciz "k/TUGINI PUREISURUTOKIHA AKIRAMEZUNI"
+	.balign 4
+glabel string_k_ZENNBU_KURIA_DEKIRUYOUNI_GANBARE_
+	.asciz "k/ZENNBU KURIA DEKIRUYOUNI GANBARE!"
+	.4byte string_k_KONOSUTE_JIMADE_KORETA_OMAEHA  ;# ptr
+	.4byte string_k_KANARINO_UDEMAEDA_XTU__UHOUHO_  ;# ptr
+	.4byte string_k_TUGINI_PUREISURUTOKIHA_AKIRAMEZUNI  ;# ptr
+	.4byte string_k_ZENNBU_KURIA_DEKIRUYOUNI_GANBARE_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_something_to_have
+	.asciz "You really are something to have"
+	.balign 4
+glabel string_made_it_this_far__Congratulations__
+	.asciz "made it this far! Congratulations!!"
+glabel string_Next_time_you_play_
+	.asciz "Next time you play,"
+glabel string_let_s_take_it_all_the_way___
+	.asciz "let's take it all the way!!!"
+	.balign 4
+glabel lbl_801E5468
+	.4byte string_You_really_are_something_to_have  ;# ptr
+	.4byte string_made_it_this_far__Congratulations__  ;# ptr
+	.4byte string_Next_time_you_play_  ;# ptr
+	.4byte string_let_s_take_it_all_the_way___  ;# ptr
+	.4byte 0
+glabel string_k__pk_POINNTO_GETTOXO_XTU_
+	.asciz "k/%pk/POINNTO GETTOXO~XTU!"
+	.balign 4
+glabel string_k_ZENBUDE__tk_POINNTOXO_XTU_
+	.asciz "k/ZENBUDE %tk/POINNTOXO~XTU!"
+	.balign 4
+glabel string_k_ATO__nk_POINNTO_DE
+	.asciz "k/ATO %nk/POINNTO DE"
+	.balign 4
+glabel string_k_MINIGEXE_MU_GETTOXO_XTU__UHOHO_
+	.asciz "k/MINIGEXE~MU GETTOXO~XTU! UHOHO!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_ATO__nk_POINNTO_DE  ;# ptr
+	.4byte string_k_MINIGEXE_MU_GETTOXO_XTU__UHOHO_  ;# ptr
+	.4byte 0
+glabel string_You_got__p__Alright___
+	.asciz "You got %p! Alright!!!"
+	.balign 4
+glabel string_Go_go_go___
+	.asciz "Go go go!!!"
+glabel lbl_801E552C
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_unlock_the_next_Mini_Game_  ;# ptr
+	.4byte string_Go_go_go___  ;# ptr
+	.4byte 0
+glabel string_k_POINNTO_TAKUSANN__DAXAKA_RA
+	.asciz "k/POINNTO TAKUSANN! DAXAKA~RA"
+	.balign 4
+glabel string_k_MINIGE_MU_GETTOXO_XTU__DAXA__
+	.asciz "k/MINIGE~MU GETTOXO~XTU! DAXA~!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_MINIGE_MU_GETTOXO_XTU__DAXA__  ;# ptr
+	.4byte 0
+glabel string_you_can_unlock_a_Mini_Game__Yeah___
+	.asciz "you can unlock a Mini Game! Yeah!!!"
+glabel lbl_801E55BC
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_a_Mini_Game__Yeah___  ;# ptr
+	.4byte 0
+glabel string_k_MINIGEXE_MU_ZE_NNBU_GETTOXO_XTU_
+	.asciz "k/MINIGEXE~MU ZE~NNBU GETTOXO~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_MINIGEXE_MU_ZE_NNBU_GETTOXO_XTU_  ;# ptr
+	.4byte 0
+glabel string_All_together__you_have__t
+	.asciz "All together, you have %t"
+	.balign 4
+glabel string_Go_for_it___
+	.asciz "Go for it!!!"
+	.balign 4
+glabel lbl_801E5634
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_can_unlock_the_last_Mini_Game_  ;# ptr
+	.4byte string_Go_for_it___  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU__HUE_RU__UHOUHO_
+	.asciz "k/KONNTEXINYU~ HUE~RU! UHOUHO!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_ATO__nk_POINNTO_DE  ;# ptr
+	.4byte string_k_KONNTEXINYU__HUE_RU__UHOUHO_  ;# ptr
+	.4byte 0
+glabel lbl_801E5680
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Only__n_left_to  ;# ptr
+	.4byte string_increase_your_number_of_continues_  ;# ptr
+	.4byte 0
+glabel string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_
+	.asciz "k/KONNTEXINYU~ %ck/ KAINI HUETA~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_POINNTO_TAKUSANN__DAXAKA_RA  ;# ptr
+	.4byte string_k_KONNTEXINYU___ck__KAINI_HUETA_XTU_  ;# ptr
+	.4byte 0
+glabel lbl_801E56D0
+	.4byte string_You_got__p__Alright___  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Since_you_got_a_lot_of_points_  ;# ptr
+	.4byte string_you_increase_your_number  ;# ptr
+	.4byte string_of_continues_to__c_  ;# ptr
+	.4byte 0
+glabel string_k_DAXAKA_RA_KONNTEXINYU__NANNDOMO
+	.asciz "k/DAXAKA~RA KONNTEXINYU~ NANNDOMO"
+	.balign 4
+glabel string_k_DEKIRUYOUNI_NATTA___NATTA__
+	.asciz "k/DEKIRUYOUNI NATTA~! NATTA~!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_ZENBUDE__tk_POINNTOXO_XTU_  ;# ptr
+	.4byte string_k_DAXAKA_RA_KONNTEXINYU__NANNDOMO  ;# ptr
+	.4byte string_k_DEKIRUYOUNI_NATTA___NATTA__  ;# ptr
+	.4byte 0
+glabel string_infinite_continues__Good_job__
+	.asciz "infinite continues! Good job!!"
+	.balign 4
+glabel lbl_801E5760
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_All_together__you_have__t_  ;# ptr
+	.4byte string_Now__you_can_play_with  ;# ptr
+	.4byte string_infinite_continues__Good_job__  ;# ptr
+	.4byte 0
+glabel string_k_MOU_OMAENI_YARERUMONO_NAI_
+	.asciz "k/MOU OMAENI YARERUMONO NAI!"
+	.balign 4
+glabel string_k_KOREKARAHA_1PUREIDE_PUREIPOINNTO
+	.asciz "k/KOREKARAHA 1PUREIDE PUREIPOINNTO"
+	.balign 4
+glabel string_k_NANNTENN_GETTODEKIRUKA_TYARENNJI_
+	.asciz "k/NANNTENN GETTODEKIRUKA TYARENNJI!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_MOU_OMAENI_YARERUMONO_NAI_  ;# ptr
+	.4byte string_k_KOREKARAHA_1PUREIDE_PUREIPOINNTO  ;# ptr
+	.4byte string_k_NANNTENN_GETTODEKIRUKA_TYARENNJI_  ;# ptr
+	.4byte 0
+glabel string_You_ve_unlocked_everything__Wow___
+	.asciz "You've unlocked everything! Wow!!!"
+	.balign 4
+glabel string_high_score_for_most_Play_Points_
+	.asciz "high score for most Play Points!"
+	.balign 4
+glabel lbl_801E5838
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_You_ve_unlocked_everything__Wow___  ;# ptr
+	.4byte string_Now__you_can_try_to_set_the  ;# ptr
+	.4byte string_high_score_for_most_Play_Points_  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO__bk_POINNTO__ZANNNENN_
+	.asciz "k/SAIKO~%bk/POINNTO! ZANNNENN!"
+	.balign 4
+glabel string_k_KOREKARAMO_SAIKO_KIROKU_MEZASITE
+	.asciz "k/KOREKARAMO SAIKO~KIROKU MEZASITE"
+	.balign 4
+glabel string_k_PUREI_SURUNO_DA_XTU__UHOHO_I_
+	.asciz "k/PUREI SURUNO DA~XTU! UHOHO~I!"
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO__bk_POINNTO__ZANNNENN_  ;# ptr
+	.4byte string_k_KOREKARAMO_SAIKO_KIROKU_MEZASITE  ;# ptr
+	.4byte string_k_PUREI_SURUNO_DA_XTU__UHOHO_I_  ;# ptr
+	.4byte 0
+glabel string_the_high_score__You_can_do_it___
+	.asciz "the high score! You can do it!!!"
+	.balign 4
+glabel lbl_801E58E8
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Do_your_best_to_try_and_beat  ;# ptr
+	.4byte string_the_high_score__You_can_do_it___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO_KIROKU_DETTA___DETTA__
+	.asciz "k/SAIKO~KIROKU DETTA~! DETTA~!"
+	.balign 4
+glabel string_k_UHO_UHOHO__UHOUHO_UHOHO_I_
+	.asciz "k/UHO UHOHO! UHOUHO UHOHO~I!"
+	.balign 4
+glabel string_k_YATTA__YATTA___YATTA_GO_NN_
+	.asciz "k/YATTA~ YATTA~! YATTA~GO~NN!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO_KIROKU_DETTA___DETTA__  ;# ptr
+	.4byte string_k_UHO_UHOHO__UHOUHO_UHOHO_I_  ;# ptr
+	.4byte string_k_YATTA__YATTA___YATTA_GO_NN_  ;# ptr
+	.4byte 0
+glabel string_You_really_are_the_best____Woo_hoo___
+	.asciz "You really are the best!!! Woo hoo!!!"
+	.balign 4
+glabel lbl_801E5998
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_That_s_a_new_high_score_  ;# ptr
+	.4byte string_Congratulations_  ;# ptr
+	.4byte string_You_really_are_the_best____Woo_hoo___  ;# ptr
+	.4byte 0
+glabel string_k_KO_KOREHA_ODOROKINO_DA_IKIROKU_
+	.asciz "k/KO KOREHA ODOROKINO DA~IKIROKU!"
+	.balign 4
+glabel string_k_KOREIJYO__SUGOI_KIROKU_DENAI_
+	.asciz "k/KOREIJYO~ SUGOI KIROKU DENAI!"
+glabel string_k_OMAE_TENNSA_I_SUGOIZOXO_XTU_
+	.asciz "k/OMAE TENNSA~I SUGOIZOXO~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_KO_KOREHA_ODOROKINO_DA_IKIROKU_  ;# ptr
+	.4byte string_k_KOREIJYO__SUGOI_KIROKU_DENAI_  ;# ptr
+	.4byte string_k_OMAE_TENNSA_I_SUGOIZOXO_XTU_  ;# ptr
+	.4byte 0
+glabel string_I_can_t_believe_it__
+	.asciz "I can't believe it!!"
+	.balign 4
+glabel string_You_must_be_a_genius___
+	.asciz "You must be a genius!!!"
+glabel lbl_801E5A54
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_There_s_no_record_better_than_this_  ;# ptr
+	.4byte string_I_can_t_believe_it__  ;# ptr
+	.4byte string_You_must_be_a_genius___  ;# ptr
+	.4byte 0
+glabel string_k_SAIKO__bk_POINNTO__ZANNNENN
+	.asciz "k/SAIKO~%bk/POINNTO! ZANNNENN"
+	.balign 4
+glabel string_k__bk_POINNTO_MATA_DASERUYO_NI
+	.asciz "k/%bk/POINNTO MATA DASERUYO~NI"
+	.balign 4
+glabel string_k_GANNBARE_XTU__1p___k_2p___k_3p___k_DAXA_XTU_
+	.asciz "k/GANNBARE~XTU! 1p/./k/2p/./k/3p/./k/DAXA~XTU!"
+	.balign 4
+	.4byte string_k__pk_POINNTO_GETTOXO_XTU_  ;# ptr
+	.4byte string_k_SAIKO__bk_POINNTO__ZANNNENN  ;# ptr
+	.4byte string_k__bk_POINNTO_MATA_DASERUYO_NI  ;# ptr
+	.4byte string_k_GANNBARE_XTU__1p___k_2p___k_3p___k_DAXA_XTU_  ;# ptr
+	.4byte 0
+glabel string_Readyp_TENNTENN_a__Go___
+	.asciz "Readyp/TENNTENN/a/ Go!!!"
+	.balign 4
+glabel lbl_801E5B08
+	.4byte string_You_got__p_  ;# ptr
+	.4byte string_The_high_score_is__b_  ;# ptr
+	.4byte string_Try_one_more_time_to_see  ;# ptr
+	.4byte string_if_you_can_get__b_  ;# ptr
+	.4byte string_Readyp_TENNTENN_a__Go___  ;# ptr
+	.4byte 0
+glabel lbl_801E5B20
+	.4byte lbl_801E32B8  ;# ptr
+	.4byte lbl_801E3330  ;# ptr
+	.4byte lbl_801E33D0  ;# ptr
+	.4byte lbl_801E3518  ;# ptr
+	.4byte lbl_801E3614  ;# ptr
+	.4byte lbl_801E36E8  ;# ptr
+	.4byte lbl_801E3784  ;# ptr
+	.4byte lbl_801E3820  ;# ptr
+	.4byte lbl_801E38AC  ;# ptr
+	.4byte lbl_801E3948  ;# ptr
+	.4byte lbl_801E3A58  ;# ptr
+	.4byte lbl_801E3B34  ;# ptr
+	.4byte lbl_801E3C14  ;# ptr
+	.4byte lbl_801E3CE4  ;# ptr
+	.4byte lbl_801E3D7C  ;# ptr
+glabel lbl_801E5B5C
+	.4byte lbl_801E3DD0  ;# ptr
+	.4byte lbl_801E3E34  ;# ptr
+	.4byte lbl_801E3EA8  ;# ptr
+	.4byte lbl_801E3FE8  ;# ptr
+	.4byte lbl_801E40D8  ;# ptr
+	.4byte lbl_801E41A8  ;# ptr
+	.4byte lbl_801E4234  ;# ptr
+	.4byte lbl_801E42D8  ;# ptr
+	.4byte lbl_801E4374  ;# ptr
+	.4byte lbl_801E43B8  ;# ptr
+	.4byte lbl_801E44A4  ;# ptr
+	.4byte lbl_801E4558  ;# ptr
+	.4byte lbl_801E4640  ;# ptr
+	.4byte lbl_801E46F8  ;# ptr
+	.4byte lbl_801E47A4  ;# ptr
+glabel lbl_801E5B98
+	.4byte lbl_801E4814  ;# ptr
+	.4byte lbl_801E487C  ;# ptr
+	.4byte lbl_801E48F4  ;# ptr
+	.4byte lbl_801E4A10  ;# ptr
+	.4byte lbl_801E4AE4  ;# ptr
+	.4byte lbl_801E4B6C  ;# ptr
+	.4byte lbl_801E4C28  ;# ptr
+	.4byte lbl_801E4CB4  ;# ptr
+	.4byte lbl_801E4D34  ;# ptr
+	.4byte lbl_801E4DBC  ;# ptr
+	.4byte lbl_801E4E5C  ;# ptr
+	.4byte lbl_801E4F04  ;# ptr
+	.4byte lbl_801E4FCC  ;# ptr
+	.4byte lbl_801E5078  ;# ptr
+	.4byte lbl_801E5134  ;# ptr
+glabel lbl_801E5BD4
+	.4byte lbl_801E51D8  ;# ptr
+	.4byte lbl_801E5298  ;# ptr
+	.4byte lbl_801E5334  ;# ptr
+	.4byte lbl_801E5468  ;# ptr
+	.4byte lbl_801E552C  ;# ptr
+	.4byte lbl_801E55BC  ;# ptr
+	.4byte lbl_801E5634  ;# ptr
+	.4byte lbl_801E5680  ;# ptr
+	.4byte lbl_801E56D0  ;# ptr
+	.4byte lbl_801E5760  ;# ptr
+	.4byte lbl_801E5838  ;# ptr
+	.4byte lbl_801E58E8  ;# ptr
+	.4byte lbl_801E5998  ;# ptr
+	.4byte lbl_801E5A54  ;# ptr
+	.4byte lbl_801E5B08  ;# ptr
+
+.global lbl_801E5C10
+lbl_801E5C10:
+	# ROM: 0x1E2C10
+	.4byte lbl_801E5B20  ;# ptr
+	.4byte lbl_801E5B5C  ;# ptr
+	.4byte lbl_801E5B98  ;# ptr
+	.4byte lbl_801E5BD4  ;# ptr
+
+.global lbl_801E5C20
+lbl_801E5C20:
+	# ROM: 0x1E2C20
+	.4byte lbl_800C0EEC  ;# ptr
+	.4byte lbl_800C0EF4  ;# ptr
+	.4byte lbl_800C0EFC  ;# ptr
+	.4byte lbl_800C0F04  ;# ptr
+	.4byte lbl_800C0F0C  ;# ptr
+	.4byte lbl_800C0F14  ;# ptr
+	.4byte lbl_800C0F1C  ;# ptr
+	.4byte lbl_800C0F24  ;# ptr
+	.4byte lbl_800C0F2C  ;# ptr
+	.4byte lbl_800C0F34  ;# ptr
+	.4byte lbl_800C0F3C  ;# ptr
+	.4byte lbl_800C0F44  ;# ptr
+	.4byte lbl_800C0F4C  ;# ptr
+	.4byte lbl_800C0F54  ;# ptr
+	.4byte lbl_800C0F5C  ;# ptr
+	.4byte string__point  ;# ptr
+	.4byte string__points  ;# ptr
+	.4byte lbl_802F1920  ;# ptr
+glabel string_c_0xff0000__dc_0x000000__s
+	.asciz "c/0xff0000/%dc/0x000000/%s"
+	.balign 4
+glabel string_c_0xff0000__dc_0x000000_
+	.asciz "c/0xff0000/%dc/0x000000/"
+	.balign 4
+
+.global lbl_801E5CA0
+lbl_801E5CA0:
+	# ROM: 0x1E2CA0
+	.4byte lbl_800C15F8  ;# ptr
+	.4byte lbl_800C15E0  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1624  ;# ptr
+	.4byte lbl_800C15A0  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1544  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1650  ;# ptr
+	.4byte lbl_800C1574  ;# ptr
+	.4byte 0

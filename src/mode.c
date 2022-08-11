@@ -462,7 +462,7 @@ s16 gameSubmode;
 s16 gameSubmodeRequest;
 void *modeStringPtr;
 void *submodeStringPtr;
-void (*lbl_802F1B80)(void);
+void (*unusedCallback)(void);  // always NULL
 void (*lbl_802F1B7C)(void);
 s32 lbl_802F1B78;
 void (*lbl_802F1B74)(void);
@@ -474,44 +474,41 @@ void gm_init(void)
     gameSubmode = SMD_ADV_WARNING_INIT;
     gameModeRequest = -1;
     gameSubmodeRequest = -1;
-    lbl_802F1B80 = NULL;
+    unusedCallback = NULL;
     lbl_802F1B7C = NULL;
-    modeCtrl.levelSetFlags = 0;
-    modeCtrl.unk0 = 0;
-    modeCtrl.unk42 = 0;
+    modeCtrl.courseFlags = 0;
+    modeCtrl.submodeTimer = 0;
+    modeCtrl.splitscreenMode = 0;
     modeCtrl.unk1C = 0;
     modeCtrl.menuSel = 0;
 }
 
 void gm_main(void)
 {
-    s16 r4;
-
     if (dipSwitches & DIP_DEBUG)
-        g_menu_input_debug();
+        u_menu_input_debug();
     else
-        g_menu_input_notdebug();
+        u_menu_input_notdebug();
 
-    if ((modeCtrl.levelSetFlags & (1 << 9))
+    if ((modeCtrl.courseFlags & (1 << 9))
      && gameModeRequest != -1 && gameModeRequest != gameMode)
     {
         relocation_unload_module(&lbl_802F021C);
-        modeCtrl.levelSetFlags &= ~(1 << 9);
+        modeCtrl.courseFlags &= ~(1 << 9);
     }
 
     if (gameModeRequest != -1)
     {
-        if (lbl_802F1B80 != NULL)
+        if (unusedCallback != NULL)
         {
-            lbl_802F1B80();
-            lbl_802F1B80 = NULL;
+            unusedCallback();
+            unusedCallback = NULL;
         }
         gameMode = gameModeRequest;
-        r4 = gameMode;
         modeStringPtr = gameModeNames[gameMode];
         gameModeRequest = -1;
-        if (r4 == MD_TEST || r4 == MD_OPTION)
-            modeCtrl.levelSetFlags |= 0x200;
+        if (gameMode == MD_TEST || gameMode == MD_OPTION)
+            modeCtrl.courseFlags |= 0x200;
     }
 
     if (gameSubmodeRequest != -1)
@@ -521,7 +518,7 @@ void gm_main(void)
         gameSubmodeRequest = -1;
     }
 
-    if (modeCtrl.levelSetFlags & (1 << 9))
+    if (modeCtrl.courseFlags & (1 << 9))
     {
         if (lbl_802F021C.info == NULL)
         {
@@ -585,13 +582,13 @@ int title_screen_debug_menu(void)
             {
             case 0:  // "GAME START"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 1;
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 1;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 1:  // "STAGE SELECT"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 2:  // "MINI MODE"
@@ -601,8 +598,8 @@ int title_screen_debug_menu(void)
                 break;
             case 3:  // "OPTION"
                 empty_load_queue();
-                modeCtrl.levelSetFlags |= 0x40000;
-                modeCtrl.levelSetFlags |= 2;
+                modeCtrl.courseFlags |= 0x40000;
+                modeCtrl.courseFlags |= 2;
                 gameSubmodeRequest = SMD_ADV_START_INIT;
                 break;
             case 4:  // "TEST MODE"
@@ -614,44 +611,41 @@ int title_screen_debug_menu(void)
             return 1;
         }
 
-        if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[1].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[2].unk0[2].button & PAD_BUTTON_B)
-         || (controllerInfo[3].unk0[2].button & PAD_BUTTON_B))
+        if (ANY_CONTROLLER_PRESSED(PAD_BUTTON_B))
             modeCtrl.unk1C = 0;
     }
 
-    g_debug_set_cursor_pos(15, 15);
+    u_debug_set_cursor_pos(15, 15);
     for (i = 0; i < 5; i++)
     {
         if (i == modeCtrl.menuSel)
-            g_debug_set_text_color(2);
-        g_debug_printf("%s\n", items[i]);
+            u_debug_set_text_color(2);
+        u_debug_printf("%s\n", items[i]);
         if (i == modeCtrl.menuSel)
-            g_debug_set_text_color(0);
+            u_debug_set_text_color(0);
     }
-    g_debug_set_cursor_pos(13, 15 + modeCtrl.menuSel);
-    g_debug_print("*");
-    g_debug_set_cursor_pos(11, 13);
-    g_debug_print("\x18");
+    u_debug_set_cursor_pos(13, 15 + modeCtrl.menuSel);
+    u_debug_print("*");
+    u_debug_set_cursor_pos(11, 13);
+    u_debug_print("\x18");
     for (i = 0; i < 16; i++)
-        g_debug_print("\x16");
-    g_debug_print("\x19");
-    g_debug_set_cursor_pos(11, 14);
+        u_debug_print("\x16");
+    u_debug_print("\x19");
+    u_debug_set_cursor_pos(11, 14);
     for (i = 0; i < 7; i++)
-        g_debug_print("\x17\n");
-    g_debug_set_cursor_pos(28, 14);
+        u_debug_print("\x17\n");
+    u_debug_set_cursor_pos(28, 14);
     for (i = 0; i < 7; i++)
-        g_debug_print("\x17\n");
-    g_debug_set_cursor_pos(11, 21);
-    g_debug_print("\x1A");
+        u_debug_print("\x17\n");
+    u_debug_set_cursor_pos(11, 21);
+    u_debug_print("\x1A");
     for (i = 0; i < 16; i++)
-        g_debug_print("\x16");
-    g_debug_print("\x1B");
+        u_debug_print("\x16");
+    u_debug_print("\x1B");
     return 0;
 }
 
-void g_menu_input_debug(void)
+void u_menu_input_debug(void)
 {
     int bvar = FALSE;
     int i;
@@ -666,10 +660,10 @@ void g_menu_input_debug(void)
             if (controllerInfo[i].unk0[2].button & PAD_BUTTON_START)
                 bvar = TRUE;
         }
-        if ((gameMode == MD_GAME && (modeCtrl.levelSetFlags & 1))
+        if ((gameMode == MD_GAME && (modeCtrl.courseFlags & 1))
          || (gameMode == MD_MINI && gameSubmode != SMD_MINI_SELECT_MAIN))
         {
-            if (!(lbl_801F3D88[0] & (1 << 4)))
+            if (!(g_currPlayerButtons[0] & PAD_TRIGGER_Z))
                 bvar = FALSE;
         }
 
@@ -749,41 +743,38 @@ void g_menu_input_debug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        unkFunc8000B09C();
+        u_menu_input_game_notdebug();
         if (modeCtrl.unk1C != 0)
             modeCtrl.unk1C = 0;
         break;
     }
 }
 
-void g_menu_input_notdebug(void)
+void u_menu_input_notdebug(void)
 {
     switch (gameMode)
     {
     case MD_ADV:
-        if (!(modeCtrl.levelSetFlags & (1 << 1))
+        if (!(modeCtrl.courseFlags & (1 << 1))
          && gameSubmode == SMD_ADV_TITLE_MAIN
-         && (modeCtrl.levelSetFlags & (1 << 2)))
+         && (modeCtrl.courseFlags & (1 << 2)))
         {
             struct Sprite *sprite = find_sprite_with_tag(modeCtrl.unk10 + 12);
-            if (sprite != NULL && sprite->unk10 > 0)
+            if (sprite != NULL && sprite->counter > 0)
                 break;
-            if ((controllerInfo[0].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[1].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[2].unk0[2].button & PAD_BUTTON_A)
-             || (controllerInfo[3].unk0[2].button & PAD_BUTTON_A))
+            if (ANY_CONTROLLER_PRESSED(PAD_BUTTON_A))
             {
                 empty_load_queue();
                 if (modeCtrl.unk10 == 0)
                 {
-                    modeCtrl.levelSetFlags |= 1;
-                    modeCtrl.levelSetFlags |= 2;
+                    modeCtrl.courseFlags |= 1;
+                    modeCtrl.courseFlags |= 2;
                     gameSubmodeRequest = SMD_ADV_START_INIT;
                 }
                 else
                 {
-                    modeCtrl.levelSetFlags |= 0x40000;
-                    modeCtrl.levelSetFlags |= 2;
+                    modeCtrl.courseFlags |= 0x40000;
+                    modeCtrl.courseFlags |= 2;
                     gameSubmodeRequest = SMD_ADV_START_INIT;
                 }
             }
@@ -791,7 +782,7 @@ void g_menu_input_notdebug(void)
         break;
     case MD_GAME:
     case MD_MINI:
-        unkFunc8000B09C();
+        u_menu_input_game_notdebug();
         break;
     case MD_SEL:
     case MD_TEST:
@@ -803,96 +794,4 @@ void g_menu_input_notdebug(void)
 void submode_dummy_func(void)
 {
     printf("sub_mode: error %s.\n", gameSubmodeNames[gameSubmode]);
-}
-
-static int unkFunc8000A0F4_inline(void)
-{
-    if (screenFadeInfo.unk8 != 0)
-        return FALSE;
-    if (lbl_801EEC68.unk4 & (1 << 1))
-        return FALSE;
-    switch (gameSubmode)
-    {
-    case SMD_GAME_FIRST_INIT:
-    case SMD_GAME_OVER_INIT:
-    case SMD_GAME_OVER_MAIN:
-    case SMD_GAME_NAMEENTRY_INIT:
-    case SMD_GAME_NAMEENTRY_MAIN:
-    case SMD_GAME_CONTINUE_INIT:
-    case SMD_GAME_CONTINUE_MAIN:
-    case SMD_GAME_RESTART_INIT:
-    case SMD_GAME_NAMEENTRY_READY_INIT:
-    case SMD_GAME_NAMEENTRY_READY_MAIN:
-    case SMD_GAME_ENDING_INIT:
-    case SMD_GAME_ENDING_MAIN:
-    case SMD_GAME_EXTRA_INIT:
-    case SMD_GAME_EXTRA_WAIT:
-    case SMD_GAME_RESULT_INIT:
-    case SMD_GAME_RESULT_MAIN:
-    case SMD_GAME_RESULT_MENU:
-    case SMD_GAME_INTR_SEL_INIT:
-    case SMD_GAME_INTR_SEL_MAIN:
-    case SMD_GAME_OVER_SAVE:
-    case SMD_GAME_OVER_DEST:
-    case SMD_GAME_ROLL_INIT:
-    case SMD_GAME_ROLL_MAIN:
-    case SMD_GAME_OVER_POINT_INIT:
-    case SMD_GAME_OVER_POINT_MAIN:
-        return FALSE;
-    }
-    switch (gameSubmodeRequest)
-    {
-    case SMD_GAME_FIRST_INIT:
-    case SMD_GAME_OVER_INIT:
-    case SMD_GAME_OVER_MAIN:
-    case SMD_GAME_NAMEENTRY_INIT:
-    case SMD_GAME_NAMEENTRY_MAIN:
-    case SMD_GAME_CONTINUE_INIT:
-    case SMD_GAME_CONTINUE_MAIN:
-    case SMD_GAME_RESTART_INIT:
-    case SMD_GAME_NAMEENTRY_READY_INIT:
-    case SMD_GAME_NAMEENTRY_READY_MAIN:
-    case SMD_GAME_ENDING_INIT:
-    case SMD_GAME_ENDING_MAIN:
-    case SMD_GAME_EXTRA_INIT:
-    case SMD_GAME_EXTRA_WAIT:
-    case SMD_GAME_RESULT_INIT:
-    case SMD_GAME_RESULT_MAIN:
-    case SMD_GAME_RESULT_MENU:
-    case SMD_GAME_INTR_SEL_INIT:
-    case SMD_GAME_INTR_SEL_MAIN:
-    case SMD_GAME_OVER_SAVE:
-    case SMD_GAME_OVER_DEST:
-    case SMD_GAME_ROLL_INIT:
-    case SMD_GAME_ROLL_MAIN:
-    case SMD_GAME_OVER_POINT_INIT:
-    case SMD_GAME_OVER_POINT_MAIN:
-        return FALSE;
-    }
-    if (func_8009D5D8() != 0)
-        return FALSE;
-    return TRUE;
-}
-
-int unkFunc8000A0F4(void)
-{
-    if (!unkFunc8000A0F4_inline())
-        return FALSE;
-    if (lbl_802F1BA1 > 0)
-        return FALSE;
-    if (dipSwitches & DIP_DEBUG)
-    {
-        if (!(analogButtonInfo[0][0] & PAD_BUTTON_A)
-         && !(analogButtonInfo[0][0] & PAD_BUTTON_B)
-         && lbl_802F1ED8 == 0
-         && !(gamePauseStatus & (1<<(31-0x1C)))
-         && (lbl_801F3D88[2] & (1<<(31-0x13))))
-            return TRUE;
-    }
-    else
-    {
-        if (!(gamePauseStatus & (1<<(31-0x1C))) && (lbl_801F3D88[2] & (1<<(31-0x13))))
-            return TRUE;
-    }
-    return FALSE;
 }

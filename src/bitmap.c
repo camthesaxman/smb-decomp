@@ -2,15 +2,18 @@
 
 #include <dolphin.h>
 
+#include <dolphin/GXEnum.h>
 #include "global.h"
 #include "bitmap.h"
 #include "event.h"
+#include "gxcache.h"
 #include "gxutil.h"
 #include "load.h"
 #include "mathutil.h"
 #include "sprite.h"
+#include "mouse.h"
 
-struct TPL *g_unkBitmapTPL;
+struct TPL *u_unkBitmapTPL;
 s32 lbl_802F1D04;
 s32 spriteParamsBufCount;
 u16 lbl_802F1CFC;
@@ -77,14 +80,14 @@ char **bitmapNames[] =
 
 u32 lbl_802F04A8 = 0xFFFFFFFF;
 
-static u8 lzssHeader[0x20];
+static u8 lzssHeader[0x20] __attribute__((aligned(32)));
 
 void bitmap_draw(struct Bitmap *a);
 
 void bitmap_init(void)
 {
-    bitmap_load_group(0);
-    func_80026378(0);
+    bitmap_load_group(BMP_COM);
+    u_bitmap_set_some_tpl(0);
     currString = prevString = OSAlloc(0x800);
     if (prevString == NULL)
         OSPanic("bitmap.c", 120, "cannot OSAlloc");
@@ -126,7 +129,7 @@ struct TPL *bitmap_load_tpl(char *filename)
             OSPanic("bitmap.c", 164, "cannot OSAlloc\n");
 
         // Read whole file
-        lzData = OSAllocFromHeap(memHeap5, compressedSize);
+        lzData = OSAllocFromHeap(mainHeap, compressedSize);
         if (lzData == NULL)
             OSPanic("bitmap.c", 165, "cannot OSAlloc\n");
         if (file_read(&file, lzData, compressedSize, 0) < 0)
@@ -138,7 +141,7 @@ struct TPL *bitmap_load_tpl(char *filename)
         fileData = (void *)OSRoundUp32B((u32)tpl + 0x10);
         lzs_decompress(lzData, fileData);
         DCFlushRange(fileData, size);
-        OSFreeToHeap(memHeap5, lzData);
+        OSFreeToHeap(mainHeap, lzData);
     }
     else
     {
@@ -238,18 +241,18 @@ void bitmap_free_tpl(struct TPL *tpl)
     OSFree(tpl);
 }
 
-void func_80026378(int grpId)
+void u_bitmap_set_some_tpl(enum BitmapGroupID grpId)
 {
-    g_unkBitmapTPL = bitmapGroups[grpId].tpl;
+    u_unkBitmapTPL = bitmapGroups[grpId].tpl;
 }
 
-void func_80026394(void)
+void u_bitmap_frame_reset(void)
 {
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 0;
 }
 
-void func_800263A4(void)
+void bitmap_init_tev(void)
 {
     GXColor green = { 0, 255, 0, 255 };
 
@@ -259,20 +262,56 @@ void func_800263A4(void)
       | (1 << GX_VA_TEX0));
     GXSetNumChans(0);
     GXSetNumTexGens(1);
-    func_8009F2C8(1);
+    GXSetNumTevStages_cached(1);
     GXSetTevDirect(GX_TEVSTAGE0);
-    func_8009EA30(0, 0);
+    GXSetTevOp_cached(GX_TEVSTAGE0, GX_MODULATE);
     GXSetTexCoordGen(
         GX_TEXCOORD0,  // dst_coord
         GX_TG_MTX2x4,  // func
         GX_TG_TEX0,  // src_param
         GX_IDENTITY);  // mtx
-    func_8009EFF4(0, 0, 0, 0xFF);
-    func_8009E2C8(0, 0, 0);
-    func_8009E618(0, 15, 2, 8, 4);
-    func_8009E800(0, 0, 0, 0, 1, 0);
-    func_8009E70C(0, 7, 1, 4, 2);
-    func_8009E918(0, 0, 0, 0, 1, 0);
+    GXSetTevOrder_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEXCOORD0,  // coord
+        GX_TEXMAP0,  // map
+        GX_COLOR_NULL);  // color
+    GXSetTevSwapMode_cached(
+        GX_TEVSTAGE0, // stage
+        GX_TEV_SWAP0,  // ras_sel
+        GX_TEV_SWAP0);  // tex_sel
+
+    // Set the TEV color and alpha calculations.
+    // The final color/alpha is computed from: a * (1 - c) + b * c op d
+    // final color (GX_TEVPREV) = tex color (GX_CC_TEXC) * reg 0 color (GX_CC_C0) + reg 1 color (GX_CC_C1)
+    GXSetTevColorIn_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_CC_ZERO,    // a - zero
+        GX_CC_C0,      // b - reg 0 color
+        GX_CC_TEXC,    // c - texture color
+        GX_CC_C1);     // d - reg 1 color
+    GXSetTevColorOp_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEV_ADD,  // op
+        GX_TB_ZERO,  // bias
+        GX_CS_SCALE_1,  // scale
+        GX_TRUE,  // clamp
+        GX_TEVPREV);  // out_reg
+    // final alpha (GX_TEVPREV) = tex alpha (GX_CA_TEXA) * reg 0 alpha (GX_CA_A0) + reg 1 alpha (GX_CA_A1)
+    GXSetTevAlphaIn_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_CA_ZERO,    // a - zero
+        GX_CA_A0,      // b - reg 0 alpha
+        GX_CA_TEXA,    // c - texture alpha
+        GX_CA_A1);     // d - reg 1 alpha
+    GXSetTevAlphaOp_cached(
+        GX_TEVSTAGE0,  // stage
+        GX_TEV_ADD,  // op
+        GX_TB_ZERO,  // bias
+        GX_CS_SCALE_1,  // scale
+        GX_TRUE,  // clamp
+        GX_TEVPREV);  // out_reg
+
+    // Disable lighting
     GXSetChanCtrl(
         GX_COLOR0A0,  // chan
         GX_DISABLE,  // enable
@@ -281,43 +320,33 @@ void func_800263A4(void)
         GX_LIGHT_NULL,  // light_mask
         GX_DF_CLAMP,  // diff_fn
         GX_AF_NONE);  // attn_fn
+
     GXSetTevColor(GX_TEVREG0, green);
-
-    if (zMode->updateEnable != GX_ENABLE
-     || zMode->compareFunc != GX_LESS
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LESS, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_LESS;
-        zMode->updateEnable = GX_ENABLE;
-    }
-
-    func_8009E110(1, 4, 5, 0);
+    GXSetZMode_cached(GX_ENABLE, GX_LESS, GX_ENABLE);
+    GXSetBlendMode_cached(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
     {
         GXColor color = {0, 0, 0, 0};
-        func_8009E398(0, color, 0.0f, 100.0f, 0.1f, 20000.0f);
+        GXSetFog_cached(GX_FOG_NONE, 0.0f, 100.0f, 0.1f, 20000.0f, color);
     }
-    func_8009E094(2);
+    GXSetCullMode_cached(GX_CULL_BACK);
 }
 
 void bitmap_main(void)
 {
     float projParams[GX_PROJECTION_SZ];
-    u8 unused[16];
-    Mtx m;
+    Mtx44 m;
     struct Bitmap *bmp;
 
-    func_800263A4();
+    bitmap_init_tev();
     mathutil_mtxA_from_identity();
     GXLoadPosMtxImm(mathutilData->mtxA, GX_PNMTX0);
-    C_MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
+    MTXPerspective(m, 60.0f, 1.33333333f, 0.1f, 20000.0f);
     GXSetProjection(m, GX_PERSPECTIVE);
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(0);
     GXGetProjectionv(projParams);
-    C_MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
+    MTXOrtho(m, 0.0f, 480.0f, 0.0f, 640.0f, 0.0f, 20000.0f);
     GXSetProjection(m, GX_ORTHOGRAPHIC);
 
     bmp = bitmapList;
@@ -331,42 +360,24 @@ void bitmap_main(void)
 
     bitmap_draw_string();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    u_draw_all_naomi_sprites();
     spriteParamsBufCount = 0;
     lbl_802F1D04 = 1;
     if (eventInfo[EVENT_SPRITE].state == EV_STATE_RUNNING)
         func_800700D8(1);
     if (eventInfo[EVENT_MOUSE].state == EV_STATE_RUNNING)
-        func_80095024();
+        ev_mouse_update();
     lbl_802F1D04 = 3;
-    func_800730B4();
+    u_draw_screen_fade_mask();
     lbl_802F1D04 = 2;
-    func_8002704C();
+    u_draw_all_naomi_sprites();  // again?
 
-    if (zMode->updateEnable != GX_DISABLE
-     || zMode->compareFunc != GX_ALWAYS
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_ALWAYS;
-        zMode->updateEnable = GX_DISABLE;
-    }
-
+    GXSetZMode_cached(GX_ENABLE, GX_ALWAYS, GX_DISABLE);
     if (eventInfo[EVENT_MEMCARD].state == EV_STATE_RUNNING)
         memcard_draw_ui();
+    GXSetZMode_cached(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
 
-    if (zMode->updateEnable != GX_ENABLE
-     || zMode->compareFunc != GX_LEQUAL
-     || zMode->compareEnable != GX_ENABLE)
-    {
-        GXSetZMode(GX_ENABLE, GX_LEQUAL, GX_ENABLE);
-        zMode->compareEnable = GX_ENABLE;
-        zMode->compareFunc = GX_LEQUAL;
-        zMode->updateEnable = GX_ENABLE;
-    }
-
-    g_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
+    u_unkBitmapTPL = bitmapGroups[BMP_COM].tpl;
     func_8002F0E4();
     m[0][0] = projParams[1];
     m[0][3] = projParams[2];
@@ -452,7 +463,7 @@ void bitmap_draw(struct Bitmap *bmp)
     mathutil_mtxA_tf_vec(&sp38, &sp38);
     mathutil_mtxA_tf_vec(&sp2C, &sp2C);
 
-    func_8009F430(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(bmp->imageId >> 8) & 0xFF].tpl->texObjs[bmp->imageId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = bmp->r;
     tevColor.g = bmp->g;
@@ -483,7 +494,7 @@ void bitmap_draw_normal_char(unsigned char chr)
     struct FontParams *font = &fontInfo[currFont];
     float x = textX;
     float y = textY;
-    int var1 = chr - font->unk4;
+    int var1 = chr - font->firstChar;
     int var2 = var1 % font->unkC;
     int var3 = var1 / font->unkC;
     float f29;
@@ -492,12 +503,12 @@ void bitmap_draw_normal_char(unsigned char chr)
     float f26;
     GXColor tevColor;
 
-    f27 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].width;
-    f26 = 128.0f / bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texHeaders[font->unk0 & 0xFF].height;
+    f27 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].width;
+    f26 = 128.0f / bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texHeaders[font->bmpId & 0xFF].height;
 
     f29 = f27 * (var2 * font->spaceWidth);
     f28 = f26 * (var3 * font->lineHeight);
-    func_8009F430(&bitmapGroups[(font->unk0 >> 8) & 0xFF].tpl->texObjs[font->unk0 & 0xFF], 0);
+    GXLoadTexObj_cached(&bitmapGroups[(font->bmpId >> 8) & 0xFF].tpl->texObjs[font->bmpId & 0xFF], GX_TEXMAP0);
 
     tevColor.r = 255;
     tevColor.g = 255;
@@ -614,7 +625,7 @@ void bitmap_draw_string(void)
     prevString = currString;
 }
 
-void func_8002704C(void)
+void u_draw_all_naomi_sprites(void)
 {
     int i;
     struct NaomiSpriteParams *params = &spriteParamsBuf[0];

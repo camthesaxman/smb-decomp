@@ -11,11 +11,13 @@
 #include "mathutil.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
+#include "rend_efc.h"
 #include "stage.h"
+#include "stobj.h"
 
 void sel_stage_draw(void)
 {
-    struct StageCollHdr *r27;
+    struct StageAnimGroup *r27;
     int i;
 
     func_80054FF0();
@@ -24,20 +26,20 @@ void sel_stage_draw(void)
     mathutil_mtxA_translate(&decodedStageLzPtr->startPos->pos);
     mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
     mathutil_mtxA_scale_xyz(0.6f, 0.6f, 0.6f);
-    g_nl2ngc_set_scale(0.6f);
-    g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 10));
+    nl2ngc_set_scale(0.6f);
+    nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, 10));
     
-    for (i = 0, r27 = decodedStageLzPtr->collHdrs; i < decodedStageLzPtr->collHdrsCount; i++, r27++)
+    for (i = 0, r27 = decodedStageLzPtr->animGroups; i < decodedStageLzPtr->animGroupCount; i++, r27++)
     {
-        Vec *r25 = &r27->unk40->unk0;
+        Vec *r25 = &r27->goals->pos;
         int j;
-        for (j = 0; j < r27->unk3C; j++)
+        for (j = 0; j < r27->goalCount; j++)
         {
             mathutil_mtxA_from_mtxB();
             mathutil_mtxA_translate(r25);
             mathutil_mtxA_translate_xyz(0.0f, 2.0f, 0.0f);
             mathutil_mtxA_rotate_y(unpausedFrameCounter << 9);
-            g_draw_naomi_model_and_do_other_stuff(NLOBJ_MODEL(naomiCommonObj, 7));
+            nl2ngc_draw_model_sort_translucent(NLOBJ_MODEL(g_commonNlObj, 7));
         }
     }
 
@@ -51,7 +53,7 @@ void sel_stage_draw(void)
         ord_tbl_set_depth_offset(0.0f);
     }
     if (eventInfo[EVENT_REND_EFC].state == EV_STATE_RUNNING)
-        func_80095398(16);
+        rend_efc_draw(16);
     if (eventInfo[EVENT_ITEM].state == EV_STATE_RUNNING)
         item_draw();
     if (eventInfo[EVENT_STOBJ].state == EV_STATE_RUNNING)

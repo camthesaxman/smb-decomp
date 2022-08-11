@@ -7,8 +7,10 @@
 #include "camera.h"
 #include "event.h"
 #include "mathutil.h"
+#include "stcoli.h"
+#include "gma.h"
 
-static struct BGModelSearch stormModelFind[] =
+static struct BGModelSearch stormBgModelFind[] =
 {
     { BG_MDL_CMP_FULL, "STM_RAIN00" },
     { BG_MDL_CMP_FULL, "STM_RAIN01" },
@@ -16,30 +18,30 @@ static struct BGModelSearch stormModelFind[] =
     { BG_MDL_CMP_END,  NULL },
 };
 
-static int storm_model_find_proc(int, struct GMAModelEntry *);
+static int model_find_proc(int, struct GMAModelEntry *);
 
 void bg_storm_init(void)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
     int i;
     struct BGStormWork_child *r28;
 
-    bg_e3_init();
+    bg_default_init();
     if (work->unk0 == 0)
-        g_search_bg_models(stormModelFind, storm_model_find_proc);
-    work->unk10.x = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-    work->unk10.y = ((rand() / 32767.0f) - 0.5f) * 9.0f;
-    work->unk10.z = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-    work->unk1C.x = ((rand() / 32767.0f) - 0.5f) * 0.1f;
+        find_background_gma_models(stormBgModelFind, model_find_proc);
+    work->unk10.x = (RAND_FLOAT() - 0.5f) * 6.0f;
+    work->unk10.y = (RAND_FLOAT() - 0.5f) * 9.0f;
+    work->unk10.z = (RAND_FLOAT() - 0.5f) * 6.0f;
+    work->unk1C.x = (RAND_FLOAT() - 0.5f) * 0.1f;
     work->unk1C.y = -0.25f;
-    work->unk1C.z = ((rand() / 32767.0f) - 0.5f) * 0.1f;
+    work->unk1C.z = (RAND_FLOAT() - 0.5f) * 0.1f;
     r28 = work->unk28;
     for (i = ARRAY_COUNT(work->unk28); i > 0; i--, r28++)
     {
-        r28->unk0 = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-        r28->unk4 = ((rand() / 32767.0f) - 0.5f) * 9.0f;
-        r28->unk8 = ((rand() / 32767.0f) - 0.5f) * 6.0f;
-        r28->unkC = (((rand() / 32767.0f) * 0.5f) + 1.0f) * 0.01f;
+        r28->unk0 = (RAND_FLOAT() - 0.5f) * 6.0f;
+        r28->unk4 = (RAND_FLOAT() - 0.5f) * 9.0f;
+        r28->unk8 = (RAND_FLOAT() - 0.5f) * 6.0f;
+        r28->unkC = ((RAND_FLOAT() * 0.5f) + 1.0f) * 0.01f;
     }
 }
 
@@ -48,16 +50,16 @@ void bg_storm_main(void)
     struct BGStormWork *work;
     Vec spDC;
     Vec spD0;
-    struct Struct8003FB48 spB4;
-    struct Struct8003C550 sp8;
+    struct RaycastHit spB4;
+    struct Effect sp8;
     int i;
     struct Camera *camera;
 
     if ((gamePauseStatus & 0xA) && eventInfo[EVENT_VIEW].state != EV_STATE_RUNNING)
         return;
 
-    work = backgroundInfo.unk9C;
-    bg_e3_main();
+    work = backgroundInfo.work;
+    bg_default_main();
 
     spDC = work->unk10;
 
@@ -86,15 +88,15 @@ void bg_storm_main(void)
     sp8.unk8 = 35;
     if (lbl_801EEC90.unk0 & 1)
     {
-        spD0.x = (rand() / 32767.0f) - 0.5f;
+        spD0.x = RAND_FLOAT() - 0.5f;
         spD0.y = 0.0f;
-        spD0.z = (rand() / 32767.0f) - 0.5f;
-        mathutil_vec_set_len(&spD0, &sp8.unk34, ((rand() / 32767.0f) + 0.1f) * 3.6000001430511475f);
+        spD0.z = RAND_FLOAT() - 0.5f;
+        mathutil_vec_set_len(&spD0, &sp8.unk34, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
         sp8.unk70.y = 1.0f;
-        mathutil_vec_to_euler_xy(&spB4.unk10, &sp8.unk4C, &sp8.unk4E);
+        mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
         sp8.unk50 = rand() & 0x7FFF;
         sp8.unk30 = work->rain02Model;
-        g_spawn_effect_object(&sp8);
+        spawn_effect(&sp8);
         return;
     }
     camera = cameraInfo;
@@ -102,21 +104,21 @@ void bg_storm_main(void)
     {
         if (cameraInfo[i].sub28.vp.width > 0.0f && cameraInfo[i].sub28.vp.height > 0.0f)
         {
-            spD0.x = (rand() / 32767.0f) - 0.5f;
+            spD0.x = RAND_FLOAT() - 0.5f;
             spD0.y = 0.0f;
-            spD0.z = (rand() / 32767.0f) - 0.5f;
-            mathutil_vec_set_len(&spD0, &spD0, ((rand() / 32767.0f) + 0.1f) * 3.6000001430511475f);
+            spD0.z = RAND_FLOAT() - 0.5f;
+            mathutil_vec_set_len(&spD0, &spD0, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
             spD0.x += camera->lookAt.x;
             spD0.y += camera->lookAt.y + 10.0f;
             spD0.z += camera->lookAt.z;
-            if ((u32)func_8003FB48(&spD0, &spB4, &sp8.unk7C) != 0)
+            if ((u32)raycast_stage_down(&spD0, &spB4, &sp8.unk7C) != 0)
             {
-                sp8.unk34 = spB4.unk4;
-                sp8.unk70 = spB4.unk10;
-                mathutil_vec_to_euler_xy(&spB4.unk10, &sp8.unk4C, &sp8.unk4E);
+                sp8.unk34 = spB4.pos;
+                sp8.unk70 = spB4.normal;
+                mathutil_vec_to_euler_xy(&spB4.normal, &sp8.unk4C, &sp8.unk4E);
                 sp8.unk50 = rand() & 0x7FFF;
                 sp8.unk30 = work->rain02Model;
-                g_spawn_effect_object(&sp8);
+                spawn_effect(&sp8);
             }
         }
     }
@@ -135,23 +137,20 @@ Vec lbl_801BA0A4[] =
     {  0,  0, -6 },
 };
 
-#ifdef NONMATCHING
-// https://decomp.me/scratch/7I9K0
 void bg_storm_draw(void)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
     Vec sp7C;
     Vec sp70;
     Vec sp64;
-    int i;  // r28
-    int j;  // r27
+    int i;
+    int j;
     struct BGStormWork_child *r30;
     Vec *r26;
-    struct GMAModelHeader *r25;
+    struct GMAModel *raindropModel;
     float f25;
-    float f24;
 
-    bg_e3_draw();
+    bg_default_draw();
     if (lbl_801EEC90.unk0 & (1 << 2))
         return;
     mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
@@ -161,9 +160,10 @@ void bg_storm_draw(void)
     sp70.y += (mathutil_ceil((sp7C.y - sp70.y) * 0.1111111119389534f) - 0.5f) * 9.0f;
     sp70.z += (mathutil_ceil((sp7C.z - sp70.z) * 0.1666666716337204f) - 0.5f) * 6.0f;
     sp64 = work->unk1C;
-    r25 = work->rain00Model;
+    raindropModel = work->rain00Model;
+
     r30 = work->unk28;
-    for (i = ARRAY_COUNT(work->unk28); i > 0; i--, r30++)
+    for (i = 64; i > 0; i--, r30++)
     {
         Vec sp58;
         Vec sp4C;
@@ -171,11 +171,12 @@ void bg_storm_draw(void)
         Vec sp34;
         Vec sp28;
         S16Vec sp20;
+        float f24 = r30->unkC;
 
-        f24 = r30->unkC;
         sp58.x = sp70.x + r30->unk0;
         sp58.y = sp70.y + r30->unk4;
         sp58.z = sp70.z + r30->unk8;
+
         r26 = lbl_801BA0A4;
         for (j = 7; j > 0; j--, r26++)
         {
@@ -197,7 +198,7 @@ void bg_storm_draw(void)
             mathutil_mtxA_tf_point(&sp4C, &sp40);
             if (sp40.z > 0.0f && sp34.z > 0.0f)
                 continue;
-            //lbl_800629B4
+
             sp28.x = sp40.x - sp34.x;
             sp28.y = sp40.y - sp34.y;
             sp28.z = sp40.z - sp34.z;
@@ -205,12 +206,15 @@ void bg_storm_draw(void)
             sp34.x += sp28.x * -0.5f;
             sp34.y += sp28.y * -0.5f;
             sp34.z += sp28.z * -0.5f;
+
             sp28.z = 0.0f;
+
+            {float dumb = 0; dumb += 1.0f; dumb += 0.2f;}  // needed to match
+
             if (sp28.x != 0.0f || sp28.y != 0.0f)
                 mathutil_vec_set_len(&sp28, &sp28, f24);
             else
                 sp28.y = f24;
-            //lbl_80062A50
             sp40.x += sp28.x;
             sp34.x -= sp28.x;
             sp40.y += sp28.y;
@@ -230,40 +234,28 @@ void bg_storm_draw(void)
                 alpha = f25;
             else
                 alpha = 1.0f - 0.2f * (f25 - 1.0f);
-            g_avdisp_set_alpha(alpha);
-            g_avdisp_maybe_draw_model_1(r25);
+            avdisp_set_alpha(alpha);
+            avdisp_draw_model_culled_sort_translucent(raindropModel);
         }
     }
 }
-#else
-const float lbl_802F44D4 = 0.1666666716337204f;
-const float lbl_802F44D8 = 0.1111111119389534f;
-const float lbl_802F44DC = -0.5f;
-const float lbl_802F44E0 = 0.20000000298023224f;
-asm void bg_storm_draw(void)
-{
-    nofralloc
-#include "../asm/nonmatchings/bg_storm_draw.s"
-}
-#pragma peephole on
-#endif
 
 void bg_storm_interact(int a) {}
 
-static int storm_model_find_proc(int index, struct GMAModelEntry *entry)
+static int model_find_proc(int index, struct GMAModelEntry *entry)
 {
-    struct BGStormWork *work = backgroundInfo.unk9C;
+    struct BGStormWork *work = backgroundInfo.work;
 
     switch (index)
     {
     case 0:  // STM_RAIN00
-        work->rain00Model = entry->modelOffset;
+        work->rain00Model = entry->model;
         break;
     case 1:  // STM_RAIN01
-        work->rain01Model = entry->modelOffset;
+        work->rain01Model = entry->model;
         break;
     case 2:  // STM_RAIN02
-        work->rain02Model = entry->modelOffset;
+        work->rain02Model = entry->model;
         break;
     }
     return 1;
