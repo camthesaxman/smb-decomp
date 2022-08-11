@@ -283,7 +283,7 @@ SOURCES := \
 	libraries/perf/asm/perfdraw.s \
 	libraries/musyx/asm/seq.s \
 	libraries/musyx/asm/synth.s \
-	libraries/musyx/asm/seq_api.s \
+	libraries/musyx/seq_api.c \
 	libraries/musyx/asm/snd_synthapi.s \
 	libraries/musyx/asm/stream.s \
 	libraries/musyx/asm/synthdata.s \
@@ -297,14 +297,14 @@ SOURCES := \
 	libraries/musyx/asm/hw_volconv.s \
 	libraries/musyx/asm/snd3d.s \
 	libraries/musyx/asm/synth_2.s \
-	libraries/musyx/asm/snd_math.s \
+	libraries/musyx/snd_math.c \
 	libraries/musyx/asm/snd_midictrl.s \
 	libraries/musyx/asm/snd_service.s \
 	libraries/musyx/asm/HARDWARE.s \
 	libraries/musyx/asm/hw_aramdma.s \
 	libraries/musyx/asm/hw_dolphin.s \
-	libraries/musyx/asm/hw_memory.s \
-	libraries/musyx/asm/reverb_fx.s \
+	libraries/musyx/hw_memory.c \
+	libraries/musyx/reverb_fx.c \
 	libraries/musyx/asm/reverb.s \
 	libraries/musyx/asm/chorus_fx.s \
 	libraries/dtk/asm/dtk.s \

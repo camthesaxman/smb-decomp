@@ -1,7 +1,14 @@
 #ifndef _MUSYX_MUSYX_H_
 #define _MUSYX_MUSYX_H_
 
+#include <dolphin/types.h>
+
+typedef int bool;
+
 #define SND_AUX_NUMPARAMETERS 4
+
+#define SND_AUX_REASON_BUFFERUPDATE 0
+#define SND_AUX_REASON_PARAMETERUPDATE 1
 
 typedef u32 SND_VOICEID;
 typedef u16 SND_FXID;
@@ -30,6 +37,19 @@ typedef struct SND_HOOKS
 } SND_HOOKS;
 
 void sndSetHooks(SND_HOOKS *hooks);
+
+typedef struct SND_FVECTOR
+{
+    f32 x;
+    f32 y;
+    f32 z;
+} SND_FVECTOR;
+
+typedef struct SND_FMATRIX
+{
+    f32 m[3][3];
+    f32 t[3];
+} SND_FMATRIX;
 
 typedef struct _SND_REVHI_DELAYLINE
 {
@@ -91,8 +111,8 @@ int sndFXCtrl(SND_VOICEID vid, u8 ctrl, u8 value);
 int sndFXCtrl14(SND_VOICEID vid, u8 ctrl, u16 value);
 
 void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
-s32 sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
-s32 sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
+bool sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
+bool sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
 
 
 void sndAuxCallbackChorus();
