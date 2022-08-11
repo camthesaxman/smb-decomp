@@ -11,6 +11,7 @@
 #include "mode.h"
 #include "pool.h"
 #include "recplay.h"
+#include "sound.h"
 #include "sprite.h"
 
 struct PauseMenuState pauseMenuState;
@@ -203,7 +204,7 @@ void u_open_pause_menu(struct Sprite *menuSprite)
     }
     else
         menuSprite->userVar = 1;
-    func_8002B5C8(0x70);
+    u_play_sound_1(0x70);
     u_play_music(50, 10);
 }
 
@@ -226,7 +227,7 @@ void u_handle_pause_menu_navigation(struct Sprite *menuSprite)
         lbl_802F1BA0 = 10;
     }
     if (r3 != pauseMenuState.selection)
-        func_8002B5C8(0x6F);
+        u_play_sound_1(0x6F);
     if (pauseMenuState.menuType == PAUSEMENU_CONT_GUIDE_HOW_EXIT
      && pauseMenuState.selection == 1)  // "Guide"
     {
@@ -234,7 +235,7 @@ void u_handle_pause_menu_navigation(struct Sprite *menuSprite)
          || CONTROLLER_SOMETHING(pauseMenuState.padId, PAD_BUTTON_RIGHT))
         {
             pauseMenuState.unk4 |= 0x10;
-            func_8002B5C8(0x169);
+            u_play_sound_1(0x169);
         }
     }
     if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_A)
@@ -242,7 +243,7 @@ void u_handle_pause_menu_navigation(struct Sprite *menuSprite)
      || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
     {
         pauseMenuState.unk4 |= 1;
-        func_8002B5C8(0x6E);
+        u_play_sound_1(0x6E);
         pauseMenuState.unk0 = 2;
         if ((controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
          || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
@@ -463,7 +464,7 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
          || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
         {
             event_finish(EVENT_VIEW);
-            func_8002B5C8(0x70);
+            u_play_sound_1(0x70);
             pauseMenuState.unk4 &= ~1;
             if (menuSprite != NULL)
                 menuSprite->unk78 &= ~1;
@@ -473,7 +474,7 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
     case 3:
         if (eventInfo[EVENT_MEMCARD].state != EV_STATE_RUNNING)
         {
-            func_8002B5C8(0x70);
+            u_play_sound_1(0x70);
             pauseMenuState.unk4 &= ~1;
             lbl_802F1B98 = -1;
         }
@@ -486,7 +487,7 @@ void unkFunc8000AECC(struct Sprite *menuSprite)
          || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_B)
          || (controllerInfo[pauseMenuState.padId].unk0[2].button & PAD_BUTTON_START))
         {
-            func_8002B5C8(0x70);
+            u_play_sound_1(0x70);
             pauseMenuState.unk4 &= ~1;
             destroy_sprite_with_tag(10);
             if (modeCtrl.gameType == GAMETYPE_MINI_TARGET || modeCtrl.gameType == GAMETYPE_MINI_GOLF)

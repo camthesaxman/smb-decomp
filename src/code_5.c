@@ -64,7 +64,7 @@ struct
     u8 filler9[0x10-0x9];
 } lbl_801EED98;
 
-u8 lbl_801EEDA8[0x118];
+struct Struct801EEDA8 lbl_801EEDA8;
 
 void u_reset_gamedata(void)
 {

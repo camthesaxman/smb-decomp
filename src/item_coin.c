@@ -14,6 +14,7 @@
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sound.h"
 #include "stage.h"
 
 #include "../data/common.gma.h"
@@ -221,16 +222,16 @@ void item_coin_collect(struct Item *item, struct PhysicsBall *ball)
         return;
     if (item->subType == 1)
     {
-        u_play_sound(0x39);
+        u_play_sound_0(0x39);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
-            u_play_sound(0x2820);
+            u_play_sound_0(0x2820);
         background_interact(1);
     }
     else
     {
-        u_play_sound(3);
+        u_play_sound_0(3);
         if ((infoWork.flags & (1 << 11)) || !(infoWork.flags & (1 << 4)))
-            u_play_sound(0x281F);
+            u_play_sound_0(0x281F);
         background_interact(0);
     }
 }

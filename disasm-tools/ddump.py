@@ -73,7 +73,7 @@ with open(sys.argv[1], 'r') as f:
             if label:
                 write_c()
                 startLabel = label
-                #break
+                break
             data += read_data(line)
         else:
             if read_label(line) == startLabel:

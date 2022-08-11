@@ -44,6 +44,8 @@ OSTime OSGetTime(void);
 void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
 BOOL OSDisableInterrupts(void);
 BOOL OSRestoreInterrupts(BOOL level);
+u32 OSGetSoundMode(void);
+void OSSetSoundMode(u32 mode);
 
 void OSReport(char *, ...);
 void OSPanic(char *file, int line, char *msg, ...);

@@ -7,6 +7,7 @@
 #include "info.h"
 #include "input.h"
 #include "mode.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
 #include "textbox.h"
@@ -1034,7 +1035,7 @@ static void play_points_textbox_callback(struct TextBox *tbox)
                     int buyContinues;
                     if (tbox->unk17 == 0)
                     {
-                        func_8002B5C8(0x16D);
+                        u_play_sound_1(0x16D);
                         tbox->unk17 = 1;
                     }
                     buyContinues = g_totalPlayPoints / 2500;

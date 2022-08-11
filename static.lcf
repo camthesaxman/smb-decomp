@@ -39,7 +39,7 @@ SECTIONS
     /* debug immediately follows normal stack */
     _db_stack_end = _stack_addr;
     _db_stack_addr = _db_stack_end + 0x2000;
-    
+
     /* arena follows debug stack */
     __ArenaLo = (_db_stack_addr + 0x1F) & ~ 0x1F;
     __ArenaHi = 0x81700000;
@@ -61,22 +61,3 @@ lbl_80292C00_alias = lbl_80292C00;
 
 /* For GCC compatibility */
 __udivdi3 = __div2u;
-
-lbl_801B9BB0 = 0x801B9BB0;
-
-lbl_802F4234 = 0x802F4234;
-lbl_802F4238 = 0x802F4238;
-lbl_802F4240 = 0x802F4240;
-lbl_802F4244 = 0x802F4244;
-lbl_802F424C = 0x802F424C;
-lbl_802F4254 = 0x802F4254;
-lbl_802F4258 = 0x802F4258;
-lbl_802F425C = 0x802F425C;
-lbl_802F4270 = 0x802F4270;
-lbl_802F428C = 0x802F428C;
-lbl_802F42A0 = 0x802F42A0;
-lbl_802F42A8 = 0x802F42A8;
-lbl_802F42AC = 0x802F42AC;
-lbl_802F42B0 = 0x802F42B0;
-lbl_802F42B4 = 0x802F42B4;
-lbl_802F42B8 = 0x802F42B8;

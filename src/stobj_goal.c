@@ -13,6 +13,7 @@
 #include "nl2ngc.h"
 #include "pool.h"
 #include "recplay.h"
+#include "sound.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -1369,8 +1370,8 @@ static void open_goal_bag(int goalId, struct PhysicsBall *arg1)
             stobj->u_local_vel.x += 0.5 * arg1->vel.x;
             stobj->u_local_vel.y += 0.5 * arg1->vel.y;
             stobj->u_local_vel.z += 0.5 * arg1->vel.z;
-            u_play_sound(0x16);
-            u_play_sound(0x127);
+            u_play_sound_0(0x16);
+            u_play_sound_0(0x127);
             if (bag->unk24 < 0)
                 bag->unk24 = infoWork.timerCurr;
             temp_r30 = 1 << currentBallStructPtr->playerId;

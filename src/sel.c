@@ -7,6 +7,7 @@
 #include "event.h"
 #include "mode.h"
 #include "relocation.h"
+#include "sound.h"
 #include "sprite.h"
 
 extern struct StageSelection stageSelection;

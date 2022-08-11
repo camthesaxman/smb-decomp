@@ -2100,7 +2100,7 @@ lbl_00001D80:
 /* 00001D90 2C030000 */ cmpwi r3, 0
 /* 00001D94 4182005C */ beq lbl_00001DF0
 /* 00001D98 3860006E */ li r3, 0x6e
-/* 00001D9C 4BFFE3ED */ bl u_play_sound
+/* 00001D9C 4BFFE3ED */ bl u_play_sound_0
 /* 00001DA0 3860000C */ li r3, 0xc
 /* 00001DA4 4BFFE3E5 */ bl call_bitmap_load_group
 /* 00001DA8 4BFFE3E1 */ bl func_80081F30
@@ -2117,7 +2117,7 @@ lbl_00001DB4:
 /* 00001DD0 41820020 */ beq lbl_00001DF0
 lbl_00001DD4:
 /* 00001DD4 38600070 */ li r3, 0x70
-/* 00001DD8 4BFFE3B1 */ bl u_play_sound
+/* 00001DD8 4BFFE3B1 */ bl u_play_sound_0
 /* 00001DDC 3860000A */ li r3, 0xa
 /* 00001DE0 4BFFE3A9 */ bl destroy_sprite_with_tag
 /* 00001DE4 3860000C */ li r3, 0xc
@@ -2180,7 +2180,7 @@ lbl_00001E80:
 /* 00001EB0 90170000 */ stw r0, 0(r23)
 lbl_00001EB4:
 /* 00001EB4 3860006C */ li r3, 0x6c
-/* 00001EB8 4BFFE2D1 */ bl u_play_sound
+/* 00001EB8 4BFFE2D1 */ bl u_play_sound_0
 lbl_00001EBC:
 /* 00001EBC 38600000 */ li r3, 0
 /* 00001EC0 4BFFE715 */ bl lbl_000005D4
@@ -2195,7 +2195,7 @@ lbl_00001EBC:
 /* 00001EE4 93170000 */ stw r24, 0(r23)
 lbl_00001EE8:
 /* 00001EE8 3860006C */ li r3, 0x6c
-/* 00001EEC 4BFFE29D */ bl u_play_sound
+/* 00001EEC 4BFFE29D */ bl u_play_sound_0
 /* 00001EF0 4800006C */ b lbl_00001F5C
 lbl_00001EF4:
 /* 00001EF4 38600000 */ li r3, 0
@@ -2211,7 +2211,7 @@ lbl_00001EF4:
 /* 00001F1C 90170000 */ stw r0, 0(r23)
 lbl_00001F20:
 /* 00001F20 3860006C */ li r3, 0x6c
-/* 00001F24 4BFFE265 */ bl u_play_sound
+/* 00001F24 4BFFE265 */ bl u_play_sound_0
 lbl_00001F28:
 /* 00001F28 38600001 */ li r3, 1
 /* 00001F2C 4BFFE6A9 */ bl lbl_000005D4
@@ -2226,7 +2226,7 @@ lbl_00001F28:
 /* 00001F50 93170000 */ stw r24, 0(r23)
 lbl_00001F54:
 /* 00001F54 3860006C */ li r3, 0x6c
-/* 00001F58 4BFFE231 */ bl u_play_sound
+/* 00001F58 4BFFE231 */ bl u_play_sound_0
 lbl_00001F5C:
 /* 00001F5C 80170000 */ lwz r0, 0(r23)
 /* 00001F60 38600017 */ li r3, 0x17
@@ -2638,25 +2638,25 @@ lbl_00002500:
 lbl_0000250C:
 /* 0000250C 3C600100 */ lis r3, 0x100
 /* 00002510 3863004F */ addi r3, r3, 0x4f
-/* 00002514 4BFFDC75 */ bl u_play_sound
+/* 00002514 4BFFDC75 */ bl u_play_sound_0
 /* 00002518 48000030 */ b lbl_00002548
 lbl_0000251C:
 /* 0000251C 3C6001D8 */ lis r3, 0x1d8
 /* 00002520 3863004F */ addi r3, r3, 0x4f
-/* 00002524 4BFFDC65 */ bl u_play_sound
+/* 00002524 4BFFDC65 */ bl u_play_sound_0
 /* 00002528 48000020 */ b lbl_00002548
 lbl_0000252C:
 /* 0000252C 3C600028 */ lis r3, 0x28
 /* 00002530 3863004F */ addi r3, r3, 0x4f
-/* 00002534 4BFFDC55 */ bl u_play_sound
+/* 00002534 4BFFDC55 */ bl u_play_sound_0
 /* 00002538 48000010 */ b lbl_00002548
 lbl_0000253C:
 /* 0000253C 3C6000FC */ lis r3, 0xfc
 /* 00002540 3863004F */ addi r3, r3, 0x4f
-/* 00002544 4BFFDC45 */ bl u_play_sound
+/* 00002544 4BFFDC45 */ bl u_play_sound_0
 lbl_00002548:
 /* 00002548 38600065 */ li r3, 0x65
-/* 0000254C 4BFFDC3D */ bl u_play_sound
+/* 0000254C 4BFFDC3D */ bl u_play_sound_0
 /* 00002550 80DE0000 */ lwz r6, 0(r30)
 /* 00002554 3C800000 */ lis r4, lbl_801EEDA8@ha
 /* 00002558 3C600000 */ lis r3, lbl_802F1C10@ha
@@ -2826,7 +2826,7 @@ lbl_000027AC:
 /* 000027B4 90010004 */ stw r0, 4(r1)
 /* 000027B8 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000027BC 93E1000C */ stw r31, 0xc(r1)
-/* 000027C0 4BFFD9C9 */ bl u_play_sound
+/* 000027C0 4BFFD9C9 */ bl u_play_sound_0
 /* 000027C4 3C600000 */ lis r3, lbl_802F1FB4@ha
 /* 000027C8 38830000 */ addi r4, r3, lbl_802F1FB4@l
 /* 000027CC 80A40000 */ lwz r5, 0(r4)
@@ -2896,7 +2896,7 @@ lbl_000028A8:
 /* 000028B0 90010004 */ stw r0, 4(r1)
 /* 000028B4 9421FFF0 */ stwu r1, -0x10(r1)
 /* 000028B8 93E1000C */ stw r31, 0xc(r1)
-/* 000028BC 4BFFD8CD */ bl u_play_sound
+/* 000028BC 4BFFD8CD */ bl u_play_sound_0
 /* 000028C0 3C600000 */ lis r3, lbl_802F1FB4@ha
 /* 000028C4 38830000 */ addi r4, r3, lbl_802F1FB4@l
 /* 000028C8 80A40000 */ lwz r5, 0(r4)
@@ -3110,7 +3110,7 @@ lbl_00002BB8:
 /* 00002BC8 4081000C */ ble lbl_00002BD4
 lbl_00002BCC:
 /* 00002BCC 3860006C */ li r3, 0x6c
-/* 00002BD0 4BFFD5B9 */ bl u_play_sound
+/* 00002BD0 4BFFD5B9 */ bl u_play_sound_0
 lbl_00002BD4:
 /* 00002BD4 801F0040 */ lwz r0, 0x40(r31)
 /* 00002BD8 2C000001 */ cmpwi r0, 1
@@ -3141,7 +3141,7 @@ lbl_00002BD4:
 /* 00002C3C 7C9F0214 */ add r4, r31, r0
 /* 00002C40 80040044 */ lwz r0, 0x44(r4)
 /* 00002C44 901E0000 */ stw r0, 0(r30)
-/* 00002C48 4BFFD541 */ bl u_play_sound
+/* 00002C48 4BFFD541 */ bl u_play_sound_0
 /* 00002C4C 48000094 */ b lbl_00002CE0
 lbl_00002C50:
 /* 00002C50 38600006 */ li r3, 6
@@ -3182,7 +3182,7 @@ lbl_00002C70:
 lbl_00002CD8:
 /* 00002CD8 38600066 */ li r3, 0x66
 lbl_00002CDC:
-/* 00002CDC 4BFFD4AD */ bl u_play_sound
+/* 00002CDC 4BFFD4AD */ bl u_play_sound_0
 lbl_00002CE0:
 /* 00002CE0 80010024 */ lwz r0, 0x24(r1)
 /* 00002CE4 83E1001C */ lwz r31, 0x1c(r1)
@@ -3800,7 +3800,7 @@ lbl_000035A4:
 /* 000035AC 3B9C0004 */ addi r28, r28, 4
 /* 000035B0 4180FFD4 */ blt lbl_00003584
 /* 000035B4 3860006A */ li r3, 0x6a
-/* 000035B8 4BFFCBD1 */ bl u_play_sound
+/* 000035B8 4BFFCBD1 */ bl u_play_sound_0
 /* 000035BC 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 000035C0 38000001 */ li r0, 1
 /* 000035C4 90030000 */ stw r0, lbl_801EEDA8@l(r3)
@@ -3892,7 +3892,7 @@ lbl_000036F0:
 /* 000036F8 3B9C0004 */ addi r28, r28, 4
 /* 000036FC 4180FFD4 */ blt lbl_000036D0
 /* 00003700 3860006B */ li r3, 0x6b
-/* 00003704 4BFFCA85 */ bl u_play_sound
+/* 00003704 4BFFCA85 */ bl u_play_sound_0
 /* 00003708 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 0000370C 38000003 */ li r0, 3
 /* 00003710 90030000 */ stw r0, lbl_801EEDA8@l(r3)
@@ -3959,7 +3959,7 @@ lbl_000037C8:
 /* 000037EC 48006068 */ b lbl_00009854
 lbl_000037F0:
 /* 000037F0 3860023A */ li r3, 0x23a
-/* 000037F4 4BFFC995 */ bl u_play_sound
+/* 000037F4 4BFFC995 */ bl u_play_sound_0
 /* 000037F8 3C600000 */ lis r3, lbl_802F1C10@ha
 /* 000037FC 88030000 */ lbz r0, lbl_802F1C10@l(r3)
 /* 00003800 38600016 */ li r3, 0x16
@@ -4014,19 +4014,19 @@ lbl_000038AC:
 /* 000038B4 4800002C */ b lbl_000038E0
 lbl_000038B8:
 /* 000038B8 38600212 */ li r3, 0x212
-/* 000038BC 4BFFC8CD */ bl u_play_sound
+/* 000038BC 4BFFC8CD */ bl u_play_sound_0
 /* 000038C0 38000009 */ li r0, 9
 /* 000038C4 900F0004 */ stw r0, 4(r15)
 /* 000038C8 48005F8C */ b lbl_00009854
 lbl_000038CC:
 /* 000038CC 3860021B */ li r3, 0x21b
-/* 000038D0 4BFFC8B9 */ bl u_play_sound
+/* 000038D0 4BFFC8B9 */ bl u_play_sound_0
 /* 000038D4 3800000B */ li r0, 0xb
 /* 000038D8 900F0004 */ stw r0, 4(r15)
 /* 000038DC 48005F78 */ b lbl_00009854
 lbl_000038E0:
 /* 000038E0 38600222 */ li r3, 0x222
-/* 000038E4 4BFFC8A5 */ bl u_play_sound
+/* 000038E4 4BFFC8A5 */ bl u_play_sound_0
 /* 000038E8 3800000D */ li r0, 0xd
 /* 000038EC 900F0004 */ stw r0, 4(r15)
 /* 000038F0 48005F64 */ b lbl_00009854
@@ -4135,7 +4135,7 @@ lbl_00003A60:
 /* 00003A68 480000EC */ b lbl_00003B54
 lbl_00003A6C:
 /* 00003A6C 38600213 */ li r3, 0x213
-/* 00003A70 4BFFC719 */ bl u_play_sound
+/* 00003A70 4BFFC719 */ bl u_play_sound_0
 /* 00003A74 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003A78 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 00003A7C 3800000F */ li r0, 0xf
@@ -4155,7 +4155,7 @@ lbl_00003A6C:
 /* 00003AB4 48005DA0 */ b lbl_00009854
 lbl_00003AB8:
 /* 00003AB8 38600214 */ li r3, 0x214
-/* 00003ABC 4BFFC6CD */ bl u_play_sound
+/* 00003ABC 4BFFC6CD */ bl u_play_sound_0
 /* 00003AC0 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003AC4 39E30000 */ addi r15, r3, lbl_801EEDA8@l
 /* 00003AC8 3800000F */ li r0, 0xf
@@ -4195,7 +4195,7 @@ lbl_00003AB8:
 /* 00003B50 48005D04 */ b lbl_00009854
 lbl_00003B54:
 /* 00003B54 38600215 */ li r3, 0x215
-/* 00003B58 4BFFC631 */ bl u_play_sound
+/* 00003B58 4BFFC631 */ bl u_play_sound_0
 /* 00003B5C 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003B60 39030000 */ addi r8, r3, lbl_801EEDA8@l
 /* 00003B64 38000011 */ li r0, 0x11
@@ -4340,7 +4340,7 @@ lbl_00003D60:
 /* 00003D68 48000054 */ b lbl_00003DBC
 lbl_00003D6C:
 /* 00003D6C 3860021C */ li r3, 0x21c
-/* 00003D70 4BFFC419 */ bl u_play_sound
+/* 00003D70 4BFFC419 */ bl u_play_sound_0
 /* 00003D74 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003D78 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 00003D7C 3800001C */ li r0, 0x1c
@@ -4351,7 +4351,7 @@ lbl_00003D6C:
 /* 00003D90 48005AC4 */ b lbl_00009854
 lbl_00003D94:
 /* 00003D94 3860021D */ li r3, 0x21d
-/* 00003D98 4BFFC3F1 */ bl u_play_sound
+/* 00003D98 4BFFC3F1 */ bl u_play_sound_0
 /* 00003D9C 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003DA0 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 00003DA4 3800000F */ li r0, 0xf
@@ -4362,7 +4362,7 @@ lbl_00003D94:
 /* 00003DB8 48005A9C */ b lbl_00009854
 lbl_00003DBC:
 /* 00003DBC 3860021E */ li r3, 0x21e
-/* 00003DC0 4BFFC3C9 */ bl u_play_sound
+/* 00003DC0 4BFFC3C9 */ bl u_play_sound_0
 /* 00003DC4 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00003DC8 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 00003DCC 3800000F */ li r0, 0xf
@@ -4543,7 +4543,7 @@ lbl_00004048:
 /* 00004048 2C130000 */ cmpwi r19, 0
 /* 0000404C 41820050 */ beq lbl_0000409C
 /* 00004050 3860016D */ li r3, 0x16d
-/* 00004054 4BFFC135 */ bl func_8002B5C8
+/* 00004054 4BFFC135 */ bl u_play_sound_1
 /* 00004058 4BFFC131 */ bl spend_play_points
 /* 0000405C 2C0F0000 */ cmpwi r15, 0
 /* 00004060 408257F4 */ bne lbl_00009854
@@ -4610,7 +4610,7 @@ lbl_00004130:
 /* 00004138 48000054 */ b lbl_0000418C
 lbl_0000413C:
 /* 0000413C 38600223 */ li r3, 0x223
-/* 00004140 4BFFC049 */ bl u_play_sound
+/* 00004140 4BFFC049 */ bl u_play_sound_0
 /* 00004144 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00004148 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 0000414C 38000029 */ li r0, 0x29
@@ -4621,7 +4621,7 @@ lbl_0000413C:
 /* 00004160 480056F4 */ b lbl_00009854
 lbl_00004164:
 /* 00004164 38600224 */ li r3, 0x224
-/* 00004168 4BFFC021 */ bl u_play_sound
+/* 00004168 4BFFC021 */ bl u_play_sound_0
 /* 0000416C 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00004170 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 00004174 3800002D */ li r0, 0x2d
@@ -4632,7 +4632,7 @@ lbl_00004164:
 /* 00004188 480056CC */ b lbl_00009854
 lbl_0000418C:
 /* 0000418C 38600225 */ li r3, 0x225
-/* 00004190 4BFFBFF9 */ bl u_play_sound
+/* 00004190 4BFFBFF9 */ bl u_play_sound_0
 /* 00004194 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00004198 38630000 */ addi r3, r3, lbl_801EEDA8@l
 /* 0000419C 3800002F */ li r0, 0x2f
@@ -4823,7 +4823,7 @@ lbl_00004434:
 /* 00004438 7C0F0000 */ cmpw r15, r0
 /* 0000443C 4182000C */ beq lbl_00004448
 /* 00004440 3860006C */ li r3, 0x6c
-/* 00004444 4BFFBD45 */ bl u_play_sound
+/* 00004444 4BFFBD45 */ bl u_play_sound_0
 lbl_00004448:
 /* 00004448 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 0000444C 3A030000 */ addi r16, r3, lbl_801EEDA8@l
@@ -5245,7 +5245,7 @@ lbl_000049E0:
 /* 00004A08 38000000 */ li r0, 0
 /* 00004A0C 90030048 */ stw r0, 0x48(r3)
 /* 00004A10 38600066 */ li r3, 0x66
-/* 00004A14 4BFFB775 */ bl u_play_sound
+/* 00004A14 4BFFB775 */ bl u_play_sound_0
 /* 00004A18 39000001 */ li r8, 1
 /* 00004A1C 48000010 */ b lbl_00004A2C
 lbl_00004A20:
@@ -5309,7 +5309,7 @@ lbl_00004AC0:
 /* 00004AEC 901E0000 */ stw r0, 0(r30)
 lbl_00004AF0:
 /* 00004AF0 3860006C */ li r3, 0x6c
-/* 00004AF4 4BFFB695 */ bl u_play_sound
+/* 00004AF4 4BFFB695 */ bl u_play_sound_0
 /* 00004AF8 3AC00001 */ li r22, 1
 lbl_00004AFC:
 /* 00004AFC A0110030 */ lhz r0, 0x30(r17)
@@ -5334,7 +5334,7 @@ lbl_00004B14:
 /* 00004B44 901E0000 */ stw r0, 0(r30)
 lbl_00004B48:
 /* 00004B48 3860006C */ li r3, 0x6c
-/* 00004B4C 4BFFB63D */ bl u_play_sound
+/* 00004B4C 4BFFB63D */ bl u_play_sound_0
 /* 00004B50 3AC00001 */ li r22, 1
 lbl_00004B54:
 /* 00004B54 80180000 */ lwz r0, 0(r24)
@@ -5643,7 +5643,7 @@ lbl_00004F7C:
 /* 00004F90 38000000 */ li r0, 0
 /* 00004F94 90110048 */ stw r0, 0x48(r17)
 /* 00004F98 38600066 */ li r3, 0x66
-/* 00004F9C 4BFFB1ED */ bl u_play_sound
+/* 00004F9C 4BFFB1ED */ bl u_play_sound_0
 /* 00004FA0 39E00001 */ li r15, 1
 lbl_00004FA4:
 /* 00004FA4 3A310004 */ addi r17, r17, 4
@@ -5695,7 +5695,7 @@ lbl_0000501C:
 /* 00005048 90120000 */ stw r0, 0(r18)
 lbl_0000504C:
 /* 0000504C 3860006C */ li r3, 0x6c
-/* 00005050 4BFFB139 */ bl u_play_sound
+/* 00005050 4BFFB139 */ bl u_play_sound_0
 lbl_00005054:
 /* 00005054 A01B0030 */ lhz r0, 0x30(r27)
 /* 00005058 540007BD */ rlwinm. r0, r0, 0, 0x1e, 0x1e
@@ -5719,7 +5719,7 @@ lbl_0000506C:
 /* 0000509C 90120000 */ stw r0, 0(r18)
 lbl_000050A0:
 /* 000050A0 3860006C */ li r3, 0x6c
-/* 000050A4 4BFFB0E5 */ bl u_play_sound
+/* 000050A4 4BFFB0E5 */ bl u_play_sound_0
 lbl_000050A8:
 /* 000050A8 3A310004 */ addi r17, r17, 4
 /* 000050AC 3A520004 */ addi r18, r18, 4
@@ -5966,7 +5966,7 @@ lbl_000053E0:
 /* 000053F8 90030048 */ stw r0, 0x48(r3)
 lbl_000053FC:
 /* 000053FC 3860006C */ li r3, 0x6c
-/* 00005400 4BFFAD89 */ bl u_play_sound
+/* 00005400 4BFFAD89 */ bl u_play_sound_0
 lbl_00005404:
 /* 00005404 38600001 */ li r3, 1
 /* 00005408 4BFFB1CD */ bl lbl_000005D4
@@ -6000,7 +6000,7 @@ lbl_00005458:
 /* 00005470 90030048 */ stw r0, 0x48(r3)
 lbl_00005474:
 /* 00005474 3860006C */ li r3, 0x6c
-/* 00005478 4BFFAD11 */ bl u_play_sound
+/* 00005478 4BFFAD11 */ bl u_play_sound_0
 lbl_0000547C:
 /* 0000547C 38600007 */ li r3, 7
 /* 00005480 4BFFB155 */ bl lbl_000005D4
@@ -6040,7 +6040,7 @@ lbl_000054C8:
 /* 000054FC 38000033 */ li r0, 0x33
 /* 00005500 90030004 */ stw r0, 4(r3)
 /* 00005504 38650216 */ addi r3, r5, 0x216
-/* 00005508 4BFFAC81 */ bl u_play_sound
+/* 00005508 4BFFAC81 */ bl u_play_sound_0
 /* 0000550C 3A200000 */ li r17, 0
 lbl_00005510:
 /* 00005510 80100000 */ lwz r0, 0(r16)
@@ -6566,7 +6566,7 @@ lbl_00005C7C:
 /* 00005C84 7C1A0000 */ cmpw r26, r0
 /* 00005C88 4182000C */ beq lbl_00005C94
 /* 00005C8C 3860006C */ li r3, 0x6c
-/* 00005C90 4BFFA4F9 */ bl u_play_sound
+/* 00005C90 4BFFA4F9 */ bl u_play_sound_0
 lbl_00005C94:
 /* 00005C94 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00005C98 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -6625,7 +6625,7 @@ lbl_00005D40:
 /* 00005D54 38000019 */ li r0, 0x19
 /* 00005D58 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 00005D5C 3860006A */ li r3, 0x6a
-/* 00005D60 4BFFA429 */ bl u_play_sound
+/* 00005D60 4BFFA429 */ bl u_play_sound_0
 /* 00005D64 3C600000 */ lis r3, lbl_802F1FA8@ha
 /* 00005D68 38830000 */ addi r4, r3, lbl_802F1FA8@l
 /* 00005D6C 39E00002 */ li r15, 2
@@ -6764,7 +6764,7 @@ lbl_00005F38:
 /* 00005F54 2C000000 */ cmpwi r0, 0
 /* 00005F58 4081088C */ ble lbl_000067E4
 /* 00005F5C 38600066 */ li r3, 0x66
-/* 00005F60 4BFFA229 */ bl u_play_sound
+/* 00005F60 4BFFA229 */ bl u_play_sound_0
 /* 00005F64 80900000 */ lwz r4, 0(r16)
 /* 00005F68 3C600000 */ lis r3, lbl_802F1FB4@ha
 /* 00005F6C 39E30000 */ addi r15, r3, lbl_802F1FB4@l
@@ -7055,7 +7055,7 @@ lbl_00006360:
 /* 00006380 38000000 */ li r0, 0
 /* 00006384 90190000 */ stw r0, 0(r25)
 /* 00006388 3860006C */ li r3, 0x6c
-/* 0000638C 4BFF9DFD */ bl u_play_sound
+/* 0000638C 4BFF9DFD */ bl u_play_sound_0
 /* 00006390 807C0000 */ lwz r3, 0(r28)
 /* 00006394 B2C30000 */ sth r22, 0(r3)
 /* 00006398 48000054 */ b lbl_000063EC
@@ -7075,7 +7075,7 @@ lbl_000063A8:
 /* 000063C8 38000000 */ li r0, 0
 /* 000063CC 90190000 */ stw r0, 0(r25)
 /* 000063D0 3860006C */ li r3, 0x6c
-/* 000063D4 4BFF9DB5 */ bl u_play_sound
+/* 000063D4 4BFF9DB5 */ bl u_play_sound_0
 /* 000063D8 807C0000 */ lwz r3, 0(r28)
 /* 000063DC B2C30000 */ sth r22, 0(r3)
 /* 000063E0 4800000C */ b lbl_000063EC
@@ -7128,7 +7128,7 @@ lbl_0000646C:
 /* 00006488 4182000C */ beq lbl_00006494
 lbl_0000648C:
 /* 0000648C 3860006C */ li r3, 0x6c
-/* 00006490 4BFF9CF9 */ bl u_play_sound
+/* 00006490 4BFF9CF9 */ bl u_play_sound_0
 lbl_00006494:
 /* 00006494 3C600000 */ lis r3, lbl_802F1FB4@ha
 /* 00006498 39E30000 */ addi r15, r3, lbl_802F1FB4@l
@@ -7159,7 +7159,7 @@ lbl_000064D8:
 /* 000064F4 2C000000 */ cmpwi r0, 0
 /* 000064F8 40810150 */ ble lbl_00006648
 /* 000064FC 38600066 */ li r3, 0x66
-/* 00006500 4BFF9C89 */ bl u_play_sound
+/* 00006500 4BFF9C89 */ bl u_play_sound_0
 /* 00006504 80900000 */ lwz r4, 0(r16)
 /* 00006508 3C600000 */ lis r3, lbl_802F1FB4@ha
 /* 0000650C 39E30000 */ addi r15, r3, lbl_802F1FB4@l
@@ -7253,7 +7253,7 @@ lbl_00006648:
 /* 00006650 2C030000 */ cmpwi r3, 0
 /* 00006654 418200FC */ beq lbl_00006750
 /* 00006658 38600065 */ li r3, 0x65
-/* 0000665C 4BFF9B2D */ bl u_play_sound
+/* 0000665C 4BFF9B2D */ bl u_play_sound_0
 /* 00006660 3C600000 */ lis r3, lbl_802F1FAC@ha
 /* 00006664 38A30000 */ addi r5, r3, lbl_802F1FAC@l
 /* 00006668 80850000 */ lwz r4, 0(r5)
@@ -7455,7 +7455,7 @@ lbl_00006930:
 /* 00006934 38000018 */ li r0, 0x18
 /* 00006938 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 0000693C 3860006B */ li r3, 0x6b
-/* 00006940 4BFF9849 */ bl u_play_sound
+/* 00006940 4BFF9849 */ bl u_play_sound_0
 /* 00006944 38600017 */ li r3, 0x17
 /* 00006948 4BFF9841 */ bl find_sprite_with_tag
 /* 0000694C 28030000 */ cmplwi r3, 0
@@ -7638,7 +7638,7 @@ lbl_00006BC8:
 /* 00006BD8 48002C7C */ b lbl_00009854
 lbl_00006BDC:
 /* 00006BDC 3860022D */ li r3, 0x22d
-/* 00006BE0 4BFF95A9 */ bl u_play_sound
+/* 00006BE0 4BFF95A9 */ bl u_play_sound_0
 /* 00006BE4 3C600000 */ lis r3, currStageId@ha
 /* 00006BE8 A8030000 */ lha r0, currStageId@l(r3)
 /* 00006BEC 38600018 */ li r3, 0x18
@@ -7831,7 +7831,7 @@ lbl_00006E70:
 /* 00006E88 7C0F0000 */ cmpw r15, r0
 /* 00006E8C 4182000C */ beq lbl_00006E98
 /* 00006E90 38600065 */ li r3, 0x65
-/* 00006E94 4BFF92F5 */ bl u_play_sound
+/* 00006E94 4BFF92F5 */ bl u_play_sound_0
 lbl_00006E98:
 /* 00006E98 38600001 */ li r3, 1
 /* 00006E9C 4BFF9739 */ bl lbl_000005D4
@@ -7945,7 +7945,7 @@ lbl_0000700C:
 /* 00007010 38600065 */ li r3, 0x65
 /* 00007014 68000800 */ xori r0, r0, 0x800
 /* 00007018 9015002C */ stw r0, 0x2c(r21)
-/* 0000701C 4BFF916D */ bl u_play_sound
+/* 0000701C 4BFF916D */ bl u_play_sound_0
 /* 00007020 48000044 */ b lbl_00007064
 lbl_00007024:
 /* 00007024 88100000 */ lbz r0, 0(r16)
@@ -7964,7 +7964,7 @@ lbl_00007050:
 /* 00007054 38600065 */ li r3, 0x65
 /* 00007058 68001000 */ xori r0, r0, 0x1000
 /* 0000705C 9015002C */ stw r0, 0x2c(r21)
-/* 00007060 4BFF9129 */ bl u_play_sound
+/* 00007060 4BFF9129 */ bl u_play_sound_0
 lbl_00007064:
 /* 00007064 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00007068 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -8111,7 +8111,7 @@ lbl_00007274:
 /* 0000727C 48000058 */ b lbl_000072D4
 lbl_00007280:
 /* 00007280 3860021F */ li r3, 0x21f
-/* 00007284 4BFF8F05 */ bl u_play_sound
+/* 00007284 4BFF8F05 */ bl u_play_sound_0
 /* 00007288 80750008 */ lwz r3, 8(r21)
 /* 0000728C 3800000F */ li r0, 0xf
 /* 00007290 54630774 */ rlwinm r3, r3, 0, 0x1d, 0x1a
@@ -8122,7 +8122,7 @@ lbl_000072A0:
 /* 000072A0 38600085 */ li r3, 0x85
 /* 000072A4 4BFF8EE5 */ bl preload_stage_files
 /* 000072A8 38600220 */ li r3, 0x220
-/* 000072AC 4BFF8EDD */ bl u_play_sound
+/* 000072AC 4BFF8EDD */ bl u_play_sound_0
 /* 000072B0 80750008 */ lwz r3, 8(r21)
 /* 000072B4 3800000F */ li r0, 0xf
 /* 000072B8 60630008 */ ori r3, r3, 8
@@ -8134,7 +8134,7 @@ lbl_000072A0:
 /* 000072D0 48002584 */ b lbl_00009854
 lbl_000072D4:
 /* 000072D4 38600221 */ li r3, 0x221
-/* 000072D8 4BFF8EB1 */ bl u_play_sound
+/* 000072D8 4BFF8EB1 */ bl u_play_sound_0
 /* 000072DC 3C600000 */ lis r3, modeCtrl@ha
 /* 000072E0 38630000 */ addi r3, r3, modeCtrl@l
 /* 000072E4 38800001 */ li r4, 1
@@ -8367,7 +8367,7 @@ lbl_000075F0:
 /* 0000762C 41820030 */ beq lbl_0000765C
 lbl_00007630:
 /* 00007630 3860006C */ li r3, 0x6c
-/* 00007634 4BFF8B55 */ bl u_play_sound
+/* 00007634 4BFF8B55 */ bl u_play_sound_0
 /* 00007638 88150000 */ lbz r0, 0(r21)
 /* 0000763C 7C000774 */ extsb r0, r0
 /* 00007640 7C1D00AE */ lbzx r0, r29, r0
@@ -8416,7 +8416,7 @@ lbl_000076DC:
 /* 000076DC 3C600000 */ lis r3, lbl_801EED88@ha
 /* 000076E0 3AA30000 */ addi r21, r3, lbl_801EED88@l
 /* 000076E4 3860022D */ li r3, 0x22d
-/* 000076E8 4BFF8AA1 */ bl u_play_sound
+/* 000076E8 4BFF8AA1 */ bl u_play_sound_0
 /* 000076EC 3C600000 */ lis r3, currStageId@ha
 /* 000076F0 A8030000 */ lha r0, currStageId@l(r3)
 /* 000076F4 3860001D */ li r3, 0x1d
@@ -8648,7 +8648,7 @@ lbl_00007A00:
 /* 00007A1C 7C100000 */ cmpw r16, r0
 /* 00007A20 418200F4 */ beq lbl_00007B14
 /* 00007A24 38600065 */ li r3, 0x65
-/* 00007A28 4BFF8761 */ bl u_play_sound
+/* 00007A28 4BFF8761 */ bl u_play_sound_0
 /* 00007A2C 480000E8 */ b lbl_00007B14
 lbl_00007A30:
 /* 00007A30 3C600000 */ lis r3, modeCtrl@ha
@@ -8675,7 +8675,7 @@ lbl_00007A78:
 /* 00007A7C 38600065 */ li r3, 0x65
 /* 00007A80 68000001 */ xori r0, r0, 1
 /* 00007A84 90150008 */ stw r0, 8(r21)
-/* 00007A88 4BFF8701 */ bl u_play_sound
+/* 00007A88 4BFF8701 */ bl u_play_sound_0
 /* 00007A8C 48000088 */ b lbl_00007B14
 lbl_00007A90:
 /* 00007A90 88100000 */ lbz r0, 0(r16)
@@ -8694,7 +8694,7 @@ lbl_00007ABC:
 /* 00007AC0 38600065 */ li r3, 0x65
 /* 00007AC4 68000002 */ xori r0, r0, 2
 /* 00007AC8 90150008 */ stw r0, 8(r21)
-/* 00007ACC 4BFF86BD */ bl u_play_sound
+/* 00007ACC 4BFF86BD */ bl u_play_sound_0
 /* 00007AD0 48000044 */ b lbl_00007B14
 lbl_00007AD4:
 /* 00007AD4 88100000 */ lbz r0, 0(r16)
@@ -8713,7 +8713,7 @@ lbl_00007B00:
 /* 00007B04 38600065 */ li r3, 0x65
 /* 00007B08 68000004 */ xori r0, r0, 4
 /* 00007B0C 90150008 */ stw r0, 8(r21)
-/* 00007B10 4BFF8679 */ bl u_play_sound
+/* 00007B10 4BFF8679 */ bl u_play_sound_0
 lbl_00007B14:
 /* 00007B14 2C0F0004 */ cmpwi r15, 4
 /* 00007B18 40820018 */ bne lbl_00007B30
@@ -8996,7 +8996,7 @@ lbl_00007F04:
 /* 00007F0C 7C0F0000 */ cmpw r15, r0
 /* 00007F10 4182000C */ beq lbl_00007F1C
 /* 00007F14 3860006C */ li r3, 0x6c
-/* 00007F18 4BFF8271 */ bl u_play_sound
+/* 00007F18 4BFF8271 */ bl u_play_sound_0
 lbl_00007F1C:
 /* 00007F1C 38600007 */ li r3, 7
 /* 00007F20 4BFF86B5 */ bl lbl_000005D4
@@ -9027,7 +9027,7 @@ lbl_00007F74:
 /* 00007F7C 2C030000 */ cmpwi r3, 0
 /* 00007F80 418218D4 */ beq lbl_00009854
 /* 00007F84 3860006A */ li r3, 0x6a
-/* 00007F88 4BFF8201 */ bl u_play_sound
+/* 00007F88 4BFF8201 */ bl u_play_sound_0
 /* 00007F8C 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 00007F90 38000024 */ li r0, 0x24
 /* 00007F94 90030000 */ stw r0, lbl_801EEDA8@l(r3)
@@ -9094,7 +9094,7 @@ lbl_00008054:
 /* 00008070 4182000C */ beq lbl_0000807C
 lbl_00008074:
 /* 00008074 3860006C */ li r3, 0x6c
-/* 00008078 4BFF8111 */ bl u_play_sound
+/* 00008078 4BFF8111 */ bl u_play_sound_0
 lbl_0000807C:
 /* 0000807C 39E00000 */ li r15, 0
 /* 00008080 38600007 */ li r3, 7
@@ -9105,7 +9105,7 @@ lbl_0000807C:
 /* 00008094 7C000775 */ extsb. r0, r0
 /* 00008098 40810020 */ ble lbl_000080B8
 /* 0000809C 38600066 */ li r3, 0x66
-/* 000080A0 4BFF80E9 */ bl u_play_sound
+/* 000080A0 4BFF80E9 */ bl u_play_sound_0
 /* 000080A4 88750009 */ lbz r3, 9(r21)
 /* 000080A8 39E00001 */ li r15, 1
 /* 000080AC 3803FFFF */ addi r0, r3, -1  ;# fixed addi
@@ -9117,7 +9117,7 @@ lbl_000080B8:
 /* 000080C0 2C030000 */ cmpwi r3, 0
 /* 000080C4 4182002C */ beq lbl_000080F0
 /* 000080C8 38600065 */ li r3, 0x65
-/* 000080CC 4BFF80BD */ bl u_play_sound
+/* 000080CC 4BFF80BD */ bl u_play_sound_0
 /* 000080D0 88150009 */ lbz r0, 9(r21)
 /* 000080D4 88950005 */ lbz r4, 5(r21)
 /* 000080D8 7C000774 */ extsb r0, r0
@@ -9154,7 +9154,7 @@ lbl_00008124:
 /* 0000814C 38000023 */ li r0, 0x23
 /* 00008150 90030000 */ stw r0, lbl_801EEDA8@l(r3)
 /* 00008154 3860006B */ li r3, 0x6b
-/* 00008158 4BFF8031 */ bl u_play_sound
+/* 00008158 4BFF8031 */ bl u_play_sound_0
 /* 0000815C 38600018 */ li r3, 0x18
 /* 00008160 4BFF8029 */ bl find_sprite_with_tag
 /* 00008164 28030000 */ cmplwi r3, 0
@@ -9193,7 +9193,7 @@ lbl_000081D4:
 /* 000081D4 3C600000 */ lis r3, lbl_801EED98@ha
 /* 000081D8 3AA30000 */ addi r21, r3, lbl_801EED98@l
 /* 000081DC 3860022D */ li r3, 0x22d
-/* 000081E0 4BFF7FA9 */ bl u_play_sound
+/* 000081E0 4BFF7FA9 */ bl u_play_sound_0
 /* 000081E4 3C600000 */ lis r3, currStageId@ha
 /* 000081E8 A8030000 */ lha r0, currStageId@l(r3)
 /* 000081EC 3860001D */ li r3, 0x1d
@@ -9337,7 +9337,7 @@ lbl_000083DC:
 /* 000083E0 38600065 */ li r3, 0x65
 /* 000083E4 68000001 */ xori r0, r0, 1
 /* 000083E8 900F0000 */ stw r0, 0(r15)
-/* 000083EC 4BFF7D9D */ bl u_play_sound
+/* 000083EC 4BFF7D9D */ bl u_play_sound_0
 lbl_000083F0:
 /* 000083F0 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 000083F4 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -9415,7 +9415,7 @@ lbl_000084DC:
 /* 00008500 48001354 */ b lbl_00009854
 lbl_00008504:
 /* 00008504 3860022D */ li r3, 0x22d
-/* 00008508 4BFF7C81 */ bl u_play_sound
+/* 00008508 4BFF7C81 */ bl u_play_sound_0
 /* 0000850C 3860001D */ li r3, 0x1d
 /* 00008510 4BFF7C79 */ bl find_sprite_with_tag
 /* 00008514 28030000 */ cmplwi r3, 0
@@ -9522,7 +9522,7 @@ lbl_00008660:
 /* 00008684 2C030000 */ cmpwi r3, 0
 /* 00008688 41820018 */ beq lbl_000086A0
 /* 0000868C 38600065 */ li r3, 0x65
-/* 00008690 4BFF7AF9 */ bl u_play_sound
+/* 00008690 4BFF7AF9 */ bl u_play_sound_0
 /* 00008694 88750000 */ lbz r3, 0(r21)
 /* 00008698 3803FFFB */ addi r0, r3, -5  ;# fixed addi
 /* 0000869C 98150000 */ stb r0, 0(r21)
@@ -9539,7 +9539,7 @@ lbl_000086A0:
 /* 000086C4 2C030000 */ cmpwi r3, 0
 /* 000086C8 418200A0 */ beq lbl_00008768
 /* 000086CC 38600065 */ li r3, 0x65
-/* 000086D0 4BFF7AB9 */ bl u_play_sound
+/* 000086D0 4BFF7AB9 */ bl u_play_sound_0
 /* 000086D4 88750000 */ lbz r3, 0(r21)
 /* 000086D8 38030005 */ addi r0, r3, 5
 /* 000086DC 98150000 */ stb r0, 0(r21)
@@ -9561,7 +9561,7 @@ lbl_00008710:
 /* 00008714 38600065 */ li r3, 0x65
 /* 00008718 68000008 */ xori r0, r0, 8
 /* 0000871C 90150004 */ stw r0, 4(r21)
-/* 00008720 4BFF7A69 */ bl u_play_sound
+/* 00008720 4BFF7A69 */ bl u_play_sound_0
 /* 00008724 48000044 */ b lbl_00008768
 lbl_00008728:
 /* 00008728 88100000 */ lbz r0, 0(r16)
@@ -9580,7 +9580,7 @@ lbl_00008754:
 /* 00008758 38600065 */ li r3, 0x65
 /* 0000875C 68000010 */ xori r0, r0, 0x10
 /* 00008760 90150004 */ stw r0, 4(r21)
-/* 00008764 4BFF7A25 */ bl u_play_sound
+/* 00008764 4BFF7A25 */ bl u_play_sound_0
 lbl_00008768:
 /* 00008768 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 0000876C 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -9713,7 +9713,7 @@ lbl_0000891C:
 /* 00008944 48000F10 */ b lbl_00009854
 lbl_00008948:
 /* 00008948 38600226 */ li r3, 0x226
-/* 0000894C 4BFF783D */ bl u_play_sound
+/* 0000894C 4BFF783D */ bl u_play_sound_0
 /* 00008950 3800000F */ li r0, 0xf
 /* 00008954 90120004 */ stw r0, 4(r18)
 /* 00008958 39E00001 */ li r15, 1
@@ -9731,7 +9731,7 @@ lbl_00008948:
 /* 00008988 48000ECC */ b lbl_00009854
 lbl_0000898C:
 /* 0000898C 38600227 */ li r3, 0x227
-/* 00008990 4BFF77F9 */ bl u_play_sound
+/* 00008990 4BFF77F9 */ bl u_play_sound_0
 /* 00008994 38000011 */ li r0, 0x11
 /* 00008998 3C600000 */ lis r3, modeCtrl@ha
 /* 0000899C 90120004 */ stw r0, 4(r18)
@@ -9742,7 +9742,7 @@ lbl_0000898C:
 /* 000089B0 48000EA4 */ b lbl_00009854
 lbl_000089B4:
 /* 000089B4 3860022D */ li r3, 0x22d
-/* 000089B8 4BFF77D1 */ bl u_play_sound
+/* 000089B8 4BFF77D1 */ bl u_play_sound_0
 /* 000089BC 3860001D */ li r3, 0x1d
 /* 000089C0 4BFF77C9 */ bl find_sprite_with_tag
 /* 000089C4 28030000 */ cmplwi r3, 0
@@ -9884,7 +9884,7 @@ lbl_00008B80:
 /* 00008BB0 38600065 */ li r3, 0x65
 /* 00008BB4 3804FFFE */ addi r0, r4, -2  ;# fixed addi
 /* 00008BB8 98150000 */ stb r0, 0(r21)
-/* 00008BBC 4BFF75CD */ bl u_play_sound
+/* 00008BBC 4BFF75CD */ bl u_play_sound_0
 lbl_00008BC0:
 /* 00008BC0 88150000 */ lbz r0, 0(r21)
 /* 00008BC4 7C000774 */ extsb r0, r0
@@ -9901,7 +9901,7 @@ lbl_00008BC0:
 /* 00008BF0 38600065 */ li r3, 0x65
 /* 00008BF4 38040002 */ addi r0, r4, 2
 /* 00008BF8 98150000 */ stb r0, 0(r21)
-/* 00008BFC 4BFF758D */ bl u_play_sound
+/* 00008BFC 4BFF758D */ bl u_play_sound_0
 /* 00008C00 4800008C */ b lbl_00008C8C
 lbl_00008C04:
 /* 00008C04 80130000 */ lwz r0, 0(r19)
@@ -9921,7 +9921,7 @@ lbl_00008C04:
 /* 00008C3C 38600065 */ li r3, 0x65
 /* 00008C40 3804FFFF */ addi r0, r4, -1  ;# fixed addi
 /* 00008C44 98150001 */ stb r0, 1(r21)
-/* 00008C48 4BFF7541 */ bl u_play_sound
+/* 00008C48 4BFF7541 */ bl u_play_sound_0
 lbl_00008C4C:
 /* 00008C4C 88150001 */ lbz r0, 1(r21)
 /* 00008C50 7C000774 */ extsb r0, r0
@@ -9938,7 +9938,7 @@ lbl_00008C4C:
 /* 00008C7C 38600065 */ li r3, 0x65
 /* 00008C80 38040001 */ addi r0, r4, 1
 /* 00008C84 98150001 */ stb r0, 1(r21)
-/* 00008C88 4BFF7501 */ bl u_play_sound
+/* 00008C88 4BFF7501 */ bl u_play_sound_0
 lbl_00008C8C:
 /* 00008C8C 2C0F0003 */ cmpwi r15, 3
 /* 00008C90 4082002C */ bne lbl_00008CBC
@@ -10072,7 +10072,7 @@ lbl_00008E40:
 /* 00008E68 480009EC */ b lbl_00009854
 lbl_00008E6C:
 /* 00008E6C 38600228 */ li r3, 0x228
-/* 00008E70 4BFF7319 */ bl u_play_sound
+/* 00008E70 4BFF7319 */ bl u_play_sound_0
 /* 00008E74 39E00001 */ li r15, 1
 /* 00008E78 91F20040 */ stw r15, 0x40(r18)
 /* 00008E7C 38000004 */ li r0, 4
@@ -10093,7 +10093,7 @@ lbl_00008EA4:
 /* 00008EB4 480009A0 */ b lbl_00009854
 lbl_00008EB8:
 /* 00008EB8 38600229 */ li r3, 0x229
-/* 00008EBC 4BFF72CD */ bl u_play_sound
+/* 00008EBC 4BFF72CD */ bl u_play_sound_0
 /* 00008EC0 38000011 */ li r0, 0x11
 /* 00008EC4 3C600000 */ lis r3, modeCtrl@ha
 /* 00008EC8 90120004 */ stw r0, 4(r18)
@@ -10165,7 +10165,7 @@ lbl_00008FB4:
 /* 00008FBC 48000070 */ b lbl_0000902C
 lbl_00008FC0:
 /* 00008FC0 3860022A */ li r3, 0x22a
-/* 00008FC4 4BFF71C5 */ bl u_play_sound
+/* 00008FC4 4BFF71C5 */ bl u_play_sound_0
 /* 00008FC8 3800000F */ li r0, 0xf
 /* 00008FCC 90120004 */ stw r0, 4(r18)
 /* 00008FD0 39E00001 */ li r15, 1
@@ -10183,7 +10183,7 @@ lbl_00008FC0:
 /* 00009000 48000854 */ b lbl_00009854
 lbl_00009004:
 /* 00009004 3860022B */ li r3, 0x22b
-/* 00009008 4BFF7181 */ bl u_play_sound
+/* 00009008 4BFF7181 */ bl u_play_sound_0
 /* 0000900C 38000011 */ li r0, 0x11
 /* 00009010 3C600000 */ lis r3, modeCtrl@ha
 /* 00009014 90120004 */ stw r0, 4(r18)
@@ -10211,7 +10211,7 @@ lbl_0000902C:
 /* 00009068 480007EC */ b lbl_00009854
 lbl_0000906C:
 /* 0000906C 3860022D */ li r3, 0x22d
-/* 00009070 4BFF7119 */ bl u_play_sound
+/* 00009070 4BFF7119 */ bl u_play_sound_0
 /* 00009074 3860001D */ li r3, 0x1d
 /* 00009078 4BFF7111 */ bl find_sprite_with_tag
 /* 0000907C 28030000 */ cmplwi r3, 0
@@ -10315,7 +10315,7 @@ lbl_000091B0:
 /* 000091E4 98150004 */ stb r0, 4(r21)
 lbl_000091E8:
 /* 000091E8 38600065 */ li r3, 0x65
-/* 000091EC 4BFF6F9D */ bl u_play_sound
+/* 000091EC 4BFF6F9D */ bl u_play_sound_0
 /* 000091F0 48000038 */ b lbl_00009228
 lbl_000091F4:
 /* 000091F4 38600001 */ li r3, 1
@@ -10331,7 +10331,7 @@ lbl_000091F4:
 /* 0000921C 99F50004 */ stb r15, 4(r21)
 lbl_00009220:
 /* 00009220 38600065 */ li r3, 0x65
-/* 00009224 4BFF6F65 */ bl u_play_sound
+/* 00009224 4BFF6F65 */ bl u_play_sound_0
 lbl_00009228:
 /* 00009228 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 0000922C 38630000 */ addi r3, r3, lbl_801EEDA8@l
@@ -10698,7 +10698,7 @@ lbl_00009724:
 /* 00009740 48000114 */ b lbl_00009854
 lbl_00009744:
 /* 00009744 386000D1 */ li r3, 0xd1
-/* 00009748 4BFF6A41 */ bl u_play_sound
+/* 00009748 4BFF6A41 */ bl u_play_sound_0
 /* 0000974C 3C600000 */ lis r3, modeCtrl@ha
 /* 00009750 3800001E */ li r0, 0x1e
 /* 00009754 90030000 */ stw r0, modeCtrl@l(r3)

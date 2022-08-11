@@ -17,6 +17,7 @@
 #include "mode.h"
 #include "pool.h"
 #include "recplay.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stcoli.h"
@@ -297,7 +298,7 @@ void ev_info_main(void)
             init_physball_from_ball(&ballInfo[0], &sp8);
             u_break_goal_tape(infoWork.goalEntered, &sp8);
             ball->unk12A = infoWork.timerCurr;
-            u_play_sound(0x16);
+            u_play_sound_0(0x16);
         }
     }
 
@@ -736,10 +737,10 @@ void func_80024860(struct Ball *ball)
     if (infoWork.timerCurr > (infoWork.timerMax >> 1))
     {
         if (infoWork.unk22 != 1)
-            u_play_sound(0x2859);
+            u_play_sound_0(0x2859);
         else
-            u_play_sound(0x2858);
+            u_play_sound_0(0x2858);
     }
     else
-        u_play_sound(0x281B);
+        u_play_sound_0(0x281B);
 }

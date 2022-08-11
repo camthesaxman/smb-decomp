@@ -18,6 +18,7 @@
 #include "pool.h"
 #include "ranking_screen.h"
 #include "recplay.h"
+#include "sound.h"
 #include "sprite.h"
 #include "textbox.h"
 
@@ -1569,7 +1570,7 @@ void hud_show_ready_banner(int duration)
         sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "READY");
     }
-    u_play_sound(4);
+    u_play_sound_0(4);
 }
 
 static void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
@@ -1602,7 +1603,7 @@ static void ready_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
     if (--sprite->counter <= 0)
     {
-        u_play_sound(5);
+        u_play_sound_0(5);
         *arg0 = 0;
     }
 }
@@ -2518,7 +2519,7 @@ static void score_value_sprite_main(s8 *arg0, struct Sprite *sprite)
     {
         r31->unk0 += r31->unk8;
         if (gameSubmode == SMD_GAME_GOAL_REPLAY_MAIN && r31->unk4 % 4 == 0)
-            u_play_sound(0x2E);
+            u_play_sound_0(0x2E);
     }
     sprintf(sprite->text, "%d", r31->unk0);
 }
@@ -3139,7 +3140,7 @@ static void fall_out_sprite_main(s8 *arg0, struct Sprite *sprite)
     t = sprite->userVar - sprite->counter;
 
     if (modeCtrl.gameType != GAMETYPE_MINI_TARGET && t == 90)
-        u_play_sound(0xC);
+        u_play_sound_0(0xC);
 
     if (t < 30)
     {
@@ -3302,7 +3303,7 @@ static void bonus_finish_sprite_main(s8 *arg0, struct Sprite *sprite)
 
     sprite->scaleY = sprite->scaleX = temp_f3 * 0.8 + (1.0 - temp_f3) * 5.0;
     if (sprite->counter == 29)
-        u_play_sound((sprite->userVar != 0) ? 0x48 : 0x45);
+        u_play_sound_0((sprite->userVar != 0) ? 0x48 : 0x45);
     if (sprite->counter < 30)
         sprite->counter++;
 }
@@ -3410,7 +3411,7 @@ static void continue_sprite_main(s8 *arg0, struct Sprite *sprite)
     }
     if (sprite->userVar == 0)
     {
-        u_play_sound(0x47);
+        u_play_sound_0(0x47);
         sprite->userVar = 1;
     }
     sprite->opacity += 0.1 * (1.0 - sprite->opacity);
@@ -3623,7 +3624,7 @@ static void oneup_sprite_main(s8 *arg0, struct Sprite *sprite)
     {
         if (t == 0)
         {
-            func_8002B5C8(0xA00E);
+            u_play_sound_1(0xA00E);
             SoundRevID(0xE, 0x64);
             SoundChoID(0xE, 0x64);
         }
@@ -3913,7 +3914,7 @@ void hud_show_name_entry_banner(int arg0)
         sprite->mainFunc = ready_sprite_main;
         strcpy(sprite->text, "ENTRY");
     }
-    u_play_sound(4);
+    u_play_sound_0(4);
 }
 
 // Unused credits-related data. Possibly left over from arcade version?
@@ -4504,7 +4505,7 @@ static void best_score_sprite_main(s8 *arg0, struct Sprite *sprite)
     switch (sprite->userVar)
     {
     case 1:
-        SoundPitch(func_8002B610(0xA11D), 0);
+        SoundPitch(u_play_sound_1_dupe(0xA11D), 0);
         u_play_music(0x1E, 8);
         sprite->userVar = 2;
         sprite->counter = 120;

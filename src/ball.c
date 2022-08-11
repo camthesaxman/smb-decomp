@@ -22,6 +22,7 @@
 #include "ord_tbl.h"
 #include "pool.h"
 #include "recplay.h"
+#include "sound.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "world.h"
@@ -1350,7 +1351,7 @@ void give_bananas(int bananas)
             ball->lives++;
             ball->bananas -= 100;
             hud_show_1up_banner(0x78);
-            u_play_sound(0x2852);  // play 1-up sound?
+            u_play_sound_0(0x2852);  // play 1-up sound?
         }
         break;
     case GAMETYPE_MAIN_COMPETITION:
@@ -1652,7 +1653,7 @@ void ball_func_3(struct Ball *ball)
     ball->flags |= BALL_FLAG_14;
     if (ball->ape != NULL)
         ball->ape->flags &= ~(1 << 5);
-    u_play_sound(0x1E);
+    u_play_sound_0(0x1E);
     ball->state = 4;
     ball->unkC4 = 0.0f;
     ball->unkF8 = 0.0f;
@@ -1695,7 +1696,7 @@ void ball_func_goal_main(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        u_play_sound(0x126);
+        u_play_sound_0(0x126);
     }
 
     handle_ball_linear_kinematics(ball, &physBall, 1);
@@ -2017,8 +2018,8 @@ void ball_func_19(struct Ball *ball)
     ball->unk124 = 60;
     worldInfo[ball->playerId].unk20 = 0x5A;
     cameraInfo[ball->playerId].state = 4;
-    u_play_sound(ball->lives == 1 ? 0x51 : 0x1D);
-    u_play_sound(0x15);
+    u_play_sound_0(ball->lives == 1 ? 0x51 : 0x1D);
+    u_play_sound_0(0x15);
     ball->state = 20;
 }
 
@@ -2201,7 +2202,7 @@ void ball_func_27(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        u_play_sound(0x126);
+        u_play_sound_0(0x126);
     }
 
     func_8003B0F4_inline(ball);
@@ -2215,7 +2216,7 @@ void ball_func_28(struct Ball *ball)
     {
         ball->flags &= ~(BALL_FLAG_08|BALL_FLAG_10);
         ball->flags |= BALL_FLAG_09;
-        u_play_sound(0x126);
+        u_play_sound_0(0x126);
     }
 
     handle_ball_linear_kinematics_ignore_collision(ball, &physBall, 1);
@@ -2858,7 +2859,7 @@ static inline void func_8003CDC0_sub(struct Ball *ball)
         lbl_80206BE0[ball->playerId] = 0;
 
     if ((lbl_80206BE0[ball->playerId] % 30) == 1)
-        u_play_sound(lbl_801179D4[(rand() >> 12) & 7]);
+        u_play_sound_0(lbl_801179D4[(rand() >> 12) & 7]);
 }
 
 void func_8003CDC0(struct Ball *ball)
@@ -2903,22 +2904,22 @@ void func_8003CDC0(struct Ball *ball)
     {
         float f1 = (lbl_80205E20[ball->playerId] * 216000.0) / 1000.0;
         if (f1 >= 35.0f)
-            u_play_sound(0x1A);
+            u_play_sound_0(0x1A);
         else if (f1 >= 20.0f)
-            u_play_sound(0x18);
+            u_play_sound_0(0x18);
         else
-            u_play_sound(0x17);
+            u_play_sound_0(0x17);
     }
     if (ball->flags & BALL_FLAG_27)
-        u_play_sound(0x69);
+        u_play_sound_0(0x69);
     else if (ball->flags & BALL_FLAG_28)
-        u_play_sound(0x2F);
+        u_play_sound_0(0x2F);
     else if (ball->flags & BALL_FLAG_29)
-        u_play_sound(0x14);
+        u_play_sound_0(0x14);
     else if (ball->flags & BALL_FLAG_30)
-        u_play_sound(0x13);
+        u_play_sound_0(0x13);
     else if (ball->flags & BALL_FLAG_31)
-        u_play_sound(0x12);
+        u_play_sound_0(0x12);
 
     if (gameSubmode == SMD_GAME_ROLL_MAIN)
         return;

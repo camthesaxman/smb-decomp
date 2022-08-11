@@ -134,10 +134,10 @@ void load_main(void)
     }
 }
 
-BOOL file_open(char *filename, struct File *file)
+BOOL file_open(const char *filename, struct File *file)
 {
     int i;
-    int entryNum = DVDConvertPathToEntrynum(filename);
+    int entryNum = DVDConvertPathToEntrynum((char *)filename);
     struct FileCacheEntry *entry = fileCache;
 
     // Search for a cache entry for this file
@@ -153,7 +153,7 @@ BOOL file_open(char *filename, struct File *file)
 
     // Not cached. Open it from the filesystem.
     file->isCached = FALSE;
-    return DVDOpen(filename, &file->dvdFile);
+    return DVDOpen((char *)filename, &file->dvdFile);
 }
 
 BOOL file_close(struct File *file)
@@ -270,9 +270,9 @@ static void invalidate_file_cache_range(u32 addr, u32 size)
 static int add_entrynum_to_load_queue(int entryNum);
 
 /* Adds a file to the load queue for fast loading */
-int file_preload(char *filename)
+int file_preload(const char *filename)
 {
-    int entryNum = DVDConvertPathToEntrynum(filename);
+    int entryNum = DVDConvertPathToEntrynum((char *)filename);
     if (entryNum < 0)
         return FALSE;
     if (loadQueueTail == loadQueueHead)
