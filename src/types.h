@@ -1018,17 +1018,4 @@ struct Struct801EEDA8
     u8 filler104[0x118-0x104];
 };
 
-struct Struct802014E0
-{
-    s32 unk0;  // 86C8
-    u32 unk4;
-    u8 filler8[4];
-    u8 unkC;
-    u8 fillerD[0x10-0xD];
-    s32 unk10;
-    s32 unk14;
-    s32 unk18;
-    s32 unk1C;
-};
-
 #endif

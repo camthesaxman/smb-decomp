@@ -26,6 +26,7 @@
 #include "ranking_screen.h"
 #include "recplay.h"
 #include "rend_efc.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
 #include "textbox.h"
@@ -132,7 +133,7 @@ void submode_adv_logo_init_func(void)
     unload_stage();
     call_bitmap_load_group(BMP_ADV);
     u_logo_plus_sprite_something();
-    u_play_sound(0x21);
+    u_play_sound_0(0x21);
     preload_stage_files(ST_001_PLAIN);
     light_init(0);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
@@ -201,7 +202,7 @@ static void update_av_logo(void)
         advLogoInfo.rollTimer++;
     update_av_logo_pos_and_sound();
     if (advLogoInfo.timer == 460)
-        u_play_sound(0x3B1F4);
+        u_play_sound_0(0x3B1F4);
     if (advLogoInfo.timer == 240)
         func_8002BFCC(0x51F2, 0x51F3);
 
@@ -1205,7 +1206,7 @@ static void func_8000FEC8(int a)
         sprite->userVar = 1;
 
     hud_show_title_banner(a);
-    u_play_sound(0xA022);
+    u_play_sound_0(0xA022);
     if (lbl_802014E0.unk0 != 2)
         u_play_music(3, 0);
     modeCtrl.courseFlags |= (1 << 13);
@@ -1285,7 +1286,7 @@ void submode_adv_title_reinit_func(void)
     }
     load_stage(ST_150_TUTORIAL);
     light_init(0);
-    u_play_sound(0xA022);
+    u_play_sound_0(0xA022);
     u_play_music(3, 0);
     start_screen_fade(FADE_IN|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 30);
     gameSubmodeRequest = SMD_ADV_TITLE_MAIN;
@@ -1314,7 +1315,7 @@ void submode_adv_title_main_func(void)
     {
         struct TextBox tbox;
 
-        func_8002B5C8(0x162);
+        u_play_sound_1(0x162);
         modeCtrl.courseFlags |= 4;
         memset(&tbox, 0, sizeof(tbox));
         tbox.x = 320;
@@ -1334,14 +1335,14 @@ void submode_adv_title_main_func(void)
             if (modeCtrl.unk10 != 0 && CONTROLLER_SOMETHING(i, PAD_BUTTON_UP))
             {
                 modeCtrl.unk10 = 0;
-                func_8002B5C8(0x6F);
+                u_play_sound_1(0x6F);
                 if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 300)
                     modeCtrl.submodeTimer = 300;
             }
             else if (modeCtrl.unk10 != 1 && CONTROLLER_SOMETHING(i, PAD_BUTTON_DOWN))
             {
                 modeCtrl.unk10 = 1;
-                func_8002B5C8(0x6F);
+                u_play_sound_1(0x6F);
                 if (modeCtrl.submodeTimer > 30 && modeCtrl.submodeTimer < 300)
                     modeCtrl.submodeTimer = 300;
             }
@@ -1551,7 +1552,7 @@ void submode_adv_info_main_func(void)
     {
         infoWork.flags &= ~INFO_FLAG_FALLOUT;
         camera_set_state(4);
-        u_play_sound(29);
+        u_play_sound_0(29);
     }
     if (modeCtrl.submodeTimer == 583)
     {
@@ -1632,7 +1633,7 @@ void submode_adv_info_main_func(void)
             advTutorialInfo.state = cmd->param;
             break;
         case INFOCMD_PLAY_SOUND:
-            u_play_sound(cmd->param);
+            u_play_sound_0(cmd->param);
             break;
         }
     }
@@ -2009,7 +2010,7 @@ void submode_adv_ranking_main_func(void)
             {
                 r29->flags &= ~0x500;
                 r29->flags |= 0x200;
-                u_play_sound(0x126);
+                u_play_sound_0(0x126);
             }
         }
     }
@@ -2116,7 +2117,7 @@ void submode_adv_start_init_func(void)
         return;
     modeCtrl.submodeTimer = 30;
     lbl_802F1BA8 = 0;
-    func_8002B5C8(2);
+    u_play_sound_1(2);
     start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(0, 0, 0, 0), 32);
     textbox_set_properties(0, 20, NULL);
     textbox_set_properties(1, 20, NULL);

@@ -6,6 +6,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "preview.h"
+#include "sound.h"
 #include "sprite.h"
 
 static s32 lbl_802F21F8;

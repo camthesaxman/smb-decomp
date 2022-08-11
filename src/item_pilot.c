@@ -13,6 +13,7 @@
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sound.h"
 #include "stage.h"
 
 #include "../data/common.gma.h"
@@ -395,8 +396,8 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         lbl_802F1FD0 |= 0x42;
         if (lbl_802F1FF6 == 14)
             lbl_802F1FF4 = 15;
-        u_play_sound(0x10B);
-        u_play_sound(0x1C);
+        u_play_sound_0(0x10B);
+        u_play_sound_0(0x1C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         ball->vel.y += 0.92592592592592582;
         lbl_802F1FE0 = 0x78;
@@ -417,10 +418,10 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         int i;
 
         lbl_802F1FD0 |= 0x82;
-        u_play_sound(0x2F);
-        u_play_sound(0x1C);
+        u_play_sound_0(0x2F);
+        u_play_sound_0(0x1C);
         if (lbl_802F1FF6 == 14)
-            u_play_sound(0x16C);
+            u_play_sound_0(0x16C);
         func_800B60F4(lbl_80206BD0[r31->playerId], 1, 0x1C);
         ball->vel.y += 0.1388888888888889;
         ball->vel.x += RAND_FLOAT() * 0.64814814814814814;
@@ -443,15 +444,15 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         return;
     if (item->subType == 2)
     {
-        u_play_sound(0x39);
+        u_play_sound_0(0x39);
         if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_REPLAY))
-            u_play_sound(0x2820);
+            u_play_sound_0(0x2820);
     }
     else if (item->subType == 0 || item->subType == 1)
     {
-        u_play_sound(3);
+        u_play_sound_0(3);
         if ((infoWork.flags & INFO_FLAG_11) || !(infoWork.flags & INFO_FLAG_REPLAY))
-            u_play_sound(0x281F);
+            u_play_sound_0(0x281F);
     }
 }
 

@@ -15,33 +15,28 @@
 #include "load.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "sound.h"
 #include "stage.h"
 
-struct Struct80110400
+struct Struct801FE498
 {
-    char *unk0;
-    u32 unk4;
-    s32 unk8;
-    u32 unkC;
-    char *unk10;
-};
-
-struct Struct8011057C
-{
-    s32 unk0;
-    char *unk4;
-    s8 unk8;
-    s16 unkA;
-    s16 unkC;
-};
-
-struct Struct801B2A5C
-{
-    char *unk0;
-    u32 unk4;
+    s16 unk0;
+    s16 unk2;
+    s8 unk4;
+    s8 unk5;
+    s8 unk6;
+    s8 unk7;
     u32 unk8;
-    s8 unkC;
 };
+
+static void func_8002A34C(void);
+static void func_8002A964(struct Struct801FE498 *arg0);
+static int u_play_sound_2(int arg0);
+static s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3);
+static void func_8002CA38(s8, s8);
+static void func_8002CEB8(int);
+static void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
+static void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
 
 const struct Struct80110400 lbl_80110400[] =
 {
@@ -1131,7 +1126,15 @@ const struct Struct8011057C lbl_8011057C[] =
     {  -2, "GRPend",                                1,  0,  -1 },
 };
 
-struct Struct801B2A5C lbl_801B2A5C[] =
+struct Struct801B2A5C
+{
+    char *unk0;
+    u32 unk4;
+    u32 unk8;
+    s8 unkC;
+};
+
+static struct Struct801B2A5C lbl_801B2A5C[] =
 {
     { "theme",         0x91000000, 0x002CE400, -1 },
     { "theme",         0x91000000, 0x002CE400, -1 },
@@ -1324,6 +1327,43 @@ static s32 lbl_802F1DC0;
 static s32 lbl_802F1DC4;
 static s32 lbl_802F1DC8;
 
+static void *lbl_801F8E18[9];
+static void *lbl_801F8E3C[9];
+static void *lbl_801F8E60[9];
+static void *lbl_801F8E84[9];
+static u32 lbl_801F8EA8[9];
+static u32 lbl_801F8ECC[9];
+static u32 lbl_801F8EF0[9];
+static u32 lbl_801F8F14[9];
+static SND_AUX_REVERBHI lbl_801F8F38;
+static struct
+{
+    u8 unk300[0x90];
+    u32 unk390;
+    u32 unk394;
+    u32 unk398;
+} lbl_801F9118;
+static u32 lbl_801F91B4[4][0x425];
+static u8 lbl_801FD404[4][0x425];
+static struct Struct801FE498 lbl_801FE498[16];
+static struct
+{
+    s8 unk0[4][20];
+    struct { s32 unk0; u8 filler4[4]; } unk50[4];
+} lbl_801FE558;
+static float lbl_801FE5C8[4];
+static DTKTrack lbl_801FE5D8[0x94];
+static DVDFileInfo lbl_80201418;
+static DVDFileInfo lbl_80201454;
+static struct
+{
+    u32 unk3C;
+    u32 unk40;
+    u32 unk44;
+} lbl_80201490;
+static s32 lbl_8020149C[9];
+static s32 lbl_802014C0[8];
+
 s32 lbl_802F1E00;
 s32 lbl_802F1DFC;
 int lbl_802F1DF8;
@@ -1341,126 +1381,23 @@ s32 lbl_802F1DD4;
 u32 lbl_802F1DD0;
 s32 lbl_802F1DCC;
 
-void print_sound_error(const char *a, const char *b, ...)
+struct Struct802014E0 lbl_802014E0;
+s8 lbl_80201500[0x428];
+
+static void sound_error(const char *func, const char *msg, ...)
 {
     va_list args;
     char buffer[0x200];
 
-    va_start(args, b);
-    vsprintf(buffer, b, args);
+    va_start(args, msg);
+    vsprintf(buffer, msg, args);
     va_end(args);
     printf("### Sound ERROR ### at ");
-    printf(a);
+    printf(func);
     printf(buffer);
 }
 
-void *lbl_801F8E18[9];
-FORCE_BSS_ORDER(lbl_801F8E18)
-
-void *lbl_801F8E3C[9];
-FORCE_BSS_ORDER(lbl_801F8E3C)
-
-void *lbl_801F8E60[9];
-FORCE_BSS_ORDER(lbl_801F8E60)
-
-void *lbl_801F8E84[9];
-FORCE_BSS_ORDER(lbl_801F8E84)
-
-u32 lbl_801F8EA8[9];
-FORCE_BSS_ORDER(lbl_801F8EA8)
-
-u32 lbl_801F8ECC[9];
-FORCE_BSS_ORDER(lbl_801F8ECC)
-
-u32 lbl_801F8EF0[9];
-FORCE_BSS_ORDER(lbl_801F8EF0)
-
-u32 lbl_801F8F14[9];
-FORCE_BSS_ORDER(lbl_801F8F14)
-
-SND_AUX_REVERBHI lbl_801F8F38;
-FORCE_BSS_ORDER(lbl_801F8F38)
-
-struct
-{
-    u8 unk300[0x390-0x300];
-    u32 unk390;
-    u32 unk394;
-    u32 unk398;
-} lbl_801F9118;
-FORCE_BSS_ORDER(lbl_801F9118)
-
-u32 lbl_801F91B4[4][0x425];  // 39C
-FORCE_BSS_ORDER(lbl_801F91B4)
-
-u8 lbl_801FD404[4][0x425];  // 45EC
-FORCE_BSS_ORDER(lbl_801FD404)
-
-struct Struct801FE498
-{
-    s16 unk0;
-    s16 unk2;
-    s8 unk4;
-    s8 unk5;
-    s8 unk6;
-    s8 unk7;
-    u32 unk8;
-};
-
-//u8 lbl_801FE498[0xC0];
-struct Struct801FE498 lbl_801FE498[16];  // 0x5680
-FORCE_BSS_ORDER(lbl_801FE498)
-
-//u8 lbl_801FE558_unk0[4][20];
-//FORCE_BSS_ORDER(lbl_801FE558_unk0)
-
-struct Struct801FE558_sub
-{
-    s32 unk0;
-    u8 filler4[4];
-};
-
-struct
-{
-    s8 unk0[4][20];
-    struct Struct801FE558_sub unk50[4];  // 0x5790
-} lbl_801FE558;  // 0x5740
-FORCE_BSS_ORDER(lbl_801FE558)
-
-float lbl_801FE5C8[4];  // 0x57B0
-FORCE_BSS_ORDER(lbl_801FE5C8)
-
-DTKTrack lbl_801FE5D8[0x4A];
-FORCE_BSS_ORDER(lbl_801FE5D8)
-
-u8 lbl_801FFCF8[0x50*0x4A];
-FORCE_BSS_ORDER(lbl_801FFCF8)
-
-DVDFileInfo lbl_80201418;  // 8600
-FORCE_BSS_ORDER(lbl_80201418)
-
-DVDFileInfo lbl_80201454;
-FORCE_BSS_ORDER(lbl_80201454)
-
-struct
-{
-    //DVDFileInfo unk0;
-    u32 unk3C;  //8678
-    u32 unk40;  //867C
-    u32 unk44;  //8680
-} lbl_80201490;
-FORCE_BSS_ORDER(lbl_80201490)
-
-s32 lbl_8020149C[9];  // 8684
-FORCE_BSS_ORDER(lbl_8020149C)
-
-s32 lbl_802014C0[8];  // 86A8
-FORCE_BSS_ORDER(lbl_802014C0)
-
-struct Struct802014E0 lbl_802014E0;
-FORCE_BSS_ORDER(lbl_802014E0);
-
-void func_800275A0(s32 arg0, s32 arg1)
+static void func_800275A0(s32 arg0, s32 arg1)
 {
     char fileName[0x100];
     int i;
@@ -1500,7 +1437,7 @@ void func_800275A0(s32 arg0, s32 arg1)
     }
 }
 
-void *read_musyx_file(char *fileName, u32 *sizeOut)
+static void *ReadMusyXData(const char *fileName, u32 *sizeOut)
 {
     struct File file;
     u32 size;
@@ -1508,25 +1445,25 @@ void *read_musyx_file(char *fileName, u32 *sizeOut)
 
     if (!file_open(fileName, &file))
     {
-        print_sound_error("ReadMusyXData\n", "Unable to open '%s'\n", fileName);
+        sound_error("ReadMusyXData\n", "Unable to open '%s'\n", fileName);
         return NULL;
     }
     size = file_size(&file);
     if (size == 0)
     {
-        print_sound_error("ReadMusyXData\n", "Zero length file '%s'\n", fileName);
+        sound_error("ReadMusyXData\n", "Zero length file '%s'\n", fileName);
         return NULL;
     }
     *sizeOut = OSRoundUp32B(size);
     buffer = OSAlloc(*sizeOut);
     if (buffer == NULL)
     {
-        print_sound_error("ReadMusyXData\n", "unable to allocate buffer '%s'\n", fileName);
+        sound_error("ReadMusyXData\n", "unable to allocate buffer '%s'\n", fileName);
         return NULL;
     }
     if (file_read(&file, buffer, *sizeOut, 0) <= 0)
     {
-        print_sound_error("ReadMusyXData\n", "Failed to read data from '%s'\n", fileName);
+        sound_error("ReadMusyXData\n", "Failed to read data from '%s'\n", fileName);
         OSFree(buffer);
         return NULL;
     }
@@ -1534,19 +1471,13 @@ void *read_musyx_file(char *fileName, u32 *sizeOut)
     return buffer;
 }
 
-void SoundOff(u16);
-
-s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3);
-int func_8002B5EC(int arg0);
-void SoundOffID(int arg0_);
-
 #define SOME_MACRO(a, b, c, d) \
     ((a) | (((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25))
 
 #define SOME_MACRO2(a, b, c, d) \
     ((((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25) | (a))
 
-void func_8002786C(void)
+static void func_8002786C(void)
 {
     s8 sp15 = 0;
     s8 sp14 = 0;
@@ -1577,11 +1508,11 @@ void func_8002786C(void)
                 if (lbl_802F1DC4 == 0 && lbl_802F1D40 == 1.0)
                 {
                     lbl_802F1DC4 = 1;
-                    lbl_80201490.unk3C = func_8002B5EC(0x4C);
+                    lbl_80201490.unk3C = u_play_sound_2(0x4C);
                 }
                 if ((int)lbl_80206DEC.u_stageTimer % 300 == 60)
                 {
-                    lbl_80201490.unk40 = func_8002B610(
+                    lbl_80201490.unk40 = u_play_sound_1_dupe(
                         SOME_MACRO(
                             0x4D,
                             ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 0x23,
@@ -1593,7 +1524,7 @@ void func_8002786C(void)
                 }
                 if ((int)lbl_80206DEC.u_stageTimer % 1000 == 200)
                 {
-                    lbl_80201490.unk44 = func_8002B610(
+                    lbl_80201490.unk44 = u_play_sound_1_dupe(
                         SOME_MACRO(
                             0x4E,
                             ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 5,
@@ -1617,11 +1548,11 @@ void func_8002786C(void)
                 if (lbl_802F1DC8 == 0 && lbl_802F1D40 == 1.0)
                 {
                     lbl_802F1DC8 = 1;
-                    u_play_sound(0x389F7);
+                    u_play_sound_0(0x389F7);
                 }
                 if ((int)lbl_80206DEC.u_stageTimer % 1000 == 200)
                 {
-                    u_play_sound(
+                    u_play_sound_0(
                         SOME_MACRO(
                             0x1F6,
                             ((int)lbl_80206DEC.u_stageTimer & 0x1F) - 0x28,
@@ -1648,7 +1579,7 @@ void func_8002786C(void)
                         sp8.y = 7.5f;
                         sp8.z = -17.2f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
-                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x43, r3, sp15, sp14));
                     }
                     break;
                 case ST_061_TWIN_ATTACKER:
@@ -1660,12 +1591,12 @@ void func_8002786C(void)
                             sp8.y = 0.25f;
                             sp8.z = 42.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x42, r3, sp15, sp14));
                             sp8.x = -3.0f;
                             sp8.y = 0.25f;
                             sp8.z = -15.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x42, r3, sp15, sp14));
                         }
                         else
                         {
@@ -1673,12 +1604,12 @@ void func_8002786C(void)
                             sp8.y = 0.25f;
                             sp8.z = 42.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x42, r3, sp15, sp14));
                             sp8.x = 2.0f;
                             sp8.y = 0.25f;
                             sp8.z = -15.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x42, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x42, r3, sp15, sp14));
                         }
                     }
                     break;
@@ -1691,12 +1622,12 @@ void func_8002786C(void)
                             sp8.y = 0.5f;
                             sp8.z = -9.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x41, r3, sp15, sp14));
                             sp8.x = -3.0f;
                             sp8.y = 0.5f;
                             sp8.z = 4.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x41, r3, sp15, sp14));
                         }
                         else
                         {
@@ -1704,12 +1635,12 @@ void func_8002786C(void)
                             sp8.y = 0.5f;
                             sp8.z = -9.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x41, r3, sp15, sp14));
                             sp8.x = 3.0f;
                             sp8.y = 0.5f;
                             sp8.z = 4.0f;
                             r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 2.0;
-                            u_play_sound(SOME_MACRO2(0x41, r3, sp15, sp14));
+                            u_play_sound_0(SOME_MACRO2(0x41, r3, sp15, sp14));
                         }
                     }
                     break;
@@ -1721,19 +1652,19 @@ void func_8002786C(void)
                         sp8.z = -3.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
                         r3 *= 0.333;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                         sp8.x = 0.0f;
                         sp8.y = 3.0f;
                         sp8.z = -15.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
                         r3 *= 0.333;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                         sp8.x = 0.0f;
                         sp8.y = 7.0f;
                         sp8.z = -26.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
                         r3 *= 0.333;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                     }
                     break;
                 case ST_113_DAA_LOO_MAA:
@@ -1744,7 +1675,7 @@ void func_8002786C(void)
                         sp8.z = 0.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14);
                         r3 += 20;
-                        u_play_sound(SOME_MACRO2(0x40, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x40, r3, sp15, sp14));
                     }
                     break;
                 case ST_107_BREATHE:
@@ -1754,22 +1685,22 @@ void func_8002786C(void)
                         sp8.y = 0.5f;
                         sp8.z = 16.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x43, r3, sp15, sp14));
                         sp8.x = -16.0f;
                         sp8.y = 0.5f;
                         sp8.z = -16.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x43, r3, sp15, sp14));
                         sp8.x = 18.0f;
                         sp8.y = 0.5f;
                         sp8.z = -18.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x43, r3, sp15, sp14));
                         sp8.x = -18.0f;
                         sp8.y = 0.5f;
                         sp8.z = 18.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x43, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x43, r3, sp15, sp14));
                     }
                     break;
                 case ST_077_QUAKE:
@@ -1779,22 +1710,22 @@ void func_8002786C(void)
                         sp8.y = 0.5f;
                         sp8.z = 16.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                         sp8.x = 16.0f;
                         sp8.y = 0.5f;
                         sp8.z = -16.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                         sp8.x = 12.0f;
                         sp8.y = 0.5f;
                         sp8.z = 12.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                         sp8.x = -12.0f;
                         sp8.y = 0.5f;
                         sp8.z = -12.0f;
                         r3 = func_8002BB20(modeCtrl.unk30, &sp8, &sp15, &sp14) / 4.0;
-                        u_play_sound(SOME_MACRO2(0x44, r3, sp15, sp14));
+                        u_play_sound_0(SOME_MACRO2(0x44, r3, sp15, sp14));
                     }
                     break;
                 }
@@ -1803,23 +1734,15 @@ void func_8002786C(void)
     }
 }
 
-void *u_alloc(u32 size)
+static void *u_alloc(u32 size)
 {
     return OSAlloc(size);
 }
 
-void u_free(void *ptr)
+static void u_free(void *ptr)
 {
     OSFree(ptr);
 }
-
-void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
-s32 sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
-s32 sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
-
-void sndAuxCallbackChorus();
-
-void func_80029228(int arg0);
 
 void sound_init(void)
 {
@@ -1860,8 +1783,8 @@ void sound_init(void)
     lbl_802014C0[5] = -1;
     lbl_802014C0[6] = -1;
     lbl_802014C0[7] = -1;
-    func_80029228(1);
-    func_80029228(0xF);
+    SoundGroupLoad(1);
+    SoundGroupLoad(0xF);
     lbl_801F8F38.tempDisableFX = 0;
     lbl_801F8F38.time = 3.0f;
     lbl_801F8F38.preDelay = 0.1f;
@@ -1918,8 +1841,6 @@ void sound_init(void)
     lbl_802F1DE4 = 0;
     lbl_802F1DE8 = 1;
 }
-
-void func_8002CEB8(int);
 
 void sound_main(void)
 {
@@ -2041,7 +1962,7 @@ void sound_main(void)
     lbl_802F1DE0 = lbl_8011057C[lbl_802F1DE8].unk4;
 }
 
-void func_80029228(int arg0)
+void SoundGroupLoad(int arg0)
 {
     char poolFileName[0x100];
     char projFileName[0x100];
@@ -2066,36 +1987,36 @@ void func_80029228(int arg0)
             return;
     }
 
-
     sprintf(poolFileName, "%s.pool", temp_r29->unk10);
     sprintf(projFileName, "%s.proj", temp_r29->unk10);
     sprintf(sampFileName, "%s.samp", temp_r29->unk10);
     sprintf(sdirFileName, "%s.sdir", temp_r29->unk10);
+
     DVDChangeDir("snd/mkb");
     lbl_802F1DC0 = 0;
-    lbl_801F8E84[temp_r29->unkC] = read_musyx_file(sampFileName, &spC);
+    lbl_801F8E84[temp_r29->unkC] = ReadMusyXData(sampFileName, &spC);
     if (lbl_801F8E84[temp_r29->unkC] == NULL)
     {
         temp_r3_7 = OSCheckHeap(mainHeap);
         if (temp_r3_7 == -1U)
-            print_sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n", temp_r29->unk10, spC);
+            sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n", temp_r29->unk10, spC);
         else if (spC < temp_r3_7)
-            print_sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+            sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
         else
-            print_sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
+            sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
         lbl_802F1DC0 = 1;
         heap = OSSetCurrentHeap(charaHeap);
-        lbl_801F8E84[temp_r29->unkC] = read_musyx_file(sampFileName, &spC);
+        lbl_801F8E84[temp_r29->unkC] = ReadMusyXData(sampFileName, &spC);
         OSSetCurrentHeap(heap);
         if (lbl_801F8E84[temp_r29->unkC] == NULL)
         {
             temp_r3_7 = OSCheckHeap(charaHeap);
             if (temp_r3_7 == -1U)
-                print_sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n", temp_r29->unk10, spC);
+                sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n", temp_r29->unk10, spC);
             else if (spC < temp_r3_7)
-                print_sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+                sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
             else
-                print_sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
+                sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
             DVDChangeDir("/test");
             return;
         }
@@ -2107,7 +2028,7 @@ void func_80029228(int arg0)
     temp_r7 = lbl_802F1DF0 + lbl_801F8F14[temp_r29->unkC];
     if (temp_r7 >= 0x700000U)
     {
-        print_sound_error("SoundGroupLoad\n", "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n", temp_r29->unk10, lbl_801F8F14[temp_r29->unkC], temp_r7 + 0xFF900000);
+        sound_error("SoundGroupLoad\n", "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n", temp_r29->unk10, lbl_801F8F14[temp_r29->unkC], temp_r7 + 0xFF900000);
         if (lbl_802F1DC0 != 0)
             heap = OSSetCurrentHeap(charaHeap);
         OSFree(lbl_801F8E84[temp_r29->unkC]);
@@ -2118,13 +2039,13 @@ void func_80029228(int arg0)
         return;
     }
 
-    lbl_801F8E18[temp_r29->unkC] = read_musyx_file(poolFileName, &spC);
+    lbl_801F8E18[temp_r29->unkC] = ReadMusyXData(poolFileName, &spC);
     lbl_801F8EA8[temp_r29->unkC] = spC;
     lbl_802F1DEC += lbl_801F8EA8[temp_r29->unkC];
-    lbl_801F8E3C[temp_r29->unkC] = read_musyx_file(projFileName, &spC);
+    lbl_801F8E3C[temp_r29->unkC] = ReadMusyXData(projFileName, &spC);
     lbl_801F8ECC[temp_r29->unkC] = spC;
     lbl_802F1DEC += lbl_801F8ECC[temp_r29->unkC];
-    lbl_801F8E60[temp_r29->unkC] = read_musyx_file(sdirFileName, &spC);
+    lbl_801F8E60[temp_r29->unkC] = ReadMusyXData(sdirFileName, &spC);
     lbl_801F8EF0[temp_r29->unkC] = spC;
     lbl_802F1DEC += lbl_801F8EF0[temp_r29->unkC];
     temp_cr0_eq = sndPushGroup(
@@ -2171,8 +2092,6 @@ void func_80029788(void)
     }
 }
 
-void func_8002CA38(s8, s8);
-
 #ifdef NONMATCHING
 // https://decomp.me/scratch/8mIVf
 void ev_sound_init(void)
@@ -2215,10 +2134,6 @@ asm void ev_sound_init(void)
 }
 #pragma peephole on
 #endif
-
-//void sndFXCtrl(int, int, int);
-void func_8002A34C(void);
-void func_8002A964(struct Struct801FE498 *arg0);
 
 void ev_sound_main(void)
 {
@@ -2375,15 +2290,15 @@ void ev_sound_dest(void)
     lbl_802F1DC8 = 0;
 }
 
-u8 lbl_802F07E4[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-u8 lbl_802F07EC[8] = { 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x00 };
-u8 lbl_802F07F4[8] = { 0x00, 0x00, 0xC0, 0xC0, 0x3F, 0xC0, 0x00, 0x00 };
-u8 lbl_802F07FC[8] = { 0xC0, 0x00, 0x3F, 0x00, 0xC0, 0xC0, 0x3F, 0xC0 };
-u8 lbl_802F0804[8] = { 0xC0, 0xC0, 0x00, 0x00, 0x3F, 0xC0, 0x00, 0x00 };
-u8 lbl_802F080C[8] = { 0xC0, 0x00, 0x3F, 0x00, 0x00, 0xC0, 0x00, 0x00 };
-u8 lbl_802F0814[8] = { 0xC0, 0x00, 0x3F, 0x00, 0xC0, 0xC0, 0x00, 0x00 };
+static u8 lbl_802F07E4[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+static u8 lbl_802F07EC[8] = { 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x00 };
+static u8 lbl_802F07F4[8] = { 0x00, 0x00, 0xC0, 0xC0, 0x3F, 0xC0, 0x00, 0x00 };
+static u8 lbl_802F07FC[8] = { 0xC0, 0x00, 0x3F, 0x00, 0xC0, 0xC0, 0x3F, 0xC0 };
+static u8 lbl_802F0804[8] = { 0xC0, 0xC0, 0x00, 0x00, 0x3F, 0xC0, 0x00, 0x00 };
+static u8 lbl_802F080C[8] = { 0xC0, 0x00, 0x3F, 0x00, 0x00, 0xC0, 0x00, 0x00 };
+static u8 lbl_802F0814[8] = { 0xC0, 0x00, 0x3F, 0x00, 0xC0, 0xC0, 0x00, 0x00 };
 
-u8 *lbl_801B3630[] =
+static u8 *lbl_801B3630[] =
 {
     lbl_802F07E4,
     lbl_802F07EC,
@@ -2403,7 +2318,7 @@ u8 *lbl_801B3630[] =
     lbl_802F07FC,
 };
 
-s8 func_8002A22C(int arg0, int arg1)
+static s8 func_8002A22C(int arg0, int arg1)
 {
     int temp_r4;
 
@@ -2432,7 +2347,7 @@ s8 func_8002A22C(int arg0, int arg1)
 }
 
 #pragma dont_inline on
-float func_8002A324(int arg0)
+static float func_8002A324(int arg0)
 {
     float temp_f1;
 
@@ -2444,11 +2359,9 @@ float func_8002A324(int arg0)
 }
 #pragma dont_inline reset
 
-float lbl_801B3670[] = { 1, 1, 1, 1, 0, 1, 1, 1, 1 };
+static float lbl_801B3670[] = { 1, 1, 1, 1, 0, 1, 1, 1, 1 };
 
-int func_8002B634(int arg0, Vec *arg1, s8 *arg2, s8 *arg3);
-
-void func_8002A34C(void)
+static void func_8002A34C(void)
 {
     int var_r3;
     float var_f31;
@@ -2553,7 +2466,7 @@ void func_8002A34C(void)
     }
 }
 
-void func_8002A964(struct Struct801FE498 *arg0)
+static void func_8002A964(struct Struct801FE498 *arg0)
 {
     int temp_r0;
     u8 temp_r31;
@@ -2604,9 +2517,9 @@ void func_8002A964(struct Struct801FE498 *arg0)
     }
 }
 
-s8 lbl_802F081C[4] = { 0, 1, -1, 2 };
+static s8 lbl_802F081C[4] = { 0, 1, -1, 2 };
 
-int func_8002ABF0(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
+static int func_8002ABF0(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
 {
     float var_f2;
     int var_r3;
@@ -2677,7 +2590,7 @@ int func_8002ABF0(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
     return var_r3;
 }
 
-int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
+static int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
 {
     int i;
     int j;
@@ -2732,9 +2645,6 @@ int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
     }
     return 0;
 }
-
-s8 lbl_80201500[0x428];
-FORCE_BSS_ORDER(lbl_80201500)
 
 static int sound_req_inline(void)
 {
@@ -2829,7 +2739,7 @@ int SoundReqDirect(u32 arg0)
     return sp10.unk2;
 }
 
-int SoundReqID(u32 arg0, s32 arg1)
+static int SoundReqID(u32 arg0, s32 arg1)
 {
     int var_r0;
     int var_r5;
@@ -2926,22 +2836,22 @@ int SoundReqID(u32 arg0, s32 arg1)
     return -1;
 }
 
-void u_play_sound(int arg0)
+void u_play_sound_0(int arg0)
 {
     SoundReqID(arg0, 0);
 }
 
-void func_8002B5C8(int arg0)
+void u_play_sound_1(int arg0)
 {
     SoundReqID(arg0, 1);
 }
 
-int func_8002B5EC(int arg0)
+static int u_play_sound_2(int arg0)
 {
     return SoundReqID(arg0, 2);
 }
 
-int func_8002B610(int arg0)
+int u_play_sound_1_dupe(int arg0)
 {
     return SoundReqID(arg0, 1);
 }
@@ -2987,7 +2897,7 @@ int func_8002B634(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
     return ret;
 }
 
-s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
+static s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
 {
     float var_f31;
     float temp_f30;
@@ -3094,7 +3004,7 @@ void SoundOff(u16 arg0)
 }
 
 #pragma force_active on
-void func_8002C100(u16 arg0, u8 arg1)
+void SoundVol(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundVol", (u16)arg0);
 
@@ -3123,7 +3033,7 @@ void SoundPitch(u16 arg0, u16 arg1)
 }
 
 #pragma force_active on
-void func_8002C3E0(u16 arg0, u16 arg1)
+void SoundDop(u16 arg0, u16 arg1)
 {
     int var_r3 = get_some_id("SoundDop", (u16)arg0);
 
@@ -3133,7 +3043,7 @@ void func_8002C3E0(u16 arg0, u16 arg1)
 
 char string_SoundMod[] = "SoundMod";
 
-void func_8002C4CC(u16 arg0, u8 arg1)
+void SoundRev(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundRev", (u16)arg0);
 
@@ -3141,7 +3051,7 @@ void func_8002C4CC(u16 arg0, u8 arg1)
         sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x5B, arg1);
 }
 
-void func_8002C5B8(u16 arg0, u8 arg1)
+void SoundCho(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundCho", (u16)arg0);
 
@@ -3150,7 +3060,7 @@ void func_8002C5B8(u16 arg0, u8 arg1)
 }
 #pragma force_active reset
 
-int SoundSearchID(int arg0)
+static int SoundSearchID(int arg0)
 {
     int i;
     int var_r9;
@@ -3226,7 +3136,7 @@ void SoundChoID(int arg0_, u8 arg1)
         sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5D, arg1);
 }
 
-void func_8002CA38(s8 arg0, s8 arg1)
+static void func_8002CA38(s8 arg0, s8 arg1)
 {
     if (arg0 != -1)
         lbl_802F1D38 = arg0;
@@ -3240,7 +3150,7 @@ struct Struct801B3938
     s32 unk4;
 };
 
-struct Struct801B3938 lbl_801B3938[][3] =
+static struct Struct801B3938 lbl_801B3938[][3] =
 {
     {
     { -1, 0x00000051 },
@@ -3264,32 +3174,32 @@ struct Struct801B3938 lbl_801B3938[][3] =
     }
 };
 
-struct Struct80176434 lbl_801B3998[] =
+static struct Struct80176434 lbl_801B3998[] =
 {
     {   0,   0.0f, 0.0f, 0.0f },
     { 127, 127.0f, 0.0f, 0.0f },
 };
 
-struct Struct80176434 lbl_801B39B8[] =
+static struct Struct80176434 lbl_801B39B8[] =
 {
     {   0, 127.0f, 0.0f, 0.0f },
     { 127, 127.0f, 0.0f, 0.0f },
 };
 
-struct Struct80176434 lbl_801B39D8[] =
+static struct Struct80176434 lbl_801B39D8[] =
 {
     {   0,   0.0f, 0.0f, 0.0f },
     { 127, 127.0f, 0.0f, 0.0f },
 };
 
-struct Struct80176434 *lbl_801B39F8[] =
+static struct Struct80176434 *lbl_801B39F8[] =
 {
     lbl_801B3998,
     lbl_801B39B8,
     lbl_801B39D8,
 };
 
-struct Struct80176434 lbl_801B3A04[] =
+static struct Struct80176434 lbl_801B3A04[] =
 {
     {   0,  4608.0f, 0.0f, 0.0f },
     { 127, 16383.0f, 0.0f, 0.0f },
@@ -3388,7 +3298,7 @@ void func_8002CEB0(void) {}
 void func_8002CEB4(void) {}
 #pragma force_active reset
 
-void func_8002CEB8(int arg0)
+static void func_8002CEB8(int arg0)
 {
     float temp_f0;
     u8 temp_f2;
@@ -3500,9 +3410,7 @@ void u_play_music(u32 arg0, s8 arg1)
     }
 }
 
-void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
-
-void lbl_8002D344(s32 result, DVDFileInfo *fileInfo)
+static void lbl_8002D344(s32 result, DVDFileInfo *fileInfo)
 {
     u8 *temp_r31;
 
@@ -3516,19 +3424,17 @@ void lbl_8002D344(s32 result, DVDFileInfo *fileInfo)
         temp_r31 = lbl_802F1D84 + lbl_802F1D94;
         OSReport("restL %d\n", lbl_802F1DAC);
         OSReport("extraL %d\n", lbl_802F1D94);
-        DVDReadAsyncPrio(fileInfo, temp_r31, lbl_802F1DAC, 0, lbl_8002D420, 2);
+        DVDReadAsync(fileInfo, temp_r31, lbl_802F1DAC, 0, lbl_8002D420);
     }
 }
 
-void lbl_8002D420(s32 result, DVDFileInfo *fileInfo)
+static void lbl_8002D420(s32 result, DVDFileInfo *fileInfo)
 {
     if (result != lbl_802F1DAC)
         OSReport("DVDReadAsync result %x\n", result);
 }
 
-void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
-
-void lbl_8002D45C(s32 result, DVDFileInfo *fileInfo)
+static void lbl_8002D45C(s32 result, DVDFileInfo *fileInfo)
 {
     u8 *temp_r31;
 
@@ -3542,17 +3448,17 @@ void lbl_8002D45C(s32 result, DVDFileInfo *fileInfo)
         temp_r31 = lbl_802F1D88 + lbl_802F1D98;
         OSReport("restR %d\n", lbl_802F1DB0);
         OSReport("extraR %d\n", lbl_802F1D98);
-        DVDReadAsyncPrio(fileInfo, temp_r31, lbl_802F1DB0, 0, lbl_8002D538, 2);
+        DVDReadAsync(fileInfo, temp_r31, lbl_802F1DB0, 0, lbl_8002D538);
     }
 }
 
-void lbl_8002D538(s32 result, DVDFileInfo *fileInfo)
+static void lbl_8002D538(s32 result, DVDFileInfo *fileInfo)
 {
     if (result != lbl_802F1DB0)
         OSReport("DVDReadAsync result %x\n", result);
 }
 
-u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
+static u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
 {
     s32 temp_r5;
     s32 temp_r4;
@@ -3579,7 +3485,7 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
                 if (temp_r4 > 0x8000)
                 {
                     lbl_802F1DA4 = 0x8000;
-                    DVDReadAsyncPrio(&lbl_80201418, arg0, lbl_802F1DA4, lbl_802F1D8C, lbl_8002D344, 2);
+                    DVDReadAsync(&lbl_80201418, arg0, lbl_802F1DA4, lbl_802F1D8C, lbl_8002D344);
                     lbl_802F1D8C += 0x8000;
                 }
                 else
@@ -3588,7 +3494,7 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
                     temp_r5 = lbl_802F1DA4;
                     lbl_802F1D94 = (temp_r5 + lbl_802F1D8C) - lbl_80201418.length;
                     lbl_802F1D84 = (arg0 + temp_r5) - lbl_802F1D94;
-                    DVDReadAsyncPrio(&lbl_80201418, arg0, temp_r5, lbl_802F1D8C, lbl_8002D344, 2);
+                    DVDReadAsync(&lbl_80201418, arg0, temp_r5, lbl_802F1D8C, lbl_8002D344);
                     lbl_802F1D8C = 0x8000 - lbl_802F1DA4;
                 }
                 lbl_802F1D9C = 1;
@@ -3601,7 +3507,7 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
                 if (temp_r4 > 0x8000)
                 {
                     lbl_802F1DA8 = 0x8000;
-                    DVDReadAsyncPrio(&lbl_80201454, arg0, lbl_802F1DA8, lbl_802F1D90, lbl_8002D45C, 2);
+                    DVDReadAsync(&lbl_80201454, arg0, lbl_802F1DA8, lbl_802F1D90, lbl_8002D45C);
                     lbl_802F1D90 += 0x8000;
                 }
                 else
@@ -3610,7 +3516,7 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
                     temp_r5 = lbl_802F1DA8;
                     lbl_802F1D98 = (temp_r5 + lbl_802F1D90) - lbl_80201454.length;
                     lbl_802F1D88 = (arg0 + temp_r5) - lbl_802F1D98;
-                    DVDReadAsyncPrio(&lbl_80201454, arg0, temp_r5, lbl_802F1D90, lbl_8002D45C, 2);
+                    DVDReadAsync(&lbl_80201454, arg0, temp_r5, lbl_802F1D90, lbl_8002D45C);
                     lbl_802F1D90 = 0x8000 - lbl_802F1DA8;
                 }
                 lbl_802F1DA0 = 1;
@@ -3623,28 +3529,28 @@ u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
 }
 
 #pragma force_active on
-void func_8002D798(void)
+void SoundStreamStart(void)
 {
     BOOL intrEnabled;
-    int var_ctr;
-    u8 *var_r5;
+    int i;
+    u8 *ptr;
 
     if (lbl_802F1DBC == 0)
     {
         lbl_802F1D7C = OSAlloc(0x10000);
         lbl_802F1D80 = OSAlloc(0x10000);
-        var_r5 = lbl_802F1D7C;
-        for (var_ctr = 0; var_ctr < 0x10000; var_ctr++, var_r5++)
-            *var_r5 = 0;
-        var_r5 = lbl_802F1D80;
-        for (var_ctr = 0; var_ctr < 0x10000; var_ctr++, var_r5++)
-            *var_r5 = 0;
+        ptr = lbl_802F1D7C;
+        for (i = 0; i < 0x10000; i++, ptr++)
+            *ptr = 0;
+        ptr = lbl_802F1D80;
+        for (i = 0; i < 0x10000; i++, ptr++)
+            *ptr = 0;
         DCFlushRange(lbl_802F1D7C, 0x10000);
         DCFlushRange(lbl_802F1D80, 0x10000);
         if (DVDOpen("/test/snd/test/streamL.pcm", &lbl_80201418) == 0)
-            print_sound_error("SoundStreamStart\n", "can't open data\n");
+            sound_error("SoundStreamStart\n", "can't open data\n");
         if (DVDOpen("/test/snd/test/streamR.pcm", &lbl_80201454) == 0)
-            print_sound_error("SoundStreamStart\n", "can't open data\n");
+            sound_error("SoundStreamStart\n", "can't open data\n");
         lbl_802F1D8C = 0;
         lbl_802F1D90 = 0;
         lbl_802F1D9C = 0;
@@ -3654,9 +3560,9 @@ void func_8002D798(void)
         lbl_802F1DB8 = sndStreamAllocEx(0xFF, lbl_802F1D80, 0x8000, 0xABE0, 0x7F, 0x7F, 0, 0, 0, 0, 0, lbl_8002D574, 1, 0);
         OSRestoreInterrupts(intrEnabled);
         if (lbl_802F1DB4 == -1U)
-            print_sound_error("SoundStreamStart\n", "can't allocate stream\n");
+            sound_error("SoundStreamStart\n", "can't allocate stream\n");
         if (lbl_802F1DB8 == -1U)
-            print_sound_error("SoundStreamStart\n", "can't allocate stream\n");
+            sound_error("SoundStreamStart\n", "can't allocate stream\n");
         lbl_802F1DBC = 1;
     }
 }

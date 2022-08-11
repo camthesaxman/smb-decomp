@@ -13,6 +13,7 @@
 #include "perf.h"
 #include "recplay.h"
 #include "rend_efc.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stobj.h"

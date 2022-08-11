@@ -11,6 +11,7 @@
 #include "nl2ngc.h"
 #include "obj_collision.h"
 #include "pool.h"
+#include "sound.h"
 #include "stage.h"
 #include "stcoli.h"
 #include "stobj.h"
@@ -780,7 +781,7 @@ static void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
     arg1->pos.x = stobj->position.x + sp24.x;
     arg1->pos.y = stobj->position.y + sp24.y;
     arg1->pos.z = stobj->position.z + sp24.z;
-    u_play_sound(0x5011);
+    u_play_sound_0(0x5011);
     temp_r31->flags |= 0x20;
 
     {
@@ -794,7 +795,7 @@ static void stobj_bumper_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
         u8 dummy[4];
 
         lbl_802F1DFC = temp_r31->ape->charaId;
-        u_play_sound(sp14[unpausedFrameCounter & 7]);
+        u_play_sound_0(sp14[unpausedFrameCounter & 7]);
         phi_r4 = 1;
         if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
         {

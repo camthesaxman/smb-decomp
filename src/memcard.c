@@ -14,6 +14,7 @@
 #include "mathutil.h"
 #include "mode.h"
 #include "recplay.h"
+#include "sound.h"
 #include "sprite.h"
 
 struct StringEntry
@@ -2707,19 +2708,19 @@ void save_sequence(void)
          || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
-                func_8002B5C8(0x6C);
+                u_play_sound_1(0x6C);
             lbl_802F21B1 = 1;
         }
         if ((g_currPlayerButtons[2] & PAD_BUTTON_RIGHT)
          || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
-                func_8002B5C8(0x6C);
+                u_play_sound_1(0x6C);
             lbl_802F21B1 = 0;
         }
         if (g_currPlayerButtons[2] & PAD_BUTTON_A)
         {
-            func_8002B5C8(0x6A);
+            u_play_sound_1(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
@@ -2750,19 +2751,19 @@ void save_sequence(void)
              || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_LEFT))
             {
                 if (lbl_802F21B1 == 0)
-                    func_8002B5C8(0x6C);
+                    u_play_sound_1(0x6C);
                 lbl_802F21B1 = 1;
             }
             if ((g_currPlayerButtons[2] & PAD_BUTTON_RIGHT)
              || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_RIGHT))
             {
                 if (lbl_802F21B1 == 1)
-                    func_8002B5C8(0x6C);
+                    u_play_sound_1(0x6C);
                 lbl_802F21B1 = 0;
             }
             if (!(g_currPlayerButtons[2] & PAD_BUTTON_A))
                 break;
-            func_8002B5C8(0x6A);
+            u_play_sound_1(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
@@ -2838,7 +2839,7 @@ void replay_save_sequence(void)
     case 1:
         if (g_currPlayerButtons[2] & PAD_BUTTON_A)
         {
-            func_8002B5C8(0x6A);
+            u_play_sound_1(0x6A);
             memcardInfo.unk40 = 0x3C;
             memcardInfo.state = 2;
         }
@@ -2866,19 +2867,19 @@ void replay_save_sequence(void)
          || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_LEFT))
         {
             if (lbl_802F21B1 == 0)
-                func_8002B5C8(0x6C);
+                u_play_sound_1(0x6C);
             lbl_802F21B1 = 1;
         }
         if ((g_currPlayerButtons[2] & PAD_BUTTON_RIGHT)
          || (g_currPlayerAnalogButtons[2] & PAD_BUTTON_RIGHT))
         {
             if (lbl_802F21B1 == 1)
-                func_8002B5C8(0x6C);
+                u_play_sound_1(0x6C);
             lbl_802F21B1 = 0;
         }
         if (g_currPlayerButtons[2] & PAD_BUTTON_A)
         {
-            func_8002B5C8(0x6A);
+            u_play_sound_1(0x6A);
             memcardInfo.statusFlags &= ~(1 << 10);
             if (lbl_802F21B1 == 0)
             {
@@ -2954,7 +2955,7 @@ void replay_list_sequence(void)
     case 1:
         if (g_currPlayerButtons[2] & PAD_BUTTON_A)
         {
-            func_8002B5C8(0x6A);
+            u_play_sound_1(0x6A);
             memcardInfo.unk40 = 0x3C;
             memcardInfo.state = 2;
         }
@@ -3135,7 +3136,7 @@ void ev_memcard_main(void)
      && memcardInfo.state == 1
      && (g_currPlayerButtons[2] & PAD_BUTTON_B))
     {
-        func_8002B5C8(0x6B);
+        u_play_sound_1(0x6B);
         memcardInfo.state = MC_STATE_ERROR;
         memcardInfo.statusFlags |= (1 << 8);
     }
@@ -3150,7 +3151,7 @@ void ev_memcard_main(void)
         memcardInfo.statusFlags &= ~((1 << 15) | (1 << 17) | MC_STATUS_WRITE_IN_PROGRESS);
         if (g_currPlayerButtons[2] & PAD_BUTTON_B)
         {
-            func_8002B5C8(0x6B);
+            u_play_sound_1(0x6B);
             memcardInfo.unk42 = 0;
             memcardInfo.statusFlags &= ~MC_STATUS_ERROR;
             g_currPlayerButtons[2] = 0;

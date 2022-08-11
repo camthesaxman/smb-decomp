@@ -17,6 +17,7 @@
 #include "perf.h"
 #include "pool.h"
 #include "recplay.h"
+#include "sound.h"
 #include "stage.h"
 #include "world.h"
 

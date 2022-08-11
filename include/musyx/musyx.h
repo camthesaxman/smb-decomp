@@ -90,4 +90,21 @@ SND_VOICEID sndFXStartParaInfo(SND_FXID fid, u8 vol, u8 pan, u8 studio, SND_PARA
 int sndFXCtrl(SND_VOICEID vid, u8 ctrl, u8 value);
 int sndFXCtrl14(SND_VOICEID vid, u8 ctrl, u16 value);
 
+void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
+s32 sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
+s32 sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
+
+
+void sndAuxCallbackChorus();
+void sndAuxCallbackPrepareChorus();
+void sndOutputMode();
+void sndActive();
+int sndPushGroup();
+void sndPopGroup(void);
+int sndFXCheck(void);
+void sndFXKeyOff();
+void sndStreamFree();
+int sndStreamAllocEx();
+void sndSetAuxProcessingCallbacks();
+
 #endif
