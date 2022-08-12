@@ -20,6 +20,7 @@
 #include "input.h"
 #include "load.h"
 #include "mathutil.h"
+#include "minimap.h"
 #include "mode.h"
 #include "mot_ape.h"
 #include "pool.h"

@@ -9,6 +9,7 @@
 #include "event.h"
 #include "info.h"
 #include "item.h"
+#include "minimap.h"
 #include "obj_collision.h"
 #include "perf.h"
 #include "recplay.h"

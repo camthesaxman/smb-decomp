@@ -301,14 +301,6 @@ void func_80081F30(void);
 void func_80082024(int, struct Sprite *);
 // ? func_80082C6C();
 // ? func_80083138();
-void ev_minimap_init(void);
-void ev_minimap_main(void);
-void ev_minimap_dest(void);
-void func_800846B0(int);
-void func_80084794(void *);
-void minimap_change_size(void);
-// ? func_800847FC();
-void minimap_draw(void);
 
 // ? func_80085C0C();
 // ? draw_aiai_hair();

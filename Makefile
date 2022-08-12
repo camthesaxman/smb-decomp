@@ -173,7 +173,7 @@ SOURCES := \
 	src/textbox.c \
 	src/hud.c \
 	asm/code_5.s \
-	asm/minimap.s \
+	src/minimap.c \
 	src/ord_tbl.c \
 	src/code_3.c \
 	src/ranking_screen.c \
