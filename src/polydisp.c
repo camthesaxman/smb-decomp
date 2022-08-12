@@ -19,6 +19,7 @@
 #include "light.h"
 #include "load.h"
 #include "mathutil.h"
+#include "minimap.h"
 #include "mode.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"

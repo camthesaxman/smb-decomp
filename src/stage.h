@@ -532,7 +532,7 @@ void u_initialize_stuff_for_dynamic_stage_parts(int stageId);
 int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);
 void compute_stage_bounding_sphere(void);
-// ? func_800463E8();
+void func_800463E8(Vec *, float *);
 float func_80046884(struct NlModel *);
 void load_stagedef(int stageId);
 void free_stagedef(void);

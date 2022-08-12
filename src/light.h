@@ -85,7 +85,7 @@ void load_light_group_cached(int lightGrpId);
 void push_light_group(void);
 void pop_light_group(void);
 void u_reset_light_group_stack(int a);
-// ? u_set_some_minimap_light_param();
+void u_set_some_minimap_light_param(float);
 void set_bg_ambient(float, float, float);
 void set_render_ambient(float r, float g, float b);
 void get_curr_light_group_ambient(struct Color3f *color);

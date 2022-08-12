@@ -4617,9 +4617,6 @@ lbl_802F5350:
 .global lbl_80292D18
 lbl_80292D18:
 	.skip 0x18
-.global lbl_80292D30
-lbl_80292D30:
-	.skip 0x130
 
 .section .data
 

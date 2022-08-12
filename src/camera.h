@@ -133,7 +133,7 @@ void camera_setup_singleplayer_viewport(void);
 void camera_apply_viewport(int);
 void u_call_camera_apply_viewport();
 // ? camera_apply_viewport_2();
-// ? func_800188A8();
+void func_800188A8(int cameraId);
 void func_800188D4(void);
 void func_8001898C(int cameraId, int b, Vec *c);
 void camera_set_state(int state);

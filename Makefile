@@ -174,7 +174,6 @@ SOURCES := \
 	src/hud.c \
 	asm/code_5.s \
 	src/minimap.c \
-	asm/minimap.s \
 	src/ord_tbl.c \
 	src/code_3.c \
 	src/ranking_screen.c \

@@ -21,6 +21,7 @@
 #include "item.h"
 #include "load.h"
 #include "mathutil.h"
+#include "minimap.h"
 #include "mode.h"
 #include "pool.h"
 #include "recplay.h"
