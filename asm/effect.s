@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global u_give_points
 u_give_points:
 /* 8004C7D4 000486F4  7C 08 02 A6 */	mflr r0
@@ -222,6 +223,7 @@ lbl_8004CACC:
 /* 8004CAD0 000489F0  38 21 00 08 */	addi r1, r1, 8
 /* 8004CAD4 000489F4  7C 08 03 A6 */	mtlr r0
 /* 8004CAD8 000489F8  4E 80 00 20 */	blr
+.endif
 
 .global ev_effect_init
 ev_effect_init:
