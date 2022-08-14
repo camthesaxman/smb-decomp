@@ -469,9 +469,12 @@ struct Stage;
 
 struct Effect
 {
-    u8 filler0[8];
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
     s16 unk8;
-    u8 fillerA[0x10-0xA];
+    s16 unkA;
+    s32 unkC;
     s32 unk10;
     s16 unk14;
     u16 unk16;
@@ -488,7 +491,8 @@ struct Effect
     s16 unk52;
     s16 unk54;
     s16 unk56;
-    u8 filler58[0x70-0x58];
+    Vec unk58;
+    Vec unk64;
     Vec unk70;
     Vec unk7C;
     Vec unk88;
