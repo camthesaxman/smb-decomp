@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "effect.h"
 #include "gma.h"
+#include "gxutil.h"
 #include "hud.h"
 #include "info.h"
 #include "mathutil.h"
@@ -15,6 +16,8 @@
 #include "stage.h"
 #include "stcoli.h"
 #include "world.h"
+
+#include "../data/common.gma.h"
 
 void effect_dummy_init(struct Effect *);
 void effect_dummy_main(struct Effect *);
@@ -775,14 +778,24 @@ void effect_dummy_draw(struct Effect *effect) {}
 
 void effect_dummy_destroy(struct Effect *effect) {}
 
-extern u16 lbl_801B9168[];
+u16 s_paperPieceModels[] =
+{
+    PAPER_PIECE_DEEPGREEN,
+    PAPER_PIECE_GREEN,
+    PAPER_PIECE_ORANGE,
+    PAPER_PIECE_RED,
+    PAPER_PIECE_YELLOW,
+};
 
 void effect_paperfrag_init(struct Effect *effect)
 {
     if (effect->unkC == 0)
         effect->unkC = 210.0 + (60.0f * RAND_FLOAT());
     if (effect->model == NULL)
-        effect->model = commonGma->modelEntries[lbl_801B9168[(u32)(rand() & 0x7FFF) % 5]].model;
+    {
+        u16 modelIndex = s_paperPieceModels[(u32)(rand() & 0x7FFF) % ARRAY_COUNT(s_paperPieceModels)];
+        effect->model = commonGma->modelEntries[modelIndex].model;
+    }
     effect->unkA = 0;
     if (effect->unk24.x == 0.0f)
         effect->unk24.x = 0.5 + (0.5 * RAND_FLOAT());
@@ -918,5 +931,296 @@ void effect_paperfrag_main(struct Effect *effect)
         effect->unk54 -= effect->unk54 >> 4;
         effect->unk56 >>= 2;
         effect->unk56 += (effect->unk50 - temp_r31) >> 2;
+    }
+}
+
+void effect_paperfrag_draw(struct Effect *effect)
+{
+    float temp_f30;
+    float var_f31;
+    float new_var;
+
+    if (lbl_801EEC90.unk0 & 4)
+    {
+        temp_f30 = 0.1 * effect->unk24.x;
+        var_f31 = temp_f30 + func_8000E4D0(&effect->unk34);
+        if (var_f31 <= 0.0f)
+            return;
+        if (var_f31 > temp_f30)
+            var_f31 = 1.0f;
+        else
+            var_f31 *= (1.0f / temp_f30);
+    }
+    else
+        var_f31 = 1.0f;
+
+    mathutil_mtxA_from_mtxB_translate(&effect->unk34);
+    mathutil_mtxA_rotate_y(effect->unk4E);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
+
+    new_var = (120.0f * currentCameraStructPtr->sub28.vp.height) * (0.11f * effect->unk24.x) * currentCameraStructPtr->sub28.unk3C;
+    var_f31 *= 2.0f * (new_var + mathutilData->mtxA[2][3]);
+    if (var_f31 < 0.0)
+        return;
+    if (var_f31 > 1.0)
+        var_f31 = 1.0f;
+    mathutil_mtxA_scale_s(effect->unk24.x);
+    avdisp_set_bound_sphere_scale(effect->unk24.x);
+    if (effect->unkC < 0xC)
+        var_f31 *= 0.083333336f * effect->unkC;
+    if (var_f31 < 1.0)
+    {
+        avdisp_set_alpha(var_f31);
+        avdisp_draw_model_culled_sort_all(effect->model);
+    }
+    else
+    {
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        avdisp_draw_model_culled_sort_translucent(effect->model);
+    }
+}
+
+void effect_paperfrag_destroy(struct Effect *effect) {}
+
+void effect_get_banana_init(struct Effect *effect)
+{
+    effect->unkC = 60.0 * (0.25 + (0.125 * RAND_FLOAT()));
+    effect->unk16 = 1 << effect->unk14;
+    mathutil_mtxA_from_mtx(cameraInfo[effect->unk14].unk144);
+    mathutil_mtxA_tf_point(&effect->unk34, &effect->unk34);
+    mathutil_mtxA_tf_vec(&effect->unk40, &effect->unk40);
+    mathutil_mtxA_rotate_y(effect->unk4E);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
+    mathutil_mtxA_to_euler_yxz(&effect->unk4E, &effect->unk4C, &effect->unk50);
+}
+
+void effect_get_banana_main(struct Effect *effect)
+{
+    float temp_f0;
+    float temp_f7;
+    float new_var;
+    Vec v;
+    struct Camera *camera = &cameraInfo[effect->unk14];
+
+    temp_f7 = 2.0f * camera->sub28.unk38;
+    v.x = temp_f0 = (0.7333333333333333 - camera->sub28.unk28) * temp_f7;
+    v.y = (0.9 - camera->sub28.unk2C) * temp_f7;
+    v.z = -2.0f;
+    new_var = (0.05333333333333334 * temp_f7) / effect->model->boundSphereRadius;
+
+    temp_f0 = 1.0 / ((float) effect->unkC);
+    effect->unk40.x = temp_f0 * (v.x - effect->unk34.x);
+    effect->unk40.y = temp_f0 * (v.y - effect->unk34.y);
+    effect->unk40.z = temp_f0 * (v.z - effect->unk34.z);
+
+    effect->unk34.x += effect->unk40.x;
+    effect->unk34.y += effect->unk40.y;
+    effect->unk34.z += effect->unk40.z;
+
+    effect->unk24.x += temp_f0 * (new_var - effect->unk24.x);
+    effect->unk24.y = effect->unk24.x;
+    effect->unk24.z = effect->unk24.x;
+
+    effect->unk54 -= effect->unk54 >> 7;
+    effect->unk4C += effect->unk52;
+    effect->unk4E += effect->unk54;
+    effect->unk50 += effect->unk56;
+}
+
+void effect_get_banana_draw(struct Effect *effect)
+{
+    if (!(lbl_801EEC90.unk0 & 4))
+    {
+        mathutil_mtxA_from_translate(&effect->unk34);
+        mathutil_mtxA_rotate_y(effect->unk4E);
+        mathutil_mtxA_rotate_x(effect->unk4C);
+        mathutil_mtxA_rotate_z(effect->unk50);
+        mathutil_mtxA_scale_xyz(effect->unk24.x, effect->unk24.y, effect->unk24.z);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        avdisp_set_bound_sphere_scale(effect->unk24.x);
+        avdisp_draw_model_culled_sort_none(effect->model);
+    }
+}
+
+void effect_get_banana_destroy(struct Effect *effect) {}
+
+void effect_coli_particle_init(struct Effect *effect)
+{
+    effect->unk4 |= 2;
+    effect->unkA = 0;
+    effect->unkC = 15.0 + (45.0 * RAND_FLOAT());
+    effect->unk10 = 0;
+    effect->unk24.x = 1.0f;
+    if (effect->unk18 == 0.0f && effect->unk1C == 0.0f && effect->unk20 == 0.0f)
+    {
+        effect->unk18 = 0.9f;
+        effect->unk1C = 0.8f;
+        effect->unk20 = 0.4f;
+    }
+    effect->unk16 = 1 << effect->unk14;
+    effect->unk10 = 0;
+}
+
+void effect_coli_particle_main(struct Effect *effect)
+{
+    struct RaycastHit sp24;
+    Vec sp18;
+    Vec spC;
+    float temp_f0_2;
+    float temp_f2_4;
+    float temp_f31;
+    struct World *world = currentWorldStructPtr;
+
+    effect->unk40.x += 0.008f * world->unk10.x;
+    effect->unk40.y += 0.008f * world->unk10.y;
+    effect->unk40.z += 0.008f * world->unk10.z;
+    effect->unk40.x *= 0.992f;
+    effect->unk40.y *= 0.992f;
+    effect->unk40.z *= 0.992f;
+    effect->unk34.x += effect->unk40.x;
+    effect->unk34.y += effect->unk40.y;
+    effect->unk34.z += effect->unk40.z;
+    if (!(effect->unkC & 0xF))
+    {
+        effect->unkA = 0;
+        if (raycast_stage_down(&effect->unk34, &sp24, &effect->unk7C) != 0U
+         && sp24.pos.y > effect->unk34.y - 0.5)
+        {
+            effect->unkA = 1;
+            effect->unk64.x = sp24.pos.x;
+            effect->unk64.y = sp24.pos.y;
+            effect->unk64.z = sp24.pos.z;
+            effect->unk70.x = sp24.normal.x;
+            effect->unk70.y = sp24.normal.y;
+            effect->unk70.z = sp24.normal.z;
+        }
+    }
+    if (effect->unkC < 24)
+    {
+        effect->unk18 *= 0.96;
+        effect->unk1C *= 0.87;
+        effect->unk20 *= 0.86;
+        effect->unk24.x = (float)effect->unkC / 24.0;
+    }
+
+    switch (effect->unkA)
+    {
+    case 0:
+        if (effect->unkA8 > 0.0)
+        {
+            effect->unkA8 -= 0.125;
+            if (effect->unkA8 < 0.0)
+                effect->unkA8 = 0.0f;
+        }
+        return;
+    case 1:
+        sp18 = effect->unk70;
+        spC.x = effect->unk34.x - effect->unk64.x;
+        spC.y = effect->unk34.y - effect->unk64.y;
+        spC.z = effect->unk34.z - effect->unk64.z;
+        temp_f31 = mathutil_vec_dot_prod(&sp18, &spC);
+        effect->unkA8 += 0.25 * (temp_f31 - effect->unkA8);
+        effect->unk88.x = effect->unk34.x - ((temp_f31 - 0.02) * sp18.x);
+        effect->unk88.y = effect->unk34.y - ((temp_f31 - 0.02) * sp18.y);
+        effect->unk88.z = effect->unk34.z - ((temp_f31 - 0.02) * sp18.z);
+        mathutil_vec_to_euler_xy(&sp18, &effect->unkA0, &effect->unkA2);
+        effect->unkA0 += 0x8000;
+        if (temp_f31 < 0.025)
+        {
+            temp_f0_2 = 0.025 - temp_f31;
+            effect->unk34.x += temp_f0_2 * sp18.x;
+            effect->unk34.y += temp_f0_2 * sp18.y;
+            effect->unk34.z += temp_f0_2 * sp18.z;
+            temp_f2_4 = mathutil_vec_dot_prod(&effect->unk40, &sp18);
+            if (temp_f2_4 < 0.0)
+            {
+                temp_f0_2 = temp_f2_4;
+                temp_f0_2 *= -1.0;
+                effect->unk40.x += temp_f0_2 * sp18.x;
+                effect->unk40.y += temp_f0_2 * sp18.y;
+                effect->unk40.z += temp_f0_2 * sp18.z;
+                effect->unk40.x += 0.03 * (effect->unk7C.x - effect->unk40.x);
+                effect->unk40.y += 0.03 * (effect->unk7C.y - effect->unk40.y);
+                effect->unk40.z += 0.03 * (effect->unk7C.z - effect->unk40.z);
+                temp_f0_2 *= 0.9;
+                effect->unk40.x += temp_f0_2 * sp18.x;
+                effect->unk40.y += temp_f0_2 * sp18.y;
+                effect->unk40.z += temp_f0_2 * sp18.z;
+            }
+        }
+        break;
+    }
+}
+
+void effect_coli_particle_draw(struct Effect *effect)
+{
+    f32 temp_f31;
+    f32 temp_f30;
+    Vec *new_var;
+    f32 temp_f1;
+    f32 var_f1;
+    Vec sp38;
+    struct PointWithColor sp28;
+    struct PointWithColor sp18;
+    Vec spC;
+
+    if ((lbl_801EEC90.unk0 & 4) && func_8000E4D0(&effect->unk34) < 0.0f)
+        return;
+    mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[3]);
+    mathutil_mtxA_tf_point(&effect->unk58, &sp38);
+    mathutil_mtxA_from_mtxB();
+    if (effect->unk10 == 0)
+    {
+        effect->unk10 = 1;
+        return;
+    }
+    mathutil_mtxA_tf_point(&effect->unk34, &sp18.pos);
+    new_var = &sp18.pos;
+    sp28.pos.x = (1.5 * sp38.x) - (0.5 * new_var->x);
+    sp28.pos.y = (1.5 * sp38.y) - (0.5 * new_var->y);
+    sp28.pos.z = (1.5 * sp38.z) - (0.5 * new_var->z);
+    mathutil_mtxA_from_identity();
+    temp_f1 = 0.5f * mathutil_vec_distance(&sp18.pos, &sp28.pos);
+    spC.x = (sp18.pos.x + sp28.pos.y) * 0.5f;
+    spC.y = (sp18.pos.y + sp28.pos.y) * 0.5f;
+    spC.z = (sp18.pos.z + sp28.pos.z) * 0.5f;
+    if (test_sphere_in_frustum(&spC, temp_f1) != 0)
+    {
+        sp18.color.r = 255.0f * effect->unk18;
+        sp18.color.g = 255.0f * effect->unk1C;
+        sp18.color.b = 255.0f * effect->unk20;
+        sp18.color.a = 255;
+        sp28.color.r = 96.0f * effect->unk18;
+        sp28.color.g = 88.0f * effect->unk1C;
+        sp28.color.b = 8.0f * effect->unk20;
+        sp28.color.a = 255;
+        if (new_var->z < -3.0)
+            var_f1 = 1.5f;
+        else if (new_var->z > 0.0)
+            var_f1 = 4.5f;
+        else
+            var_f1 = 1.5 + (3.0 + new_var->z);
+        gxutil_set_line_width(6.0f * var_f1);
+        gxutil_set_line_blend_params(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
+        gxutil_draw_line_multicolor_deferred(&sp18, &sp28);
+    }
+    if (effect->unkA8 > 0.0 && effect->unkA8 < 0.5)
+    {
+        temp_f30 = 0.5 / (1.0 + (2.0 * effect->unkA8));
+        temp_f31 = (0.25 - (0.5 * effect->unkA8)) * effect->unk24.x;
+        mathutil_mtxA_from_mtxB_translate(&effect->unk88);
+        mathutil_mtxA_rotate_y(effect->unkA2);
+        mathutil_mtxA_rotate_x(effect->unkA0);
+        mathutil_mtxA_scale_s(temp_f31);
+        avdisp_set_z_mode(1, GX_LEQUAL, 0);
+        avdisp_set_bound_sphere_scale(temp_f31);
+        avdisp_set_post_mult_color(effect->unk18 * temp_f30, effect->unk1C * temp_f30, effect->unk20 * temp_f30, 1.0f);
+        avdisp_draw_model_unculled_sort_translucent(commonGma->modelEntries[0x5A].model);
+        avdisp_set_z_mode(1, GX_LEQUAL, 1);
+        u_reset_post_mult_color();
     }
 }

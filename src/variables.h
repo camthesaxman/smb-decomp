@@ -222,7 +222,7 @@ extern float unknownTrigTable[];
 // extern ? s_effectInitFuncs;
 // extern ? s_effectMainFuncs;
 // extern ? s_effectDestroyFuncs;
-// extern ? lbl_801B9168;
+// extern ? s_paperPieceModels;
 
 // extern ? lbl_801B9B28;
 // extern ? lbl_801B9B48;

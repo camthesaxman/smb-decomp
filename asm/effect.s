@@ -770,9 +770,9 @@ lbl_8004D20C:
 /* 8004D234 00049154  54 00 F0 BE */	srwi r0, r0, 2
 /* 8004D238 00049158  1C 00 00 05 */	mulli r0, r0, 5
 /* 8004D23C 0004915C  7C 00 30 50 */	subf r0, r0, r6
-/* 8004D240 00049160  3C 80 80 1C */	lis r4, lbl_801B9168@ha
+/* 8004D240 00049160  3C 80 80 1C */	lis r4, s_paperPieceModels@ha
 /* 8004D244 00049164  54 05 08 3C */	slwi r5, r0, 1
-/* 8004D248 00049168  38 04 91 68 */	addi r0, r4, lbl_801B9168@l
+/* 8004D248 00049168  38 04 91 68 */	addi r0, r4, s_paperPieceModels@l
 /* 8004D24C 0004916C  7C 80 2A 14 */	add r4, r0, r5
 /* 8004D250 00049170  A0 04 00 00 */	lhz r0, 0(r4)
 /* 8004D254 00049174  54 00 18 38 */	slwi r0, r0, 3
@@ -1255,7 +1255,6 @@ lbl_8004D990:
 /* 8004D9A0 000498C0  83 A1 00 84 */	lwz r29, 0x84(r1)
 /* 8004D9A4 000498C4  38 21 00 90 */	addi r1, r1, 0x90
 /* 8004D9A8 000498C8  4E 80 00 20 */	blr
-.endif
 
 .global effect_paperfrag_draw
 effect_paperfrag_draw:
@@ -1429,6 +1428,7 @@ effect_get_banana_init:
 /* 8004DC1C 00049B3C  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004DC20 00049B40  7C 08 03 A6 */	mtlr r0
 /* 8004DC24 00049B44  4E 80 00 20 */	blr
+
 .global effect_get_banana_main
 effect_get_banana_main:
 /* 8004DC28 00049B48  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -1624,6 +1624,7 @@ lbl_8004DEDC:
 /* 8004DF00 00049E20  7C 08 03 A6 */	mtlr r0
 /* 8004DF04 00049E24  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004DF08 00049E28  4E 80 00 20 */	blr
+
 .global effect_coli_particle_main
 effect_coli_particle_main:
 /* 8004DF0C 00049E2C  7C 08 02 A6 */	mflr r0
@@ -1917,6 +1918,7 @@ lbl_8004E36C:
 /* 8004E378 0004A298  7C 08 03 A6 */	mtlr r0
 /* 8004E37C 0004A29C  38 21 00 58 */	addi r1, r1, 0x58
 /* 8004E380 0004A2A0  4E 80 00 20 */	blr
+
 .global effect_coli_particle_draw
 effect_coli_particle_draw:
 /* 8004E384 0004A2A4  7C 08 02 A6 */	mflr r0
@@ -2145,6 +2147,7 @@ lbl_8004E6D4:
 /* 8004E6E4 0004A604  83 E1 00 7C */	lwz r31, 0x7c(r1)
 /* 8004E6E8 0004A608  38 21 00 90 */	addi r1, r1, 0x90
 /* 8004E6EC 0004A60C  4E 80 00 20 */	blr
+.endif
 .global effect_coli_particle_destroy
 effect_coli_particle_destroy:
 /* 8004E6F0 0004A610  4E 80 00 20 */	blr
@@ -8219,9 +8222,9 @@ lbl_80054098:
 /* 800540C0 0004FFE0  54 00 F0 BE */	srwi r0, r0, 2
 /* 800540C4 0004FFE4  1C 00 00 05 */	mulli r0, r0, 5
 /* 800540C8 0004FFE8  7C 00 30 50 */	subf r0, r0, r6
-/* 800540CC 0004FFEC  3C 80 80 1C */	lis r4, lbl_801B9168@ha
+/* 800540CC 0004FFEC  3C 80 80 1C */	lis r4, s_paperPieceModels@ha
 /* 800540D0 0004FFF0  54 05 08 3C */	slwi r5, r0, 1
-/* 800540D4 0004FFF4  38 04 91 68 */	addi r0, r4, lbl_801B9168@l
+/* 800540D4 0004FFF4  38 04 91 68 */	addi r0, r4, s_paperPieceModels@l
 /* 800540D8 0004FFF8  7C 80 2A 14 */	add r4, r0, r5
 /* 800540DC 0004FFFC  A0 04 00 00 */	lhz r0, 0(r4)
 /* 800540E0 00050000  54 00 18 38 */	slwi r0, r0, 3
@@ -9221,7 +9224,6 @@ lbl_802F3930:
 	# ROM: 0x1ED350
 	.4byte 0x3FC00000
 	.4byte 0
-.endif
 
 .global lbl_802F3938
 lbl_802F3938:
@@ -9430,6 +9432,7 @@ lbl_802F3A20:
 	# ROM: 0x1ED440
 	.4byte 0x40000000
 	.4byte 0
+.endif
 
 .global lbl_802F3A28
 lbl_802F3A28:
@@ -10506,16 +10509,16 @@ s_effectDestroyFuncs:
 	.4byte effect_dummy_draw  ;# ptr
 	.4byte effect_dummy_destroy  ;# ptr
 .endif
-
-.global lbl_801B9168
-lbl_801B9168:
+.if 0
+.global s_paperPieceModels
+s_paperPieceModels:
 	# ROM: 0x1B6168
 	.4byte 0x0029002A
 	.4byte 0x002B002C
 	.4byte 0x002D0000
 	.4byte 0
 
-.if 0
+
 .section .bss
 
 	.balign 8
