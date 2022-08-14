@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "ball.h"
+#include "effect.h"
 #include "gma.h"
 #include "gxutil.h"
 #include "info.h"
@@ -360,7 +361,7 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         if (item->unk5E < 0
          && (!(infoWork.flags & INFO_FLAG_REPLAY) || (infoWork.flags & INFO_FLAG_11)))
         {
-            struct Effect sp178;
+            struct Effect effect;
 
             item->unk5E = infoWork.timerCurr;
             lbl_80285A58[modeCtrl.currPlayer] += pilotBananaInfo[item->subType].unkE;
@@ -372,26 +373,26 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
             item->state = 0;
             item->flags |= ITEM_FLAG_INVISIBLE;
             item->flags &= ~(1 << 1);
-            memset(&sp178, 0, sizeof(sp178));
-            sp178.unk8 = 8;
-            sp178.unk14 = currentBallStructPtr->playerId;
+            memset(&effect, 0, sizeof(effect));
+            effect.type = ET_HOLDING_BANANA;
+            effect.unk14 = currentBallStructPtr->playerId;
             mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
-            mathutil_mtxA_tf_point(&item->pos, &sp178.unk34);
-            mathutil_mtxA_tf_vec(&item->vel, &sp178.unk40);
-            sp178.unk4C = item->rotX;
-            sp178.unk4E = item->rotY;
-            sp178.unk50 = item->rotZ;
-            sp178.unk30 = get_lod(item->modelLODs);
-            sp178.unk24.x = (item->unk14 / sp178.unk30->boundSphereRadius) * 1.5;
-            sp178.unk24.y = sp178.unk24.x;
-            sp178.unk24.z = sp178.unk24.y;
-            spawn_effect(&sp178);
+            mathutil_mtxA_tf_point(&item->pos, &effect.unk34);
+            mathutil_mtxA_tf_vec(&item->vel, &effect.unk40);
+            effect.unk4C = item->rotX;
+            effect.unk4E = item->rotY;
+            effect.unk50 = item->rotZ;
+            effect.model = get_lod(item->modelLODs);
+            effect.unk24.x = (item->unk14 / effect.model->boundSphereRadius) * 1.5;
+            effect.unk24.y = effect.unk24.x;
+            effect.unk24.z = effect.unk24.y;
+            spawn_effect(&effect);
         }
     }
     else if (item->subType == 3)
     {
         struct Ball *r31 = currentBallStructPtr;
-        struct Effect spCC;
+        struct Effect effect;
 
         lbl_802F1FD0 |= 0x42;
         if (lbl_802F1FF6 == 14)
@@ -402,19 +403,19 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         ball->vel.y += 0.92592592592592582;
         lbl_802F1FE0 = 0x78;
         lbl_802F1FD8 = 0.6f;
-        memset(&spCC, 0, sizeof(spCC));
-        spCC.unk8 = 0x27;
-        spCC.unk14 = r31->playerId;
-        spCC.unk34.x = r31->pos.x;
-        spCC.unk34.y = r31->pos.y - 1.0;
-        spCC.unk34.z = r31->pos.z;
-        spCC.unk24 = (Vec){3.5, 4.5, 3.5};
-        spawn_effect(&spCC);
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_PILOT_BOMB;
+        effect.unk14 = r31->playerId;
+        effect.unk34.x = r31->pos.x;
+        effect.unk34.y = r31->pos.y - 1.0;
+        effect.unk34.z = r31->pos.z;
+        effect.unk24 = (Vec){3.5, 4.5, 3.5};
+        spawn_effect(&effect);
     }
     else if (item->subType == 4)
     {
         struct Ball *r31 = currentBallStructPtr;
-        struct Effect sp20;
+        struct Effect effect;
         int i;
 
         lbl_802F1FD0 |= 0x82;
@@ -428,16 +429,16 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         ball->vel.z += RAND_FLOAT() * 0.64814814814814814;
         lbl_802F1FD8 = 0.6f;
         lbl_802F1FDC = 1.0f;
-        memset(&sp20, 0, sizeof(sp20));
-        sp20.unk8 = 0x13;
-        sp20.unk14 = r31->playerId;
-        sp20.unk34 = r31->pos;
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_COLISTAR_PARTICLE;
+        effect.unk14 = r31->playerId;
+        effect.unk34 = r31->pos;
         for (i = 0; i < 30; i++)
         {
-            sp20.unk40.x = ball->vel.x + (RAND_FLOAT() * 0.2 - 0.1);
-            sp20.unk40.y = ball->vel.y + 0.1 + (RAND_FLOAT() * 0.2 - 0.1);
-            sp20.unk40.z = ball->vel.z + (RAND_FLOAT() * 0.2 - 0.1);
-            spawn_effect(&sp20);
+            effect.unk40.x = ball->vel.x + (RAND_FLOAT() * 0.2 - 0.1);
+            effect.unk40.y = ball->vel.y + 0.1 + (RAND_FLOAT() * 0.2 - 0.1);
+            effect.unk40.z = ball->vel.z + (RAND_FLOAT() * 0.2 - 0.1);
+            spawn_effect(&effect);
         }
     }
     if (gameSubmode == 2)

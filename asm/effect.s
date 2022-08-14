@@ -304,11 +304,11 @@ ev_effect_main:
 /* 8004CBF8 00048B18  83 A4 00 4C */	lwz r29, 0x4c(r4)
 /* 8004CBFC 00048B1C  38 03 73 C8 */	addi r0, r3, lbl_802673C8@l
 /* 8004CC00 00048B20  83 E4 00 48 */	lwz r31, 0x48(r4)
-/* 8004CC04 00048B24  3C 60 80 1C */	lis r3, lbl_801B8F00@ha
-/* 8004CC08 00048B28  3C 80 80 1C */	lis r4, lbl_801B9090@ha
+/* 8004CC04 00048B24  3C 60 80 1C */	lis r3, s_effectMainFuncs@ha
+/* 8004CC08 00048B28  3C 80 80 1C */	lis r4, s_effectDestroyFuncs@ha
 /* 8004CC0C 00048B2C  7C 1E 03 78 */	mr r30, r0
-/* 8004CC10 00048B30  3B 83 8F 00 */	addi r28, r3, lbl_801B8F00@l
-/* 8004CC14 00048B34  3B 64 90 90 */	addi r27, r4, lbl_801B9090@l
+/* 8004CC10 00048B30  3B 83 8F 00 */	addi r28, r3, s_effectMainFuncs@l
+/* 8004CC14 00048B34  3B 64 90 90 */	addi r27, r4, s_effectDestroyFuncs@l
 /* 8004CC18 00048B38  48 00 00 9C */	b lbl_8004CCB4
 lbl_8004CC1C:
 /* 8004CC1C 00048B3C  88 1D 00 00 */	lbz r0, 0(r29)
@@ -371,10 +371,10 @@ ev_effect_dest:
 /* 8004CCE0 00048C00  3C 60 80 26 */	lis r3, lbl_802673C8@ha
 /* 8004CCE4 00048C04  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 8004CCE8 00048C08  38 03 73 C8 */	addi r0, r3, lbl_802673C8@l
-/* 8004CCEC 00048C0C  3C 60 80 1C */	lis r3, lbl_801B9090@ha
+/* 8004CCEC 00048C0C  3C 60 80 1C */	lis r3, s_effectDestroyFuncs@ha
 /* 8004CCF0 00048C10  BF 61 00 0C */	stmw r27, 0xc(r1)
 /* 8004CCF4 00048C14  7C 1C 03 78 */	mr r28, r0
-/* 8004CCF8 00048C18  3B C3 90 90 */	addi r30, r3, lbl_801B9090@l
+/* 8004CCF8 00048C18  3B C3 90 90 */	addi r30, r3, s_effectDestroyFuncs@l
 /* 8004CCFC 00048C1C  3B E0 00 00 */	li r31, 0
 /* 8004CD00 00048C20  83 64 00 4C */	lwz r27, 0x4c(r4)
 /* 8004CD04 00048C24  83 A4 00 48 */	lwz r29, 0x48(r4)
@@ -555,8 +555,8 @@ lbl_8004CF48:
 /* 8004CF64 00048E84  4B FB 64 B1 */	bl memcpy
 /* 8004CF68 00048E88  7F E0 07 34 */	extsh r0, r31
 /* 8004CF6C 00048E8C  B0 1E 00 00 */	sth r0, 0(r30)
-/* 8004CF70 00048E90  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 8004CF74 00048E94  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 8004CF70 00048E90  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 8004CF74 00048E94  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 8004CF78 00048E98  A8 9E 00 08 */	lha r4, 8(r30)
 /* 8004CF7C 00048E9C  38 7E 00 00 */	addi r3, r30, 0
 /* 8004CF80 00048EA0  54 84 10 3A */	slwi r4, r4, 2
@@ -654,7 +654,7 @@ lbl_8004D0B4:
 /* 8004D0B4 00048FD4  7C 83 23 78 */	mr r3, r4
 /* 8004D0B8 00048FD8  4E 80 00 20 */	blr
 
-glabel func_8004D0BC
+glabel effect_replace_type_funcs
 /* 8004D0BC 00048FDC  28 04 00 00 */	cmplwi r4, 0
 /* 8004D0C0 00048FE0  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 8004D0C4 00048FE4  3C A0 80 1C */	lis r5, lbl_801B89E8@ha
@@ -715,21 +715,21 @@ lbl_8004D164:
 /* 8004D18C 000490AC  38 21 00 20 */	addi r1, r1, 0x20
 /* 8004D190 000490B0  4E 80 00 20 */	blr
 
-.global func_8004D194
-func_8004D194:
+.global effect_dummy_init
+effect_dummy_init:
 /* 8004D194 000490B4  4E 80 00 20 */	blr
-.global func_8004D198
-func_8004D198:
+.global effect_dummy_main
+effect_dummy_main:
 /* 8004D198 000490B8  4E 80 00 20 */	blr
-.global func_8004D19C
-func_8004D19C:
+.global effect_dummy_draw
+effect_dummy_draw:
 /* 8004D19C 000490BC  4E 80 00 20 */	blr
-.global func_8004D1A0
-func_8004D1A0:
+.global effect_dummy_destroy
+effect_dummy_destroy:
 /* 8004D1A0 000490C0  4E 80 00 20 */	blr
 
-.global func_8004D1A4
-func_8004D1A4:
+.global effect_paperfrag_init
+effect_paperfrag_init:
 /* 8004D1A4 000490C4  7C 08 02 A6 */	mflr r0
 /* 8004D1A8 000490C8  90 01 00 04 */	stw r0, 4(r1)
 /* 8004D1AC 000490CC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -807,8 +807,8 @@ lbl_8004D2B4:
 /* 8004D2C0 000491E0  7C 08 03 A6 */	mtlr r0
 /* 8004D2C4 000491E4  4E 80 00 20 */	blr
 
-.global func_8004D2C8
-func_8004D2C8:
+.global effect_paperfrag_main
+effect_paperfrag_main:
 /* 8004D2C8 000491E8  7C 08 02 A6 */	mflr r0
 /* 8004D2CC 000491EC  90 01 00 04 */	stw r0, 4(r1)
 /* 8004D2D0 000491F0  94 21 FF 70 */	stwu r1, -0x90(r1)
@@ -1257,8 +1257,8 @@ lbl_8004D990:
 /* 8004D9A8 000498C8  4E 80 00 20 */	blr
 .endif
 
-.global func_8004D9AC
-func_8004D9AC:
+.global effect_paperfrag_draw
+effect_paperfrag_draw:
 /* 8004D9AC 000498CC  7C 08 02 A6 */	mflr r0
 /* 8004D9B0 000498D0  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 8004D9B4 000498D4  90 01 00 04 */	stw r0, 4(r1)
@@ -1367,11 +1367,11 @@ lbl_8004DB24:
 /* 8004DB34 00049A54  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 8004DB38 00049A58  38 21 00 30 */	addi r1, r1, 0x30
 /* 8004DB3C 00049A5C  4E 80 00 20 */	blr
-.global func_8004DB40
-func_8004DB40:
+.global effect_paperfrag_destroy
+effect_paperfrag_destroy:
 /* 8004DB40 00049A60  4E 80 00 20 */	blr
-.global func_8004DB44
-func_8004DB44:
+.global effect_get_banana_init
+effect_get_banana_init:
 /* 8004DB44 00049A64  7C 08 02 A6 */	mflr r0
 /* 8004DB48 00049A68  90 01 00 04 */	stw r0, 4(r1)
 /* 8004DB4C 00049A6C  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -1429,8 +1429,8 @@ func_8004DB44:
 /* 8004DC1C 00049B3C  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004DC20 00049B40  7C 08 03 A6 */	mtlr r0
 /* 8004DC24 00049B44  4E 80 00 20 */	blr
-.global func_8004DC28
-func_8004DC28:
+.global effect_get_banana_main
+effect_get_banana_main:
 /* 8004DC28 00049B48  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 8004DC2C 00049B4C  3C 00 43 30 */	lis r0, 0x4330
 /* 8004DC30 00049B50  3C A0 80 1F */	lis r5, cameraInfo@ha
@@ -1519,8 +1519,8 @@ func_8004DC28:
 /* 8004DD7C 00049C9C  7C 04 02 14 */	add r0, r4, r0
 /* 8004DD80 00049CA0  B0 03 00 50 */	sth r0, 0x50(r3)
 /* 8004DD84 00049CA4  4E 80 00 20 */	blr
-.global func_8004DD88
-func_8004DD88:
+.global effect_get_banana_draw
+effect_get_banana_draw:
 /* 8004DD88 00049CA8  7C 08 02 A6 */	mflr r0
 /* 8004DD8C 00049CAC  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 8004DD90 00049CB0  90 01 00 04 */	stw r0, 4(r1)
@@ -1558,11 +1558,11 @@ lbl_8004DE04:
 /* 8004DE0C 00049D2C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004DE10 00049D30  7C 08 03 A6 */	mtlr r0
 /* 8004DE14 00049D34  4E 80 00 20 */	blr
-.global func_8004DE18
-func_8004DE18:
+.global effect_get_banana_destroy
+effect_get_banana_destroy:
 /* 8004DE18 00049D38  4E 80 00 20 */	blr
-.global func_8004DE1C
-func_8004DE1C:
+.global effect_coli_particle_init
+effect_coli_particle_init:
 /* 8004DE1C 00049D3C  7C 08 02 A6 */	mflr r0
 /* 8004DE20 00049D40  90 01 00 04 */	stw r0, 4(r1)
 /* 8004DE24 00049D44  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -1624,8 +1624,8 @@ lbl_8004DEDC:
 /* 8004DF00 00049E20  7C 08 03 A6 */	mtlr r0
 /* 8004DF04 00049E24  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004DF08 00049E28  4E 80 00 20 */	blr
-.global func_8004DF0C
-func_8004DF0C:
+.global effect_coli_particle_main
+effect_coli_particle_main:
 /* 8004DF0C 00049E2C  7C 08 02 A6 */	mflr r0
 /* 8004DF10 00049E30  90 01 00 04 */	stw r0, 4(r1)
 /* 8004DF14 00049E34  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -1917,8 +1917,8 @@ lbl_8004E36C:
 /* 8004E378 0004A298  7C 08 03 A6 */	mtlr r0
 /* 8004E37C 0004A29C  38 21 00 58 */	addi r1, r1, 0x58
 /* 8004E380 0004A2A0  4E 80 00 20 */	blr
-.global func_8004E384
-func_8004E384:
+.global effect_coli_particle_draw
+effect_coli_particle_draw:
 /* 8004E384 0004A2A4  7C 08 02 A6 */	mflr r0
 /* 8004E388 0004A2A8  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 8004E38C 0004A2AC  90 01 00 04 */	stw r0, 4(r1)
@@ -2145,14 +2145,14 @@ lbl_8004E6D4:
 /* 8004E6E4 0004A604  83 E1 00 7C */	lwz r31, 0x7c(r1)
 /* 8004E6E8 0004A608  38 21 00 90 */	addi r1, r1, 0x90
 /* 8004E6EC 0004A60C  4E 80 00 20 */	blr
-.global func_8004E6F0
-func_8004E6F0:
+.global effect_coli_particle_destroy
+effect_coli_particle_destroy:
 /* 8004E6F0 0004A610  4E 80 00 20 */	blr
-.global func_8004E6F4
-func_8004E6F4:
+.global effect_rotate_bg_init
+effect_rotate_bg_init:
 /* 8004E6F4 0004A614  4E 80 00 20 */	blr
-.global func_8004E6F8
-func_8004E6F8:
+.global effect_rotate_bg_main
+effect_rotate_bg_main:
 /* 8004E6F8 0004A618  A8 0D 99 AE */	lha r0, gameSubmode@sda21(r13)
 /* 8004E6FC 0004A61C  80 8D 9D 38 */	lwz r4, currentBallStructPtr@sda21(r13)
 /* 8004E700 0004A620  2C 00 00 02 */	cmpwi r0, 2
@@ -2174,8 +2174,8 @@ lbl_8004E714:
 /* 8004E73C 0004A65C  7C 04 02 14 */	add r0, r4, r0
 /* 8004E740 0004A660  B0 03 00 50 */	sth r0, 0x50(r3)
 /* 8004E744 0004A664  4E 80 00 20 */	blr
-.global func_8004E748
-func_8004E748:
+.global effect_rotate_bg_draw
+effect_rotate_bg_draw:
 /* 8004E748 0004A668  7C 08 02 A6 */	mflr r0
 /* 8004E74C 0004A66C  90 01 00 04 */	stw r0, 4(r1)
 /* 8004E750 0004A670  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -2209,13 +2209,13 @@ lbl_8004E7B4:
 /* 8004E7BC 0004A6DC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004E7C0 0004A6E0  7C 08 03 A6 */	mtlr r0
 /* 8004E7C4 0004A6E4  4E 80 00 20 */	blr
-.global func_8004E7C8
-func_8004E7C8:
+.global effect_rotate_bg_destroy
+effect_rotate_bg_destroy:
 /* 8004E7C8 0004A6E8  38 00 00 00 */	li r0, 0
 /* 8004E7CC 0004A6EC  90 03 00 30 */	stw r0, 0x30(r3)
 /* 8004E7D0 0004A6F0  4E 80 00 20 */	blr
-.global func_8004E7D4
-func_8004E7D4:
+.global effect_raindrop_init
+effect_raindrop_init:
 /* 8004E7D4 0004A6F4  80 03 00 04 */	lwz r0, 4(r3)
 /* 8004E7D8 0004A6F8  38 A0 00 1E */	li r5, 0x1e
 /* 8004E7DC 0004A6FC  38 80 00 00 */	li r4, 0
@@ -2228,8 +2228,8 @@ func_8004E7D4:
 /* 8004E7F8 0004A718  C0 02 90 C8 */	lfs f0, lbl_802F38C8-_SDA2_BASE_(r2)
 /* 8004E7FC 0004A71C  D0 03 00 A8 */	stfs f0, 0xa8(r3)
 /* 8004E800 0004A720  4E 80 00 20 */	blr
-.global func_8004E804
-func_8004E804:
+.global effect_raindrop_main
+effect_raindrop_main:
 /* 8004E804 0004A724  A8 03 00 0A */	lha r0, 0xa(r3)
 /* 8004E808 0004A728  2C 00 00 01 */	cmpwi r0, 1
 /* 8004E80C 0004A72C  41 82 00 58 */	beq lbl_8004E864
@@ -2325,8 +2325,8 @@ lbl_8004E8F0:
 /* 8004E960 0004A880  EC 01 00 2A */	fadds f0, f1, f0
 /* 8004E964 0004A884  D0 03 00 3C */	stfs f0, 0x3c(r3)
 /* 8004E968 0004A888  4E 80 00 20 */	blr
-.global func_8004E96C
-func_8004E96C:
+.global effect_raindrop_draw
+effect_raindrop_draw:
 /* 8004E96C 0004A88C  7C 08 02 A6 */	mflr r0
 /* 8004E970 0004A890  90 01 00 04 */	stw r0, 4(r1)
 /* 8004E974 0004A894  94 21 FF B8 */	stwu r1, -0x48(r1)
@@ -2410,11 +2410,11 @@ func_8004E96C:
 /* 8004EAAC 0004A9CC  83 A1 00 34 */	lwz r29, 0x34(r1)
 /* 8004EAB0 0004A9D0  38 21 00 48 */	addi r1, r1, 0x48
 /* 8004EAB4 0004A9D4  4E 80 00 20 */	blr
-.global func_8004EAB8
-func_8004EAB8:
+.global effect_raindrop_destroy
+effect_raindrop_destroy:
 /* 8004EAB8 0004A9D8  4E 80 00 20 */	blr
-.global func_8004EABC
-func_8004EABC:
+.global effect_holding_banana_init
+effect_holding_banana_init:
 /* 8004EABC 0004A9DC  80 AD 9D 38 */	lwz r5, currentBallStructPtr@sda21(r13)
 /* 8004EAC0 0004A9E0  38 80 00 1E */	li r4, 0x1e
 /* 8004EAC4 0004A9E4  38 00 10 00 */	li r0, 0x1000
@@ -2446,8 +2446,8 @@ func_8004EABC:
 /* 8004EB2C 0004AA4C  D0 03 00 9C */	stfs f0, 0x9c(r3)
 /* 8004EB30 0004AA50  B0 03 00 A2 */	sth r0, 0xa2(r3)
 /* 8004EB34 0004AA54  4E 80 00 20 */	blr
-.global func_8004EB38
-func_8004EB38:
+.global effect_holding_banana_main
+effect_holding_banana_main:
 /* 8004EB38 0004AA58  7C 08 02 A6 */	mflr r0
 /* 8004EB3C 0004AA5C  3C 80 80 20 */	lis r4, ballInfo@ha
 /* 8004EB40 0004AA60  90 01 00 04 */	stw r0, 4(r1)
@@ -2507,8 +2507,8 @@ lbl_8004EBBC:
 /* 8004EC0C 0004AB2C  4B FB 48 09 */	bl memcpy
 /* 8004EC10 0004AB30  7F C0 07 34 */	extsh r0, r30
 /* 8004EC14 0004AB34  B0 1D 00 00 */	sth r0, 0(r29)
-/* 8004EC18 0004AB38  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 8004EC1C 0004AB3C  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 8004EC18 0004AB38  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 8004EC1C 0004AB3C  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 8004EC20 0004AB40  A8 9D 00 08 */	lha r4, 8(r29)
 /* 8004EC24 0004AB44  38 7D 00 00 */	addi r3, r29, 0
 /* 8004EC28 0004AB48  54 84 10 3A */	slwi r4, r4, 2
@@ -2621,8 +2621,8 @@ lbl_8004EDB4:
 /* 8004EDC4 0004ACE4  83 A1 00 CC */	lwz r29, 0xcc(r1)
 /* 8004EDC8 0004ACE8  38 21 00 D8 */	addi r1, r1, 0xd8
 /* 8004EDCC 0004ACEC  4E 80 00 20 */	blr
-.global func_8004EDD0
-func_8004EDD0:
+.global effect_holding_banana_draw
+effect_holding_banana_draw:
 /* 8004EDD0 0004ACF0  7C 08 02 A6 */	mflr r0
 /* 8004EDD4 0004ACF4  90 01 00 04 */	stw r0, 4(r1)
 /* 8004EDD8 0004ACF8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -2656,11 +2656,11 @@ func_8004EDD0:
 /* 8004EE48 0004AD68  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004EE4C 0004AD6C  7C 08 03 A6 */	mtlr r0
 /* 8004EE50 0004AD70  4E 80 00 20 */	blr
-.global func_8004EE54
-func_8004EE54:
+.global effect_holding_banana_destroy
+effect_holding_banana_destroy:
 /* 8004EE54 0004AD74  4E 80 00 20 */	blr
-.global func_8004EE58
-func_8004EE58:
+.global effect_bubble_init
+effect_bubble_init:
 /* 8004EE58 0004AD78  7C 08 02 A6 */	mflr r0
 /* 8004EE5C 0004AD7C  90 01 00 04 */	stw r0, 4(r1)
 /* 8004EE60 0004AD80  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -2707,8 +2707,8 @@ func_8004EE58:
 /* 8004EF04 0004AE24  38 21 00 30 */	addi r1, r1, 0x30
 /* 8004EF08 0004AE28  7C 08 03 A6 */	mtlr r0
 /* 8004EF0C 0004AE2C  4E 80 00 20 */	blr
-.global func_8004EF10
-func_8004EF10:
+.global effect_bubble_main
+effect_bubble_main:
 /* 8004EF10 0004AE30  7C 08 02 A6 */	mflr r0
 /* 8004EF14 0004AE34  90 01 00 04 */	stw r0, 4(r1)
 /* 8004EF18 0004AE38  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -2866,8 +2866,8 @@ lbl_8004F168:
 /* 8004F170 0004B090  38 21 00 58 */	addi r1, r1, 0x58
 /* 8004F174 0004B094  7C 08 03 A6 */	mtlr r0
 /* 8004F178 0004B098  4E 80 00 20 */	blr
-.global func_8004F17C
-func_8004F17C:
+.global effect_bubble_draw
+effect_bubble_draw:
 /* 8004F17C 0004B09C  7C 08 02 A6 */	mflr r0
 /* 8004F180 0004B0A0  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F184 0004B0A4  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -2895,11 +2895,11 @@ func_8004F17C:
 /* 8004F1DC 0004B0FC  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004F1E0 0004B100  7C 08 03 A6 */	mtlr r0
 /* 8004F1E4 0004B104  4E 80 00 20 */	blr
-.global func_8004F1E8
-func_8004F1E8:
+.global effect_bubble_destroy
+effect_bubble_destroy:
 /* 8004F1E8 0004B108  4E 80 00 20 */	blr
-.global func_8004F1EC
-func_8004F1EC:
+.global effect_levitate_init
+effect_levitate_init:
 /* 8004F1EC 0004B10C  7C 08 02 A6 */	mflr r0
 /* 8004F1F0 0004B110  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F1F4 0004B114  38 00 00 3C */	li r0, 0x3c
@@ -3000,8 +3000,8 @@ lbl_8004F354:
 /* 8004F360 0004B280  7C 08 03 A6 */	mtlr r0
 /* 8004F364 0004B284  38 21 00 48 */	addi r1, r1, 0x48
 /* 8004F368 0004B288  4E 80 00 20 */	blr
-.global func_8004F36C
-func_8004F36C:
+.global effect_levitate_main
+effect_levitate_main:
 /* 8004F36C 0004B28C  C0 23 00 44 */	lfs f1, 0x44(r3)
 /* 8004F370 0004B290  C8 02 92 C0 */	lfd f0, lbl_802F3AC0-_SDA2_BASE_(r2)
 /* 8004F374 0004B294  FC 01 00 28 */	fsub f0, f1, f0
@@ -3037,8 +3037,8 @@ lbl_8004F3D8:
 /* 8004F3E8 0004B308  38 80 00 03 */	li r4, 3
 /* 8004F3EC 0004B30C  7C 83 01 AE */	stbx r4, r3, r0
 /* 8004F3F0 0004B310  4E 80 00 20 */	blr
-.global func_8004F3F4
-func_8004F3F4:
+.global effect_levitate_draw
+effect_levitate_draw:
 /* 8004F3F4 0004B314  7C 08 02 A6 */	mflr r0
 /* 8004F3F8 0004B318  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F3FC 0004B31C  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -3139,18 +3139,18 @@ lbl_8004F554:
 /* 8004F560 0004B480  7C 08 03 A6 */	mtlr r0
 /* 8004F564 0004B484  38 21 00 30 */	addi r1, r1, 0x30
 /* 8004F568 0004B488  4E 80 00 20 */	blr
-.global func_8004F56C
-func_8004F56C:
+.global effect_levitate_destroy
+effect_levitate_destroy:
 /* 8004F56C 0004B48C  4E 80 00 20 */	blr
-.global func_8004F570
-func_8004F570:
+.global effect_twinkle_star_init
+effect_twinkle_star_init:
 /* 8004F570 0004B490  C0 02 90 E8 */	lfs f0, lbl_802F38E8-_SDA2_BASE_(r2)
 /* 8004F574 0004B494  D0 03 00 88 */	stfs f0, 0x88(r3)
 /* 8004F578 0004B498  D0 03 00 8C */	stfs f0, 0x8c(r3)
 /* 8004F57C 0004B49C  D0 03 00 90 */	stfs f0, 0x90(r3)
 /* 8004F580 0004B4A0  4E 80 00 20 */	blr
-.global func_8004F584
-func_8004F584:
+.global effect_twinkle_star_main
+effect_twinkle_star_main:
 /* 8004F584 0004B4A4  7C 08 02 A6 */	mflr r0
 /* 8004F588 0004B4A8  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F58C 0004B4AC  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -3202,8 +3202,8 @@ lbl_8004F61C:
 /* 8004F63C 0004B55C  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004F640 0004B560  7C 08 03 A6 */	mtlr r0
 /* 8004F644 0004B564  4E 80 00 20 */	blr
-.global func_8004F648
-func_8004F648:
+.global effect_twinkle_star_draw
+effect_twinkle_star_draw:
 /* 8004F648 0004B568  7C 08 02 A6 */	mflr r0
 /* 8004F64C 0004B56C  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F650 0004B570  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -3286,11 +3286,11 @@ lbl_8004F770:
 /* 8004F780 0004B6A0  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 8004F784 0004B6A4  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004F788 0004B6A8  4E 80 00 20 */	blr
-.global func_8004F78C
-func_8004F78C:
+.global effect_twinkle_star_destroy
+effect_twinkle_star_destroy:
 /* 8004F78C 0004B6AC  4E 80 00 20 */	blr
-.global func_8004F790
-func_8004F790:
+.global effect_bonus_stg_star_init
+effect_bonus_stg_star_init:
 /* 8004F790 0004B6B0  7C 08 02 A6 */	mflr r0
 /* 8004F794 0004B6B4  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F798 0004B6B8  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -3327,8 +3327,8 @@ func_8004F790:
 /* 8004F814 0004B734  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004F818 0004B738  7C 08 03 A6 */	mtlr r0
 /* 8004F81C 0004B73C  4E 80 00 20 */	blr
-.global func_8004F820
-func_8004F820:
+.global effect_bonus_stg_star_main
+effect_bonus_stg_star_main:
 /* 8004F820 0004B740  7C 08 02 A6 */	mflr r0
 /* 8004F824 0004B744  90 01 00 04 */	stw r0, 4(r1)
 /* 8004F828 0004B748  94 21 FE F8 */	stwu r1, -0x108(r1)
@@ -3471,8 +3471,8 @@ func_8004F820:
 /* 8004FA4C 0004B96C  4B FB 39 C9 */	bl memcpy
 /* 8004FA50 0004B970  7F C0 07 34 */	extsh r0, r30
 /* 8004FA54 0004B974  B0 1D 00 00 */	sth r0, 0(r29)
-/* 8004FA58 0004B978  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 8004FA5C 0004B97C  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 8004FA58 0004B978  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 8004FA5C 0004B97C  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 8004FA60 0004B980  A8 9D 00 08 */	lha r4, 8(r29)
 /* 8004FA64 0004B984  38 7D 00 00 */	addi r3, r29, 0
 /* 8004FA68 0004B988  54 84 10 3A */	slwi r4, r4, 2
@@ -3525,8 +3525,8 @@ lbl_8004FB00:
 /* 8004FB18 0004BA38  83 A1 00 EC */	lwz r29, 0xec(r1)
 /* 8004FB1C 0004BA3C  38 21 01 08 */	addi r1, r1, 0x108
 /* 8004FB20 0004BA40  4E 80 00 20 */	blr
-.global func_8004FB24
-func_8004FB24:
+.global effect_bonus_stg_star_draw
+effect_bonus_stg_star_draw:
 /* 8004FB24 0004BA44  7C 08 02 A6 */	mflr r0
 /* 8004FB28 0004BA48  90 01 00 04 */	stw r0, 4(r1)
 /* 8004FB2C 0004BA4C  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -3615,11 +3615,11 @@ lbl_8004FC64:
 /* 8004FC74 0004BB94  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 8004FC78 0004BB98  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004FC7C 0004BB9C  4E 80 00 20 */	blr
-.global func_8004FC80
-func_8004FC80:
+.global effect_bonus_stg_star_destroy
+effect_bonus_stg_star_destroy:
 /* 8004FC80 0004BBA0  4E 80 00 20 */	blr
-.global func_8004FC84
-func_8004FC84:
+.global effect_bonus_stg_star_tail_init
+effect_bonus_stg_star_tail_init:
 /* 8004FC84 0004BBA4  7C 08 02 A6 */	mflr r0
 /* 8004FC88 0004BBA8  90 01 00 04 */	stw r0, 4(r1)
 /* 8004FC8C 0004BBAC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -3656,8 +3656,8 @@ func_8004FC84:
 /* 8004FD08 0004BC28  38 21 00 28 */	addi r1, r1, 0x28
 /* 8004FD0C 0004BC2C  7C 08 03 A6 */	mtlr r0
 /* 8004FD10 0004BC30  4E 80 00 20 */	blr
-.global func_8004FD14
-func_8004FD14:
+.global effect_bonus_stg_star_tail_main
+effect_bonus_stg_star_tail_main:
 /* 8004FD14 0004BC34  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8004FD18 0004BC38  3C 00 43 30 */	lis r0, 0x4330
 /* 8004FD1C 0004BC3C  C0 03 00 40 */	lfs f0, 0x40(r3)
@@ -3705,8 +3705,8 @@ func_8004FD14:
 lbl_8004FDC4:
 /* 8004FDC4 0004BCE4  38 21 00 18 */	addi r1, r1, 0x18
 /* 8004FDC8 0004BCE8  4E 80 00 20 */	blr
-.global func_8004FDCC
-func_8004FDCC:
+.global effect_bonus_stg_star_tail_draw
+effect_bonus_stg_star_tail_draw:
 /* 8004FDCC 0004BCEC  7C 08 02 A6 */	mflr r0
 /* 8004FDD0 0004BCF0  90 01 00 04 */	stw r0, 4(r1)
 /* 8004FDD4 0004BCF4  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -3767,11 +3767,11 @@ func_8004FDCC:
 /* 8004FEB0 0004BDD0  7C 08 03 A6 */	mtlr r0
 /* 8004FEB4 0004BDD4  38 21 00 30 */	addi r1, r1, 0x30
 /* 8004FEB8 0004BDD8  4E 80 00 20 */	blr
-.global func_8004FEBC
-func_8004FEBC:
+.global effect_bonus_stg_star_tail_destroy
+effect_bonus_stg_star_tail_destroy:
 /* 8004FEBC 0004BDDC  4E 80 00 20 */	blr
-.global func_8004FEC0
-func_8004FEC0:
+.global effect_water_light_init
+effect_water_light_init:
 /* 8004FEC0 0004BDE0  7C 08 02 A6 */	mflr r0
 /* 8004FEC4 0004BDE4  90 01 00 04 */	stw r0, 4(r1)
 /* 8004FEC8 0004BDE8  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -3840,8 +3840,8 @@ func_8004FEC0:
 /* 8004FFC4 0004BEE4  38 21 00 38 */	addi r1, r1, 0x38
 /* 8004FFC8 0004BEE8  7C 08 03 A6 */	mtlr r0
 /* 8004FFCC 0004BEEC  4E 80 00 20 */	blr
-.global func_8004FFD0
-func_8004FFD0:
+.global effect_water_light_main
+effect_water_light_main:
 /* 8004FFD0 0004BEF0  7C 08 02 A6 */	mflr r0
 /* 8004FFD4 0004BEF4  90 01 00 04 */	stw r0, 4(r1)
 /* 8004FFD8 0004BEF8  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -3934,8 +3934,8 @@ lbl_80050124:
 /* 8005012C 0004C04C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80050130 0004C050  7C 08 03 A6 */	mtlr r0
 /* 80050134 0004C054  4E 80 00 20 */	blr
-.global func_80050138
-func_80050138:
+.global effect_water_light_draw
+effect_water_light_draw:
 /* 80050138 0004C058  7C 08 02 A6 */	mflr r0
 /* 8005013C 0004C05C  90 01 00 04 */	stw r0, 4(r1)
 /* 80050140 0004C060  94 21 FF C8 */	stwu r1, -0x38(r1)
@@ -4019,11 +4019,11 @@ lbl_80050264:
 /* 80050274 0004C194  83 C1 00 28 */	lwz r30, 0x28(r1)
 /* 80050278 0004C198  38 21 00 38 */	addi r1, r1, 0x38
 /* 8005027C 0004C19C  4E 80 00 20 */	blr
-.global func_80050280
-func_80050280:
+.global effect_water_light_destroy
+effect_water_light_destroy:
 /* 80050280 0004C1A0  4E 80 00 20 */	blr
-.global func_80050284
-func_80050284:
+.global effect_raindrop_ripple_init
+effect_raindrop_ripple_init:
 /* 80050284 0004C1A4  7C 08 02 A6 */	mflr r0
 /* 80050288 0004C1A8  90 01 00 04 */	stw r0, 4(r1)
 /* 8005028C 0004C1AC  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -4164,8 +4164,8 @@ lbl_80050498:
 /* 800504A4 0004C3C4  7C 08 03 A6 */	mtlr r0
 /* 800504A8 0004C3C8  38 21 00 58 */	addi r1, r1, 0x58
 /* 800504AC 0004C3CC  4E 80 00 20 */	blr
-.global func_800504B0
-func_800504B0:
+.global effect_raindrop_ripple_main
+effect_raindrop_ripple_main:
 /* 800504B0 0004C3D0  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 800504B4 0004C3D4  C0 23 00 40 */	lfs f1, 0x40(r3)
 /* 800504B8 0004C3D8  C0 03 00 94 */	lfs f0, 0x94(r3)
@@ -4245,8 +4245,8 @@ func_800504B0:
 lbl_800505E0:
 /* 800505E0 0004C500  38 21 00 20 */	addi r1, r1, 0x20
 /* 800505E4 0004C504  4E 80 00 20 */	blr
-.global func_800505E8
-func_800505E8:
+.global effect_raindrop_ripple_draw
+effect_raindrop_ripple_draw:
 /* 800505E8 0004C508  7C 08 02 A6 */	mflr r0
 /* 800505EC 0004C50C  90 01 00 04 */	stw r0, 4(r1)
 /* 800505F0 0004C510  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4315,18 +4315,18 @@ lbl_800506D8:
 /* 800506E4 0004C604  7C 08 03 A6 */	mtlr r0
 /* 800506E8 0004C608  38 21 00 28 */	addi r1, r1, 0x28
 /* 800506EC 0004C60C  4E 80 00 20 */	blr
-.global func_800506F0
-func_800506F0:
+.global effect_raindrop_ripple_destroy
+effect_raindrop_ripple_destroy:
 /* 800506F0 0004C610  4E 80 00 20 */	blr
-.global func_800506F4
-func_800506F4:
+.global effect_ball_glow_init
+effect_ball_glow_init:
 /* 800506F4 0004C614  C0 02 90 C8 */	lfs f0, lbl_802F38C8-_SDA2_BASE_(r2)
 /* 800506F8 0004C618  D0 03 00 18 */	stfs f0, 0x18(r3)
 /* 800506FC 0004C61C  D0 03 00 1C */	stfs f0, 0x1c(r3)
 /* 80050700 0004C620  D0 03 00 20 */	stfs f0, 0x20(r3)
 /* 80050704 0004C624  4E 80 00 20 */	blr
-.global func_80050708
-func_80050708:
+.global effect_ball_glow_main
+effect_ball_glow_main:
 /* 80050708 0004C628  80 8D 9D 38 */	lwz r4, currentBallStructPtr@sda21(r13)
 /* 8005070C 0004C62C  80 04 00 94 */	lwz r0, 0x94(r4)
 /* 80050710 0004C630  54 00 06 F7 */	rlwinm. r0, r0, 0, 0x1b, 0x1b
@@ -4360,8 +4360,8 @@ lbl_80050774:
 /* 8005077C 0004C69C  D0 03 00 1C */	stfs f0, 0x1c(r3)
 /* 80050780 0004C6A0  D0 03 00 20 */	stfs f0, 0x20(r3)
 /* 80050784 0004C6A4  4E 80 00 20 */	blr
-.global func_80050788
-func_80050788:
+.global effect_ball_glow_draw
+effect_ball_glow_draw:
 /* 80050788 0004C6A8  7C 08 02 A6 */	mflr r0
 /* 8005078C 0004C6AC  90 01 00 04 */	stw r0, 4(r1)
 /* 80050790 0004C6B0  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4425,16 +4425,16 @@ lbl_80050868:
 /* 80050874 0004C794  7C 08 03 A6 */	mtlr r0
 /* 80050878 0004C798  38 21 00 28 */	addi r1, r1, 0x28
 /* 8005087C 0004C79C  4E 80 00 20 */	blr
-.global func_80050880
-func_80050880:
+.global effect_ball_glow_destroy
+effect_ball_glow_destroy:
 /* 80050880 0004C7A0  4E 80 00 20 */	blr
-.global func_80050884
-func_80050884:
+.global effect_exm_guide_light_init
+effect_exm_guide_light_init:
 /* 80050884 0004C7A4  C0 02 90 C8 */	lfs f0, lbl_802F38C8-_SDA2_BASE_(r2)
 /* 80050888 0004C7A8  D0 03 00 A8 */	stfs f0, 0xa8(r3)
 /* 8005088C 0004C7AC  4E 80 00 20 */	blr
-.global func_80050890
-func_80050890:
+.global effect_exm_guide_light_main
+effect_exm_guide_light_main:
 /* 80050890 0004C7B0  7C 08 02 A6 */	mflr r0
 /* 80050894 0004C7B4  90 01 00 04 */	stw r0, 4(r1)
 /* 80050898 0004C7B8  94 21 FF 00 */	stwu r1, -0x100(r1)
@@ -4630,8 +4630,8 @@ lbl_800509E4:
 /* 80050B88 0004CAA8  4B FB 28 8D */	bl memcpy
 /* 80050B8C 0004CAAC  7F C0 07 34 */	extsh r0, r30
 /* 80050B90 0004CAB0  B0 1D 00 00 */	sth r0, 0(r29)
-/* 80050B94 0004CAB4  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 80050B98 0004CAB8  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 80050B94 0004CAB4  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 80050B98 0004CAB8  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 80050B9C 0004CABC  A8 9D 00 08 */	lha r4, 8(r29)
 /* 80050BA0 0004CAC0  38 7D 00 00 */	addi r3, r29, 0
 /* 80050BA4 0004CAC4  54 84 10 3A */	slwi r4, r4, 2
@@ -4674,8 +4674,8 @@ lbl_80050C18:
 /* 80050C2C 0004CB4C  83 A1 00 EC */	lwz r29, 0xec(r1)
 /* 80050C30 0004CB50  38 21 01 00 */	addi r1, r1, 0x100
 /* 80050C34 0004CB54  4E 80 00 20 */	blr
-.global func_80050C38
-func_80050C38:
+.global effect_exm_guide_light_draw
+effect_exm_guide_light_draw:
 /* 80050C38 0004CB58  7C 08 02 A6 */	mflr r0
 /* 80050C3C 0004CB5C  90 01 00 04 */	stw r0, 4(r1)
 /* 80050C40 0004CB60  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4766,11 +4766,11 @@ lbl_80050D7C:
 /* 80050D8C 0004CCAC  83 C1 00 18 */	lwz r30, 0x18(r1)
 /* 80050D90 0004CCB0  38 21 00 28 */	addi r1, r1, 0x28
 /* 80050D94 0004CCB4  4E 80 00 20 */	blr
-.global func_80050D98
-func_80050D98:
+.global effect_exm_guide_light_destroy
+effect_exm_guide_light_destroy:
 /* 80050D98 0004CCB8  4E 80 00 20 */	blr
-.global func_80050D9C
-func_80050D9C:
+.global effect_exm_guide_light_tail_init
+effect_exm_guide_light_tail_init:
 /* 80050D9C 0004CCBC  7C 08 02 A6 */	mflr r0
 /* 80050DA0 0004CCC0  90 01 00 04 */	stw r0, 4(r1)
 /* 80050DA4 0004CCC4  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4803,8 +4803,8 @@ func_80050D9C:
 /* 80050E10 0004CD30  38 21 00 28 */	addi r1, r1, 0x28
 /* 80050E14 0004CD34  7C 08 03 A6 */	mtlr r0
 /* 80050E18 0004CD38  4E 80 00 20 */	blr
-.global func_80050E1C
-func_80050E1C:
+.global effect_exm_guide_light_tail_main
+effect_exm_guide_light_tail_main:
 /* 80050E1C 0004CD3C  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 80050E20 0004CD40  3C 00 43 30 */	lis r0, 0x4330
 /* 80050E24 0004CD44  C0 03 00 40 */	lfs f0, 0x40(r3)
@@ -4852,8 +4852,8 @@ func_80050E1C:
 lbl_80050ECC:
 /* 80050ECC 0004CDEC  38 21 00 18 */	addi r1, r1, 0x18
 /* 80050ED0 0004CDF0  4E 80 00 20 */	blr
-.global func_80050ED4
-func_80050ED4:
+.global effect_exm_guide_light_tail_draw
+effect_exm_guide_light_tail_draw:
 /* 80050ED4 0004CDF4  7C 08 02 A6 */	mflr r0
 /* 80050ED8 0004CDF8  90 01 00 04 */	stw r0, 4(r1)
 /* 80050EDC 0004CDFC  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -4909,11 +4909,11 @@ func_80050ED4:
 /* 80050FA4 0004CEC4  7C 08 03 A6 */	mtlr r0
 /* 80050FA8 0004CEC8  38 21 00 30 */	addi r1, r1, 0x30
 /* 80050FAC 0004CECC  4E 80 00 20 */	blr
-.global func_80050FB0
-func_80050FB0:
+.global effect_exm_guide_light_tail_destroy
+effect_exm_guide_light_tail_destroy:
 /* 80050FB0 0004CED0  4E 80 00 20 */	blr
-.global func_80050FB4
-func_80050FB4:
+.global effect_colistar_particle_init
+effect_colistar_particle_init:
 /* 80050FB4 0004CED4  7C 08 02 A6 */	mflr r0
 /* 80050FB8 0004CED8  90 01 00 04 */	stw r0, 4(r1)
 /* 80050FBC 0004CEDC  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -4994,8 +4994,8 @@ lbl_8005109C:
 /* 800510E0 0004D000  38 21 00 28 */	addi r1, r1, 0x28
 /* 800510E4 0004D004  7C 08 03 A6 */	mtlr r0
 /* 800510E8 0004D008  4E 80 00 20 */	blr
-.global func_800510EC
-func_800510EC:
+.global effect_colistar_particle_main
+effect_colistar_particle_main:
 /* 800510EC 0004D00C  7C 08 02 A6 */	mflr r0
 /* 800510F0 0004D010  90 01 00 04 */	stw r0, 4(r1)
 /* 800510F4 0004D014  94 21 FF 68 */	stwu r1, -0x98(r1)
@@ -5382,8 +5382,8 @@ lbl_800516C0:
 /* 800516D0 0004D5F0  83 C1 00 88 */	lwz r30, 0x88(r1)
 /* 800516D4 0004D5F4  38 21 00 98 */	addi r1, r1, 0x98
 /* 800516D8 0004D5F8  4E 80 00 20 */	blr
-.global func_800516DC
-func_800516DC:
+.global effect_colistar_particle_draw
+effect_colistar_particle_draw:
 /* 800516DC 0004D5FC  7C 08 02 A6 */	mflr r0
 /* 800516E0 0004D600  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 800516E4 0004D604  90 01 00 04 */	stw r0, 4(r1)
@@ -5695,11 +5695,11 @@ lbl_80051B6C:
 /* 80051B8C 0004DAAC  83 81 00 48 */	lwz r28, 0x48(r1)
 /* 80051B90 0004DAB0  38 21 00 70 */	addi r1, r1, 0x70
 /* 80051B94 0004DAB4  4E 80 00 20 */	blr
-.global func_80051B98
-func_80051B98:
+.global effect_colistar_particle_destroy
+effect_colistar_particle_destroy:
 /* 80051B98 0004DAB8  4E 80 00 20 */	blr
-.global func_80051B9C
-func_80051B9C:
+.global effect_bgwat_bubble_base_init
+effect_bgwat_bubble_base_init:
 /* 80051B9C 0004DABC  7C 08 02 A6 */	mflr r0
 /* 80051BA0 0004DAC0  90 01 00 04 */	stw r0, 4(r1)
 /* 80051BA4 0004DAC4  38 00 00 00 */	li r0, 0
@@ -5732,8 +5732,8 @@ func_80051B9C:
 /* 80051C10 0004DB30  83 A1 00 14 */	lwz r29, 0x14(r1)
 /* 80051C14 0004DB34  38 21 00 20 */	addi r1, r1, 0x20
 /* 80051C18 0004DB38  4E 80 00 20 */	blr
-.global func_80051C1C
-func_80051C1C:
+.global effect_bgwat_bubble_base_main
+effect_bgwat_bubble_base_main:
 /* 80051C1C 0004DB3C  7C 08 02 A6 */	mflr r0
 /* 80051C20 0004DB40  90 01 00 04 */	stw r0, 4(r1)
 /* 80051C24 0004DB44  94 21 FE D8 */	stwu r1, -0x128(r1)
@@ -5956,8 +5956,8 @@ func_80051C1C:
 /* 80051F88 0004DEA8  4B FB 14 8D */	bl memcpy
 /* 80051F8C 0004DEAC  7F A0 07 34 */	extsh r0, r29
 /* 80051F90 0004DEB0  B0 1E 00 00 */	sth r0, 0(r30)
-/* 80051F94 0004DEB4  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 80051F98 0004DEB8  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 80051F94 0004DEB4  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 80051F98 0004DEB8  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 80051F9C 0004DEBC  A8 9E 00 08 */	lha r4, 8(r30)
 /* 80051FA0 0004DEC0  38 7E 00 00 */	addi r3, r30, 0
 /* 80051FA4 0004DEC4  54 84 10 3A */	slwi r4, r4, 2
@@ -5990,22 +5990,22 @@ lbl_80051FF4:
 /* 80052008 0004DF28  83 A1 01 14 */	lwz r29, 0x114(r1)
 /* 8005200C 0004DF2C  38 21 01 28 */	addi r1, r1, 0x128
 /* 80052010 0004DF30  4E 80 00 20 */	blr
-.global func_80052014
-func_80052014:
+.global effect_bgwat_bubble_base_draw
+effect_bgwat_bubble_base_draw:
 /* 80052014 0004DF34  4E 80 00 20 */	blr
-.global func_80052018
-func_80052018:
+.global effect_bgwat_bubble_base_destroy
+effect_bgwat_bubble_base_destroy:
 /* 80052018 0004DF38  4E 80 00 20 */	blr
-.global func_8005201C
-func_8005201C:
+.global effect_bgwat_bubble_init
+effect_bgwat_bubble_init:
 /* 8005201C 0004DF3C  C0 22 90 C8 */	lfs f1, lbl_802F38C8-_SDA2_BASE_(r2)
 /* 80052020 0004DF40  D0 23 00 A8 */	stfs f1, 0xa8(r3)
 /* 80052024 0004DF44  C0 03 00 24 */	lfs f0, 0x24(r3)
 /* 80052028 0004DF48  D0 03 00 2C */	stfs f0, 0x2c(r3)
 /* 8005202C 0004DF4C  D0 23 00 24 */	stfs f1, 0x24(r3)
 /* 80052030 0004DF50  4E 80 00 20 */	blr
-.global func_80052034
-func_80052034:
+.global effect_bgwat_bubble_main
+effect_bgwat_bubble_main:
 /* 80052034 0004DF54  7C 08 02 A6 */	mflr r0
 /* 80052038 0004DF58  90 01 00 04 */	stw r0, 4(r1)
 /* 8005203C 0004DF5C  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -6182,8 +6182,8 @@ lbl_800522D8:
 /* 800522E0 0004E200  38 21 00 58 */	addi r1, r1, 0x58
 /* 800522E4 0004E204  7C 08 03 A6 */	mtlr r0
 /* 800522E8 0004E208  4E 80 00 20 */	blr
-.global func_800522EC
-func_800522EC:
+.global effect_bgwat_bubble_draw
+effect_bgwat_bubble_draw:
 /* 800522EC 0004E20C  7C 08 02 A6 */	mflr r0
 /* 800522F0 0004E210  90 01 00 04 */	stw r0, 4(r1)
 /* 800522F4 0004E214  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -6252,11 +6252,11 @@ lbl_800523D8:
 /* 800523E4 0004E304  7C 08 03 A6 */	mtlr r0
 /* 800523E8 0004E308  38 21 00 20 */	addi r1, r1, 0x20
 /* 800523EC 0004E30C  4E 80 00 20 */	blr
-.global func_800523F0
-func_800523F0:
+.global effect_bgwat_bubble_destroy
+effect_bgwat_bubble_destroy:
 /* 800523F0 0004E310  4E 80 00 20 */	blr
-.global func_800523F4
-func_800523F4:
+.global effect_meteo_init
+effect_meteo_init:
 /* 800523F4 0004E314  38 00 00 00 */	li r0, 0
 /* 800523F8 0004E318  B0 03 00 0A */	sth r0, 0xa(r3)
 /* 800523FC 0004E31C  38 00 01 2C */	li r0, 0x12c
@@ -6265,8 +6265,8 @@ func_800523F4:
 /* 80052408 0004E328  EC 00 00 32 */	fmuls f0, f0, f0
 /* 8005240C 0004E32C  D0 03 00 88 */	stfs f0, 0x88(r3)
 /* 80052410 0004E330  4E 80 00 20 */	blr
-.global func_80052414
-func_80052414:
+.global effect_meteo_main
+effect_meteo_main:
 /* 80052414 0004E334  7C 08 02 A6 */	mflr r0
 /* 80052418 0004E338  90 01 00 04 */	stw r0, 4(r1)
 /* 8005241C 0004E33C  94 21 FF 88 */	stwu r1, -0x78(r1)
@@ -6600,8 +6600,8 @@ lbl_800528F8:
 /* 8005290C 0004E82C  83 C1 00 60 */	lwz r30, 0x60(r1)
 /* 80052910 0004E830  38 21 00 78 */	addi r1, r1, 0x78
 /* 80052914 0004E834  4E 80 00 20 */	blr
-.global func_80052918
-func_80052918:
+.global effect_meteo_draw
+effect_meteo_draw:
 /* 80052918 0004E838  7C 08 02 A6 */	mflr r0
 /* 8005291C 0004E83C  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80052920 0004E840  90 01 00 04 */	stw r0, 4(r1)
@@ -6666,14 +6666,14 @@ lbl_800529F4:
 /* 80052A00 0004E920  7C 08 03 A6 */	mtlr r0
 /* 80052A04 0004E924  38 21 00 18 */	addi r1, r1, 0x18
 /* 80052A08 0004E928  4E 80 00 20 */	blr
-.global func_80052A0C
-func_80052A0C:
+.global effect_meteo_destroy
+effect_meteo_destroy:
 /* 80052A0C 0004E92C  4E 80 00 20 */	blr
-.global func_80052A10
-func_80052A10:
+.global effect_meteo_fix_init
+effect_meteo_fix_init:
 /* 80052A10 0004E930  4E 80 00 20 */	blr
-.global func_80052A14
-func_80052A14:
+.global effect_meteo_fix_main
+effect_meteo_fix_main:
 /* 80052A14 0004E934  A8 83 00 52 */	lha r4, 0x52(r3)
 /* 80052A18 0004E938  7C 80 36 70 */	srawi r0, r4, 6
 /* 80052A1C 0004E93C  7C 00 20 50 */	subf r0, r0, r4
@@ -6705,8 +6705,8 @@ func_80052A14:
 /* 80052A84 0004E9A4  7C 04 02 14 */	add r0, r4, r0
 /* 80052A88 0004E9A8  B0 03 00 50 */	sth r0, 0x50(r3)
 /* 80052A8C 0004E9AC  4E 80 00 20 */	blr
-.global func_80052A90
-func_80052A90:
+.global effect_meteo_fix_draw
+effect_meteo_fix_draw:
 /* 80052A90 0004E9B0  7C 08 02 A6 */	mflr r0
 /* 80052A94 0004E9B4  90 01 00 04 */	stw r0, 4(r1)
 /* 80052A98 0004E9B8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -6749,11 +6749,11 @@ lbl_80052B1C:
 /* 80052B28 0004EA48  7C 08 03 A6 */	mtlr r0
 /* 80052B2C 0004EA4C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80052B30 0004EA50  4E 80 00 20 */	blr
-.global func_80052B34
-func_80052B34:
+.global effect_meteo_fix_destroy
+effect_meteo_fix_destroy:
 /* 80052B34 0004EA54  4E 80 00 20 */	blr
-.global func_80052B38
-func_80052B38:
+.global effect_coliflash_init
+effect_coliflash_init:
 /* 80052B38 0004EA58  7C 08 02 A6 */	mflr r0
 /* 80052B3C 0004EA5C  90 01 00 04 */	stw r0, 4(r1)
 /* 80052B40 0004EA60  38 00 00 0C */	li r0, 0xc
@@ -6799,8 +6799,8 @@ lbl_80052BCC:
 /* 80052BD4 0004EAF4  38 21 00 18 */	addi r1, r1, 0x18
 /* 80052BD8 0004EAF8  7C 08 03 A6 */	mtlr r0
 /* 80052BDC 0004EAFC  4E 80 00 20 */	blr
-.global func_80052BE0
-func_80052BE0:
+.global effect_coliflash_main
+effect_coliflash_main:
 /* 80052BE0 0004EB00  7C 08 02 A6 */	mflr r0
 /* 80052BE4 0004EB04  90 01 00 04 */	stw r0, 4(r1)
 /* 80052BE8 0004EB08  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -6848,8 +6848,8 @@ lbl_80052C84:
 /* 80052C8C 0004EBAC  38 21 00 20 */	addi r1, r1, 0x20
 /* 80052C90 0004EBB0  7C 08 03 A6 */	mtlr r0
 /* 80052C94 0004EBB4  4E 80 00 20 */	blr
-.global func_80052C98
-func_80052C98:
+.global effect_coliflash_draw
+effect_coliflash_draw:
 /* 80052C98 0004EBB8  7C 08 02 A6 */	mflr r0
 /* 80052C9C 0004EBBC  90 01 00 04 */	stw r0, 4(r1)
 /* 80052CA0 0004EBC0  94 21 FF B0 */	stwu r1, -0x50(r1)
@@ -6991,11 +6991,11 @@ lbl_80052E98:
 /* 80052EB0 0004EDD0  83 E1 00 2C */	lwz r31, 0x2c(r1)
 /* 80052EB4 0004EDD4  38 21 00 50 */	addi r1, r1, 0x50
 /* 80052EB8 0004EDD8  4E 80 00 20 */	blr
-.global func_80052EBC
-func_80052EBC:
+.global effect_coliflash_destroy
+effect_coliflash_destroy:
 /* 80052EBC 0004EDDC  4E 80 00 20 */	blr
-.global func_80052EC0
-func_80052EC0:
+.global effect_bns_stg_star_init
+effect_bns_stg_star_init:
 /* 80052EC0 0004EDE0  7C 08 02 A6 */	mflr r0
 /* 80052EC4 0004EDE4  90 01 00 04 */	stw r0, 4(r1)
 /* 80052EC8 0004EDE8  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -7032,8 +7032,8 @@ func_80052EC0:
 /* 80052F44 0004EE64  38 21 00 28 */	addi r1, r1, 0x28
 /* 80052F48 0004EE68  7C 08 03 A6 */	mtlr r0
 /* 80052F4C 0004EE6C  4E 80 00 20 */	blr
-.global func_80052F50
-func_80052F50:
+.global effect_bns_stg_star_main
+effect_bns_stg_star_main:
 /* 80052F50 0004EE70  7C 08 02 A6 */	mflr r0
 /* 80052F54 0004EE74  90 01 00 04 */	stw r0, 4(r1)
 /* 80052F58 0004EE78  94 21 FE F8 */	stwu r1, -0x108(r1)
@@ -7176,8 +7176,8 @@ func_80052F50:
 /* 8005317C 0004F09C  4B FB 02 99 */	bl memcpy
 /* 80053180 0004F0A0  7F C0 07 34 */	extsh r0, r30
 /* 80053184 0004F0A4  B0 1D 00 00 */	sth r0, 0(r29)
-/* 80053188 0004F0A8  3C 60 80 1C */	lis r3, lbl_801B8E38@ha
-/* 8005318C 0004F0AC  38 03 8E 38 */	addi r0, r3, lbl_801B8E38@l
+/* 80053188 0004F0A8  3C 60 80 1C */	lis r3, s_effectInitFuncs@ha
+/* 8005318C 0004F0AC  38 03 8E 38 */	addi r0, r3, s_effectInitFuncs@l
 /* 80053190 0004F0B0  A8 9D 00 08 */	lha r4, 8(r29)
 /* 80053194 0004F0B4  38 7D 00 00 */	addi r3, r29, 0
 /* 80053198 0004F0B8  54 84 10 3A */	slwi r4, r4, 2
@@ -7230,8 +7230,8 @@ lbl_80053230:
 /* 80053248 0004F168  83 A1 00 EC */	lwz r29, 0xec(r1)
 /* 8005324C 0004F16C  38 21 01 08 */	addi r1, r1, 0x108
 /* 80053250 0004F170  4E 80 00 20 */	blr
-.global func_80053254
-func_80053254:
+.global effect_bns_stg_star_draw
+effect_bns_stg_star_draw:
 /* 80053254 0004F174  7C 08 02 A6 */	mflr r0
 /* 80053258 0004F178  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 8005325C 0004F17C  90 01 00 04 */	stw r0, 4(r1)
@@ -7338,11 +7338,11 @@ lbl_800533D0:
 /* 800533E8 0004F308  83 81 00 18 */	lwz r28, 0x18(r1)
 /* 800533EC 0004F30C  38 21 00 30 */	addi r1, r1, 0x30
 /* 800533F0 0004F310  4E 80 00 20 */	blr
-.global func_800533F4
-func_800533F4:
+.global effect_bns_stg_star_destroy
+effect_bns_stg_star_destroy:
 /* 800533F4 0004F314  4E 80 00 20 */	blr
-.global func_800533F8
-func_800533F8:
+.global effect_bns_stg_star_tail_init
+effect_bns_stg_star_tail_init:
 /* 800533F8 0004F318  7C 08 02 A6 */	mflr r0
 /* 800533FC 0004F31C  90 01 00 04 */	stw r0, 4(r1)
 /* 80053400 0004F320  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -7379,8 +7379,8 @@ func_800533F8:
 /* 8005347C 0004F39C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80053480 0004F3A0  7C 08 03 A6 */	mtlr r0
 /* 80053484 0004F3A4  4E 80 00 20 */	blr
-.global func_80053488
-func_80053488:
+.global effect_bns_stg_star_tail_main
+effect_bns_stg_star_tail_main:
 /* 80053488 0004F3A8  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 8005348C 0004F3AC  3C 00 43 30 */	lis r0, 0x4330
 /* 80053490 0004F3B0  C0 03 00 40 */	lfs f0, 0x40(r3)
@@ -7425,8 +7425,8 @@ func_80053488:
 lbl_8005352C:
 /* 8005352C 0004F44C  38 21 00 18 */	addi r1, r1, 0x18
 /* 80053530 0004F450  4E 80 00 20 */	blr
-.global func_80053534
-func_80053534:
+.global effect_bns_stg_star_tail_draw
+effect_bns_stg_star_tail_draw:
 /* 80053534 0004F454  7C 08 02 A6 */	mflr r0
 /* 80053538 0004F458  90 01 00 04 */	stw r0, 4(r1)
 /* 8005353C 0004F45C  94 21 FF D0 */	stwu r1, -0x30(r1)
@@ -7497,11 +7497,11 @@ lbl_80053628:
 /* 80053638 0004F558  83 C1 00 20 */	lwz r30, 0x20(r1)
 /* 8005363C 0004F55C  38 21 00 30 */	addi r1, r1, 0x30
 /* 80053640 0004F560  4E 80 00 20 */	blr
-.global func_80053644
-func_80053644:
+.global effect_bns_stg_star_tail_destroy
+effect_bns_stg_star_tail_destroy:
 /* 80053644 0004F564  4E 80 00 20 */	blr
-.global func_80053648
-func_80053648:
+.global effect_bgmst_gen_cloud_init
+effect_bgmst_gen_cloud_init:
 /* 80053648 0004F568  7C 08 02 A6 */	mflr r0
 /* 8005364C 0004F56C  90 01 00 04 */	stw r0, 4(r1)
 /* 80053650 0004F570  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -7536,8 +7536,8 @@ func_80053648:
 /* 800536C4 0004F5E4  38 21 00 28 */	addi r1, r1, 0x28
 /* 800536C8 0004F5E8  7C 08 03 A6 */	mtlr r0
 /* 800536CC 0004F5EC  4E 80 00 20 */	blr
-.global func_800536D0
-func_800536D0:
+.global effect_bgmst_gen_cloud_main
+effect_bgmst_gen_cloud_main:
 /* 800536D0 0004F5F0  7C 08 02 A6 */	mflr r0
 /* 800536D4 0004F5F4  90 01 00 04 */	stw r0, 4(r1)
 /* 800536D8 0004F5F8  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -7712,8 +7712,8 @@ lbl_80053950:
 /* 8005395C 0004F87C  7C 08 03 A6 */	mtlr r0
 /* 80053960 0004F880  38 21 00 40 */	addi r1, r1, 0x40
 /* 80053964 0004F884  4E 80 00 20 */	blr
-.global func_80053968
-func_80053968:
+.global effect_bgmst_gen_cloud_draw
+effect_bgmst_gen_cloud_draw:
 /* 80053968 0004F888  7C 08 02 A6 */	mflr r0
 /* 8005396C 0004F88C  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80053970 0004F890  90 01 00 04 */	stw r0, 4(r1)
@@ -7774,11 +7774,11 @@ lbl_80053A30:
 /* 80053A40 0004F960  83 C1 00 10 */	lwz r30, 0x10(r1)
 /* 80053A44 0004F964  38 21 00 20 */	addi r1, r1, 0x20
 /* 80053A48 0004F968  4E 80 00 20 */	blr
-.global func_80053A4C
-func_80053A4C:
+.global effect_bgmst_gen_cloud_destroy
+effect_bgmst_gen_cloud_destroy:
 /* 80053A4C 0004F96C  4E 80 00 20 */	blr
-.global func_80053A50
-func_80053A50:
+.global effect_bgstm_rainripple_init
+effect_bgstm_rainripple_init:
 /* 80053A50 0004F970  7C 08 02 A6 */	mflr r0
 /* 80053A54 0004F974  90 01 00 04 */	stw r0, 4(r1)
 /* 80053A58 0004F978  94 21 FF A8 */	stwu r1, -0x58(r1)
@@ -7916,8 +7916,8 @@ lbl_80053C58:
 /* 80053C64 0004FB84  7C 08 03 A6 */	mtlr r0
 /* 80053C68 0004FB88  38 21 00 58 */	addi r1, r1, 0x58
 /* 80053C6C 0004FB8C  4E 80 00 20 */	blr
-.global func_80053C70
-func_80053C70:
+.global effect_bgstm_rainripple_main
+effect_bgstm_rainripple_main:
 /* 80053C70 0004FB90  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 80053C74 0004FB94  C0 23 00 40 */	lfs f1, 0x40(r3)
 /* 80053C78 0004FB98  C0 03 00 94 */	lfs f0, 0x94(r3)
@@ -7993,8 +7993,8 @@ func_80053C70:
 lbl_80053D90:
 /* 80053D90 0004FCB0  38 21 00 20 */	addi r1, r1, 0x20
 /* 80053D94 0004FCB4  4E 80 00 20 */	blr
-.global func_80053D98
-func_80053D98:
+.global effect_bgstm_rainripple_draw
+effect_bgstm_rainripple_draw:
 /* 80053D98 0004FCB8  7C 08 02 A6 */	mflr r0
 /* 80053D9C 0004FCBC  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80053DA0 0004FCC0  90 01 00 04 */	stw r0, 4(r1)
@@ -8088,17 +8088,17 @@ lbl_80053EE8:
 /* 80053EF8 0004FE18  83 E1 00 1C */	lwz r31, 0x1c(r1)
 /* 80053EFC 0004FE1C  38 21 00 30 */	addi r1, r1, 0x30
 /* 80053F00 0004FE20  4E 80 00 20 */	blr
-.global func_80053F04
-func_80053F04:
+.global effect_bgstm_rainripple_destroy
+effect_bgstm_rainripple_destroy:
 /* 80053F04 0004FE24  4E 80 00 20 */	blr
-.global func_80053F08
-func_80053F08:
+.global effect_bgmst_water_init
+effect_bgmst_water_init:
 /* 80053F08 0004FE28  4E 80 00 20 */	blr
-.global func_80053F0C
-func_80053F0C:
+.global effect_bgmst_water_main
+effect_bgmst_water_main:
 /* 80053F0C 0004FE2C  4E 80 00 20 */	blr
-.global func_80053F10
-func_80053F10:
+.global effect_bgmst_water_draw
+effect_bgmst_water_draw:
 /* 80053F10 0004FE30  7C 08 02 A6 */	mflr r0
 /* 80053F14 0004FE34  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80053F18 0004FE38  90 01 00 04 */	stw r0, 4(r1)
@@ -8174,11 +8174,11 @@ lbl_80054014:
 /* 80054020 0004FF40  7C 08 03 A6 */	mtlr r0
 /* 80054024 0004FF44  38 21 00 18 */	addi r1, r1, 0x18
 /* 80054028 0004FF48  4E 80 00 20 */	blr
-.global func_8005402C
-func_8005402C:
+.global effect_bgmst_water_destroy
+effect_bgmst_water_destroy:
 /* 8005402C 0004FF4C  4E 80 00 20 */	blr
-.global func_80054030
-func_80054030:
+.global effect_commendfrag_init
+effect_commendfrag_init:
 /* 80054030 0004FF50  7C 08 02 A6 */	mflr r0
 /* 80054034 0004FF54  90 01 00 04 */	stw r0, 4(r1)
 /* 80054038 0004FF58  94 21 FF D8 */	stwu r1, -0x28(r1)
@@ -8256,8 +8256,8 @@ lbl_80054144:
 /* 8005414C 0005006C  38 21 00 28 */	addi r1, r1, 0x28
 /* 80054150 00050070  7C 08 03 A6 */	mtlr r0
 /* 80054154 00050074  4E 80 00 20 */	blr
-.global func_80054158
-func_80054158:
+.global effect_commendfrag_main
+effect_commendfrag_main:
 /* 80054158 00050078  7C 08 02 A6 */	mflr r0
 /* 8005415C 0005007C  90 01 00 04 */	stw r0, 4(r1)
 /* 80054160 00050080  94 21 FF 70 */	stwu r1, -0x90(r1)
@@ -8689,8 +8689,8 @@ lbl_800547E4:
 /* 800547F4 00050714  83 A1 00 84 */	lwz r29, 0x84(r1)
 /* 800547F8 00050718  38 21 00 90 */	addi r1, r1, 0x90
 /* 800547FC 0005071C  4E 80 00 20 */	blr
-.global func_80054800
-func_80054800:
+.global effect_commendfrag_draw
+effect_commendfrag_draw:
 /* 80054800 00050720  7C 08 02 A6 */	mflr r0
 /* 80054804 00050724  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80054808 00050728  90 01 00 04 */	stw r0, 4(r1)
@@ -8804,11 +8804,11 @@ lbl_8005498C:
 /* 8005499C 000508BC  83 E1 00 4C */	lwz r31, 0x4c(r1)
 /* 800549A0 000508C0  38 21 00 60 */	addi r1, r1, 0x60
 /* 800549A4 000508C4  4E 80 00 20 */	blr
-.global func_800549A8
-func_800549A8:
+.global effect_commendfrag_destroy
+effect_commendfrag_destroy:
 /* 800549A8 000508C8  4E 80 00 20 */	blr
-.global func_800549AC
-func_800549AC:
+.global effect_banana_drop_init
+effect_banana_drop_init:
 /* 800549AC 000508CC  80 03 00 04 */	lwz r0, 4(r3)
 /* 800549B0 000508D0  38 80 00 50 */	li r4, 0x50
 /* 800549B4 000508D4  38 A0 00 01 */	li r5, 1
@@ -8837,8 +8837,8 @@ func_800549AC:
 /* 80054A10 00050930  B0 03 00 56 */	sth r0, 0x56(r3)
 /* 80054A14 00050934  B0 03 00 0A */	sth r0, 0xa(r3)
 /* 80054A18 00050938  4E 80 00 20 */	blr
-.global func_80054A1C
-func_80054A1C:
+.global effect_banana_drop_main
+effect_banana_drop_main:
 /* 80054A1C 0005093C  7C 08 02 A6 */	mflr r0
 /* 80054A20 00050940  90 01 00 04 */	stw r0, 4(r1)
 /* 80054A24 00050944  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -8933,8 +8933,8 @@ lbl_80054B40:
 /* 80054B78 00050A98  38 21 00 20 */	addi r1, r1, 0x20
 /* 80054B7C 00050A9C  7C 08 03 A6 */	mtlr r0
 /* 80054B80 00050AA0  4E 80 00 20 */	blr
-.global func_80054B84
-func_80054B84:
+.global effect_banana_drop_draw
+effect_banana_drop_draw:
 /* 80054B84 00050AA4  7C 08 02 A6 */	mflr r0
 /* 80054B88 00050AA8  90 01 00 04 */	stw r0, 4(r1)
 /* 80054B8C 00050AAC  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -9021,17 +9021,17 @@ lbl_80054CC0:
 /* 80054CC8 00050BE8  38 21 00 18 */	addi r1, r1, 0x18
 /* 80054CCC 00050BEC  7C 08 03 A6 */	mtlr r0
 /* 80054CD0 00050BF0  4E 80 00 20 */	blr
-.global func_80054CD4
-func_80054CD4:
+.global effect_banana_drop_destroy
+effect_banana_drop_destroy:
 /* 80054CD4 00050BF4  4E 80 00 20 */	blr
-.global func_80054CD8
-func_80054CD8:
+.global effect_bgend_water_init
+effect_bgend_water_init:
 /* 80054CD8 00050BF8  4E 80 00 20 */	blr
-.global func_80054CDC
-func_80054CDC:
+.global effect_bgend_water_main
+effect_bgend_water_main:
 /* 80054CDC 00050BFC  4E 80 00 20 */	blr
-.global func_80054CE0
-func_80054CE0:
+.global effect_bgend_water_draw
+effect_bgend_water_draw:
 /* 80054CE0 00050C00  7C 08 02 A6 */	mflr r0
 /* 80054CE4 00050C04  3C 80 80 1F */	lis r4, lbl_801EEC90@ha
 /* 80054CE8 00050C08  90 01 00 04 */	stw r0, 4(r1)
@@ -9108,8 +9108,8 @@ lbl_80054DE8:
 /* 80054DF4 00050D14  7C 08 03 A6 */	mtlr r0
 /* 80054DF8 00050D18  38 21 00 18 */	addi r1, r1, 0x18
 /* 80054DFC 00050D1C  4E 80 00 20 */	blr
-.global func_80054E00
-func_80054E00:
+.global effect_bgend_water_destroy
+effect_bgend_water_destroy:
 /* 80054E00 00050D20  4E 80 00 20 */	blr
 
 .section .sbss
@@ -10290,221 +10290,221 @@ glabel string_ET_BGEND_WATER
 	.4byte string_ET_BANANA_DROP  ;# ptr
 	.4byte string_ET_BGEND_WATER  ;# ptr
 
-.global lbl_801B8E38
-lbl_801B8E38:
+.global s_effectInitFuncs
+s_effectInitFuncs:
 	# ROM: 0x1B5E38
-	.4byte func_8004D1A4  ;# ptr
-	.4byte func_8004DB44  ;# ptr
-	.4byte func_8004DE1C  ;# ptr
-	.4byte func_800573A4  ;# ptr
-	.4byte func_8004E6F4  ;# ptr
-	.4byte func_80058CE0  ;# ptr
-	.4byte func_80059560  ;# ptr
-	.4byte func_8004E7D4  ;# ptr
-	.4byte func_8004EABC  ;# ptr
-	.4byte func_8004EE58  ;# ptr
-	.4byte func_8004F1EC  ;# ptr
-	.4byte func_8004F570  ;# ptr
-	.4byte func_8004F790  ;# ptr
-	.4byte func_8004FC84  ;# ptr
-	.4byte func_8004FEC0  ;# ptr
-	.4byte func_80050284  ;# ptr
-	.4byte func_800506F4  ;# ptr
-	.4byte func_80050884  ;# ptr
-	.4byte func_80050D9C  ;# ptr
-	.4byte func_80050FB4  ;# ptr
-	.4byte func_80051B9C  ;# ptr
-	.4byte func_8005201C  ;# ptr
-	.4byte func_800523F4  ;# ptr
-	.4byte func_80052A10  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_80052B38  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_80052EC0  ;# ptr
-	.4byte func_800533F8  ;# ptr
-	.4byte func_80053648  ;# ptr
-	.4byte func_80053A50  ;# ptr
-	.4byte func_800AF1DC  ;# ptr
-	.4byte func_800AF3DC  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_80053F08  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D194  ;# ptr
-	.4byte func_80054030  ;# ptr
-	.4byte func_800C09B8  ;# ptr
-	.4byte func_800549AC  ;# ptr
-	.4byte func_80054CD8  ;# ptr
+	.4byte effect_paperfrag_init  ;# ptr
+	.4byte effect_get_banana_init  ;# ptr
+	.4byte effect_coli_particle_init  ;# ptr
+	.4byte effect_bird_kite_init  ;# ptr
+	.4byte effect_rotate_bg_init  ;# ptr
+	.4byte effect_icewater_reflect_init  ;# ptr
+	.4byte effect_icewater_particle_init  ;# ptr
+	.4byte effect_raindrop_init  ;# ptr
+	.4byte effect_holding_banana_init  ;# ptr
+	.4byte effect_bubble_init  ;# ptr
+	.4byte effect_levitate_init  ;# ptr
+	.4byte effect_twinkle_star_init  ;# ptr
+	.4byte effect_bonus_stg_star_init  ;# ptr
+	.4byte effect_bonus_stg_star_tail_init  ;# ptr
+	.4byte effect_water_light_init  ;# ptr
+	.4byte effect_raindrop_ripple_init  ;# ptr
+	.4byte effect_ball_glow_init  ;# ptr
+	.4byte effect_exm_guide_light_init  ;# ptr
+	.4byte effect_exm_guide_light_tail_init  ;# ptr
+	.4byte effect_colistar_particle_init  ;# ptr
+	.4byte effect_bgwat_bubble_base_init  ;# ptr
+	.4byte effect_bgwat_bubble_init  ;# ptr
+	.4byte effect_meteo_init  ;# ptr
+	.4byte effect_meteo_fix_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_coliflash_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_bns_stg_star_init  ;# ptr
+	.4byte effect_bns_stg_star_tail_init  ;# ptr
+	.4byte effect_bgmst_gen_cloud_init  ;# ptr
+	.4byte effect_bgstm_rainripple_init  ;# ptr
+	.4byte effect_nameent_code_init  ;# ptr
+	.4byte effect_get_nameent_code_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_bgmst_water_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_commendfrag_init  ;# ptr
+	.4byte effect_ending_ballfrag_init  ;# ptr
+	.4byte effect_banana_drop_init  ;# ptr
+	.4byte effect_bgend_water_init  ;# ptr
 	.4byte 0
 
-.global lbl_801B8F00
-lbl_801B8F00:
+.global s_effectMainFuncs
+s_effectMainFuncs:
 	# ROM: 0x1B5F00
-	.4byte func_8004D2C8  ;# ptr
-	.4byte func_8004DC28  ;# ptr
-	.4byte func_8004DF0C  ;# ptr
-	.4byte func_8005748C  ;# ptr
-	.4byte func_8004E6F8  ;# ptr
-	.4byte func_80058D44  ;# ptr
-	.4byte func_800595DC  ;# ptr
-	.4byte func_8004E804  ;# ptr
-	.4byte func_8004EB38  ;# ptr
-	.4byte func_8004EF10  ;# ptr
-	.4byte func_8004F36C  ;# ptr
-	.4byte func_8004F584  ;# ptr
-	.4byte func_8004F820  ;# ptr
-	.4byte func_8004FD14  ;# ptr
-	.4byte func_8004FFD0  ;# ptr
-	.4byte func_800504B0  ;# ptr
-	.4byte func_80050708  ;# ptr
-	.4byte func_80050890  ;# ptr
-	.4byte func_80050E1C  ;# ptr
-	.4byte func_800510EC  ;# ptr
-	.4byte func_80051C1C  ;# ptr
-	.4byte func_80052034  ;# ptr
-	.4byte func_80052414  ;# ptr
-	.4byte func_80052A14  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_80052BE0  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_80052F50  ;# ptr
-	.4byte func_80053488  ;# ptr
-	.4byte func_800536D0  ;# ptr
-	.4byte func_80053C70  ;# ptr
-	.4byte func_800AF1F8  ;# ptr
-	.4byte func_800AF478  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_80053F0C  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_80054158  ;# ptr
-	.4byte func_800C09D0  ;# ptr
-	.4byte func_80054A1C  ;# ptr
-	.4byte func_80054CDC  ;# ptr
+	.4byte effect_paperfrag_main  ;# ptr
+	.4byte effect_get_banana_main  ;# ptr
+	.4byte effect_coli_particle_main  ;# ptr
+	.4byte effect_bird_kite_main  ;# ptr
+	.4byte effect_rotate_bg_main  ;# ptr
+	.4byte effect_icewater_reflect_main  ;# ptr
+	.4byte effect_icewater_particle_main  ;# ptr
+	.4byte effect_raindrop_main  ;# ptr
+	.4byte effect_holding_banana_main  ;# ptr
+	.4byte effect_bubble_main  ;# ptr
+	.4byte effect_levitate_main  ;# ptr
+	.4byte effect_twinkle_star_main  ;# ptr
+	.4byte effect_bonus_stg_star_main  ;# ptr
+	.4byte effect_bonus_stg_star_tail_main  ;# ptr
+	.4byte effect_water_light_main  ;# ptr
+	.4byte effect_raindrop_ripple_main  ;# ptr
+	.4byte effect_ball_glow_main  ;# ptr
+	.4byte effect_exm_guide_light_main  ;# ptr
+	.4byte effect_exm_guide_light_tail_main  ;# ptr
+	.4byte effect_colistar_particle_main  ;# ptr
+	.4byte effect_bgwat_bubble_base_main  ;# ptr
+	.4byte effect_bgwat_bubble_main  ;# ptr
+	.4byte effect_meteo_main  ;# ptr
+	.4byte effect_meteo_fix_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_coliflash_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_bns_stg_star_main  ;# ptr
+	.4byte effect_bns_stg_star_tail_main  ;# ptr
+	.4byte effect_bgmst_gen_cloud_main  ;# ptr
+	.4byte effect_bgstm_rainripple_main  ;# ptr
+	.4byte effect_nameent_code_main  ;# ptr
+	.4byte effect_get_nameent_code_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_bgmst_water_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_commendfrag_main  ;# ptr
+	.4byte effect_ending_ballfrag_main  ;# ptr
+	.4byte effect_banana_drop_main  ;# ptr
+	.4byte effect_bgend_water_main  ;# ptr
 	.4byte 0
-	.4byte func_8004D9AC  ;# ptr
-	.4byte func_8004DD88  ;# ptr
-	.4byte func_8004E384  ;# ptr
-	.4byte func_800578D0  ;# ptr
-	.4byte func_8004E748  ;# ptr
-	.4byte func_80059058  ;# ptr
-	.4byte func_800596C0  ;# ptr
-	.4byte func_8004E96C  ;# ptr
-	.4byte func_8004EDD0  ;# ptr
-	.4byte func_8004F17C  ;# ptr
-	.4byte func_8004F3F4  ;# ptr
-	.4byte func_8004F648  ;# ptr
-	.4byte func_8004FB24  ;# ptr
-	.4byte func_8004FDCC  ;# ptr
-	.4byte func_80050138  ;# ptr
-	.4byte func_800505E8  ;# ptr
-	.4byte func_80050788  ;# ptr
-	.4byte func_80050C38  ;# ptr
-	.4byte func_80050ED4  ;# ptr
-	.4byte func_800516DC  ;# ptr
-	.4byte func_80052014  ;# ptr
-	.4byte func_800522EC  ;# ptr
-	.4byte func_80052918  ;# ptr
-	.4byte func_80052A90  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_80052C98  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_80053254  ;# ptr
-	.4byte func_80053534  ;# ptr
-	.4byte func_80053968  ;# ptr
-	.4byte func_80053D98  ;# ptr
-	.4byte func_800AF2C8  ;# ptr
-	.4byte func_800AF62C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_80053F10  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_80054800  ;# ptr
-	.4byte func_800C0C1C  ;# ptr
-	.4byte func_80054B84  ;# ptr
-	.4byte func_80054CE0  ;# ptr
+	.4byte effect_paperfrag_draw  ;# ptr
+	.4byte effect_get_banana_draw  ;# ptr
+	.4byte effect_coli_particle_draw  ;# ptr
+	.4byte effect_bird_kite_draw  ;# ptr
+	.4byte effect_rotate_bg_draw  ;# ptr
+	.4byte effect_icewater_reflect_draw  ;# ptr
+	.4byte effect_icewater_particle_draw  ;# ptr
+	.4byte effect_raindrop_draw  ;# ptr
+	.4byte effect_holding_banana_draw  ;# ptr
+	.4byte effect_bubble_draw  ;# ptr
+	.4byte effect_levitate_draw  ;# ptr
+	.4byte effect_twinkle_star_draw  ;# ptr
+	.4byte effect_bonus_stg_star_draw  ;# ptr
+	.4byte effect_bonus_stg_star_tail_draw  ;# ptr
+	.4byte effect_water_light_draw  ;# ptr
+	.4byte effect_raindrop_ripple_draw  ;# ptr
+	.4byte effect_ball_glow_draw  ;# ptr
+	.4byte effect_exm_guide_light_draw  ;# ptr
+	.4byte effect_exm_guide_light_tail_draw  ;# ptr
+	.4byte effect_colistar_particle_draw  ;# ptr
+	.4byte effect_bgwat_bubble_base_draw  ;# ptr
+	.4byte effect_bgwat_bubble_draw  ;# ptr
+	.4byte effect_meteo_draw  ;# ptr
+	.4byte effect_meteo_fix_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_coliflash_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_bns_stg_star_draw  ;# ptr
+	.4byte effect_bns_stg_star_tail_draw  ;# ptr
+	.4byte effect_bgmst_gen_cloud_draw  ;# ptr
+	.4byte effect_bgstm_rainripple_draw  ;# ptr
+	.4byte effect_nameent_code_draw  ;# ptr
+	.4byte effect_get_nameent_code_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_bgmst_water_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_commendfrag_draw  ;# ptr
+	.4byte effect_ending_ballfrag_draw  ;# ptr
+	.4byte effect_banana_drop_draw  ;# ptr
+	.4byte effect_bgend_water_draw  ;# ptr
 	.4byte 0
 
-.global lbl_801B9090
-lbl_801B9090:
+.global s_effectDestroyFuncs
+s_effectDestroyFuncs:
 	# ROM: 0x1B6090
-	.4byte func_8004DB40  ;# ptr
-	.4byte func_8004DE18  ;# ptr
-	.4byte func_8004E6F0  ;# ptr
-	.4byte func_80057934  ;# ptr
-	.4byte func_8004E7C8  ;# ptr
-	.4byte func_80059554  ;# ptr
-	.4byte func_80059764  ;# ptr
-	.4byte func_8004EAB8  ;# ptr
-	.4byte func_8004EE54  ;# ptr
-	.4byte func_8004F1E8  ;# ptr
-	.4byte func_8004F56C  ;# ptr
-	.4byte func_8004F78C  ;# ptr
-	.4byte func_8004FC80  ;# ptr
-	.4byte func_8004FEBC  ;# ptr
-	.4byte func_80050280  ;# ptr
-	.4byte func_800506F0  ;# ptr
-	.4byte func_80050880  ;# ptr
-	.4byte func_80050D98  ;# ptr
-	.4byte func_80050FB0  ;# ptr
-	.4byte func_80051B98  ;# ptr
-	.4byte func_80052018  ;# ptr
-	.4byte func_800523F0  ;# ptr
-	.4byte func_80052A0C  ;# ptr
-	.4byte func_80052B34  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_80052EBC  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_800533F4  ;# ptr
-	.4byte func_80053644  ;# ptr
-	.4byte func_80053A4C  ;# ptr
-	.4byte func_80053F04  ;# ptr
-	.4byte func_800AF3A4  ;# ptr
-	.4byte func_800AF6D4  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8005402C  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
-	.4byte func_800549A8  ;# ptr
-	.4byte func_800C0DBC  ;# ptr
-	.4byte func_80054CD4  ;# ptr
-	.4byte func_80054E00  ;# ptr
+	.4byte effect_paperfrag_destroy  ;# ptr
+	.4byte effect_get_banana_destroy  ;# ptr
+	.4byte effect_coli_particle_destroy  ;# ptr
+	.4byte effect_bird_kite_destroy  ;# ptr
+	.4byte effect_rotate_bg_destroy  ;# ptr
+	.4byte effect_icewater_reflect_destroy  ;# ptr
+	.4byte effect_icewater_particle_destroy  ;# ptr
+	.4byte effect_raindrop_destroy  ;# ptr
+	.4byte effect_holding_banana_destroy  ;# ptr
+	.4byte effect_bubble_destroy  ;# ptr
+	.4byte effect_levitate_destroy  ;# ptr
+	.4byte effect_twinkle_star_destroy  ;# ptr
+	.4byte effect_bonus_stg_star_destroy  ;# ptr
+	.4byte effect_bonus_stg_star_tail_destroy  ;# ptr
+	.4byte effect_water_light_destroy  ;# ptr
+	.4byte effect_raindrop_ripple_destroy  ;# ptr
+	.4byte effect_ball_glow_destroy  ;# ptr
+	.4byte effect_exm_guide_light_destroy  ;# ptr
+	.4byte effect_exm_guide_light_tail_destroy  ;# ptr
+	.4byte effect_colistar_particle_destroy  ;# ptr
+	.4byte effect_bgwat_bubble_base_destroy  ;# ptr
+	.4byte effect_bgwat_bubble_destroy  ;# ptr
+	.4byte effect_meteo_destroy  ;# ptr
+	.4byte effect_meteo_fix_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_coliflash_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_bns_stg_star_destroy  ;# ptr
+	.4byte effect_bns_stg_star_tail_destroy  ;# ptr
+	.4byte effect_bgmst_gen_cloud_destroy  ;# ptr
+	.4byte effect_bgstm_rainripple_destroy  ;# ptr
+	.4byte effect_nameent_code_destroy  ;# ptr
+	.4byte effect_get_nameent_code_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_bgmst_water_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
+	.4byte effect_commendfrag_destroy  ;# ptr
+	.4byte effect_ending_ballfrag_destroy  ;# ptr
+	.4byte effect_banana_drop_destroy  ;# ptr
+	.4byte effect_bgend_water_destroy  ;# ptr
 	.4byte 0
-	.4byte func_8004D194  ;# ptr
-	.4byte func_8004D198  ;# ptr
-	.4byte func_8004D19C  ;# ptr
-	.4byte func_8004D1A0  ;# ptr
+	.4byte effect_dummy_init  ;# ptr
+	.4byte effect_dummy_main  ;# ptr
+	.4byte effect_dummy_draw  ;# ptr
+	.4byte effect_dummy_destroy  ;# ptr
 .endif
 
 .global lbl_801B9168

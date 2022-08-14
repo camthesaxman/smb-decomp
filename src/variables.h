@@ -219,9 +219,9 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B87A0;
 // extern ? lbl_801B8858;
 // extern ? lbl_801B89E8;
-// extern ? lbl_801B8E38;
-// extern ? lbl_801B8F00;
-// extern ? lbl_801B9090;
+// extern ? s_effectInitFuncs;
+// extern ? s_effectMainFuncs;
+// extern ? s_effectDestroyFuncs;
 // extern ? lbl_801B9168;
 
 // extern ? lbl_801B9B28;

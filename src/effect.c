@@ -5,6 +5,7 @@
 #include "global.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "gma.h"
 #include "hud.h"
 #include "info.h"
@@ -15,154 +16,154 @@
 #include "stcoli.h"
 #include "world.h"
 
-void func_8004D194(struct Effect *);
-void func_8004D198(struct Effect *);
-void func_8004D19C(struct Effect *);
-void func_8004D1A0(struct Effect *);
-void func_8004D1A4(struct Effect *);
-void func_8004D2C8(struct Effect *);
-void func_8004D9AC(struct Effect *);
-void func_8004DB40(struct Effect *);
-void func_8004DB44(struct Effect *);
-void func_8004DC28(struct Effect *);
-void func_8004DD88(struct Effect *);
-void func_8004DE18(struct Effect *);
-void func_8004DE1C(struct Effect *);
-void func_8004DF0C(struct Effect *);
-void func_8004E384(struct Effect *);
-void func_8004E6F0(struct Effect *);
-void func_8004E6F4(struct Effect *);
-void func_8004E6F8(struct Effect *);
-void func_8004E748(struct Effect *);
-void func_8004E7C8(struct Effect *);
-void func_8004E7D4(struct Effect *);
-void func_8004E804(struct Effect *);
-void func_8004E96C(struct Effect *);
-void func_8004EAB8(struct Effect *);
-void func_8004EABC(struct Effect *);
-void func_8004EB38(struct Effect *);
-void func_8004EDD0(struct Effect *);
-void func_8004EE54(struct Effect *);
-void func_8004EE58(struct Effect *);
-void func_8004EF10(struct Effect *);
-void func_8004F17C(struct Effect *);
-void func_8004F1E8(struct Effect *);
-void func_8004F1EC(struct Effect *);
-void func_8004F36C(struct Effect *);
-void func_8004F3F4(struct Effect *);
-void func_8004F56C(struct Effect *);
-void func_8004F570(struct Effect *);
-void func_8004F584(struct Effect *);
-void func_8004F648(struct Effect *);
-void func_8004F78C(struct Effect *);
-void func_8004F790(struct Effect *);
-void func_8004F820(struct Effect *);
-void func_8004FB24(struct Effect *);
-void func_8004FC80(struct Effect *);
-void func_8004FC84(struct Effect *);
-void func_8004FD14(struct Effect *);
-void func_8004FDCC(struct Effect *);
-void func_8004FEBC(struct Effect *);
-void func_8004FEC0(struct Effect *);
-void func_8004FFD0(struct Effect *);
-void func_80050138(struct Effect *);
-void func_80050280(struct Effect *);
-void func_80050284(struct Effect *);
-void func_800504B0(struct Effect *);
-void func_800505E8(struct Effect *);
-void func_800506F0(struct Effect *);
-void func_800506F4(struct Effect *);
-void func_80050708(struct Effect *);
-void func_80050788(struct Effect *);
-void func_80050880(struct Effect *);
-void func_80050884(struct Effect *);
-void func_80050890(struct Effect *);
-void func_80050C38(struct Effect *);
-void func_80050D98(struct Effect *);
-void func_80050D9C(struct Effect *);
-void func_80050E1C(struct Effect *);
-void func_80050ED4(struct Effect *);
-void func_80050FB0(struct Effect *);
-void func_80050FB4(struct Effect *);
-void func_800510EC(struct Effect *);
-void func_800516DC(struct Effect *);
-void func_80051B98(struct Effect *);
-void func_80051B9C(struct Effect *);
-void func_80051C1C(struct Effect *);
-void func_80052014(struct Effect *);
-void func_80052018(struct Effect *);
-void func_8005201C(struct Effect *);
-void func_80052034(struct Effect *);
-void func_800522EC(struct Effect *);
-void func_800523F0(struct Effect *);
-void func_800523F4(struct Effect *);
-void func_80052414(struct Effect *);
-void func_80052918(struct Effect *);
-void func_80052A0C(struct Effect *);
-void func_80052A10(struct Effect *);
-void func_80052A14(struct Effect *);
-void func_80052A90(struct Effect *);
-void func_80052B34(struct Effect *);
-void func_80052B38(struct Effect *);
-void func_80052BE0(struct Effect *);
-void func_80052C98(struct Effect *);
-void func_80052EBC(struct Effect *);
-void func_80052EC0(struct Effect *);
-void func_80052F50(struct Effect *);
-void func_80053254(struct Effect *);
-void func_800533F4(struct Effect *);
-void func_800533F8(struct Effect *);
-void func_80053488(struct Effect *);
-void func_80053534(struct Effect *);
-void func_80053644(struct Effect *);
-void func_80053648(struct Effect *);
-void func_800536D0(struct Effect *);
-void func_80053968(struct Effect *);
-void func_80053A4C(struct Effect *);
-void func_80053A50(struct Effect *);
-void func_80053C70(struct Effect *);
-void func_80053D98(struct Effect *);
-void func_80053F04(struct Effect *);
-void func_80053F08(struct Effect *);
-void func_80053F0C(struct Effect *);
-void func_80053F10(struct Effect *);
-void func_8005402C(struct Effect *);
-void func_80054030(struct Effect *);
-void func_80054158(struct Effect *);
-void func_80054800(struct Effect *);
-void func_800549A8(struct Effect *);
-void func_800549AC(struct Effect *);
-void func_80054A1C(struct Effect *);
-void func_80054B84(struct Effect *);
-void func_80054CD4(struct Effect *);
-void func_80054CD8(struct Effect *);
-void func_80054CDC(struct Effect *);
-void func_80054CE0(struct Effect *);
-void func_80054E00(struct Effect *);
-void func_800573A4(struct Effect *);
-void func_8005748C(struct Effect *);
-void func_800578D0(struct Effect *);
-void func_80057934(struct Effect *);
-void func_80058CE0(struct Effect *);
-void func_80058D44(struct Effect *);
-void func_80059058(struct Effect *);
-void func_80059554(struct Effect *);
-void func_80059560(struct Effect *);
-void func_800595DC(struct Effect *);
-void func_800596C0(struct Effect *);
-void func_80059764(struct Effect *);
-void func_800AF1DC(struct Effect *);
-void func_800AF1F8(struct Effect *);
-void func_800AF2C8(struct Effect *);
-void func_800AF3A4(struct Effect *);
-void func_800AF3DC(struct Effect *);
-void func_800AF478(struct Effect *);
-void func_800AF62C(struct Effect *);
-void func_800AF6D4(struct Effect *);
-void func_800C09B8(struct Effect *);
-void func_800C09D0(struct Effect *);
-void func_800C0C1C(struct Effect *);
-void func_800C0DBC(struct Effect *);
+void effect_dummy_init(struct Effect *);
+void effect_dummy_main(struct Effect *);
+void effect_dummy_draw(struct Effect *);
+void effect_dummy_destroy(struct Effect *);
+void effect_paperfrag_init(struct Effect *);
+void effect_paperfrag_main(struct Effect *);
+void effect_paperfrag_draw(struct Effect *);
+void effect_paperfrag_destroy(struct Effect *);
+void effect_get_banana_init(struct Effect *);
+void effect_get_banana_main(struct Effect *);
+void effect_get_banana_draw(struct Effect *);
+void effect_get_banana_destroy(struct Effect *);
+void effect_coli_particle_init(struct Effect *);
+void effect_coli_particle_main(struct Effect *);
+void effect_coli_particle_draw(struct Effect *);
+void effect_coli_particle_destroy(struct Effect *);
+void effect_rotate_bg_init(struct Effect *);
+void effect_rotate_bg_main(struct Effect *);
+void effect_rotate_bg_draw(struct Effect *);
+void effect_rotate_bg_destroy(struct Effect *);
+void effect_raindrop_init(struct Effect *);
+void effect_raindrop_main(struct Effect *);
+void effect_raindrop_draw(struct Effect *);
+void effect_raindrop_destroy(struct Effect *);
+void effect_holding_banana_init(struct Effect *);
+void effect_holding_banana_main(struct Effect *);
+void effect_holding_banana_draw(struct Effect *);
+void effect_holding_banana_destroy(struct Effect *);
+void effect_bubble_init(struct Effect *);
+void effect_bubble_main(struct Effect *);
+void effect_bubble_draw(struct Effect *);
+void effect_bubble_destroy(struct Effect *);
+void effect_levitate_init(struct Effect *);
+void effect_levitate_main(struct Effect *);
+void effect_levitate_draw(struct Effect *);
+void effect_levitate_destroy(struct Effect *);
+void effect_twinkle_star_init(struct Effect *);
+void effect_twinkle_star_main(struct Effect *);
+void effect_twinkle_star_draw(struct Effect *);
+void effect_twinkle_star_destroy(struct Effect *);
+void effect_bonus_stg_star_init(struct Effect *);
+void effect_bonus_stg_star_main(struct Effect *);
+void effect_bonus_stg_star_draw(struct Effect *);
+void effect_bonus_stg_star_destroy(struct Effect *);
+void effect_bonus_stg_star_tail_init(struct Effect *);
+void effect_bonus_stg_star_tail_main(struct Effect *);
+void effect_bonus_stg_star_tail_draw(struct Effect *);
+void effect_bonus_stg_star_tail_destroy(struct Effect *);
+void effect_water_light_init(struct Effect *);
+void effect_water_light_main(struct Effect *);
+void effect_water_light_draw(struct Effect *);
+void effect_water_light_destroy(struct Effect *);
+void effect_raindrop_ripple_init(struct Effect *);
+void effect_raindrop_ripple_main(struct Effect *);
+void effect_raindrop_ripple_draw(struct Effect *);
+void effect_raindrop_ripple_destroy(struct Effect *);
+void effect_ball_glow_init(struct Effect *);
+void effect_ball_glow_main(struct Effect *);
+void effect_ball_glow_draw(struct Effect *);
+void effect_ball_glow_destroy(struct Effect *);
+void effect_exm_guide_light_init(struct Effect *);
+void effect_exm_guide_light_main(struct Effect *);
+void effect_exm_guide_light_draw(struct Effect *);
+void effect_exm_guide_light_destroy(struct Effect *);
+void effect_exm_guide_light_tail_init(struct Effect *);
+void effect_exm_guide_light_tail_main(struct Effect *);
+void effect_exm_guide_light_tail_draw(struct Effect *);
+void effect_exm_guide_light_tail_destroy(struct Effect *);
+void effect_colistar_particle_init(struct Effect *);
+void effect_colistar_particle_main(struct Effect *);
+void effect_colistar_particle_draw(struct Effect *);
+void effect_colistar_particle_destroy(struct Effect *);
+void effect_bgwat_bubble_base_init(struct Effect *);
+void effect_bgwat_bubble_base_main(struct Effect *);
+void effect_bgwat_bubble_base_draw(struct Effect *);
+void effect_bgwat_bubble_base_destroy(struct Effect *);
+void effect_bgwat_bubble_init(struct Effect *);
+void effect_bgwat_bubble_main(struct Effect *);
+void effect_bgwat_bubble_draw(struct Effect *);
+void effect_bgwat_bubble_destroy(struct Effect *);
+void effect_meteo_init(struct Effect *);
+void effect_meteo_main(struct Effect *);
+void effect_meteo_draw(struct Effect *);
+void effect_meteo_destroy(struct Effect *);
+void effect_meteo_fix_init(struct Effect *);
+void effect_meteo_fix_main(struct Effect *);
+void effect_meteo_fix_draw(struct Effect *);
+void effect_meteo_fix_destroy(struct Effect *);
+void effect_coliflash_init(struct Effect *);
+void effect_coliflash_main(struct Effect *);
+void effect_coliflash_draw(struct Effect *);
+void effect_coliflash_destroy(struct Effect *);
+void effect_bns_stg_star_init(struct Effect *);
+void effect_bns_stg_star_main(struct Effect *);
+void effect_bns_stg_star_draw(struct Effect *);
+void effect_bns_stg_star_destroy(struct Effect *);
+void effect_bns_stg_star_tail_init(struct Effect *);
+void effect_bns_stg_star_tail_main(struct Effect *);
+void effect_bns_stg_star_tail_draw(struct Effect *);
+void effect_bns_stg_star_tail_destroy(struct Effect *);
+void effect_bgmst_gen_cloud_init(struct Effect *);
+void effect_bgmst_gen_cloud_main(struct Effect *);
+void effect_bgmst_gen_cloud_draw(struct Effect *);
+void effect_bgmst_gen_cloud_destroy(struct Effect *);
+void effect_bgstm_rainripple_init(struct Effect *);
+void effect_bgstm_rainripple_main(struct Effect *);
+void effect_bgstm_rainripple_draw(struct Effect *);
+void effect_bgstm_rainripple_destroy(struct Effect *);
+void effect_bgmst_water_init(struct Effect *);
+void effect_bgmst_water_main(struct Effect *);
+void effect_bgmst_water_draw(struct Effect *);
+void effect_bgmst_water_destroy(struct Effect *);
+void effect_commendfrag_init(struct Effect *);
+void effect_commendfrag_main(struct Effect *);
+void effect_commendfrag_draw(struct Effect *);
+void effect_commendfrag_destroy(struct Effect *);
+void effect_banana_drop_init(struct Effect *);
+void effect_banana_drop_main(struct Effect *);
+void effect_banana_drop_draw(struct Effect *);
+void effect_banana_drop_destroy(struct Effect *);
+void effect_bgend_water_init(struct Effect *);
+void effect_bgend_water_main(struct Effect *);
+void effect_bgend_water_draw(struct Effect *);
+void effect_bgend_water_destroy(struct Effect *);
+void effect_bird_kite_init(struct Effect *);
+void effect_bird_kite_main(struct Effect *);
+void effect_bird_kite_draw(struct Effect *);
+void effect_bird_kite_destroy(struct Effect *);
+void effect_icewater_reflect_init(struct Effect *);
+void effect_icewater_reflect_main(struct Effect *);
+void effect_icewater_reflect_draw(struct Effect *);
+void effect_icewater_reflect_destroy(struct Effect *);
+void effect_icewater_particle_init(struct Effect *);
+void effect_icewater_particle_main(struct Effect *);
+void effect_icewater_particle_draw(struct Effect *);
+void effect_icewater_particle_destroy(struct Effect *);
+void effect_nameent_code_init(struct Effect *);
+void effect_nameent_code_main(struct Effect *);
+void effect_nameent_code_draw(struct Effect *);
+void effect_nameent_code_destroy(struct Effect *);
+void effect_get_nameent_code_init(struct Effect *);
+void effect_get_nameent_code_main(struct Effect *);
+void effect_get_nameent_code_draw(struct Effect *);
+void effect_get_nameent_code_destroy(struct Effect *);
+void effect_ending_ballfrag_init(struct Effect *);
+void effect_ending_ballfrag_main(struct Effect *);
+void effect_ending_ballfrag_draw(struct Effect *);
+void effect_ending_ballfrag_destroy(struct Effect *);
 
 struct Effect lbl_802673C8[MAX_EFFECTS];
 
@@ -352,236 +353,236 @@ char *lbl_801B8D74[] =
 
 #pragma force_active reset
 
-void (*lbl_801B8E38[])(struct Effect *) =
+void (*s_effectInitFuncs[])(struct Effect *) =
 {
-    func_8004D1A4,
-    func_8004DB44,
-    func_8004DE1C,
-    func_800573A4,
-    func_8004E6F4,
-    func_80058CE0,
-    func_80059560,
-    func_8004E7D4,
-    func_8004EABC,
-    func_8004EE58,
-    func_8004F1EC,
-    func_8004F570,
-    func_8004F790,
-    func_8004FC84,
-    func_8004FEC0,
-    func_80050284,
-    func_800506F4,
-    func_80050884,
-    func_80050D9C,
-    func_80050FB4,
-    func_80051B9C,
-    func_8005201C,
-    func_800523F4,
-    func_80052A10,
-    func_8004D194,
-    func_8004D194,
-    func_8004D194,
-    func_80052B38,
-    func_8004D194,
-    func_8004D194,
-    func_8004D194,
-    func_8004D194,
-    func_80052EC0,
-    func_800533F8,
-    func_80053648,
-    func_80053A50,
-    func_800AF1DC,
-    func_800AF3DC,
-    func_8004D194,
-    func_8004D194,
-    func_80053F08,
-    func_8004D194,
-    func_8004D194,
-    func_8004D194,
-    func_8004D194,
-    func_80054030,
-    func_800C09B8,
-    func_800549AC,
-    func_80054CD8,
+    effect_paperfrag_init,
+    effect_get_banana_init,
+    effect_coli_particle_init,
+    effect_bird_kite_init,
+    effect_rotate_bg_init,
+    effect_icewater_reflect_init,
+    effect_icewater_particle_init,
+    effect_raindrop_init,
+    effect_holding_banana_init,
+    effect_bubble_init,
+    effect_levitate_init,
+    effect_twinkle_star_init,
+    effect_bonus_stg_star_init,
+    effect_bonus_stg_star_tail_init,
+    effect_water_light_init,
+    effect_raindrop_ripple_init,
+    effect_ball_glow_init,
+    effect_exm_guide_light_init,
+    effect_exm_guide_light_tail_init,
+    effect_colistar_particle_init,
+    effect_bgwat_bubble_base_init,
+    effect_bgwat_bubble_init,
+    effect_meteo_init,
+    effect_meteo_fix_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_coliflash_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_bns_stg_star_init,
+    effect_bns_stg_star_tail_init,
+    effect_bgmst_gen_cloud_init,
+    effect_bgstm_rainripple_init,
+    effect_nameent_code_init,
+    effect_get_nameent_code_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_bgmst_water_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_dummy_init,
+    effect_commendfrag_init,
+    effect_ending_ballfrag_init,
+    effect_banana_drop_init,
+    effect_bgend_water_init,
     NULL,
 };
 
-void (*lbl_801B8F00[])(struct Effect *) =
+static void (*s_effectMainFuncs[])(struct Effect *) =
 {
-    func_8004D2C8,
-    func_8004DC28,
-    func_8004DF0C,
-    func_8005748C,
-    func_8004E6F8,
-    func_80058D44,
-    func_800595DC,
-    func_8004E804,
-    func_8004EB38,
-    func_8004EF10,
-    func_8004F36C,
-    func_8004F584,
-    func_8004F820,
-    func_8004FD14,
-    func_8004FFD0,
-    func_800504B0,
-    func_80050708,
-    func_80050890,
-    func_80050E1C,
-    func_800510EC,
-    func_80051C1C,
-    func_80052034,
-    func_80052414,
-    func_80052A14,
-    func_8004D198,
-    func_8004D198,
-    func_8004D198,
-    func_80052BE0,
-    func_8004D198,
-    func_8004D198,
-    func_8004D198,
-    func_8004D198,
-    func_80052F50,
-    func_80053488,
-    func_800536D0,
-    func_80053C70,
-    func_800AF1F8,
-    func_800AF478,
-    func_8004D198,
-    func_8004D198,
-    func_80053F0C,
-    func_8004D198,
-    func_8004D198,
-    func_8004D198,
-    func_8004D198,
-    func_80054158,
-    func_800C09D0,
-    func_80054A1C,
-    func_80054CDC,
+    effect_paperfrag_main,
+    effect_get_banana_main,
+    effect_coli_particle_main,
+    effect_bird_kite_main,
+    effect_rotate_bg_main,
+    effect_icewater_reflect_main,
+    effect_icewater_particle_main,
+    effect_raindrop_main,
+    effect_holding_banana_main,
+    effect_bubble_main,
+    effect_levitate_main,
+    effect_twinkle_star_main,
+    effect_bonus_stg_star_main,
+    effect_bonus_stg_star_tail_main,
+    effect_water_light_main,
+    effect_raindrop_ripple_main,
+    effect_ball_glow_main,
+    effect_exm_guide_light_main,
+    effect_exm_guide_light_tail_main,
+    effect_colistar_particle_main,
+    effect_bgwat_bubble_base_main,
+    effect_bgwat_bubble_main,
+    effect_meteo_main,
+    effect_meteo_fix_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_coliflash_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_bns_stg_star_main,
+    effect_bns_stg_star_tail_main,
+    effect_bgmst_gen_cloud_main,
+    effect_bgstm_rainripple_main,
+    effect_nameent_code_main,
+    effect_get_nameent_code_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_bgmst_water_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_dummy_main,
+    effect_commendfrag_main,
+    effect_ending_ballfrag_main,
+    effect_banana_drop_main,
+    effect_bgend_water_main,
     NULL,
 };
 
-void (*lbl_801B8FC8[])(struct Effect *) =
+static void (*s_effectDrawFuncs[])(struct Effect *) =
 {
-    func_8004D9AC,
-    func_8004DD88,
-    func_8004E384,
-    func_800578D0,
-    func_8004E748,
-    func_80059058,
-    func_800596C0,
-    func_8004E96C,
-    func_8004EDD0,
-    func_8004F17C,
-    func_8004F3F4,
-    func_8004F648,
-    func_8004FB24,
-    func_8004FDCC,
-    func_80050138,
-    func_800505E8,
-    func_80050788,
-    func_80050C38,
-    func_80050ED4,
-    func_800516DC,
-    func_80052014,
-    func_800522EC,
-    func_80052918,
-    func_80052A90,
-    func_8004D19C,
-    func_8004D19C,
-    func_8004D19C,
-    func_80052C98,
-    func_8004D19C,
-    func_8004D19C,
-    func_8004D19C,
-    func_8004D19C,
-    func_80053254,
-    func_80053534,
-    func_80053968,
-    func_80053D98,
-    func_800AF2C8,
-    func_800AF62C,
-    func_8004D19C,
-    func_8004D19C,
-    func_80053F10,
-    func_8004D19C,
-    func_8004D19C,
-    func_8004D19C,
-    func_8004D19C,
-    func_80054800,
-    func_800C0C1C,
-    func_80054B84,
-    func_80054CE0,
+    effect_paperfrag_draw,
+    effect_get_banana_draw,
+    effect_coli_particle_draw,
+    effect_bird_kite_draw,
+    effect_rotate_bg_draw,
+    effect_icewater_reflect_draw,
+    effect_icewater_particle_draw,
+    effect_raindrop_draw,
+    effect_holding_banana_draw,
+    effect_bubble_draw,
+    effect_levitate_draw,
+    effect_twinkle_star_draw,
+    effect_bonus_stg_star_draw,
+    effect_bonus_stg_star_tail_draw,
+    effect_water_light_draw,
+    effect_raindrop_ripple_draw,
+    effect_ball_glow_draw,
+    effect_exm_guide_light_draw,
+    effect_exm_guide_light_tail_draw,
+    effect_colistar_particle_draw,
+    effect_bgwat_bubble_base_draw,
+    effect_bgwat_bubble_draw,
+    effect_meteo_draw,
+    effect_meteo_fix_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_coliflash_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_bns_stg_star_draw,
+    effect_bns_stg_star_tail_draw,
+    effect_bgmst_gen_cloud_draw,
+    effect_bgstm_rainripple_draw,
+    effect_nameent_code_draw,
+    effect_get_nameent_code_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_bgmst_water_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_dummy_draw,
+    effect_commendfrag_draw,
+    effect_ending_ballfrag_draw,
+    effect_banana_drop_draw,
+    effect_bgend_water_draw,
     NULL,
 };
 
-void (*lbl_801B9090[])(struct Effect *) =
+static void (*s_effectDestroyFuncs[])(struct Effect *) =
 {
-    func_8004DB40,
-    func_8004DE18,
-    func_8004E6F0,
-    func_80057934,
-    func_8004E7C8,
-    func_80059554,
-    func_80059764,
-    func_8004EAB8,
-    func_8004EE54,
-    func_8004F1E8,
-    func_8004F56C,
-    func_8004F78C,
-    func_8004FC80,
-    func_8004FEBC,
-    func_80050280,
-    func_800506F0,
-    func_80050880,
-    func_80050D98,
-    func_80050FB0,
-    func_80051B98,
-    func_80052018,
-    func_800523F0,
-    func_80052A0C,
-    func_80052B34,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_80052EBC,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_800533F4,
-    func_80053644,
-    func_80053A4C,
-    func_80053F04,
-    func_800AF3A4,
-    func_800AF6D4,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8005402C,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_8004D1A0,
-    func_800549A8,
-    func_800C0DBC,
-    func_80054CD4,
-    func_80054E00,
+    effect_paperfrag_destroy,
+    effect_get_banana_destroy,
+    effect_coli_particle_destroy,
+    effect_bird_kite_destroy,
+    effect_rotate_bg_destroy,
+    effect_icewater_reflect_destroy,
+    effect_icewater_particle_destroy,
+    effect_raindrop_destroy,
+    effect_holding_banana_destroy,
+    effect_bubble_destroy,
+    effect_levitate_destroy,
+    effect_twinkle_star_destroy,
+    effect_bonus_stg_star_destroy,
+    effect_bonus_stg_star_tail_destroy,
+    effect_water_light_destroy,
+    effect_raindrop_ripple_destroy,
+    effect_ball_glow_destroy,
+    effect_exm_guide_light_destroy,
+    effect_exm_guide_light_tail_destroy,
+    effect_colistar_particle_destroy,
+    effect_bgwat_bubble_base_destroy,
+    effect_bgwat_bubble_destroy,
+    effect_meteo_destroy,
+    effect_meteo_fix_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_coliflash_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_bns_stg_star_destroy,
+    effect_bns_stg_star_tail_destroy,
+    effect_bgmst_gen_cloud_destroy,
+    effect_bgstm_rainripple_destroy,
+    effect_nameent_code_destroy,
+    effect_get_nameent_code_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_bgmst_water_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_dummy_destroy,
+    effect_commendfrag_destroy,
+    effect_ending_ballfrag_destroy,
+    effect_banana_drop_destroy,
+    effect_bgend_water_destroy,
     NULL,
 };
 
 struct EffectFuncs
 {
-    void (*unk0)(struct Effect *);
-    void (*unk4)(struct Effect *);
-    void (*unk8)(struct Effect *);
-    void (*unkC)(struct Effect *);
+    void (*init)(struct Effect *);
+    void (*main)(struct Effect *);
+    void (*draw)(struct Effect *);
+    void (*destroy)(struct Effect *);
 };
 
-struct EffectFuncs lbl_801B9158 =
+static struct EffectFuncs s_dummyEffectFuncs =
 {
-    func_8004D194,
-    func_8004D198,
-    func_8004D19C,
-    func_8004D1A0,
+    effect_dummy_init,
+    effect_dummy_main,
+    effect_dummy_draw,
+    effect_dummy_destroy,
 };
 
 void ev_effect_main(void)
@@ -601,13 +602,13 @@ void ev_effect_main(void)
             effect->unkC--;
             if (effect->unkC == 0 || *poolStatus == 3)
             {
-                lbl_801B9090[effect->unk8](effect);
+                s_effectDestroyFuncs[effect->type](effect);
                 *poolStatus = 0;
             }
             else
             {
                 effect->unk58 = effect->unk34;
-                lbl_801B8F00[effect->unk8](effect);
+                s_effectMainFuncs[effect->type](effect);
             }
         }
     }
@@ -625,7 +626,7 @@ void ev_effect_dest(void)
     {
         if (*poolStatus != 0)
         {
-            lbl_801B9090[effect->unk8](effect);
+            s_effectDestroyFuncs[effect->type](effect);
             *poolStatus = 0;
         }
     }
@@ -656,7 +657,7 @@ void effect_draw(void)
         for (i = g_poolInfo.effectPool.count; i > 0; i--, poolStatus++, effect++)
         {
             if (*poolStatus != 0 && (effect->unk16 & cameras) && !(effect->unk4 & 1))
-                lbl_801B8FC8[effect->unk8](effect);
+                s_effectDrawFuncs[effect->type](effect);
         }
     }
     else
@@ -667,14 +668,14 @@ void effect_draw(void)
             {
                 if (effect->unk4 & 0x10)
                 {
-                    lbl_801B9090[effect->unk8](effect);
+                    s_effectDestroyFuncs[effect->type](effect);
                     *poolStatus = 0;
                 }
                 else
                 {
                     if (effect->unk4 & 0xE)
                         effect->unk58 = effect->unk34;
-                    lbl_801B8FC8[effect->unk8](effect);
+                    s_effectDrawFuncs[effect->type](effect);
                 }
             }
         }
@@ -693,7 +694,7 @@ int spawn_effect(struct Effect *effect)
     newEffect = &lbl_802673C8[index];
     memcpy(newEffect, effect, sizeof(*newEffect));
     newEffect->unk0 = index;
-    lbl_801B8E38[newEffect->unk8](newEffect);
+    s_effectInitFuncs[newEffect->type](newEffect);
     if (newEffect->unk16 == 0)
         newEffect->unk16 = 0xF;
     newEffect->unk2 = lbl_802F1F90;
@@ -713,7 +714,7 @@ void func_8004CFF0(int arg0)
     effect = lbl_802673C8;
     for (i = g_poolInfo.effectPool.count; i > 0; i--, poolStatus++, effect++)
     {
-        if (*poolStatus != 0 && effect->unk8 == arg0)
+        if (*poolStatus != 0 && effect->type == arg0)
         {
             *poolStatus = 3;
             effect->unk4 |= 1;
@@ -741,53 +742,53 @@ struct Effect *func_8004D054(int arg0)
 }
 
 #pragma force_active on
-void func_8004D0BC(int arg0, struct EffectFuncs *funcs)
+void effect_replace_type_funcs(int type, struct EffectFuncs *newFuncs)
 {
-    struct EffectFuncs sp10;
+    struct EffectFuncs funcs;
 
-    if (funcs == NULL)
-        sp10 = lbl_801B9158;
+    if (newFuncs == NULL)
+        funcs = s_dummyEffectFuncs;
     else
     {
-        sp10 = *funcs;
-        if (sp10.unk0 == NULL)
-            sp10.unk0 = lbl_801B9158.unk0;
-        if (sp10.unk4 == NULL)
-            sp10.unk4 = lbl_801B9158.unk4;
-        if (sp10.unk8 == NULL)
-            sp10.unk8 = lbl_801B9158.unk8;
-        if (sp10.unkC == NULL)
-            sp10.unkC = lbl_801B9158.unkC;
+        funcs = *newFuncs;
+        if (funcs.init == NULL)
+            funcs.init = s_dummyEffectFuncs.init;
+        if (funcs.main == NULL)
+            funcs.main = s_dummyEffectFuncs.main;
+        if (funcs.draw == NULL)
+            funcs.draw = s_dummyEffectFuncs.draw;
+        if (funcs.destroy == NULL)
+            funcs.destroy = s_dummyEffectFuncs.destroy;
     }
-    lbl_801B8E38[arg0] = sp10.unk0;
-    lbl_801B8F00[arg0] = sp10.unk4;
-    lbl_801B8FC8[arg0] = sp10.unk8;
-    lbl_801B9090[arg0] = sp10.unkC;
+    s_effectInitFuncs[type]    = funcs.init;
+    s_effectMainFuncs[type]    = funcs.main;
+    s_effectDrawFuncs[type]    = funcs.draw;
+    s_effectDestroyFuncs[type] = funcs.destroy;
 }
 #pragma force_active reset
 
-void func_8004D194(struct Effect *effect) {}
+void effect_dummy_init(struct Effect *effect) {}
 
-void func_8004D198(struct Effect *effect) {}
+void effect_dummy_main(struct Effect *effect) {}
 
-void func_8004D19C(struct Effect *effect) {}
+void effect_dummy_draw(struct Effect *effect) {}
 
-void func_8004D1A0(struct Effect *effect) {}
+void effect_dummy_destroy(struct Effect *effect) {}
 
 extern u16 lbl_801B9168[];
 
-void func_8004D1A4(struct Effect *effect)
+void effect_paperfrag_init(struct Effect *effect)
 {
     if (effect->unkC == 0)
         effect->unkC = 210.0 + (60.0f * RAND_FLOAT());
-    if (effect->unk30 == NULL)
-        effect->unk30 = commonGma->modelEntries[lbl_801B9168[(u32)(rand() & 0x7FFF) % 5]].model;
+    if (effect->model == NULL)
+        effect->model = commonGma->modelEntries[lbl_801B9168[(u32)(rand() & 0x7FFF) % 5]].model;
     effect->unkA = 0;
     if (effect->unk24.x == 0.0f)
         effect->unk24.x = 0.5 + (0.5 * RAND_FLOAT());
 }
 
-void func_8004D2C8(struct Effect *effect)
+void effect_paperfrag_main(struct Effect *effect)
 {
     Vec sp58;
     struct RaycastHit sp3C;

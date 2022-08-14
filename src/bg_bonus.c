@@ -10,6 +10,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "gma.h"
 #include "gxcache.h"
 #include "gxutil.h"
@@ -198,7 +199,7 @@ void bg_bonus_interact(int a)
     case 1:
         // spawn shooting star
         memset(&star, 0, sizeof(star));
-        star.unk8 = 32;
+        star.type = ET_BNS_STG_STAR;
         star.unk14 = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(cameraInfo[star.unk14].unk1A4);
         spC.z = -120.0f + RAND_FLOAT() * -225.0f;

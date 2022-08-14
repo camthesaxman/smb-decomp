@@ -13,6 +13,7 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "course.h"
+#include "effect.h"
 #include "event.h"
 #include "game.h"
 #include "hud.h"
@@ -1643,12 +1644,12 @@ double force_float_order_802F2C00(void) { return 0.5; }
 void func_800165C0(struct Ball *ball)
 {
     int i;
-    struct Effect sp1C;
+    struct Effect effect;
     Vec sp10;
     u16 r28 = 1 << ball->playerId;
 
-    memset(&sp1C, 0, sizeof(sp1C));
-    sp1C.unk8 = 0;
+    memset(&effect, 0, sizeof(effect));
+    effect.type = ET_PAPERFRAG;
     mathutil_mtxA_from_translate(&ball->pos);
     mathutil_mtxA_translate_xyz(0.0f, 2.0f, 0.0f);
     sp10.x = 0.0f;
@@ -1660,12 +1661,12 @@ void func_800165C0(struct Ball *ball)
         sp10.z = (RAND_FLOAT() + 1.0) * var * 0.5;
         mathutil_mtxA_rotate_y(rand() & 0x7FFF);
         mathutil_mtxA_rotate_x(rand() & 0x7FFF);
-        mathutil_mtxA_tf_point(&sp10, &sp1C.unk34);
-        sp1C.unk4C = rand() & 0x7FFF;
-        sp1C.unk4E = rand() & 0x7FFF;
-        sp1C.unk50 = rand() & 0x7FFF;
-        sp1C.unk16 = r28;
-        spawn_effect(&sp1C);
+        mathutil_mtxA_tf_point(&sp10, &effect.unk34);
+        effect.unk4C = rand() & 0x7FFF;
+        effect.unk4E = rand() & 0x7FFF;
+        effect.unk50 = rand() & 0x7FFF;
+        effect.unk16 = r28;
+        spawn_effect(&effect);
     }
 }
 

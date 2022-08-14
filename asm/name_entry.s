@@ -2107,8 +2107,8 @@ lbl_800AF194:
 /* 800AF1D0 000AB0F0  38 21 00 30 */	addi r1, r1, 0x30
 /* 800AF1D4 000AB0F4  7C 08 03 A6 */	mtlr r0
 /* 800AF1D8 000AB0F8  4E 80 00 20 */	blr
-.global func_800AF1DC
-func_800AF1DC:
+.global effect_nameent_code_init
+effect_nameent_code_init:
 /* 800AF1DC 000AB0FC  38 00 00 00 */	li r0, 0
 /* 800AF1E0 000AB100  B0 03 00 0A */	sth r0, 0xa(r3)
 /* 800AF1E4 000AB104  C0 02 B7 58 */	lfs f0, lbl_802F5F58@sda21(r2)
@@ -2116,8 +2116,8 @@ func_800AF1DC:
 /* 800AF1EC 000AB10C  C0 02 B7 10 */	lfs f0, lbl_802F5F10@sda21(r2)
 /* 800AF1F0 000AB110  D0 03 00 28 */	stfs f0, 0x28(r3)
 /* 800AF1F4 000AB114  4E 80 00 20 */	blr
-.global func_800AF1F8
-func_800AF1F8:
+.global effect_nameent_code_main
+effect_nameent_code_main:
 /* 800AF1F8 000AB118  A8 03 00 0A */	lha r0, 0xa(r3)
 /* 800AF1FC 000AB11C  2C 00 00 01 */	cmpwi r0, 1
 /* 800AF200 000AB120  41 82 00 44 */	beq lbl_800AF244
@@ -2174,8 +2174,8 @@ lbl_800AF268:
 /* 800AF2BC 000AB1DC  38 80 00 03 */	li r4, 3
 /* 800AF2C0 000AB1E0  7C 83 01 AE */	stbx r4, r3, r0
 /* 800AF2C4 000AB1E4  4E 80 00 20 */	blr
-.global func_800AF2C8
-func_800AF2C8:
+.global effect_nameent_code_draw
+effect_nameent_code_draw:
 /* 800AF2C8 000AB1E8  7C 08 02 A6 */	mflr r0
 /* 800AF2CC 000AB1EC  90 01 00 04 */	stw r0, 4(r1)
 /* 800AF2D0 000AB1F0  94 21 FF C0 */	stwu r1, -0x40(r1)
@@ -2233,8 +2233,8 @@ lbl_800AF360:
 /* 800AF398 000AB2B8  83 E1 00 2C */	lwz r31, 0x2c(r1)
 /* 800AF39C 000AB2BC  38 21 00 40 */	addi r1, r1, 0x40
 /* 800AF3A0 000AB2C0  4E 80 00 20 */	blr
-.global func_800AF3A4
-func_800AF3A4:
+.global effect_nameent_code_destroy
+effect_nameent_code_destroy:
 /* 800AF3A4 000AB2C4  38 00 00 00 */	li r0, 0
 /* 800AF3A8 000AB2C8  90 03 00 30 */	stw r0, 0x30(r3)
 /* 800AF3AC 000AB2CC  4E 80 00 20 */	blr
@@ -2254,8 +2254,8 @@ lbl_800AF3D0:
 /* 800AF3D0 000AB2F0  38 00 00 02 */	li r0, 2
 /* 800AF3D4 000AB2F4  B0 03 00 0A */	sth r0, 0xa(r3)
 /* 800AF3D8 000AB2F8  4E 80 00 20 */	blr
-.global func_800AF3DC
-func_800AF3DC:
+.global effect_get_nameent_code_init
+effect_get_nameent_code_init:
 /* 800AF3DC 000AB2FC  3C 80 80 1F */	lis r4, modeCtrl@ha
 /* 800AF3E0 000AB300  38 84 EC 20 */	addi r4, r4, modeCtrl@l
 /* 800AF3E4 000AB304  80 A4 00 2C */	lwz r5, 0x2c(r4)
@@ -2295,8 +2295,8 @@ func_800AF3DC:
 /* 800AF46C 000AB38C  D0 03 00 9C */	stfs f0, 0x9c(r3)
 /* 800AF470 000AB390  B0 03 00 A2 */	sth r0, 0xa2(r3)
 /* 800AF474 000AB394  4E 80 00 20 */	blr
-.global func_800AF478
-func_800AF478:
+.global effect_get_nameent_code_main
+effect_get_nameent_code_main:
 /* 800AF478 000AB398  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800AF47C 000AB39C  3C 80 80 1F */	lis r4, modeCtrl@ha
 /* 800AF480 000AB3A0  38 84 EC 20 */	addi r4, r4, modeCtrl@l
@@ -2409,8 +2409,8 @@ lbl_800AF548:
 /* 800AF620 000AB540  B0 03 00 A2 */	sth r0, 0xa2(r3)
 /* 800AF624 000AB544  38 21 00 18 */	addi r1, r1, 0x18
 /* 800AF628 000AB548  4E 80 00 20 */	blr
-.global func_800AF62C
-func_800AF62C:
+.global effect_get_nameent_code_draw
+effect_get_nameent_code_draw:
 /* 800AF62C 000AB54C  7C 08 02 A6 */	mflr r0
 /* 800AF630 000AB550  90 01 00 04 */	stw r0, 4(r1)
 /* 800AF634 000AB554  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -2453,8 +2453,8 @@ func_800AF62C:
 /* 800AF6C8 000AB5E8  38 21 00 20 */	addi r1, r1, 0x20
 /* 800AF6CC 000AB5EC  7C 08 03 A6 */	mtlr r0
 /* 800AF6D0 000AB5F0  4E 80 00 20 */	blr
-.global func_800AF6D4
-func_800AF6D4:
+.global effect_get_nameent_code_destroy
+effect_get_nameent_code_destroy:
 /* 800AF6D4 000AB5F4  4E 80 00 20 */	blr
 .global stobj_nameent_btn_init
 stobj_nameent_btn_init:

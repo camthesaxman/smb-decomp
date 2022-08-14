@@ -8,6 +8,7 @@
 #include "global.h"
 #include "background.h"
 #include "ball.h"
+#include "effect.h"
 #include "mathutil.h"
 #include "mode.h"
 #include "nl2ngc.h"
@@ -16,7 +17,7 @@
 void bg_old_storm_init(void)
 {
     Point3d spB4;
-    struct Effect sp8;
+    struct Effect effect;
 
     backgroundInfo.unk80 = g_bgNlObj->models[7];
     backgroundInfo.unk84 = 1.0f;
@@ -27,51 +28,51 @@ void bg_old_storm_init(void)
     mathutil_mtxA_rigid_inv_tf_point(&spB4, &backgroundInfo.unk2C);
     backgroundInfo.unk2C.y += 3.0;
 
-    memset(&sp8, 0, sizeof(sp8));
-    sp8.unk8 = 4;
+    memset(&effect, 0, sizeof(effect));
+    effect.type = ET_ROTATE_BG;
 
-    sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unk54 = -((rand() & 0x3F) + 16);
-    sp8.unk30 = (void *)g_bgNlObj->models[1];
-    spawn_effect(&sp8);
+    effect.unkA0 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA2 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA4 = (rand() & 0x7FF) - 0x3FF;
+    effect.unk54 = -((rand() & 0x3F) + 16);
+    effect.model = (void *)g_bgNlObj->models[1];
+    spawn_effect(&effect);
 
-    sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNlObj->models[2];
-    spawn_effect(&sp8);
+    effect.unkA0 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA2 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA4 = (rand() & 0x7FF) - 0x3FF;
+    effect.unk54 -= (rand() & 0x7F) + 0x20;
+    effect.model = (void *)g_bgNlObj->models[2];
+    spawn_effect(&effect);
 
-    sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNlObj->models[5];
-    spawn_effect(&sp8);
+    effect.unkA0 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA2 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA4 = (rand() & 0x7FF) - 0x3FF;
+    effect.unk54 -= (rand() & 0x7F) + 0x20;
+    effect.model = (void *)g_bgNlObj->models[5];
+    spawn_effect(&effect);
 
-    sp8.unkA0 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA2 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unkA4 = (rand() & 0x7FF) - 0x3FF;
-    sp8.unk54 -= (rand() & 0x7F) + 0x20;
-    sp8.unk30 = (void *)g_bgNlObj->models[6];
-    spawn_effect(&sp8);
+    effect.unkA0 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA2 = (rand() & 0x7FF) - 0x3FF;
+    effect.unkA4 = (rand() & 0x7FF) - 0x3FF;
+    effect.unk54 -= (rand() & 0x7F) + 0x20;
+    effect.model = (void *)g_bgNlObj->models[6];
+    spawn_effect(&effect);
 }
 
 void bg_old_storm_main(void)
 {
     Point3d spDC;
     Point3d spD0;
-    struct Effect sp24;
+    struct Effect effect;
     struct RaycastHit sp8;
     struct Ball *temp_r30 = currentBallStructPtr;
 
     if (gamePauseStatus & 0xA)
         return;
  
-    memset(&sp24, 0, sizeof(sp24));
-    sp24.unk8 = 7;
+    memset(&effect, 0, sizeof(effect));
+    effect.type = ET_RAINDROP;
     spDC.x = 0.0f;
     spDC.y = 0.0f;
     spDC.z = -3.5f;
@@ -90,17 +91,17 @@ void bg_old_storm_main(void)
     spDC.x = RAND_FLOAT() - 0.5;
     spDC.y = RAND_FLOAT() - 0.5;
     spDC.z = RAND_FLOAT() - 0.5;
-    mathutil_vec_set_len(&spDC, &sp24.unk34, 3.5 * RAND_FLOAT());
-    sp24.unk34.x += spD0.x;
-    sp24.unk34.y += spD0.y;
-    sp24.unk34.z += spD0.z;
-    sp24.unk40.x = 0.0f;
-    sp24.unk40.y = -0.2f;
-    sp24.unk40.z = 0.0f;
-    sp24.unk18 = 0.2f;
-    sp24.unk1C = 0.35f;
-    sp24.unk20 = 0.4f;
-    spawn_effect(&sp24);
+    mathutil_vec_set_len(&spDC, &effect.unk34, 3.5 * RAND_FLOAT());
+    effect.unk34.x += spD0.x;
+    effect.unk34.y += spD0.y;
+    effect.unk34.z += spD0.z;
+    effect.unk40.x = 0.0f;
+    effect.unk40.y = -0.2f;
+    effect.unk40.z = 0.0f;
+    effect.unk18 = 0.2f;
+    effect.unk1C = 0.35f;
+    effect.unk20 = 0.4f;
+    spawn_effect(&effect);
     mathutil_mtxA_from_mtxB();
     spD0.x = 0.0f;
     spD0.y = 0.0f;
@@ -115,39 +116,39 @@ void bg_old_storm_main(void)
     spD0.z += spDC.z;
     if (gameSubmode == SMD_GAME_CONTINUE_MAIN)
     {
-        memset(&sp24, 0, sizeof(sp24));
-        sp24.unk8 = 15;
-        sp24.unk34.x = spD0.x;
-        sp24.unk34.y = 0.0f;
-        sp24.unk34.z = spD0.z;
-        sp24.unk7C.x = 0.0f;
-        sp24.unk7C.y = 0.0f;
-        sp24.unk7C.z = 0.0f;
-        sp24.unk70.x = 0.0f;
-        sp24.unk70.y = 1.0f;
-        sp24.unk70.z = 0.0f;
-        mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
-        sp24.unk50 = rand() & 0x7FFF;
-        sp24.unk30 = (void *)g_bgNlObj->models[8];
-        spawn_effect(&sp24);
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_RAINDROP_RIPPLE;
+        effect.unk34.x = spD0.x;
+        effect.unk34.y = 0.0f;
+        effect.unk34.z = spD0.z;
+        effect.unk7C.x = 0.0f;
+        effect.unk7C.y = 0.0f;
+        effect.unk7C.z = 0.0f;
+        effect.unk70.x = 0.0f;
+        effect.unk70.y = 1.0f;
+        effect.unk70.z = 0.0f;
+        mathutil_vec_to_euler_xy(&sp8.normal, &effect.unk4C, &effect.unk4E);
+        effect.unk50 = rand() & 0x7FFF;
+        effect.model = (void *)g_bgNlObj->models[8];
+        spawn_effect(&effect);
     }
     else if ((u32)raycast_stage_down(&spD0, &sp8, &spDC) != 0)
     {
-        memset(&sp24, 0, sizeof(sp24));
-        sp24.unk8 = 15;
-        sp24.unk34.x = sp8.pos.x + 0.04 * sp8.normal.x;
-        sp24.unk34.y = sp8.pos.y + 0.04 * sp8.normal.y;
-        sp24.unk34.z = sp8.pos.z + 0.04 * sp8.normal.z;
-        sp24.unk7C.x = spDC.x;
-        sp24.unk7C.y = spDC.y;
-        sp24.unk7C.z = spDC.z;
-        sp24.unk70.x = sp8.normal.x;
-        sp24.unk70.y = sp8.normal.y;
-        sp24.unk70.z = sp8.normal.z;
-        mathutil_vec_to_euler_xy(&sp8.normal, &sp24.unk4C, &sp24.unk4E);
-        sp24.unk50 = rand() & 0x7FFF;
-        sp24.unk30 = (void *)g_bgNlObj->models[8];
-        spawn_effect(&sp24);
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_RAINDROP_RIPPLE;
+        effect.unk34.x = sp8.pos.x + 0.04 * sp8.normal.x;
+        effect.unk34.y = sp8.pos.y + 0.04 * sp8.normal.y;
+        effect.unk34.z = sp8.pos.z + 0.04 * sp8.normal.z;
+        effect.unk7C.x = spDC.x;
+        effect.unk7C.y = spDC.y;
+        effect.unk7C.z = spDC.z;
+        effect.unk70.x = sp8.normal.x;
+        effect.unk70.y = sp8.normal.y;
+        effect.unk70.z = sp8.normal.z;
+        mathutil_vec_to_euler_xy(&sp8.normal, &effect.unk4C, &effect.unk4E);
+        effect.unk50 = rand() & 0x7FFF;
+        effect.model = (void *)g_bgNlObj->models[8];
+        spawn_effect(&effect);
     }
 
 }

@@ -8,6 +8,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "effect.h"
 #include "event.h"
 #include "gxcache.h"
 #include "info.h"
@@ -113,13 +114,13 @@ void bg_space_init(void)
 
     work->unk38 = 15;
     memset(&effect, 0, sizeof(effect));
-    effect.unk8 = 0x17;
+    effect.type = ET_METEO_FIX;
     i = work->unk3C * ((rand() & 0xF) + 48);
     while (i > 0)
     {
         float temp_f1;
 
-        effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
+        effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
         effect.unk24.x = 12.0f * RAND_FLOAT() + 1.0f;
         effect.unk34.x = (RAND_FLOAT() - 0.5f) * 2000.0f;
         effect.unk34.y = (RAND_FLOAT() - 0.5f) * 500.0f + effect.unk34.x * -0.5f;
@@ -143,12 +144,12 @@ void bg_space_init(void)
         i -= 1;
     }
     memset(&effect, 0, sizeof(effect));
-    effect.unk8 = 0x16;
+    effect.type = ET_METEO;
     effect.unkA8 = 1.0f;
     i = work->unk3C * ((rand() & 0xF) + 64);
     while (i > 0)
     {
-        effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
+        effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
         effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
         effect.unk34.x = (RAND_FLOAT() - 0.5f);
         effect.unk34.y = (RAND_FLOAT() - 0.5f) * 0.5f + effect.unk34.x * -0.75f;
@@ -205,8 +206,8 @@ void bg_space_main(void)
 
             work->unk38 = (15.0f * (1.0f + RAND_FLOAT())) / work->unk3C;
             memset(&effect, 0, sizeof(effect));
-            effect.unk8 = 0x16;
-            effect.unk30 = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
+            effect.type = ET_METEO;
+            effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
             effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
             effect.unk34.x = effect.unk24.x * (175.0f * (RAND_FLOAT() - 0.5f));
             effect.unk34.y = effect.unk24.x * (150.0f * (RAND_FLOAT() - 0.5f)) + effect.unk34.x * -0.75f;

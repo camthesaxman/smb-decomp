@@ -9,6 +9,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "effect.h"
 #include "event.h"
 #include "gxcache.h"
 #include "gxutil.h"
@@ -495,8 +496,8 @@ static int obj_find_proc(int index, struct StageBgObject *bgObj)
     case 0:  // WAT_SUB_SUKRYU
         // submarine propeller
         memset(&effect, 0, sizeof(effect));
-        effect.unk8 = 20;
-        effect.unk30 = (void *)bgObj;
+        effect.type = ET_BGWAT_BUBBLE_BASE;
+        effect.model = (void *)bgObj;
         spawn_effect(&effect);
         break;
     case 1:  // WAT_SUIMEN

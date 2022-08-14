@@ -72,8 +72,8 @@ bg_old_ice_draw:
 .global bg_old_ice_interact
 bg_old_ice_interact:
 /* 80058CDC 00054BFC  4E 80 00 20 */	blr
-.global func_80058CE0
-func_80058CE0:
+.global effect_icewater_reflect_init
+effect_icewater_reflect_init:
 /* 80058CE0 00054C00  7C 08 02 A6 */	mflr r0
 /* 80058CE4 00054C04  90 01 00 04 */	stw r0, 4(r1)
 /* 80058CE8 00054C08  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -99,8 +99,8 @@ func_80058CE0:
 /* 80058D38 00054C58  38 21 00 18 */	addi r1, r1, 0x18
 /* 80058D3C 00054C5C  7C 08 03 A6 */	mtlr r0
 /* 80058D40 00054C60  4E 80 00 20 */	blr
-.global func_80058D44
-func_80058D44:
+.global effect_icewater_reflect_main
+effect_icewater_reflect_main:
 /* 80058D44 00054C64  7C 08 02 A6 */	mflr r0
 /* 80058D48 00054C68  90 01 00 04 */	stw r0, 4(r1)
 /* 80058D4C 00054C6C  94 21 FE F8 */	stwu r1, -0x108(r1)
@@ -299,8 +299,8 @@ lbl_80059034:
 /* 8005904C 00054F6C  38 21 01 08 */	addi r1, r1, 0x108
 /* 80059050 00054F70  7C 08 03 A6 */	mtlr r0
 /* 80059054 00054F74  4E 80 00 20 */	blr
-.global func_80059058
-func_80059058:
+.global effect_icewater_reflect_draw
+effect_icewater_reflect_draw:
 /* 80059058 00054F78  7C 08 02 A6 */	mflr r0
 /* 8005905C 00054F7C  90 01 00 04 */	stw r0, 4(r1)
 /* 80059060 00054F80  94 21 FF 80 */	stwu r1, -0x80(r1)
@@ -625,13 +625,13 @@ lbl_8005952C:
 /* 80059548 00055468  83 A1 00 5C */	lwz r29, 0x5c(r1)
 /* 8005954C 0005546C  38 21 00 80 */	addi r1, r1, 0x80
 /* 80059550 00055470  4E 80 00 20 */	blr
-.global func_80059554
-func_80059554:
+.global effect_icewater_reflect_destroy
+effect_icewater_reflect_destroy:
 /* 80059554 00055474  38 00 00 00 */	li r0, 0
 /* 80059558 00055478  90 03 00 30 */	stw r0, 0x30(r3)
 /* 8005955C 0005547C  4E 80 00 20 */	blr
-.global func_80059560
-func_80059560:
+.global effect_icewater_particle_init
+effect_icewater_particle_init:
 /* 80059560 00055480  7C 08 02 A6 */	mflr r0
 /* 80059564 00055484  90 01 00 04 */	stw r0, 4(r1)
 /* 80059568 00055488  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -663,8 +663,8 @@ func_80059560:
 /* 800595D0 000554F0  38 21 00 20 */	addi r1, r1, 0x20
 /* 800595D4 000554F4  7C 08 03 A6 */	mtlr r0
 /* 800595D8 000554F8  4E 80 00 20 */	blr
-.global func_800595DC
-func_800595DC:
+.global effect_icewater_particle_main
+effect_icewater_particle_main:
 /* 800595DC 000554FC  94 21 FF E8 */	stwu r1, -0x18(r1)
 /* 800595E0 00055500  3C 00 43 30 */	lis r0, 0x4330
 /* 800595E4 00055504  C0 03 00 40 */	lfs f0, 0x40(r3)
@@ -724,8 +724,8 @@ lbl_800596A4:
 lbl_800596B8:
 /* 800596B8 000555D8  38 21 00 18 */	addi r1, r1, 0x18
 /* 800596BC 000555DC  4E 80 00 20 */	blr
-.global func_800596C0
-func_800596C0:
+.global effect_icewater_particle_draw
+effect_icewater_particle_draw:
 /* 800596C0 000555E0  7C 08 02 A6 */	mflr r0
 /* 800596C4 000555E4  90 01 00 04 */	stw r0, 4(r1)
 /* 800596C8 000555E8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -769,8 +769,8 @@ lbl_80059728:
 /* 80059758 00055678  38 21 00 18 */	addi r1, r1, 0x18
 /* 8005975C 0005567C  7C 08 03 A6 */	mtlr r0
 /* 80059760 00055680  4E 80 00 20 */	blr
-.global func_80059764
-func_80059764:
+.global effect_icewater_particle_destroy
+effect_icewater_particle_destroy:
 /* 80059764 00055684  38 00 00 00 */	li r0, 0
 /* 80059768 00055688  90 03 00 30 */	stw r0, 0x30(r3)
 /* 8005976C 0005568C  4E 80 00 20 */	blr
