@@ -67,9 +67,9 @@ static void reset_alpha_model_tev_material(void);
 void build_alpha_mesh_tev_material(struct NlMesh *pmesh);
 
 #pragma force_active on
-void nl2ngc_set_line_width(float a)
+void nl2ngc_set_line_width(float width)
 {
-    gxutil_set_line_width(a * 6.0f);
+    gxutil_set_line_width(width * 6.0f);
 }
 
 void nl2ngc_set_line_blend_params(GXBlendFactor srcFactor, GXBlendFactor dstFactor)
