@@ -306,6 +306,16 @@ struct BGSandWork
     u8 filler568[4];
 };
 
+struct BGMasterWork
+{
+    u8 filler0[0xB0C];
+    struct GMAModel *unkB0C;
+    u8 fillerB10[4];
+    BallEnvFunc unkB14;
+    u8 fillerB18[0xB60-0xB18];
+    Mtx unkB60;
+};
+
 typedef int (*BgModelFindProc)(int, struct GMAModelEntry *);
 typedef int (*BgObjFindProc)(int, struct StageBgObject *);
 

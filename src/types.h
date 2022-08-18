@@ -986,4 +986,11 @@ struct Struct801EEDA8
     u8 filler104[0x118-0x104];
 };
 
+struct Struct8009DBB0
+{
+    int unk0;
+    Vec unk4;
+    Vec unk10;
+};
+
 #endif

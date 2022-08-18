@@ -286,7 +286,7 @@ void u_give_points(int arg0, int arg1)
     }
 }
 
-extern s16 lbl_802F1F90;
+s16 lbl_802F1F90;
 
 void ev_effect_init(void)
 {
@@ -879,8 +879,8 @@ void effect_paperfrag_main(struct Effect *effect)
     sp30.y = 1.0f;
     sp30.z = 0.0f;
     mathutil_mtxA_from_rotate_y(effect->unk4E);
-    mathutil_mtxA_rotate_x((s32) effect->unk4C);
-    mathutil_mtxA_rotate_z((s32) effect->unk50);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
     mathutil_mtxA_tf_vec(&sp30, &sp30);
 
     temp_f3 = (sp30.x * sp24.x) + (sp30.y * sp24.y) + (sp30.z * sp24.z);
@@ -889,13 +889,13 @@ void effect_paperfrag_main(struct Effect *effect)
     sp18.y = effect->unk34.y - effect->unk64.y;
     sp18.z = effect->unk34.z - effect->unk64.z;
     temp_f4 = (sp24.x * sp18.x) + (sp24.y * sp18.y) + (sp24.z * sp18.z);
-    if (temp_f4 < (temp_f2_3 + 0.05))
+    if (temp_f4 < temp_f2_3 + 0.05)
     {
         temp_f2 = temp_f2_3 + 0.05 - temp_f4;
         effect->unk34.x += temp_f2 * sp24.x;
         effect->unk34.y += temp_f2 * sp24.y;
         effect->unk34.z += temp_f2 * sp24.z;
-        temp_f2 = ((effect->unk40.x * sp24.x) + (effect->unk40.y * sp24.y)) + (effect->unk40.z * sp24.z);
+        temp_f2 = (effect->unk40.x * sp24.x) + (effect->unk40.y * sp24.y) + (effect->unk40.z * sp24.z);
         if (temp_f2 < 0.0)
         {
             temp_f2 = -temp_f2;
@@ -903,7 +903,6 @@ void effect_paperfrag_main(struct Effect *effect)
             effect->unk40.y += temp_f2 * sp24.y;
             effect->unk40.z += temp_f2 * sp24.z;
             temp_f4 = __fabs(temp_f3) * (1.0 / 8.0);
-            effect->unk40.x = effect->unk40.x;
             effect->unk40.x = effect->unk40.x + (temp_f4 * (effect->unk7C.x - effect->unk40.x));
             effect->unk40.y = effect->unk40.y + (temp_f4 * (effect->unk7C.y - effect->unk40.y));
             effect->unk40.z = effect->unk40.z + (temp_f4 * (effect->unk7C.z - effect->unk40.z));
@@ -971,7 +970,7 @@ void effect_paperfrag_draw(struct Effect *effect)
         var_f31 = 1.0f;
     mathutil_mtxA_scale_s(effect->unk24.x);
     avdisp_set_bound_sphere_scale(effect->unk24.x);
-    if (effect->unkC < 0xC)
+    if (effect->unkC < 12)
         var_f31 *= 0.083333336f * effect->unkC;
     if (var_f31 < 1.0)
     {
@@ -2552,9 +2551,9 @@ void effect_meteo_fix_destroy(struct Effect *effect) {}
 
 void effect_coliflash_init(struct Effect *effect)
 {
-    f32 temp_f1;
+    float temp_f1;
 
-    effect->unkC = 0xC;
+    effect->unkC = 12;
     temp_f1 = mathutil_sqrt((float)__fabs(10.0f * effect->unkA8));
     effect->unk24.x = 0.25f * temp_f1;
     effect->unk24.y = temp_f1;
@@ -2775,8 +2774,8 @@ void effect_bgmst_gen_cloud_main(struct Effect *effect)
 {
     float temp_f31 = 0.5f * (effect->model->boundSphereRadius * effect->unk24.x);
     float var_f2;
-    
-    switch (effect->unkA)                
+
+    switch (effect->unkA)
     {
     case 0:
         if (mathutil_unk(effect->unk64.x, effect->unk64.z, effect->unk34.x, effect->unk34.z) > effect->unk88.x + temp_f31)
@@ -2930,3 +2929,362 @@ void effect_bgstm_rainripple_draw(struct Effect *effect)
 }
 
 void effect_bgstm_rainripple_destroy(struct Effect *effect) {}
+
+void effect_bgmst_water_init(struct Effect *effect) {}
+
+void effect_bgmst_water_main(struct Effect *effect) {}
+
+void effect_bgmst_water_draw(struct Effect *effect)
+{
+    struct StageBgObject *bgObj = (struct StageBgObject *)effect->model;
+    struct BGMasterWork *bgWork = backgroundInfo.work;
+    BallEnvFunc func;
+    u32 var_r3;
+
+    if (lbl_801EEC90.unk0 & 1)
+        var_r3 = 1 << 4;
+    else if (modeCtrl.gameType == 1)
+        var_r3 = 1 << (modeCtrl.unk30 - 1);
+    else
+        var_r3 = 1 << 0;
+    if (bgObj->flags & var_r3)
+    {
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
+        mathutil_mtxA_translate(&bgObj->pos);
+        mathutil_mtxA_rotate_z(bgObj->rotZ);
+        mathutil_mtxA_rotate_y(bgObj->rotY);
+        mathutil_mtxA_rotate_x(bgObj->rotX);
+        mathutil_mtxA_scale(&bgObj->scale);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        mathutil_mtxA_to_mtx(bgWork->unkB60);
+        mathutil_mtxA_translate_xyz(0.0f, -20.0f, 0.0f);
+        mathutil_mtxA_scale_xyz(1.0f, 0.0f, 1.0f);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        func = u_avdisp_set_some_func_1(bgWork->unkB14);
+        avdisp_draw_model_culled_sort_none(bgWork->unkB0C);
+        u_avdisp_set_some_func_1(func);
+    }
+}
+
+void effect_bgmst_water_destroy(struct Effect *effect) {}
+
+void effect_commendfrag_init(struct Effect *effect)
+{
+    if (effect->unkC == 0)
+        effect->unkC = 210.0 + (60.0f * RAND_FLOAT());
+    if (effect->model == NULL)
+    {
+        u16 modelIndex = s_paperPieceModels[(u32)(rand() & 0x7FFF) % ARRAY_COUNT(s_paperPieceModels)];
+        effect->model = commonGma->modelEntries[modelIndex].model;
+    }
+    effect->unkA = 0;
+    if (effect->unk24.x == 0.0f)
+        effect->unk24.x = 0.2 + (0.3 * RAND_FLOAT());
+}
+
+void effect_commendfrag_main(struct Effect *effect)
+{
+    Vec sp58;
+    struct Struct8009DBB0 sp3C;
+    Vec sp30;
+    Vec sp24;
+    Vec sp18;
+    Vec spC;
+    float temp_f2;
+    float temp_f3;
+    float temp_f4;
+    float temp_f2_3;
+    s16 temp_r29;
+    s16 temp_r31;
+
+    effect->unk40.y += -0.004;
+    mathutil_mtxA_from_rotate_y(effect->unk4E);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
+    sp58.x = 0.0f;
+    sp58.y = 1.0f;
+    sp58.z = 0.0f;
+    mathutil_mtxA_tf_vec(&sp58, &sp58);
+    temp_f2 = -0.7 * mathutil_vec_dot_prod(&sp58, &effect->unk40);
+    effect->unk40.x += sp58.x * temp_f2;
+    effect->unk40.y += sp58.y * temp_f2;
+    effect->unk40.z += sp58.z * temp_f2;
+    effect->unk40.x *= 0.95;
+    effect->unk40.y *= 0.95;
+    effect->unk40.z *= 0.95;
+    effect->unk34.x += effect->unk40.x;
+    effect->unk34.y += effect->unk40.y;
+    effect->unk34.z += effect->unk40.z;
+    temp_f2 = 2560.0f / effect->unk24.x;
+    effect->unk52 += (int)(temp_f2 * (effect->unk40.x + effect->unk40.y));
+    effect->unk54 += (int)(temp_f2 * (effect->unk40.y + effect->unk40.z));
+    effect->unk56 += (int)(temp_f2 * (effect->unk40.z + effect->unk40.x));
+    effect->unk52 -= effect->unk52 >> 5;
+    effect->unk54 -= effect->unk54 >> 5;
+    effect->unk56 -= effect->unk56 >> 5;
+    effect->unk4C += effect->unk52;
+    effect->unk4E += effect->unk54;
+    effect->unk50 += effect->unk56;
+
+    if (!(effect->unkC & 0xF))
+    {
+        effect->unkA = 0;
+        if (func_8009DBB0(&effect->unk34, &sp3C, &effect->unk7C) != 0
+         && sp3C.unk4.y > effect->unk34.y - 1.0)
+        {
+            effect->unkA = 1;
+            effect->unk64.x = sp3C.unk4.x;
+            effect->unk64.y = sp3C.unk4.y;
+            effect->unk64.z = sp3C.unk4.z;
+            effect->unk70.x = sp3C.unk10.x;
+            effect->unk70.y = sp3C.unk10.y;
+            effect->unk70.z = sp3C.unk10.z;
+        }
+    }
+
+    switch (effect->unkA)
+    {
+    case 0:
+        return;
+    }
+
+    sp24 = effect->unk70;
+    sp30.x = 0.0f;
+    sp30.y = 1.0f;
+    sp30.z = 0.0f;
+    mathutil_mtxA_from_rotate_y(effect->unk4E);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
+    mathutil_mtxA_tf_vec(&sp30, &sp30);
+
+    temp_f3 = (sp30.x * sp24.x) + (sp30.y * sp24.y) + (sp30.z * sp24.z);
+    temp_f2_3 = (1.1920929e-7f * effect->unk0) + (0.1 * (1.0 - __fabs(temp_f3)));
+    sp18.x = effect->unk34.x - effect->unk64.x;
+    sp18.y = effect->unk34.y - effect->unk64.y;
+    sp18.z = effect->unk34.z - effect->unk64.z;
+    temp_f4 = (sp24.x * sp18.x) + (sp24.y * sp18.y) + (sp24.z * sp18.z);
+    if (temp_f4 < temp_f2_3 + 0.01)
+    {
+        temp_f2 = temp_f2_3 + 0.01 - temp_f4;
+        effect->unk34.x += temp_f2 * sp24.x;
+        effect->unk34.y += temp_f2 * sp24.y;
+        effect->unk34.z += temp_f2 * sp24.z;
+
+        temp_f2 = (effect->unk40.x * sp24.x) + (effect->unk40.y * sp24.y) + (effect->unk40.z * sp24.z);
+        if (temp_f2 < 0.0)
+        {
+            temp_f2 = -temp_f2;
+            effect->unk40.x += temp_f2 * sp24.x;
+            effect->unk40.y += temp_f2 * sp24.y;
+            effect->unk40.z += temp_f2 * sp24.z;
+            temp_f4 = __fabs(temp_f3) * (1.0 / 8.0);
+            effect->unk40.x += (temp_f4 * (effect->unk7C.x - effect->unk40.x));
+            effect->unk40.y += (temp_f4 * (effect->unk7C.y - effect->unk40.y));
+            effect->unk40.z += (temp_f4 * (effect->unk7C.z - effect->unk40.z));
+            temp_f2 = temp_f2 / 2.0;
+            effect->unk40.x += temp_f2 * sp24.x;
+            effect->unk40.y += temp_f2 * sp24.y;
+            effect->unk40.z += temp_f2 * sp24.z;
+        }
+        spC = sp24;
+        if (temp_f3 < 0.0)
+        {
+            spC.x = -spC.x;
+            spC.y = -spC.y;
+            spC.z = -spC.z;
+        }
+        sp30.x = (0.05 * spC.x) + (0.95 * sp30.x);
+        sp30.y = (0.05 * spC.y) + (0.95 * sp30.y);
+        sp30.z = (0.05 * spC.z) + (0.95 * sp30.z);
+        mathutil_vec_normalize_len(&sp30);
+        temp_r29 = effect->unk4C;
+        temp_r31 = effect->unk50;
+        mathutil_mtxA_from_rotate_y(-effect->unk4E);
+        mathutil_mtxA_rotate_x(0);
+        mathutil_mtxA_tf_vec(&sp30, &sp30);
+        effect->unk4C = mathutil_atan2(sp30.z, sp30.y);
+        effect->unk50 = -mathutil_atan2(sp30.x, mathutil_sqrt(mathutil_sum_of_sq_2(sp30.z, sp30.y)));
+        effect->unk52 >>= 2;
+        effect->unk52 += (effect->unk4C - temp_r29) >> 2;
+        effect->unk54 -= effect->unk54 >> 4;
+        effect->unk56 >>= 2;
+        effect->unk56 += (effect->unk50 - temp_r31) >> 2;
+    }
+}
+
+void effect_commendfrag_draw(struct Effect *effect)
+{
+    Mtx sp10;
+    float temp_f30;
+    float var_f31;
+    float new_var;
+
+    if (lbl_801EEC90.unk0 & 4)
+    {
+        temp_f30 = 0.1 * effect->unk24.x;
+        var_f31 = temp_f30 + func_8000E4D0(&effect->unk34);
+        if (var_f31 <= 0.0f)
+            return;
+        if (var_f31 > temp_f30)
+            var_f31 = 1.0f;
+        else
+            var_f31 *= (1.0f / temp_f30);
+    }
+    else
+        var_f31 = 1.0f;
+
+    mathutil_mtxA_from_mtxB();
+    func_8009DB6C(sp10);
+    mathutil_mtxA_mult_right(sp10);
+    mathutil_mtxA_translate(&effect->unk34);
+    mathutil_mtxA_rotate_y(effect->unk4E);
+    mathutil_mtxA_rotate_x(effect->unk4C);
+    mathutil_mtxA_rotate_z(effect->unk50);
+    new_var = (120.0f * currentCameraStructPtr->sub28.vp.height) * (0.11f * effect->unk24.x) * currentCameraStructPtr->sub28.unk3C;
+    var_f31 *= 2.0f * (new_var + mathutilData->mtxA[2][3]);
+    if (var_f31 < 0.0)
+        return;
+    if (var_f31 > 1.0)
+        var_f31 = 1.0f;
+    mathutil_mtxA_scale_s(effect->unk24.x);
+    avdisp_set_bound_sphere_scale(effect->unk24.x);
+    if (effect->unkC < 12)
+        var_f31 *= 0.083333336f * effect->unkC;
+    if (var_f31 < 1.0)
+    {
+        avdisp_set_alpha(var_f31);
+        avdisp_draw_model_culled_sort_all(effect->model);
+    }
+    else
+    {
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        avdisp_draw_model_culled_sort_translucent(effect->model);
+    }
+}
+
+void effect_commendfrag_destroy(struct Effect *effect) {}
+
+void effect_banana_drop_init(struct Effect *effect)
+{
+    effect->unk4 |= 2;
+    effect->unkC = 80;
+    effect->unk16 = 1 << effect->unk14;
+    effect->unk34.x = 0.0f;
+    effect->unk34.y = -0.2f;
+    effect->unk34.z = 0.0f;
+    effect->unk40.x = 0.0f;
+    effect->unk40.y = 0.15f;
+    effect->unk40.z = -0.05f;
+    effect->unk4C = 0;
+    effect->unk4E = 0;
+    effect->unk50 = 0;
+    effect->unk52 = 0;
+    effect->unk54 = 0;
+    effect->unk56 = 0;
+    effect->unkA = 0;
+}
+
+void effect_banana_drop_main(struct Effect *effect)
+{
+    Vec spC;
+
+    effect->unk34.x += effect->unk40.x;
+    effect->unk34.y += effect->unk40.y;
+    effect->unk34.z += effect->unk40.z;
+    effect->unk40.y -= 0.0098;
+    mathutil_mtxA_from_translate((Vec *)effect->model);
+    mathutil_mtxA_rotate_y(effect->unkA2 + (effect->unk10 * 0x1999));
+    mathutil_mtxA_tf_point(&effect->unk34, &spC);
+    if (spC.x < -10.0 || spC.x > 10.0)
+        effect->unkA |= 2;
+    if (!(effect->unkA & 1) && (effect->unk34.y < -0.25))
+    {
+        if (effect->unkA & 2)
+            effect->unkA |= 1;
+        else
+        {
+            effect->unk34.y = -0.25f;
+            effect->unk40.y *= -0.6;
+            effect->unk52 = (s16)(int)((rand() >> 4) & 0x7FF);
+            effect->unk54 = (s16)(int)((rand() >> 5) & 0x3FF);
+            effect->unk56 = (s16)(int)((rand() >> 5) & 0x3FF);
+        }
+    }
+    effect->unk4C += effect->unk52;
+    effect->unk4E += effect->unk54;
+    effect->unk50 += effect->unk56;
+}
+
+void effect_banana_drop_draw(struct Effect *effect)
+{
+    if (effect->unkC >= 30 || !(unpausedFrameCounter & 2))
+    {
+        mathutil_mtxA_from_mtxB_translate((Vec *)effect->model);
+        mathutil_mtxA_rotate_y(effect->unkA2 + (effect->unk10 * 0x1999));
+        mathutil_mtxA_translate(&effect->unk34);
+        mathutil_mtxA_sq_from_identity();
+        mathutil_mtxA_rotate_y(effect->unk4E);
+        mathutil_mtxA_rotate_x(effect->unk4C);
+        mathutil_mtxA_rotate_z(effect->unk50);
+        mathutil_mtxA_scale_s(0.65f);
+        u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+        avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x23].model);
+        if (!(effect->unkA & 3))
+        {
+            avdisp_set_z_mode(1, GX_LEQUAL, 0);
+            avdisp_set_post_mult_color(0.3f, 0.3f, 0.3f, 0.3f);
+            mathutil_mtxA_from_mtxB_translate((Vec *)effect->model);
+            mathutil_mtxA_rotate_y(effect->unkA2 + (effect->unk10 * 0x1999));
+            mathutil_mtxA_translate_xyz(effect->unk34.x, -0.45f, effect->unk34.z);
+            mathutil_mtxA_rotate_x(0x4000);
+            mathutil_mtxA_scale_s(0.25f);
+            u_gxutil_upload_some_mtx(mathutilData->mtxA, 0);
+            avdisp_draw_model_culled_sort_none(commonGma->modelEntries[0x4E].model);
+            avdisp_set_post_mult_color(1.0f, 1.0f, 1.0f, 1.0f);
+            avdisp_set_z_mode(1, GX_LEQUAL, 1);
+        }
+    }
+}
+
+void effect_banana_drop_destroy(struct Effect *effect) {}
+
+void effect_bgend_water_init(struct Effect *effect) {}
+
+void effect_bgend_water_main(struct Effect *effect) {}
+
+void effect_bgend_water_draw(struct Effect *effect)
+{
+    struct StageBgObject *bgObj = (struct StageBgObject *)effect->model;
+    struct BGEndWork *bgWork = backgroundInfo.work;
+    BallEnvFunc func;
+    u32 var_r3;
+
+    if (lbl_801EEC90.unk0 & 1)
+        var_r3 = 1 << 4;
+    else if (modeCtrl.gameType == 1)
+        var_r3 = 1 << (modeCtrl.unk30 - 1);
+    else
+        var_r3 = 1 << 0;
+    if (bgObj->flags & var_r3)
+    {
+        mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[0]);
+        mathutil_mtxA_translate(&bgObj->pos);
+        mathutil_mtxA_rotate_z(bgObj->rotZ);
+        mathutil_mtxA_rotate_y(bgObj->rotY);
+        mathutil_mtxA_rotate_x(bgObj->rotX);
+        mathutil_mtxA_scale(&bgObj->scale);
+        func = u_avdisp_set_some_func_1(bgWork->unk18);
+        mathutil_mtxA_push();
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        mathutil_mtxA_to_mtx(bgWork->unk64);
+        mathutil_mtxA_translate_xyz(0.0f, -20.0f, 0.0f);
+        mathutil_mtxA_scale_xyz(1.0f, 0.0f, 1.0f);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        avdisp_draw_model_culled_sort_none(bgWork->waterModel);
+        mathutil_mtxA_pop();
+        u_avdisp_set_some_func_1(func);
+    }
+}
+
+void effect_bgend_water_destroy(struct Effect *effect) {}

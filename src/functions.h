@@ -521,7 +521,7 @@ void func_8009D7FC(int, Vec *);
 void func_8009D98C(Vec *);
 // ? func_8009DB40();
 void func_8009DB6C(Mtx);
-// ? func_8009DBB0();
+int func_8009DBB0(Vec *, struct Struct8009DBB0 *, Vec *);
 void func_8009F49C(int);
 int memcard_is_write_in_progress(void);
 u8 func_8009F4C4(void);
