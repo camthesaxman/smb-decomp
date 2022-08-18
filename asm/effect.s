@@ -5700,7 +5700,6 @@ lbl_80051B6C:
 .global effect_colistar_particle_destroy
 effect_colistar_particle_destroy:
 /* 80051B98 0004DAB8  4E 80 00 20 */	blr
-.endif
 .global effect_bgwat_bubble_base_init
 effect_bgwat_bubble_base_init:
 /* 80051B9C 0004DABC  7C 08 02 A6 */	mflr r0
@@ -8094,6 +8093,7 @@ lbl_80053EE8:
 .global effect_bgstm_rainripple_destroy
 effect_bgstm_rainripple_destroy:
 /* 80053F04 0004FE24  4E 80 00 20 */	blr
+.endif
 .global effect_bgmst_water_init
 effect_bgmst_water_init:
 /* 80053F08 0004FE28  4E 80 00 20 */	blr
@@ -9830,7 +9830,7 @@ lbl_802F3C08:
 lbl_802F3C0C:
 	# ROM: 0x1ED62C
 	.4byte 0x3F0A3D71
-.endif
+
 .global lbl_802F3C10
 lbl_802F3C10:
 	# ROM: 0x1ED630
@@ -10002,7 +10002,7 @@ lbl_802F3C98:
 lbl_802F3C9C:
 	# ROM: 0x1ED6BC
 	.4byte 0x3F75C28F
-
+.endif
 .global lbl_802F3CA0
 lbl_802F3CA0:
 	# ROM: 0x1ED6C0
