@@ -56,25 +56,25 @@ enum
 
 struct Effect
 {
-    s16 unk0;
-    s16 unk2;
-    u32 unk4;
+    s16 poolIndex;  // index in effect pool
+    s16 uid;  // unique ID
+    u32 flags;
     s16 type;
-    s16 unkA;
-    s32 unkC;
-    s32 unk10;
-    s16 unk14;
-    u16 unk16;
+    s16 state;
+    s32 timer;  // decremented each frame. effect is destroyed when this reaches zero.
+    s32 u_otherTimer;  // another general purpose timer
+    s16 playerId;  // associates this effect with a player. used for various purposes.
+    u16 cameras;
     float unk18;
     float unk1C;
     float unk20;
-    Vec unk24;
-    struct GMAModel *model;
-    Vec unk34;
-    Vec unk40;
-    s16 unk4C;
-    s16 unk4E;
-    s16 unk50;
+    /*0x24*/ Vec scale;
+    /*0x30*/ struct GMAModel *model;
+    /*0x34*/ Vec pos;
+    Vec vel;
+    s16 rotX;
+    s16 rotY;
+    s16 rotZ;
     s16 unk52;
     s16 unk54;
     s16 unk56;
@@ -87,8 +87,10 @@ struct Effect
     s16 unkA0;
     s16 unkA2;
     s16 unkA4;
-    float unkA8;
+    /*0xA8*/ float colorFactor;  // seems to mainly be used in computing color values
 };
+
+extern struct Effect g_effects[MAX_EFFECTS];
 
 void u_give_points(int, int);
 void ev_effect_init(void);
@@ -96,5 +98,17 @@ void ev_effect_main(void);
 void ev_effect_dest(void);
 void effect_draw(void);
 int spawn_effect(struct Effect *);
+void func_8004CFF0(int type);
+struct Effect *find_effect_by_uid(int uid);
+
+struct EffectFuncs
+{
+    void (*init)(struct Effect *);
+    void (*main)(struct Effect *);
+    void (*draw)(struct Effect *);
+    void (*destroy)(struct Effect *);
+};
+
+void effect_replace_type_funcs(int type, struct EffectFuncs *newFuncs);
 
 #endif

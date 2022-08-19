@@ -1646,7 +1646,7 @@ void func_800165C0(struct Ball *ball)
     int i;
     struct Effect effect;
     Vec sp10;
-    u16 r28 = 1 << ball->playerId;
+    u16 cameraMask = 1 << ball->playerId;
 
     memset(&effect, 0, sizeof(effect));
     effect.type = ET_PAPERFRAG;
@@ -1661,11 +1661,11 @@ void func_800165C0(struct Ball *ball)
         sp10.z = (RAND_FLOAT() + 1.0) * var * 0.5;
         mathutil_mtxA_rotate_y(rand() & 0x7FFF);
         mathutil_mtxA_rotate_x(rand() & 0x7FFF);
-        mathutil_mtxA_tf_point(&sp10, &effect.unk34);
-        effect.unk4C = rand() & 0x7FFF;
-        effect.unk4E = rand() & 0x7FFF;
-        effect.unk50 = rand() & 0x7FFF;
-        effect.unk16 = r28;
+        mathutil_mtxA_tf_point(&sp10, &effect.pos);
+        effect.rotX = rand() & 0x7FFF;
+        effect.rotY = rand() & 0x7FFF;
+        effect.rotZ = rand() & 0x7FFF;
+        effect.cameras = cameraMask;
         spawn_effect(&effect);
     }
 }

@@ -150,7 +150,7 @@ void u_apply_func_to_nl_disp_list_type_a(struct NlDispList *dl, void *end, void 
 void func_80048420();
 
 void func_8004CFF0(int);
-// ? func_8004D054();
+// ? find_effect_by_uid();
 // ? effect_dummy_init();
 // ? effect_dummy_main();
 // ? effect_dummy_draw();

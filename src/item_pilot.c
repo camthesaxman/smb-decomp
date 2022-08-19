@@ -375,17 +375,17 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
             item->flags &= ~(1 << 1);
             memset(&effect, 0, sizeof(effect));
             effect.type = ET_HOLDING_BANANA;
-            effect.unk14 = currentBallStructPtr->playerId;
+            effect.playerId = currentBallStructPtr->playerId;
             mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
-            mathutil_mtxA_tf_point(&item->pos, &effect.unk34);
-            mathutil_mtxA_tf_vec(&item->vel, &effect.unk40);
-            effect.unk4C = item->rotX;
-            effect.unk4E = item->rotY;
-            effect.unk50 = item->rotZ;
+            mathutil_mtxA_tf_point(&item->pos, &effect.pos);
+            mathutil_mtxA_tf_vec(&item->vel, &effect.vel);
+            effect.rotX = item->rotX;
+            effect.rotY = item->rotY;
+            effect.rotZ = item->rotZ;
             effect.model = get_lod(item->modelLODs);
-            effect.unk24.x = (item->unk14 / effect.model->boundSphereRadius) * 1.5;
-            effect.unk24.y = effect.unk24.x;
-            effect.unk24.z = effect.unk24.y;
+            effect.scale.x = (item->unk14 / effect.model->boundSphereRadius) * 1.5;
+            effect.scale.y = effect.scale.x;
+            effect.scale.z = effect.scale.y;
             spawn_effect(&effect);
         }
     }
@@ -405,11 +405,11 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         lbl_802F1FD8 = 0.6f;
         memset(&effect, 0, sizeof(effect));
         effect.type = ET_PILOT_BOMB;
-        effect.unk14 = r31->playerId;
-        effect.unk34.x = r31->pos.x;
-        effect.unk34.y = r31->pos.y - 1.0;
-        effect.unk34.z = r31->pos.z;
-        effect.unk24 = (Vec){3.5, 4.5, 3.5};
+        effect.playerId = r31->playerId;
+        effect.pos.x = r31->pos.x;
+        effect.pos.y = r31->pos.y - 1.0;
+        effect.pos.z = r31->pos.z;
+        effect.scale = (Vec){3.5, 4.5, 3.5};
         spawn_effect(&effect);
     }
     else if (item->subType == 4)
@@ -431,13 +431,13 @@ void item_pilot_collect(struct Item *item, struct PhysicsBall *ball)
         lbl_802F1FDC = 1.0f;
         memset(&effect, 0, sizeof(effect));
         effect.type = ET_COLISTAR_PARTICLE;
-        effect.unk14 = r31->playerId;
-        effect.unk34 = r31->pos;
+        effect.playerId = r31->playerId;
+        effect.pos = r31->pos;
         for (i = 0; i < 30; i++)
         {
-            effect.unk40.x = ball->vel.x + (RAND_FLOAT() * 0.2 - 0.1);
-            effect.unk40.y = ball->vel.y + 0.1 + (RAND_FLOAT() * 0.2 - 0.1);
-            effect.unk40.z = ball->vel.z + (RAND_FLOAT() * 0.2 - 0.1);
+            effect.vel.x = ball->vel.x + (RAND_FLOAT() * 0.2 - 0.1);
+            effect.vel.y = ball->vel.y + 0.1 + (RAND_FLOAT() * 0.2 - 0.1);
+            effect.vel.z = ball->vel.z + (RAND_FLOAT() * 0.2 - 0.1);
             spawn_effect(&effect);
         }
     }

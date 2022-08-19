@@ -2688,29 +2688,29 @@ void func_8003C550(struct Ball *ball)
 
     memset(&effect, 0, sizeof(effect));
 
-    effect.unk14 = ball->playerId;
+    effect.playerId = ball->playerId;
     effect.type = ET_COLIFLASH;
-    effect.unk34 = spC;
+    effect.pos = spC;
     effect.unk88 = sp24;
-    effect.unkA8 = ball->unk130;
+    effect.colorFactor = ball->unk130;
     spawn_effect(&effect);
 
     memset(&effect, 0, sizeof(effect));
 
-    effect.unk14 = ball->playerId;
+    effect.playerId = ball->playerId;
     effect.type = ET_COLISTAR_PARTICLE;
-    effect.unk34 = spC;
+    effect.pos = spC;
 
     for (r31 = r30 >> 1; r31 > 0; r31--)
     {
-        effect.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        effect.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        effect.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
         f0 = f25 * (RAND_FLOAT() * 0.055f + 0.015f);
-        effect.unk40.x += f0 * sp24.x;
-        effect.unk40.y += f0 * sp24.y;
-        effect.unk40.z += f0 * sp24.z;
+        effect.vel.x += f0 * sp24.x;
+        effect.vel.y += f0 * sp24.y;
+        effect.vel.z += f0 * sp24.z;
 
         spawn_effect(&effect);
     }
@@ -2718,23 +2718,23 @@ void func_8003C550(struct Ball *ball)
 
     memset(&effect, 0, sizeof(effect));
 
-    effect.unk14 = ball->playerId;
+    effect.playerId = ball->playerId;
     sp18.x *= 0.5f;
     sp18.y *= 0.5f;
     sp18.z *= 0.5f;
     effect.type = ET_COLI_PARTICLE;
-    effect.unk34 = spC;
+    effect.pos = spC;
 
     for (r31 = r30; r31 > 0; r31--)
     {
-        effect.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        effect.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        effect.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
         f0 = f25 * (RAND_FLOAT() * 0.05f + 0.06f);
-        effect.unk40.x += f0 * sp24.x;
-        effect.unk40.y += f0 * sp24.y;
-        effect.unk40.z += f0 * sp24.z;
+        effect.vel.x += f0 * sp24.x;
+        effect.vel.y += f0 * sp24.y;
+        effect.vel.z += f0 * sp24.z;
 
         spawn_effect(&effect);
     }
@@ -2839,8 +2839,8 @@ void func_8003CCB0(void)
 
         memset(&effect, 0, sizeof(effect));
         effect.type = ET_LEVITATE;
-        effect.unk14 = ball->playerId;
-        effect.unk34 = ball->pos;
+        effect.playerId = ball->playerId;
+        effect.pos = ball->pos;
         spawn_effect(&effect);
     }
 }
@@ -2989,11 +2989,11 @@ void func_8003D3C4(struct Ball *ball)
         memset(&effect, 0, sizeof(effect));
 
         effect.type = ET_COLI_PARTICLE;
-        effect.unk14 = ball->playerId;
+        effect.playerId = ball->playerId;
 
-        effect.unk34.x = ball->pos.x + ball->unk114.x * ball->currRadius;
-        effect.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
-        effect.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
+        effect.pos.x = ball->pos.x + ball->unk114.x * ball->currRadius;
+        effect.pos.y = ball->pos.y + ball->unk114.y * ball->currRadius;
+        effect.pos.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
         if (!(infoWork.flags & INFO_FLAG_REPLAY) || (infoWork.flags & INFO_FLAG_11))
             f2 = 0.85f;
@@ -3008,9 +3008,9 @@ void func_8003D3C4(struct Ball *ball)
         {
             float f25 = RAND_FLOAT() * f26 * 0.1;
 
-            effect.unk40.x = (spC.x + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.x;
-            effect.unk40.y = (spC.y + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.y;
-            effect.unk40.z = (spC.z + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.z;
+            effect.vel.x = (spC.x + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.x;
+            effect.vel.y = (spC.y + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.y;
+            effect.vel.z = (spC.z + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.z;
 
             spawn_effect(&effect);
         }

@@ -121,59 +121,59 @@ void bg_space_init(void)
         float temp_f1;
 
         effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-        effect.unk24.x = 12.0f * RAND_FLOAT() + 1.0f;
-        effect.unk34.x = (RAND_FLOAT() - 0.5f) * 2000.0f;
-        effect.unk34.y = (RAND_FLOAT() - 0.5f) * 500.0f + effect.unk34.x * -0.5f;
-        effect.unk34.z = (RAND_FLOAT() - 0.5f) * 6000.0f;
-        temp_f1 = effect.unk34.x;
-        if (mathutil_vec_len(&effect.unk34) < 1.7391304f * work->coreScale)
+        effect.scale.x = 12.0f * RAND_FLOAT() + 1.0f;
+        effect.pos.x = (RAND_FLOAT() - 0.5f) * 2000.0f;
+        effect.pos.y = (RAND_FLOAT() - 0.5f) * 500.0f + effect.pos.x * -0.5f;
+        effect.pos.z = (RAND_FLOAT() - 0.5f) * 6000.0f;
+        temp_f1 = effect.pos.x;
+        if (mathutil_vec_len(&effect.pos) < 1.7391304f * work->coreScale)
         {
-            if (__abs(effect.unk34.y) < 1.1920929e-7f)
-                effect.unk34.y = 0.01f;
-            mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.7391304f * work->coreScale * (1.0f + RAND_FLOAT()));
+            if (__abs(effect.pos.y) < 1.1920929e-7f)
+                effect.pos.y = 0.01f;
+            mathutil_vec_set_len(&effect.pos, &effect.pos, 1.7391304f * work->coreScale * (1.0f + RAND_FLOAT()));
         }
-        effect.unk4C = rand() & 0x7FFF;
-        effect.unk4E = rand() & 0x7FFF;
-        effect.unk50 = rand() & 0x7FFF;
-        temp_f31 = 2.0f / effect.unk24.x;
+        effect.rotX = rand() & 0x7FFF;
+        effect.rotY = rand() & 0x7FFF;
+        effect.rotZ = rand() & 0x7FFF;
+        temp_f31 = 2.0f / effect.scale.x;
         effect.unkA0 = temp_f31 * ((rand() & 0x3FF) - 0x200);
         effect.unkA2 = temp_f31 * ((rand() & 0x3FF) - 0x200);
         effect.unkA4 = temp_f31 * ((rand() & 0x3FF) - 0x200);
-        effect.unkA8 = 1.0f;
+        effect.colorFactor = 1.0f;
         spawn_effect(&effect);
         i -= 1;
     }
     memset(&effect, 0, sizeof(effect));
     effect.type = ET_METEO;
-    effect.unkA8 = 1.0f;
+    effect.colorFactor = 1.0f;
     i = work->unk3C * ((rand() & 0xF) + 64);
     while (i > 0)
     {
         effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-        effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
-        effect.unk34.x = (RAND_FLOAT() - 0.5f);
-        effect.unk34.y = (RAND_FLOAT() - 0.5f) * 0.5f + effect.unk34.x * -0.75f;
-        effect.unk34.z = (RAND_FLOAT() - 0.5f);
-        if (effect.unk34.y == 0.0f)
-            effect.unk34.y = 0.1f;
-        mathutil_vec_set_len(&effect.unk34, &effect.unk34, 1.3043479f * work->coreScale * (1.0f + RAND_FLOAT()));
+        effect.scale.x = RAND_FLOAT() * 8.0f + 1.0f;
+        effect.pos.x = (RAND_FLOAT() - 0.5f);
+        effect.pos.y = (RAND_FLOAT() - 0.5f) * 0.5f + effect.pos.x * -0.75f;
+        effect.pos.z = (RAND_FLOAT() - 0.5f);
+        if (effect.pos.y == 0.0f)
+            effect.pos.y = 0.1f;
+        mathutil_vec_set_len(&effect.pos, &effect.pos, 1.3043479f * work->coreScale * (1.0f + RAND_FLOAT()));
         effect.unk94.x = 0.0f;
         effect.unk94.y = 0.0f;
         effect.unk94.z = 1.2000000476837158 + 0.20000000298023224 * (RAND_FLOAT() - 0.5);
-        effect.unk40.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
-        effect.unk40.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
-        effect.unk40.z = effect.unk94.z + 0.5f * RAND_FLOAT();
-        effect.unk4C = rand() & 0x7FFF;
-        effect.unk4E = rand() & 0x7FFF;
-        effect.unk50 = rand() & 0x7FFF;
-        temp_f31 = 1.0f / effect.unk24.x;
+        effect.vel.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
+        effect.vel.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
+        effect.vel.z = effect.unk94.z + 0.5f * RAND_FLOAT();
+        effect.rotX = rand() & 0x7FFF;
+        effect.rotY = rand() & 0x7FFF;
+        effect.rotZ = rand() & 0x7FFF;
+        temp_f31 = 1.0f / effect.scale.x;
         effect.unkA0 = temp_f31 * ((rand() & 0x3FF) - 0x200);
         effect.unkA2 = temp_f31 * ((rand() & 0x3FF) - 0x200);
         effect.unkA4 = temp_f31 * ((rand() & 0x3FF) - 0x200);
         effect.unk52 = (rand() & 0xFF) - 0x80;
         effect.unk54 = (rand() & 0xFF) - 0x80;
         effect.unk56 = (rand() & 0xFF) - 0x80;
-        effect.unkA8 = 1.0f;
+        effect.colorFactor = 1.0f;
         spawn_effect(&effect);
         i -= 1;
     }
@@ -208,10 +208,10 @@ void bg_space_main(void)
             memset(&effect, 0, sizeof(effect));
             effect.type = ET_METEO;
             effect.model = work->meteorModels[(rand() & 0x7FFF) % work->meteorModelCount];
-            effect.unk24.x = RAND_FLOAT() * 8.0f + 1.0f;
-            effect.unk34.x = effect.unk24.x * (175.0f * (RAND_FLOAT() - 0.5f));
-            effect.unk34.y = effect.unk24.x * (150.0f * (RAND_FLOAT() - 0.5f)) + effect.unk34.x * -0.75f;
-            effect.unk34.z = 1.3043479f * -work->coreScale * effect.unk24.x;
+            effect.scale.x = RAND_FLOAT() * 8.0f + 1.0f;
+            effect.pos.x = effect.scale.x * (175.0f * (RAND_FLOAT() - 0.5f));
+            effect.pos.y = effect.scale.x * (150.0f * (RAND_FLOAT() - 0.5f)) + effect.pos.x * -0.75f;
+            effect.pos.z = 1.3043479f * -work->coreScale * effect.scale.x;
             if (infoWork.timerMax == 0)
                 var_f31 = 1.0f;
             else
@@ -219,20 +219,20 @@ void bg_space_main(void)
             effect.unk94.x = 0.0f;
             effect.unk94.y = 0.0f;
             effect.unk94.z = var_f31 * (1.2000000476837158 + 0.20000000298023224 * (RAND_FLOAT() - 0.5));
-            effect.unk40.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
-            effect.unk40.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
-            effect.unk40.z = effect.unk94.z + 0.5f * RAND_FLOAT();
-            effect.unk4C = rand() & 0x7FFF;
-            effect.unk4E = rand() & 0x7FFF;
-            effect.unk50 = rand() & 0x7FFF;
-            temp_f31 = 1.0f / effect.unk24.x;
+            effect.vel.x = effect.unk94.x + 0.2f * (RAND_FLOAT() - 0.5f);
+            effect.vel.y = effect.unk94.y + 0.2f * (RAND_FLOAT() - 0.5f);
+            effect.vel.z = effect.unk94.z + 0.5f * RAND_FLOAT();
+            effect.rotX = rand() & 0x7FFF;
+            effect.rotY = rand() & 0x7FFF;
+            effect.rotZ = rand() & 0x7FFF;
+            temp_f31 = 1.0f / effect.scale.x;
             effect.unkA0 = (s16) (temp_f31 * (f32) ((rand() & 0x3FF) - 0x200));
             effect.unkA2 = (s16) (temp_f31 * (f32) ((rand() & 0x3FF) - 0x200));
             effect.unkA4 = (s16) (temp_f31 * (f32) ((rand() & 0x3FF) - 0x200));
             effect.unk52 = (rand() & 0xFF) - 0x80;
             effect.unk54 = (rand() & 0xFF) - 0x80;
             effect.unk56 = (rand() & 0xFF) - 0x80;
-            effect.unkA8 = 0.0f;
+            effect.colorFactor = 0.0f;
             spawn_effect(&effect);
         }
         work->unk48.x += work->unk54;

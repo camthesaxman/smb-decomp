@@ -28,16 +28,16 @@ void bg_old_bonus_init(void)
     memset(&effect, 0, sizeof(effect));
     effect.type = ET_TWINKLE_STAR;
     effect.model = (void *)NLOBJ_MODEL(g_bgNlObj, 1);
-    effect.unk10 = 0;
+    effect.u_otherTimer = 0;
     len = strlen("obj_STARPOINT_");
     modelIter = g_bgNlObj->models;
     while (*modelIter != NULL)
     {
         if (strncmp(NLMODEL_HEADER(*modelIter)->unk0->unk0, "obj_STARPOINT_", len) == 0)
         {
-            effect.unk34 = (*modelIter)->boundSphereCenter;
+            effect.pos = (*modelIter)->boundSphereCenter;
             spawn_effect(&effect);
-            effect.unk10 += 30.0;
+            effect.u_otherTimer += 30.0;
         }
         modelIter++;
     }
@@ -59,7 +59,7 @@ void bg_old_bonus_draw(void)
 
 void bg_old_bonus_interact(int a)
 {
-    struct Effect effect;
+    struct Effect star;
     Vec spC;
     float f31;
 
@@ -67,25 +67,26 @@ void bg_old_bonus_interact(int a)
     {
     case 0:
     case 1:
-        memset(&effect, 0, sizeof(effect));
-        effect.type = ET_BONUS_STG_STAR;
-        effect.unk14 = currentBallStructPtr->playerId;
+        // spawn shooting star
+        memset(&star, 0, sizeof(star));
+        star.type = ET_BONUS_STG_STAR;
+        star.playerId = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(lbl_802F1B3C->matrices[1]);
         spC.z = -180.0 + RAND_FLOAT() * -300.0;
         spC.x = spC.z * -2.6666666666666665 * currentCameraStructPtr->sub28.unk38 * (RAND_FLOAT() - 0.5);
         spC.y = spC.z * -1.1 * currentCameraStructPtr->sub28.unk38;
-        mathutil_mtxA_rigid_inv_tf_point(&spC, &effect.unk34);
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &star.pos);
         f31 = -spC.z * 0.0033333333333333335;
-        effect.unk40.x = (1.0 + RAND_FLOAT()) * f31;
-        effect.unk40.y = (-3.0 + -1.0 * RAND_FLOAT()) * f31;
-        effect.unk40.z = (1.0 + RAND_FLOAT()) * f31;
+        star.vel.x = (1.0 + RAND_FLOAT()) * f31;
+        star.vel.y = (-3.0 + -1.0 * RAND_FLOAT()) * f31;
+        star.vel.z = (1.0 + RAND_FLOAT()) * f31;
         spC.x = 0.0f;
         spC.y = 0.0f;
         spC.z = 0.0f;
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
-        mathutil_ray_to_euler_xy(&spC, &effect.unk34, &effect.unk4C, &effect.unk4E);
-        effect.unk50 = rand() & 0x7FFF;
-        spawn_effect(&effect);
+        mathutil_ray_to_euler_xy(&spC, &star.pos, &star.rotX, &star.rotY);
+        star.rotZ = rand() & 0x7FFF;
+        spawn_effect(&star);
         break;
     }
 }

@@ -92,10 +92,10 @@ void bg_storm_main(void)
         spD0.x = RAND_FLOAT() - 0.5f;
         spD0.y = 0.0f;
         spD0.z = RAND_FLOAT() - 0.5f;
-        mathutil_vec_set_len(&spD0, &effect.unk34, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
+        mathutil_vec_set_len(&spD0, &effect.pos, (RAND_FLOAT() + 0.1f) * 3.6000001430511475f);
         effect.unk70.y = 1.0f;
-        mathutil_vec_to_euler_xy(&spB4.normal, &effect.unk4C, &effect.unk4E);
-        effect.unk50 = rand() & 0x7FFF;
+        mathutil_vec_to_euler_xy(&spB4.normal, &effect.rotX, &effect.rotY);
+        effect.rotZ = rand() & 0x7FFF;
         effect.model = work->rain02Model;
         spawn_effect(&effect);
         return;
@@ -114,10 +114,10 @@ void bg_storm_main(void)
             spD0.z += camera->lookAt.z;
             if ((u32)raycast_stage_down(&spD0, &spB4, &effect.unk7C) != 0)
             {
-                effect.unk34 = spB4.pos;
+                effect.pos = spB4.pos;
                 effect.unk70 = spB4.normal;
-                mathutil_vec_to_euler_xy(&spB4.normal, &effect.unk4C, &effect.unk4E);
-                effect.unk50 = rand() & 0x7FFF;
+                mathutil_vec_to_euler_xy(&spB4.normal, &effect.rotX, &effect.rotY);
+                effect.rotZ = rand() & 0x7FFF;
                 effect.model = work->rain02Model;
                 spawn_effect(&effect);
             }

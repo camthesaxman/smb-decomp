@@ -496,4 +496,31 @@ void bg_end_finish(void);
 void bg_end_draw(void);
 void bg_end_interact(int);
 
+struct Effect;
+
+void effect_bird_kite_init(struct Effect *);
+void effect_bird_kite_main(struct Effect *);
+void effect_bird_kite_draw(struct Effect *);
+void effect_bird_kite_destroy(struct Effect *);
+void effect_icewater_reflect_init(struct Effect *);
+void effect_icewater_reflect_main(struct Effect *);
+void effect_icewater_reflect_draw(struct Effect *);
+void effect_icewater_reflect_destroy(struct Effect *);
+void effect_icewater_particle_init(struct Effect *);
+void effect_icewater_particle_main(struct Effect *);
+void effect_icewater_particle_draw(struct Effect *);
+void effect_icewater_particle_destroy(struct Effect *);
+void effect_nameent_code_init(struct Effect *);
+void effect_nameent_code_main(struct Effect *);
+void effect_nameent_code_draw(struct Effect *);
+void effect_nameent_code_destroy(struct Effect *);
+void effect_get_nameent_code_init(struct Effect *);
+void effect_get_nameent_code_main(struct Effect *);
+void effect_get_nameent_code_draw(struct Effect *);
+void effect_get_nameent_code_destroy(struct Effect *);
+void effect_ending_ballfrag_init(struct Effect *);
+void effect_ending_ballfrag_main(struct Effect *);
+void effect_ending_ballfrag_draw(struct Effect *);
+void effect_ending_ballfrag_destroy(struct Effect *);
+
 #endif
