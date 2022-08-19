@@ -10,6 +10,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "gma.h"
 #include "gxutil.h"
 #include "hud.h"
@@ -2653,7 +2654,7 @@ void func_8003C4A0(struct Ball *ball, int b)
 
 void func_8003C550(struct Ball *ball)
 {
-    struct Effect sp30;
+    struct Effect effect;
     Vec sp24;
     Vec sp18;
     Vec spC;
@@ -2685,57 +2686,57 @@ void func_8003C550(struct Ball *ball)
 
     f25 = __fabs(ball->unk130 / 0.32999999821186066) + 1.0;
 
-    memset(&sp30, 0, sizeof(sp30));
+    memset(&effect, 0, sizeof(effect));
 
-    sp30.unk14 = ball->playerId;
-    sp30.unk8 = 0x1B;
-    sp30.unk34 = spC;
-    sp30.unk88 = sp24;
-    sp30.unkA8 = ball->unk130;
-    spawn_effect(&sp30);
+    effect.playerId = ball->playerId;
+    effect.type = ET_COLIFLASH;
+    effect.pos = spC;
+    effect.unk88 = sp24;
+    effect.colorFactor = ball->unk130;
+    spawn_effect(&effect);
 
-    memset(&sp30, 0, sizeof(sp30));
+    memset(&effect, 0, sizeof(effect));
 
-    sp30.unk14 = ball->playerId;
-    sp30.unk8 = 0x13;
-    sp30.unk34 = spC;
+    effect.playerId = ball->playerId;
+    effect.type = ET_COLISTAR_PARTICLE;
+    effect.pos = spC;
 
     for (r31 = r30 >> 1; r31 > 0; r31--)
     {
-        sp30.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        sp30.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        sp30.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
         f0 = f25 * (RAND_FLOAT() * 0.055f + 0.015f);
-        sp30.unk40.x += f0 * sp24.x;
-        sp30.unk40.y += f0 * sp24.y;
-        sp30.unk40.z += f0 * sp24.z;
+        effect.vel.x += f0 * sp24.x;
+        effect.vel.y += f0 * sp24.y;
+        effect.vel.z += f0 * sp24.z;
 
-        spawn_effect(&sp30);
+        spawn_effect(&effect);
     }
     r30 -= r30 >> 1;
 
-    memset(&sp30, 0, sizeof(sp30));
+    memset(&effect, 0, sizeof(effect));
 
-    sp30.unk14 = ball->playerId;
+    effect.playerId = ball->playerId;
     sp18.x *= 0.5f;
     sp18.y *= 0.5f;
     sp18.z *= 0.5f;
-    sp30.unk8 = 2;
-    sp30.unk34 = spC;
+    effect.type = ET_COLI_PARTICLE;
+    effect.pos = spC;
 
     for (r31 = r30; r31 > 0; r31--)
     {
-        sp30.unk40.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        sp30.unk40.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
-        sp30.unk40.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.x = sp18.x + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.y = sp18.y + f25 * (RAND_FLOAT() * 0.05 - 0.025);
+        effect.vel.z = sp18.z + f25 * (RAND_FLOAT() * 0.05 - 0.025);
 
         f0 = f25 * (RAND_FLOAT() * 0.05f + 0.06f);
-        sp30.unk40.x += f0 * sp24.x;
-        sp30.unk40.y += f0 * sp24.y;
-        sp30.unk40.z += f0 * sp24.z;
+        effect.vel.x += f0 * sp24.x;
+        effect.vel.y += f0 * sp24.y;
+        effect.vel.z += f0 * sp24.z;
 
-        spawn_effect(&sp30);
+        spawn_effect(&effect);
     }
 }
 
@@ -2834,13 +2835,13 @@ void func_8003CCB0(void)
 
     if (bvar)
     {
-        struct Effect sp8;
+        struct Effect effect;
 
-        memset(&sp8, 0, sizeof(sp8));
-        sp8.unk8 = 10;
-        sp8.unk14 = ball->playerId;
-        sp8.unk34 = ball->pos;
-        spawn_effect(&sp8);
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_LEVITATE;
+        effect.playerId = ball->playerId;
+        effect.pos = ball->pos;
+        spawn_effect(&effect);
     }
 }
 
@@ -2976,7 +2977,7 @@ void func_8003D3C4(struct Ball *ball)
     if (f26 > 1.5f)
     {
         Vec spC4;
-        struct Effect sp18;
+        struct Effect effect;
         Vec spC;
         float f2;
         int r29;
@@ -2985,14 +2986,14 @@ void func_8003D3C4(struct Ball *ball)
         spC.y = -ball->unk114.y;
         spC.z = -ball->unk114.z;
 
-        memset(&sp18, 0, sizeof(sp18));
+        memset(&effect, 0, sizeof(effect));
 
-        sp18.unk8 = 2;
-        sp18.unk14 = ball->playerId;
+        effect.type = ET_COLI_PARTICLE;
+        effect.playerId = ball->playerId;
 
-        sp18.unk34.x = ball->pos.x + ball->unk114.x * ball->currRadius;
-        sp18.unk34.y = ball->pos.y + ball->unk114.y * ball->currRadius;
-        sp18.unk34.z = ball->pos.z + ball->unk114.z * ball->currRadius;
+        effect.pos.x = ball->pos.x + ball->unk114.x * ball->currRadius;
+        effect.pos.y = ball->pos.y + ball->unk114.y * ball->currRadius;
+        effect.pos.z = ball->pos.z + ball->unk114.z * ball->currRadius;
 
         if (!(infoWork.flags & INFO_FLAG_REPLAY) || (infoWork.flags & INFO_FLAG_11))
             f2 = 0.85f;
@@ -3007,11 +3008,11 @@ void func_8003D3C4(struct Ball *ball)
         {
             float f25 = RAND_FLOAT() * f26 * 0.1;
 
-            sp18.unk40.x = (spC.x + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.x;
-            sp18.unk40.y = (spC.y + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.y;
-            sp18.unk40.z = (spC.z + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.z;
+            effect.vel.x = (spC.x + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.x;
+            effect.vel.y = (spC.y + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.y;
+            effect.vel.z = (spC.z + (RAND_FLOAT() * 1.5 - 0.75)) * f25 + spC4.z;
 
-            spawn_effect(&sp18);
+            spawn_effect(&effect);
         }
     }
 }

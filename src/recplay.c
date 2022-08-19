@@ -1197,3 +1197,34 @@ static int dummy_return_true(struct BuiltinReplay *unused)
 {
     return TRUE;
 }
+
+static u32 lbl_801B89A0[] =
+{
+    0x0002136E,
+    0x00076675,
+    0x00096776,
+    0,
+};
+
+static u32 lbl_801B89B0[] =
+{
+    0x00086877,
+    0x00094E78,
+    0x000B1B79,
+    0x000C697A,
+    0x000E6B7B,
+    0x00136D7C,
+    0x0017707D,
+    0x0018717E,
+    0x001A5F7F,
+    0,
+};
+
+static u32 lbl_802F0A04[] =
+{
+    0,
+};
+
+#pragma force_active on
+void *lbl_801B89D8[] = { lbl_801B89A0, lbl_801B89B0, lbl_802F0A04, NULL };
+#pragma force_active reset

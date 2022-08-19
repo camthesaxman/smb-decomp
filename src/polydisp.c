@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "event.h"
 #include "gma.h"
 #include "gxcache.h"

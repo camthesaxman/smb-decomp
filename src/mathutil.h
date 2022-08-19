@@ -241,6 +241,24 @@ static inline float mathutil_sum_of_sq_3(register float a, register float b, reg
 #endif
 }
 
+static inline float mathutil_unk(register float a, register float b, register float c, register float d)
+{
+#ifdef C_ONLY
+    a -= c;
+    b -= d;
+    return mathutil_sqrt(a * a + b * b);
+#else
+    asm
+    {
+        fsubs a, a, c
+        fsubs b, b, d
+        fmuls a, a, a
+        fmadds a, b, b, a
+    }
+    return mathutil_sqrt(a);
+#endif
+}
+
 static inline float mathutil_vec_len(register Vec *v)
 {
 #ifdef C_ONLY

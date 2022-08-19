@@ -10,6 +10,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "gma.h"
 #include "gxcache.h"
 #include "gxutil.h"
@@ -198,23 +199,23 @@ void bg_bonus_interact(int a)
     case 1:
         // spawn shooting star
         memset(&star, 0, sizeof(star));
-        star.unk8 = 32;
-        star.unk14 = currentBallStructPtr->playerId;
-        mathutil_mtxA_from_mtx(cameraInfo[star.unk14].unk1A4);
+        star.type = ET_BNS_STG_STAR;
+        star.playerId = currentBallStructPtr->playerId;
+        mathutil_mtxA_from_mtx(cameraInfo[star.playerId].unk1A4);
         spC.z = -120.0f + RAND_FLOAT() * -225.0f;
         spC.x = spC.z * -(8.0f / 3.0f) * currentCameraStructPtr->sub28.unk38 * (RAND_FLOAT() - 0.5f);
         spC.y = spC.z * -1.1f * currentCameraStructPtr->sub28.unk38;
-        mathutil_mtxA_rigid_inv_tf_point(&spC, &star.unk34);
+        mathutil_mtxA_rigid_inv_tf_point(&spC, &star.pos);
         f31 = -spC.z * (1.0f / 300.0f);
-        star.unk40.x = (1.0f + RAND_FLOAT()) * f31;
-        star.unk40.y = (-3.0f + RAND_FLOAT() * -1.0f) * f31;
-        star.unk40.z = (1.0f + RAND_FLOAT()) * f31;
+        star.vel.x = (1.0f + RAND_FLOAT()) * f31;
+        star.vel.y = (-3.0f + RAND_FLOAT() * -1.0f) * f31;
+        star.vel.z = (1.0f + RAND_FLOAT()) * f31;
         spC.x = 0.0f;
         spC.y = 0.0f;
         spC.z = 0.0f;
         mathutil_mtxA_rigid_inv_tf_point(&spC, &spC);
-        mathutil_ray_to_euler_xy(&spC, &star.unk34, &star.unk4C, &star.unk4E);
-        star.unk50 = rand() & 0x7FFF;
+        mathutil_ray_to_euler_xy(&spC, &star.pos, &star.rotX, &star.rotY);
+        star.rotZ = rand() & 0x7FFF;
         spawn_effect(&star);
         break;
     }

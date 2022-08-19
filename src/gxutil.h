@@ -27,7 +27,7 @@ void gxutil_set_line_blend_params(GXBlendMode blendMode, GXBlendFactor srcFactor
 void gxutil_draw_line(Vec *pos1, Vec *pos2, GXColor *c);
 void gxutil_draw_line_strip(u16 numPoints, Point3d *points, GXColor *color);
 void gxutil_draw_line_deferred(Point3d *start, Point3d *end, GXColor *c);
-// ? gxutil_draw_line_multicolor_deferred();
+void gxutil_draw_line_multicolor_deferred(struct PointWithColor *start, struct PointWithColor *end);
 void prepare_for_drawing_lines(void);
 
 #endif

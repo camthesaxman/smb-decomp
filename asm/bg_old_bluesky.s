@@ -725,8 +725,8 @@ bg_old_bluesky_draw:
 .global bg_old_bluesky_interact
 bg_old_bluesky_interact:
 /* 800573A0 000532C0  4E 80 00 20 */	blr
-.global func_800573A4
-func_800573A4:
+.global effect_bird_kite_init
+effect_bird_kite_init:
 /* 800573A4 000532C4  7C 08 02 A6 */	mflr r0
 /* 800573A8 000532C8  38 80 00 00 */	li r4, 0
 /* 800573AC 000532CC  90 01 00 04 */	stw r0, 4(r1)
@@ -788,8 +788,8 @@ lbl_8005744C:
 /* 80057480 000533A0  38 21 00 20 */	addi r1, r1, 0x20
 /* 80057484 000533A4  7C 08 03 A6 */	mtlr r0
 /* 80057488 000533A8  4E 80 00 20 */	blr
-.global func_8005748C
-func_8005748C:
+.global effect_bird_kite_main
+effect_bird_kite_main:
 /* 8005748C 000533AC  7C 08 02 A6 */	mflr r0
 /* 80057490 000533B0  90 01 00 04 */	stw r0, 4(r1)
 /* 80057494 000533B4  94 21 FF 98 */	stwu r1, -0x68(r1)
@@ -1074,8 +1074,8 @@ lbl_800577B4:
 /* 800578C8 000537E8  7C 08 03 A6 */	mtlr r0
 /* 800578CC 000537EC  4E 80 00 20 */	blr
 
-.global func_800578D0
-func_800578D0:
+.global effect_bird_kite_draw
+effect_bird_kite_draw:
 /* 800578D0 000537F0  7C 08 02 A6 */	mflr r0
 /* 800578D4 000537F4  90 01 00 04 */	stw r0, 4(r1)
 /* 800578D8 000537F8  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -1102,8 +1102,8 @@ lbl_80057920:
 /* 80057928 00053848  38 21 00 18 */	addi r1, r1, 0x18
 /* 8005792C 0005384C  7C 08 03 A6 */	mtlr r0
 /* 80057930 00053850  4E 80 00 20 */	blr
-.global func_80057934
-func_80057934:
+.global effect_bird_kite_destroy
+effect_bird_kite_destroy:
 /* 80057934 00053854  38 00 00 00 */	li r0, 0
 /* 80057938 00053858  90 03 00 30 */	stw r0, 0x30(r3)
 /* 8005793C 0005385C  4E 80 00 20 */	blr

@@ -467,38 +467,6 @@ struct Struct80206DEC
 
 struct Stage;
 
-struct Effect
-{
-    u8 filler0[8];
-    s16 unk8;
-    u8 fillerA[0x10-0xA];
-    s32 unk10;
-    s16 unk14;
-    u16 unk16;
-    float unk18;
-    float unk1C;
-    float unk20;
-    Vec unk24;
-    struct GMAModel *unk30;
-    Vec unk34;
-    Vec unk40;
-    s16 unk4C;
-    s16 unk4E;
-    s16 unk50;
-    s16 unk52;
-    s16 unk54;
-    s16 unk56;
-    u8 filler58[0x70-0x58];
-    Vec unk70;
-    Vec unk7C;
-    Vec unk88;
-    Vec unk94;
-    s16 unkA0;
-    s16 unkA2;
-    s16 unkA4;
-    float unkA8;
-};
-
 // motload
 
 struct MotDatJoint
@@ -1016,6 +984,13 @@ struct Struct801EEDA8
     u8 filler0[0x100];
     float unk100;
     u8 filler104[0x118-0x104];
+};
+
+struct Struct8009DBB0
+{
+    int unk0;
+    Vec unk4;
+    Vec unk10;
 };
 
 #endif

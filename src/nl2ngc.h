@@ -141,8 +141,10 @@ struct NlObj
 
 #define NLOBJ_MODEL(obj, index) (((struct NlModel **)obj->models)[index])
 
-// ? func_80030AF8();
-// ? nl2ngc_draw_line_deferred();
+void nl2ngc_set_line_width(float width);
+void nl2ngc_set_line_blend_params(GXBlendFactor srcFactor, GXBlendFactor dstFactor);
+void nl2ngc_draw_line(Point3d *start, Point3d *end, u32 color);
+void nl2ngc_draw_line_deferred(Point3d *start, Point3d *end, u32 color);
 void nl2ngc_set_scale(float);
 void nl2ngc_set_material_color(float r, float g, float b);
 BOOL load_nlobj(struct NlObj **pobj, struct TPL **ptpl, char *modelName, char *texName);

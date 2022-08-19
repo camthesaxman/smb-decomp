@@ -7701,31 +7701,31 @@ lbl_00007444:
 /* 00007458 3BE30000 */ addi r31, r3, lbl_0001CB40@l
 /* 0000745C 389F0000 */ addi r4, r31, 0
 /* 00007460 38600018 */ li r3, 0x18
-/* 00007464 4BFF8D01 */ bl func_8004D0BC
+/* 00007464 4BFF8D01 */ bl effect_replace_type_funcs
 /* 00007468 38600019 */ li r3, 0x19
 /* 0000746C 389F0010 */ addi r4, r31, 0x10
-/* 00007470 4BFF8CF5 */ bl func_8004D0BC
+/* 00007470 4BFF8CF5 */ bl effect_replace_type_funcs
 /* 00007474 3860001A */ li r3, 0x1a
 /* 00007478 389F0020 */ addi r4, r31, 0x20
-/* 0000747C 4BFF8CE9 */ bl func_8004D0BC
+/* 0000747C 4BFF8CE9 */ bl effect_replace_type_funcs
 /* 00007480 3860001C */ li r3, 0x1c
 /* 00007484 389F0030 */ addi r4, r31, 0x30
-/* 00007488 4BFF8CDD */ bl func_8004D0BC
+/* 00007488 4BFF8CDD */ bl effect_replace_type_funcs
 /* 0000748C 3860001D */ li r3, 0x1d
 /* 00007490 389F0040 */ addi r4, r31, 0x40
-/* 00007494 4BFF8CD1 */ bl func_8004D0BC
+/* 00007494 4BFF8CD1 */ bl effect_replace_type_funcs
 /* 00007498 3860001E */ li r3, 0x1e
 /* 0000749C 389F0050 */ addi r4, r31, 0x50
-/* 000074A0 4BFF8CC5 */ bl func_8004D0BC
+/* 000074A0 4BFF8CC5 */ bl effect_replace_type_funcs
 /* 000074A4 3860001F */ li r3, 0x1f
 /* 000074A8 389F0060 */ addi r4, r31, 0x60
-/* 000074AC 4BFF8CB9 */ bl func_8004D0BC
+/* 000074AC 4BFF8CB9 */ bl effect_replace_type_funcs
 /* 000074B0 3860002A */ li r3, 0x2a
 /* 000074B4 389F0070 */ addi r4, r31, 0x70
-/* 000074B8 4BFF8CAD */ bl func_8004D0BC
+/* 000074B8 4BFF8CAD */ bl effect_replace_type_funcs
 /* 000074BC 3860002B */ li r3, 0x2b
 /* 000074C0 389F0080 */ addi r4, r31, 0x80
-/* 000074C4 4BFF8CA1 */ bl func_8004D0BC
+/* 000074C4 4BFF8CA1 */ bl effect_replace_type_funcs
 /* 000074C8 80010014 */ lwz r0, 0x14(r1)
 /* 000074CC 83E1000C */ lwz r31, 0xc(r1)
 /* 000074D0 38210010 */ addi r1, r1, 0x10
@@ -7737,31 +7737,31 @@ lbl_000074DC:
 /* 000074E4 90010004 */ stw r0, 4(r1)
 /* 000074E8 38800000 */ li r4, 0
 /* 000074EC 9421FFF8 */ stwu r1, -8(r1)
-/* 000074F0 4BFF8C75 */ bl func_8004D0BC
+/* 000074F0 4BFF8C75 */ bl effect_replace_type_funcs
 /* 000074F4 38600019 */ li r3, 0x19
 /* 000074F8 38800000 */ li r4, 0
-/* 000074FC 4BFF8C69 */ bl func_8004D0BC
+/* 000074FC 4BFF8C69 */ bl effect_replace_type_funcs
 /* 00007500 3860001A */ li r3, 0x1a
 /* 00007504 38800000 */ li r4, 0
-/* 00007508 4BFF8C5D */ bl func_8004D0BC
+/* 00007508 4BFF8C5D */ bl effect_replace_type_funcs
 /* 0000750C 3860001C */ li r3, 0x1c
 /* 00007510 38800000 */ li r4, 0
-/* 00007514 4BFF8C51 */ bl func_8004D0BC
+/* 00007514 4BFF8C51 */ bl effect_replace_type_funcs
 /* 00007518 3860001D */ li r3, 0x1d
 /* 0000751C 38800000 */ li r4, 0
-/* 00007520 4BFF8C45 */ bl func_8004D0BC
+/* 00007520 4BFF8C45 */ bl effect_replace_type_funcs
 /* 00007524 3860001E */ li r3, 0x1e
 /* 00007528 38800000 */ li r4, 0
-/* 0000752C 4BFF8C39 */ bl func_8004D0BC
+/* 0000752C 4BFF8C39 */ bl effect_replace_type_funcs
 /* 00007530 3860001F */ li r3, 0x1f
 /* 00007534 38800000 */ li r4, 0
-/* 00007538 4BFF8C2D */ bl func_8004D0BC
+/* 00007538 4BFF8C2D */ bl effect_replace_type_funcs
 /* 0000753C 3860002A */ li r3, 0x2a
 /* 00007540 38800000 */ li r4, 0
-/* 00007544 4BFF8C21 */ bl func_8004D0BC
+/* 00007544 4BFF8C21 */ bl effect_replace_type_funcs
 /* 00007548 3860002B */ li r3, 0x2b
 /* 0000754C 38800000 */ li r4, 0
-/* 00007550 4BFF8C15 */ bl func_8004D0BC
+/* 00007550 4BFF8C15 */ bl effect_replace_type_funcs
 /* 00007554 8001000C */ lwz r0, 0xc(r1)
 /* 00007558 38210008 */ addi r1, r1, 8
 /* 0000755C 7C0803A6 */ mtlr r0

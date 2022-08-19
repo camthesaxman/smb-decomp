@@ -139,7 +139,7 @@ SOURCES := \
 	src/code_8.c \
 	src/recplay.c \
 	src/recplay_2.c \
-	asm/effect.s \
+	src/effect.c \
 	src/background.c \
 	asm/bg_old_bluesky.s \
 	src/bg_old_cave.c \

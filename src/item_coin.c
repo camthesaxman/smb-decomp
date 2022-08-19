@@ -9,6 +9,7 @@
 #include "background.h"
 #include "ball.h"
 #include "camera.h"
+#include "effect.h"
 #include "gma.h"
 #include "info.h"
 #include "item.h"
@@ -193,7 +194,7 @@ void item_coin_collect(struct Item *item, struct PhysicsBall *ball)
     item->vel.z += ball->vel.z * 0.25;
     if (item->unk5E < 0 && !(currentBallStructPtr->flags & (1 << 24)))
     {
-        struct Effect sp10;
+        struct Effect effect;
 
         item->unk5E = infoWork.timerCurr;
         give_bananas(s_bananaInfos[item->subType].bananaValue);
@@ -203,20 +204,20 @@ void item_coin_collect(struct Item *item, struct PhysicsBall *ball)
         item->flags &= ~(1 << 1);
 
         // spawn banana effect that travels towards counter in HUD
-        memset(&sp10, 0, sizeof(sp10));
-        sp10.unk8 = 8;
-        sp10.unk14 = currentBallStructPtr->playerId;
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_HOLDING_BANANA;
+        effect.playerId = currentBallStructPtr->playerId;
         mathutil_mtxA_from_mtx(animGroups[ball->animGroupId].transform);
-        mathutil_mtxA_tf_point(&item->pos, &sp10.unk34);
-        mathutil_mtxA_tf_vec(&item->vel, &sp10.unk40);
-        sp10.unk4C = item->rotX;
-        sp10.unk4E = item->rotY;
-        sp10.unk50 = item->rotZ;
-        sp10.unk30 = get_lod((void *)item->modelLODs);
-        sp10.unk24.x = (item->unk14 / sp10.unk30->boundSphereRadius) * 1.5;
-        sp10.unk24.y = sp10.unk24.x;
-        sp10.unk24.z = sp10.unk24.y;
-        spawn_effect(&sp10);
+        mathutil_mtxA_tf_point(&item->pos, &effect.pos);
+        mathutil_mtxA_tf_vec(&item->vel, &effect.vel);
+        effect.rotX = item->rotX;
+        effect.rotY = item->rotY;
+        effect.rotZ = item->rotZ;
+        effect.model = get_lod((void *)item->modelLODs);
+        effect.scale.x = (item->unk14 / effect.model->boundSphereRadius) * 1.5;
+        effect.scale.y = effect.scale.x;
+        effect.scale.z = effect.scale.y;
+        spawn_effect(&effect);
     }
     if (advDemoInfo.flags & (1 << 8))
         return;

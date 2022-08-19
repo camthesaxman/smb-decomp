@@ -219,10 +219,10 @@ extern float unknownTrigTable[];
 // extern ? lbl_801B87A0;
 // extern ? lbl_801B8858;
 // extern ? lbl_801B89E8;
-// extern ? lbl_801B8E38;
-// extern ? lbl_801B8F00;
-// extern ? lbl_801B9090;
-// extern ? lbl_801B9168;
+// extern ? s_effectInitFuncs;
+// extern ? s_effectMainFuncs;
+// extern ? s_effectDestroyFuncs;
+// extern ? s_paperPieceModels;
 
 // extern ? lbl_801B9B28;
 // extern ? lbl_801B9B48;
@@ -566,8 +566,7 @@ extern struct Struct80250A68 lbl_80250A68;
 // extern ? lbl_80250AA0;
 // extern ? lbl_80250B58;
 // extern ? lbl_80250B70;
-// extern ? s_replayData;
-// extern ? lbl_802673C8;
+
 // extern ? lbl_8027CBC8;
 // extern ? lbl_8027CBF8;
 // extern ? lbl_8027CC28;

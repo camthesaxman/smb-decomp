@@ -6,6 +6,7 @@
 #include "ball.h"
 #include "camera.h"
 #include "course.h"
+#include "effect.h"
 #include "event.h"
 #include "info.h"
 #include "item.h"

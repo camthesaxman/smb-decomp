@@ -7,6 +7,7 @@
 
 #include "global.h"
 #include "background.h"
+#include "effect.h"
 #include "gxcache.h"
 #include "mathutil.h"
 #include "stage.h"
@@ -202,15 +203,15 @@ static int model_find_proc(int index, struct GMAModelEntry *entry)
 
 static int obj_find_proc(int index, struct StageBgObject *bgObj)
 {
-    struct Effect sp10;
+    struct Effect effect;
 
     switch (index)
     {
     case 0:  // END_PARADISE_
-        memset(&sp10, 0, sizeof(sp10));
-        sp10.unk8 = 48;
-        sp10.unk30 = (void *)bgObj;
-        spawn_effect(&sp10);
+        memset(&effect, 0, sizeof(effect));
+        effect.type = ET_BGEND_WATER;
+        effect.model = (void *)bgObj;
+        spawn_effect(&effect);
         break;
     }
     return 1;

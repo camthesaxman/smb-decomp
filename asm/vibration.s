@@ -11602,16 +11602,16 @@ func_800C09B0:
 .global func_800C09B4
 func_800C09B4:
 /* 800C09B4 000BC8D4  4E 80 00 20 */	blr
-.global func_800C09B8
-func_800C09B8:
+.global effect_ending_ballfrag_init
+effect_ending_ballfrag_init:
 /* 800C09B8 000BC8D8  38 00 0E 10 */	li r0, 0xe10
 /* 800C09BC 000BC8DC  3C 80 00 01 */	lis r4, 0x0000FFFF@ha
 /* 800C09C0 000BC8E0  90 03 00 0C */	stw r0, 0xc(r3)
 /* 800C09C4 000BC8E4  38 04 FF FF */	addi r0, r4, 0x0000FFFF@l
 /* 800C09C8 000BC8E8  B0 03 00 16 */	sth r0, 0x16(r3)
 /* 800C09CC 000BC8EC  4E 80 00 20 */	blr
-.global func_800C09D0
-func_800C09D0:
+.global effect_ending_ballfrag_main
+effect_ending_ballfrag_main:
 /* 800C09D0 000BC8F0  7C 08 02 A6 */	mflr r0
 /* 800C09D4 000BC8F4  3C 80 80 2C */	lis r4, lbl_802C6BD8@ha
 /* 800C09D8 000BC8F8  90 01 00 04 */	stw r0, 4(r1)
@@ -11762,8 +11762,8 @@ lbl_800C0C08:
 /* 800C0C10 000BCB30  38 21 00 50 */	addi r1, r1, 0x50
 /* 800C0C14 000BCB34  7C 08 03 A6 */	mtlr r0
 /* 800C0C18 000BCB38  4E 80 00 20 */	blr
-.global func_800C0C1C
-func_800C0C1C:
+.global effect_ending_ballfrag_draw
+effect_ending_ballfrag_draw:
 /* 800C0C1C 000BCB3C  7C 08 02 A6 */	mflr r0
 /* 800C0C20 000BCB40  90 01 00 04 */	stw r0, 4(r1)
 /* 800C0C24 000BCB44  94 21 FF E0 */	stwu r1, -0x20(r1)
@@ -11871,8 +11871,8 @@ lbl_800C0DA4:
 /* 800C0DB0 000BCCD0  7C 08 03 A6 */	mtlr r0
 /* 800C0DB4 000BCCD4  38 21 00 18 */	addi r1, r1, 0x18
 /* 800C0DB8 000BCCD8  4E 80 00 20 */	blr
-.global func_800C0DBC
-func_800C0DBC:
+.global effect_ending_ballfrag_destroy
+effect_ending_ballfrag_destroy:
 /* 800C0DBC 000BCCDC  4E 80 00 20 */	blr
 
 .global func_800C0DC0
