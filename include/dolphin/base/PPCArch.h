@@ -1,5 +1,5 @@
-#ifndef _DOLPHIN_PPCARCH_H_
-#define _DOLPHIN_PPCARCH_H_
+#ifndef _DOLPHIN_BASE_PPCARCH_H_
+#define _DOLPHIN_BASE_PPCARCH_H_
 
 // GEKKO registers
 #define GQR0 0x390
@@ -12,5 +12,6 @@
 #define GQR7 0x397
 
 void PPCHalt(void);
+void PPCSync(void);
 
 #endif

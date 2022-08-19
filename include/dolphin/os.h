@@ -16,6 +16,20 @@
 typedef s64 OSTime;
 typedef u32 OSTick;
 
+#define OS_BASE_CACHED 0x80000000
+#ifdef __MWERKS__
+u32 __OSBusClock  : (OS_BASE_CACHED | 0x00F8);
+u32 __OSCoreClock : (OS_BASE_CACHED | 0x00FC);
+#else
+#define __OSBusClock  (*(u32 *)(OS_BASE_CACHED | 0x00F8))
+#define __OSCoreClock (*(u32 *)(OS_BASE_CACHED | 0x00FC))
+#endif
+#define OS_BUS_CLOCK   __OSBusClock
+#define OS_CORE_CLOCK  __OSCoreClock
+#define OS_TIMER_CLOCK (OS_BUS_CLOCK/4)
+
+#define OSTicksToMicroseconds(ticks) (((ticks)*8) / (OS_TIMER_CLOCK/125000))
+
 void OSInit(void);
 
 void *OSGetArenaHi(void);
@@ -42,6 +56,7 @@ typedef struct OSCalendarTime
 OSTick OSGetTick(void);
 OSTime OSGetTime(void);
 void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
+BOOL OSEnableInterrupts(void);
 BOOL OSDisableInterrupts(void);
 BOOL OSRestoreInterrupts(BOOL level);
 u32 OSGetSoundMode(void);

@@ -1,7 +1,7 @@
 #include <musyx/musyx.h>
 #include "musyx_priv.h"
 
-void *salMalloc(u32 len)
+void *salMalloc(size_t len)
 {
     return salHooks.malloc(len);
 }

@@ -28,9 +28,11 @@ struct DSPTaskInfo
     OSTime t_task;
 };
 
+void DSPInit(void);
 u32 DSPCheckMailFromDSP(void);
 u32 DSPCheckMailToDSP(void);
 u32 DSPReadMailFromDSP(void);
 void DSPSendMailToDSP(u32 msg);
+DSPTaskInfo *DSPAddTask(DSPTaskInfo *task);
 
 #endif

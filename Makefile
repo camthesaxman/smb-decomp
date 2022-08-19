@@ -302,7 +302,7 @@ SOURCES := \
 	libraries/musyx/asm/snd_service.s \
 	libraries/musyx/asm/HARDWARE.s \
 	libraries/musyx/asm/hw_aramdma.s \
-	libraries/musyx/asm/hw_dolphin.s \
+	libraries/musyx/hw_dolphin.c \
 	libraries/musyx/hw_memory.c \
 	libraries/musyx/reverb_fx.c \
 	libraries/musyx/asm/reverb.s \
