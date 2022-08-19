@@ -566,8 +566,7 @@ extern struct Struct80250A68 lbl_80250A68;
 // extern ? lbl_80250AA0;
 // extern ? lbl_80250B58;
 // extern ? lbl_80250B70;
-// extern ? s_replayData;
-// extern ? g_effects;
+
 // extern ? lbl_8027CBC8;
 // extern ? lbl_8027CBF8;
 // extern ? lbl_8027CC28;
