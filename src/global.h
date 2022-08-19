@@ -36,12 +36,6 @@
 // returns a random float between 0.0 and 1.0, inclusive
 #define RAND_FLOAT() (rand() / (float)RAND_MAX)
 
-#ifdef __MWERKS__
-u32 OS_BUS_CLOCK_SPEED : 0x800000F8;
-#else
-#define OS_BUS_CLOCK_SPEED (*(u32 *)0x800000F8)
-#endif
-
 // intrinsics
 #ifndef __MWERKS__
 static inline u32 __cntlzw(u32 n)

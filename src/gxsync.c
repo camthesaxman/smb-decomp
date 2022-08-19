@@ -130,7 +130,7 @@ void gpwait_main(void)
 
     while (!drawingFinished)
     {
-        if (OSGetTime() - prevTime > (OS_BUS_CLOCK_SPEED / 4))
+        if (OSGetTime() - prevTime > OS_TIMER_CLOCK)
         {
             printf("\t[warning]\tGP WAIT TimeOut\n");
             break;

@@ -856,7 +856,7 @@ void init_replay_file_data(void)
     memcardReplayData->character = sp88.character;
     memcardReplayData->unk8 = sp88.unk10;
 
-    memcardReplayData->unkC = (u64)memcardInfo.time / (OS_BUS_CLOCK_SPEED / 4);
+    memcardReplayData->unkC = OSTicksToSeconds((u64)memcardInfo.time);
 }
 
 void probe_memcard(void)

@@ -22,8 +22,7 @@ void perf_start_timer(int timerId)
 
 u32 perf_stop_timer(volatile /* why ?*/ int timerId)
 {
-    return ((OSGetTick() - perfTimers[timerId]) * 8)
-         / ((OS_BUS_CLOCK_SPEED / 4) / 125000);
+    return OSTicksToMicroseconds(OSGetTick() - perfTimers[timerId]);
 }
 
 void perf_free(void *ptr)
