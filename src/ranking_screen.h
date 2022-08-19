@@ -9,7 +9,7 @@ void func_800885EC(void);
 void init_ranking_screen(int);
 void func_8008897C(int);
 void func_80088A10(void);
-// ? func_80088AF4();
+int func_80088AF4(void);
 int func_80088C18(void);
 void show_rank_title_logo(void);
 // ? func_80088D44();

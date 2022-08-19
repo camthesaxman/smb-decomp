@@ -477,14 +477,14 @@ s16 func_80007424(float a)
 {
     s16 r3;
 
-    if (__fabs(a) > 1.0)
+    if (fabs(a) > 1.0)
     {
         if (a > 0.0f)
             return 0;
         else
             return -0x8000;
     }
-    if (__fabs(a) > 1.0)  // uh... we already checked that.
+    if (fabs(a) > 1.0)  // uh... we already checked that.
     {
         if (a > 0.0f)
             r3 = 0x4000;
@@ -2521,7 +2521,7 @@ void u_math_unk7(Quaternion *a, Vec *b, Vec *c, float d)
     Vec sp24;
     double var1 = mathutil_quat_to_axis_angle(a, &sp24);
 
-    if (__fabs(mathutil_vec_dot_prod(&sp24, c)) < 0.9999989867210388)
+    if (fabs(mathutil_vec_dot_prod(&sp24, c)) < 0.9999989867210388)
     {
         Vec sp18;
         float var2;
@@ -2842,7 +2842,7 @@ void u_math_unk11(Quaternion *a, Quaternion *b)
 
 static int is_large_enough(float n)  // inlined
 {
-    return __fabs(n) > FLT_EPSILON;
+    return fabs(n) > FLT_EPSILON;
 }
 
 // Should the angles be called `yaw`, `pitch`, and `roll`? Not sure if they

@@ -280,7 +280,7 @@ static void pause_menu_sprite_draw(struct Sprite *sprite)
         // Display billiards guide toggle
         if (menuType == PAUSEMENU_CONT_GUIDE_HOW_EXIT && i == 1)
         {
-            u32 temp_r3 = (1.0 - __fabs(mathutil_sin(globalFrameCounter << 9))) * 255.0;
+            u32 temp_r3 = (1.0 - fabs(mathutil_sin(globalFrameCounter << 9))) * 255.0;
             u32 flashColor = RGBA(temp_r3, temp_r3, temp_r3, 0);
 
             strcpy(text, "ON");
@@ -679,7 +679,7 @@ static void title_sprite_main(s8 *arg0, struct Sprite *sprite)
             lbl_80292D08[i] = TRUE;
         if (lbl_80292D08[i])
         {
-            if (__abs(titleMonkeyBallOffsets[i].vel) <= 2.0 && __abs(titleMonkeyBallOffsets[i].pos) <= 2.0)
+            if (abs(titleMonkeyBallOffsets[i].vel) <= 2.0 && abs(titleMonkeyBallOffsets[i].pos) <= 2.0)
             {
                 titleMonkeyBallOffsets[i].vel = 0.0f;
                 titleMonkeyBallOffsets[i].pos = 0.0f;
@@ -780,7 +780,7 @@ static void title_sprite_draw(struct Sprite *sprite)
 
         params.bmpId = BMP_ADV_adv_title_spr_gawa;
         params.z = sprite->unk4C - 0.002;
-        params.opacity = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * offset->pos));
+        params.opacity = 1.0 - fabs(0.2 * mathutil_sin(512.0f * offset->pos));
         draw_naomi_sprite(&params);
     }
 
@@ -809,7 +809,7 @@ static void title_sprite_draw(struct Sprite *sprite)
 
         params.bmpId = BMP_ADV_adv_title_mnk_gawa;
         params.z = sprite->unk4C - 0.002;
-        params.opacity = 1.0 - __fabs(0.2 * mathutil_sin(512.0f * offset->pos));
+        params.opacity = 1.0 - fabs(0.2 * mathutil_sin(512.0f * offset->pos));
         params.rotation = 0;
         draw_naomi_sprite(&params);
     }
@@ -1497,7 +1497,7 @@ static void floor_intro_sprite_draw(struct Sprite *sprite)
         }
 
         set_text_pos(sprite->x - centerX + 14.4 + 57.6 * i + xOffset, sprite->y - 25.6 + yOffset);
-        set_text_scale(sprite->scaleX - 0.01, sprite->scaleY + (0.01 * __fabs((float)yOffset)));
+        set_text_scale(sprite->scaleX - 0.01, sprite->scaleY + (0.01 * fabs((float)yOffset)));
         if (i > spacePos)
             set_text_opacity(MIN(0.0625 * (sprite->counter - 30 - spacePos * 16), sprite->opacity));
         else if (i > 0)
@@ -4562,8 +4562,8 @@ static void lbl_800800D4(struct Sprite *sprite)
     temp_r3 = find_sprite_with_tag(8);
     if (temp_r3 != NULL && temp_r3->userVar > 0)
     {
-        float temp_f31 = 1.0 - __fabs(mathutil_sin(temp_r3->counter << 9));
-        u32 temp_r30 = (1.0 - __fabs(mathutil_sin((temp_r3->counter << 9) + 0x4000))) * 255.0;
+        float temp_f31 = 1.0 - fabs(mathutil_sin(temp_r3->counter << 9));
+        u32 temp_r30 = (1.0 - fabs(mathutil_sin((temp_r3->counter << 9) + 0x4000))) * 255.0;
 
         func_80071B1C(0.09f);
         set_text_add_color(RGBA(temp_r30, temp_r30, temp_r30, 0));
@@ -4580,8 +4580,8 @@ static float func_800802E0(u16 arg0)
 
     if (arg0 > 60)
     {
-        float f4 = __fabs(mathutil_sin(((60 - ((u32)arg0 % 60)) & 0x3F) << 8));
-        return 0.20000000298023224 * (1.0 - __fabs(1.0f - f4 * 2.0f));
+        float f4 = fabs(mathutil_sin(((60 - ((u32)arg0 % 60)) & 0x3F) << 8));
+        return 0.20000000298023224 * (1.0 - fabs(1.0f - f4 * 2.0f));
     }
     if (arg0 < 15)
     {
@@ -4617,7 +4617,7 @@ static void bomb_crack_sprite_main(s8 *arg0, struct Sprite *sprite)
         if (infoWork.timerCurr < 240)
         {
             sprite->userVar += 40.0f - (infoWork.timerCurr * 40.0f) / 240.0f;
-            sprite->mulG = __abs(255 - (sprite->userVar % 510));
+            sprite->mulG = abs(255 - (sprite->userVar % 510));
             sprite->mulB = sprite->mulG;
             if (sprite->mulB < 128)
                 sprite->mulB = 128;

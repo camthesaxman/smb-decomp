@@ -1,3 +1,4 @@
+#include <math.h>
 #include <dolphin.h>
 #include <stdlib.h>
 #include <string.h>
@@ -853,7 +854,7 @@ static void effect_paperfrag_main(struct Effect *effect)
     mathutil_mtxA_tf_vec(&sp30, &sp30);
 
     temp_f3 = (sp30.x * sp24.x) + (sp30.y * sp24.y) + (sp30.z * sp24.z);
-    temp_f2_3 = (1.1920929e-7f * effect->poolIndex) + (0.1 * (1.0 - __fabs(temp_f3)));
+    temp_f2_3 = (1.1920929e-7f * effect->poolIndex) + (0.1 * (1.0 - fabs(temp_f3)));
     sp18.x = effect->pos.x - effect->unk64.x;
     sp18.y = effect->pos.y - effect->unk64.y;
     sp18.z = effect->pos.z - effect->unk64.z;
@@ -871,7 +872,7 @@ static void effect_paperfrag_main(struct Effect *effect)
             effect->vel.x += temp_f2 * sp24.x;
             effect->vel.y += temp_f2 * sp24.y;
             effect->vel.z += temp_f2 * sp24.z;
-            temp_f4 = __fabs(temp_f3) * (1.0 / 8.0);
+            temp_f4 = fabs(temp_f3) * (1.0 / 8.0);
             effect->vel.x = effect->vel.x + (temp_f4 * (effect->unk7C.x - effect->vel.x));
             effect->vel.y = effect->vel.y + (temp_f4 * (effect->unk7C.y - effect->vel.y));
             effect->vel.z = effect->vel.z + (temp_f4 * (effect->unk7C.z - effect->vel.z));
@@ -1743,7 +1744,7 @@ static void effect_raindrop_ripple_init(struct Effect *effect)
     effect->unk94.y = temp_f5 * effect->unk70.y + -0.008;
     effect->unk94.z = temp_f5 * effect->unk70.z;
     temp_f5 = (effect->unk70.x * effect->unk7C.x) + (effect->unk70.y * effect->unk7C.y) + (effect->unk70.z * effect->unk7C.z);
-    temp_f5 = __fabs(temp_f5);
+    temp_f5 = fabs(temp_f5);
     temp_f3 = 1.0 - (5.0 * temp_f5);
     effect->timer *= temp_f3;
     temp_f3 = 1.0 / (1.0 + (3.0 * mathutil_vec_len(&effect->unk7C)));
@@ -2527,7 +2528,7 @@ static void effect_coliflash_init(struct Effect *effect)
     float temp_f1;
 
     effect->timer = 12;
-    temp_f1 = mathutil_sqrt((float)__fabs(10.0f * effect->colorFactor));
+    temp_f1 = mathutil_sqrt((float)fabs(10.0f * effect->colorFactor));
     effect->scale.x = 0.25f * temp_f1;
     effect->scale.y = temp_f1;
     effect->unk18 = 1.0f;
@@ -2840,7 +2841,7 @@ static void effect_bgstm_rainripple_init(struct Effect *effect)
     effect->unk94.y = temp_f5 * effect->unk70.y + -0.008;
     effect->unk94.z = temp_f5 * effect->unk70.z;
     temp_f5 = effect->unk70.x * effect->unk7C.x + effect->unk70.y * effect->unk7C.y + effect->unk70.z * effect->unk7C.z;
-    temp_f5 = __fabs(temp_f5);
+    temp_f5 = fabs(temp_f5);
     temp_f3 = 1.0f - (5.0f * temp_f5);
     effect->timer *= temp_f3;
     temp_f3 = 1.0f / (1.0f + (3.0f * mathutil_vec_len(&effect->unk7C)));
@@ -3031,7 +3032,7 @@ static void effect_commendfrag_main(struct Effect *effect)
     mathutil_mtxA_tf_vec(&sp30, &sp30);
 
     temp_f3 = (sp30.x * sp24.x) + (sp30.y * sp24.y) + (sp30.z * sp24.z);
-    temp_f2_3 = (1.1920929e-7f * effect->poolIndex) + (0.1 * (1.0 - __fabs(temp_f3)));
+    temp_f2_3 = (1.1920929e-7f * effect->poolIndex) + (0.1 * (1.0 - fabs(temp_f3)));
     sp18.x = effect->pos.x - effect->unk64.x;
     sp18.y = effect->pos.y - effect->unk64.y;
     sp18.z = effect->pos.z - effect->unk64.z;
@@ -3050,7 +3051,7 @@ static void effect_commendfrag_main(struct Effect *effect)
             effect->vel.x += temp_f2 * sp24.x;
             effect->vel.y += temp_f2 * sp24.y;
             effect->vel.z += temp_f2 * sp24.z;
-            temp_f4 = __fabs(temp_f3) * (1.0 / 8.0);
+            temp_f4 = fabs(temp_f3) * (1.0 / 8.0);
             effect->vel.x += (temp_f4 * (effect->unk7C.x - effect->vel.x));
             effect->vel.y += (temp_f4 * (effect->unk7C.y - effect->vel.y));
             effect->vel.z += (temp_f4 * (effect->unk7C.z - effect->vel.z));

@@ -278,7 +278,7 @@ static inline int func_8003721C_inline(struct Ball *ball)
     for (i = 0; i < g_poolInfo.playerPool.count; i++)
     {
         if (ball->rank - 1 == ballInfo[i].rank
-         && (u16)__abs(ball->unk12A - ballInfo[i].unk12A) < 30)
+         && (u16)abs(ball->unk12A - ballInfo[i].unk12A) < 30)
             return 3;
     }
 
@@ -2680,11 +2680,11 @@ void func_8003C550(struct Ball *ball)
     sp18.y += f0 * sp24.y;
     sp18.z += f0 * sp24.z;
 
-    r30 = __fabs(ball->unk130 / 0.0165f);
+    r30 = fabs(ball->unk130 / 0.0165f);
     if (r30 > 32)
         r30 = 32;
 
-    f25 = __fabs(ball->unk130 / 0.32999999821186066) + 1.0;
+    f25 = fabs(ball->unk130 / 0.32999999821186066) + 1.0;
 
     memset(&effect, 0, sizeof(effect));
 

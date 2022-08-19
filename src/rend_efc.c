@@ -1,3 +1,4 @@
+#include <math.h>
 #include <string.h>
 #include <dolphin.h>
 
@@ -433,11 +434,11 @@ void rend_efc_focus_main(struct RenderEffect *rendEfc)
         float f1;
         float f3;
 
-        r30->unkC = 512.0 * __fabs(mathutil_tan(r30->unk0 >> 1) - mathutil_tan(fov >> 1));
+        r30->unkC = 512.0 * fabs(mathutil_tan(r30->unk0 >> 1) - mathutil_tan(fov >> 1));
         r30->unk0 = fov;
         f1 = mathutil_vec_distance(&camera->eye, &camera->lookAt);
         f3 = r30->unk4 - f1;
-        r30->unkC += 64.0 * __fabs(r30->unk8 - f3);
+        r30->unkC += 64.0 * fabs(r30->unk8 - f3);
         r30->unk4 = f1;
         r30->unk8 += (f3 - r30->unk8) * 0.2f;
         r30->unkC -= 0.25f;

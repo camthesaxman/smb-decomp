@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
@@ -168,7 +169,7 @@ void func_80099518(struct RenderEffect *rendEfc)
     sp18 = temp_r28->pos;
     spC = temp_r28->vel;
     f1 = mathutil_vec_len(&spC);
-    temp_f10 = __fabs(sp18.y);
+    temp_f10 = fabs(sp18.y);
     sp18.x += 3.0f * (spC.x * temp_f10);
     sp18.z += 3.0f * (spC.z * temp_f10);
     var_f31 = (f1 * (4.0f / (1.0f + temp_f10)));

@@ -14,7 +14,6 @@
 
 static void ranking_screen_sprite_main(s8 *, struct Sprite *);
 static void ranking_screen_sprite_draw(struct Sprite *);
-static int func_80088AF4(void);
 static void rnk_title_sprite_main(s8 *, struct Sprite *);
 static void lbl_80089070(s8 *, struct Sprite *);
 static void lbl_800890B4(struct Sprite *);
@@ -813,7 +812,7 @@ void func_80088A10(void)
     }
 }
 
-static int func_80088AF4(void)
+int func_80088AF4(void)
 {
     struct RankingEntry *entry;
     int i;

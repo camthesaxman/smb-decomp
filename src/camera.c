@@ -1895,9 +1895,9 @@ void camera_func_16(struct Camera *camera, struct Ball *ball)
             sp60.z = sp34.pos.z - sp28.z;
 
             zero = 0.0;
-            if (__fabs(sp60.y) != zero)
+            if (fabs(sp60.y) != zero)
             {
-                float f1 = 0.35 / __fabs(sp60.y);
+                float f1 = 0.35 / fabs(sp60.y);
                 float f2;
                 Vec *r3 = &sp60;
                 sp60.x *= f1;

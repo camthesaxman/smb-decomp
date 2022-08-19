@@ -37,13 +37,6 @@
 #define __IEEE_LITTLE_ENDIAN
 #endif
 
-static inline float __fabs(float n)
-{
-    float ret;
-    asm("fabs %0, %1" : "=f"(ret) : "f"(n));
-    return ret;
-}
-
 #endif
 
 #ifndef __IEEE_BIG_ENDIAN

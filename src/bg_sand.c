@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
@@ -201,7 +202,7 @@ void bg_sand_main(void)
         var_r28->unk18.x += var_r28->unk24;
         var_r28->unk18.y += var_r28->unk28;
         var_r28->unk18.z += var_r28->unk2C;
-        temp_f28 = __fabs(var_r28->unk28);
+        temp_f28 = fabs(var_r28->unk28);
         temp_f29 = 3.0f * temp_f28;
 
         var_r27 = var_r28->unk34;

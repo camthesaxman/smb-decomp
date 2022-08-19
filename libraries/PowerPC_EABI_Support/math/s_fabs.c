@@ -13,6 +13,8 @@
  * fabs(x) returns the absolute value of x.
  */
 #include "fdlibm.h"
+#undef fabs
+
 #ifdef __STDC__
 	double fabs(double x)
 #else
@@ -20,5 +22,9 @@
 	double x;
 #endif
 {
+#ifdef __MWERKS__
     return __fabs(x);
+#else
+    return (x >= 0.0) ? x : -x;
+#endif
 }

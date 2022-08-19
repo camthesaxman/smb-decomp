@@ -128,7 +128,7 @@ void bg_space_init(void)
         temp_f1 = effect.pos.x;
         if (mathutil_vec_len(&effect.pos) < 1.7391304f * work->coreScale)
         {
-            if (__abs(effect.pos.y) < 1.1920929e-7f)
+            if (abs(effect.pos.y) < 1.1920929e-7f)
                 effect.pos.y = 0.01f;
             mathutil_vec_set_len(&effect.pos, &effect.pos, 1.7391304f * work->coreScale * (1.0f + RAND_FLOAT()));
         }

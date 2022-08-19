@@ -52,13 +52,6 @@ static inline u32 __lwbrx(void *ptr, u32 offset)
     return ret;
 }
 
-static inline float __fabs(float n)
-{
-    float ret;
-    asm("fabs %0, %1" : "=f"(ret) : "f"(n));
-    return ret;
-}
-
 static inline float __frsqrte(float n)
 {
     float ret;

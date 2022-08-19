@@ -676,7 +676,7 @@ void func_8008A55C(u32 a, struct Struct802B39C0_B0_child *b, int c, int d)
     int r8;
 
     b->unk4 += b->unk10;
-    if (__fabs(b->unk10) < lbl_802F56D8)
+    if (fabs(b->unk10) < lbl_802F56D8)
         r8 = dummy = b->unkC != NULL;
     else if (b->unk10 < 0.0f)
         r8 = dummy = b->unk4 < b->unk8;

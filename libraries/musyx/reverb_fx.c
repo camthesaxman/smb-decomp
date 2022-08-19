@@ -26,8 +26,10 @@ bool sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev)
     return ReverbHICreate(&rev->rv, rev->coloration, rev->time, rev->mix, rev->damping, rev->preDelay, rev->crosstalk);
 }
 
+/*
 bool sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev)
 {
     ReverbHIFree(&rev->rv);
     return TRUE;
 }
+*/

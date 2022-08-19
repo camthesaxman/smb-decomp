@@ -632,13 +632,13 @@ void stobj_goaltape_coli(struct Stobj *stobj, struct PhysicsBall *ball)
         if (var_r29->unk28 & 1)
             continue;
         sp4C.x = var_r29->unk0.x - sp58.x;
-        if (__fabs(sp4C.x) > radius)
+        if (fabs(sp4C.x) > radius)
             continue;
         sp4C.z = var_r29->unk0.z - sp58.z;
-        if (__fabs(sp4C.z) > radius)
+        if (fabs(sp4C.z) > radius)
             continue;
         sp4C.y = var_r29->unk0.y - sp58.y;
-        if (__fabs(sp4C.y) > radius)
+        if (fabs(sp4C.y) > radius)
             continue;
         if (mathutil_vec_sq_len(&sp4C) > radiusSq)
             continue;

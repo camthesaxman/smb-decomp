@@ -139,7 +139,7 @@ static float interpolate_channel_keyframes(struct MotionChannel *chan, float t)
     {
         float frameT = *chan->times;
 
-        if (__fabs(frameT - t) < FLT_EPSILON)
+        if (fabs(frameT - t) < FLT_EPSILON)
         {
             type = 1;
             break;

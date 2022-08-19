@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <dolphin.h>
 #include <musyx/musyx.h>
@@ -31,9 +32,7 @@ struct Struct801FE498
 
 static void func_8002A34C(void);
 static void func_8002A964(struct Struct801FE498 *arg0);
-static int u_play_sound_2(int arg0);
 static s8 func_8002BB20(int arg0, Vec *arg1, s8 *arg2, s8 *arg3);
-static void func_8002CA38(s8, s8);
 static void func_8002CEB8(int);
 static void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
 static void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
@@ -2846,7 +2845,7 @@ void u_play_sound_1(int arg0)
     SoundReqID(arg0, 1);
 }
 
-static int u_play_sound_2(int arg0)
+int u_play_sound_2(int arg0)
 {
     return SoundReqID(arg0, 2);
 }
@@ -2876,13 +2875,13 @@ int func_8002B634(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
 
     dist = mathutil_vec_distance(&temp_r26->eye, arg1);
     ret = CLAMP(1.0f - (dist * lbl_801B3670[modeCtrl.gameType]) / 100.0f, 0.0f, 1.0f);
-    if (__abs(temp_r30) < 0x4000)
+    if (abs(temp_r30) < 0x4000)
         *arg2 = 0.0039 * -temp_r30;
     else if (temp_r30 > 0)
         *arg2 = 0.0039 * -(0x8000 - temp_r30);
     else
         *arg2 = 0.0039 * -(-0x8000 - temp_r30);
-    *arg3 = 0.0039 * -(__abs(temp_r30) - 0x4000);
+    *arg3 = 0.0039 * -(abs(temp_r30) - 0x4000);
     if (modeCtrl.gameType == 6)
     {
         *arg2 = CLAMP(*arg2 * 10.0, -64.0, 63.0);
@@ -3136,7 +3135,7 @@ void SoundChoID(int arg0_, u8 arg1)
         sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5D, arg1);
 }
 
-static void func_8002CA38(s8 arg0, s8 arg1)
+void func_8002CA38(s8 arg0, s8 arg1)
 {
     if (arg0 != -1)
         lbl_802F1D38 = arg0;

@@ -146,7 +146,7 @@ void update_av_logo_pos_and_sound(void)
     if (advLogoInfo.rollTimer <= 120)
         advLogoInfo.pos.x = 0.0f;
     else if (advLogoInfo.rollTimer <= 240)
-        advLogoInfo.pos.x = 4.5f * (1.0 - __fabs(mathutil_cos((advLogoInfo.rollTimer - 120) * 273)));
+        advLogoInfo.pos.x = 4.5f * (1.0 - fabs(mathutil_cos((advLogoInfo.rollTimer - 120) * 273)));
 
     if (advLogoInfo.rollTimer <= 180)
         advLogoInfo.pos.y = (180 - advLogoInfo.rollTimer) * -0.004;

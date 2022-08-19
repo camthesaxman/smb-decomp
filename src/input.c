@@ -1,5 +1,6 @@
 #include <float.h>
 #include <math.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <dolphin.h>
@@ -244,7 +245,7 @@ void input_main(void)
             f4 = (float)lbl_80110320_74[i][r3][0] * (float)lbl_80110320_74[i][r0][1]
                - (float)lbl_80110320_74[i][r0][0] * (float)lbl_80110320_74[i][r3][1];
 
-            if (__fabs(f4) < FLT_EPSILON)
+            if (fabs(f4) < FLT_EPSILON)
                 continue;
 
             f4 = 1.0f / f4;
@@ -257,7 +258,7 @@ void input_main(void)
 
             r8 = (int)(f3 * lbl_80110320_64[r3][0] + f2 * lbl_80110320_64[r0][0]);
             r7 = r8 < 0;
-            r6_ = clamp(__abs(r8), 0, 99);
+            r6_ = clamp(abs(r8), 0, 99);
             //lbl_80024FF4
             r5 = r7 ? -1 : 1;
             //lbl_80025008
@@ -265,7 +266,7 @@ void input_main(void)
 
             r8 = (int)(f3 * lbl_80110320_64[r3][1] + f2 * lbl_80110320_64[r0][1]);
             r7 = r8 < 0;
-            r6_ = clamp(__abs(r8), 0, 99);
+            r6_ = clamp(abs(r8), 0, 99);
             r5 = r7 ? -1 : 1;
             sp10[i].substickY = r5 * lbl_80110320[r6_];
             break;
@@ -589,7 +590,7 @@ void func_80025B1C(struct CoordsS8 *a, s8 *b)
         f8 = (float)b[i*2+0] * (float)b[r0*2+1]
            - (float)b[r0*2+0] * (float)b[i*2+1];
 
-        if (__fabs(f8) < FLT_EPSILON)
+        if (fabs(f8) < FLT_EPSILON)
             continue;
 
         f8 = 1.0f / f8;
@@ -601,13 +602,13 @@ void func_80025B1C(struct CoordsS8 *a, s8 *b)
 
         r8 = f5_ * lbl_80110320_64[i][0] + f3 * lbl_80110320_64[r0][0];
         foo = r8 < 0;
-        bar = clamp(__abs(r8), 0, 99);
+        bar = clamp(abs(r8), 0, 99);
         sign = foo ? -1 : 1;
         a->x = sign * lbl_80110320[bar];
 
         r8 = f5_ * lbl_80110320_64[i][1] + f3 * lbl_80110320_64[r0][1];
         foo = r8 < 0;
-        bar = clamp(__abs(r8), 0, 99);
+        bar = clamp(abs(r8), 0, 99);
         sign = foo ? -1 : 1;
         a->y = sign * lbl_80110320[bar];
 

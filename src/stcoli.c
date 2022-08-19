@@ -278,13 +278,13 @@ void collide_ball_with_tri_edge(struct PhysicsBall *ball, Point3d *ballPos_rt_tr
 
     // radius = physBall->radius;
     someY = ballPos_rt_edge.y;
-    if (__fabs(someY) > ball->radius)
+    if (fabs(someY) > ball->radius)
     {
         mathutil_mtxA_pop();
         return;
     }
     phi_f1 = mathutil_sqrt((ball->radius * ball->radius) - (ballPos_rt_edge.y * ballPos_rt_edge.y));
-    if (__fabs(ballPos_rt_edge.z) > phi_f1)
+    if (fabs(ballPos_rt_edge.z) > phi_f1)
     {
         mathutil_mtxA_pop();
         return;
@@ -1308,7 +1308,7 @@ u32 raycast_tri(Point3d *rayOrigin, Point3d *rayDir, struct StageColiTri *tri)
     mathutil_mtxA_rigid_inv_tf_vec(rayDir, &rayDir_rt_tri);
 
     // If ray is nearly parallel to plane, no hit
-    if (__fabs(rayDir_rt_tri.z) <= FLT_EPSILON)
+    if (fabs(rayDir_rt_tri.z) <= FLT_EPSILON)
         return 0U;
 
     // Find the ray-plane intersection point
@@ -1357,7 +1357,7 @@ u32 raycast_cone(Point3d* rayOrigin, Point3d* rayDir, struct StageColiCone* cone
              + rayDir_rt_cone_sp1c.z * rayDir_rt_cone_sp1c.z
              - (yRadiusRatio * yRadiusRatio * (rayDir_rt_cone_sp1c.y * rayDir_rt_cone_sp1c.y));
 
-    if (__fabs(temp_f31) < FLT_EPSILON)
+    if (fabs(temp_f31) < FLT_EPSILON)
         return FALSE;
 
     temp_f30 = ((rayDir_rt_cone_sp1c.x * rayOrigin_rt_cone_sp34.x)
@@ -1527,7 +1527,7 @@ u32 raycast_cylinder(Point3d *rayOrigin, Point3d *rayDir, struct StageColiCylind
             vec_sp34.x = sp28.x + (sp1C.x * temp_f7);
             vec_sp34.y = sp28.y + (sp1C.y * temp_f7);
             vec_sp34.z = sp28.z + (sp1C.z * temp_f7);
-            if (!(__fabs(vec_sp34.y) > (0.5 * cylinder->height)))
+            if (!(fabs(vec_sp34.y) > (0.5 * cylinder->height)))
             {
                 mathutil_mtxA_tf_point((Point3d *)&vec_sp34.x, outHitPos);
                 outHitNormal->x = vec_sp34.x / cylinder->radius;

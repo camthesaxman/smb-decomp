@@ -1,3 +1,4 @@
+#include <math.h>
 #include <string.h>
 #include <dolphin.h>
 
@@ -795,9 +796,9 @@ void func_80098EB4(int arg0, struct RenderEffect *rendEfc)
     sp1C[1][0] = 1.2f;
     sp1C[1][1] = 0.0f;
     sp1C[1][2] = 0.0f;
-    if (__fabs(sp1C[0][1]) > __fabs(sp1C[1][0]))
+    if (fabs(sp1C[0][1]) > fabs(sp1C[1][0]))
     {
-        while (__fabs(sp1C[0][1]) >= 1.0)
+        while (fabs(sp1C[0][1]) >= 1.0)
         {
             var_r3 += 1;
             sp1C[0][1] *= 0.5f;
@@ -806,7 +807,7 @@ void func_80098EB4(int arg0, struct RenderEffect *rendEfc)
     }
     else
     {
-        while (__fabs(sp1C[1][0]) >= 1.0)
+        while (fabs(sp1C[1][0]) >= 1.0)
         {
             var_r3 += 1;
             sp1C[0][1] *= 0.5f;

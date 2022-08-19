@@ -17,6 +17,10 @@ static void __GXFifoLink(u8 arg0);
 static void __GXWriteFifoIntEnable(u8 arg0, u8 arg1);
 static void __GXWriteFifoIntReset(u8 arg0, u8 arg1);
 
+#ifndef __MWERKS__
+#define __sync() __asm("sync")
+#endif
+
 static void GXCPInterruptHandler(__OSInterrupt unused, OSContext *ctx)
 {
     OSContext sp10;
