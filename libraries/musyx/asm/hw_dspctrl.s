@@ -138,8 +138,8 @@ lbl_800F8814:
 /* 800F8814 000F4734  88 0D A5 54 */	lbz r0, salNumVoices@sda21(r13)
 /* 800F8818 000F4738  7C 1D 00 40 */	cmplw r29, r0
 /* 800F881C 000F473C  41 80 FE A8 */	blt lbl_800F86C4
-/* 800F8820 000F4740  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
-/* 800F8824 000F4744  3B C3 41 B0 */	addi r30, r3, lbl_802E41B0@l
+/* 800F8820 000F4740  3C 60 80 2E */	lis r3, dspStudio@ha
+/* 800F8824 000F4744  3B C3 41 B0 */	addi r30, r3, dspStudio@l
 /* 800F8828 000F4748  3B E0 00 00 */	li r31, 0
 lbl_800F882C:
 /* 800F882C 000F474C  3B 80 00 00 */	li r28, 0
@@ -258,13 +258,13 @@ salActivateStudio:
 /* 800F89C0 000F48E0  7C 08 02 A6 */	mflr r0
 /* 800F89C4 000F48E4  90 01 00 04 */	stw r0, 4(r1)
 /* 800F89C8 000F48E8  54 60 06 3E */	clrlwi r0, r3, 0x18
-/* 800F89CC 000F48EC  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
+/* 800F89CC 000F48EC  3C 60 80 2E */	lis r3, dspStudio@ha
 /* 800F89D0 000F48F0  94 21 FF D0 */	stwu r1, -0x30(r1)
 /* 800F89D4 000F48F4  BF 61 00 1C */	stmw r27, 0x1c(r1)
 /* 800F89D8 000F48F8  3B 64 00 00 */	addi r27, r4, 0
 /* 800F89DC 000F48FC  3B 85 00 00 */	addi r28, r5, 0
 /* 800F89E0 000F4900  1F A0 00 BC */	mulli r29, r0, 0xbc
-/* 800F89E4 000F4904  3B E3 41 B0 */	addi r31, r3, lbl_802E41B0@l
+/* 800F89E4 000F4904  3B E3 41 B0 */	addi r31, r3, dspStudio@l
 /* 800F89E8 000F4908  7F DF EA 14 */	add r30, r31, r29
 /* 800F89EC 000F490C  84 7E 00 28 */	lwzu r3, 0x28(r30)
 /* 800F89F0 000F4910  38 80 00 00 */	li r4, 0
@@ -326,8 +326,8 @@ salActivateStudio:
 salDeactivateStudio:
 /* 800F8AC8 000F49E8  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800F8ACC 000F49EC  1C 00 00 BC */	mulli r0, r0, 0xbc
-/* 800F8AD0 000F49F0  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
-/* 800F8AD4 000F49F4  38 63 41 B0 */	addi r3, r3, lbl_802E41B0@l
+/* 800F8AD0 000F49F0  3C 60 80 2E */	lis r3, dspStudio@ha
+/* 800F8AD4 000F49F4  38 63 41 B0 */	addi r3, r3, dspStudio@l
 /* 800F8AD8 000F49F8  7C 63 02 14 */	add r3, r3, r0
 /* 800F8ADC 000F49FC  38 00 00 00 */	li r0, 0
 /* 800F8AE0 000F4A00  98 03 00 50 */	stb r0, 0x50(r3)
@@ -661,9 +661,9 @@ lbl_800F8F24:
 .global salBuildCommandList
 salBuildCommandList:
 /* 800F8F40 000F4E60  7C 08 02 A6 */	mflr r0
-/* 800F8F44 000F4E64  3C A0 80 2E */	lis r5, lbl_802E41B0@ha
+/* 800F8F44 000F4E64  3C A0 80 2E */	lis r5, dspStudio@ha
 /* 800F8F48 000F4E68  90 01 00 04 */	stw r0, 4(r1)
-/* 800F8F4C 000F4E6C  38 05 41 B0 */	addi r0, r5, lbl_802E41B0@l
+/* 800F8F4C 000F4E6C  38 05 41 B0 */	addi r0, r5, dspStudio@l
 /* 800F8F50 000F4E70  3C A0 80 1F */	lis r5, lbl_801EA358@ha
 /* 800F8F54 000F4E74  94 21 FF 38 */	stwu r1, -0xc8(r1)
 /* 800F8F58 000F4E78  38 C0 00 00 */	li r6, 0
@@ -3291,10 +3291,10 @@ salActivateVoice:
 lbl_800FB4D4:
 /* 800FB4D4 000F73F4  57 E0 06 3E */	clrlwi r0, r31, 0x18
 /* 800FB4D8 000F73F8  38 80 00 00 */	li r4, 0
-/* 800FB4DC 000F73FC  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
+/* 800FB4DC 000F73FC  3C 60 80 2E */	lis r3, dspStudio@ha
 /* 800FB4E0 000F7400  98 9E 00 E9 */	stb r4, 0xe9(r30)
 /* 800FB4E4 000F7404  1C 00 00 BC */	mulli r0, r0, 0xbc
-/* 800FB4E8 000F7408  38 63 41 B0 */	addi r3, r3, lbl_802E41B0@l
+/* 800FB4E8 000F7408  38 63 41 B0 */	addi r3, r3, dspStudio@l
 /* 800FB4EC 000F740C  7C A3 02 14 */	add r5, r3, r0
 /* 800FB4F0 000F7410  84 05 00 48 */	lwzu r0, 0x48(r5)
 /* 800FB4F4 000F7414  28 00 00 00 */	cmplwi r0, 0
@@ -3329,8 +3329,8 @@ salDeactivateVoice:
 /* 800FB558 000F7478  48 00 00 20 */	b lbl_800FB578
 lbl_800FB55C:
 /* 800FB55C 000F747C  88 03 00 EA */	lbz r0, 0xea(r3)
-/* 800FB560 000F7480  3C 80 80 2E */	lis r4, lbl_802E41B0@ha
-/* 800FB564 000F7484  38 84 41 B0 */	addi r4, r4, lbl_802E41B0@l
+/* 800FB560 000F7480  3C 80 80 2E */	lis r4, dspStudio@ha
+/* 800FB564 000F7484  38 84 41 B0 */	addi r4, r4, dspStudio@l
 /* 800FB568 000F7488  80 A3 00 0C */	lwz r5, 0xc(r3)
 /* 800FB56C 000F748C  1C 00 00 BC */	mulli r0, r0, 0xbc
 /* 800FB570 000F7490  7C 84 02 14 */	add r4, r4, r0
@@ -3436,9 +3436,9 @@ lbl_800FB6BC:
 .global salHandleAuxProcessing
 salHandleAuxProcessing:
 /* 800FB6C4 000F75E4  7C 08 02 A6 */	mflr r0
-/* 800FB6C8 000F75E8  3C 60 80 2E */	lis r3, lbl_802E41B0@ha
+/* 800FB6C8 000F75E8  3C 60 80 2E */	lis r3, dspStudio@ha
 /* 800FB6CC 000F75EC  90 01 00 04 */	stw r0, 4(r1)
-/* 800FB6D0 000F75F0  38 03 41 B0 */	addi r0, r3, lbl_802E41B0@l
+/* 800FB6D0 000F75F0  38 03 41 B0 */	addi r0, r3, dspStudio@l
 /* 800FB6D4 000F75F4  3C 60 55 55 */	lis r3, 0x55555556@ha
 /* 800FB6D8 000F75F8  94 21 FF D8 */	stwu r1, -0x28(r1)
 /* 800FB6DC 000F75FC  93 E1 00 24 */	stw r31, 0x24(r1)

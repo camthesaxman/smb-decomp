@@ -300,7 +300,7 @@ SOURCES := \
 	libraries/musyx/snd_math.c \
 	libraries/musyx/asm/snd_midictrl.s \
 	libraries/musyx/snd_service.c \
-	libraries/musyx/asm/HARDWARE.s \
+	libraries/musyx/HARDWARE.c \
 	libraries/musyx/asm/hw_aramdma.s \
 	libraries/musyx/hw_dolphin.c \
 	libraries/musyx/hw_memory.c \

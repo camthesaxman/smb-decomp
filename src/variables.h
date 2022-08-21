@@ -688,7 +688,7 @@ extern struct Struct802C67D4 lbl_802C67D4[];
 // extern ? synth_last_fxstarted;
 // extern ? lbl_802E3CB0;
 // extern ? gs;
-// extern ? lbl_802E41B0;
+// extern ? dspStudio;
 // extern ? lbl_802E4890;
 // extern ? lbl_802E48E0;
 // extern ? midi_lastNote;

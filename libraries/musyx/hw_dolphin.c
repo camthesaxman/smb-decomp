@@ -64,7 +64,7 @@ void dspResumeCallback(void *task)
     }
 }
 
-int salInitAi(void (*arg0)(void), int arg1, int *arg2)
+u32 salInitAi(void (*arg0)(void), int arg1, int *arg2)
 {
     void *buffer = salMalloc(0xA00);
 
@@ -1761,10 +1761,8 @@ static u16 dspSlaveLength = sizeof(dspSlave);
 static DSPTaskInfo dsp_task;
 static u16 dram_image[0x1000] ATTRIBUTE_ALIGN(32);
 
-int salInitDsp(void)
+u32 salInitDsp(int unused)
 {
-    char unused[8];
-
     dsp_task.iram_mmem_addr = dspSlave;
     dsp_task.iram_length = dspSlaveLength;
     dsp_task.iram_addr = 0;
@@ -1788,7 +1786,7 @@ int salInitDsp(void)
     return 1;
 }
 
-void salCtrlDsp(int arg0)
+void salCtrlDsp(void *arg0)
 {
     u32 msg;
 

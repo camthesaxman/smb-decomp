@@ -2199,8 +2199,8 @@ lbl_801EA5D8:
 .global gs
 gs:
 	.skip 0x400
-.global lbl_802E41B0
-lbl_802E41B0:
+.global dspStudio
+dspStudio:
 	.skip 0x6E0
 .global lbl_802E4890
 lbl_802E4890:
