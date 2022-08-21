@@ -493,7 +493,7 @@ extern GXRenderModeObj GXPal528IntDf;
 // extern ? lbl_801EA5B8;
 // extern ? lbl_801EA5C8;
 // extern ? lbl_801EA5D8;
-// extern ? lbl_801EA600;
+// extern ? sndSintab;
 // extern ? dspSlave;
 // extern ? lbl_801EC7E0;
 // extern ? lbl_801EC800;

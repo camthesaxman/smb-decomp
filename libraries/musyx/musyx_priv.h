@@ -1,5 +1,9 @@
 #include <stddef.h>
 
+#define ARRAY_COUNT(arr) ((int)(sizeof(arr)/sizeof(arr[0])))
+
+typedef s32 (*SND_COMPARE)(u16 *, u8 *);
+
 extern SND_HOOKS salHooks;
 
 extern struct
@@ -23,3 +27,5 @@ extern u32 dspCmdList;
 extern u16 dspCmdFirstSize;
 
 int salBuildCommandList(int, int);
+
+u32 synthGetTicksPerSecond(u32 seconds);

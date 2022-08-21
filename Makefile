@@ -299,7 +299,7 @@ SOURCES := \
 	libraries/musyx/asm/synth_2.s \
 	libraries/musyx/snd_math.c \
 	libraries/musyx/asm/snd_midictrl.s \
-	libraries/musyx/asm/snd_service.s \
+	libraries/musyx/snd_service.c \
 	libraries/musyx/asm/HARDWARE.s \
 	libraries/musyx/asm/hw_aramdma.s \
 	libraries/musyx/hw_dolphin.c \
