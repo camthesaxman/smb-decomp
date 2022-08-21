@@ -289,7 +289,7 @@ SOURCES := \
 	libraries/musyx/asm/synthdata.s \
 	libraries/musyx/asm/synthmacros.s \
 	libraries/musyx/asm/synthvoice.s \
-	libraries/musyx/asm/synth_ac.s \
+	libraries/musyx/synth_ac.c \
 	libraries/musyx/asm/synth_adsr.s \
 	libraries/musyx/asm/synth_dbtab.s \
 	libraries/musyx/asm/s_data.s \

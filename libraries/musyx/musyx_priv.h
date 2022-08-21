@@ -8,7 +8,8 @@ extern SND_HOOKS salHooks;
 
 extern struct
 {
-    u8 filler0[4];
+    u32 freq;
+    //u8 filler0[4];
     u32 unk4;
     u8 filler8[1];
 } synthInfo;

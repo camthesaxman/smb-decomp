@@ -491,6 +491,7 @@ lbl_800F7E6C:
 
 .section .sdata2
 
+	.balign 8
 .global lbl_802F6970
 lbl_802F6970:
 	# ROM: 0x1F0390
