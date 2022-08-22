@@ -387,16 +387,16 @@ extern SND_HOOKS salHooks;
 // ? hwDisableHRTF();
 
 // ? aramQueueCallback();
-void aramUploadData(void *, void *, int, int);
+void aramUploadData(void *source, u32 dest, size_t size, u32 arg3);
 void aramSyncTransferQueue(void);
 void aramInit(int);
 // ? aramGetZeroBuffer();
-int aramStoreData(int, int);
-void aramRemoveData(int, int);
+void *aramStoreData(void *, int);
+void aramRemoveData(int, u32);
 // ? InitStreamBuffers();
-void aramAllocateStreamBuffer(void);
-void *aramGetStreamBufferAddress(int, void *);
-void aramFreeStreamBuffer(void);
+u8 aramAllocateStreamBuffer(u32);
+u32 aramGetStreamBufferAddress(u8, u32 *);
+void aramFreeStreamBuffer(u8);
 
 /* hw_dolphin.c */
 

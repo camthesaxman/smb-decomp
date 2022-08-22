@@ -540,15 +540,15 @@ int hwGetPos(int arg0)
     }
 }
 
-void hwFlushStream(u8 *arg0, int arg1, int arg2, int arg3)
+void hwFlushStream(u8 *arg0, int arg1, int arg2, u8 arg3)
 {
-    u8 dunno[8];
-    u8 *temp_r31;
+    u32 dummy;
+    u32 temp_r31;
     u8 *temp_r30;
     s32 temp_r29;
     s32 temp_r28;
 
-    temp_r31 = aramGetStreamBufferAddress(arg3, dunno);
+    temp_r31 = aramGetStreamBufferAddress(arg3, &dummy);
     arg2 += arg1 & 0x1F;
     temp_r28 = OSRoundDown32B(arg1);
     temp_r29 = OSRoundUp32B(arg2);
@@ -557,19 +557,19 @@ void hwFlushStream(u8 *arg0, int arg1, int arg2, int arg3)
     aramUploadData(temp_r30, temp_r31 + temp_r28, temp_r29, 1);
 }
 
-void hwInitStream(void)
+void hwInitStream(u32 arg0)
 {
-    aramAllocateStreamBuffer();
+    aramAllocateStreamBuffer(arg0);
 }
 
-void hwExitStream(void)
+void hwExitStream(u8 arg0)
 {
-    aramFreeStreamBuffer();
+    aramFreeStreamBuffer(arg0);
 }
 
-void *hwGetStreamPlayBuffer(int arg0)
+u32 hwGetStreamPlayBuffer(u8 arg0)
 {
-    return aramGetStreamBufferAddress(arg0, 0);
+    return aramGetStreamBufferAddress(arg0, NULL);
 }
 
 void *hwTransAddr(void *arg0)
@@ -593,7 +593,7 @@ struct UnkStruct2
     u32 unk4;
 };
 
-void hwSaveSample(struct UnkStruct2 **arg0, u32 *arg1)
+void hwSaveSample(struct UnkStruct2 **arg0, void **arg1)
 {
     u32 r0 = (*arg0)->unk4 >> 24;
     u32 r4 = (*arg0)->unk4 & 0xFFFFFF;

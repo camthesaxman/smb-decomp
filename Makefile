@@ -301,7 +301,7 @@ SOURCES := \
 	libraries/musyx/asm/snd_midictrl.s \
 	libraries/musyx/snd_service.c \
 	libraries/musyx/HARDWARE.c \
-	libraries/musyx/asm/hw_aramdma.s \
+	libraries/musyx/hw_aramdma.c \
 	libraries/musyx/hw_dolphin.c \
 	libraries/musyx/hw_memory.c \
 	libraries/musyx/reverb_fx.c \
