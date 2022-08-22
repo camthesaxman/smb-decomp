@@ -29,6 +29,7 @@
 # offset: 0x00000000	length: 0x00000000	flags: 0
 # 1
 .section .text
+.if 0
 .global _prolog
 _prolog:
 /* 000000D0 7C0802A6 */ mflr r0
@@ -69,6 +70,8 @@ lbl_00000130:
 /* 0000014C 38210008 */ addi r1, r1, 8
 /* 00000150 7C0803A6 */ mtlr r0
 /* 00000154 4E800020 */ blr 
+.endif
+.if 0
 .global _epilog
 _epilog:
 /* 00000158 7C0802A6 */ mflr r0
@@ -83,6 +86,7 @@ _epilog:
 /* 0000017C 38210008 */ addi r1, r1, 8
 /* 00000180 7C0803A6 */ mtlr r0
 /* 00000184 4E800020 */ blr 
+
 .global _unresolved
 _unresolved:
 /* 00000188 7C0802A6 */ mflr r0
@@ -131,7 +135,8 @@ lbl_00000204:
 /* 00000228 83A1000C */ lwz r29, 0xc(r1)
 /* 0000022C 38210018 */ addi r1, r1, 0x18
 /* 00000230 4E800020 */ blr 
-lbl_00000234:
+
+glabel lbl_00000234
 /* 00000234 3C600000 */ lis r3, modeCtrl@ha
 /* 00000238 38830000 */ addi r4, r3, modeCtrl@l
 /* 0000023C 39200001 */ li r9, 1
@@ -202,7 +207,8 @@ lbl_00000328:
 /* 00000330 38630018 */ addi r3, r3, 0x18
 /* 00000334 4BFFFFC4 */ b lbl_000002F8
 /* 00000338 4E800020 */ blr 
-lbl_0000033C:
+
+glabel lbl_0000033C
 /* 0000033C 7C0802A6 */ mflr r0
 /* 00000340 3C600000 */ lis r3, gamePauseStatus@ha
 /* 00000344 90010004 */ stw r0, 4(r1)
@@ -379,7 +385,8 @@ lbl_000005B4:
 /* 000005C4 83A1001C */ lwz r29, 0x1c(r1)
 /* 000005C8 83810018 */ lwz r28, 0x18(r1)
 /* 000005CC 38210028 */ addi r1, r1, 0x28
-/* 000005D0 4E800020 */ blr 
+/* 000005D0 4E800020 */ blr
+.endif 
 lbl_000005D4:
 /* 000005D4 9421FFE8 */ stwu r1, -0x18(r1)
 /* 000005D8 3C800000 */ lis r4, lbl_10000000@ha
@@ -1771,7 +1778,8 @@ lbl_00001900:
 /* 00001904 7CC33378 */ mr r3, r6
 /* 00001908 38210018 */ addi r1, r1, 0x18
 /* 0000190C 4E800020 */ blr 
-lbl_00001910:
+
+glabel lbl_00001910
 /* 00001910 3C600000 */ lis r3, controllerInfo@ha
 /* 00001914 38830000 */ addi r4, r3, controllerInfo@l
 /* 00001918 8804000A */ lbz r0, 0xa(r4)
@@ -1797,7 +1805,8 @@ lbl_00001954:
 /* 0000195C 4C820020 */ bnelr 
 /* 00001960 38630001 */ addi r3, r3, 1
 /* 00001964 4E800020 */ blr 
-lbl_00001968:
+
+glabel lbl_00001968
 /* 00001968 3C600000 */ lis r3, modeCtrl@ha
 /* 0000196C 38630000 */ addi r3, r3, modeCtrl@l
 /* 00001970 80030028 */ lwz r0, 0x28(r3)
@@ -1864,7 +1873,8 @@ lbl_00001A3C:
 /* 00001A44 4C800020 */ bgelr 
 /* 00001A48 38600001 */ li r3, 1
 /* 00001A4C 4E800020 */ blr 
-lbl_00001A50:
+
+glabel lbl_00001A50
 /* 00001A50 3C800000 */ lis r4, controllerInfo@ha
 /* 00001A54 38840000 */ addi r4, r4, controllerInfo@l
 /* 00001A58 8804000A */ lbz r0, 0xa(r4)
@@ -3192,7 +3202,8 @@ lbl_00002CE0:
 /* 00002CF4 83810010 */ lwz r28, 0x10(r1)
 /* 00002CF8 38210020 */ addi r1, r1, 0x20
 /* 00002CFC 4E800020 */ blr 
-lbl_00002D00:
+
+glabel lbl_00002D00
 /* 00002D00 7C0802A6 */ mflr r0
 /* 00002D04 3C600000 */ lis r3, gamePauseStatus@ha
 /* 00002D08 90010004 */ stw r0, 4(r1)
@@ -3310,7 +3321,8 @@ lbl_00002EA8:
 /* 00002EB4 7C0803A6 */ mtlr r0
 /* 00002EB8 38210020 */ addi r1, r1, 0x20
 /* 00002EBC 4E800020 */ blr 
-lbl_00002EC0:
+
+glabel lbl_00002EC0
 /* 00002EC0 7C0802A6 */ mflr r0
 /* 00002EC4 3C600000 */ lis r3, gamePauseStatus@ha
 /* 00002EC8 90010004 */ stw r0, 4(r1)
@@ -3465,7 +3477,8 @@ lbl_000030D4:
 /* 000030E8 83810018 */ lwz r28, 0x18(r1)
 /* 000030EC 38210028 */ addi r1, r1, 0x28
 /* 000030F0 4E800020 */ blr 
-lbl_000030F4:
+
+glabel lbl_000030F4
 /* 000030F4 7C0802A6 */ mflr r0
 /* 000030F8 3C600000 */ lis r3, gamePauseStatus@ha
 /* 000030FC 90010004 */ stw r0, 4(r1)
@@ -10777,7 +10790,7 @@ lbl_00009854:
 /* 0000985C 382100D8 */ addi r1, r1, 0xd8
 /* 00009860 7C0803A6 */ mtlr r0
 /* 00009864 4E800020 */ blr 
-lbl_00009868:
+glabel lbl_00009868
 /* 00009868 7C0802A6 */ mflr r0
 /* 0000986C 3CA00000 */ lis r5, gameMode@ha
 /* 00009870 90010004 */ stw r0, 4(r1)
@@ -11946,7 +11959,7 @@ lbl_0000A870:
 /* 0000A944 38210068 */ addi r1, r1, 0x68
 /* 0000A948 7C0803A6 */ mtlr r0
 /* 0000A94C 4E800020 */ blr 
-lbl_0000A950:
+glabel lbl_0000A950
 /* 0000A950 7C0802A6 */ mflr r0
 /* 0000A954 3C800000 */ lis r4, lbl_00012730@ha
 /* 0000A958 90010004 */ stw r0, 4(r1)
@@ -16479,7 +16492,7 @@ lbl_0000EBB0:
 /* 0000EBC8 7C0803A6 */ mtlr r0
 /* 0000EBCC 38210060 */ addi r1, r1, 0x60
 /* 0000EBD0 4E800020 */ blr 
-lbl_0000EBD4:
+glabel lbl_0000EBD4
 /* 0000EBD4 7C0802A6 */ mflr r0
 /* 0000EBD8 3CA00000 */ lis r5, lbl_00012730@ha
 /* 0000EBDC 90010004 */ stw r0, 4(r1)
@@ -19490,7 +19503,8 @@ lbl_00011824:
 /* 000118D8 7C0803A6 */ mtlr r0
 /* 000118DC 38210018 */ addi r1, r1, 0x18
 /* 000118E0 4E800020 */ blr 
-lbl_000118E4:
+
+glabel lbl_000118E4
 /* 000118E4 7C0802A6 */ mflr r0
 /* 000118E8 3C600000 */ lis r3, lbl_801EEDA8@ha
 /* 000118EC 90010004 */ stw r0, 4(r1)
@@ -20120,6 +20134,7 @@ lbl_00012180:
     # 0x12180
     .asciz "RELOCATION SEL_NGC LOADED"
 .endif
+.if 0
 lbl_0001219C:
     # 0x1219C
     .asciz "RELOCATION SEL_NGC PURGED"
@@ -20131,6 +20146,7 @@ lbl_0001219C:
     .asciz "sel_ngc_rel.c"
     .balign 4
     .4byte 0x0A000000
+.endif
 lbl_00012238:
     # 0x12238
     .4byte lbl_00000608
@@ -23965,6 +23981,7 @@ lbl_00017490:
 
 # 6
 .section .bss
+.if 0
 lbl_10000000:
     .skip 0x18
 lbl_10000018:
@@ -23973,6 +23990,7 @@ lbl_1000003C:
     .skip 0x84
 lbl_100000C0:
     .skip 0x744
+.endif
 lbl_10000804:
     .skip 0x1D0
 lbl_100009D4:

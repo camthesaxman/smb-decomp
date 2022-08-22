@@ -4,9 +4,9 @@ def apply(config, args):
     devkit_str = p.communicate()[0].decode("ascii")
     devkit_path = devkit_str.split("[")[1][:-2]
 
-    config['mapfile'] = 'supermonkeyball.map'
-    config['myimg'] = 'supermonkeyball.elf'
-    config['baseimg'] = 'baserom.elf'
+    config['mapfile'] = 'mkbe.sel_ngc.map'
+    config['myimg'] = 'mkbe.sel_ngc.rel'
+    config['baseimg'] = 'baserom.sel_ngc.rel'
     
     #config['mapfile'] = 'mkbe.sel_stage.map'
     #config['myimg'] = 'mkbe.sel_stage.rel'

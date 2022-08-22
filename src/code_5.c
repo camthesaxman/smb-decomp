@@ -23,46 +23,11 @@ void (*menuCallback)(void);
 
 u8 lbl_802F02F8[6] = { 5, 5, 4, 3, 4, 2 };
 
-struct
-{
-    u8 unk0;
-    u8 filler1[3];
-    s16 unk4;
-    s16 unk6;
-    u32 unk8;
-    s16 unkC;
-    s16 unkE;
-    u32 unk10;
-    s16 unk14;
-    s16 unk16;
-    u32 unk18;
-    s16 unk1C;
-    s16 unk1E;
-    u32 unk20;
-    s16 unk24;
-    s16 unk26;
-    u32 unk28;
-    u32 unk2C;
-    u8 unk30;
-    u8 unk31;
-    u8 unk32;
-    u8 unk33;
-    u8 unk34;
-    u8 filler35[3];
-} lbl_801EED50;
+struct Struct801EED50 lbl_801EED50;
 
 struct Struct801EED88 lbl_801EED88;
 
-struct
-{
-    u32 unk48;
-    u8 unk4C;
-    u8 unk4D;
-    u8 unk4E;
-    u8 unk4F;
-    u8 unk50;
-    u8 filler9[0x10-0x9];
-} lbl_801EED98;
+struct Struct801EED98 lbl_801EED98;
 
 struct Struct801EEDA8 lbl_801EEDA8;
 

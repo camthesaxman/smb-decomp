@@ -521,7 +521,9 @@ extern GXRenderModeObj GXPal528IntDf;
 
 // .bss section
 extern struct PauseMenuState pauseMenuState;
+extern struct Struct801EED50 lbl_801EED50;
 extern struct Struct801EEC80 lbl_801EEC80;
+extern struct Struct801EED98 lbl_801EED98;
 extern struct Struct801EEC90 lbl_801EEC90;
 
 // extern ? lbl_801EED50;
