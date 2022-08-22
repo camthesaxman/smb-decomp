@@ -386,8 +386,8 @@ lbl_000005B4:
 /* 000005C8 83810018 */ lwz r28, 0x18(r1)
 /* 000005CC 38210028 */ addi r1, r1, 0x28
 /* 000005D0 4E800020 */ blr
-.endif 
-lbl_000005D4:
+
+glabel lbl_000005D4
 /* 000005D4 9421FFE8 */ stwu r1, -0x18(r1)
 /* 000005D8 3C800000 */ lis r4, lbl_10000000@ha
 /* 000005DC 28030008 */ cmplwi r3, 8
@@ -1778,6 +1778,7 @@ lbl_00001900:
 /* 00001904 7CC33378 */ mr r3, r6
 /* 00001908 38210018 */ addi r1, r1, 0x18
 /* 0000190C 4E800020 */ blr 
+.endif
 
 glabel lbl_00001910
 /* 00001910 3C600000 */ lis r3, controllerInfo@ha
@@ -3482,11 +3483,11 @@ glabel lbl_000030F4
 /* 000030F4 7C0802A6 */ mflr r0
 /* 000030F8 3C600000 */ lis r3, gamePauseStatus@ha
 /* 000030FC 90010004 */ stw r0, 4(r1)
-/* 00003100 3CA00000 */ lis r5, lbl_00012238@ha
+/* 00003100 3CA00000 */ lis r5, 0x00012238@ha ;#lbl_00012238@ha
 /* 00003104 3C800000 */ lis r4, lbl_00011B68@ha
 /* 00003108 9421FF28 */ stwu r1, -0xd8(r1)
 /* 0000310C BDE10094 */ stmw r15, 0x94(r1)
-/* 00003110 3BC50000 */ addi r30, r5, lbl_00012238@l
+/* 00003110 3BC50000 */ addi r30, r5, 0x00012238@l ;#lbl_00012238@l
 /* 00003114 3BA40000 */ addi r29, r4, lbl_00011B68@l
 /* 00003118 80030000 */ lwz r0, gamePauseStatus@l(r3)
 /* 0000311C 3C600000 */ lis r3, lbl_10000000@ha
@@ -20147,6 +20148,7 @@ lbl_0001219C:
     .balign 4
     .4byte 0x0A000000
 .endif
+.if 0
 lbl_00012238:
     # 0x12238
     .4byte lbl_00000608
@@ -20158,6 +20160,7 @@ lbl_00012238:
     .4byte lbl_00001430
     .4byte lbl_000015CC
     .4byte lbl_00001768
+.endif
 lbl_0001225C:
     # 0x1225C
     .asciz "b/c/0xff0000/a/Please do not insert or\nb/c/0xff0000/a/disconnect the controller(s)."

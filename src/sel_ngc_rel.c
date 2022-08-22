@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "course.h"
 #include "event.h"
+#include "input.h"
 #include "light.h"
 #include "mode.h"
 #include "pool.h"
@@ -63,7 +64,12 @@ void _unresolved(void)
     OSPanic("sel_ngc_rel.c", 85, "\n");
 }
 
-u8 lbl_10000000[0x18];
+struct
+{
+    u8 filler0[4];
+    u32 unk4;
+    u8 filler8[0x18-0x8];
+} lbl_10000000;
 u32 lbl_10000018[9];
 struct
 {
@@ -80,7 +86,7 @@ void lbl_00000234(void)
 {
     s32 i;
 
-    (void)lbl_10000000;
+    (void)&lbl_10000000;
 
     modeCtrl.unk30 = 1;
     for (i = 0; i < 6; i++)
@@ -169,4 +175,105 @@ void lbl_0000033C(void)
     else
         play_menu_music();
     gameSubmodeRequest = SMD_SEL_NGC_MAIN;
+}
+
+#define IS_PRESSED(btn) \
+          ((controllerInfo[0].unk0[4].button & btn) \
+        || (controllerInfo[1].unk0[4].button & btn) \
+        || (controllerInfo[2].unk0[4].button & btn) \
+        || (controllerInfo[3].unk0[4].button & btn) \
+        || (analogButtonInfo[0][4] & btn) \
+        || (analogButtonInfo[1][4] & btn) \
+        || (analogButtonInfo[2][4] & btn) \
+        || (analogButtonInfo[3][4] & btn))
+
+int lbl_000005D4(int arg0)
+{
+    int var_r6 = 0;
+
+    switch (arg0)
+    {
+    case 0:
+        var_r6 = (lbl_10000000.unk4 == 0 && IS_PRESSED(1))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[4].button & 1) || (analogButtonInfo[0][4] & 1)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[4].button & 1) || (analogButtonInfo[1][4] & 1)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[4].button & 1) || (analogButtonInfo[2][4] & 1)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[4].button & 1) || (analogButtonInfo[3][4] & 1))))
+                 );
+        break;
+    case 1:
+        var_r6 = (lbl_10000000.unk4 == 0 && IS_PRESSED(2))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[4].button & 2) || (analogButtonInfo[0][4] & 2)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[4].button & 2) || (analogButtonInfo[1][4] & 2)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[4].button & 2) || (analogButtonInfo[2][4] & 2)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[4].button & 2) || (analogButtonInfo[3][4] & 2))))
+                 );
+        break;
+    case 2:
+        var_r6 = (lbl_10000000.unk4 == 0 && IS_PRESSED(8))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[4].button & 8) || (analogButtonInfo[0][4] & 8)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[4].button & 8) || (analogButtonInfo[1][4] & 8)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[4].button & 8) || (analogButtonInfo[2][4] & 8)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[4].button & 8) || (analogButtonInfo[3][4] & 8))))
+                 );
+        break;
+    case 3:
+        var_r6 = (lbl_10000000.unk4 == 0 && IS_PRESSED(4))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[4].button & 4) || (analogButtonInfo[0][4] & 4)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[4].button & 4) || (analogButtonInfo[1][4] & 4)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[4].button & 4) || (analogButtonInfo[2][4] & 4)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[4].button & 4) || (analogButtonInfo[3][4] & 4))))
+                 );
+        break;
+    case 4:
+        var_r6 = (lbl_10000000.unk4 == 0 && ANY_CONTROLLER_PRESSED(0x40))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[2].button & 0x40)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[2].button & 0x40)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[2].button & 0x40)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[2].button & 0x40))))
+                 );
+        break;
+    case 5:
+        var_r6 = (lbl_10000000.unk4 == 0 && ANY_CONTROLLER_PRESSED(0x20))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[2].button & 0x20)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[2].button & 0x20)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[2].button & 0x20)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[2].button & 0x20))))
+                 );
+        break;
+    case 6:
+        var_r6 = (lbl_10000000.unk4 == 0 && ANY_CONTROLLER_PRESSED(0x100))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[2].button & 0x100)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[2].button & 0x100)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[2].button & 0x100)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[2].button & 0x100))))
+                 );
+        break;
+    case 7:
+        var_r6 = (lbl_10000000.unk4 == 0 && ANY_CONTROLLER_PRESSED(0x200))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[2].button & 0x200)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[2].button & 0x200)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[2].button & 0x200)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[2].button & 0x200))))
+                 );
+        break;
+    case 8:
+        var_r6 = (lbl_10000000.unk4 == 0 && ANY_CONTROLLER_PRESSED(0x400))
+              || (lbl_10000000.unk4 != 0
+                  && (((lbl_10000000.unk4 & 1) && ((controllerInfo[0].unk0[2].button & 0x400)))
+                   || ((lbl_10000000.unk4 & 2) && ((controllerInfo[1].unk0[2].button & 0x400)))
+                   || ((lbl_10000000.unk4 & 4) && ((controllerInfo[2].unk0[2].button & 0x400)))
+                   || ((lbl_10000000.unk4 & 8) && ((controllerInfo[3].unk0[2].button & 0x400))))
+                 );
+        break;
+    }
+    return var_r6;
 }

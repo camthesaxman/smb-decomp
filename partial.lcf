@@ -20,3 +20,5 @@ FORCEACTIVE
     _epilog
     _unresolved
 }
+
+lbl_00012238 = 0x00012238;
