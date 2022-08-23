@@ -27,10 +27,10 @@ u32 g_playPointsEarned;
 s8 g_currFloorStreak;  // number of floors cleared since last continue
 u32 g_totalPlayPoints;
 u32 g_maxPlayPointRecord;
-u32 lbl_802F1FB4;  // not used in this file
+struct Struct802F1FB4 *lbl_802F1FB4;  // not used in this file
 int lbl_802F1FB0;
 u32 lbl_802F1FAC;  // not used in this file
-u32 lbl_802F1FA8;  // not used in this file
+s32 lbl_802F1FA8;  // not used in this file
 int u_isCompetitionModeCourse;
 
 // g_unlockFlags bits

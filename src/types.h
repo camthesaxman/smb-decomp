@@ -981,17 +981,24 @@ struct Struct80250A68
 
 struct Struct801EEDA8
 {
-    u8 filler0[0x58];
-    u32 unk58;
-    u32 unk5C;
-    u32 unk60;
-    u32 unk64;
-    u8 filler68[0xBC-0x68];
+    s32 unk0;
+    s32 unk4;
+    u8 filler8[0x3C-0x8];
+    s32 unk3C;
+    s32 unk40;
+    s32 unk44;
+    s32 unk48[4];
+    u32 unk58[4];
+    u32 unk68;
+    u32 unk6C[1];
+    u8 filler70[0xBC-0x70];
     u32 unkBC;
     u32 unkC0;
     u8 fillerC4[0x100-0xC4];
     float unk100;
-    u8 filler104[0x118-0x104];
+    u8 filler104[0x114-0x104];
+    s8 unk114;
+    u8 filler115[3];
 };
 
 struct Struct8009DBB0
@@ -1039,6 +1046,13 @@ struct Struct801EED50
     u8 unk33;
     u8 unk34;
     u8 filler35[3];
+};
+
+struct Struct802F1FB4
+{
+    s16 unk0;
+    s16 unk2;
+    u32 unk4;
 };
 
 #endif
