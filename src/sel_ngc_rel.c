@@ -73,10 +73,15 @@ struct
     u8 filler8[0x18-0x8];
 } lbl_10000000;
 u32 lbl_10000018[9];
+u32 lbl_1000003C_unk0;
+s32 lbl_1000003C_unk4;
+s32 lbl_1000003C_unk8[1];
 struct
 {
-    u32 unk0;
-    u8 filler4[0x84-0x4];
+    //u32 unk0;
+    //s32 unk4;  // 0x40
+    //s32 unk8[1];  // 0x44
+    u8 fillerC[0x84-0xC];
 } lbl_1000003C;
 struct
 {
@@ -153,8 +158,12 @@ void lbl_0000033C(void)
     lbl_801EEDA8.unk58[1] = 0;
     lbl_801EEDA8.unk58[2] = 0;
     lbl_801EEDA8.unk58[3] = 0;
-    lbl_1000003C.unk0 = ST_190_DUMMY;
-    preload_stage_files(lbl_1000003C.unk0);
+    lbl_1000003C_unk0 = ST_190_DUMMY;
+    preload_stage_files(lbl_1000003C_unk0);
+    // TODO: remove
+    (void)lbl_1000003C_unk4;
+    (void)lbl_1000003C_unk8;
+    (void)lbl_1000003C;
     lbl_100000C0.unk0 = 1;
     if (modeCtrl.courseFlags & 0x10000)
     {
@@ -741,8 +750,8 @@ void lbl_000029A8(void)
     event_finish(EVENT_ITEM);
     event_finish(EVENT_EFFECT);
     event_finish(EVENT_BACKGROUND);
-    func_800569B4(lbl_1000003C.unk0);
-    load_stage(lbl_1000003C.unk0);
+    func_800569B4(lbl_1000003C_unk0);
+    load_stage(lbl_1000003C_unk0);
     event_start(EVENT_STAGE);
     event_start(EVENT_STOBJ);
     event_start(EVENT_ITEM);
@@ -763,4 +772,171 @@ void lbl_000029A8(void)
         return;
     }
     light_init(0);
+}
+
+void lbl_00002AA4(s32 arg0)
+{
+    if (lbl_801EEDA8.unkF4 <= arg0 - 2)
+    {
+        if (lbl_000005D4(2))
+        {
+            if (--lbl_801EEDA8.unkF4 < 0)
+                lbl_801EEDA8.unkF4 = arg0 - 2;
+        }
+        if (lbl_000005D4(3))
+        {
+            if (++lbl_801EEDA8.unkF4 > arg0 - 2)
+                lbl_801EEDA8.unkF4 = 0;
+        }
+    }
+    else
+    {
+        if (lbl_000005D4(2))
+        {
+            if (--lbl_801EEDA8.unkF4 < arg0 - 1)
+                lbl_801EEDA8.unkF4 = arg0;
+        }
+        if (lbl_000005D4(3))
+        {
+            if (++lbl_801EEDA8.unkF4 > arg0)
+                lbl_801EEDA8.unkF4 = arg0 - 1;
+        }
+    }
+    if ((lbl_000005D4(2) || lbl_000005D4(3))
+     && (lbl_1000003C_unk4 == 1 || arg0 > 2))
+    {
+        u_play_sound_0(0x6C);
+    }
+    if (lbl_1000003C_unk4 == 1)
+    {
+        if (lbl_000005D4(6) && lbl_801EEDA8.unkF4 == arg0 - 1)
+        {
+            lbl_801EEDA8.unk108 = 1;
+            lbl_1000003C_unk8[lbl_1000003C_unk4] = lbl_801EEDA8.unkF4;
+            lbl_1000003C_unk4 ^= 1;
+            lbl_801EEDA8.unkF4 = lbl_1000003C_unk8[lbl_1000003C_unk4];
+            u_play_sound_0(0x65);
+        }
+    }
+    else if (lbl_000005D4(6) || lbl_000005D4(7))
+    {
+        lbl_801EEDA8.unk108 = 0;
+        lbl_1000003C_unk8[lbl_1000003C_unk4] = lbl_801EEDA8.unkF4;
+        lbl_1000003C_unk4 ^= 1;
+        lbl_801EEDA8.unkF4 = lbl_1000003C_unk8[lbl_1000003C_unk4];
+        lbl_801EEDA8.unkF4++;
+        u_play_sound_0(lbl_000005D4(6) != 0 ? 0x6A : 0x66);
+    }
+}
+
+// to prevent inlining of lbl_00001910
+static inline int lbl_00001910_noinline(void)
+{
+    return lbl_00001910();
+}
+
+void lbl_00002D00(void)
+{
+    s32 i;
+    int temp_r3;
+
+    if (!(gamePauseStatus & 0xA))
+    {
+        func_800569B4(ST_190_DUMMY);
+        load_stage(ST_190_DUMMY);
+        modeCtrl.submodeTimer = 0;
+        modeCtrl.courseFlags = 0;
+        modeCtrl.difficulty = 0;
+        lbl_801EEDA8.unk0 = 7;
+        lbl_801EEDA8.unk4 = -1;
+        lbl_801EEDA8.unk8 = 0;
+        lbl_801EEDA8.unkC = -1;
+        lbl_801EEDA8.unkE = 0;
+        lbl_801EEDA8.unk10[lbl_801EEDA8.unkE] = lbl_801EEDA8.unk0;
+        lbl_801EEDA8.unk68 = -1;
+        for (i = 0; i < 10; i++)
+        {
+            lbl_801EEDA8.unk6C[i] = -1;
+            lbl_801EEDA8.unk94[i] = -1;
+        }
+        lbl_801EEDA8.unk110 = 0;
+        temp_r3 = lbl_00001910_noinline();
+        lbl_801EEDA8.unk40 = 1;
+        lbl_801EEDA8.unk3C = temp_r3;
+        modeCtrl.playerCount = lbl_801EEDA8.unk3C;
+        playerCharacterSelection[0] = lbl_802F1C10.unk4[0];
+        playerCharacterSelection[1] = lbl_802F1C10.unk4[1];
+        playerCharacterSelection[2] = lbl_802F1C10.unk4[2];
+        playerCharacterSelection[3] = lbl_802F1C10.unk4[3];
+        for (i = 0; i < 4; i++)
+            lbl_801EEDA8.unk48[i] = 0;
+        lbl_801EEDA8.unk44 = 0;
+        lbl_00000234();
+        lbl_0000033C();
+        func_800123DC();
+        start_screen_fade(0x100, 0U, 0x1E);
+    }
+}
+
+void lbl_00002EC0(void)
+{
+    struct Sprite *sprite;
+    s32 i;
+
+    if (gamePauseStatus & 0xA)
+        return;
+
+    modeCtrl.submodeTimer = 0;
+    if (modeCtrl.courseFlags & 0x8000)
+    {
+        lbl_801EEDA8.unkC = -1;
+        lbl_801EEDA8.unkE--;
+        lbl_801EEDA8.unk0 = lbl_801EEDA8.unk10[lbl_801EEDA8.unkE];
+        start_screen_fade(0x100, 0U, 0x1E);
+    }
+    else if (modeCtrl.courseFlags & 0x10000)
+    {
+        lbl_801EEDA8.unkC = -1;
+        lbl_801EEDA8.unkE--;
+        lbl_801EEDA8.unk0 = 4;
+    }
+    else if (modeCtrl.courseFlags & 0x80000)
+    {
+        lbl_801EEDA8.unkC = -1;
+        lbl_801EEDA8.unkE = 1;
+        lbl_00000234();
+        lbl_801EEDA8.unk0 = 4;
+    }
+    else
+    {
+        lbl_801EEDA8.unkC = -1;
+        lbl_801EEDA8.unkE = 1;
+        lbl_00000234();
+        lbl_801EEDA8.unk0 = 4;
+        start_screen_fade(0x102, 0U, 1);
+    }
+    lbl_801EEDA8.unk4 = -1;
+    lbl_801EEDA8.unk8 = 0;
+    lbl_801EEDA8.unk68 = -1;
+    for (i = 0; i < 10; i++)
+        lbl_801EEDA8.unk6C[i] = -1;
+    lbl_801EEDA8.unk110 = 0;
+    for (i = 0; i < 4; i++)
+        lbl_801EEDA8.unk48[i] = 0;
+    lbl_801EEDA8.unk44 = 0;
+    lbl_0000033C();
+    modeCtrl.courseFlags = 0;
+    camera_setup_singleplayer_viewport();
+    for (i = 0; i < lbl_801EEDA8.unkE; i++)
+    {
+        if (lbl_801EEDA8.unk94[i] == -1)
+            break;
+        sprite = find_sprite_with_tag(lbl_801EEDA8.unk94[i]);
+        if (sprite != NULL)
+        {
+            sprite->userVar = 7;
+            sprite->textAlign = i;
+        }
+    }
+    func_800123DC();
 }

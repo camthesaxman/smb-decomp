@@ -922,7 +922,7 @@ struct Struct802F1C10
     u8 unk1;
     s8 unk2;
     u8 unk3;
-    u8 unk4[4];
+    s8 unk4[4];
 };
 
 struct GBilLightGroup
@@ -983,20 +983,29 @@ struct Struct801EEDA8
 {
     s32 unk0;
     s32 unk4;
-    u8 filler8[0x3C-0x8];
+    s32 unk8;
+    s16 unkC;
+    s16 unkE;
+    u32 unk10[1];
+    u8 filler14[0x3C-0x14];
     s32 unk3C;
     s32 unk40;
     s32 unk44;
     s32 unk48[4];
     u32 unk58[4];
     u32 unk68;
-    u32 unk6C[1];
-    u8 filler70[0xBC-0x70];
+    s32 unk6C[10];
+    s32 unk94[10];
     u32 unkBC;
     u32 unkC0;
-    u8 fillerC4[0x100-0xC4];
+    u8 fillerC4[0xF4-0xC4];
+    s32 unkF4;
+    u8 fillerF8[0x100-0xF8];
     float unk100;
-    u8 filler104[0x114-0x104];
+    u8 filler104[4];
+    s32 unk108;
+    u8 filler10C[0x110-0x10C];
+    u32 unk110;
     s8 unk114;
     u8 filler115[3];
 };
