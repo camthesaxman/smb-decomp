@@ -243,7 +243,7 @@ SOURCES := \
 	libraries/vi/asm/vi.s \
 	libraries/demo/DEMOFont.c \
 	libraries/pad/asm/Pad.s \
-	libraries/ai/asm/ai.s \
+	libraries/ai/ai.c \
 	libraries/ar/asm/ar.s \
 	libraries/ar/asm/arq.s \
 	libraries/dsp/dsp.c \

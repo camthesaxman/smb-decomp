@@ -1,9 +1,3 @@
-#ifdef __MWERKS__
-volatile u16 __DSPRegs[] : 0xCC005000;
-#else
-#define __DSPRegs ((volatile u16 *)0xCC005000)
-#endif
-
 extern DSPTaskInfo *__DSP_curr_task;
 extern DSPTaskInfo *__DSP_last_task;
 extern DSPTaskInfo *__DSP_first_task;
