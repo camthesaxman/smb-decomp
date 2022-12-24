@@ -785,6 +785,7 @@ lbl_801033AC:
 
 .section .sbss
 
+    .balign 8
 .global __DTKCurrentTrack
 __DTKCurrentTrack:
 	.skip 0x4

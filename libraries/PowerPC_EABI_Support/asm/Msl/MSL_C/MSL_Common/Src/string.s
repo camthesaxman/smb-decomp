@@ -377,6 +377,7 @@ K2:
 
 .section .sbss
 
+    .balign 8
 .global initialized_60
 initialized_60:
 	.skip 0x8

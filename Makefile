@@ -22,6 +22,8 @@ default: all
 # Tools
 #-------------------------------------------------------------------------------
 
+DEVKITPPC ?=
+
 COMPILER_DIR := mwcc_compiler/$(COMPILER_VERSION)
 AS      := $(DEVKITPPC)/bin/powerpc-eabi-as
 MWCC    := $(WINE) $(COMPILER_DIR)/mwcceppc.exe

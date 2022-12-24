@@ -1233,6 +1233,7 @@ lbl_800D76FC:
 
 .section .data
 
+    .balign 32
 .global lbl_801E8A80
 lbl_801E8A80:
 	# ROM: 0x1E5A80

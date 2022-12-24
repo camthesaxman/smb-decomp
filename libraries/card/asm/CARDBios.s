@@ -1142,8 +1142,8 @@ lbl_800D6160:
 /* 800D6180 000D20A0  41 80 FF E0 */	blt lbl_800D6160
 /* 800D6184 000D20A4  3C 60 80 00 */	lis r3, 0x8000
 /* 800D6188 000D20A8  48 00 00 2D */	bl __CARDSetDiskID
-/* 800D618C 000D20AC  3C 60 80 1F */	lis r3, lbl_801E8A60@ha
-/* 800D6190 000D20B0  38 63 8A 60 */	addi r3, r3, lbl_801E8A60@l
+/* 800D618C 000D20AC  3C 60 80 1F */	lis r3, ResetFunctionInfo@ha
+/* 800D6190 000D20B0  38 63 8A 60 */	addi r3, r3, ResetFunctionInfo@l
 /* 800D6194 000D20B4  4B FF 11 01 */	bl OSRegisterResetFunction
 lbl_800D6198:
 /* 800D6198 000D20B8  80 01 00 1C */	lwz r0, 0x1c(r1)
@@ -1420,15 +1420,11 @@ lbl_800D64F8:
 .section .data
 
     .balign 8
-.global lbl_801E8A60
-lbl_801E8A60:
+.global ResetFunctionInfo
+ResetFunctionInfo:
 	# ROM: 0x1E5A60
 	.4byte func_800D64B8  ;# ptr
 	.4byte 0x0000007F
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
 	.4byte 0
 	.4byte 0
 
