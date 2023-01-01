@@ -1115,6 +1115,7 @@ gx:
 
 .section .sbss
 
+    .balign 8
 .global __piReg
 __piReg:
 	.skip 0x4

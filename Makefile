@@ -243,13 +243,13 @@ SOURCES := \
 	libraries/vi/asm/vi.s \
 	libraries/demo/DEMOFont.c \
 	libraries/pad/asm/Pad.s \
-	libraries/ai/asm/ai.s \
+	libraries/ai/ai.c \
 	libraries/ar/asm/ar.s \
 	libraries/ar/asm/arq.s \
 	libraries/dsp/dsp.c \
 	libraries/dsp/dsp_debug.c \
 	libraries/dsp/dsp_task.c \
-	libraries/card/asm/CARDBios.s \
+	libraries/card/CARDBios.c \
 	libraries/card/asm/CARDUnlock.s \
 	libraries/card/asm/CARDRdwr.s \
 	libraries/card/asm/CARDBlock.s \
