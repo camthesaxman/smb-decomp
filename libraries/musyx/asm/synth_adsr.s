@@ -183,9 +183,9 @@ lbl_800F7A34:
 /* 800F7A6C 000F398C  40 80 00 08 */	bge lbl_800F7A74
 /* 800F7A70 000F3990  38 A0 00 00 */	li r5, 0
 lbl_800F7A74:
-/* 800F7A74 000F3994  3C 80 80 1F */	lis r4, lbl_801E9BD0@ha
+/* 800F7A74 000F3994  3C 80 80 1F */	lis r4, dspAttenuationTab@ha
 /* 800F7A78 000F3998  54 A5 08 3C */	slwi r5, r5, 1
-/* 800F7A7C 000F399C  38 84 9B D0 */	addi r4, r4, lbl_801E9BD0@l
+/* 800F7A7C 000F399C  38 84 9B D0 */	addi r4, r4, dspAttenuationTab@l
 /* 800F7A80 000F39A0  7C 84 2A 14 */	add r4, r4, r5
 /* 800F7A84 000F39A4  A0 84 00 00 */	lhz r4, 0(r4)
 /* 800F7A88 000F39A8  54 84 80 1E */	slwi r4, r4, 0x10
@@ -407,9 +407,9 @@ lbl_800F7D48:
 /* 800F7D70 000F3C90  40 80 00 08 */	bge lbl_800F7D78
 /* 800F7D74 000F3C94  38 E0 00 00 */	li r7, 0
 lbl_800F7D78:
-/* 800F7D78 000F3C98  3C C0 80 1F */	lis r6, lbl_801E9BD0@ha
+/* 800F7D78 000F3C98  3C C0 80 1F */	lis r6, dspAttenuationTab@ha
 /* 800F7D7C 000F3C9C  54 E7 08 3C */	slwi r7, r7, 1
-/* 800F7D80 000F3CA0  38 C6 9B D0 */	addi r6, r6, lbl_801E9BD0@l
+/* 800F7D80 000F3CA0  38 C6 9B D0 */	addi r6, r6, dspAttenuationTab@l
 /* 800F7D84 000F3CA4  7C C6 3A 14 */	add r6, r6, r7
 /* 800F7D88 000F3CA8  A0 C6 00 00 */	lhz r6, 0(r6)
 /* 800F7D8C 000F3CAC  54 C6 80 1E */	slwi r6, r6, 0x10
@@ -526,10 +526,11 @@ lbl_802F6990:
 	.4byte 0x43300000
 	.4byte 0
 
+.if 0
 .section .data
 
-.global lbl_801E9BD0
-lbl_801E9BD0:
+.global dspAttenuationTab
+dspAttenuationTab:
 	# ROM: 0x1E6BD0
 	.4byte 0x7FFF78D6
 	.4byte 0x72136BB1
@@ -628,3 +629,4 @@ lbl_801E9BD0:
 	.4byte 0
 	.4byte 0
 	.4byte 0
+.endif

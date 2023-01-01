@@ -485,7 +485,7 @@ extern GXRenderModeObj GXPal528IntDf;
 // extern ? lbl_801E9608;
 // extern ? toneup_tab;
 // extern ? tonedown_tab;
-// extern ? lbl_801E9BD0;
+// extern ? dspAttenuationTab;
 // extern ? dspScale2IndexTab;
 // extern ? dspDLSVolTab;
 // extern ? lbl_801EA358;
