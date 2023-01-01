@@ -10,8 +10,16 @@ typedef int bool;
 #define SND_AUX_REASON_BUFFERUPDATE 0
 #define SND_AUX_REASON_PARAMETERUPDATE 1
 
+typedef u32 SND_SEQID;
 typedef u32 SND_VOICEID;
 typedef u16 SND_FXID;
+
+typedef enum
+{
+    SND_OUTPUTMODE_MONO = 0,
+    SND_OUTPUTMODE_STEREO,
+    SND_OUTPUTMODE_SURROUND,
+} SND_OUTPUTMODE;
 
 typedef struct SND_AUX_INFO
 {
@@ -87,8 +95,8 @@ typedef struct SND_AUX_REVERBHI
     /*0x1DC*/ f32 crosstalk;
 } SND_AUX_REVERBHI;
 
-void sndVolume(int, int, int);
-void sndMasterVolume(int, int, int, int);
+void sndVolume(u8 volume, u16 time, u8 volgroup);
+void sndMasterVolume(u8 volume, u16 time, u8 music, u8 fx);
 
 typedef struct SND_PARAMETER
 {
@@ -114,17 +122,20 @@ void sndAuxCallbackReverbHI(u8 reason, SND_AUX_INFO *info, void *user);
 bool sndAuxCallbackPrepareReverbHI(SND_AUX_REVERBHI *rev);
 bool sndAuxCallbackShutdownReverbHI(SND_AUX_REVERBHI *rev);
 
+typedef void (*SND_AUX_CALLBACK)(u8 reason, SND_AUX_INFO *info, void *user);
 
-void sndAuxCallbackChorus();
+void sndAuxCallbackChorus(u8 reason, SND_AUX_INFO *info, void *user);
 void sndAuxCallbackPrepareChorus();
 void sndOutputMode();
 void sndActive();
 int sndPushGroup();
 void sndPopGroup(void);
-int sndFXCheck(void);
-void sndFXKeyOff();
+SND_VOICEID sndFXCheck(SND_VOICEID arg0);
+bool sndFXKeyOff(SND_VOICEID vid);
 void sndStreamFree();
 int sndStreamAllocEx();
-void sndSetAuxProcessingCallbacks();
+void sndSetAuxProcessingCallbacks(u8 studio, 
+                                  SND_AUX_CALLBACK auxA, void *userA, u8 midiA, SND_SEQID seqIDA,
+                                  SND_AUX_CALLBACK auxB, void *userB, u8 midiB, SND_SEQID seqIDB);
 
 #endif

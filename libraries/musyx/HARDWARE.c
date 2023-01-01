@@ -80,7 +80,7 @@ u8 hwGetTimeOffset(void)
     return salTimeOffset;
 }
 
-int hwIsActive(int arg0)
+u32 hwIsActive(int arg0)
 {
     return dspVoice[arg0].unkE8 != 0;
 }
@@ -484,34 +484,34 @@ void hwOff(int arg0)
     salDeactivateVoice(&dspVoice[arg0]);
 }
 
-void hwSetAUXProcessingCallbacks(u8 arg0, int arg1, int arg2, int arg3, int arg4)
+void hwSetAUXProcessingCallbacks(u8 studio, SND_AUX_CALLBACK auxA, void *userA, SND_AUX_CALLBACK auxB, void *userB)
 {
-    struct DSPStudio *temp_r3 = &dspStudio[arg0];
+    struct DSPStudio *myStudio = &dspStudio[studio];
 
-    temp_r3->unkAC = arg1;
-    temp_r3->unkB4 = arg2;
-    temp_r3->unkB0 = arg3;
-    temp_r3->unkB8 = arg4;
+    myStudio->unkAC = auxA;
+    myStudio->unkB4 = userA;
+    myStudio->unkB0 = auxB;
+    myStudio->unkB8 = userB;
 }
 
-void hwActivateStudio(void)
+void hwActivateStudio(u8 studio, u32 arg1, u32 arg2)
 {
-    salActivateStudio();
+    salActivateStudio(studio, arg1, arg2);
 }
 
-void hwDeactivateStudio(void)
+void hwDeactivateStudio(u8 studio)
 {
-    salDeactivateStudio();
+    salDeactivateStudio(studio);
 }
 
-void hwAddInput(u8 arg0, int arg1)
+bool hwAddInput(u8 arg0, void *arg1)
 {
-    salAddStudioInput(&dspStudio[arg0], arg1);
+    return salAddStudioInput(&dspStudio[arg0], arg1);
 }
 
-void hwRemoveInput(u8 arg0, int arg1)
+bool hwRemoveInput(u8 arg0, void *arg1)
 {
-    salRemoveStudioInput(&dspStudio[arg0], arg1);
+    return salRemoveStudioInput(&dspStudio[arg0], arg1);
 }
 
 int hwGetPos(int arg0)

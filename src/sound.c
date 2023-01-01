@@ -1799,11 +1799,11 @@ void sound_init(void)
 
     sndSetAuxProcessingCallbacks(
         0,
-        &sndAuxCallbackReverbHI,
+        sndAuxCallbackReverbHI,
         &lbl_801F8F38,
         0xFF,
         0,
-        &sndAuxCallbackChorus,
+        sndAuxCallbackChorus,
         &lbl_801F9118.unk300,
         0xFF,
         0);
@@ -2188,7 +2188,7 @@ void ev_sound_main(void)
         {
             if (lbl_801F91B4[var_r23][var_r24] == -1U)
                 continue;
-            lbl_801F91B4[var_r23][var_r24] = sndFXCheck();
+            lbl_801F91B4[var_r23][var_r24] = sndFXCheck(lbl_801F91B4[var_r23][var_r24]);
             if (lbl_802F1D40 == 1.0 && lbl_802F1D48 == 0)
                 continue;
             if (lbl_802F1D48 != 0)
@@ -2271,7 +2271,7 @@ void ev_sound_dest(void)
         for (j = 0; j < 0x425; j++)
         {
             if (lbl_801F91B4[i][j] != -1U && lbl_8011057C[j].unk8 != 7)
-                sndFXKeyOff();
+                sndFXKeyOff(lbl_801F91B4[i][j]);
         }
     }
 

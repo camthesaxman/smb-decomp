@@ -286,7 +286,7 @@ SOURCES := \
 	libraries/musyx/asm/seq.s \
 	libraries/musyx/asm/synth.s \
 	libraries/musyx/seq_api.c \
-	libraries/musyx/asm/snd_synthapi.s \
+	libraries/musyx/snd_synthapi.c \
 	libraries/musyx/asm/stream.s \
 	libraries/musyx/asm/synthdata.s \
 	libraries/musyx/asm/synthmacros.s \

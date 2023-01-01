@@ -11,9 +11,9 @@ extern SND_HOOKS salHooks;
 extern struct
 {
     u32 freq;
-    //u8 filler0[4];
     u32 unk4;
-    u8 filler8[1];
+    u8 filler8[0x210-0x8];
+    /*0x210*/ u8 voices;
 } synthInfo;
 
 struct DSPVoice_sub
@@ -81,17 +81,17 @@ extern struct DSPStudio
     u8 filler0[0x54];
     u32 unk54;
     u8 filler58[0xAC-0x58];
-    u32 unkAC;
-    u32 unkB0;
-    u32 unkB4;
-    u32 unkB8;
+    SND_AUX_CALLBACK unkAC;
+    void *unkB0;
+    SND_AUX_CALLBACK unkB4;
+    void *unkB8;
 } dspStudio[];
 
 // ? ResetNotes();
 // ? AllocateNote();
 // ? seqFreeKeyOffNote();
 // ? GetPublicId();
-// ? seqGetPrivateId();
+int seqGetPrivateId(int);
 // ? seqStartPlay();
 // ? HandleMasterTrack();
 // ? StartPause();
@@ -129,12 +129,12 @@ u32 synthGetTicksPerSecond(u32 seconds);
 // ? HandleJobQueue();
 // ? HandleFaderTermination();
 void synthHandle(int);
-// ? synthFXStart();
-// ? synthFXSetCtrl();
-// ? synthFXSetCtrl14();
+u32 synthFXStart(SND_FXID fid, u8 vol, u8 pan, u8 studio, u8);
+bool synthFXSetCtrl(SND_VOICEID vid, u8 ctrl, u8 value);
+bool synthFXSetCtrl14(SND_VOICEID vid, u8 ctrl, u16 value);
 // ? synthFXCloneMidiSetup();
-// ? synthSendKeyOff();
-// ? synthVolume();
+int synthSendKeyOff(int);
+void synthVolume(u8 volume, u16 time, u8 volgroup, int, int);
 // ? synthIsFadeOutActive();
 // ? synthSetMusicVolumeType();
 // ? synthHWMessageHandler();
@@ -230,7 +230,7 @@ void streamCorrectLoops(void);
 // ? vidRemoveVoiceReferences();
 // ? vidMakeRoot();
 // ? vidMakeNew();
-// ? vidGetInternalId();
+u32 vidGetInternalId(SND_VOICEID);
 // ? voiceRemovePriority();
 // ? voiceSetPriority();
 // ? voiceAllocate();
@@ -239,7 +239,7 @@ void streamCorrectLoops(void);
 // ? voiceBlock();
 // ? voiceUnblock();
 // ? voiceKill();
-// ? voiceKillSound();
+void voiceKillSound(int);
 // ? synthKillVoicesByMacroReferences();
 // ? voiceIsLastStarted();
 // ? voiceSetLastStarted();
@@ -264,16 +264,16 @@ u16 adsrConvertTimeCents();
 // ? sndSeqPlayEx();
 extern u32 salInitDspCtrl(u8, int);
 // ? salInitHRTFBuffer();
-void salActivateStudio(void);
-void salDeactivateStudio(void);
+void salActivateStudio(u8 studio, u32 arg1, u32 arg2);
+void salDeactivateStudio(u8 studio);
 // ? HandleDepopVoice();
 // ? SortVoices();
 int salBuildCommandList(void *, int);
 // ? salSynthSendMessage();
 void salActivateVoice(struct DSPVoice *, int);
 void salDeactivateVoice(struct DSPVoice *);
-void salAddStudioInput(struct DSPStudio *, int);
-void salRemoveStudioInput(struct DSPStudio *, int);
+bool salAddStudioInput(struct DSPStudio *, void *);
+bool salRemoveStudioInput(struct DSPStudio *, void *);
 void salHandleAuxProcessing(void);
 void salCalcVolume(u8, SND_FVECTOR *, int, int, int, int, float, float, float);
 // ? UpdateRoomDistances();
@@ -350,7 +350,7 @@ extern SND_HOOKS salHooks;
 // ? hwInit();
 // ? hwSetTimeOffset();
 // ? hwGetTimeOffset();
-// ? hwIsActive();
+u32 hwIsActive(int);
 // ? hwSetMesgCallback();
 // ? hwSetPriority();
 // ? hwInitSamplePlayback();
@@ -365,12 +365,12 @@ extern SND_HOOKS salHooks;
 // ? hwSetPolyPhaseFilter();
 // ? hwSetITDMode();
 // ? hwSetVolume();
-// ? hwOff();
-// ? hwSetAUXProcessingCallbacks();
-// ? hwActivateStudio();
-// ? hwDeactivateStudio();
-// ? hwAddInput();
-// ? hwRemoveInput();
+void hwOff(int);
+void hwSetAUXProcessingCallbacks(u8 studio, SND_AUX_CALLBACK auxA, void *userA, SND_AUX_CALLBACK auxB, void *userB);
+void hwActivateStudio(u8 studio, u32 arg1, u32 arg2);
+void hwDeactivateStudio(u8 studio);
+bool hwAddInput(u8 studio, void *arg1);
+bool hwRemoveInput(u8 studio, void *arg1);
 // ? hwGetPos();
 // ? hwFlushStream();
 // ? hwInitStream();
@@ -384,7 +384,7 @@ extern SND_HOOKS salHooks;
 // ? hwSyncSampleMem();
 // ? hwFrameDone();
 // ? sndSetHooks();
-// ? hwDisableHRTF();
+void hwDisableHRTF(void);
 
 // ? aramQueueCallback();
 void aramUploadData(void *source, u32 dest, size_t size, u32 arg3);
@@ -436,3 +436,40 @@ void ReverbHICallback(void *, void *, void *, void *);
 
 extern u8 dspScale2IndexTab[];
 
+typedef struct VoiceID VoiceID;
+
+struct VoiceID
+{
+    VoiceID *next;
+    VoiceID *prev;
+    s32 pubId;
+    s32 privId;
+};
+
+typedef struct SynthVoice
+{
+    char data1[0xf4];
+    u32 _f4;
+    VoiceID *voiceId;
+    char data2[0x18];
+    u32 _114[2];
+    u8 _11c;
+    u8 _11d;
+    u8 _11e;
+    u8 studio;
+    char data3[0x408 - 0x120];
+} SynthVoice;
+
+extern SynthVoice *synthVoice;
+
+extern u8 synthITDDefault[4][2];
+extern u8 synthFlags;
+extern u8 lbl_802F261D;
+extern SND_AUX_CALLBACK synthAuxACallback[];
+extern SND_AUX_CALLBACK synthAuxBCallback[];
+extern u8 synthAuxAMIDI[8];
+extern u8 synthAuxBMIDI[8];
+extern void *synthAuxAUser[];
+extern void *synthAuxBUser[];
+extern u8 synthAuxAMIDISet[8];
+extern u8 synthAuxBMIDISet[8];
