@@ -188,7 +188,6 @@ SOURCES := \
 	src/mini.c \
 	src/mini_2.c \
 	src/mini_3.c \
-	asm/mini.s \
 	src/mouse.c \
 	src/rend_efc.c \
 	src/rend_efc_mirror.c \

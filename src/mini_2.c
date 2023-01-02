@@ -27,9 +27,6 @@ void func_800940B8(void)
     lbl_802F2178 = 1.0f;
 }
 
-extern const struct Struct80171A08 { float unk0; float unk4; s16 unk8; } lbl_80171A08[];
-extern const Vec lbl_80171AA4;
-
 static inline float inline_asm_stuff(register float a, register float b, register float c, register float d)
 {
 #ifdef C_ONLY
@@ -45,6 +42,30 @@ static inline float inline_asm_stuff(register float a, register float b, registe
     return a;
 #endif
 }
+
+const struct Struct80171A08
+{
+    float unk0;
+    float unk4;
+    s16 unk8;
+} lbl_80171A08[] =
+{
+    {  0.990f, 0.010993125f, 29 },
+    {  0.663f, 0.004125f,    23 },
+    {  0.473f, 0.002475f,    28 },
+    {  0.370f, 0.003135f,    28 },
+    {  0.304f, 0.001155f,    28 },
+    {  0.145f, 0.001320f,    26 },
+    { -0.141f, 0.000825f,    27 },
+    { -0.288f, 0.001815f,    26 },
+    { -0.353f, 0.002970f,    26 },
+    { -0.424f, 0.001155f,    26 },
+    { -0.489f, 0.001155f,    25 },
+    { -0.625f, 0.003630f,    24 },
+    { -0.729f, 0.006105f,    23 },
+};
+
+const Vec lbl_80171AA4 = { 0.0f, 0.0f, -1.0f };
 
 void func_800940E0(void)
 {
