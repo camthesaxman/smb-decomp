@@ -13,7 +13,7 @@
 #include "sprite.h"
 
 #pragma force_active on
-u32 lbl_801C7ED8[] =
+u32 unused_801C7ED8[] =
 {
     0,
     0x00000015,
@@ -161,7 +161,7 @@ u32 lbl_801C7ED8[] =
     0x0000020C,
 };
 
-char *japaneseMonkeyNames[] =
+char *unused_japaneseMonkeyNames[] =
 {
     "h/ANATANO k/MONKI-REBERU",
     "k/BONOBO",
@@ -226,7 +226,7 @@ char *japaneseMonkeyNames[] =
     "k/HAIIRONEZUMIKITUNEZARU",
 };
 
-float someshit[] =
+float unused_801C8600[] =
 {
     0.0f, 0.5f, 0.0f, 256.0f,
     0.0f, 0.5f, 0.0f, 256.0f,
@@ -430,7 +430,7 @@ float someshit[] =
     0.0f, 0.5f, 0.0f, 256.0f,
 };
 
-u32 someshit2[] =
+u32 unused_801C9280[] =
 {
     0x48495341,
     0x5348492B,
@@ -565,7 +565,7 @@ u32 someshit2[] =
     0x4F534849,
 };
 
-float someshit3[] =
+float unused_801C948C[] =
 {
      -5.5f,  -5.5f, 6.0f, 6.0f,  0.0f, 0.0f, 0.0f,   0.0f, 256.0f, 256.0f, 0.0f, 0.0f, 0.0f,
      -4.5f,  -4.5f, 6.0f, 6.0f,  0.0f, 0.0f, 0.0f,   0.0f, 256.0f, 256.0f, 0.0f, 0.0f, 0.0f,
@@ -1096,7 +1096,7 @@ float someshit3[] =
 char string_game_program_directorsystem_programmersParty_game_programmersMini_game_programmers2D_system_programmerStage_design_directorStage_DesignersMotion_design_directorMotion_Designers2d_designerCharacter_designerPlannersSound_DesignMonkey_VoicePublicityCooperationSpecial_ThanksProducer___Director_2[] =
     "game+program+directorsystem+programmersParty+game+programmersMini+game+programmers2D+system+programmerStage+design+directorStage+DesignersMotion+design+directorMotion+Designers2d+designerCharacter+designerPlannersSound+DesignMonkey+VoicePublicityCooperationSpecial+ThanksProducer+&+Director";
 
-float moreshit[] =
+float unused_801D0020[] =
 {
     -10.0f,  -10.0f, 6.0f, 6.0f, 0.0f, 0.0f, 0.0f,   0.0f, 256.0f, 256.0f, 0.0f, 0.0f, 0.0f,
      -9.0f,   -9.0f, 6.0f, 6.0f, 0.0f, 0.0f, 0.0f,   0.0f, 256.0f, 256.0f, 0.0f, 0.0f, 0.0f,
