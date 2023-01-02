@@ -4,21 +4,7 @@
 
 #include "global.h"
 
-struct Struct80094870
-{
-    u32 unk0;
-    u32 unk4;
-};
-
-struct
-{
-    u8 filler0[4];
-    u32 unk4;
-    u8 filler8[0x10-0x8];
-    u32 unk10;
-    u8 filler14[0x20-0x14];
-    char unk20[0x400];
-} lbl_802C5D60;
+struct Struct802C5D60 lbl_802C5D60;
 
 #pragma force_active on
 void func_800A71B0(char *a, char *b)

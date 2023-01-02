@@ -13,7 +13,7 @@ static void print_counter(void);
 
 void _prolog(void)
 {
-    func_80093A84(increment_counter, print_counter, 0, 0);
+    set_minigame_callbacks(increment_counter, print_counter, 0, 0);
     gameSubmodeRequest = SMD_MINI_REL_SAMPLE_MAIN;
     puts("RELOCATION SAMPLE LOADED\n");
 }

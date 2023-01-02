@@ -82,7 +82,7 @@ _prolog:
 /* 00000174 38A50000 */ addi r5, r5, lbl_0001199C@l
 /* 00000178 38C60000 */ addi r6, r6, lbl_0000F194@l
 /* 0000017C 38E70000 */ addi r7, r7, lbl_0000B36C@l
-/* 00000180 48000051 */ bl func_80093AA0
+/* 00000180 48000051 */ bl u_set_minigame_callbacks_2
 /* 00000184 48000125 */ bl lbl_000002A8
 /* 00000188 3C600000 */ lis r3, lbl_00026BCC@ha
 /* 0000018C 38630000 */ addi r3, r3, lbl_00026BCC@l
