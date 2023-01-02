@@ -42,7 +42,7 @@ _prolog:
 /* 000000F0 38840000 */ addi r4, r4, lbl_00003B6C@l
 /* 000000F4 38A50000 */ addi r5, r5, lbl_00004F68@l
 /* 000000F8 38C60000 */ addi r6, r6, lbl_00006DFC@l
-/* 000000FC 48000051 */ bl func_80093A84
+/* 000000FC 48000051 */ bl set_minigame_callbacks
 /* 00000100 3C600000 */ lis r3, lbl_0000C7CC@ha
 /* 00000104 38630000 */ addi r3, r3, lbl_0000C7CC@l
 /* 00000108 48000045 */ bl puts

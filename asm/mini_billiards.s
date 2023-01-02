@@ -40,7 +40,7 @@ _prolog:
 /* 000000E4 38630000 */ addi r3, r3, lbl_00000F34@l
 /* 000000E8 38840000 */ addi r4, r4, lbl_0000E8D0@l
 /* 000000EC 38A00000 */ li r5, 0
-/* 000000F0 48000045 */ bl func_80093A84
+/* 000000F0 48000045 */ bl set_minigame_callbacks
 /* 000000F4 480000ED */ bl lbl_000001E0
 /* 000000F8 3C600000 */ lis r3, gameSubmodeRequest@ha
 /* 000000FC 3800009D */ li r0, 0x9d

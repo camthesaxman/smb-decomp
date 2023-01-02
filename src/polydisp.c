@@ -201,7 +201,7 @@ void draw_3d_scene(void)
             func_8009BEF8();
             break;
         case SMD_MINI_ENDING_MAIN:
-            func_80094028();
+            u_draw_ending_viewer_text();
             break;
         default:
             u_minigame_draw();
