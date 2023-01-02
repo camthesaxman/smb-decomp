@@ -1582,7 +1582,7 @@ lbl_80171AA4:
 	.4byte 0xBF800000
 
 .section .data
-
+.if 0
     .balign 8
 .global lbl_801C7ED8
 lbl_801C7ED8:
@@ -1731,6 +1731,7 @@ lbl_801C7ED8:
 	.4byte 0
 	.4byte 0x000001FB
 	.4byte 0x0000020C
+
 glabel string_h_ANATANO_k_MONKI_REBERU
 	.asciz "h/ANATANO k/MONKI-REBERU"
 	.balign 4
@@ -13470,99 +13471,9 @@ glabel string_game_program_directorsystem_programmersParty_game_programmersMini_
 	.4byte 0
 	.4byte 0
 	.4byte 0
+.endif
 
-.global lbl_801D3B08
-lbl_801D3B08:
-	# ROM: 0x1D0B08
-glabel string_sub_mode__error__d_in_Mini
-	.asciz "sub_mode: error %d in Mini"
-	.balign 4
-glabel string_mkbe_rel_mini_fight_rel
-	.asciz "mkbe.rel_mini_fight.rel"
-glabel string_mkbe_rel_mini_bowling_rel
-	.asciz "mkbe.rel_mini_bowling.rel"
-	.balign 4
-glabel string_mkbe_rel_mini_race_rel
-	.asciz "mkbe.rel_mini_race.rel"
-	.balign 4
-glabel string_mkbe_rel_mini_pilot_rel
-	.asciz "mkbe.rel_mini_pilot.rel"
-glabel string_mkbe_rel_mini_billiards_rel
-	.asciz "mkbe.rel_mini_billiards.rel"
-glabel string_mkbe_rel_mini_golf_rel
-	.asciz "mkbe.rel_mini_golf.rel"
-	.balign 4
-glabel string_mkbe_rel_sample_rel
-	.asciz "mkbe.rel_sample.rel"
-
-.global lbl_801D3BD0
-lbl_801D3BD0:
-	# ROM: 0x1D0BD0
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_fight_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_bowling_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_race_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_pilot_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_billiards_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_mini_golf_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte string_mkbe_rel_sample_rel  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-	.4byte lbl_802F1310  ;# ptr
-glabel string_MONKEY_RACE
-	.asciz "MONKEY RACE"
-glabel string_BILLIARDS
-	.asciz "BILLIARDS"
-	.balign 4
-glabel string_RELOCATION_SAMPLE
-	.asciz "RELOCATION SAMPLE"
-	.balign 4
-	.4byte string_TEST0  ;# ptr
-	.4byte 0x0092FF00
-	.4byte string_MONKEY_RACE  ;# ptr
-	.4byte 0x00980300
-	.4byte string_BOWLING  ;# ptr
-	.4byte 0x00960700
-	.4byte string_GOLF  ;# ptr
-	.4byte 0x009E0800
-	.4byte string_BILLIARDS  ;# ptr
-	.4byte 0x009C0600
-	.4byte string_FIGHT  ;# ptr
-	.4byte 0x00940400
-	.4byte string_PILOT  ;# ptr
-	.4byte 0x009A0500
-	.4byte string_RELOCATION_SAMPLE  ;# ptr
-	.4byte 0x00A0FF00
-	.4byte string_COMMEND  ;# ptr
-	.4byte 0x00A2FF00
-	.4byte string_RANKING_2  ;# ptr
-	.4byte 0x00A4FF00
-	.4byte string_ENDING  ;# ptr
-	.4byte 0x00A6FF00
-glabel string_MINI_GAME
-	.asciz "MINI GAME"
-	.balign 4
-glabel string_ENDING_VIEWER_n
-	.asciz "ENDING VIEWER\n"
-	.balign 4
-glabel string_COURSE__d__n
-	.asciz "COURSE[%d]\n"
-glabel string_PLAYER__d__n
-	.asciz "PLAYER[%d]\n"
-	.4byte 0
-
+.if 0
 .section .sdata
 
     .balign 8
@@ -13571,40 +13482,7 @@ glabel string_k_AIAI
 	.balign 4
 glabel string_k_ABAHI
 	.asciz "k/ABAHI"
-glabel lbl_802F1310
-	.4byte 0
-glabel string_TEST0
-	.asciz "TEST0"
-	.balign 4
-glabel string_BOWLING
-	.asciz "BOWLING"
-glabel string_GOLF
-	.asciz "GOLF"
-	.balign 4
-glabel string_FIGHT
-	.asciz "FIGHT"
-	.balign 4
-glabel string_PILOT
-	.asciz "PILOT"
-	.balign 4
-glabel string_COMMEND
-	.asciz "COMMEND"
-glabel string_RANKING_2
-	.asciz "RANKING"
-glabel string_ENDING
-	.asciz "ENDING"
-	.balign 4
-
-.global lbl_802F1354
-lbl_802F1354:
-	# ROM: 0x1EBA94
-	.4byte 0x1C200000
-
-.global lbl_802F1358
-lbl_802F1358:
-	# ROM: 0x1EBA98
-	.4byte 0x25730A00
-	.4byte 0
+.endif
 
 .section .bss
 

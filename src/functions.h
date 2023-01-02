@@ -344,7 +344,7 @@ void func_80092F90(void *);
 // ? func_800934B0();
 // ? func_80093920();
 void mode_mini_func(void);
-void func_80093A84(void (*)(void), void (*)(void), int, int);
+void func_80093A84(void (*arg0)(), void (*arg1)(), void (*ballCb)(struct Ball *), void (*cameraCb)(struct Camera *, struct Ball *));
 void submode_mini_game_init_func(void);
 void submode_mini_game_main_func(void);
 void u_minigame_draw(void);

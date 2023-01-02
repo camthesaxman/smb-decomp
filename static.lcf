@@ -59,5 +59,7 @@ FORCEACTIVE
 
 lbl_80292C00_alias = lbl_80292C00;
 
+lbl_801D3B08 = 0x801D3B08;
+
 /* For GCC compatibility */
 __udivdi3 = __div2u;

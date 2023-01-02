@@ -2,6 +2,7 @@
 
 .section .text
 
+.if 0
 .global mode_mini_func
 mode_mini_func:
 /* 80093A14 0008F934  7C 08 02 A6 */	mflr r0
@@ -83,6 +84,7 @@ lbl_80093AD4:
 /* 80093B18 0008FA38  38 21 00 08 */	addi r1, r1, 8
 /* 80093B1C 0008FA3C  7C 08 03 A6 */	mtlr r0
 /* 80093B20 0008FA40  4E 80 00 20 */	blr
+
 .global submode_mini_game_main_func
 submode_mini_game_main_func:
 /* 80093B24 0008FA44  7C 08 02 A6 */	mflr r0
@@ -151,6 +153,7 @@ func_80093BB4:
 /* 80093BF0 0008FB10  38 21 00 10 */	addi r1, r1, 0x10
 /* 80093BF4 0008FB14  7C 08 03 A6 */	mtlr r0
 /* 80093BF8 0008FB18  4E 80 00 20 */	blr
+
 .global submode_mini_select_init_func
 submode_mini_select_init_func:
 /* 80093BFC 0008FB1C  7C 08 02 A6 */	mflr r0
@@ -169,6 +172,7 @@ submode_mini_select_init_func:
 /* 80093C30 0008FB50  38 21 00 08 */	addi r1, r1, 8
 /* 80093C34 0008FB54  7C 08 03 A6 */	mtlr r0
 /* 80093C38 0008FB58  4E 80 00 20 */	blr
+
 .global submode_mini_select_main_func
 submode_mini_select_main_func:
 /* 80093C3C 0008FB5C  7C 08 02 A6 */	mflr r0
@@ -287,6 +291,7 @@ lbl_80093DB0:
 /* 80093DDC 0008FCFC  7C 08 03 A6 */	mtlr r0
 /* 80093DE0 0008FD00  38 21 00 10 */	addi r1, r1, 0x10
 /* 80093DE4 0008FD04  4E 80 00 20 */	blr
+
 .global submode_mini_test0_init_func
 submode_mini_test0_init_func:
 /* 80093DE8 0008FD08  7C 08 02 A6 */	mflr r0
@@ -318,6 +323,7 @@ func_80093E28:
 /* 80093E3C 0008FD5C  38 21 00 08 */	addi r1, r1, 8
 /* 80093E40 0008FD60  7C 08 03 A6 */	mtlr r0
 /* 80093E44 0008FD64  4E 80 00 20 */	blr
+
 .global submode_mini_ending_init_func
 submode_mini_ending_init_func:
 /* 80093E48 0008FD68  7C 08 02 A6 */	mflr r0
@@ -359,6 +365,7 @@ lbl_80093E88:
 /* 80093ED4 0008FDF4  83 81 00 08 */	lwz r28, 8(r1)
 /* 80093ED8 0008FDF8  38 21 00 18 */	addi r1, r1, 0x18
 /* 80093EDC 0008FDFC  4E 80 00 20 */	blr
+
 .global submode_mini_ending_main_func
 submode_mini_ending_main_func:
 /* 80093EE0 0008FE00  7C 08 02 A6 */	mflr r0
@@ -489,7 +496,7 @@ func_80094028:
 /* 800940AC 0008FFCC  7C 08 03 A6 */	mtlr r0
 /* 800940B0 0008FFD0  38 21 00 10 */	addi r1, r1, 0x10
 /* 800940B4 0008FFD4  4E 80 00 20 */	blr
-
+.endif
 .global func_800940B8
 func_800940B8:
 /* 800940B8 0008FFD8  3C 60 80 2C */	lis r3, lbl_802B90F0@ha
@@ -1355,8 +1362,148 @@ lbl_80094C98:
 /* 80094CCC 00090BEC  38 21 00 80 */	addi r1, r1, 0x80
 /* 80094CD0 00090BF0  4E 80 00 20 */	blr
 
+.section .data
+
+.if 0
+.global lbl_801D3B08
+lbl_801D3B08:
+	# ROM: 0x1D0B08
+glabel string_sub_mode__error__d_in_Mini
+	.asciz "sub_mode: error %d in Mini"
+	.balign 4
+
+glabel string_mkbe_rel_mini_fight_rel
+	.asciz "mkbe.rel_mini_fight.rel"
+glabel string_mkbe_rel_mini_bowling_rel
+	.asciz "mkbe.rel_mini_bowling.rel"
+	.balign 4
+glabel string_mkbe_rel_mini_race_rel
+	.asciz "mkbe.rel_mini_race.rel"
+	.balign 4
+glabel string_mkbe_rel_mini_pilot_rel
+	.asciz "mkbe.rel_mini_pilot.rel"
+glabel string_mkbe_rel_mini_billiards_rel
+	.asciz "mkbe.rel_mini_billiards.rel"
+glabel string_mkbe_rel_mini_golf_rel
+	.asciz "mkbe.rel_mini_golf.rel"
+	.balign 4
+glabel string_mkbe_rel_sample_rel
+	.asciz "mkbe.rel_sample.rel"
+
+.global lbl_801D3BD0
+lbl_801D3BD0:
+	# ROM: 0x1D0BD0
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_fight_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_bowling_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_race_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_pilot_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_billiards_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_mini_golf_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte string_mkbe_rel_sample_rel  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+	.4byte lbl_802F1310  ;# ptr
+
+glabel string_MONKEY_RACE
+	.asciz "MONKEY RACE"
+glabel string_BILLIARDS
+	.asciz "BILLIARDS"
+	.balign 4
+glabel string_RELOCATION_SAMPLE
+	.asciz "RELOCATION SAMPLE"
+	.balign 4
+	.4byte string_TEST0  ;# ptr
+	.4byte 0x0092FF00
+	.4byte string_MONKEY_RACE  ;# ptr
+	.4byte 0x00980300
+	.4byte string_BOWLING  ;# ptr
+	.4byte 0x00960700
+	.4byte string_GOLF  ;# ptr
+	.4byte 0x009E0800
+	.4byte string_BILLIARDS  ;# ptr
+	.4byte 0x009C0600
+	.4byte string_FIGHT  ;# ptr
+	.4byte 0x00940400
+	.4byte string_PILOT  ;# ptr
+	.4byte 0x009A0500
+	.4byte string_RELOCATION_SAMPLE  ;# ptr
+	.4byte 0x00A0FF00
+	.4byte string_COMMEND  ;# ptr
+	.4byte 0x00A2FF00
+	.4byte string_RANKING_2  ;# ptr
+	.4byte 0x00A4FF00
+	.4byte string_ENDING  ;# ptr
+	.4byte 0x00A6FF00
+
+glabel string_MINI_GAME
+	.asciz "MINI GAME"
+	.balign 4
+
+glabel string_ENDING_VIEWER_n
+	.asciz "ENDING VIEWER\n"
+	.balign 4
+glabel string_COURSE__d__n
+	.asciz "COURSE[%d]\n"
+glabel string_PLAYER__d__n
+	.asciz "PLAYER[%d]\n"
+	.4byte 0
+.endif
+
+.section .sdata
+.if 0
+glabel lbl_802F1310
+	.4byte 0
+
+glabel string_TEST0
+	.asciz "TEST0"
+	.balign 4
+glabel string_BOWLING
+	.asciz "BOWLING"
+glabel string_GOLF
+	.asciz "GOLF"
+	.balign 4
+glabel string_FIGHT
+	.asciz "FIGHT"
+	.balign 4
+glabel string_PILOT
+	.asciz "PILOT"
+	.balign 4
+glabel string_COMMEND
+	.asciz "COMMEND"
+glabel string_RANKING_2
+	.asciz "RANKING"
+glabel string_ENDING
+	.asciz "ENDING"
+	.balign 4
+
+.global lbl_802F1354
+lbl_802F1354:
+	# ROM: 0x1EBA94
+	.4byte 0x1C200000
+
+.global lbl_802F1358
+lbl_802F1358:
+	# ROM: 0x1EBA98
+	.4byte 0x25730A00
+	.4byte 0
+.endif
+
 .section .sdata2
 
+.if 0
 .global lbl_802F57C8
 lbl_802F57C8:
 	# ROM: 0x1EF1E8
@@ -1366,7 +1513,7 @@ lbl_802F57C8:
 lbl_802F57CC:
 	# ROM: 0x1EF1EC
 	.4byte 0x3F800000
-
+.endif
 .global lbl_802F57D0
 lbl_802F57D0:
 	# ROM: 0x1EF1F0
