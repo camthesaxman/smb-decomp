@@ -12013,13 +12013,3 @@ void func_80094028(void)
     u_debug_printf("PLAYER[%d]\n", modeCtrl.currPlayer);
     func_800B64B0();
 }
-
-/*
-void func_800940B8(void)
-{
-    lbl_802B90F0.unk280 = 0.0f;
-    lbl_802B90F0.unk284 = 10000.0f;
-    lbl_802B90F0.unk288 = 0.0f;
-    lbl_802F2178 = 1.0f;
-}
-*/

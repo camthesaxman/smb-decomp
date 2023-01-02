@@ -993,4 +993,14 @@ struct Struct8009DBB0
     Vec unk10;
 };
 
+struct Struct802C5D60
+{
+    u32 unk0;
+    u32 unk4;
+    u8 filler8[0x10-0x8];
+    u32 unk10;
+    u8 filler14[0x20-0x14];
+    char unk20[0x400];
+};
+
 #endif

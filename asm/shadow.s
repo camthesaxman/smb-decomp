@@ -13489,18 +13489,6 @@ glabel string_k_ABAHI
 .global lbl_802B8FA0
 lbl_802B8FA0:
 	.skip 0x150
-.global lbl_802B90F0
-lbl_802B90F0:
-	.skip 0x270
-.global lbl_802B9360
-lbl_802B9360:
-	.skip 0x10
-.global lbl_802B9370
-lbl_802B9370:
-	.skip 0x20
-.global lbl_802B9390
-lbl_802B9390:
-	.skip 0xE00
 
 .section .sbss
 

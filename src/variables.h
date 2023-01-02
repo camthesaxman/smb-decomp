@@ -624,7 +624,7 @@ extern struct FogInfo fogInfo;
 // extern ? cardWorkArea;
 // extern ? lbl_802C4480;
 extern GXTexObj fontTexObj;
-// extern ? lbl_802C5D60;
+extern struct Struct802C5D60 lbl_802C5D60;
 // extern ? lbl_802C6180;
 // extern ? lbl_802C6220;
 // extern ? lbl_802C6314;

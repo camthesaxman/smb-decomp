@@ -186,6 +186,7 @@ SOURCES := \
 	src/load.c \
 	asm/shadow.s \
 	src/mini.c \
+	src/mini_2.c \
 	asm/mini.s \
 	src/mouse.c \
 	src/rend_efc.c \
