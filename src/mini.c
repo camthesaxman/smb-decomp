@@ -11751,9 +11751,12 @@ u32 moreshit[] =
 };
 #pragma force_active reset
 
-extern void (*u_minigameMainCallback)();
-extern void (*u_minigameDrawCallback)();
-extern void (*lbl_802F2160)(void);
+static void (*u_minigameMainCallback)();
+static void (*u_minigameDrawCallback)();
+static void (*lbl_802F2160)(void);
+static s32 lbl_802F2164;
+static struct RelModule lbl_802F2168;
+static s16 lbl_802F2170;
 
 void mode_mini_func(void)
 {
@@ -11786,7 +11789,7 @@ void func_80093AA0(void (*arg0)(), void (*arg1)(), void (*arg2)(void), void (*ba
 }
 #pragma force_active reset
 
-char *lbl_801D3BD0[] =
+static char *lbl_801D3BD0[] =
 {
     "",
     "",
@@ -11812,12 +11815,6 @@ char *lbl_801D3BD0[] =
     "",
     "",
 };
-
-extern struct RelModule lbl_802F2168;
-
-extern s32 lbl_802F2164;
-
-extern void func_80093BB4(void);
 
 void submode_mini_game_init_func(void)
 {
@@ -11859,8 +11856,6 @@ void func_80093BB4(void)
     relocation_unload_module(&lbl_802F2168);
     lbl_802F2164 = 0;
 }
-
-extern s16 lbl_802F2170;
 
 void submode_mini_select_init_func(void)
 {

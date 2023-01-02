@@ -1045,7 +1045,7 @@ lbl_8009484C:
 /* 80094864 00090784  38 21 00 10 */	addi r1, r1, 0x10
 /* 80094868 00090788  7C 08 03 A6 */	mtlr r0
 /* 8009486C 0009078C  4E 80 00 20 */	blr
-.endif
+
 .global func_80094870
 func_80094870:
 /* 80094870 00090790  80 0D 9F A0 */	lwz r0, lbl_802F2180@sda21(r13)
@@ -1361,6 +1361,7 @@ lbl_80094C98:
 /* 80094CC8 00090BE8  83 81 00 38 */	lwz r28, 0x38(r1)
 /* 80094CCC 00090BEC  38 21 00 80 */	addi r1, r1, 0x80
 /* 80094CD0 00090BF0  4E 80 00 20 */	blr
+.endif
 
 .section .data
 
@@ -1592,8 +1593,7 @@ lbl_802F5824:
 lbl_802F5828:
 	# ROM: 0x1EF248
 	.4byte 0xC9742400
-.endif
-asdf:
+
 	.4byte 0
 
 .global lbl_802F5830
@@ -1621,6 +1621,7 @@ lbl_802F5840:
 	# ROM: 0x1EF260
 	.4byte 0x43300000
 	.4byte 0
+.endif
 
 .section .bss
 
@@ -1634,13 +1635,13 @@ lbl_802B9360:
 .global lbl_802B9370
 lbl_802B9370:
 	.skip 0x20
-.endif
 .global lbl_802B9390
 lbl_802B9390:
 	.skip 0xE00
-
+.endif
 .section .sbss
 
+.if 0
 .global u_minigameMainCallback
 u_minigameMainCallback:
 	.skip 0x4
@@ -1662,18 +1663,24 @@ lbl_802F2170:
 .global lbl_802F2178
 lbl_802F2178:
 	.skip 0x8
+
+	.balign 8
 .global lbl_802F2180
 lbl_802F2180:
 	.skip 0x4
+
 .global lbl_802F2184
 lbl_802F2184:
 	.skip 0x4
 .global lbl_802F2188
 lbl_802F2188:
 	.skip 0x8
+
+	.balign 8
 .global lbl_802F2190
 lbl_802F2190:
 	.skip 0x4
 .global lbl_802F2194
 lbl_802F2194:
 	.skip 0x4
+.endif

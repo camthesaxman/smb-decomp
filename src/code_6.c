@@ -4,12 +4,6 @@
 
 #include "global.h"
 
-struct Struct80094870
-{
-    u32 unk0;
-    u32 unk4;
-};
-
 struct Struct802C5D60 lbl_802C5D60;
 
 #pragma force_active on

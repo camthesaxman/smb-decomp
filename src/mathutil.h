@@ -533,6 +533,32 @@ static inline void mathutil_mtxA_copy_translate(register Mtx mtx)
 #endif
 }
 
+static inline void mathutil_mtxA_get_col2_scaled(register Vec *v, register float scale)
+{
+#ifdef C_ONLY
+    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][2] * scale;
+    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][2] * scale;
+    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][2] * scale;
+#else
+    register float *mtxA;
+    register float x, y, z;
+
+    asm
+    {
+        lis mtxA, LC_CACHE_BASE@ha
+        lfs x, 0x08(mtxA)  // mtxA[0][2]
+        lfs y, 0x18(mtxA)  // mtxA[1][2]
+        lfs z, 0x28(mtxA)  // mtxA[2][2]
+        fmuls x, x, scale
+        stfs x, v->x
+        fmuls y, y, scale
+        stfs y, v->y
+        fmuls z, z, scale
+        stfs z, v->z
+    }
+#endif
+}
+
 static inline void mathutil_unk_inline(register float a, register Vec *v)
 {
     register void *mtxA;

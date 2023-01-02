@@ -10,23 +10,14 @@
 
 #include "../data/common.gma.h"
 
-struct Struct802B90F0
-{
-    Vec unk0[13];
-    //u8 filler0[0x9C];
-};
-
 Vec lbl_802B90F0[4][13];
 FORCE_BSS_ORDER(lbl_802B90F0)
-
 float lbl_802B9360[4];  // 0x270
 FORCE_BSS_ORDER(lbl_802B9360)
-
 Vec lbl_802B9370;  // 0x280
+float lbl_802B937C[4];
 
-float lbl_802B937C[4+1];
-
-extern float lbl_802F2178;
+static float lbl_802F2178;
 
 void func_800940B8(void)
 {
@@ -215,32 +206,6 @@ void func_800946BC(Vec *a)
     lbl_802B9370 = *a;
 }
 
-static inline void mathutil_mtxA_get_col2_scaled(register Vec *v, register float scale)
-{
-#ifdef C_ONLY
-    v->x = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[0][2] * scale;
-    v->y = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[1][2] * scale;
-    v->z = ((struct MathutilData *)LC_CACHE_BASE)->mtxA[2][2] * scale;
-#else
-    register float *mtxA;
-    register float x, y, z;
-
-    asm
-    {
-        lis mtxA, LC_CACHE_BASE@ha
-        lfs x, 0x08(mtxA)  // mtxA[0][2]
-        lfs y, 0x18(mtxA)  // mtxA[1][2]
-        lfs z, 0x28(mtxA)  // mtxA[2][2]
-        fmuls x, x, scale
-        stfs x, v->x
-        fmuls y, y, scale
-        stfs y, v->y
-        fmuls z, z, scale
-        stfs z, v->z
-    }
-#endif
-}
-
 void func_800946DC(int arg0, int arg1)
 {
     mathutil_mtxA_from_rotate_y(arg0);
@@ -292,3 +257,37 @@ void func_80094840(void)
         HIOReadMailbox(&sp8);
     } while (sp8 != 0);
 }
+
+static s32 lbl_802F2180 ATTRIBUTE_ALIGN(8);
+static u8 *lbl_802F2184;
+static u32 lbl_802F2188;
+
+void *func_80094870(void)
+{
+    int i;
+
+    if (lbl_802F2180 == 0)
+        return 0;
+    for (i = 0; i < 16; i++)
+    {
+        u32 bit = 1 << i;
+        if (!(lbl_802F2188 & bit))
+        {
+            lbl_802F2188 |= bit;
+            return lbl_802F2184 + i * 0xC;
+        }
+    }
+    return 0;
+}
+
+void func_800948D0(struct Struct80094870 *arg0)
+{
+    lbl_802F2188 &= ~(1 << arg0->unk8);
+}
+
+#pragma force_active on
+int func_800948EC(void)
+{
+    return lbl_802F2180;
+}
+#pragma force_active reset
