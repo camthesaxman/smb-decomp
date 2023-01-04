@@ -527,7 +527,7 @@ void preload_stage_files(int);
 void load_stage_files(int stageId);
 void func_80044E18(void);
 void func_80045194(void);
-// ? find_stage_or_bg_model();
+struct GMAModel *find_stage_or_bg_model(char *name);
 void u_initialize_stuff_for_dynamic_stage_parts(int stageId);
 int get_stage_background(int stageId);
 int get_stage_background_2(int stageId);

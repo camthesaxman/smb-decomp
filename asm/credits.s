@@ -6651,6 +6651,7 @@ lbl_800B5EC8:
 
 .section .sdata
 
+.if 0
 	.balign 8
 glabel string_FONT_A
 	.asciz "FONT_A"
@@ -6730,18 +6731,20 @@ glabel string_FONT_Y
 glabel string_FONT_Z
 	.asciz "FONT_Z"
 	.balign 4
+
 glabel lbl_802F1800
-	.4byte 0x53455800
+	.asciz "SEX"
 glabel lbl_802F1804
-	.4byte 0x58585800
+	.asciz "XXX"
 glabel lbl_802F1808
-	.4byte 0x58582000
+	.asciz "XX "
 glabel lbl_802F180C
-	.4byte 0x58580000
+	.asciz "XX"
+	.balign 4
 glabel lbl_802F1810
-	.4byte 0x20585800
+	.asciz " XX"
 glabel lbl_802F1814
-	.4byte 0x58205800
+	.asciz "X X"
 
 .global lbl_802F1818
 lbl_802F1818:
@@ -6749,7 +6752,7 @@ lbl_802F1818:
 glabel string_BUTTON
 	.asciz "BUTTON"
 	.balign 4
-
+.endif
 .global lbl_802F1820
 lbl_802F1820:
 	# ROM: 0x1EBF60
@@ -8538,6 +8541,7 @@ lbl_802F6728:
 
 .section .data
 
+.if 0
 .global lbl_801D6B58
 lbl_801D6B58:
 	# ROM: 0x1D3B58
@@ -8553,6 +8557,7 @@ lbl_801D6B58:
 	.4byte 0x38373635
 	.4byte 0x34333231
 	.4byte 0x30080000
+
 glabel string_FONT_ARROW_R
 	.asciz "FONT_ARROW_R"
 	.balign 4
@@ -8666,61 +8671,7 @@ lbl_801D6D30:
 	.4byte lbl_802F180C  ;# ptr
 	.4byte lbl_802F1810  ;# ptr
 	.4byte lbl_802F1814  ;# ptr
-
-.global lbl_801D6D48
-lbl_801D6D48:
-	# ROM: 0x1D3D48
-glabel string_PLEASE_ENTER_YOUR_NAME
-	.asciz "PLEASE ENTER YOUR NAME"
-	.balign 4
-
-.global lbl_801D6D60
-lbl_801D6D60:
-	# ROM: 0x1D3D60
-	.4byte lbl_800ADDAC  ;# ptr
-	.4byte lbl_800AD6D8  ;# ptr
-	.4byte lbl_800AD6E4  ;# ptr
-	.4byte lbl_800AD718  ;# ptr
-	.4byte lbl_800AD82C  ;# ptr
-	.4byte lbl_800AD89C  ;# ptr
-	.4byte lbl_800AD918  ;# ptr
-	.4byte lbl_800ADB00  ;# ptr
-	.4byte lbl_800ADBA4  ;# ptr
-	.4byte lbl_800ADC0C  ;# ptr
-	.4byte lbl_800ADCC8  ;# ptr
-	.4byte lbl_800ADD88  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-.global lbl_801D6DC0
-lbl_801D6DC0:
-	# ROM: 0x1D3DC0
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1834  ;# ptr
-	.4byte lbl_802F1838  ;# ptr
-	.4byte lbl_802F183C  ;# ptr
-	.4byte lbl_802F1820  ;# ptr
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1840  ;# ptr
-	.4byte lbl_802F1844  ;# ptr
-	.4byte lbl_802F1848  ;# ptr
-	.4byte lbl_802F184C  ;# ptr
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1850  ;# ptr
-	.4byte lbl_802F1854  ;# ptr
-	.4byte lbl_802F1858  ;# ptr
-	.4byte lbl_802F185C  ;# ptr
-	.4byte 0
+.endif
 
 .global lbl_801D6E00
 lbl_801D6E00:
@@ -20629,6 +20580,7 @@ glabel string_spr_banana_work
 
 .section .bss
 
+	.balign 8
 .global lbl_802C6918
 lbl_802C6918:
 	.skip 0x2A0
