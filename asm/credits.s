@@ -6753,6 +6753,7 @@ glabel string_BUTTON
 	.asciz "BUTTON"
 	.balign 4
 .endif
+.if 0
 .global lbl_802F1820
 lbl_802F1820:
 	# ROM: 0x1EBF60
@@ -6762,6 +6763,7 @@ lbl_802F1820:
 lbl_802F1824:
 	# ROM: 0x1EBF64
 	.4byte 0x2D2D2D00
+.endif
 
 .global lbl_802F1828
 lbl_802F1828:

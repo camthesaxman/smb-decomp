@@ -187,7 +187,7 @@ lbl_800AD584:
 /* 800AD638 000A9558  CB 41 01 08 */	lfd f26, 0x108(r1)
 /* 800AD63C 000A955C  38 21 01 38 */	addi r1, r1, 0x138
 /* 800AD640 000A9560  4E 80 00 20 */	blr
-.endif
+
 .global ev_name_entry_main
 ev_name_entry_main:
 /* 800AD644 000A9564  7C 08 02 A6 */	mflr r0
@@ -1136,6 +1136,7 @@ lbl_800AE3C0:
 /* 800AE3D8 000AA2F8  CB 81 01 18 */	lfd f28, 0x118(r1)
 /* 800AE3DC 000AA2FC  38 21 01 38 */	addi r1, r1, 0x138
 /* 800AE3E0 000AA300  4E 80 00 20 */	blr
+.endif
 .global ev_name_entry_dest
 ev_name_entry_dest:
 /* 800AE3E4 000AA304  7C 08 02 A6 */	mflr r0
@@ -2868,6 +2869,7 @@ lbl_800AFC9C:
 
 .section .data
 
+.if 0
 .global lbl_801D6D48
 lbl_801D6D48:
 	# ROM: 0x1D3D48
@@ -2890,6 +2892,8 @@ lbl_801D6D60:
 	.4byte lbl_800ADC0C  ;# ptr
 	.4byte lbl_800ADCC8  ;# ptr
 	.4byte lbl_800ADD88  ;# ptr
+.endif
+asdf:
 	.4byte 0
 	.4byte 0
 	.4byte 0
@@ -2982,7 +2986,7 @@ lbl_802F5F28:
 	# ROM: 0x1EF948
 	.4byte 0x43300000
 	.4byte 0x80000000
-.endif
+
 .global lbl_802F5F30
 lbl_802F5F30:
 	# ROM: 0x1EF950
@@ -3176,7 +3180,7 @@ lbl_802F6010:
 	# ROM: 0x1EFA30
 	.4byte 0x3FB99999
 	.4byte 0x9999999A
-
+.endif
 .global lbl_802F6018
 lbl_802F6018:
 	# ROM: 0x1EFA38
