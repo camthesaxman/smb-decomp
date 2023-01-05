@@ -1,5 +1,6 @@
 #include <dolphin.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "global.h"
@@ -7,28 +8,52 @@
 #include "bitmap.h"
 #include "camera.h"
 #include "effect.h"
+#include "event.h"
 #include "info.h"
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "ranking_screen.h"
+#include "recplay.h"
+#include "sound.h"
 #include "sprite.h"
 #include "stage.h"
 #include "stobj.h"
 
-u8 lbl_802C6220[0xF4];
+#define NUM_BUTTONS 48
+
+struct Struct802C6220_sub
+{
+    char unk0[4];
+    u32 unk4;
+    u32 unk8;
+    u8 unkC;
+    u8 unkD;
+    s8 unkE;
+    u8 fillerF;
+};
+
+struct Struct802C6220
+{
+    u32 unk0;
+    struct Struct802C6220_sub unk4[3*5];
+};
+
+struct Struct802C6220 lbl_802C6220;
 FORCE_BSS_ORDER(lbl_802C6220)
 
-struct GMAModel *lbl_802C6314[0x30];  // 0xF4
-FORCE_BSS_ORDER(lbl_802C6314)
+/*static*/ struct GMAModel *s_buttonModels[NUM_BUTTONS];  // 0xF4
+FORCE_BSS_ORDER(s_buttonModels)
 
 struct Struct802C63D4
 {
     s8 unk0;
-    u8 filler1[7];
+    u8 filler1[3];
+    s32 unk4;
     float unk8[3];
 };  // size = 0x14
 
-struct Struct802C63D4 lbl_802C63D4[0x30];  // 0x1B4
+struct Struct802C63D4 lbl_802C63D4[NUM_BUTTONS];  // 0x1B4
 FORCE_BSS_ORDER(lbl_802C63D4)
 
 struct
@@ -38,7 +63,7 @@ struct
     s32 unk8;  // 0x57C
     char unkC[4];  // 0x580
     s32 unk10;  // 0x584
-    u32 unk14;  // 0x588
+    s32 unk14;  // 0x588
     float unk18;  // 0x58C
     float unk1C;  // 0x590
     float unk20;
@@ -61,23 +86,23 @@ void func_800AD38C(void)
     func_800AEBA8();
 }
 
-u32 lbl_801D6B58[] =
+u8 lbl_801D6B58[] =
 {
-    0x00002041,
-    0x42434445,
-    0x46474849,
-    0x4A4B4C4D,
-    0x4E4F5051,
-    0x52535455,
-    0x56575859,
-    0x5A21262D,
-    0x2E3F4039,
-    0x38373635,
-    0x34333231,
-    0x30080000,
+    0x00, 0x00, 0x20, 0x41,
+    0x42, 0x43, 0x44, 0x45,
+    0x46, 0x47, 0x48, 0x49,
+    0x4A, 0x4B, 0x4C, 0x4D,
+    0x4E, 0x4F, 0x50, 0x51,
+    0x52, 0x53, 0x54, 0x55,
+    0x56, 0x57, 0x58, 0x59,
+    0x5A, 0x21, 0x26, 0x2D,
+    0x2E, 0x3F, 0x40, 0x39,
+    0x38, 0x37, 0x36, 0x35,
+    0x34, 0x33, 0x32, 0x31,
+    0x30, 0x08, 0x00, 0x00,
 };
 
-char *lbl_801D6C70[] =
+static char *s_buttonModelNames[NUM_BUTTONS] =
 {
     NULL,
     NULL,
@@ -129,7 +154,8 @@ char *lbl_801D6C70[] =
     NULL,
 };
 
-char *lbl_801D6D30[] =
+// If any of these names is entered, it will be replaced with "---".
+static char *s_censoredNames[] =
 {
     "SEX",
     "XXX",
@@ -162,13 +188,14 @@ void ev_name_entry_init(void)
 
     lbl_802C6794.unk0 = 1;
     lbl_802C6794.unk8 = -2;
-    memset(lbl_802C6794.unkC, 0, 4);
+    memset(lbl_802C6794.unkC, 0, sizeof(lbl_802C6794.unkC));
     lbl_802F2208 = 0;
     buttonModel = find_stage_or_bg_model("BUTTON");
 
-    nameIter = lbl_801D6C70;
-    modelIter = lbl_802C6314;
-    for (i = 48; i > 0; i--, nameIter++, modelIter++)
+    // find models
+    nameIter = s_buttonModelNames;
+    modelIter = s_buttonModels;
+    for (i = NUM_BUTTONS; i > 0; i--, nameIter++, modelIter++)
     {
         if (*nameIter == NULL)
             *modelIter = NULL;
@@ -176,7 +203,7 @@ void ev_name_entry_init(void)
             *modelIter = find_stage_or_bg_model(*nameIter);
     }
 
-    for (i = 0; i < 48; i++)
+    for (i = 0; i < NUM_BUTTONS; i++)
     {
         for (j = 0; j < 3; j++)
             lbl_802C63D4[i].unk8[j] = 0.25f;
@@ -186,14 +213,14 @@ void ev_name_entry_init(void)
     stobj.type = SOT_NAMEENT_BTN;
     stobj.model = buttonModel;
 
-    modelIter = lbl_802C6314;
+    modelIter = s_buttonModels;
     var_r24 = lbl_802C63D4;
-    for (i2 = 0; i2 < 48; i2++, var_r24++, modelIter++)
+    for (i2 = 0; i2 < NUM_BUTTONS; i2++, var_r24++, modelIter++)
     {
         if (*modelIter != 0)
         {
             stobj.model = buttonModel;
-            i = (s16)((-65536.0f * (0.5f + i2)) / 48.0f);
+            i = (s16)((-65536.0f * (0.5f + i2)) / (float)NUM_BUTTONS);
             stobj.rotY = i;
             stobj.u_some_pos.x = 0.0f;
             stobj.u_some_pos.y = 0.0f;
@@ -373,10 +400,10 @@ void ev_name_entry_main(void)
             lbl_802C6794.unk8 = 4;
             if (strlen(lbl_802C6794.unkC) == 0)
                 strcpy(lbl_802C6794.unkC, lbl_802F1820);
-            if (func_800AEB28(lbl_802C6794.unkC) != 0)
+            if (is_censored_name(lbl_802C6794.unkC))
                 strcpy(lbl_802C6794.unkC, lbl_802F1824);
             lbl_802C6794.unk34 = 736.0f;
-            memcpy(&lbl_802C67D4[modeCtrl.currPlayer].filler0, lbl_802C6794.unkC, 4);
+            memcpy(&lbl_802C67D4[modeCtrl.currPlayer].record.initials, lbl_802C6794.unkC, 4);
             func_800AF098();
             func_800AED54(lbl_802C6794.unkC);
             func_80049430(lbl_802C6794.unkC);
@@ -491,8 +518,8 @@ void ev_name_entry_main(void)
         switch (lbl_802C6794.unk8)
         {
         case -1:
-            var_r28 = 48 - (lbl_802C6794.unk4 >> 1);
-            for (i = 48; i > 0; i--)
+            var_r28 = NUM_BUTTONS - (lbl_802C6794.unk4 >> 1);
+            for (i = NUM_BUTTONS; i > 0; i--)
             {
                 if (i > var_r28)
                 {
@@ -516,7 +543,7 @@ void ev_name_entry_main(void)
             break;
         case 3:
             var_r28 = (unpausedFrameCounter << 9) & 0x3E00;
-            for (i = 48; i > 0; i--)
+            for (i = NUM_BUTTONS; i > 0; i--)
             {
                 if (var_r27->unk0 == 8)
                 {
@@ -541,7 +568,7 @@ void ev_name_entry_main(void)
             break;
         default:
             var_r28 = unpausedFrameCounter >> 5;
-            for (i = 48; i > 0; i--, var_r28++)
+            for (i = NUM_BUTTONS; i > 0; i--, var_r28++)
             {
                 if (var_r28 & 1)
                 {
@@ -566,4 +593,265 @@ void ev_name_entry_main(void)
         mathutil_mtxA_rigid_inv_tf_tl(&sp8);
         func_800390C8(5, &sp8, 0.5f);
     }
+}
+
+void ev_name_entry_dest(void)
+{
+    call_bitmap_free_group(BMP_RNK);
+}
+
+char lbl_802F1828[5] = "%07d";
+
+void func_800AE408(void)
+{
+    struct NaomiSpriteParams params;
+    int x;
+    int y;
+    struct Ball *ball;
+
+    ball = &ballInfo[modeCtrl.currPlayer];
+    if (lbl_802C6794.unk14 != 0)
+    {
+        x = lbl_802C6794.unk18;
+        y = lbl_802C6794.unk28;
+
+        reset_text_draw_settings();
+
+        set_text_font(FONT_ICON_TPL);
+        func_80071B1C(1.03f);
+        set_text_pos(x + 65, y);
+        u_draw_char(0x30);
+        set_text_pos(x + 180, y);
+        u_draw_char(0x31);
+        set_text_pos(x + 289, y);
+        u_draw_char(0x32);
+        set_text_pos(x + 460, y);
+        u_draw_char(0x33);
+
+        y = lbl_802C6794.unk1C;
+        set_text_font(FONT_ICON_RNK);
+        set_text_pos(x + 65, y);
+        u_draw_char(lbl_802C6794.unk10 + 0x31);
+
+        set_text_font(FONT_ASC_30x31);
+        set_text_pos(x + 172, y);
+        u_draw_text(lbl_802C6794.unkC);
+
+        draw_ranking_floor_num(lbl_802C6794.unk10, x, y, &lbl_802C67D4[modeCtrl.currPlayer].record);
+
+        set_text_font(FONT_NUM_26x31);
+        y = lbl_802C6794.unk1C;
+        set_text_pos(x + 396, y);
+        func_80072AC0(lbl_802F1828, lbl_802C67D4[modeCtrl.currPlayer].record.score);
+
+        params.bmpId = BMP_RNK_rnk_lines;
+        params.z = 1.03f;
+        params.rotation = 0;
+        params.opacity = 1.0f;
+        params.unk30 = 2;
+        params.flags = 5;
+        params.mulColor = RGBA(255, 255, 255, 0);
+        params.addColor = RGBA(0, 0, 0, 0);
+        params.x = x + 39;
+        params.y = y + 32;
+        params.scaleX = 1.0f;
+        params.scaleY = 0.0234375f;
+        params.u1 = 0.0f;
+        params.v1 = 0.9765625f;
+        params.u2 = 1.0f;
+        params.v2 = 1.0f;
+        draw_naomi_sprite(&params);
+
+        params.x += 256.0f;
+        params.scaleX = 0.1953125f;
+        params.u1 = 0.0f;
+        params.v1 = 0.9296875f;
+        params.u2 = 0.1953125f;
+        params.v2 = 0.953125f;
+        draw_naomi_sprite(&params);
+
+        params.x += 50.0f;
+        params.scaleX = 1.0f;
+        params.u1 = 0.0f;
+        params.v1 = 0.953125f;
+        params.u2 = 1.0f;
+        params.v2 = 0.9765625f;
+        draw_naomi_sprite(&params);
+
+        params.bmpId = u_get_monkey_bitmap_id(0, 0, playerCharacterSelection[ball->playerId]);
+        params.x = x + lbl_802C6794.unk30;
+        params.y = 15.5 + y;
+        params.z = 0.2f;
+        params.rotation = (s16)lbl_802C6794.unk38;
+        params.opacity = 1.0f;
+        params.unk30 = 2;
+        params.flags = 0x100A;
+        params.mulColor = RGBA(255, 255, 255, 0);
+        params.addColor = RGBA(0, 0, 0, 0);
+        params.scaleX = 0.3846154f;
+        params.scaleY = 0.25f;
+        params.u1 = 0.0f;
+        params.v1 = 0.0f;
+        params.u2 = 1.0f;
+        params.v2 = 1.0f;
+        draw_naomi_sprite(&params);
+    }
+}
+
+int u_is_name_entry_finished(void)
+{
+    if (eventInfo[EVENT_NAME_ENTRY].state == EV_STATE_INACTIVE)
+        return TRUE;
+    if (lbl_802C6794.unk0 == 0)
+        return TRUE;
+    return FALSE;
+}
+
+void func_800AE8D0(void)
+{
+    int i;
+    struct Struct802C63D4 *ptr;
+
+    ptr = lbl_802C63D4;
+    for (i = 0; i < NUM_BUTTONS; i++, ptr++)
+        ptr->unk4 = -1;
+
+    func_800AE930(0);
+}
+
+void func_800AE930(int arg0)
+{
+    struct Effect effect;
+    int i;
+    struct GMAModel **modelIter;
+    u8 *var_r28;
+    struct Struct802C63D4 *var_r27;
+    struct Effect *r3;
+
+    memset(&effect, 0, sizeof(effect));
+    effect.type = ET_NAMEENT_CODE;
+    var_r27 = lbl_802C63D4;
+    var_r28 = lbl_801D6B58;
+    modelIter = s_buttonModels;
+    for (i = 0; i < NUM_BUTTONS; i++, modelIter++, var_r28++, var_r27++)
+    {
+        if (*modelIter != NULL)
+        {
+            if (var_r27->unk4 >= 0)
+            {
+                if ((r3 = find_effect_by_uid(var_r27->unk4)) != NULL)
+                    func_800AF3B0(r3, 5);
+                var_r27->unk4 = -1;
+            }
+            if (arg0 == 0 || var_r27->unk0 == 8)
+            {
+                effect.model = *modelIter;
+                effect.pos.x = 0.0f;
+                effect.pos.y = 1.5f;
+                effect.pos.z = -16.5f;
+                mathutil_mtxA_from_identity();
+                mathutil_mtxA_rotate_y((s16)((-65536.0f * (0.5f + i)) / 48.0f));
+                mathutil_mtxA_tf_vec(&effect.pos, &effect.pos);
+                effect.u_otherTimer = (rand() & 0x1F) + 0x10;
+                var_r27->unk4 = spawn_effect(&effect);
+                var_r27->unk0 = *var_r28;
+            }
+        }
+    }
+}
+
+void func_800AEAD0(void)
+{
+    int i, j;
+    struct Struct802C6220_sub *ptr = lbl_802C6220.unk4;
+
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 5; j++, ptr++)
+            ptr->unkE = -1;
+    }
+}
+
+// returns TRUE if name is one of the censored names
+int is_censored_name(char *name)
+{
+    int found = FALSE;
+    int i;
+    char **stringIter;
+
+    stringIter = s_censoredNames;
+    for (i = ARRAY_COUNT(s_censoredNames); i > 0; i--, stringIter++)
+    {
+        if (strcmp(*stringIter, name) == 0)
+        {
+            found = TRUE;
+            break;
+        }
+    }
+    return found;
+}
+
+#pragma force_active on
+u32 someZeros[] =
+{
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+};
+#pragma force_active reset
+
+char *lbl_801D6DC0[3][5] =
+{
+    { "NAG", "@RI", "SHO", "SAK", lbl_802F1820 },
+    { "NAG", "JAM", "MKA", "ODA", "M.S" },
+    { "NAG", "H.E", "JUN", "Y.S", "AGE" },
+};
+
+void func_800AEBA8(void)
+{
+    u8 filler[4];
+    int i, j;
+    struct Struct802C6220_sub *var_r23;
+    struct Struct802C6220_sub *var_r22;
+    int var_r21;
+
+    memset(&lbl_802C6220, 0, sizeof(lbl_802C6220));
+    lbl_802C6220.unk0 = sizeof(lbl_802C6220);
+    var_r22 = lbl_802C6220.unk4;
+    for (i = 0; i < 3; i++, var_r22 += 5)
+    {
+        var_r21 = 50000;
+        var_r23 = var_r22;
+        for (j = 0; j < 5; j++, var_r23++, var_r21 -= 1000)
+        {
+            strcpy(var_r23->unk0, lbl_801D6DC0[i][j]);
+            var_r23->unk4 = var_r21;
+            var_r23->unk8 = 0xAFC80;
+            var_r23->unkC = 0xFF;
+            var_r23->unkD = 0;
+
+        }
+    }
+}
+
+struct Struct802C6220_sub *func_800AEC74(int arg0, struct Struct802C6220_sub *arg1)
+{
+    u8 filler[4];
+    struct Struct802C6220_sub *ptr = &lbl_802C6220.unk4[arg0 * 5];
+
+    if (arg1 != NULL)
+    {
+        memcpy(arg1, ptr, 5 * sizeof(*arg1));
+        return arg1;
+    }
+    return ptr;
 }

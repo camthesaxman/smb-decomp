@@ -748,7 +748,7 @@ void init_ranking_screen(int difficulty)
         lbl_802B37F0.unk18 = 0;
         break;
     }
-    lbl_802B37F0.unk168 = func_800AEC74(difficulty, 0);
+    lbl_802B37F0.unk168 = func_800AEC74(difficulty, NULL);
 
     var = 0;
     entry = lbl_802B37F0.rankingEntries;

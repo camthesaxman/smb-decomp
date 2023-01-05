@@ -1202,7 +1202,7 @@ void submode_game_nameentry_ready_main_func(void)
         textbox_set_properties(1, 20, NULL);
         hud_show_name_entry_info(
             func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]),
-            lbl_802C67D4[modeCtrl.currPlayer].unk4);
+            lbl_802C67D4[modeCtrl.currPlayer].record.score);
         hud_show_name_entry_banner(modeCtrl.submodeTimer);
     }
     if (modeCtrl.submodeTimer == 180)

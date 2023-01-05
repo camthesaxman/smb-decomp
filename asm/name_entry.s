@@ -39,8 +39,8 @@ ev_name_entry_init:
 /* 800AD400 000A9320  93 CD A0 28 */	stw r30, lbl_802F2208@sda21(r13)
 /* 800AD404 000A9324  38 6D 96 38 */	addi r3, r13, lbl_802F1818@sda21
 /* 800AD408 000A9328  4B F9 81 F5 */	bl find_stage_or_bg_model
-/* 800AD40C 000A932C  3C 80 80 1D */	lis r4, lbl_801D6C70@ha
-/* 800AD410 000A9330  38 04 6C 70 */	addi r0, r4, lbl_801D6C70@l
+/* 800AD40C 000A932C  3C 80 80 1D */	lis r4, s_buttonModelNames@ha
+/* 800AD410 000A9330  38 04 6C 70 */	addi r0, r4, s_buttonModelNames@l
 /* 800AD414 000A9334  3B A3 00 00 */	addi r29, r3, 0
 /* 800AD418 000A9338  7C 1B 03 78 */	mr r27, r0
 /* 800AD41C 000A933C  3B 5F 00 F4 */	addi r26, r31, 0xf4
@@ -538,7 +538,7 @@ lbl_800ADB00:
 /* 800ADB38 000A9A58  48 05 8F 75 */	bl strcpy
 lbl_800ADB3C:
 /* 800ADB3C 000A9A5C  7F 63 DB 78 */	mr r3, r27
-/* 800ADB40 000A9A60  48 00 0F E9 */	bl func_800AEB28
+/* 800ADB40 000A9A60  48 00 0F E9 */	bl is_censored_name
 /* 800ADB44 000A9A64  2C 03 00 00 */	cmpwi r3, 0
 /* 800ADB48 000A9A68  41 82 00 10 */	beq lbl_800ADB58
 /* 800ADB4C 000A9A6C  38 7B 00 00 */	addi r3, r27, 0
@@ -1136,7 +1136,7 @@ lbl_800AE3C0:
 /* 800AE3D8 000AA2F8  CB 81 01 18 */	lfd f28, 0x118(r1)
 /* 800AE3DC 000AA2FC  38 21 01 38 */	addi r1, r1, 0x138
 /* 800AE3E0 000AA300  4E 80 00 20 */	blr
-.endif
+
 .global ev_name_entry_dest
 ev_name_entry_dest:
 /* 800AE3E4 000AA304  7C 08 02 A6 */	mflr r0
@@ -1516,13 +1516,13 @@ func_800AE930:
 /* 800AE97C 000AA89C  B0 01 00 14 */	sth r0, 0x14(r1)
 /* 800AE980 000AA8A0  3C 80 80 1D */	lis r4, lbl_801D6B58@ha
 /* 800AE984 000AA8A4  C3 42 B8 48 */	lfs f26, lbl_802F6048-_SDA2_BASE_(r2)
-/* 800AE988 000AA8A8  3C 60 80 2C */	lis r3, lbl_802C6314@ha
+/* 800AE988 000AA8A8  3C 60 80 2C */	lis r3, s_buttonModels@ha
 /* 800AE98C 000AA8AC  C3 62 B8 4C */	lfs f27, lbl_802F604C-_SDA2_BASE_(r2)
 /* 800AE990 000AA8B0  38 A5 63 D4 */	addi r5, r5, lbl_802C63D4@l
 /* 800AE994 000AA8B4  C3 82 B7 04 */	lfs f28, lbl_802F5F04-_SDA2_BASE_(r2)
 /* 800AE998 000AA8B8  38 84 6B 58 */	addi r4, r4, lbl_801D6B58@l
 /* 800AE99C 000AA8BC  C3 A2 B7 08 */	lfs f29, lbl_802F5F08-_SDA2_BASE_(r2)
-/* 800AE9A0 000AA8C0  38 03 63 14 */	addi r0, r3, lbl_802C6314@l
+/* 800AE9A0 000AA8C0  38 03 63 14 */	addi r0, r3, s_buttonModels@l
 /* 800AE9A4 000AA8C4  CB C2 B7 28 */	lfd f30, lbl_802F5F28-_SDA2_BASE_(r2)
 /* 800AE9A8 000AA8C8  C3 E2 B7 0C */	lfs f31, lbl_802F5F0C-_SDA2_BASE_(r2)
 /* 800AE9AC 000AA8CC  3B E1 00 40 */	addi r31, r1, 0x40
@@ -1629,12 +1629,12 @@ func_800AEAD0:
 /* 800AEB20 000AAA40  98 03 00 4E */	stb r0, 0x4e(r3)
 /* 800AEB24 000AAA44  4E 80 00 20 */	blr
 
-.global func_800AEB28
-func_800AEB28:
+.global is_censored_name
+is_censored_name:
 /* 800AEB28 000AAA48  7C 08 02 A6 */	mflr r0
-/* 800AEB2C 000AAA4C  3C 80 80 1D */	lis r4, lbl_801D6D30@ha
+/* 800AEB2C 000AAA4C  3C 80 80 1D */	lis r4, s_censoredNames@ha
 /* 800AEB30 000AAA50  90 01 00 04 */	stw r0, 4(r1)
-/* 800AEB34 000AAA54  38 04 6D 30 */	addi r0, r4, lbl_801D6D30@l
+/* 800AEB34 000AAA54  38 04 6D 30 */	addi r0, r4, s_censoredNames@l
 /* 800AEB38 000AAA58  94 21 FF E0 */	stwu r1, -0x20(r1)
 /* 800AEB3C 000AAA5C  93 E1 00 1C */	stw r31, 0x1c(r1)
 /* 800AEB40 000AAA60  3B E0 00 00 */	li r31, 0
@@ -1749,7 +1749,7 @@ lbl_800AECB8:
 /* 800AECC0 000AABE0  38 21 00 20 */	addi r1, r1, 0x20
 /* 800AECC4 000AABE4  7C 08 03 A6 */	mtlr r0
 /* 800AECC8 000AABE8  4E 80 00 20 */	blr
-
+.endif
 .global func_800AECCC
 func_800AECCC:
 /* 800AECCC 000AABEC  1C A3 00 50 */	mulli r5, r3, 0x50
@@ -2892,7 +2892,7 @@ lbl_801D6D60:
 	.4byte lbl_800ADC0C  ;# ptr
 	.4byte lbl_800ADCC8  ;# ptr
 	.4byte lbl_800ADD88  ;# ptr
-.endif
+
 asdf:
 	.4byte 0
 	.4byte 0
@@ -2925,8 +2925,36 @@ lbl_801D6DC0:
 	.4byte lbl_802F1854  ;# ptr
 	.4byte lbl_802F1858  ;# ptr
 	.4byte lbl_802F185C  ;# ptr
+.endif
+asdf:
 	.4byte 0
-
+.section .sdata
+.if 0
+glabel lbl_802F1830
+	.asciz "NAG"
+glabel lbl_802F1834
+	.asciz "@RI"
+glabel lbl_802F1838
+	.asciz "SHO"
+glabel lbl_802F183C
+	.asciz "SAK"
+glabel lbl_802F1840
+	.asciz "JAM"
+glabel lbl_802F1844
+	.asciz "MKA"
+glabel lbl_802F1848
+	.asciz "ODA"
+glabel lbl_802F184C
+	.asciz "M.S"
+glabel lbl_802F1850
+	.asciz "H.E"
+glabel lbl_802F1854
+	.asciz "JUN"
+glabel lbl_802F1858
+	.asciz "Y.S"
+glabel lbl_802F185C
+	.asciz "AGE"
+.endif
 .section .sdata2
 
 .if 0
@@ -3180,7 +3208,7 @@ lbl_802F6010:
 	# ROM: 0x1EFA30
 	.4byte 0x3FB99999
 	.4byte 0x9999999A
-.endif
+
 .global lbl_802F6018
 lbl_802F6018:
 	# ROM: 0x1EFA38
@@ -3246,7 +3274,7 @@ lbl_802F6048:
 lbl_802F604C:
 	# ROM: 0x1EFA6C
 	.4byte 0xC1840000
-
+.endif
 .global lbl_802F6050
 lbl_802F6050:
 	# ROM: 0x1EFA70
@@ -3330,8 +3358,8 @@ lbl_802F60B0:
 .global lbl_802C6220
 lbl_802C6220:
 	.skip 0xF4
-.global lbl_802C6314
-lbl_802C6314:
+.global s_buttonModels
+s_buttonModels:
 	.skip 0xC0
 .global lbl_802C63D4
 lbl_802C63D4:

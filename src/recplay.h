@@ -62,7 +62,7 @@ void func_80049268(int);
 void func_800492FC(int);
 void func_80049368(int);
 void func_800493C4(int);
-// ? func_80049430();
+void func_80049430(char *playerName);
 void func_80049514(int);
 float func_8004964C(int);
 void func_800496BC(int, struct ReplayBallFrame *, float);

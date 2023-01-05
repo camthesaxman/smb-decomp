@@ -6763,7 +6763,6 @@ lbl_802F1820:
 lbl_802F1824:
 	# ROM: 0x1EBF64
 	.4byte 0x2D2D2D00
-.endif
 
 .global lbl_802F1828
 lbl_802F1828:
@@ -6771,30 +6770,8 @@ lbl_802F1828:
 glabel string__07d_2
 	.asciz "%07d"
 	.balign 4
-glabel lbl_802F1830
-	.4byte 0x4E414700
-glabel lbl_802F1834
-	.4byte 0x40524900
-glabel lbl_802F1838
-	.4byte 0x53484F00
-glabel lbl_802F183C
-	.4byte 0x53414B00
-glabel lbl_802F1840
-	.4byte 0x4A414D00
-glabel lbl_802F1844
-	.4byte 0x4D4B4100
-glabel lbl_802F1848
-	.4byte 0x4F444100
-glabel lbl_802F184C
-	.4byte 0x4D2E5300
-glabel lbl_802F1850
-	.4byte 0x482E4500
-glabel lbl_802F1854
-	.4byte 0x4A554E00
-glabel lbl_802F1858
-	.4byte 0x592E5300
-glabel lbl_802F185C
-	.4byte 0x41474500
+.endif
+
 glabel string_Bonobo
 	.asciz "Bonobo"
 	.balign 4
@@ -8612,8 +8589,8 @@ glabel string_FONT_ARROW_L
 	.asciz "FONT_ARROW_L"
 	.balign 4
 
-.global lbl_801D6C70
-lbl_801D6C70:
+.global s_buttonModelNames
+s_buttonModelNames:
 	# ROM: 0x1D3C70
 	.4byte 0
 	.4byte 0
@@ -8664,8 +8641,8 @@ lbl_801D6C70:
 	.4byte 0
 	.4byte 0
 
-.global lbl_801D6D30
-lbl_801D6D30:
+.global s_censoredNames
+s_censoredNames:
 	# ROM: 0x1D3D30
 	.4byte lbl_802F1800  ;# ptr
 	.4byte lbl_802F1804  ;# ptr

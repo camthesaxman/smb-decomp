@@ -501,7 +501,7 @@ void lbl_8003781C(struct Ape *ape, int b)
     r29->unk110 = 0.0f;
 }
 
-void func_80037B1C() {}
+void func_80037B1C(struct Ball *ball) {}
 
 void func_80037B20(void)
 {

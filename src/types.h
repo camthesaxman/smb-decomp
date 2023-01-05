@@ -815,13 +815,6 @@ struct ModelLOD
     float distance;
 };
 
-struct Struct802C67D4
-{
-    u8 filler0[4];
-    u32 unk4;
-    u8 filler8[0x50-0x8];
-};
-
 struct ApeFacePart
 {
     s16 modelId;
@@ -973,6 +966,12 @@ struct ScoreRecord
     s8 unkD;  // 0 = normal, 1 = extra, 2 = master
 };
 
+struct Struct802C67D4
+{
+    struct ScoreRecord record;
+    u8 fillerE[0x50-0x10];
+};
+
 struct Struct80250A68
 {
     s32 unk0[4];
@@ -1010,5 +1009,8 @@ struct Struct80094870
     u32 unk4;
     u16 unk8;
 };
+
+struct Effect;
+struct Struct802C6220_sub;
 
 #endif
