@@ -159,7 +159,7 @@ lbl_0000027C:
 /* 00000288 4BFFFF49 */ bl event_finish_all
 /* 0000028C 4BFFFF45 */ bl free_all_bitmap_groups_except_com
 /* 00000290 4BFFFF41 */ bl u_free_minigame_graphics
-/* 00000294 4BFFFF3D */ bl func_80029788
+/* 00000294 4BFFFF3D */ bl SoundGroupFree
 /* 00000298 8001000C */ lwz r0, 0xc(r1)
 /* 0000029C 38210008 */ addi r1, r1, 8
 /* 000002A0 7C0803A6 */ mtlr r0
@@ -1521,7 +1521,7 @@ lbl_000015FC:
 /* 00001634 4BFFEB9D */ bl event_finish_all
 /* 00001638 4BFFEB99 */ bl free_all_bitmap_groups_except_com
 /* 0000163C 4BFFEB95 */ bl u_free_minigame_graphics
-/* 00001640 4BFFEB91 */ bl func_80029788
+/* 00001640 4BFFEB91 */ bl SoundGroupFree
 /* 00001644 38600010 */ li r3, 0x10
 /* 00001648 4BFFEB89 */ bl event_start
 /* 0000164C 38600012 */ li r3, 0x12
@@ -9786,7 +9786,7 @@ lbl_0000907C:
 /* 00009098 4BFF7139 */ bl event_finish_all
 /* 0000909C 4BFF7135 */ bl free_all_bitmap_groups_except_com
 /* 000090A0 4BFF7131 */ bl u_free_minigame_graphics
-/* 000090A4 4BFF712D */ bl func_80029788
+/* 000090A4 4BFF712D */ bl SoundGroupFree
 /* 000090A8 3C600000 */ lis r3, lbl_00026AC4@ha
 /* 000090AC 38630000 */ addi r3, r3, lbl_00026AC4@l
 /* 000090B0 A8630022 */ lha r3, 0x22(r3)

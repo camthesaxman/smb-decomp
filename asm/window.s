@@ -2229,8 +2229,8 @@ lbl_8002FA30:
 /* 8002FB14 0002BA34  2C 03 00 01 */	cmpwi r3, 1
 /* 8002FB18 0002BA38  40 82 00 3C */	bne lbl_8002FB54
 /* 8002FB1C 0002BA3C  80 6D 9C 04 */	lwz r3, lbl_802F1DE4@sda21(r13)
-/* 8002FB20 0002BA40  3C 80 80 11 */	lis r4, lbl_80110400@ha
-/* 8002FB24 0002BA44  38 84 04 00 */	addi r4, r4, lbl_80110400@l
+/* 8002FB20 0002BA40  3C 80 80 11 */	lis r4, g_soundGroupDesc@ha
+/* 8002FB24 0002BA44  38 84 04 00 */	addi r4, r4, g_soundGroupDesc@l
 /* 8002FB28 0002BA48  1C 63 00 14 */	mulli r3, r3, 0x14
 /* 8002FB2C 0002BA4C  7C 64 1A 14 */	add r3, r4, r3
 /* 8002FB30 0002BA50  80 83 00 04 */	lwz r4, 4(r3)
@@ -2249,8 +2249,8 @@ lbl_8002FB54:
 /* 8002FB5C 0002BA7C  7C 00 18 00 */	cmpw r0, r3
 /* 8002FB60 0002BA80  41 82 00 20 */	beq lbl_8002FB80
 /* 8002FB64 0002BA84  1C 03 00 14 */	mulli r0, r3, 0x14
-/* 8002FB68 0002BA88  3C 60 80 11 */	lis r3, lbl_80110400@ha
-/* 8002FB6C 0002BA8C  38 63 04 00 */	addi r3, r3, lbl_80110400@l
+/* 8002FB68 0002BA88  3C 60 80 11 */	lis r3, g_soundGroupDesc@ha
+/* 8002FB6C 0002BA8C  38 63 04 00 */	addi r3, r3, g_soundGroupDesc@l
 /* 8002FB70 0002BA90  7C 63 02 14 */	add r3, r3, r0
 /* 8002FB74 0002BA94  80 63 00 04 */	lwz r3, 4(r3)
 /* 8002FB78 0002BA98  38 03 00 01 */	addi r0, r3, 1
@@ -5067,13 +5067,13 @@ glabel lbl_801B5A50
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFE
 	.4byte string__RAM__08X  ;# ptr
-	.4byte lbl_802F1DEC  ;# ptr
+	.4byte g_soundTotalBytesLoaded  ;# ptr
 	.4byte 0
 	.4byte 0x0000000E
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_ARAM__08X  ;# ptr
-	.4byte lbl_802F1DF0  ;# ptr
+	.4byte g_soundAramTop  ;# ptr
 	.4byte 0
 	.4byte 0x00000005
 	.4byte 0x00000002
@@ -5085,7 +5085,7 @@ glabel lbl_801B5A50
 	.4byte 0x00000002
 	.4byte 0xFFFFFFFF
 	.4byte string_BGM_vol____3d  ;# ptr
-	.4byte lbl_802F1DD9  ;# ptr
+	.4byte u_volumeRelated1  ;# ptr
 	.4byte lbl_801B598C  ;# ptr
 	.4byte 0x0000000D
 	.4byte 0x00000002

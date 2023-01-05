@@ -1094,7 +1094,7 @@ void submode_game_over_dest_func(void)
         g_poolInfo.playerPool.statusList[3] = 0;
         modeCtrl.currPlayer = 0;
         currentBallStructPtr = &ballInfo[modeCtrl.currPlayer];
-        func_80029788();
+        SoundGroupFree();
         break;
     default:
         mark_player_finished(modeCtrl.currPlayer);

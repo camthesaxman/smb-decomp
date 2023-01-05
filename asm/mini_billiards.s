@@ -10838,7 +10838,7 @@ lbl_00009E34:
 /* 00009E5C 4BFF62D9 */ bl OSSetCurrentHeap
 /* 00009E60 7C7E1B78 */ mr r30, r3
 /* 00009E64 4BFF62D1 */ bl u_free_minigame_graphics
-/* 00009E68 4BFF62CD */ bl func_80029788
+/* 00009E68 4BFF62CD */ bl SoundGroupFree
 /* 00009E6C 7FC3F378 */ mr r3, r30
 /* 00009E70 4BFF62C5 */ bl OSSetCurrentHeap
 /* 00009E74 3C600000 */ lis r3, lbl_10000064@ha

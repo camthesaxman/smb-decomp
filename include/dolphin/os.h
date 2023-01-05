@@ -64,6 +64,10 @@ void OSTicksToCalendarTime(OSTime ticks, OSCalendarTime *td);
 BOOL OSEnableInterrupts(void);
 BOOL OSDisableInterrupts(void);
 BOOL OSRestoreInterrupts(BOOL level);
+
+#define OS_SOUND_MODE_MONO   0
+#define OS_SOUND_MODE_STEREO 1
+
 u32 OSGetSoundMode(void);
 void OSSetSoundMode(u32 mode);
 

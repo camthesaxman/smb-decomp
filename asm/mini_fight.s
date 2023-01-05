@@ -11244,7 +11244,7 @@ lbl_0000A974:
 /* 0000A9E8 5400003C */ rlwinm r0, r0, 0, 0, 0x1e
 /* 0000A9EC 901E0000 */ stw r0, 0(r30)
 lbl_0000A9F0:
-/* 0000A9F0 4BFF5775 */ bl func_80029788
+/* 0000A9F0 4BFF5775 */ bl SoundGroupFree
 /* 0000A9F4 3C600000 */ lis r3, stageHeap@ha
 /* 0000A9F8 38630000 */ addi r3, r3, stageHeap@l
 /* 0000A9FC 80630000 */ lwz r3, 0(r3)

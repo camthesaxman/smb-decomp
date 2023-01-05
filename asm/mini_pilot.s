@@ -259,7 +259,7 @@ lbl_0000041C:
 /* 0000041C 48000251 */ bl lbl_0000066C
 /* 00000420 3860000B */ li r3, 0xb
 /* 00000424 4BFFFD29 */ bl bitmap_free_group
-/* 00000428 4BFFFD25 */ bl func_80029788
+/* 00000428 4BFFFD25 */ bl SoundGroupFree
 /* 0000042C 3C600000 */ lis r3, lbl_802F1FD0@ha
 /* 00000430 38000000 */ li r0, 0
 /* 00000434 90030000 */ stw r0, lbl_802F1FD0@l(r3)

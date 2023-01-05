@@ -37,7 +37,7 @@ static void func_8002CEB8(int);
 static void lbl_8002D420(s32 result, DVDFileInfo *fileInfo);
 static void lbl_8002D538(s32 result, DVDFileInfo *fileInfo);
 
-const struct Struct80110400 lbl_80110400[] =
+const struct SoundGroupDesc g_soundGroupDesc[] =
 {
     { "GRPse04",          0,  3, 0, "allse"  },
     { "GRPse01",          4,  0, 0, "allse"  },
@@ -1285,7 +1285,7 @@ static struct Struct801B2A5C lbl_801B2A5C[] =
     { "optm",          0x01000000, 0x00000000, 73 },
 };
 
-static u32 lbl_802F1D30[2];
+static u32 s_aramBlocks[2];
 static u8 lbl_802F1D38;
 static u8 lbl_802F1D39;
 static s16 lbl_802F1D3A;
@@ -1304,9 +1304,9 @@ static s32 lbl_802F1D68;
 static s32 lbl_802F1D6C;
 static s32 lbl_802F1D70;
 static s32 lbl_802F1D74;
-static float lbl_802F1D78;
-static u8 *lbl_802F1D7C;
-static u8 *lbl_802F1D80;
+static float u_volumeRelated3;
+static u8 *s_testStreamLeftBuffer;
+static u8 *s_testStreamRightBuffer;
 static u8 *lbl_802F1D84;
 static u8 *lbl_802F1D88;
 static u32 lbl_802F1D8C;
@@ -1322,18 +1322,18 @@ static s32 lbl_802F1DB0;
 static u32 lbl_802F1DB4;
 static u32 lbl_802F1DB8;
 static u32 lbl_802F1DBC;
-static s32 lbl_802F1DC0;
+static BOOL s_groupIsUsingCharaHeap;
 static s32 lbl_802F1DC4;
 static s32 lbl_802F1DC8;
 
-static void *lbl_801F8E18[9];
-static void *lbl_801F8E3C[9];
-static void *lbl_801F8E60[9];
-static void *lbl_801F8E84[9];
-static u32 lbl_801F8EA8[9];
-static u32 lbl_801F8ECC[9];
-static u32 lbl_801F8EF0[9];
-static u32 lbl_801F8F14[9];
+static void *s_poolData[9];
+static void *s_projData[9];
+static void *s_sdirData[9];
+static void *s_sampData[9];
+static u32 s_poolDataSizes[9];
+static u32 s_projDataSizes[9];
+static u32 s_sdirDataSizes[9];
+static u32 s_sampDataSizes[9];
 static SND_AUX_REVERBHI lbl_801F8F38;
 static struct
 {
@@ -1342,7 +1342,7 @@ static struct
     u32 unk394;
     u32 unk398;
 } lbl_801F9118;
-static u32 lbl_801F91B4[4][0x425];
+static SND_VOICEID s_voiceIDs[4][0x425];
 static u8 lbl_801FD404[4][0x425];
 static struct Struct801FE498 lbl_801FE498[16];
 static struct
@@ -1351,9 +1351,9 @@ static struct
     struct { s32 unk0; u8 filler4[4]; } unk50[4];
 } lbl_801FE558;
 static float lbl_801FE5C8[4];
-static DTKTrack lbl_801FE5D8[0x94];
-static DVDFileInfo lbl_80201418;
-static DVDFileInfo lbl_80201454;
+static DTKTrack s_dtkTracks[0x94];
+static DVDFileInfo s_testStreamLeftFile;
+static DVDFileInfo s_testStreamRightFile;
 static struct
 {
     u32 unk3C;
@@ -1361,22 +1361,22 @@ static struct
     u32 unk44;
 } lbl_80201490;
 static s32 lbl_8020149C[9];
-static s32 lbl_802014C0[8];
+static s32 s_loadedSoundGroups[8];
 
-s32 lbl_802F1E00;
+s32 g_loadedSoundGroupsCount;
 s32 lbl_802F1DFC;
 int lbl_802F1DF8;
 u8 lbl_802F1DF5;
 u8 lbl_802F1DF4;
-u32 lbl_802F1DF0;
-u32 lbl_802F1DEC;
+u32 g_soundAramTop;
+u32 g_soundTotalBytesLoaded;
 u32 lbl_802F1DE8;
 u32 lbl_802F1DE4;
 const char *lbl_802F1DE0;
 const char *lbl_802F1DDC;
-u8 lbl_802F1DD9;
-u8 lbl_802F1DD8;
-s32 lbl_802F1DD4;
+u8 u_volumeRelated1;
+u8 u_volumeRelated2;
+s32 g_soundMuted;
 u32 lbl_802F1DD0;
 s32 lbl_802F1DCC;
 
@@ -1396,41 +1396,41 @@ static void sound_error(const char *func, const char *msg, ...)
     printf(buffer);
 }
 
-static void func_800275A0(s32 arg0, s32 arg1)
+static void queue_dtk_tracks(s32 arg0, s32 mode)
 {
     char fileName[0x100];
     int i;
     int r0;
 
-    switch (arg1)
+    switch (mode)
     {
     case 0:
-        sndOutputMode(0);
+        sndOutputMode(SND_OUTPUTMODE_MONO);
         if (arg0 == 0)
         {
             for (i = 0; i < 0x4A; i++)
-                DTKRemoveTrack(&lbl_801FE5D8[i]);
+                DTKRemoveTrack(&s_dtkTracks[i]);
         }
         r0 = 0;
         for (i = 0x4A; i < 0x94; i++, r0++)
         {
             sprintf(fileName, "/test/snd/adp/%s.adp", lbl_801B2A5C[i].unk0);
-            DTKQueueTrack(fileName, &lbl_801FE5D8[r0], 0, 0);
+            DTKQueueTrack(fileName, &s_dtkTracks[r0], 0, 0);
         }
         break;
     case 1:
         break;
     case 2:
-        sndOutputMode(2);
+        sndOutputMode(SND_OUTPUTMODE_SURROUND);
         if (arg0 == 0)
         {
             for (i = 0; i < 0x4A; i++)
-                DTKRemoveTrack(&lbl_801FE5D8[i]);
+                DTKRemoveTrack(&s_dtkTracks[i]);
         }
         for (i = 0; i < 0x4A; i++)
         {
             sprintf(fileName, "/test/snd/adp/%s.adp", lbl_801B2A5C[i].unk0);
-            DTKQueueTrack(fileName, &lbl_801FE5D8[i], 0, 0);
+            DTKQueueTrack(fileName, &s_dtkTracks[i], 0, 0);
         }
         break;
     }
@@ -1476,7 +1476,7 @@ static void *ReadMusyXData(const char *fileName, u32 *sizeOut)
 #define SOME_MACRO2(a, b, c, d) \
     ((((b) & 0x7F) << 11) | (((c) & 0x7F) << 18) | (((d) & 0x7F) << 25) | (a))
 
-static void func_8002786C(void)
+static void play_stage_sounds(void)
 {
     s8 sp15 = 0;
     s8 sp14 = 0;
@@ -1745,26 +1745,26 @@ static void u_free(void *ptr)
 
 void sound_init(void)
 {
-    SND_HOOKS sp28 = { u_alloc, u_free };
+    SND_HOOKS hooks = { u_alloc, u_free };
     u8 unused[16];
     s32 i;
     s32 j;
     s32 i2;
 
-    lbl_802F1DEC = 0;
-    lbl_802F1DF0 = 0;
-    ARInit(lbl_802F1D30, ARRAY_COUNT(lbl_802F1D30));
+    g_soundTotalBytesLoaded = 0;
+    g_soundAramTop = 0;
+    ARInit(s_aramBlocks, ARRAY_COUNT(s_aramBlocks));
     ARQInit();
-    AIInit(0);
-    AISetStreamSampleRate(1);
-    sndSetHooks(&sp28);
+    AIInit(NULL);
+    AISetStreamSampleRate(AI_SAMPLERATE_48KHZ);
+    sndSetHooks(&hooks);
     sndActive(0x30, 0x30, 0x30, 0, 0x700000);
     lbl_802F1DF5 = 0x5A;
     lbl_802F1DF4 = 0x5A;
     sndVolume(0.01f * (127.0f * lbl_802F1DF5), 0, 0xFF);
-    lbl_802F1DD9 = 0x50;
-    lbl_802F1DD8 = 0x50;
-    DTKSetVolume(lbl_802F1D78 * (0.01f * lbl_802F1DD9), lbl_802F1D78 * (0.01f * lbl_802F1DD9));
+    u_volumeRelated1 = 0x50;
+    u_volumeRelated2 = 0x50;
+    DTKSetVolume(u_volumeRelated3 * (0.01f * u_volumeRelated1), u_volumeRelated3 * (0.01f * u_volumeRelated1));
     lbl_802F1D58 = 0;
     lbl_802F1D40 = 1.0f;
     lbl_802F1D44 = 1.0f;
@@ -1773,15 +1773,15 @@ void sound_init(void)
     lbl_802F1D54 = 1.0f;
     for (i = 0; i < 9; i++)
         lbl_8020149C[i] = 0;
-    lbl_802F1E00 = 0;
-    lbl_802014C0[0] = -1;
-    lbl_802014C0[1] = -1;
-    lbl_802014C0[2] = -1;
-    lbl_802014C0[3] = -1;
-    lbl_802014C0[4] = -1;
-    lbl_802014C0[5] = -1;
-    lbl_802014C0[6] = -1;
-    lbl_802014C0[7] = -1;
+    g_loadedSoundGroupsCount = 0;
+    s_loadedSoundGroups[0] = -1;
+    s_loadedSoundGroups[1] = -1;
+    s_loadedSoundGroups[2] = -1;
+    s_loadedSoundGroups[3] = -1;
+    s_loadedSoundGroups[4] = -1;
+    s_loadedSoundGroups[5] = -1;
+    s_loadedSoundGroups[6] = -1;
+    s_loadedSoundGroups[7] = -1;
     SoundGroupLoad(1);
     SoundGroupLoad(0xF);
     lbl_801F8F38.tempDisableFX = 0;
@@ -1815,7 +1815,7 @@ void sound_init(void)
     for (i2 = 0; i2 < 4; i2++)
     {
         for (j = 0; j < 0x425; j++)
-            lbl_801F91B4[i2][j] = -1;
+            s_voiceIDs[i2][j] = -1;
     }
 
     lbl_802F1D3A = -1;
@@ -1823,13 +1823,13 @@ void sound_init(void)
     lbl_801FE558.unk50[1].unk0 = 0;
     lbl_801FE558.unk50[2].unk0 = 0;
     lbl_801FE558.unk50[3].unk0 = 0;
-    AISetStreamSampleRate(1);
+    AISetStreamSampleRate(AI_SAMPLERATE_48KHZ);
     DTKInit();
-    if (OSGetSoundMode() == 0)
-        func_800275A0(1, 0);
+    if (OSGetSoundMode() == OS_SOUND_MODE_MONO)
+        queue_dtk_tracks(1, 0);
     else
-        func_800275A0(1, 2);
-    DTKSetRepeatMode(2);
+        queue_dtk_tracks(1, 2);
+    DTKSetRepeatMode(DTK_MODE_REPEAT1);
     lbl_802F1D64 = 0;
     lbl_802F1D68 = 0;
     lbl_802F1D6C = 0;
@@ -1846,8 +1846,8 @@ void sound_main(void)
     struct Struct801B2A5C *temp_r29 = &lbl_801B2A5C[lbl_802F1D64];
     u8 unused[8];
 
-    lbl_802014E0.unk1C = DTKGetState();
-    if (lbl_802014E0.unk1C != 3 && lbl_802F1D70 == 0)
+    lbl_802014E0.dtkState = DTKGetState();
+    if (lbl_802014E0.dtkState != DTK_STATE_BUSY && lbl_802F1D70 == 0)
     {
         if (temp_r29->unkC != -1)
         {
@@ -1863,7 +1863,7 @@ void sound_main(void)
             u_play_music(-1, 1);
     }
 
-    if (lbl_802014E0.unk1C != 3)
+    if (lbl_802014E0.dtkState != DTK_STATE_BUSY)
     {
         if (lbl_802F1D70 > 0)
         {
@@ -1872,7 +1872,7 @@ void sound_main(void)
                 switch (lbl_802F1D74)
                 {
                 case -4:
-                    DTKSetState(0);
+                    DTKSetState(DTK_STATE_STOP);
                     AIResetStreamSampleCount();
                     lbl_802F1D74 = 0;
                     lbl_802F1D70 = 1;
@@ -1904,11 +1904,11 @@ void sound_main(void)
                     }
                     break;
                 case -2:
-                    func_8002CEB8(lbl_802F1D4C * (lbl_802F1D78 * lbl_802F1D40));
+                    func_8002CEB8(lbl_802F1D4C * (u_volumeRelated3 * lbl_802F1D40));
                     lbl_802F1D74 = 0;
                     break;
                 case -1:
-                    DTKSetState(0);
+                    DTKSetState(DTK_STATE_STOP);
                     AIResetStreamSampleCount();
                     lbl_802F1D74 = 0;
                     lbl_802F1D70 = 1;
@@ -1930,164 +1930,170 @@ void sound_main(void)
                     }
                     else
                     {
-                        DTKSetState(1);
+                        DTKSetState(DTK_STATE_RUN);
                         AIResetStreamSampleCount();
                         lbl_802F1D74 = -2;
                         lbl_802F1D70 = 1;
-                        lbl_802F1D78 = lbl_802014E0.unkC;
+                        u_volumeRelated3 = lbl_802014E0.unkC;
                         lbl_802014E0.unk4 = 0U;
                     }
                     break;
                 case 1:
-                    DTKSetState(0);
+                    DTKSetState(DTK_STATE_STOP);
                     AIResetStreamSampleCount();
                     lbl_802F1D74 = 0;
                     lbl_802014E0.unk4 = 0U;
                     break;
                 case 5:
-                    if (lbl_802014E0.unk1C == 1)
-                        DTKSetState(2);
-                    else if (lbl_802014E0.unk1C == 2)
-                        DTKSetState(1);
+                    if (lbl_802014E0.dtkState == DTK_STATE_RUN)
+                        DTKSetState(DTK_STATE_PAUSE);
+                    else if (lbl_802014E0.dtkState == DTK_STATE_PAUSE)
+                        DTKSetState(DTK_STATE_RUN);
                     lbl_802F1D74 = 0;
                     break;
                 }
             }
         }
     }
-    if (lbl_802014E0.unk0 != -1 && lbl_802014E0.unk1C == 1)
+    if (lbl_802014E0.unk0 != -1 && lbl_802014E0.dtkState == DTK_STATE_RUN)
         lbl_802014E0.unk4++;
-    lbl_802F1DDC = lbl_80110400[lbl_802F1DE4].unk0;
+    lbl_802F1DDC = g_soundGroupDesc[lbl_802F1DE4].groupName;
     lbl_802F1DE0 = lbl_8011057C[lbl_802F1DE8].unk4;
 }
 
-void SoundGroupLoad(int arg0)
+void SoundGroupLoad(int groupId)
 {
     char poolFileName[0x100];
     char projFileName[0x100];
     char sampFileName[0x100];
     char sdirFileName[0x100];
-    u32 spC;
+    u32 bytesRead;
     s32 temp_cr0_eq;
-    u32 temp_r3_7;
     OSHeapHandle heap;
     u32 temp_r7;
-    const struct Struct80110400 *temp_r29;
+    const struct SoundGroupDesc *temp_r29;
     int i;
 
-    if (lbl_802F1E00 == 8)
+    if (g_loadedSoundGroupsCount == 8)
         return;
-    temp_r29 = &lbl_80110400[arg0];
+    temp_r29 = &g_soundGroupDesc[groupId];
     if (lbl_8020149C[temp_r29->unkC] != 0)
         return;
+    
+    // check if already loaded
     for (i = 0; i < 8; i++)
     {
-        if (arg0 == lbl_802014C0[i])
+        if (groupId == s_loadedSoundGroups[i])
             return;
     }
 
-    sprintf(poolFileName, "%s.pool", temp_r29->unk10);
-    sprintf(projFileName, "%s.proj", temp_r29->unk10);
-    sprintf(sampFileName, "%s.samp", temp_r29->unk10);
-    sprintf(sdirFileName, "%s.sdir", temp_r29->unk10);
+    sprintf(poolFileName, "%s.pool", temp_r29->baseName);
+    sprintf(projFileName, "%s.proj", temp_r29->baseName);
+    sprintf(sampFileName, "%s.samp", temp_r29->baseName);
+    sprintf(sdirFileName, "%s.sdir", temp_r29->baseName);
 
     DVDChangeDir("snd/mkb");
-    lbl_802F1DC0 = 0;
-    lbl_801F8E84[temp_r29->unkC] = ReadMusyXData(sampFileName, &spC);
-    if (lbl_801F8E84[temp_r29->unkC] == NULL)
+    s_groupIsUsingCharaHeap = FALSE;
+    s_sampData[temp_r29->unkC] = ReadMusyXData(sampFileName, &bytesRead);
+    if (s_sampData[temp_r29->unkC] == NULL)
     {
-        temp_r3_7 = OSCheckHeap(mainHeap);
-        if (temp_r3_7 == -1U)
-            sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n", temp_r29->unk10, spC);
-        else if (spC < temp_r3_7)
-            sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+        u32 freeSpace = OSCheckHeap(mainHeap);
+        if (freeSpace == -1U)
+            sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) MainHeap error\n", temp_r29->baseName, bytesRead);
+        else if (bytesRead < freeSpace)
+            sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) MainHeap:0x%X\n", temp_r29->baseName, bytesRead, freeSpace);
         else
-            sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
-        lbl_802F1DC0 = 1;
+            sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... MainHeap:0x%X\n", temp_r29->baseName, bytesRead, bytesRead - freeSpace, freeSpace);
+        s_groupIsUsingCharaHeap = TRUE;
         heap = OSSetCurrentHeap(charaHeap);
-        lbl_801F8E84[temp_r29->unkC] = ReadMusyXData(sampFileName, &spC);
+        s_sampData[temp_r29->unkC] = ReadMusyXData(sampFileName, &bytesRead);
         OSSetCurrentHeap(heap);
-        if (lbl_801F8E84[temp_r29->unkC] == NULL)
+        if (s_sampData[temp_r29->unkC] == NULL)
         {
-            temp_r3_7 = OSCheckHeap(charaHeap);
-            if (temp_r3_7 == -1U)
-                sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n", temp_r29->unk10, spC);
-            else if (spC < temp_r3_7)
-                sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n", temp_r29->unk10, spC, temp_r3_7);
+            freeSpace = OSCheckHeap(charaHeap);
+            if (freeSpace == -1U)
+                sound_error("SoundGroupLoad\n", "RAM ERROR ! \"%s\"(0x%X) CharaHeap error\n", temp_r29->baseName, bytesRead);
+            else if (bytesRead < freeSpace)
+                sound_error("SoundGroupLoad\n", "RAM ALLOC ERROR ! \"%s\"(0x%X) CharaHeap:0x%X\n", temp_r29->baseName, bytesRead, freeSpace);
             else
-                sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n", temp_r29->unk10, spC, spC - temp_r3_7, temp_r3_7);
+                sound_error("SoundGroupLoad\n", "RAM SIZE OVER ! \"%s\"(0x%X) need 0x%X ... CharaHeap:0x%X\n", temp_r29->baseName, bytesRead, bytesRead - freeSpace, freeSpace);
             DVDChangeDir("/test");
             return;
         }
         printf("--> but SUCCESS !! use CharaHeap\n");
     }
 
-    lbl_801F8F14[temp_r29->unkC] = spC;
-    lbl_802F1DEC += lbl_801F8F14[temp_r29->unkC];
-    temp_r7 = lbl_802F1DF0 + lbl_801F8F14[temp_r29->unkC];
+    s_sampDataSizes[temp_r29->unkC] = bytesRead;
+    g_soundTotalBytesLoaded += s_sampDataSizes[temp_r29->unkC];
+
+    temp_r7 = g_soundAramTop + s_sampDataSizes[temp_r29->unkC];
     if (temp_r7 >= 0x700000U)
     {
-        sound_error("SoundGroupLoad\n", "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n", temp_r29->unk10, lbl_801F8F14[temp_r29->unkC], temp_r7 + 0xFF900000);
-        if (lbl_802F1DC0 != 0)
+        sound_error("SoundGroupLoad\n", "ARAM SIZE OVER ! \"%s\"(0x%X) need 0x%X\n", temp_r29->baseName, s_sampDataSizes[temp_r29->unkC], temp_r7 + 0xFF900000);
+        if (s_groupIsUsingCharaHeap)
             heap = OSSetCurrentHeap(charaHeap);
-        OSFree(lbl_801F8E84[temp_r29->unkC]);
-        if (lbl_802F1DC0 != 0)
+        OSFree(s_sampData[temp_r29->unkC]);
+        if (s_groupIsUsingCharaHeap)
             OSSetCurrentHeap(heap);
-        lbl_802F1DEC -= lbl_801F8F14[temp_r29->unkC];
+        g_soundTotalBytesLoaded -= s_sampDataSizes[temp_r29->unkC];
         DVDChangeDir("/test");
         return;
     }
 
-    lbl_801F8E18[temp_r29->unkC] = ReadMusyXData(poolFileName, &spC);
-    lbl_801F8EA8[temp_r29->unkC] = spC;
-    lbl_802F1DEC += lbl_801F8EA8[temp_r29->unkC];
-    lbl_801F8E3C[temp_r29->unkC] = ReadMusyXData(projFileName, &spC);
-    lbl_801F8ECC[temp_r29->unkC] = spC;
-    lbl_802F1DEC += lbl_801F8ECC[temp_r29->unkC];
-    lbl_801F8E60[temp_r29->unkC] = ReadMusyXData(sdirFileName, &spC);
-    lbl_801F8EF0[temp_r29->unkC] = spC;
-    lbl_802F1DEC += lbl_801F8EF0[temp_r29->unkC];
+    s_poolData[temp_r29->unkC] = ReadMusyXData(poolFileName, &bytesRead);
+    s_poolDataSizes[temp_r29->unkC] = bytesRead;
+    g_soundTotalBytesLoaded += s_poolDataSizes[temp_r29->unkC];
+
+    s_projData[temp_r29->unkC] = ReadMusyXData(projFileName, &bytesRead);
+    s_projDataSizes[temp_r29->unkC] = bytesRead;
+    g_soundTotalBytesLoaded += s_projDataSizes[temp_r29->unkC];
+
+    s_sdirData[temp_r29->unkC] = ReadMusyXData(sdirFileName, &bytesRead);
+    s_sdirDataSizes[temp_r29->unkC] = bytesRead;
+    g_soundTotalBytesLoaded += s_sdirDataSizes[temp_r29->unkC];
+
     temp_cr0_eq = sndPushGroup(
-        lbl_801F8E3C[temp_r29->unkC],
+        s_projData[temp_r29->unkC],
         (u16)temp_r29->unk8,
-        lbl_801F8E84[temp_r29->unkC],
-        lbl_801F8E60[temp_r29->unkC],
-        lbl_801F8E18[temp_r29->unkC]);
-    lbl_802F1DF0 += lbl_801F8F14[temp_r29->unkC];
+        s_sampData[temp_r29->unkC],
+        s_sdirData[temp_r29->unkC],
+        s_poolData[temp_r29->unkC]);
+    g_soundAramTop += s_sampDataSizes[temp_r29->unkC];
     if (temp_cr0_eq == 0)
     {
         DVDChangeDir("/test");
         return;
     }
-    if (lbl_802F1DC0 != 0)
+    if (s_groupIsUsingCharaHeap)
         heap = OSSetCurrentHeap(charaHeap);
-    OSFree(lbl_801F8E84[temp_r29->unkC]);
-    if (lbl_802F1DC0 != 0)
+    OSFree(s_sampData[temp_r29->unkC]);
+    if (s_groupIsUsingCharaHeap)
         OSSetCurrentHeap(heap);
 
-    lbl_802F1DEC -= lbl_801F8F14[temp_r29->unkC];
+    g_soundTotalBytesLoaded -= s_sampDataSizes[temp_r29->unkC];
     lbl_8020149C[temp_r29->unkC] = 1;
     DVDChangeDir("/test");
-    lbl_802014C0[lbl_802F1E00++] = arg0;
+    s_loadedSoundGroups[g_loadedSoundGroupsCount++] = groupId;
 }
 
-void func_80029788(void)
+// Frees the most recently loaded sound group
+void SoundGroupFree(void)
 {
-    const struct Struct80110400 *temp_r29;
+    const struct SoundGroupDesc *temp_r29;
 
-    if (lbl_802F1E00 > 2)
+    if (g_loadedSoundGroupsCount > 2)
     {
-        temp_r29 = &lbl_80110400[lbl_802014C0[--lbl_802F1E00]];
+        temp_r29 = &g_soundGroupDesc[s_loadedSoundGroups[--g_loadedSoundGroupsCount]];
         sndPopGroup();
-        lbl_802F1DF0 -= lbl_801F8F14[temp_r29->unkC];
-        OSFree(lbl_801F8E18[temp_r29->unkC]);
-        lbl_802F1DEC -= lbl_801F8EA8[temp_r29->unkC];
-        OSFree(lbl_801F8E3C[temp_r29->unkC]);
-        lbl_802F1DEC -= lbl_801F8ECC[temp_r29->unkC];
-        OSFree(lbl_801F8E60[temp_r29->unkC]);
-        lbl_802F1DEC -= lbl_801F8EF0[temp_r29->unkC];
+        g_soundAramTop -= s_sampDataSizes[temp_r29->unkC];
+        OSFree(s_poolData[temp_r29->unkC]);
+        g_soundTotalBytesLoaded -= s_poolDataSizes[temp_r29->unkC];
+        OSFree(s_projData[temp_r29->unkC]);
+        g_soundTotalBytesLoaded -= s_projDataSizes[temp_r29->unkC];
+        OSFree(s_sdirData[temp_r29->unkC]);
+        g_soundTotalBytesLoaded -= s_sdirDataSizes[temp_r29->unkC];
         lbl_8020149C[temp_r29->unkC] = 0;
-        lbl_802014C0[lbl_802F1E00] = -1;
+        s_loadedSoundGroups[g_loadedSoundGroupsCount] = -1;
     }
 }
 
@@ -2143,9 +2149,9 @@ void ev_sound_main(void)
     {
         lbl_802F1D58--;
         lbl_802F1D4C = lbl_802F1D50 - ((lbl_802F1D58 / 60.0) * (lbl_802F1D50 - lbl_802F1D54));
-        u_play_music((u32)(lbl_802F1D78 * lbl_802F1D40), 4);
+        u_play_music((u32)(u_volumeRelated3 * lbl_802F1D40), 4);
     }
-    if (lbl_802014E0.unk1C != 3)
+    if (lbl_802014E0.dtkState != DTK_STATE_BUSY)
     {
         if (lbl_802014E0.unk14 > 0)
         {
@@ -2162,7 +2168,7 @@ void ev_sound_main(void)
                 else
                 {
                     lbl_802F1D40 = ((float)*(s32 *)&lbl_802014E0.unk14 / (float)lbl_802014E0.unk18) * lbl_802F1D44;
-                    u_play_music((u32)(lbl_802F1D78 * lbl_802F1D40), 4);
+                    u_play_music((u32)(u_volumeRelated3 * lbl_802F1D40), 4);
                 }
             }
             else
@@ -2171,12 +2177,12 @@ void ev_sound_main(void)
                 {
                     lbl_802F1D48 = 1;
                     lbl_802F1D40 = 1.0f;
-                    u_play_music((u32)lbl_802F1D78, 4);
+                    u_play_music((u32)u_volumeRelated3, 4);
                 }
                 else
                 {
                     lbl_802F1D40 = 1.0f - ((float)lbl_802014E0.unk14 / (float)lbl_802014E0.unk18);
-                    u_play_music((u32)(lbl_802F1D78 * lbl_802F1D40), 4);
+                    u_play_music((u32)(u_volumeRelated3 * lbl_802F1D40), 4);
                 }
             }
         }
@@ -2186,30 +2192,30 @@ void ev_sound_main(void)
     {
         for (var_r24 = 0; var_r24 < 0x425; var_r24++)
         {
-            if (lbl_801F91B4[var_r23][var_r24] == -1U)
+            if (s_voiceIDs[var_r23][var_r24] == -1U)
                 continue;
-            lbl_801F91B4[var_r23][var_r24] = sndFXCheck(lbl_801F91B4[var_r23][var_r24]);
+            s_voiceIDs[var_r23][var_r24] = sndFXCheck(s_voiceIDs[var_r23][var_r24]);
             if (lbl_802F1D40 == 1.0 && lbl_802F1D48 == 0)
                 continue;
             if (lbl_802F1D48 != 0)
             {
-                sndFXCtrl(lbl_801F91B4[var_r23][var_r24], 7, lbl_801FD404[var_r23][var_r24]);
+                sndFXCtrl(s_voiceIDs[var_r23][var_r24], 7, lbl_801FD404[var_r23][var_r24]);
                 continue;
             }
-            switch (lbl_8011057C[var_r24].unk8 - 4)
+            switch (lbl_8011057C[var_r24].unk8)
             {
-            case 0:
-            case 5:
-                sndFXCtrl(lbl_801F91B4[var_r23][var_r24], 7, 0);
-                break;
-            default:
-                sndFXCtrl(lbl_801F91B4[var_r23][var_r24], 7, (s8)lbl_801FD404[var_r23][var_r24] * lbl_802F1D40);
-                break;
-            case 3:
             case 4:
             case 9:
-            case 10:
-            case 15:
+                sndFXCtrl(s_voiceIDs[var_r23][var_r24], 7, 0);
+                break;
+            default:
+                sndFXCtrl(s_voiceIDs[var_r23][var_r24], 7, (s8)lbl_801FD404[var_r23][var_r24] * lbl_802F1D40);
+                break;
+            case 7:
+            case 8:
+            case 13:
+            case 14:
+            case 19:
                 break;
             }
         }
@@ -2222,12 +2228,12 @@ void ev_sound_main(void)
         sndVolume(0.01f * (127.0f * lbl_802F1DF5), 0, 0xFF);
         lbl_802F1DF4 = lbl_802F1DF5;
     }
-    if (lbl_802F1DD9 != lbl_802F1DD8)
+    if (u_volumeRelated1 != u_volumeRelated2)
     {
         DTKSetVolume(
-            lbl_802F1D78 * (0.01f * lbl_802F1DD9),
-            lbl_802F1D78 * (0.01f * lbl_802F1DD9));
-        lbl_802F1DD8 = lbl_802F1DD9;
+            u_volumeRelated3 * (0.01f * u_volumeRelated1),
+            u_volumeRelated3 * (0.01f * u_volumeRelated1));
+        u_volumeRelated2 = u_volumeRelated1;
     }
     if (!(gamePauseStatus & 0xA))
     {
@@ -2245,8 +2251,8 @@ void ev_sound_main(void)
             }
         }
 
-        if (eventInfo[1].state == 2)
-            func_8002786C();
+        if (eventInfo[EVENT_STAGE].state == EV_STATE_RUNNING)
+            play_stage_sounds();
         func_8002A34C();
 
         var_r22_2 = lbl_801FE498;
@@ -2270,15 +2276,15 @@ void ev_sound_dest(void)
     {
         for (j = 0; j < 0x425; j++)
         {
-            if (lbl_801F91B4[i][j] != -1U && lbl_8011057C[j].unk8 != 7)
-                sndFXKeyOff(lbl_801F91B4[i][j]);
+            if (s_voiceIDs[i][j] != -1U && lbl_8011057C[j].unk8 != 7)
+                sndFXKeyOff(s_voiceIDs[i][j]);
         }
     }
 
     for (i = 0; i < 4; i++)
     {
         for (j = 0; j < 0x425; j++)
-            lbl_801F91B4[i][j] = -1;
+            s_voiceIDs[i][j] = -1;
     }
 
     lbl_801FE558.unk50[0].unk0 = 0;
@@ -2387,17 +2393,17 @@ static void func_8002A34C(void)
         lbl_802F1D60[i] = 100;
         lbl_801FE5C8[i] = -1.0f;
     }
-    if (modeCtrl.gameType == 3)
+    if (modeCtrl.gameType == GAMETYPE_MINI_RACE)
     {
         var_r27 = modeCtrl.unk30;
         var_r3 = 0;
-        if (modeCtrl.unk30 == 3 && modeCtrl.splitscreenMode == 3)
+        if (modeCtrl.unk30 == 3 && modeCtrl.splitscreenMode == SPLITSCREEN_4_SPLIT)
             var_r3 = 1;
         var_r24 = var_r3 ? 4 : modeCtrl.unk30;
         var_f31 = lbl_801B3670[modeCtrl.gameType];
         var_r23 = 3;
     }
-    else if (modeCtrl.gameType == 4)
+    else if (modeCtrl.gameType == GAMETYPE_MINI_FIGHT)
     {
         var_f31 = lbl_801B3670[modeCtrl.gameType];
         var_r27 = 0;
@@ -2511,7 +2517,7 @@ static void func_8002A964(struct Struct801FE498 *arg0)
         sp1C.numPara = var_r9;
         sp1C.paraArray = spC;
         temp = sndFXStartParaInfo(temp_r0, temp_r31, arg0->unk5 + 0x40, 0, &sp1C);
-        lbl_801F91B4[arg0->unk8][arg0->unk2] = temp;
+        s_voiceIDs[arg0->unk8][arg0->unk2] = temp;
         lbl_801FD404[arg0->unk8][arg0->unk2] = temp_r31;
     }
 }
@@ -2602,7 +2608,7 @@ static int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
     case 4:
     case 9:
     case 11:
-        if (lbl_801F91B4[arg2][*arg0 & 0x7FF] != -1U)
+        if (s_voiceIDs[arg2][*arg0 & 0x7FF] != -1U)
             return 1;
         break;
     case 15:
@@ -2610,10 +2616,10 @@ static int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
     case 17:
     case 18:
     case 19:
-        if (lbl_801F91B4[arg2][*arg0 & 0x7FF] != -1U)
+        if (s_voiceIDs[arg2][*arg0 & 0x7FF] != -1U)
         {
-            sndFXKeyOff(lbl_801F91B4[arg2][*arg0 & 0x7FF]);
-            lbl_801F91B4[arg2][*arg0 & 0x7FF] = -1U;
+            sndFXKeyOff(s_voiceIDs[arg2][*arg0 & 0x7FF]);
+            s_voiceIDs[arg2][*arg0 & 0x7FF] = -1U;
         }
         break;
     case 8:
@@ -2624,7 +2630,7 @@ static int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
             var_r25 = lbl_8011057C;
             for (j = 0; j < 0x425; j++, var_r25++)
             {
-                if (lbl_801F91B4[i][j] != -1U)
+                if (s_voiceIDs[i][j] != -1U)
                 {
                     if (arg1->unk8 == 8 || arg1->unk8 == 14)
                     {
@@ -2636,8 +2642,8 @@ static int func_8002AE58(u32 *arg0, const struct Struct8011057C *arg1, u32 arg2)
                         if (arg1->unk8 != var_r25->unk8)
                             continue;
                     }
-                    sndFXKeyOff(lbl_801F91B4[i][j]);
-                    lbl_801F91B4[i][j] = -1;
+                    sndFXKeyOff(s_voiceIDs[i][j]);
+                    s_voiceIDs[i][j] = -1;
                 }
             }
         }
@@ -2658,7 +2664,7 @@ static int sound_req_inline(void)
     return var_r6;
 }
 
-int SoundReq(u32 arg0)
+int SoundReq(u32 soundId)
 {
     int i;
     int var_r0_2;
@@ -2667,14 +2673,14 @@ int SoundReq(u32 arg0)
     struct Struct801FE498 *var_r29;
     const struct Struct8011057C *temp_r28;
 
-    temp_r28 = &lbl_8011057C[arg0 & 0x7FF];
+    temp_r28 = &lbl_8011057C[soundId & 0x7FF];
     var_r30 = sound_req_inline();
     if (var_r30 == -1)
     {
         printf("SoundReq %s nowball is NULL. --> pid = 0\n", temp_r28->unk4);
         var_r30 = 0;
     }
-    if (func_8002AE58(&arg0, temp_r28, var_r30) != 0)
+    if (func_8002AE58(&soundId, temp_r28, var_r30) != 0)
         return -1;
     if (modeCtrl.gameType != 6 && lbl_801FE558.unk0[var_r30][temp_r28->unk8] > 0)
         return -1;
@@ -2684,12 +2690,12 @@ int SoundReq(u32 arg0)
     {
         if (var_r29->unk0 == -1)
         {
-            temp_r3_2 = func_8002ABF0(&arg0, temp_r28, var_r30);
-            var_r29->unk0 = arg0 & 0x7FF;
+            temp_r3_2 = func_8002ABF0(&soundId, temp_r28, var_r30);
+            var_r29->unk0 = soundId & 0x7FF;
             var_r29->unk2 = (lbl_802F1D3A == -1) ? var_r29->unk0 : lbl_802F1D3A;
-            var_r29->unk4 = (arg0 >> 11) & 0x7F;
-            var_r29->unk5 = (arg0 >> 18) & 0x7F;
-            var_r29->unk6 = (u8)(arg0 >> 25);
+            var_r29->unk4 = (soundId >> 11) & 0x7F;
+            var_r29->unk5 = (soundId >> 18) & 0x7F;
+            var_r29->unk6 = (u8)(soundId >> 25);
             var_r29->unk7 = temp_r3_2;
             var_r29->unk8 = var_r30;
             if (temp_r28->unk8 != 0)
@@ -2705,7 +2711,7 @@ int SoundReq(u32 arg0)
     return -1;
 }
 
-int SoundReqDirect(u32 arg0)
+int SoundReqDirect(u32 soundId)
 {
     struct Struct801FE498 sp10;
     int var_r0;
@@ -2714,21 +2720,21 @@ int SoundReqDirect(u32 arg0)
     s32 var_r31;
     const struct Struct8011057C *temp_r30;
 
-    temp_r30 = &lbl_8011057C[arg0 & 0x7FF];
+    temp_r30 = &lbl_8011057C[soundId & 0x7FF];
     var_r31 = sound_req_inline();
     if (var_r31 == -1)
     {
         printf("SoundReqDirect %s ape is NULL. --> pid = 0\n", temp_r30->unk4);
         var_r31 = 0;
     }
-    if (func_8002AE58(&arg0, temp_r30, var_r31) != 0)
+    if (func_8002AE58(&soundId, temp_r30, var_r31) != 0)
         return -1;
-    temp_r3_2 = func_8002ABF0(&arg0, temp_r30, var_r31);
-    sp10.unk0 = arg0 & 0x7FF;
+    temp_r3_2 = func_8002ABF0(&soundId, temp_r30, var_r31);
+    sp10.unk0 = soundId & 0x7FF;
     sp10.unk2 = (lbl_802F1D3A == -1) ? sp10.unk0 : lbl_802F1D3A;
-    sp10.unk4 = (arg0 >> 11) & 0x7F;
-    sp10.unk5 = (arg0 >> 18) & 0x7F;
-    sp10.unk6 = (u8)(arg0 >> 25);
+    sp10.unk4 = (soundId >> 11) & 0x7F;
+    sp10.unk5 = (soundId >> 18) & 0x7F;
+    sp10.unk6 = (u8)(soundId >> 25);
     sp10.unk7 = temp_r3_2;
     sp10.unk8 = var_r31;
     lbl_802F1D3A = -1;
@@ -2738,7 +2744,7 @@ int SoundReqDirect(u32 arg0)
     return sp10.unk2;
 }
 
-static int SoundReqID(u32 arg0, s32 arg1)
+static int SoundReqID(u32 soundId, s32 arg1)
 {
     int var_r0;
     int var_r5;
@@ -2750,7 +2756,7 @@ static int SoundReqID(u32 arg0, s32 arg1)
     const struct Struct8011057C *var_r6;
     s8 temp;
 
-    r31 = arg0 & 0x7FF;
+    r31 = soundId & 0x7FF;
     var_r6 = lbl_8011057C;
     var_r0 = -1;
     var_r30 = 0;
@@ -2779,10 +2785,10 @@ static int SoundReqID(u32 arg0, s32 arg1)
                     continue;
                 if (var_r30 == 4)
                 {
-                    temp = (arg0 >> 11) & 0x7F;
-                    arg0 &= ~(0x7F << 11);
+                    temp = (soundId >> 11) & 0x7F;
+                    soundId &= ~(0x7F << 11);
                     temp += 20;
-                    arg0 |= (temp & 0x7F) << 11;
+                    soundId |= (temp & 0x7F) << 11;
                 }
             }
             lbl_802F1D3A = var_r5;
@@ -2812,21 +2818,21 @@ static int SoundReqID(u32 arg0, s32 arg1)
                 var_r8 = 10;
             if (var_r8 != 0)
             {
-                temp = (arg0 >> 11) & 0x7F;
-                arg0 &= ~(0x7F << 11);
+                temp = (soundId >> 11) & 0x7F;
+                soundId &= ~(0x7F << 11);
                 temp += var_r8;
-                arg0 |= (temp & 0x7F) << 11;
+                soundId |= (temp & 0x7F) << 11;
             }
-            arg0 = (arg0 & ~0x7FF) | var_r5;
+            soundId = (soundId & ~0x7FF) | var_r5;
             switch (arg1)
             {
             case 2:
             case 0:
-                var_r0 = SoundReq(arg0);
+                var_r0 = SoundReq(soundId);
                 break;
             case 1:
             case 3:
-                var_r0 = SoundReqDirect(arg0);
+                var_r0 = SoundReqDirect(soundId);
                 break;
             }
             return var_r0;
@@ -2835,24 +2841,24 @@ static int SoundReqID(u32 arg0, s32 arg1)
     return -1;
 }
 
-void u_play_sound_0(int arg0)
+void u_play_sound_0(int soundId)
 {
-    SoundReqID(arg0, 0);
+    SoundReqID(soundId, 0);
 }
 
-void u_play_sound_1(int arg0)
+void u_play_sound_1(int soundId)
 {
-    SoundReqID(arg0, 1);
+    SoundReqID(soundId, 1);
 }
 
-int u_play_sound_2(int arg0)
+int u_play_sound_2(int soundId)
 {
-    return SoundReqID(arg0, 2);
+    return SoundReqID(soundId, 2);
 }
 
-int u_play_sound_1_dupe(int arg0)
+int u_play_sound_1_dupe(int soundId)
 {
-    return SoundReqID(arg0, 1);
+    return SoundReqID(soundId, 1);
 }
 
 int func_8002B634(int arg0, Vec *arg1, s8 *arg2, s8 *arg3)
@@ -2995,10 +3001,10 @@ void SoundOff(u16 arg0)
 {
     int var_r3 = get_some_id("SoundOff", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
     {
-        sndFXKeyOff(lbl_801F91B4[var_r3][arg0 & 0xFFFF]);
-        lbl_801F91B4[var_r3][arg0 & 0xFFFF] = -1U;
+        sndFXKeyOff(s_voiceIDs[var_r3][arg0 & 0xFFFF]);
+        s_voiceIDs[var_r3][arg0 & 0xFFFF] = -1U;
     }
 }
 
@@ -3007,8 +3013,8 @@ void SoundVol(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundVol", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 7, arg1);
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(s_voiceIDs[var_r3][arg0 & 0xFFFF], 7, arg1);
 }
 #pragma force_active reset
 
@@ -3016,10 +3022,10 @@ void SoundPan(u16 arg0, u8 arg1, u8 arg2)
 {
     int var_r3 = get_some_id("SoundPan", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
     {
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x0A, arg1 + 64);
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x83, arg2 + 64);
+        sndFXCtrl(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x0A, arg1 + 64);
+        sndFXCtrl(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x83, arg2 + 64);
     }
 }
 
@@ -3027,8 +3033,8 @@ void SoundPitch(u16 arg0, u16 arg1)
 {
     int var_r3 = get_some_id("SoundPitch", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
-        sndFXCtrl14(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x80, arg1);
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl14(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x80, arg1);
 }
 
 #pragma force_active on
@@ -3036,8 +3042,8 @@ void SoundDop(u16 arg0, u16 arg1)
 {
     int var_r3 = get_some_id("SoundDop", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
-        sndFXCtrl14(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x84, arg1);
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl14(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x84, arg1);
 }
 
 char string_SoundMod[] = "SoundMod";
@@ -3046,16 +3052,16 @@ void SoundRev(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundRev", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x5B, arg1);
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x5B, arg1);
 }
 
 void SoundCho(u16 arg0, u8 arg1)
 {
     int var_r3 = get_some_id("SoundCho", (u16)arg0);
 
-    if (lbl_801F91B4[var_r3][arg0 & 0xFFFF] != -1U)
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0 & 0xFFFF], 0x5D, arg1);
+    if (s_voiceIDs[var_r3][arg0 & 0xFFFF] != -1U)
+        sndFXCtrl(s_voiceIDs[var_r3][arg0 & 0xFFFF], 0x5D, arg1);
 }
 #pragma force_active reset
 
@@ -3102,10 +3108,10 @@ void SoundOffID(int arg0_)
     int arg0 = SoundSearchID(arg0_);
     int var_r3 = get_some_id("SoundOffID", arg0);
 
-    if (lbl_801F91B4[var_r3][arg0] != -1U)
+    if (s_voiceIDs[var_r3][arg0] != -1U)
     {
-        sndFXKeyOff(lbl_801F91B4[var_r3][arg0]);
-        lbl_801F91B4[var_r3][arg0] = -1U;
+        sndFXKeyOff(s_voiceIDs[var_r3][arg0]);
+        s_voiceIDs[var_r3][arg0] = -1U;
     }
 }
 
@@ -3122,8 +3128,8 @@ void SoundRevID(int arg0_, u8 arg1)
     int arg0 = SoundSearchID(arg0_);
     int var_r3 = get_some_id("SoundRevID", arg0);
 
-    if (lbl_801F91B4[var_r3][arg0] != -1U)
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5B, arg1);
+    if (s_voiceIDs[var_r3][arg0] != -1U)
+        sndFXCtrl(s_voiceIDs[var_r3][arg0], 0x5B, arg1);
 }
 
 void SoundChoID(int arg0_, u8 arg1)
@@ -3131,8 +3137,8 @@ void SoundChoID(int arg0_, u8 arg1)
     int arg0 = SoundSearchID(arg0_);
     int var_r3 = get_some_id("SoundChoID", arg0);
 
-    if (lbl_801F91B4[var_r3][arg0] != -1U)
-        sndFXCtrl(lbl_801F91B4[var_r3][arg0], 0x5D, arg1);
+    if (s_voiceIDs[var_r3][arg0] != -1U)
+        sndFXCtrl(s_voiceIDs[var_r3][arg0], 0x5D, arg1);
 }
 
 void func_8002CA38(s8 arg0, s8 arg1)
@@ -3251,7 +3257,7 @@ void func_8002CA5C(u32 arg0, u8 arg1, s8 arg2)
             ptr = &lbl_801B3938[temp_r21][i];
             arg2 = f28 * func_8008CDC0(arg1, lbl_801B39F8[i]);
             ptr->unk0 = sndFXStartParaInfo(lbl_8011057C[ptr->unk4].unk0, 0x7FU, var_r23 + 0x40, 0U, &sp14);
-            lbl_801F91B4[temp_r21][ptr->unk4] = ptr->unk0;
+            s_voiceIDs[temp_r21][ptr->unk4] = ptr->unk0;
             sndFXCtrl(ptr->unk0, 7, arg2);
         }
         lbl_801FE558.unk50[temp_r21].unk0 = 1;
@@ -3302,8 +3308,8 @@ static void func_8002CEB8(int arg0)
     float temp_f0;
     u8 temp_f2;
 
-    temp_f2 = (lbl_802F1DD4 != 0) ? 0 : arg0;
-    temp_f0 = temp_f2 * (0.01f * lbl_802F1DD9);
+    temp_f2 = (g_soundMuted != 0) ? 0 : arg0;
+    temp_f0 = temp_f2 * (0.01f * u_volumeRelated1);
     DTKSetVolume(temp_f0, temp_f0);
 }
 
@@ -3312,7 +3318,7 @@ void u_play_music(u32 arg0, s8 arg1)
     s32 hi = (arg0 >> 16) & 0xFFFF;
     u32 lo = arg0 & 0xFFFF;
     u8 var_r3;
-    float temp_f0;
+    float vol;
 
     switch (arg1)
     {
@@ -3354,10 +3360,10 @@ void u_play_music(u32 arg0, s8 arg1)
         break;
     case 4:
         var_r3 = lo * lbl_802F1D4C;
-        if (lbl_802F1DD4 != 0)
+        if (g_soundMuted != 0)
             var_r3 = 0;
-        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
-        DTKSetVolume(temp_f0, temp_f0);
+        vol = var_r3 * (0.01f * u_volumeRelated1);
+        DTKSetVolume(vol, vol);
         break;
     case 6:
         lbl_802014E0.unk0 = lo;
@@ -3390,21 +3396,21 @@ void u_play_music(u32 arg0, s8 arg1)
         lbl_802F1D40 = 0.01f * lo;
         if (lo == 100)
             lbl_802F1D48 = 1;
-        var_r3 = lbl_802F1D4C * (lbl_802F1D78 * *(float *)&lbl_802F1D40);
-        if (lbl_802F1DD4 != 0)
+        var_r3 = lbl_802F1D4C * (u_volumeRelated3 * *(float *)&lbl_802F1D40);
+        if (g_soundMuted != 0)
             var_r3 = 0;
-        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
-        DTKSetVolume(temp_f0, temp_f0);
+        vol = var_r3 * (0.01f * u_volumeRelated1);
+        DTKSetVolume(vol, vol);
         break;
     case 11:
         lbl_802F1D44 = 1.0f;
         lbl_802F1D40 = 1.0f;
         lbl_802F1D48 = 1;
-        var_r3 = (lbl_802F1D78 * lbl_802F1D4C);
-        if (lbl_802F1DD4 != 0)
+        var_r3 = (u_volumeRelated3 * lbl_802F1D4C);
+        if (g_soundMuted != 0)
             var_r3 = 0;
-        temp_f0 = var_r3 * (0.01f * lbl_802F1DD9);
-        DTKSetVolume(temp_f0, temp_f0);
+        vol = var_r3 * (0.01f * u_volumeRelated1);
+        DTKSetVolume(vol, vol);
         break;
     }
 }
@@ -3480,20 +3486,20 @@ static u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
         case 0:
             if (lbl_802F1D9C == 0)
             {
-                temp_r4 = OSRoundUp32B(lbl_80201418.length - lbl_802F1D8C);
+                temp_r4 = OSRoundUp32B(s_testStreamLeftFile.length - lbl_802F1D8C);
                 if (temp_r4 > 0x8000)
                 {
                     lbl_802F1DA4 = 0x8000;
-                    DVDReadAsync(&lbl_80201418, arg0, lbl_802F1DA4, lbl_802F1D8C, lbl_8002D344);
+                    DVDReadAsync(&s_testStreamLeftFile, arg0, lbl_802F1DA4, lbl_802F1D8C, lbl_8002D344);
                     lbl_802F1D8C += 0x8000;
                 }
                 else
                 {
                     lbl_802F1DA4 = temp_r4;
                     temp_r5 = lbl_802F1DA4;
-                    lbl_802F1D94 = (temp_r5 + lbl_802F1D8C) - lbl_80201418.length;
+                    lbl_802F1D94 = (temp_r5 + lbl_802F1D8C) - s_testStreamLeftFile.length;
                     lbl_802F1D84 = (arg0 + temp_r5) - lbl_802F1D94;
-                    DVDReadAsync(&lbl_80201418, arg0, temp_r5, lbl_802F1D8C, lbl_8002D344);
+                    DVDReadAsync(&s_testStreamLeftFile, arg0, temp_r5, lbl_802F1D8C, lbl_8002D344);
                     lbl_802F1D8C = 0x8000 - lbl_802F1DA4;
                 }
                 lbl_802F1D9C = 1;
@@ -3502,20 +3508,20 @@ static u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
         case 1:
             if (lbl_802F1DA0 == 0)
             {
-                temp_r4 = OSRoundUp32B(lbl_80201454.length - lbl_802F1D90);
+                temp_r4 = OSRoundUp32B(s_testStreamRightFile.length - lbl_802F1D90);
                 if (temp_r4 > 0x8000)
                 {
                     lbl_802F1DA8 = 0x8000;
-                    DVDReadAsync(&lbl_80201454, arg0, lbl_802F1DA8, lbl_802F1D90, lbl_8002D45C);
+                    DVDReadAsync(&s_testStreamRightFile, arg0, lbl_802F1DA8, lbl_802F1D90, lbl_8002D45C);
                     lbl_802F1D90 += 0x8000;
                 }
                 else
                 {
                     lbl_802F1DA8 = temp_r4;
                     temp_r5 = lbl_802F1DA8;
-                    lbl_802F1D98 = (temp_r5 + lbl_802F1D90) - lbl_80201454.length;
+                    lbl_802F1D98 = (temp_r5 + lbl_802F1D90) - s_testStreamRightFile.length;
                     lbl_802F1D88 = (arg0 + temp_r5) - lbl_802F1D98;
-                    DVDReadAsync(&lbl_80201454, arg0, temp_r5, lbl_802F1D90, lbl_8002D45C);
+                    DVDReadAsync(&s_testStreamRightFile, arg0, temp_r5, lbl_802F1D90, lbl_8002D45C);
                     lbl_802F1D90 = 0x8000 - lbl_802F1DA8;
                 }
                 lbl_802F1DA0 = 1;
@@ -3528,6 +3534,7 @@ static u32 lbl_8002D574(u8 *arg0, u32 arg1, int unused1, int unused2, s32 arg4)
 }
 
 #pragma force_active on
+// Starts the test song
 void SoundStreamStart(void)
 {
     BOOL intrEnabled;
@@ -3536,27 +3543,27 @@ void SoundStreamStart(void)
 
     if (lbl_802F1DBC == 0)
     {
-        lbl_802F1D7C = OSAlloc(0x10000);
-        lbl_802F1D80 = OSAlloc(0x10000);
-        ptr = lbl_802F1D7C;
+        s_testStreamLeftBuffer = OSAlloc(0x10000);
+        s_testStreamRightBuffer = OSAlloc(0x10000);
+        ptr = s_testStreamLeftBuffer;
         for (i = 0; i < 0x10000; i++, ptr++)
             *ptr = 0;
-        ptr = lbl_802F1D80;
+        ptr = s_testStreamRightBuffer;
         for (i = 0; i < 0x10000; i++, ptr++)
             *ptr = 0;
-        DCFlushRange(lbl_802F1D7C, 0x10000);
-        DCFlushRange(lbl_802F1D80, 0x10000);
-        if (DVDOpen("/test/snd/test/streamL.pcm", &lbl_80201418) == 0)
+        DCFlushRange(s_testStreamLeftBuffer, 0x10000);
+        DCFlushRange(s_testStreamRightBuffer, 0x10000);
+        if (DVDOpen("/test/snd/test/streamL.pcm", &s_testStreamLeftFile) == 0)
             sound_error("SoundStreamStart\n", "can't open data\n");
-        if (DVDOpen("/test/snd/test/streamR.pcm", &lbl_80201454) == 0)
+        if (DVDOpen("/test/snd/test/streamR.pcm", &s_testStreamRightFile) == 0)
             sound_error("SoundStreamStart\n", "can't open data\n");
         lbl_802F1D8C = 0;
         lbl_802F1D90 = 0;
         lbl_802F1D9C = 0;
         lbl_802F1DA0 = 0;
         intrEnabled = OSDisableInterrupts();
-        lbl_802F1DB4 = sndStreamAllocEx(0xFF, lbl_802F1D7C, 0x8000, 0xABE0, 0x7F, 0, 0, 0, 0, 0, 0, lbl_8002D574, 0, 0);
-        lbl_802F1DB8 = sndStreamAllocEx(0xFF, lbl_802F1D80, 0x8000, 0xABE0, 0x7F, 0x7F, 0, 0, 0, 0, 0, lbl_8002D574, 1, 0);
+        lbl_802F1DB4 = sndStreamAllocEx(0xFF, s_testStreamLeftBuffer, 0x8000, 0xABE0, 0x7F, 0, 0, 0, 0, 0, 0, lbl_8002D574, 0, 0);
+        lbl_802F1DB8 = sndStreamAllocEx(0xFF, s_testStreamRightBuffer, 0x8000, 0xABE0, 0x7F, 0x7F, 0, 0, 0, 0, 0, lbl_8002D574, 1, 0);
         OSRestoreInterrupts(intrEnabled);
         if (lbl_802F1DB4 == -1U)
             sound_error("SoundStreamStart\n", "can't allocate stream\n");
@@ -3566,7 +3573,8 @@ void SoundStreamStart(void)
     }
 }
 
-void func_8002DA18(void)
+// Stops the test song
+void SoundStreamEnd(void)
 {
     if (lbl_802F1DBC != 0)
     {
@@ -3574,38 +3582,38 @@ void func_8002DA18(void)
             sndStreamFree(lbl_802F1DB4);
         if (lbl_802F1DB8 != -1U)
             sndStreamFree(lbl_802F1DB8);
-        DVDClose(&lbl_80201418);
-        DVDClose(&lbl_80201454);
-        if (lbl_802F1D7C != NULL)
-            OSFree(lbl_802F1D7C);
-        if (lbl_802F1D80 != NULL)
-            OSFree(lbl_802F1D80);
+        DVDClose(&s_testStreamLeftFile);
+        DVDClose(&s_testStreamRightFile);
+        if (s_testStreamLeftBuffer != NULL)
+            OSFree(s_testStreamLeftBuffer);
+        if (s_testStreamRightBuffer != NULL)
+            OSFree(s_testStreamRightBuffer);
         lbl_802F1DBC = 0;
     }
 }
 
-void func_8002DAB0(u32 mode)
+void u_change_sound_mode(u32 mode)
 {
     if (mode != OSGetSoundMode())
     {
         OSSetSoundMode(mode);
-        if (mode == 0)
-            func_800275A0(0, 0);
+        if (mode == OS_SOUND_MODE_MONO)
+            queue_dtk_tracks(0, 0);
         else
-            func_800275A0(0, 2);
+            queue_dtk_tracks(0, 2);
     }
 }
 #pragma force_active reset
 
 void func_8002DB10(struct MemcardGameData *arg0)
 {
-    arg0->unk5844.unk4C = lbl_802F1DD9;
+    arg0->unk5844.unk4C = u_volumeRelated1;
     arg0->unk5844.unk4D = lbl_802F1DF5;
 }
 
 void func_8002DB24(struct MemcardGameData *arg0)
 {
-    lbl_802F1DD9 = arg0->unk5844.unk4C;
+    u_volumeRelated1 = arg0->unk5844.unk4C;
     lbl_802F1DF5 = arg0->unk5844.unk4D;
 }
 
@@ -3617,8 +3625,8 @@ void func_8002DB38(void)
     {
         for (j = 0; j < 0x425; j++)
         {
-            if (lbl_801F91B4[i][j] != -1U)
-                sndFXCtrl(lbl_801F91B4[i][j], 7, 0);
+            if (s_voiceIDs[i][j] != -1U)
+                sndFXCtrl(s_voiceIDs[i][j], 7, 0);
         }
     }
 }
@@ -3631,8 +3639,8 @@ void func_8002DBC4(void)
     {
         for (j = 0; j < 0x425; j++)
         {
-            if (lbl_801F91B4[i][j] != -1U)
-                sndFXCtrl(lbl_801F91B4[i][j], 7, lbl_801FD404[i][j]);
+            if (s_voiceIDs[i][j] != -1U)
+                sndFXCtrl(s_voiceIDs[i][j], 7, lbl_801FD404[i][j]);
         }
     }
 }

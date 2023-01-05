@@ -67,7 +67,7 @@ void func_80012434(int a)
     }
 
     if (modeCtrl.gameType == GAMETYPE_MAIN_COMPETITION)
-        func_80029788();
+        SoundGroupFree();
 
     if (modeCtrl.gameType >= GAMETYPE_MINI_RACE || modeCtrl.gameType < GAMETYPE_MAIN_NORMAL)
     {

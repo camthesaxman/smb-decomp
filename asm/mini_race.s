@@ -294,7 +294,7 @@ lbl_0000048C:
 /* 000004AC 4BFFFCD1 */ bl camera_setup_singleplayer_viewport
 /* 000004B0 38600007 */ li r3, 7
 /* 000004B4 4BFFFCC9 */ bl call_bitmap_free_group
-/* 000004B8 4BFFFCC5 */ bl func_80029788
+/* 000004B8 4BFFFCC5 */ bl SoundGroupFree
 /* 000004BC 3C600000 */ lis r3, lbl_000136A4@ha
 /* 000004C0 38C30000 */ addi r6, r3, lbl_000136A4@l
 /* 000004C4 80A60000 */ lwz r5, 0(r6)

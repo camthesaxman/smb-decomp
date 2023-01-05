@@ -1672,7 +1672,7 @@ lbl_00001888:
 /* 000018B4 4BFFE8AD */ bl u_free_minigame_graphics
 /* 000018B8 38600006 */ li r3, 6
 /* 000018BC 4BFFE8A5 */ bl bitmap_free_group
-/* 000018C0 4BFFE8A1 */ bl func_80029788
+/* 000018C0 4BFFE8A1 */ bl SoundGroupFree
 /* 000018C4 3C600000 */ lis r3, lbl_80206B80@ha
 /* 000018C8 38630000 */ addi r3, r3, lbl_80206B80@l
 /* 000018CC 3BE3003C */ addi r31, r3, 0x3c
