@@ -8521,8 +8521,8 @@ lbl_802F6728:
 .section .data
 
 .if 0
-.global lbl_801D6B58
-lbl_801D6B58:
+.global s_buttonLetters
+s_buttonLetters:
 	# ROM: 0x1D3B58
 	.4byte 0x00002041
 	.4byte 0x42434445

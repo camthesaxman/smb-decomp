@@ -960,8 +960,8 @@ struct Struct80089A04
 struct ScoreRecord
 {
     char initials[4];
-    u32 score;
-    u8 filler8[4];
+    s32 score;
+    u32 unk8;
     u8 floorNum;
     s8 unkD;  // 0 = normal, 1 = extra, 2 = master
 };

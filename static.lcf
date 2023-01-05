@@ -74,6 +74,9 @@ lbl_802F5FF0 = 0x802F5FF0;
 lbl_802F5FF8 = 0x802F5FF8;
 lbl_802F6000 = 0x802F6000;
 lbl_802F6010 = 0x802F6010;
+lbl_802F6050 = 0x802F6050;
+lbl_802F6068 = 0x802F6068;
+lbl_802F6070 = 0x802F6070;
 
 /* For GCC compatibility */
 __udivdi3 = __div2u;

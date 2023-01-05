@@ -717,7 +717,7 @@ void submode_game_continue_main_func(void)
         if (modeCtrl.unk10 == 0 && modeCtrl.submodeTimer == 60)
         {
             if (modeCtrl.gameType == GAMETYPE_MAIN_NORMAL
-             && (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]) >= 0
+             && (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer][0]) >= 0
                  || (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) == (DIP_DEBUG|DIP_NAMEENTRY)))
                 start_screen_fade(FADE_OUT|FADE_ABOVE_SPRITES, RGBA(255, 255, 255, 0), modeCtrl.submodeTimer);
             else
@@ -1146,7 +1146,7 @@ void submode_game_nameentry_ready_init_func(void)
         return;
     }
     if (modeCtrl.gameType != GAMETYPE_MAIN_NORMAL
-     || (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]) < 0
+     || (func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer][0]) < 0
          && (dipSwitches & (DIP_DEBUG|DIP_NAMEENTRY)) != (DIP_DEBUG|DIP_NAMEENTRY)))
     {
         gameSubmodeRequest = SMD_GAME_OVER_INIT;
@@ -1201,8 +1201,8 @@ void submode_game_nameentry_ready_main_func(void)
     {
         textbox_set_properties(1, 20, NULL);
         hud_show_name_entry_info(
-            func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer]),
-            lbl_802C67D4[modeCtrl.currPlayer].record.score);
+            func_800AECCC(modeCtrl.difficulty, &lbl_802C67D4[modeCtrl.currPlayer][0]),
+            lbl_802C67D4[modeCtrl.currPlayer][0].score);
         hud_show_name_entry_banner(modeCtrl.submodeTimer);
     }
     if (modeCtrl.submodeTimer == 180)

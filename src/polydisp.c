@@ -98,7 +98,7 @@ void polydisp_main(void)
         view_draw();
     func_8000E180();
     if (eventInfo[EVENT_NAME_ENTRY].state == EV_STATE_RUNNING)
-        func_800AE408();
+        draw_name_entry_hud();
     if (modeCtrl.unk30 <= 1
      && eventInfo[EVENT_VIEW].state == EV_STATE_INACTIVE
      && eventInfo[EVENT_MINIMAP].state == EV_STATE_RUNNING)

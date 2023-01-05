@@ -1149,8 +1149,8 @@ ev_name_entry_dest:
 /* 800AE400 000AA320  7C 08 03 A6 */	mtlr r0
 /* 800AE404 000AA324  4E 80 00 20 */	blr
 
-.global func_800AE408
-func_800AE408:
+.global draw_name_entry_hud
+draw_name_entry_hud:
 /* 800AE408 000AA328  7C 08 02 A6 */	mflr r0
 /* 800AE40C 000AA32C  3C 60 80 1F */	lis r3, modeCtrl@ha
 /* 800AE410 000AA330  90 01 00 04 */	stw r0, 4(r1)
@@ -1514,13 +1514,13 @@ func_800AE930:
 /* 800AE974 000AA894  C3 22 B7 10 */	lfs f25, lbl_802F5F10-_SDA2_BASE_(r2)
 /* 800AE978 000AA898  3C A0 80 2C */	lis r5, lbl_802C63D4@ha
 /* 800AE97C 000AA89C  B0 01 00 14 */	sth r0, 0x14(r1)
-/* 800AE980 000AA8A0  3C 80 80 1D */	lis r4, lbl_801D6B58@ha
+/* 800AE980 000AA8A0  3C 80 80 1D */	lis r4, s_buttonLetters@ha
 /* 800AE984 000AA8A4  C3 42 B8 48 */	lfs f26, lbl_802F6048-_SDA2_BASE_(r2)
 /* 800AE988 000AA8A8  3C 60 80 2C */	lis r3, s_buttonModels@ha
 /* 800AE98C 000AA8AC  C3 62 B8 4C */	lfs f27, lbl_802F604C-_SDA2_BASE_(r2)
 /* 800AE990 000AA8B0  38 A5 63 D4 */	addi r5, r5, lbl_802C63D4@l
 /* 800AE994 000AA8B4  C3 82 B7 04 */	lfs f28, lbl_802F5F04-_SDA2_BASE_(r2)
-/* 800AE998 000AA8B8  38 84 6B 58 */	addi r4, r4, lbl_801D6B58@l
+/* 800AE998 000AA8B8  38 84 6B 58 */	addi r4, r4, s_buttonLetters@l
 /* 800AE99C 000AA8BC  C3 A2 B7 08 */	lfs f29, lbl_802F5F08-_SDA2_BASE_(r2)
 /* 800AE9A0 000AA8C0  38 03 63 14 */	addi r0, r3, s_buttonModels@l
 /* 800AE9A4 000AA8C4  CB C2 B7 28 */	lfd f30, lbl_802F5F28-_SDA2_BASE_(r2)
@@ -1749,7 +1749,7 @@ lbl_800AECB8:
 /* 800AECC0 000AABE0  38 21 00 20 */	addi r1, r1, 0x20
 /* 800AECC4 000AABE4  7C 08 03 A6 */	mtlr r0
 /* 800AECC8 000AABE8  4E 80 00 20 */	blr
-.endif
+
 .global func_800AECCC
 func_800AECCC:
 /* 800AECCC 000AABEC  1C A3 00 50 */	mulli r5, r3, 0x50
@@ -2110,6 +2110,7 @@ lbl_800AF194:
 /* 800AF1D0 000AB0F0  38 21 00 30 */	addi r1, r1, 0x30
 /* 800AF1D4 000AB0F4  7C 08 03 A6 */	mtlr r0
 /* 800AF1D8 000AB0F8  4E 80 00 20 */	blr
+
 .global effect_nameent_code_init
 effect_nameent_code_init:
 /* 800AF1DC 000AB0FC  38 00 00 00 */	li r0, 0
@@ -2119,6 +2120,7 @@ effect_nameent_code_init:
 /* 800AF1EC 000AB10C  C0 02 B7 10 */	lfs f0, lbl_802F5F10-_SDA2_BASE_(r2)
 /* 800AF1F0 000AB110  D0 03 00 28 */	stfs f0, 0x28(r3)
 /* 800AF1F4 000AB114  4E 80 00 20 */	blr
+
 .global effect_nameent_code_main
 effect_nameent_code_main:
 /* 800AF1F8 000AB118  A8 03 00 0A */	lha r0, 0xa(r3)
@@ -2177,6 +2179,7 @@ lbl_800AF268:
 /* 800AF2BC 000AB1DC  38 80 00 03 */	li r4, 3
 /* 800AF2C0 000AB1E0  7C 83 01 AE */	stbx r4, r3, r0
 /* 800AF2C4 000AB1E4  4E 80 00 20 */	blr
+
 .global effect_nameent_code_draw
 effect_nameent_code_draw:
 /* 800AF2C8 000AB1E8  7C 08 02 A6 */	mflr r0
@@ -2241,7 +2244,6 @@ effect_nameent_code_destroy:
 /* 800AF3A4 000AB2C4  38 00 00 00 */	li r0, 0
 /* 800AF3A8 000AB2C8  90 03 00 30 */	stw r0, 0x30(r3)
 /* 800AF3AC 000AB2CC  4E 80 00 20 */	blr
-
 .global func_800AF3B0
 func_800AF3B0:
 /* 800AF3B0 000AB2D0  2C 04 00 06 */	cmpwi r4, 6
@@ -2257,6 +2259,7 @@ lbl_800AF3D0:
 /* 800AF3D0 000AB2F0  38 00 00 02 */	li r0, 2
 /* 800AF3D4 000AB2F4  B0 03 00 0A */	sth r0, 0xa(r3)
 /* 800AF3D8 000AB2F8  4E 80 00 20 */	blr
+
 .global effect_get_nameent_code_init
 effect_get_nameent_code_init:
 /* 800AF3DC 000AB2FC  3C 80 80 1F */	lis r4, modeCtrl@ha
@@ -2298,6 +2301,7 @@ effect_get_nameent_code_init:
 /* 800AF46C 000AB38C  D0 03 00 9C */	stfs f0, 0x9c(r3)
 /* 800AF470 000AB390  B0 03 00 A2 */	sth r0, 0xa2(r3)
 /* 800AF474 000AB394  4E 80 00 20 */	blr
+
 .global effect_get_nameent_code_main
 effect_get_nameent_code_main:
 /* 800AF478 000AB398  94 21 FF E8 */	stwu r1, -0x18(r1)
@@ -2412,6 +2416,7 @@ lbl_800AF548:
 /* 800AF620 000AB540  B0 03 00 A2 */	sth r0, 0xa2(r3)
 /* 800AF624 000AB544  38 21 00 18 */	addi r1, r1, 0x18
 /* 800AF628 000AB548  4E 80 00 20 */	blr
+
 .global effect_get_nameent_code_draw
 effect_get_nameent_code_draw:
 /* 800AF62C 000AB54C  7C 08 02 A6 */	mflr r0
@@ -2459,6 +2464,7 @@ effect_get_nameent_code_draw:
 .global effect_get_nameent_code_destroy
 effect_get_nameent_code_destroy:
 /* 800AF6D4 000AB5F4  4E 80 00 20 */	blr
+.endif
 .global stobj_nameent_btn_init
 stobj_nameent_btn_init:
 /* 800AF6D8 000AB5F8  38 00 00 00 */	li r0, 0
@@ -3274,7 +3280,7 @@ lbl_802F6048:
 lbl_802F604C:
 	# ROM: 0x1EFA6C
 	.4byte 0xC1840000
-.endif
+
 .global lbl_802F6050
 lbl_802F6050:
 	# ROM: 0x1EFA70
@@ -3316,7 +3322,7 @@ lbl_802F6080:
 	# ROM: 0x1EFAA0
 	.4byte 0x3FE99999
 	.4byte 0x9999999A
-
+.endif
 .global lbl_802F6088
 lbl_802F6088:
 	# ROM: 0x1EFAA8
