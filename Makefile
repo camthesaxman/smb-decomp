@@ -357,11 +357,11 @@ SOURCES := \
 	libraries/TRK_MINNOW_DOLPHIN/asm/msg.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/msgbuf.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/serpoll.s \
-	libraries/TRK_MINNOW_DOLPHIN/asm/usr_put.s \
+	libraries/TRK_MINNOW_DOLPHIN/usr_put.c \
 	libraries/TRK_MINNOW_DOLPHIN/asm/dispatch.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/msghndlr.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/support.s \
-	libraries/TRK_MINNOW_DOLPHIN/asm/mutex_TRK.s \
+	libraries/TRK_MINNOW_DOLPHIN/mutex_TRK.c \
 	libraries/TRK_MINNOW_DOLPHIN/asm/notify.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/flush_cache.s \
 	libraries/TRK_MINNOW_DOLPHIN/Portable/mem_TRK.c \
