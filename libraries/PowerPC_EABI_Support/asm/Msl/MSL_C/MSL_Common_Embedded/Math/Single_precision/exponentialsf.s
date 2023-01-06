@@ -570,7 +570,7 @@ lbl_802F1AC4:
 
 .section .data
 
-;# exponentialsf data
+	.balign 8
 .global lbl_801ED560
 lbl_801ED560:
 	# ROM: 0x1EA560

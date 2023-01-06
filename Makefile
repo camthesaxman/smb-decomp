@@ -349,7 +349,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/math/s_sin.c \
 	libraries/PowerPC_EABI_Support/asm/math/inverse_trig.s \
 	libraries/PowerPC_EABI_Support/asm/math/trigf.s \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/common_float_tables.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common_Embedded/Math/Single_precision/exponentialsf.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/mainloop.s \
 	libraries/TRK_MINNOW_DOLPHIN/asm/nubevent.s \
