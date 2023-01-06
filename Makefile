@@ -327,7 +327,7 @@ SOURCES := \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/direct_io.s \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mbstring.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem.c \
-	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/mem_funcs.s \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem_funcs.c \
 	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/misc_io.c \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/printf.s \
 	libraries/PowerPC_EABI_Support/asm/Msl/MSL_C/MSL_Common/Src/float.s \
@@ -589,7 +589,8 @@ RUNTIME_OBJECTS := \
 	libraries/PowerPC_EABI_Support/Runtime/Src/ExceptionPPC.cp.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/__init_cpp_exceptions.cpp.o \
 	libraries/PowerPC_EABI_Support/Runtime/Src/global_destructor_chain.c.o \
-	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c.o
+	libraries/PowerPC_EABI_Support/Runtime/Src/__va_arg.c.o \
+	libraries/PowerPC_EABI_Support/Msl/MSL_C/MSL_Common/Src/mem_funcs.c.o
 
 $(RUNTIME_OBJECTS): CC_CHECK := true
 $(RUNTIME_OBJECTS): SYSTEM_INCLUDE_DIRS += libraries/PowerPC_EABI_Support/Runtime/Inc
