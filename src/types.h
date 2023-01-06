@@ -710,6 +710,23 @@ struct Struct801EED88
     u32 unkC;
 };  // size = 0x10
 
+struct Struct802C6220_sub
+{
+    char unk0[4];
+    s32 unk4;
+    u32 unk8;
+    u8 unkC;
+    u8 unkD;
+    s8 unkE;
+    u8 fillerF;
+};
+
+struct Struct802C6220
+{
+    u32 unk0;
+    struct Struct802C6220_sub unk4[3*5];
+};
+
 struct MemcardGameData_sub
 {
     /*0x5844*/ u8 filler0[0x44-0x00];
@@ -781,7 +798,7 @@ struct MemcardGameData_sub
     /*0x5B03*/ u8 unk2BF;
     /*0x5B04*/ u32 unk2C0;
     /*0x5B08*/ u32 unk2C4;
-    /*0x5B0C*/ u8 filler2C8[0x3BC-0x2C8];
+    /*0x5B0C*/ struct Struct802C6220 unk2C8;
     /*0x5C00*/ u32 unk3BC;
 };  // size = 0x3C0
 

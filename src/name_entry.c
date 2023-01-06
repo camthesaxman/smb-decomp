@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "effect.h"
 #include "event.h"
+#include "gma.h"
 #include "info.h"
 #include "input.h"
 #include "mathutil.h"
@@ -19,26 +20,10 @@
 #include "sound.h"
 #include "sprite.h"
 #include "stage.h"
+#include "stcoli.h"
 #include "stobj.h"
 
 #define NUM_BUTTONS 48
-
-struct Struct802C6220_sub
-{
-    char unk0[4];
-    s32 unk4;
-    u32 unk8;
-    u8 unkC;
-    u8 unkD;
-    s8 unkE;
-    u8 fillerF;
-};
-
-struct Struct802C6220
-{
-    u32 unk0;
-    struct Struct802C6220_sub unk4[3*5];
-};
 
 struct Struct802C6220 lbl_802C6220;
 FORCE_BSS_ORDER(lbl_802C6220)
@@ -166,7 +151,7 @@ struct Struct802F2208
     u8 filler8[0x14-0x8];
 };
 
-extern struct Struct802F2208 *lbl_802F2208;
+static struct Struct802F2208 *lbl_802F2208;
 
 void ev_name_entry_init(void)
 {
@@ -1111,3 +1096,153 @@ void effect_get_nameent_code_draw(struct Effect *effect)
 }
 
 void effect_get_nameent_code_destroy(struct Effect *effect) {}
+
+void stobj_nameent_btn_init(struct Stobj *stobj)
+{
+    stobj->state = 0;
+    stobj->unk8 |= 0x12;
+    stobj->boundSphereRadius = 0.75 * stobj->model->boundSphereRadius;
+    stobj->u_model_origin = stobj->model->boundSphereCenter;
+    stobj->unkA8 = stobj->u_some_pos;
+}
+
+void stobj_nameent_btn_main(struct Stobj *arg0)
+{
+    switch (arg0->state)
+    {
+    case 0:
+        break;
+    case 1:
+        arg0->state = 2;
+        arg0->counter = 8;
+        // fall through
+    case 2:
+        arg0->counter--;
+        if (arg0->counter < 0)
+            arg0->unk8 |= 2;
+        break;
+    }
+
+    arg0->unk64.x += 0.1 * (arg0->unkA8.x - arg0->u_some_pos.x);
+    arg0->unk64.y += 0.1 * (arg0->unkA8.y - arg0->u_some_pos.y);
+    arg0->unk64.z += 0.1 * (arg0->unkA8.z - arg0->u_some_pos.z);
+    arg0->unk64.x *= 0.9;
+    arg0->unk64.y *= 0.9;
+    arg0->unk64.z *= 0.9;
+    arg0->u_some_pos.x += arg0->unk64.x;
+    arg0->u_some_pos.y += arg0->unk64.y;
+    arg0->u_some_pos.z += arg0->unk64.z;
+}
+
+void stobj_nameent_btn_draw(struct Stobj *arg0)
+{
+    float new_var;
+    struct Color3f color;
+    Vec pos;
+    float temp_f31;
+    float temp_f5;
+    float temp_f1_2;
+    struct Struct802C63D4 *data = arg0->extraData;
+
+    color = *((struct Color3f *)data->unk8);
+    if (color.r > 1.0)
+        color.r = 1.0f;
+    if (color.g > 1.0)
+        color.g = 1.0f;
+    if (color.b > 1.0)
+        color.b = 1.0f;
+    avdisp_set_post_mult_color(color.r, color.g, color.b, 1.0f);
+    mathutil_mtxA_from_mtxB_translate(&arg0->u_some_pos);
+    mathutil_mtxA_rotate_y(arg0->rotY);
+    mathutil_mtxA_rotate_x(arg0->rotX);
+    GXLoadPosMtxImm(mathutilData->mtxA, 0);
+    GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+    avdisp_draw_model_culled_sort_translucent(arg0->model);
+    mathutil_mtxA_tf_point(&arg0->model->boundSphereCenter, &pos);
+    if (pos.z < 0.0f)
+    {
+        temp_f1_2 = new_var = mathutil_vec_len(&pos);
+        temp_f5 = (temp_f1_2 - 1.179) / temp_f1_2;
+        pos.x *= temp_f5;
+        pos.y *= temp_f5;
+        pos.z *= temp_f5;
+        temp_f31 = temp_f5 * (0.5f + (0.16666667f * (color.r + color.g + color.b)));
+        mathutil_mtxA_from_translate(&pos);
+        mathutil_mtxA_scale_s(temp_f31);
+        GXLoadPosMtxImm(mathutilData->mtxA, 0);
+        GXLoadNrmMtxImm(mathutilData->mtxA, 0);
+        avdisp_set_bound_sphere_scale(temp_f31);
+        avdisp_draw_model_culled_sort_translucent(commonGma->modelEntries[0x5A].model);
+    }
+    u_reset_post_mult_color();
+}
+
+void stobj_nameent_btn_coli(struct Stobj *stobj, struct PhysicsBall *arg1)
+{
+    Point3d sp6C;
+    struct PhysicsBall sp10;
+    float temp_f2;
+    struct Struct802C63D4 *temp_r3_2;
+
+    mathutil_mtxA_from_translate(&stobj->position);
+    mathutil_mtxA_rotate_y(stobj->rotY);
+    mathutil_mtxA_rotate_x(stobj->rotX);
+    stcoli_sub31(arg1, &sp10);
+    temp_f2 = 0.7 + arg1->radius;
+    sp6C.x = 0.0f;
+    sp6C.y = 0.0f;
+    if (sp10.pos.z > temp_f2)
+        sp6C.z = 0.0f;
+    else
+    {
+        sp6C.z = sp10.pos.z - temp_f2;
+        sp10.vel.z += -0.05 * sp6C.z;
+    }
+    mathutil_mtxA_tf_vec(&sp6C, &sp6C);
+    stobj->u_some_pos.x += sp6C.x;
+    stobj->u_some_pos.y += sp6C.y;
+    stobj->u_some_pos.z += sp6C.z;
+    stobj->unk64.x = stobj->u_some_pos.x - stobj->unk7C.x;
+    stobj->unk64.y = stobj->u_some_pos.y - stobj->unk7C.y;
+    stobj->unk64.z = stobj->u_some_pos.z - stobj->unk7C.z;
+    if (lbl_802F2208 == NULL)
+    {
+        if (mathutil_vec_distance(&stobj->unkA8, &stobj->u_some_pos) > 1.0)
+        {
+            temp_r3_2 = stobj->extraData;
+            lbl_802F2208 = (void *)temp_r3_2;
+            temp_r3_2->unk8[0] += 1.0;
+            temp_r3_2->unk8[1] += 1.0;
+            temp_r3_2->unk8[2] += 1.0;
+            stobj->state = 1;
+            stobj->unk8 &= 0xFFFFFFFD;
+            if (sp10.vel.z < 0.25)
+                sp10.vel.z = 0.25f;
+            sp10.vel.y += 0.125;
+            u_play_sound_0(0x33);
+        }
+    }
+    stcoli_sub30(&sp10, arg1);
+}
+
+void stobj_nameent_btn_destroy(struct Stobj *stobj) {}
+
+void stobj_nameent_btn_debug(struct Stobj *stobj) {}
+
+void func_800AFC1C(struct MemcardGameData *arg0)
+{
+    memcpy(&arg0->unk5844.unk2C8, &lbl_802C6220, sizeof(arg0->unk5844.unk2C8));
+}
+
+void func_800AFC4C(struct MemcardGameData *arg0)
+{
+    int var_r0;
+
+    memcpy(&lbl_802C6220, &arg0->unk5844.unk2C8, sizeof(lbl_802C6220));
+    if (lbl_802C6220.unk0 != sizeof(lbl_802C6220))
+        var_r0 = FALSE;
+    else
+        var_r0 = TRUE;
+    if (!var_r0)
+        func_800AEBA8();
+}

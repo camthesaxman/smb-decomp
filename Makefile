@@ -204,7 +204,6 @@ SOURCES := \
 	src/dvd.c \
 	src/preview.c \
 	src/name_entry.c \
-	asm/name_entry.s \
 	asm/credits.s \
 	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \
