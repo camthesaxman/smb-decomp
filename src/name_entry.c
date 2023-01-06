@@ -134,7 +134,7 @@ static char *s_censoredNames[] =
     "X X",
 };
 
-static struct NameEntryButton *lbl_802F2208;
+static struct NameEntryButton *s_pushedButton;
 
 static void func_800AE8D0(void);
 static void func_800AE930(int);
@@ -163,7 +163,7 @@ void ev_name_entry_init(void)
     s_nameEntry.state = 1;
     s_nameEntry.cursorPos = -2;
     memset(s_nameEntry.name, 0, sizeof(s_nameEntry.name));
-    lbl_802F2208 = NULL;
+    s_pushedButton = NULL;
     buttonModel = find_stage_or_bg_model("BUTTON");
 
     // find button models
@@ -230,16 +230,14 @@ void ev_name_entry_main(void)
     struct Effect effect;
     Point3d sp20;
     u8 filler[12];
-    float x;
-    float y;
-    float z;
+    float r, g, b;  // button color
     float var_f28;
     float temp_f1_16;
     int i;
     int var_r28;
     struct Ball *ball;
     struct Camera *camera;
-    struct Effect *temp_r3_3;
+    struct Effect *eff;
     struct Sprite *sprite;
     struct NameEntryButton *btn;
     Point3d sp8;
@@ -297,7 +295,7 @@ void ev_name_entry_main(void)
         s_nameEntry.unk34 = 187.0 + (31.0 * (float)s_nameEntry.cursorPos);
         break;
     case 5:
-        if (lbl_802F2208 != NULL)
+        if (s_pushedButton != NULL)
             s_nameEntry.state = 6;
         if ((infoWork.flags & INFO_FLAG_TIMEOVER) || (infoWork.flags & INFO_FLAG_GOAL))
         {
@@ -310,21 +308,21 @@ void ev_name_entry_main(void)
         }
         break;
     case 6:  // pushed button
-        button = *lbl_802F2208;
-        temp_r3_3 = find_effect_by_uid(button.effectUid);
-        if (temp_r3_3 != NULL)
+        button = *s_pushedButton;
+        eff = find_effect_by_uid(button.effectUid);
+        if (eff != NULL)
         {
-            func_800AF3B0(temp_r3_3, 5);
-            memcpy(&effect, temp_r3_3, sizeof(effect));
+            func_800AF3B0(eff, 5);
+            memcpy(&effect, eff, sizeof(effect));
             effect.u_otherTimer = 15;
-            lbl_802F2208->effectUid = spawn_effect(&effect);
+            s_pushedButton->effectUid = spawn_effect(&effect);
         }
-        if (temp_r3_3 != NULL && temp_r3_3->model != NULL)
+        if (eff != NULL && eff->model != NULL)
         {
             memset(&effect, 0, sizeof(effect));
             effect.type = ET_GET_NAMEENT_CODE;
-            effect.model = temp_r3_3->model;
-            effect.pos = temp_r3_3->pos;
+            effect.model = eff->model;
+            effect.pos = eff->pos;
             effect.scale.x = 1.0f;
             effect.scale.y = 1.0f;
             effect.scale.z = 1.0f;
@@ -366,7 +364,7 @@ void ev_name_entry_main(void)
             s_nameEntry.state = 7;
         else
             s_nameEntry.state = 4;
-        lbl_802F2208 = NULL;
+        s_pushedButton = NULL;
         break;
     case 7:
         s_nameEntry.state = 8;
@@ -392,7 +390,7 @@ void ev_name_entry_main(void)
         destroy_sprite_with_tag(2);
         func_800885EC();
         init_ranking_screen(modeCtrl.difficulty);
-        s_nameEntry.unk24 = (s_nameEntry.unk10 * 0x2E) + 0xA0;
+        s_nameEntry.unk24 = (s_nameEntry.unk10 * 46) + 160;
         s_nameEntry.unk2C = 136.0f;
         // fall through
     case 9:
@@ -497,19 +495,19 @@ void ev_name_entry_main(void)
         {
             if (i > var_r28)
             {
-                x = 0.8f;
-                y = 1.0f;
-                z = 2.0f;
+                r = 0.8f;
+                g = 1.0f;
+                b = 2.0f;
             }
             else
             {
-                x = 0.6f;
-                y = 0.55f;
-                z = 0.5f;
+                r = 0.6f;
+                g = 0.55f;
+                b = 0.5f;
             }
-            btn->color.r += 0.05 * (x - btn->color.r);
-            btn->color.g += 0.05 * (y - btn->color.g);
-            btn->color.b += 0.05 * (z - btn->color.b);
+            btn->color.r += 0.05 * (r - btn->color.r);
+            btn->color.g += 0.05 * (g - btn->color.g);
+            btn->color.b += 0.05 * (b - btn->color.b);
             btn++;
         }
         break;
@@ -519,22 +517,22 @@ void ev_name_entry_main(void)
         var_r28 = (unpausedFrameCounter << 9) & 0x3E00;
         for (i = NUM_BUTTONS; i > 0; i--)
         {
-            if (btn->letter == '\b')
+            if (btn->letter == '\b')  // flash the backspace button
             {
                 temp_f1_16 = mathutil_sin(var_r28);
-                x = 0.5 + temp_f1_16;
-                y = 0.25 + temp_f1_16;
-                z = 0.125 + temp_f1_16;
+                r = 0.5 + temp_f1_16;
+                g = 0.25 + temp_f1_16;
+                b = 0.125 + temp_f1_16;
             }
             else
             {
-                x = 0.6f;
-                y = 0.55f;
-                z = 0.5f;
+                r = 0.6f;
+                g = 0.55f;
+                b = 0.5f;
             }
-            btn->color.r += 0.2 * (x - btn->color.r);
-            btn->color.g += 0.2 * (y - btn->color.g);
-            btn->color.b += 0.2 * (z - btn->color.b);
+            btn->color.r += 0.2 * (r - btn->color.r);
+            btn->color.g += 0.2 * (g - btn->color.g);
+            btn->color.b += 0.2 * (b - btn->color.b);
             btn++;
             var_r28 += 0x800;
             var_r28 &= 0x3FFF;
@@ -546,19 +544,19 @@ void ev_name_entry_main(void)
         {
             if (var_r28 & 1)
             {
-                x = 2.0f;
-                y = 1.0f;
-                z = 0.8f;
+                r = 2.0f;
+                g = 1.0f;
+                b = 0.8f;
             }
             else
             {
-                x = 1.0f;
-                y = 0.7f;
-                z = 0.4f;
+                r = 1.0f;
+                g = 0.7f;
+                b = 0.4f;
             }
-            btn->color.r += 0.1 * (x - btn->color.r);
-            btn->color.g += 0.1 * (y - btn->color.g);
-            btn->color.b += 0.1 * (z - btn->color.b);
+            btn->color.r += 0.1 * (r - btn->color.r);
+            btn->color.g += 0.1 * (g - btn->color.g);
+            btn->color.b += 0.1 * (b - btn->color.b);
             btn++;
         }
         break;
@@ -587,33 +585,39 @@ void draw_name_entry_hud(void)
 
         reset_text_draw_settings();
 
+        // column header
         set_text_font(FONT_ICON_TPL);
         func_80071B1C(1.03f);
         set_text_pos(x + 65, y);
-        u_draw_char(0x30);
+        u_draw_char(0x30);  // RANK
         set_text_pos(x + 180, y);
-        u_draw_char(0x31);
+        u_draw_char(0x31);  // NAME
         set_text_pos(x + 289, y);
-        u_draw_char(0x32);
+        u_draw_char(0x32);  // FLOOR
         set_text_pos(x + 460, y);
-        u_draw_char(0x33);
+        u_draw_char(0x33);  // SCORE
 
+        // rank
         y = s_nameEntry.unk1C;
         set_text_font(FONT_ICON_RNK);
         set_text_pos(x + 65, y);
         u_draw_char(s_nameEntry.unk10 + 0x31);
 
+        // initials
         set_text_font(FONT_ASC_30x31);
         set_text_pos(x + 172, y);
         u_draw_text(s_nameEntry.name);
 
+        // floor
         draw_ranking_floor_num(s_nameEntry.unk10, x, y, &lbl_802C67D4[modeCtrl.currPlayer][0]);
 
+        // score number
         set_text_font(FONT_NUM_26x31);
         y = s_nameEntry.unk1C;
         set_text_pos(x + 396, y);
         func_80072AC0("%07d", lbl_802C67D4[modeCtrl.currPlayer][0].score);
 
+        // line start
         params.bmpId = BMP_RNK_rnk_lines;
         params.z = 1.03f;
         params.rotation = 0;
@@ -632,6 +636,7 @@ void draw_name_entry_hud(void)
         params.v2 = 1.0f;
         draw_naomi_sprite(&params);
 
+        // line middle
         params.x += 256.0f;
         params.scaleX = 0.1953125f;
         params.u1 = 0.0f;
@@ -640,6 +645,7 @@ void draw_name_entry_hud(void)
         params.v2 = 0.953125f;
         draw_naomi_sprite(&params);
 
+        // line end
         params.x += 50.0f;
         params.scaleX = 1.0f;
         params.u1 = 0.0f;
@@ -648,6 +654,7 @@ void draw_name_entry_hud(void)
         params.v2 = 0.9765625f;
         draw_naomi_sprite(&params);
 
+        // monkey
         params.bmpId = u_get_monkey_bitmap_id(0, 0, playerCharacterSelection[ball->playerId]);
         params.x = x + s_nameEntry.unk30;
         params.y = 15.5 + y;
@@ -1188,12 +1195,12 @@ void stobj_nameent_btn_coli(struct Stobj *stobj, struct PhysicsBall *ball)
     stobj->unk64.x = stobj->u_some_pos.x - stobj->unk7C.x;
     stobj->unk64.y = stobj->u_some_pos.y - stobj->unk7C.y;
     stobj->unk64.z = stobj->u_some_pos.z - stobj->unk7C.z;
-    if (lbl_802F2208 == NULL)
+    if (s_pushedButton == NULL)
     {
         if (mathutil_vec_distance(&stobj->unkA8, &stobj->u_some_pos) > 1.0)
         {
             button = stobj->extraData;
-            lbl_802F2208 = button;
+            s_pushedButton = button;
             button->color.r += 1.0;
             button->color.g += 1.0;
             button->color.b += 1.0;

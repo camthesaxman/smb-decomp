@@ -1333,7 +1333,6 @@ extern float lbl_802F21F0;
 // extern ? lbl_802F21FC;
 // extern ? s_readResult;
 // extern ? lbl_802F2204;
-// extern ? lbl_802F2208;
 // extern ? lbl_802F2210;
 // extern ? lbl_802F2214;
 // extern ? lbl_802F2218;

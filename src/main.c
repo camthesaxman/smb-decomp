@@ -63,7 +63,7 @@ __attribute__((section(".text")))
 #endif
 void main(void)
 {
-    //dipSwitches |= 1;
+    //dipSwitches |= DIP_DEBUG;
     globalFrameCounter = 0;
     initialize();
     gm_init();
