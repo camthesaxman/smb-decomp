@@ -8,6 +8,7 @@
 #include "gxutil.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "ranking_screen.h"
 #include "recplay.h"
 #include "sprite.h"

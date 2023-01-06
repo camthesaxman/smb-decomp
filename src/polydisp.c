@@ -22,6 +22,7 @@
 #include "mathutil.h"
 #include "minimap.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "pool.h"

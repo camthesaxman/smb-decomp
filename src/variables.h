@@ -397,12 +397,7 @@ extern struct ApeGfxFileInfo apeGfxFileInfo[8];
 // extern ? lbl_801D6B18;
 // extern ? lbl_801D6B34;
 // extern ? lbl_801D6B48;
-// extern ? s_buttonLetters;
-// extern ? s_buttonModelNames;
-// extern ? s_censoredNames;
-// extern ? lbl_801D6D48;
-// extern ? lbl_801D6D60;
-// extern ? lbl_801D6DC0;
+
 // extern ? lbl_801D6E00;
 // extern ? lbl_801D7524;
 // extern ? lbl_801D83B0;
@@ -626,11 +621,7 @@ extern struct FogInfo fogInfo;
 extern GXTexObj fontTexObj;
 extern struct Struct802C5D60 lbl_802C5D60;
 // extern ? lbl_802C6180;
-// extern ? lbl_802C6220;
-// extern ? s_buttonModels;
-// extern ? lbl_802C63D4;
-// extern ? lbl_802C6794;
-extern struct ScoreRecord lbl_802C67D4[4][5];
+
 // extern ? lbl_802C6918;
 // extern ? lbl_802C6BB8;
 // extern ? lbl_802C6BC8;

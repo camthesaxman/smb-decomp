@@ -710,21 +710,21 @@ struct Struct801EED88
     u32 unkC;
 };  // size = 0x10
 
-struct Struct802C6220_sub
+struct ScoreRecord
 {
-    char unk0[4];
-    s32 unk4;
+    char initials[4];
+    s32 score;
     u32 unk8;
-    u8 unkC;
-    u8 unkD;
+    u8 floorNum;
+    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
     s8 unkE;
-    u8 fillerF;
+    u8 fillerF[1];
 };
 
 struct Struct802C6220
 {
-    u32 unk0;
-    struct Struct802C6220_sub unk4[3*5];
+    u32 size;
+    struct ScoreRecord records[3*5];
 };
 
 struct MemcardGameData_sub
@@ -974,21 +974,6 @@ struct Struct80089A04
     s32 unk30[4];
 };
 
-struct ScoreRecord
-{
-    char initials[4];
-    s32 score;
-    u32 unk8;
-    u8 floorNum;
-    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
-};
-
-struct Struct802C67D4
-{
-    struct ScoreRecord record;
-    u8 fillerE[0x50-0x10];
-};
-
 struct Struct80250A68
 {
     s32 unk0[4];
@@ -1028,6 +1013,6 @@ struct Struct80094870
 };
 
 struct Effect;
-struct Struct802C6220_sub;
+struct ScoreRecord;
 
 #endif

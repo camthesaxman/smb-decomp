@@ -24,6 +24,7 @@
 #include "mathutil.h"
 #include "minimap.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "pool.h"
 #include "recplay.h"
 #include "rend_efc.h"
