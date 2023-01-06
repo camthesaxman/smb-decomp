@@ -11,6 +11,7 @@
 #include "info.h"
 #include "item.h"
 #include "minimap.h"
+#include "name_entry.h"
 #include "obj_collision.h"
 #include "perf.h"
 #include "recplay.h"

@@ -12,6 +12,7 @@
 #include "load.h"
 #include "mode.h"
 #include "mot_ape.h"
+#include "name_entry.h"
 #include "nl2ngc.h"
 #include "ord_tbl.h"
 #include "perf.h"
@@ -62,7 +63,7 @@ __attribute__((section(".text")))
 #endif
 void main(void)
 {
-    //dipSwitches |= 1;
+    //dipSwitches |= DIP_DEBUG;
     globalFrameCounter = 0;
     initialize();
     gm_init();
@@ -86,7 +87,7 @@ void main(void)
     load_common_graphics();
     init_ape_model_info("motdat.lz", "motlabel.bin", "motskl.bin", "motinfo.lz");
     mot_ape_init();
-    func_800AD38C();
+    name_entry_init();
     u_initialize_stage_dyn_part_info();
     loadingStageIdRequest = 1;
     lbl_802F1F40 = 1;

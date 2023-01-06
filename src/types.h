@@ -710,6 +710,23 @@ struct Struct801EED88
     u32 unkC;
 };  // size = 0x10
 
+struct ScoreRecord
+{
+    char initials[4];
+    s32 score;
+    u32 unk8;
+    u8 floorNum;
+    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
+    s8 unkE;
+    u8 fillerF[1];
+};
+
+struct Struct802C6220
+{
+    u32 size;
+    struct ScoreRecord records[3*5];
+};
+
 struct MemcardGameData_sub
 {
     /*0x5844*/ u8 filler0[0x44-0x00];
@@ -781,7 +798,7 @@ struct MemcardGameData_sub
     /*0x5B03*/ u8 unk2BF;
     /*0x5B04*/ u32 unk2C0;
     /*0x5B08*/ u32 unk2C4;
-    /*0x5B0C*/ u8 filler2C8[0x3BC-0x2C8];
+    /*0x5B0C*/ struct Struct802C6220 unk2C8;
     /*0x5C00*/ u32 unk3BC;
 };  // size = 0x3C0
 
@@ -813,13 +830,6 @@ struct ModelLOD
 {
     s32 modelId;
     float distance;
-};
-
-struct Struct802C67D4
-{
-    u8 filler0[4];
-    u32 unk4;
-    u8 filler8[0x50-0x8];
 };
 
 struct ApeFacePart
@@ -964,15 +974,6 @@ struct Struct80089A04
     s32 unk30[4];
 };
 
-struct ScoreRecord
-{
-    char initials[4];
-    u32 score;
-    u8 filler8[4];
-    u8 floorNum;
-    s8 unkD;  // 0 = normal, 1 = extra, 2 = master
-};
-
 struct Struct80250A68
 {
     s32 unk0[4];
@@ -1010,5 +1011,8 @@ struct Struct80094870
     u32 unk4;
     u16 unk8;
 };
+
+struct Effect;
+struct ScoreRecord;
 
 #endif

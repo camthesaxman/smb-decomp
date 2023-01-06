@@ -153,7 +153,7 @@ void func_80036EB8(struct Ape *a);
 void u_choose_ape_anim(struct Ape *a, float b);
 void func_8003765C(struct Ape *a);
 void func_80037718();
-// ? func_80037B1C();
+void func_80037B1C(struct Ball *);
 void func_80037B20(void);
 void ev_ball_init(void);
 // ? func_800380A8();

@@ -8,6 +8,7 @@
 #include "camera.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "nl2ngc.h"
 #include "obj_collision.h"
 #include "pool.h"

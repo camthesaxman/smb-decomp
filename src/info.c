@@ -15,6 +15,7 @@
 #include "item.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "pool.h"
 #include "recplay.h"
 #include "sound.h"

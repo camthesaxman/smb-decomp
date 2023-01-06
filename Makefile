@@ -203,7 +203,7 @@ SOURCES := \
 	asm/mini_ranking.s \
 	src/dvd.c \
 	src/preview.c \
-	asm/name_entry.s \
+	src/name_entry.c \
 	asm/credits.s \
 	asm/vibration.s \
 	libraries/base/asm/PPCArch.s \

@@ -8,6 +8,7 @@
 #include "gxutil.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "ranking_screen.h"
 #include "recplay.h"
 #include "sprite.h"
@@ -748,7 +749,7 @@ void init_ranking_screen(int difficulty)
         lbl_802B37F0.unk18 = 0;
         break;
     }
-    lbl_802B37F0.unk168 = func_800AEC74(difficulty, 0);
+    lbl_802B37F0.unk168 = func_800AEC74(difficulty, NULL);
 
     var = 0;
     entry = lbl_802B37F0.rankingEntries;

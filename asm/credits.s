@@ -6651,145 +6651,6 @@ lbl_800B5EC8:
 
 .section .sdata
 
-	.balign 8
-glabel string_FONT_A
-	.asciz "FONT_A"
-	.balign 4
-glabel string_FONT_B
-	.asciz "FONT_B"
-	.balign 4
-glabel string_FONT_C
-	.asciz "FONT_C"
-	.balign 4
-glabel string_FONT_D
-	.asciz "FONT_D"
-	.balign 4
-glabel string_FONT_E
-	.asciz "FONT_E"
-	.balign 4
-glabel string_FONT_F
-	.asciz "FONT_F"
-	.balign 4
-glabel string_FONT_G
-	.asciz "FONT_G"
-	.balign 4
-glabel string_FONT_H
-	.asciz "FONT_H"
-	.balign 4
-glabel string_FONT_I
-	.asciz "FONT_I"
-	.balign 4
-glabel string_FONT_J
-	.asciz "FONT_J"
-	.balign 4
-glabel string_FONT_K
-	.asciz "FONT_K"
-	.balign 4
-glabel string_FONT_L
-	.asciz "FONT_L"
-	.balign 4
-glabel string_FONT_M
-	.asciz "FONT_M"
-	.balign 4
-glabel string_FONT_N
-	.asciz "FONT_N"
-	.balign 4
-glabel string_FONT_O
-	.asciz "FONT_O"
-	.balign 4
-glabel string_FONT_P
-	.asciz "FONT_P"
-	.balign 4
-glabel string_FONT_Q
-	.asciz "FONT_Q"
-	.balign 4
-glabel string_FONT_R
-	.asciz "FONT_R"
-	.balign 4
-glabel string_FONT_S
-	.asciz "FONT_S"
-	.balign 4
-glabel string_FONT_T
-	.asciz "FONT_T"
-	.balign 4
-glabel string_FONT_U
-	.asciz "FONT_U"
-	.balign 4
-glabel string_FONT_V
-	.asciz "FONT_V"
-	.balign 4
-glabel string_FONT_W
-	.asciz "FONT_W"
-	.balign 4
-glabel string_FONT_X
-	.asciz "FONT_X"
-	.balign 4
-glabel string_FONT_Y
-	.asciz "FONT_Y"
-	.balign 4
-glabel string_FONT_Z
-	.asciz "FONT_Z"
-	.balign 4
-glabel lbl_802F1800
-	.4byte 0x53455800
-glabel lbl_802F1804
-	.4byte 0x58585800
-glabel lbl_802F1808
-	.4byte 0x58582000
-glabel lbl_802F180C
-	.4byte 0x58580000
-glabel lbl_802F1810
-	.4byte 0x20585800
-glabel lbl_802F1814
-	.4byte 0x58205800
-
-.global lbl_802F1818
-lbl_802F1818:
-	# ROM: 0x1EBF58
-glabel string_BUTTON
-	.asciz "BUTTON"
-	.balign 4
-
-.global lbl_802F1820
-lbl_802F1820:
-	# ROM: 0x1EBF60
-	.4byte 0x412E5600
-
-.global lbl_802F1824
-lbl_802F1824:
-	# ROM: 0x1EBF64
-	.4byte 0x2D2D2D00
-
-.global lbl_802F1828
-lbl_802F1828:
-	# ROM: 0x1EBF68
-glabel string__07d_2
-	.asciz "%07d"
-	.balign 4
-glabel lbl_802F1830
-	.4byte 0x4E414700
-glabel lbl_802F1834
-	.4byte 0x40524900
-glabel lbl_802F1838
-	.4byte 0x53484F00
-glabel lbl_802F183C
-	.4byte 0x53414B00
-glabel lbl_802F1840
-	.4byte 0x4A414D00
-glabel lbl_802F1844
-	.4byte 0x4D4B4100
-glabel lbl_802F1848
-	.4byte 0x4F444100
-glabel lbl_802F184C
-	.4byte 0x4D2E5300
-glabel lbl_802F1850
-	.4byte 0x482E4500
-glabel lbl_802F1854
-	.4byte 0x4A554E00
-glabel lbl_802F1858
-	.4byte 0x592E5300
-glabel lbl_802F185C
-	.4byte 0x41474500
 glabel string_Bonobo
 	.asciz "Bonobo"
 	.balign 4
@@ -8538,190 +8399,7 @@ lbl_802F6728:
 
 .section .data
 
-.global lbl_801D6B58
-lbl_801D6B58:
-	# ROM: 0x1D3B58
-	.4byte 0x00002041
-	.4byte 0x42434445
-	.4byte 0x46474849
-	.4byte 0x4A4B4C4D
-	.4byte 0x4E4F5051
-	.4byte 0x52535455
-	.4byte 0x56575859
-	.4byte 0x5A21262D
-	.4byte 0x2E3F4039
-	.4byte 0x38373635
-	.4byte 0x34333231
-	.4byte 0x30080000
-glabel string_FONT_ARROW_R
-	.asciz "FONT_ARROW_R"
-	.balign 4
-glabel string_FONT_EXCLAM
-	.asciz "FONT_EXCLAM"
-glabel string_FONT_AMPERSAND
-	.asciz "FONT_AMPERSAND"
-	.balign 4
-glabel string_FONT_MINUS
-	.asciz "FONT_MINUS"
-	.balign 4
-glabel string_FONT_PERIOD
-	.asciz "FONT_PERIOD"
-glabel string_FONT_QUESTION
-	.asciz "FONT_QUESTION"
-	.balign 4
-glabel string_FONT_ATMARK
-	.asciz "FONT_ATMARK"
-glabel string_FONT_NINE
-	.asciz "FONT_NINE"
-	.balign 4
-glabel string_FONT_EIGHT
-	.asciz "FONT_EIGHT"
-	.balign 4
-glabel string_FONT_SEVEN
-	.asciz "FONT_SEVEN"
-	.balign 4
-glabel string_FONT_SIX
-	.asciz "FONT_SIX"
-	.balign 4
-glabel string_FONT_FIVE
-	.asciz "FONT_FIVE"
-	.balign 4
-glabel string_FONT_FOUR
-	.asciz "FONT_FOUR"
-	.balign 4
-glabel string_FONT_THREE
-	.asciz "FONT_THREE"
-	.balign 4
-glabel string_FONT_TWO
-	.asciz "FONT_TWO"
-	.balign 4
-glabel string_FONT_ONE
-	.asciz "FONT_ONE"
-	.balign 4
-glabel string_FONT_ZERO
-	.asciz "FONT_ZERO"
-	.balign 4
-glabel string_FONT_ARROW_L
-	.asciz "FONT_ARROW_L"
-	.balign 4
-
-.global lbl_801D6C70
-lbl_801D6C70:
-	# ROM: 0x1D3C70
-	.4byte 0
-	.4byte 0
-	.4byte string_FONT_ARROW_R  ;# ptr
-	.4byte string_FONT_A  ;# ptr
-	.4byte string_FONT_B  ;# ptr
-	.4byte string_FONT_C  ;# ptr
-	.4byte string_FONT_D  ;# ptr
-	.4byte string_FONT_E  ;# ptr
-	.4byte string_FONT_F  ;# ptr
-	.4byte string_FONT_G  ;# ptr
-	.4byte string_FONT_H  ;# ptr
-	.4byte string_FONT_I  ;# ptr
-	.4byte string_FONT_J  ;# ptr
-	.4byte string_FONT_K  ;# ptr
-	.4byte string_FONT_L  ;# ptr
-	.4byte string_FONT_M  ;# ptr
-	.4byte string_FONT_N  ;# ptr
-	.4byte string_FONT_O  ;# ptr
-	.4byte string_FONT_P  ;# ptr
-	.4byte string_FONT_Q  ;# ptr
-	.4byte string_FONT_R  ;# ptr
-	.4byte string_FONT_S  ;# ptr
-	.4byte string_FONT_T  ;# ptr
-	.4byte string_FONT_U  ;# ptr
-	.4byte string_FONT_V  ;# ptr
-	.4byte string_FONT_W  ;# ptr
-	.4byte string_FONT_X  ;# ptr
-	.4byte string_FONT_Y  ;# ptr
-	.4byte string_FONT_Z  ;# ptr
-	.4byte string_FONT_EXCLAM  ;# ptr
-	.4byte string_FONT_AMPERSAND  ;# ptr
-	.4byte string_FONT_MINUS  ;# ptr
-	.4byte string_FONT_PERIOD  ;# ptr
-	.4byte string_FONT_QUESTION  ;# ptr
-	.4byte string_FONT_ATMARK  ;# ptr
-	.4byte string_FONT_NINE  ;# ptr
-	.4byte string_FONT_EIGHT  ;# ptr
-	.4byte string_FONT_SEVEN  ;# ptr
-	.4byte string_FONT_SIX  ;# ptr
-	.4byte string_FONT_FIVE  ;# ptr
-	.4byte string_FONT_FOUR  ;# ptr
-	.4byte string_FONT_THREE  ;# ptr
-	.4byte string_FONT_TWO  ;# ptr
-	.4byte string_FONT_ONE  ;# ptr
-	.4byte string_FONT_ZERO  ;# ptr
-	.4byte string_FONT_ARROW_L  ;# ptr
-	.4byte 0
-	.4byte 0
-
-.global lbl_801D6D30
-lbl_801D6D30:
-	# ROM: 0x1D3D30
-	.4byte lbl_802F1800  ;# ptr
-	.4byte lbl_802F1804  ;# ptr
-	.4byte lbl_802F1808  ;# ptr
-	.4byte lbl_802F180C  ;# ptr
-	.4byte lbl_802F1810  ;# ptr
-	.4byte lbl_802F1814  ;# ptr
-
-.global lbl_801D6D48
-lbl_801D6D48:
-	# ROM: 0x1D3D48
-glabel string_PLEASE_ENTER_YOUR_NAME
-	.asciz "PLEASE ENTER YOUR NAME"
-	.balign 4
-
-.global lbl_801D6D60
-lbl_801D6D60:
-	# ROM: 0x1D3D60
-	.4byte lbl_800ADDAC  ;# ptr
-	.4byte lbl_800AD6D8  ;# ptr
-	.4byte lbl_800AD6E4  ;# ptr
-	.4byte lbl_800AD718  ;# ptr
-	.4byte lbl_800AD82C  ;# ptr
-	.4byte lbl_800AD89C  ;# ptr
-	.4byte lbl_800AD918  ;# ptr
-	.4byte lbl_800ADB00  ;# ptr
-	.4byte lbl_800ADBA4  ;# ptr
-	.4byte lbl_800ADC0C  ;# ptr
-	.4byte lbl_800ADCC8  ;# ptr
-	.4byte lbl_800ADD88  ;# ptr
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-	.4byte 0
-
-.global lbl_801D6DC0
-lbl_801D6DC0:
-	# ROM: 0x1D3DC0
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1834  ;# ptr
-	.4byte lbl_802F1838  ;# ptr
-	.4byte lbl_802F183C  ;# ptr
-	.4byte lbl_802F1820  ;# ptr
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1840  ;# ptr
-	.4byte lbl_802F1844  ;# ptr
-	.4byte lbl_802F1848  ;# ptr
-	.4byte lbl_802F184C  ;# ptr
-	.4byte lbl_802F1830  ;# ptr
-	.4byte lbl_802F1850  ;# ptr
-	.4byte lbl_802F1854  ;# ptr
-	.4byte lbl_802F1858  ;# ptr
-	.4byte lbl_802F185C  ;# ptr
-	.4byte 0
-
+	.balign 8
 .global lbl_801D6E00
 lbl_801D6E00:
 	# ROM: 0x1D3E00
@@ -20629,6 +20307,149 @@ glabel string_spr_banana_work
 
 .section .bss
 
+	.balign 8
 .global lbl_802C6918
 lbl_802C6918:
 	.skip 0x2A0
+
+.section .sbss
+
+	.balign 8
+.global lbl_802F2210
+lbl_802F2210:
+	.skip 0x4
+.global lbl_802F2214
+lbl_802F2214:
+	.skip 0x4
+.global lbl_802F2218
+lbl_802F2218:
+	.skip 0x4
+.global lbl_802F221C
+lbl_802F221C:
+	.skip 0x4
+.global lbl_802F2220
+lbl_802F2220:
+	.skip 0x4
+.global lbl_802F2224
+lbl_802F2224:
+	.skip 0x4
+.global lbl_802F2228
+lbl_802F2228:
+	.skip 0x4
+.global lbl_802F222C
+lbl_802F222C:
+	.skip 0x4
+.global lbl_802F2230
+lbl_802F2230:
+	.skip 0x4
+.global lbl_802F2234
+lbl_802F2234:
+	.skip 0x4
+.global lbl_802F2238
+lbl_802F2238:
+	.skip 0x4
+.global lbl_802F223C
+lbl_802F223C:
+	.skip 0x4
+.global lbl_802F2240
+lbl_802F2240:
+	.skip 0x4
+.global lbl_802F2244
+lbl_802F2244:
+	.skip 0x4
+.global lbl_802F2248
+lbl_802F2248:
+	.skip 0x4
+.global lbl_802F224C
+lbl_802F224C:
+	.skip 0x4
+.global lbl_802F2250
+lbl_802F2250:
+	.skip 0x4
+.global lbl_802F2254
+lbl_802F2254:
+	.skip 0x4
+.global lbl_802F2258
+lbl_802F2258:
+	.skip 0x4
+.global lbl_802F225C
+lbl_802F225C:
+	.skip 0x4
+.global lbl_802F2260
+lbl_802F2260:
+	.skip 0x4
+.global lbl_802F2264
+lbl_802F2264:
+	.skip 0x4
+.global lbl_802F2268
+lbl_802F2268:
+	.skip 0x4
+.global lbl_802F226C
+lbl_802F226C:
+	.skip 0x4
+.global lbl_802F2270
+lbl_802F2270:
+	.skip 0x4
+.global lbl_802F2274
+lbl_802F2274:
+	.skip 0x4
+.global lbl_802F2278
+lbl_802F2278:
+	.skip 0x4
+.global lbl_802F227C
+lbl_802F227C:
+	.skip 0x4
+.global lbl_802F2280
+lbl_802F2280:
+	.skip 0x4
+.global lbl_802F2284
+lbl_802F2284:
+	.skip 0x4
+.global lbl_802F2288
+lbl_802F2288:
+	.skip 0x4
+.global lbl_802F228C
+lbl_802F228C:
+	.skip 0x4
+.global lbl_802F2290
+lbl_802F2290:
+	.skip 0x4
+.global lbl_802F2294
+lbl_802F2294:
+	.skip 0x4
+.global lbl_802F2298
+lbl_802F2298:
+	.skip 0x4
+.global lbl_802F229C
+lbl_802F229C:
+	.skip 0x4
+.global lbl_802F22A0
+lbl_802F22A0:
+	.skip 0x4
+.global lbl_802F22A4
+lbl_802F22A4:
+	.skip 0x4
+.global lbl_802F22A8
+lbl_802F22A8:
+	.skip 0x4
+.global lbl_802F22AC
+lbl_802F22AC:
+	.skip 0x4
+.global lbl_802F22B0
+lbl_802F22B0:
+	.skip 0x4
+.global lbl_802F22B4
+lbl_802F22B4:
+	.skip 0x4
+.global lbl_802F22B8
+lbl_802F22B8:
+	.skip 0x4
+.global lbl_802F22BC
+lbl_802F22BC:
+	.skip 0x4
+.global lbl_802F22C0
+lbl_802F22C0:
+	.skip 0x8
+.global lbl_802F22C8
+lbl_802F22C8:
+	.skip 0x8

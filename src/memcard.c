@@ -14,6 +14,7 @@
 #include "input.h"
 #include "mathutil.h"
 #include "mode.h"
+#include "name_entry.h"
 #include "recplay.h"
 #include "sound.h"
 #include "sprite.h"
