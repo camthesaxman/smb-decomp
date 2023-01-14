@@ -106,7 +106,7 @@ lbl_800CEBA0:
 /* 800CEBC0 000CAAE0  4E 80 00 20 */	blr
 
 .section .data
-
+	.balign 8
 .global lbl_801E7A60
 lbl_801E7A60:
 	# ROM: 0x1E4A60

@@ -543,7 +543,7 @@ __OSContextInit:
 /* 800C3BE4 000BFB04  3C 60 80 0C */	lis r3, OSSwitchFPUContext@ha
 /* 800C3BE8 000BFB08  38 83 3B 54 */	addi r4, r3, OSSwitchFPUContext@l
 /* 800C3BEC 000BFB0C  38 60 00 07 */	li r3, 7
-/* 800C3BF0 000BFB10  4B FF E1 69 */	bl __OSDBJUMPEND
+/* 800C3BF0 000BFB10  4B FF E1 69 */	bl __OSSetExceptionHandler
 /* 800C3BF4 000BFB14  38 00 00 00 */	li r0, 0
 /* 800C3BF8 000BFB18  4C C6 31 82 */	crclr 6
 /* 800C3BFC 000BFB1C  3C 80 80 00 */	lis r4, 0x800000D8@ha
@@ -555,3 +555,49 @@ __OSContextInit:
 /* 800C3C14 000BFB34  38 21 00 08 */	addi r1, r1, 8
 /* 800C3C18 000BFB38  7C 08 03 A6 */	mtlr r0
 /* 800C3C1C 000BFB3C  4E 80 00 20 */	blr
+
+.section .data
+    .balign 8
+.global lbl_801E64F8
+lbl_801E64F8:
+	# ROM: 0x1E34F8
+glabel string___________________________Context_0x_08x___________________________n
+	.asciz "------------------------- Context 0x%08x -------------------------\n"
+glabel string_r__2d____0x_08x___14d___r__2d____0x_08x___14d__n
+	.asciz "r%-2d  = 0x%08x (%14d)  r%-2d  = 0x%08x (%14d)\n"
+glabel string_LR_____0x_08x___________________CR_____0x_08x_n
+	.asciz "LR   = 0x%08x                   CR   = 0x%08x\n"
+	.balign 4
+glabel string_SRR0___0x_08x___________________SRR1___0x_08x_n
+	.asciz "SRR0 = 0x%08x                   SRR1 = 0x%08x\n"
+	.balign 4
+glabel string__nGQRs___________n
+	.asciz "\nGQRs----------\n"
+	.balign 4
+glabel string_gqr_d___0x_08x__t_gqr_d___0x_08x_n
+	.asciz "gqr%d = 0x%08x \t gqr%d = 0x%08x\n"
+	.balign 4
+glabel string__n_nFPRs___________n
+	.asciz "\n\nFPRs----------\n"
+	.balign 4
+glabel string_fr_d__t___d__t_fr_d__t___d_n
+	.asciz "fr%d \t= %d \t fr%d \t= %d\n"
+	.balign 4
+glabel string__n_nPSFs___________n
+	.asciz "\n\nPSFs----------\n"
+	.balign 4
+glabel string_ps_d__t__0x_x__t_ps_d__t__0x_x_n
+	.asciz "ps%d \t= 0x%x \t ps%d \t= 0x%x\n"
+	.balign 4
+glabel string__nAddress_______Back_Chain____LR_Save_n
+	.asciz "\nAddress:      Back Chain    LR Save\n"
+	.balign 4
+glabel string_0x_08x____0x_08x____0x_08x_n
+	.asciz "0x%08x:   0x%08x    0x%08x\n"
+
+.global lbl_801E66AC
+lbl_801E66AC:
+	# ROM: 0x1E36AC
+glabel string_FPU_unavailable_handler_installed_n
+	.asciz "FPU-unavailable handler installed\n"
+	.balign 4
