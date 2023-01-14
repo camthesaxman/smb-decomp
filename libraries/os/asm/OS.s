@@ -385,7 +385,7 @@ lbl_800C1CEC:
 lbl_800C1CF0:
 /* 800C1CF0 000BDC10  7E 83 A3 78 */	mr r3, r20
 /* 800C1CF4 000BDC14  7E E4 BB 78 */	mr r4, r23
-/* 800C1CF8 000BDC18  48 00 00 61 */	bl __OSDBJUMPEND
+/* 800C1CF8 000BDC18  48 00 00 61 */	bl __OSSetExceptionHandler
 /* 800C1CFC 000BDC1C  3A 94 00 01 */	addi r20, r20, 1
 lbl_800C1D00:
 /* 800C1D00 000BDC20  56 80 06 3E */	clrlwi r0, r20, 0x18
@@ -416,9 +416,10 @@ __OSDBINITSTART:
 .global __OSDBJUMPSTART
 __OSDBJUMPSTART:
 /* 800C1D54 000BDC74  48 00 00 63 */	bla 0x60
-
-.global __OSDBJUMPEND
 __OSDBJUMPEND:
+
+.global __OSSetExceptionHandler
+__OSSetExceptionHandler:
 /* 800C1D58 000BDC78  54 60 06 3E */	clrlwi r0, r3, 0x18
 /* 800C1D5C 000BDC7C  80 6D A0 FC */	lwz r3, OSExceptionTable@sda21(r13)
 /* 800C1D60 000BDC80  54 00 10 3A */	slwi r0, r0, 2

@@ -79,7 +79,7 @@ __OSInterruptInit:
 /* 800C6188 000C20A8  3C 60 80 0C */	lis r3, ExternalInterruptHandler@ha
 /* 800C618C 000C20AC  38 83 68 90 */	addi r4, r3, ExternalInterruptHandler@l
 /* 800C6190 000C20B0  38 60 00 04 */	li r3, 4
-/* 800C6194 000C20B4  4B FF BB C5 */	bl __OSDBJUMPEND
+/* 800C6194 000C20B4  4B FF BB C5 */	bl __OSSetExceptionHandler
 /* 800C6198 000C20B8  80 01 00 14 */	lwz r0, 0x14(r1)
 /* 800C619C 000C20BC  83 E1 00 0C */	lwz r31, 0xc(r1)
 /* 800C61A0 000C20C0  38 21 00 10 */	addi r1, r1, 0x10

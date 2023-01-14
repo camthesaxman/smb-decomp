@@ -18,7 +18,7 @@ OSInitAlarm:
 /* 800C1EF0 000BDE10  90 03 00 04 */	stw r0, 4(r3)
 /* 800C1EF4 000BDE14  38 60 00 08 */	li r3, 8
 /* 800C1EF8 000BDE18  90 0D A1 00 */	stw r0, AlarmQueue@sda21(r13)
-/* 800C1EFC 000BDE1C  4B FF FE 5D */	bl __OSDBJUMPEND
+/* 800C1EFC 000BDE1C  4B FF FE 5D */	bl __OSSetExceptionHandler
 lbl_800C1F00:
 /* 800C1F00 000BDE20  80 01 00 0C */	lwz r0, 0xc(r1)
 /* 800C1F04 000BDE24  38 21 00 08 */	addi r1, r1, 8
